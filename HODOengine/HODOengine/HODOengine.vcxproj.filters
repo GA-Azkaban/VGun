@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="00_Default">
+      <UniqueIdentifier>{8b23ff3e-01a0-444d-9023-d2c6a98e1663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_EngineProcess">
+      <UniqueIdentifier>{6fb42b1f-27a0-428a-8085-82fb8e0048bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_EngineProcess\0. Interface">
+      <UniqueIdentifier>{77d68b67-6a4a-492c-be10-5c62cb73efe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_EngineProcess\1. dllExporter">
+      <UniqueIdentifier>{4f966e9a-0535-47d1-8732-abe82fc0c647}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>00_Default</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>00_Default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>00_Default</Filter>
+    </ClInclude>
+    <ClInclude Include="HODOengine.h">
+      <Filter>01_EngineProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="IHODOengine.h">
+      <Filter>01_EngineProcess\0. Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="dllExporter.h">
+      <Filter>01_EngineProcess\1. dllExporter</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>00_Default</Filter>
+    </Image>
+    <Image Include="HODOengine.ico">
+      <Filter>00_Default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HODOengine.rc">
+      <Filter>00_Default</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="HODOengine.cpp">
+      <Filter>01_EngineProcess</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
