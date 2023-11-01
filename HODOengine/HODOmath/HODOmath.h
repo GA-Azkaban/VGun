@@ -236,7 +236,41 @@ namespace HDMaths
 
 	struct HDFLOAT4X4
 	{
+		union 
+		{
+			struct 
+			{
+				float _11, _12, _13, _14;
+				float _21, _22, _23, _24;
+				float _31, _32, _33, _34;
+			};
 
+			float element[4][4];
+		};
+
+		//static const HDFLOAT4X4 Identitiy;
+
+		// 기본 생성자
+		HDFLOAT4X4();
+		HDFLOAT4X4(float val11, float val12, float val13, float val14,
+			float val21, float val22, float val23, float val24,
+			float val31, float val32, float val33, float val34);
+
+		// 복사 생성자
+		HDFLOAT4X4(const HDFLOAT3X3& val);
+
+
+		// 대입 연산자
+		HDFLOAT4X4& operator=(const HDFLOAT4X4& val);
+
+		// 연산자 오버로딩 (역행렬, 행렬곱)
+		HDFLOAT4X4 operator*(const HDFLOAT4X4& val);
+		HDFLOAT4X4& operator*=(const HDFLOAT4X4& val);
+		
+
+		// 수학 연산
+		HDFLOAT4X4 Multiply(const HDFLOAT4X4& left, const HDFLOAT4X4& right);
+		HDFLOAT4X4 Inverse() const;
 	};
 };
 

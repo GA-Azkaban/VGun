@@ -577,4 +577,61 @@ namespace HDMaths
 		return result;
 	}
 
+	//const HDFLOAT4X4 HDFLOAT4X4::Identitiy =
+	//	HDFLOAT4X4(1.f, 0.f, 0.f, 0.f,
+	//		0.f, 1.f, 0.f, 0.f,
+	//		0.f, 0.f, 1.f, 0.f,
+	//		0.f, 0.f, 0.f, 1.f);
+
+	HDFLOAT4X4::HDFLOAT4X4()
+
+	{
+
+	}
+
+
+	HDFLOAT4X4::HDFLOAT4X4(const HDFLOAT3X3& val)
+	{
+
+	}
+
+
+	HDFLOAT4X4::HDFLOAT4X4(float val11, float val12, float val13, float val14,
+		float val21, float val22, float val23, float val24,
+		float val31, float val32, float val33, float val34)
+		: _11(val11), _12(val12), _13(val13), _14(val14),
+		_21(val21), _22(val22), _23(val23), _24(val24),
+		_31(val31), _32(val32), _33(val33), _34(val34)
+	{
+
+	}
+
+	HDFLOAT4X4 HDFLOAT4X4::operator*(const HDFLOAT4X4& val)
+	{
+
+	}
+
+	HDFLOAT4X4& HDFLOAT4X4::operator=(const HDFLOAT4X4& val)
+	{
+
+	}
+
+	HDFLOAT4X4& HDFLOAT4X4::operator*=(const HDFLOAT4X4& val)
+	{
+
+	}
+
+
+	HDFLOAT4X4 HDFLOAT4X4::Multiply(const HDFLOAT4X4& left, const HDFLOAT4X4& right)
+	{
+
+	}
+
+
+	HDFLOAT4X4 HDFLOAT4X4::Inverse() const
+	{
+
+	}
+
+
 }
