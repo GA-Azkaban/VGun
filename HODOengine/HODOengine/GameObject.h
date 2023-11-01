@@ -1,5 +1,8 @@
 #pragma once
 #include "dllExporter.h"
+#include "Component.h"
+#include <vector>
+#include <list>
 #include <unordered_set>
 
 /// <summary>
@@ -31,25 +34,53 @@ namespace hodoEngine
 		template <typename ComponentType>
 		ComponentType* AddComponent() {
 			auto component = new ComponentType();
+			component->gameObject = this;
 			components.emplace(component);
+			return component;
 		}
-		
-		void DeleteComponent(Component* component);
-		
+
 		template <typename ComponentType>
-		ComponentType* GetComponent() {
+		ComponentType* GetComponent() const {
+			static_assert(std::is_base_of<Component, ComponentType>::value, "Only derived class from Component class is allowed.");
 			for (auto iter = components.begin(); iter != components.end(); ++iter)
 			{
-				static_assert()
+				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
+				if (castedPointer)
+					return castedPointer;
 			}
 			return nullptr;
 		}
-		// GetComponents
-		// GetTransform
-		Transform* GetTransform() { return transform; }
-		// SetSelfActive
+
+		template<typename ComponentType>
+		std::vector<ComponentType*> GetComponents() const {
+			std::vector<ComponentType*> ret;
+			static_assert(std::is_base_of<Component, ComponentType>::value, "Only derived class from Component class is allowed.");
+			for (auto iter = components.begin(); iter != components.end(); ++iter)
+			{
+				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
+				if (castedPointer)
+					ret.push_back(castedPointer);
+			}
+			return ret;
+		}
+		
+		void DeleteComponent(Component* component);
+
+		Transform* GetTransform() const { return transform; }
+
+		void SetSelfActive(bool active) {
+			selfActive = active;
+			// 자식 오브젝트도 모두 꺼줘야 함.
+		}
+
 	private:
+		GameObject(GameObject* parent);
 		std::unordered_set<Component*> components;
+		GameObject* parentGameObject;
+		std::list<GameObject*> childrenGameObject;
 		Transform* transform;
+		bool selfActive = true;
+
+		friend Component::Component();
 	};
 }
