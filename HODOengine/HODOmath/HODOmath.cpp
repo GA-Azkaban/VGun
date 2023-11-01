@@ -471,4 +471,110 @@ namespace HDMaths
 		}
 	}
 
+
+	HDQuternion::HDQuternion()
+		: w(0.f), x(0.f), y(0.f), z(1.0)
+	{
+
+	}
+
+
+	HDQuternion::HDQuternion(float w, float x, float y, float z)
+		: w(w), x(x), y(y), z(z)
+	{
+
+	}
+
+
+	HDQuternion::HDQuternion(const HDQuternion& val)
+		: w(val.w), x(val.x), y(val.y), z(val.z)
+	{
+
+	}
+
+
+	HDMaths::HDQuternion HDQuternion::operator=(const HDQuternion& other)
+	{
+		this->w = other.w;
+		this->x = other.x;
+		this->y = other.y;
+		this->z = other.z;
+
+		return *this;
+	}
+
+	bool HDQuternion::operator==(const HDQuternion& other)
+	{
+		return (w == other.w && x == other.x && y == other.y && z == other.z);
+	}
+
+	bool HDQuternion::operator!=(const HDQuternion& other)
+	{
+		return !(*this == other);
+	}
+
+	const HDFLOAT3X3 HDFLOAT3X3::Identitiy = 
+		HDFLOAT3X3(	1.f, 0.f, 0.f,
+					0.f, 1.f, 0.f,
+					0.f, 0.f, 1.f);
+
+	HDFLOAT3X3::HDFLOAT3X3()
+		: _11(0.f), _12(0.f), _13(0.f), 
+		_21(0.f), _22(0.f), _23(0.f),
+		_31(0.f), _32(0.f), _33(0.f)
+	{
+
+	}
+
+
+	HDFLOAT3X3::HDFLOAT3X3(float val11, float val12, float val13, float val21, float val22, float val23, float val31, float val32, float val33)
+		: _11(val11), _12(val12), _13(val13),
+		_21(val21), _22(val22), _23(val23),
+		_31(val31), _32(val32), _33(val33)
+	{
+
+	}
+
+
+	HDFLOAT3X3::HDFLOAT3X3(const HDFLOAT3X3& val)
+	{
+		*this = val;
+	}
+
+
+	HDFLOAT3X3& HDFLOAT3X3::operator=(const HDFLOAT3X3& val)
+	{
+		memcpy(this->element, val.element, 9 * sizeof(float));
+		return *this;
+	}
+
+	HDFLOAT3X3 HDFLOAT3X3::operator*(const HDFLOAT3X3& val)
+	{
+		return Multiply(*this, val);
+	}
+
+	HDFLOAT3X3& HDFLOAT3X3::operator*=(const HDFLOAT3X3& val)
+	{
+		*this = Multiply(*this, val);
+		return *this;
+	}
+
+	HDFLOAT3X3 HDFLOAT3X3::Multiply(const HDFLOAT3X3& left, const HDFLOAT3X3& right)
+	{
+		HDFLOAT3X3 result;
+
+		for (int row = 0; row < 3; row++)
+		{
+			for (int col = 0; col < 3; col++)
+			{
+				result.element[row][col] =
+					left.element[row][0] * right.element[0][col] +
+					left.element[row][1] * right.element[1][col] +
+					left.element[row][2] * right.element[2][col];
+			}
+		}
+		
+		return result;
+	}
+
 }

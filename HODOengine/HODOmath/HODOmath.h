@@ -183,9 +183,61 @@ namespace HDMaths
 		// 복사 생성자
 		HDQuternion(const HDQuternion& val);
 
+		// 이동 생성자
+		HDQuternion(HDQuternion&& val) noexcept = default;
+
+		// 연산자 오버로딩
+		HDQuternion operator=(const HDQuternion& other); // 대입 연산자
+
+		// 비교 연산자
+		bool operator==(const HDQuternion& other);
+		bool operator!=(const HDQuternion& other);
+
+
 
 	};
 
+	struct HDFLOAT3X3
+	{
+		union 
+		{
+			struct
+			{
+				float _11, _12, _13;
+				float _21, _22, _23;
+				float _31, _32, _33;
+			};
+
+			float element[3][3];
+		};
+
+		static const HDFLOAT3X3 Identitiy;
+
+		// 기본 생성자
+		HDFLOAT3X3();
+		HDFLOAT3X3(	float val11, float val12, float val13,
+					float val21, float val22, float val23,
+					float val31, float val32, float val33 );
+
+		// 복사 생성자
+		HDFLOAT3X3(const HDFLOAT3X3& val);
+
+		// 대입 연산자 (깊은 복사)
+		HDFLOAT3X3& operator=(const HDFLOAT3X3& val);
+
+		// 연산자 오버로딩
+		HDFLOAT3X3 operator*(const HDFLOAT3X3& val);
+		HDFLOAT3X3& operator*=(const HDFLOAT3X3& val);
+
+		// 수학 연산
+		HDFLOAT3X3 Multiply(const HDFLOAT3X3& left, const HDFLOAT3X3& right);
+
+	};
+
+	struct HDFLOAT4X4
+	{
+
+	};
 };
 
 
