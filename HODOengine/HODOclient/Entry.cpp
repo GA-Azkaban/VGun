@@ -6,7 +6,6 @@
 ///
 /// 231026 오수안
 /// 프로그램의 시작점
-/// - 최민서를 표절함 -
 /// 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
