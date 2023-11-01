@@ -22,6 +22,9 @@
     <Filter Include="Transform">
       <UniqueIdentifier>{1d994bc1-3cba-48ef-bd78-d8a7e3880a99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Collision">
+      <UniqueIdentifier>{ff76b52b-9184-49be-88ea-cf3a2f8b2cfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -51,6 +54,7 @@
     <ClInclude Include="Transform.h">
       <Filter>Transform</Filter>
     </ClInclude>
+    <ClInclude Include="Collision.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -77,6 +81,9 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

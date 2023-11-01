@@ -1,5 +1,6 @@
 #pragma once
 #include "dllExporter.h"
+
 /// <summary>
 /// Component는 게임 오브젝트에 배치될 수 있는 객체입니다.
 /// 게임 오브젝트에 배치된 컴포넌트에 따라 게임 오브젝트의 성질이 결정됩니다.
@@ -9,6 +10,7 @@
 namespace hodoEngine
 {
 	class GameObject;
+	class Transform;
 	class Collision;
 
 	class HODO_API Component
@@ -32,6 +34,7 @@ namespace hodoEngine
 		virtual void OnCollisionStay(const Collision& collision) {};
 		// 충돌체들의 충돌이 끝나고 서로 떨어져나갈 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionExit(const Collision& collision) {};
+		virtual ~Component() {};
 
 		GameObject* GetGameObject() const { return gameObject; };
 

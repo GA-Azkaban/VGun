@@ -1,8 +1,8 @@
 #pragma once
 #include "dllExporter.h"
 #include "Component.h"
+#include "Transform.h"
 #include <vector>
-#include <list>
 #include <unordered_set>
 
 /// <summary>
@@ -33,7 +33,8 @@ namespace hodoEngine
 
 		template <typename ComponentType>
 		ComponentType* AddComponent() {
-			auto component = new ComponentType();
+			static_assert(std::is_base_of<Component, ComponentType>::value, "Only derived class from Component class is allowed.");
+			ComponentType* component = new ComponentType();
 			component->gameObject = this;
 			components.emplace(component);
 			return component;
@@ -77,7 +78,7 @@ namespace hodoEngine
 		GameObject(GameObject* parent);
 		std::unordered_set<Component*> components;
 		GameObject* parentGameObject;
-		std::list<GameObject*> childrenGameObject;
+		std::vector<GameObject*> childrenGameObject;
 		Transform* transform;
 		bool selfActive = true;
 

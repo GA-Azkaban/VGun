@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "Transform.h"
+using namespace hodoEngine;
 
 hodoEngine::GameObject::GameObject(GameObject* parent)
 {
