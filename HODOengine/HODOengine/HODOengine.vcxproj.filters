@@ -13,6 +13,15 @@
     <Filter Include="01_EngineProcess\1. dllExporter">
       <UniqueIdentifier>{4f966e9a-0535-47d1-8732-abe82fc0c647}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{3471ffb6-2201-437b-8867-bbc241be2085}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{65c6a5c3-8cbb-4ff4-ba36-96762c95d89a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transform">
+      <UniqueIdentifier>{1d994bc1-3cba-48ef-bd78-d8a7e3880a99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -33,6 +42,15 @@
     <ClInclude Include="dllExporter.h">
       <Filter>01_EngineProcess\1. dllExporter</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -50,6 +68,15 @@
   <ItemGroup>
     <ClCompile Include="HODOengine.cpp">
       <Filter>01_EngineProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Transform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
