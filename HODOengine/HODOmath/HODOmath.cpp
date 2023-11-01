@@ -606,31 +606,44 @@ namespace HDMaths
 
 	}
 
-	HDFLOAT4X4 HDFLOAT4X4::operator*(const HDFLOAT4X4& val)
-	{
-
-	}
-
 	HDFLOAT4X4& HDFLOAT4X4::operator=(const HDFLOAT4X4& val)
 	{
+		return *this;
+	}
 
+	HDFLOAT4X4 HDFLOAT4X4::operator*(const HDFLOAT4X4& val)
+	{
+		return Multiply(*this, val);
 	}
 
 	HDFLOAT4X4& HDFLOAT4X4::operator*=(const HDFLOAT4X4& val)
 	{
-
+		*this = Multiply(*this, val);
+		return *this;
 	}
-
 
 	HDFLOAT4X4 HDFLOAT4X4::Multiply(const HDFLOAT4X4& left, const HDFLOAT4X4& right)
 	{
+		HDFLOAT4X4 result;
 
+		for (int row = 0; row < 4; row++)
+		{
+			for (int col = 0; col < 4; col++)
+			{
+				result.element[row][col] =
+					left.element[row][0] * right.element[0][col] +
+					left.element[row][1] * right.element[1][col] +
+					left.element[row][2] * right.element[2][col] +
+					left.element[row][3] * right.element[3][col];
+			}
+		}
+		return result;
 	}
 
 
 	HDFLOAT4X4 HDFLOAT4X4::Inverse() const
 	{
-
+		return {};
 	}
 
 
