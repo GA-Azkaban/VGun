@@ -99,6 +99,10 @@ namespace HDMaths
 		// 비교연산자
 		bool operator==(const HDFLOAT3& other);
 		bool operator!=(const HDFLOAT3& other);
+		bool operator<(const HDFLOAT3& other);
+		bool operator<=(const HDFLOAT3& other);
+		bool operator>(const HDFLOAT3& other);
+		bool operator>=(const HDFLOAT3& other);
 
 		// 수학 연산
 		static HDFLOAT3 Add(const HDFLOAT3& left, const HDFLOAT3& right);
@@ -158,6 +162,10 @@ namespace HDMaths
 		// 비교연산자
 		bool operator==(const HDFLOAT4& other);
 		bool operator!=(const HDFLOAT4& other);
+		bool operator<(const HDFLOAT4& other);
+		bool operator<=(const HDFLOAT4& other);
+		bool operator>(const HDFLOAT4& other);
+		bool operator>=(const HDFLOAT4& other);
 
 		// 수학 연산
 		static HDFLOAT4 Add(const HDFLOAT4& left, const HDFLOAT4& right);
@@ -194,7 +202,9 @@ namespace HDMaths
 		bool operator!=(const HDQuternion& other);
 
 
-
+		// 수학 연산
+		HDQuternion conjugate() const;
+		static HDQuternion Normalize(const HDQuternion& other);
 	};
 
 	struct HDFLOAT3X3
@@ -231,6 +241,7 @@ namespace HDMaths
 
 		// 수학 연산
 		HDFLOAT3X3 Multiply(const HDFLOAT3X3& left, const HDFLOAT3X3& right);
+		HDFLOAT3X3 Inverse() const;
 
 	};
 
@@ -243,18 +254,20 @@ namespace HDMaths
 				float _11, _12, _13, _14;
 				float _21, _22, _23, _24;
 				float _31, _32, _33, _34;
+				float _41, _42, _43, _44;
 			};
 
 			float element[4][4];
 		};
 
-		//static const HDFLOAT4X4 Identitiy;
+		static const HDFLOAT4X4 Identitiy;
 
 		// 기본 생성자
 		HDFLOAT4X4();
 		HDFLOAT4X4(float val11, float val12, float val13, float val14,
 			float val21, float val22, float val23, float val24,
-			float val31, float val32, float val33, float val34);
+			float val31, float val32, float val33, float val34,
+			float val41, float val42, float val43, float val44);
 
 		// 복사 생성자
 		HDFLOAT4X4(const HDFLOAT3X3& val);
@@ -272,6 +285,15 @@ namespace HDMaths
 		HDFLOAT4X4 Multiply(const HDFLOAT4X4& left, const HDFLOAT4X4& right);
 		HDFLOAT4X4 Inverse() const;
 	};
+
+	// 기타 수학 연산
+	static HDFLOAT4 HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right);
+	static HDFLOAT4 HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right);
+	static HDFLOAT4 QuaternionToFloat4(const HDQuternion& val);
+	static HDQuternion Float4ToQuaternion(const HDFLOAT4& val);
+
+
+	// TODO) 로켓에 있는 라디안 회전과 transform 행렬식을 수학 라이브러리가 가지고 있는게 맞나?
 };
 
 
