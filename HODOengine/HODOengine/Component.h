@@ -28,6 +28,8 @@ namespace hodoEngine
 		virtual void FixedUpdate() {};
 		// 게임 오브젝트가 삭제될 때 호출되는 콜백 함수입니다.
 		virtual void OnDestroy() {};
+
+		// 충돌 관련
 		// 충돌체들이 서로 충돌을 시작할 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionEnter(const Collision& collision) {};
 		// 충돌체들이 서로 충돌하고 있는 상태일 때 호출되는 콜백 함수입니다.
