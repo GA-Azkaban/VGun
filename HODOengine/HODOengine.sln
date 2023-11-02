@@ -4,8 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HODOengine", "HODOengine\HODOengine.vcxproj", "{92B4BA0B-8B0B-4777-BD83-94281F6F22F0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{70C11750-CCBF-4DBE-843E-CF9557E19806} = {70C11750-CCBF-4DBE-843E-CF9557E19806}
+		{9873B061-FD76-4EBA-AEE8-25789C4260C7} = {9873B061-FD76-4EBA-AEE8-25789C4260C7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HODOclient", "HODOclient\HODOclient.vcxproj", "{BF11A407-2522-4094-AD41-31FCF8528546}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92B4BA0B-8B0B-4777-BD83-94281F6F22F0} = {92B4BA0B-8B0B-4777-BD83-94281F6F22F0}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HODOmath", "HODOmath\HODOmath.vcxproj", "{70C11750-CCBF-4DBE-843E-CF9557E19806}"
 EndProject
