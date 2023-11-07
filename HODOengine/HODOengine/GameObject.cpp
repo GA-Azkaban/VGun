@@ -2,6 +2,12 @@
 #include "Transform.h"
 using namespace hodoEngine;
 
+GameObject::GameObject(std::string name /*= ""*/)
+	:_objectName(name)
+{
+
+}
+
 hodoEngine::GameObject::GameObject(GameObject* parent)
 {
 	_transform = AddComponent<Transform>();
@@ -21,11 +27,6 @@ void hodoEngine::GameObject::DeleteComponent(Component* component)
 	}
 }
 
-<<<<<<< HEAD
-GameObject::GameObject(std::string name)
-{
-	objName = name;
-=======
 void GameObject::SetSelfActive(bool active)
 {
 	_selfActive = active;
@@ -34,6 +35,4 @@ void GameObject::SetSelfActive(bool active)
 	{
 		_childrenGameObjects[i]->SetSelfActive(active);
 	}
-
->>>>>>> MJKIM-GameObjectAndComponent
 }

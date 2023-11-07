@@ -28,7 +28,7 @@ namespace hodoEngine
 		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
 		GameObject() = default;
 		~GameObject() = default;
-		GameObject(std::string name);
+		GameObject(std::string name = "");
 		GameObject(const Component&) = delete;
 		GameObject(Component&&) = delete;
 		GameObject& operator=(const Component&) = delete;
@@ -77,20 +77,12 @@ namespace hodoEngine
 
 	private:
 		GameObject(GameObject* parent);
-<<<<<<< HEAD
-		std::unordered_set<Component*> components;
-		GameObject* parentGameObject;
-		std::vector<GameObject*> childrenGameObject;
-		Transform* transform;
-		bool selfActive = true;
-		std::string objName;
-=======
 		std::unordered_set<Component*> _components;
-		GameObject* _parentGameObject;
 		std::vector<GameObject*> _childrenGameObjects;
+		GameObject* _parentGameObject;
 		Transform* _transform;
+		std::string _objectName;
 		bool _selfActive = true;
->>>>>>> MJKIM-GameObjectAndComponent
 
 	};
 }

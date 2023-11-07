@@ -93,12 +93,6 @@
     <ClInclude Include="TestScene.h">
       <Filter>10_TestScene</Filter>
     </ClInclude>
-<<<<<<< HEAD
-=======
-    <ClInclude Include="Collision.h">
-      <Filter>Collision</Filter>
-    </ClInclude>
->>>>>>> MJKIM-GameObjectAndComponent
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
