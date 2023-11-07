@@ -123,9 +123,9 @@ namespace HDMaths
 
 	float HDFLOAT2::Dot(const HDFLOAT2& left, const HDFLOAT2& right)
 	{
-		
+
 		return (left.x * right.x + left.y * right.y);
-		
+
 	}
 
 	HDFLOAT2 HDFLOAT2::Normalize(const HDFLOAT2& val)
@@ -323,9 +323,9 @@ namespace HDMaths
 		float resultX = a.y * b.z - a.z * b.y;
 		float resultY = a.z * b.x - a.x * b.z;
 		float resultZ = a.x * b.y - a.y * b.x;
-		
+
 		return HDFLOAT3
-		{ 
+		{
 			resultX, resultY, resultZ
 		};
 	}
@@ -333,12 +333,12 @@ namespace HDMaths
 	HDFLOAT3 HDFLOAT3::Normalize(const HDFLOAT3& val)
 	{
 		float length = std::sqrt(val.x * val.x + val.y * val.y + val.z * val.z);
-		if (length != 0.0f) 
+		if (length != 0.0f)
 		{
 			float invLength = 1.0f / length;
 			return HDFLOAT3(val.x * invLength, val.y * invLength, val.z * invLength);
 		}
-		else 
+		else
 		{
 			return HDFLOAT3(0.0f, 0.0f, 0.0f);
 		}
@@ -521,17 +521,17 @@ namespace HDMaths
 
 	HDFLOAT4 HDFLOAT4::Normalize(const HDFLOAT4& val)
 	{
-		float length = 
+		float length =
 			std::sqrt(val.x * val.x + val.y * val.y + val.z * val.z + val.w * val.w);
-		if (length != 0.0f) 
+		if (length != 0.0f)
 		{
 			float invLength = 1.0f / length;
-			return HDFLOAT4(val.x * invLength, 
-							val.y * invLength, 
-							val.z * invLength, 
-							val.w * invLength);
+			return HDFLOAT4(val.x * invLength,
+				val.y * invLength,
+				val.z * invLength,
+				val.w * invLength);
 		}
-		else 
+		else
 		{
 			return HDFLOAT4();
 		}
@@ -565,12 +565,12 @@ namespace HDMaths
 		{
 			// W 요소를 구하고 나머지 X,Y,Z를 계산
 			root = sqrtf(trace + 1.f);
-			this->w = 0.5f * root;
+			w = 0.5f * root;
 			root = 0.5f / root;
 
-			this->z = (matrix._23 - matrix._32) * root;
-			this->y = (matrix._31 - matrix._13) * root;
-			this->z = (matrix._12 - matrix._21) * root;
+			z = (matrix._23 - matrix._32) * root;
+			y = (matrix._31 - matrix._13) * root;
+			z = (matrix._12 - matrix._21) * root;
 		}
 		else
 		{
@@ -590,45 +590,45 @@ namespace HDMaths
 				// 가장 큰 요소의 값을 구하기
 				root = sqrtf(matrix._11 - matrix._22 - matrix._33 + 1.f);
 
-				this->x = 0.5f * root;
+				 x = 0.5f * root;
 				root = 0.5f / root;
 
 				// 나머지 두 요소의 값을 구하기
-				this->y = (matrix._12 + matrix._21) * root;
-				this->z = (matrix._13 + matrix._31) * root;
+				 y = (matrix._12 + matrix._21) * root;
+				 z = (matrix._13 + matrix._31) * root;
 
 				// 마지막 W 값 구하기
-				this->w = (matrix._23 - matrix._32) * root;
+				 w = (matrix._23 - matrix._32) * root;
 			}
 			else if (i == 1)
 			{
 				// 가장 큰 요소의 값을 구하기
 				root = sqrtf(matrix._22 - matrix._33 - matrix._11 + 1.f);
 
-				this->y = 0.5f * root;
+				 y = 0.5f * root;
 				root = 0.5f / root;
 
 				// 나머지 두 요소의 값을 구하기
-				this->z = (matrix._23 + matrix._32) * root;
-				this->x = (matrix._21 + matrix._12) * root;
+				 z = (matrix._23 + matrix._32) * root;
+				 x = (matrix._21 + matrix._12) * root;
 
 				// 마지막 W 값 구하기
-				this->w = (matrix._31 - matrix._13) * root;
+				 w = (matrix._31 - matrix._13) * root;
 			}
 			else // i==2
 			{
 				// 가장 큰 요소의 값을 구하기
 				root = sqrtf(matrix._33 - matrix._11 - matrix._22 + 1.f);
 
-				this->z = 0.5f * root;
+				 z = 0.5f * root;
 				root = 0.5f / root;
 
 				// 나머지 두 요소의 값을 구하기
-				this->x = (matrix._31 + matrix._13) * root;
-				this->y = (matrix._32 + matrix._23) * root;
+				 x = (matrix._31 + matrix._13) * root;
+				 y = (matrix._32 + matrix._23) * root;
 
 				// 마지막 W 값 구하기
-				this->w = (matrix._12 - matrix._21) * root;
+				 w = (matrix._12 - matrix._21) * root;
 			}
 		}
 	}
@@ -684,13 +684,13 @@ namespace HDMaths
 		return !(*this == other);
 	}
 
-	const HDFLOAT3X3 HDFLOAT3X3::Identity = 
-		HDFLOAT3X3(	1.f, 0.f, 0.f,
-					0.f, 1.f, 0.f,
-					0.f, 0.f, 1.f);
+	const HDFLOAT3X3 HDFLOAT3X3::Identity =
+		HDFLOAT3X3(1.f, 0.f, 0.f,
+			0.f, 1.f, 0.f,
+			0.f, 0.f, 1.f);
 
 	HDFLOAT3X3::HDFLOAT3X3()
-		: _11(0.f), _12(0.f), _13(0.f), 
+		: _11(0.f), _12(0.f), _13(0.f),
 		_21(0.f), _22(0.f), _23(0.f),
 		_31(0.f), _32(0.f), _33(0.f)
 	{
@@ -744,7 +744,7 @@ namespace HDMaths
 					left.element[row][2] * right.element[2][col];
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -891,133 +891,7 @@ namespace HDMaths
 		};
 	}
 
-	HDFLOAT4 HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right)
-	{
-		HDFLOAT4 result;
+	
 
-		result.x =
-			left.x * right.element[0][0] +
-			left.y * right.element[1][0] +
-			left.z * right.element[2][0] +
-			left.w * right.element[3][0];
-
-		result.y =
-			left.x * right.element[0][1] +
-			left.y * right.element[1][1] +
-			left.z * right.element[2][1] +
-			left.w * right.element[3][1];
-
-		result.z =
-			left.x * right.element[0][2] +
-			left.y * right.element[1][2] +
-			left.z * right.element[2][2] +
-			left.w * right.element[3][2];
-
-		result.w =
-			left.x * right.element[0][3] +
-			left.y * right.element[1][3] +
-			left.z * right.element[2][3] +
-			left.w * right.element[3][3];
-
-		return result;
-	}
-
-	HDFLOAT4 HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
-	{
-		HDFLOAT4 result = HDFloat4MultiplyMatrix({ left.x, left.y, left.z, 1.0f }, right);
-		return { result.x ,result.y, result.z };
-	}
-
-	HDFLOAT4 QuaternionToFloat4(const HDQuaternion& val)
-	{
-		return { val.x, val.y, val.z, val.w };
-	}
-
-	HDQuaternion Float4ToQuaternion(const HDFLOAT4& val)
-	{
-		return { val.w, val.x, val.y, val.z };
-	}
-
-	HDFLOAT4X4 GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale)
-	{
-		HDFLOAT4X4 translateTM
-		{
-			1, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 0, 1, 0,
-			position.x, position.y, position.z , 1
-		};
-
-		// 쿼터니언 좌표값을 정규화한다
-		HDQuaternion q = HDQuaternion::Normalize(rotation);
-		// 정규화된 쿼터니언 값을 회전행렬에 적용한다
-		HDFLOAT4X4 rotationTM
-		{
-			1.f - 2.f * (q.y * q.y) - 2.f * (q.z * q.z),
-			2.f * q.x * q.y - 2.f * q.w * q.z,
-			2.f * q.x * q.z + 2.f * q.w * q.y,
-			0.f,
-
-			2.f * q.x * q.y + 2.f * q.w * q.z,
-			1.f - 2.f * (q.x * q.x) - 2.f * (q.z * q.z),
-			2.f * q.y * q.z - 2.f * q.w * q.x,
-			0.f,
-
-			2.f * q.x * q.z - 2.f * q.w * q.y,
-			2.f * q.y * q.z + 2.f * q.w * q.x,
-			1.f - 2.f * (q.x * q.x) - 2.f * (q.y * q.y),
-			0.f,
-
-			0.f,	0.f,	0.f,	1.f
-		};
-
-		HDFLOAT4X4 scaleTM
-		{
-			scale.x, 0, 0, 0,
-			0, scale.y, 0, 0,
-			0, 0, scale.z, 0,
-			0, 0, 0, 1
-		};
-
-		return scaleTM * rotationTM * translateTM;
-	}
-
-	HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
-	{
-		return HDFLOAT3{ localTM._41, localTM._42, localTM._43 };
-	}
-
-	HDQuaternion GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM)
-	{
-		HDFLOAT3 scale = GetLocalScaleFromLocalTM(localTM);
-		HDFLOAT3X3 rotScaleMatrix = localTM.ToMatrix3x3();
-
-		rotScaleMatrix._11 /= scale.x;
-		rotScaleMatrix._12 /= scale.x;
-		rotScaleMatrix._13 /= scale.x;
-
-		rotScaleMatrix._21 /= scale.y;
-		rotScaleMatrix._22 /= scale.y;
-		rotScaleMatrix._23 /= scale.y;
-
-		rotScaleMatrix._31 /= scale.z;
-		rotScaleMatrix._32 /= scale.z;
-		rotScaleMatrix._33 /= scale.z;
-
-		HDQuaternion rotation(rotScaleMatrix);
-		return rotation;
-	}
-
-	HDFLOAT3 GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM)
-	{
-		HDFLOAT3 scale;
-		const float squareSumX = localTM._11 * localTM._11 + localTM._12 * localTM._12 + localTM._13 * localTM._13;
-		const float squareSumY = localTM._21 * localTM._21 + localTM._22 * localTM._22 + localTM._23 * localTM._23;
-		const float squareSumZ = localTM._31 * localTM._31 + localTM._32 * localTM._32 + localTM._33 * localTM._33;
-		if (squareSumX > 1.0f) { scale.x = sqrtf(squareSumX); }
-		if (squareSumY > 1.0f) { scale.y = sqrtf(squareSumY); }
-		if (squareSumZ > 1.0f) { scale.z = sqrtf(squareSumZ); }
-		return scale;
-	}
-
+	
 }

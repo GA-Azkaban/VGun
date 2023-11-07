@@ -9,6 +9,9 @@
 
 namespace HDMaths
 {
+
+	struct HDFLOAT3X3;
+
 	constexpr float HD_PI = 3.141592654f;
 	constexpr float HD_2PI = 6.283185307f;
 	constexpr float HD_1DIVPI = 0.318309886f;
@@ -196,7 +199,9 @@ namespace HDMaths
 		// 기본 생성자
 		HDQuaternion(float w, float x, float y, float z);
 
+		// 매트릭스를 쿼터니언으로 변환하는 생성자
 		HDQuaternion(const HDFLOAT3X3& matrix);
+		
 		
 		// 복사 생성자
 		HDQuaternion(const HDQuaternion& val);
@@ -311,8 +316,141 @@ namespace HDMaths
 	static HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM);
 	static HDQuaternion GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM);
 	static HDFLOAT3 GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM);
+	
+	HDFLOAT4 HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right)
+	{
+		HDFLOAT4 result;
 
-	// TODO) 로켓에 있는 라디안 회전과 transform 행렬식을 수학 라이브러리가 가지고 있는게 맞나?
+		result.x =
+			left.x * right.element[0][0] +
+			left.y * right.element[1][0] +
+			left.z * right.element[2][0] +
+			left.w * right.element[3][0];
+
+		result.y =
+			left.x * right.element[0][1] +
+			left.y * right.element[1][1] +
+			left.z * right.element[2][1] +
+			left.w * right.element[3][1];
+
+		result.z =
+			left.x * right.element[0][2] +
+			left.y * right.element[1][2] +
+			left.z * right.element[2][2] +
+			left.w * right.element[3][2];
+
+		result.w =
+			left.x * right.element[0][3] +
+			left.y * right.element[1][3] +
+			left.z * right.element[2][3] +
+			left.w * right.element[3][3];
+
+		return result;
+	}
+
+	HDFLOAT4 HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
+	{
+		HDFLOAT4 result = HDFloat4MultiplyMatrix({ left.x, left.y, left.z, 1.0f }, right);
+		return { result.x ,result.y, result.z };
+	}
+
+	HDFLOAT4 QuaternionToFloat4(const HDQuaternion& val)
+	{
+		return { val.x, val.y, val.z, val.w };
+	}
+
+	HDQuaternion Float4ToQuaternion(const HDFLOAT4& val)
+	{
+		return { val.w, val.x, val.y, val.z };
+	}
+
+	HDFLOAT4X4 GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale)
+	{
+		HDFLOAT4X4 translateTM
+		{
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			position.x, position.y, position.z , 1
+		};
+
+		// 쿼터니언 좌표값을 정규화한다
+		HDQuaternion q = HDQuaternion::Normalize(rotation);
+		// 정규화된 쿼터니언 값을 회전행렬에 적용한다
+		HDFLOAT4X4 rotationTM
+		{
+			1.f - 2.f * (q.y * q.y) - 2.f * (q.z * q.z),
+			2.f * q.x * q.y - 2.f * q.w * q.z,
+			2.f * q.x * q.z + 2.f * q.w * q.y,
+			0.f,
+
+			2.f * q.x * q.y + 2.f * q.w * q.z,
+			1.f - 2.f * (q.x * q.x) - 2.f * (q.z * q.z),
+			2.f * q.y * q.z - 2.f * q.w * q.x,
+			0.f,
+
+			2.f * q.x * q.z - 2.f * q.w * q.y,
+			2.f * q.y * q.z + 2.f * q.w * q.x,
+			1.f - 2.f * (q.x * q.x) - 2.f * (q.y * q.y),
+			0.f,
+
+			0.f,	0.f,	0.f,	1.f
+		};
+
+		HDFLOAT4X4 scaleTM
+		{
+			scale.x, 0, 0, 0,
+			0, scale.y, 0, 0,
+			0, 0, scale.z, 0,
+			0, 0, 0, 1
+		};
+
+		return scaleTM * rotationTM * translateTM;
+	}
+
+
+
+	HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
+	{
+		return HDFLOAT3{ localTM._41, localTM._42, localTM._43 };
+	}
+
+	HDQuaternion GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM)
+	{
+		HDFLOAT3 scale = GetLocalScaleFromLocalTM(localTM);
+		HDFLOAT3X3 rotScaleMatrix = localTM.ToMatrix3x3();
+
+		rotScaleMatrix._11 /= scale.x;
+		rotScaleMatrix._12 /= scale.x;
+		rotScaleMatrix._13 /= scale.x;
+
+		rotScaleMatrix._21 /= scale.y;
+		rotScaleMatrix._22 /= scale.y;
+		rotScaleMatrix._23 /= scale.y;
+
+		rotScaleMatrix._31 /= scale.z;
+		rotScaleMatrix._32 /= scale.z;
+		rotScaleMatrix._33 /= scale.z;
+
+		HDQuaternion rotation(rotScaleMatrix);
+
+		return rotation;
+	}
+
+	HDFLOAT3 GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM)
+	{
+		HDFLOAT3 scale;
+		const float squareSumX = localTM._11 * localTM._11 + localTM._12 * localTM._12 + localTM._13 * localTM._13;
+		const float squareSumY = localTM._21 * localTM._21 + localTM._22 * localTM._22 + localTM._23 * localTM._23;
+		const float squareSumZ = localTM._31 * localTM._31 + localTM._32 * localTM._32 + localTM._33 * localTM._33;
+		if (squareSumX > 1.0f) { scale.x = sqrtf(squareSumX); }
+		if (squareSumY > 1.0f) { scale.y = sqrtf(squareSumY); }
+		if (squareSumZ > 1.0f) { scale.z = sqrtf(squareSumZ); }
+
+		return scale;
+	}
+
+
 };
 
 
