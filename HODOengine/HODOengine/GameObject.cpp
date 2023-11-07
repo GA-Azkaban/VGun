@@ -20,3 +20,8 @@ void hodoEngine::GameObject::DeleteComponent(Component* component)
 		}
 	}
 }
+
+GameObject::GameObject(std::string name)
+{
+	objName = name;
+}

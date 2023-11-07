@@ -16,6 +16,9 @@
     <Filter Include="02_Client\1. Client">
       <UniqueIdentifier>{2d0b935b-c7d7-4c9b-bbb3-0667f3805ddf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_Client\2. Scene">
+      <UniqueIdentifier>{f32f4ee0-94f1-45ec-85d7-4fafc965b6c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">

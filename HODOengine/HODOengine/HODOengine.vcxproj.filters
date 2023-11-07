@@ -13,17 +13,38 @@
     <Filter Include="01_EngineProcess\1. dllExporter">
       <UniqueIdentifier>{4f966e9a-0535-47d1-8732-abe82fc0c647}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObject">
+    <Filter Include="03_Scene">
+      <UniqueIdentifier>{f4afbb12-0b2e-45f6-b0a1-539260af9727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_GameObject">
       <UniqueIdentifier>{3471ffb6-2201-437b-8867-bbc241be2085}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component">
+    <Filter Include="05_Component">
       <UniqueIdentifier>{65c6a5c3-8cbb-4ff4-ba36-96762c95d89a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Transform">
+    <Filter Include="05_Component\ComponentBase">
+      <UniqueIdentifier>{b6935a20-c554-4c1b-a384-d04d3aeb461c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Transform">
       <UniqueIdentifier>{1d994bc1-3cba-48ef-bd78-d8a7e3880a99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Collision">
+    <Filter Include="05_Component\Collision">
       <UniqueIdentifier>{ff76b52b-9184-49be-88ea-cf3a2f8b2cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System">
+      <UniqueIdentifier>{0e13d6ef-847d-45f8-ac32-f23e63fcdccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\SceneSystem">
+      <UniqueIdentifier>{70d01e0f-d404-48c5-8ca3-7ed2f58f5bac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\Singleton">
+      <UniqueIdentifier>{fc6c0d83-dc3f-4106-b748-70afabc5ec3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_EngineProcess\2. API">
+      <UniqueIdentifier>{12a6450c-cedd-43ae-aa71-17378d599a71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10_TestScene">
+      <UniqueIdentifier>{29bb3646-e1a3-4279-acf5-7e73eae134e3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,15 +67,32 @@
       <Filter>01_EngineProcess\1. dllExporter</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Component</Filter>
+      <Filter>04_GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Transform</Filter>
+      <Filter>05_Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Scene.h">
+      <Filter>03_Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSystem.h">
+      <Filter>06_System\SceneSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>06_System\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>05_Component\ComponentBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>05_Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="HODO_API.h">
+      <Filter>01_EngineProcess\2. API</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>10_TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -74,16 +112,28 @@
       <Filter>01_EngineProcess</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
-      <Filter>GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Component</Filter>
+      <Filter>04_GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Transform</Filter>
+      <Filter>05_Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
-      <Filter>Collision</Filter>
+      <Filter>05_Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>03_Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneSystem.cpp">
+      <Filter>06_System\SceneSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>05_Component\ComponentBase</Filter>
+    </ClCompile>
+    <ClCompile Include="HODO_API.cpp">
+      <Filter>01_EngineProcess\2. API</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>10_TestScene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

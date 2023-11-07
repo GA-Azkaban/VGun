@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include <vector>
 #include <unordered_set>
+#include <string>
 
 /// <summary>
 /// 게임 오브젝트는 게임 씬에 배치될 수 있는 가장 기본적인 단위의 객체입니다.
@@ -26,6 +27,7 @@ namespace hodoEngine
 		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
 		GameObject() = default;
 		~GameObject() = default;
+		GameObject(std::string name);
 		GameObject(const Component&) = delete;
 		GameObject(Component&&) = delete;
 		GameObject& operator=(const Component&) = delete;
@@ -81,6 +83,7 @@ namespace hodoEngine
 		std::vector<GameObject*> childrenGameObject;
 		Transform* transform;
 		bool selfActive = true;
+		std::string objName;
 
 		friend Component::Component();
 	};
