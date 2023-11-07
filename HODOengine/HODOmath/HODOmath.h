@@ -86,6 +86,7 @@ namespace HDMaths
 		HDFLOAT3 operator-() const; // 음수 변환
 		HDFLOAT3 operator=(const HDFLOAT3& other); // 대입 연산자
 		HDFLOAT3 operator+(const HDFLOAT3& other) const; // 더하기
+		HDFLOAT3 operator*(const HDFLOAT3& other) const; // 곱하기
 		HDFLOAT3& operator+=(const HDFLOAT3& other); // 더해서 대입
 		HDFLOAT3 operator-(const HDFLOAT3& other) const; // 빼기
 		HDFLOAT3& operator-=(const HDFLOAT3& other); // 빼서 대입
@@ -112,6 +113,12 @@ namespace HDMaths
 		static float Dot(const HDFLOAT3& left, const HDFLOAT3& right); // 내적
 		static HDFLOAT3 Cross(const HDFLOAT3& a, const HDFLOAT3& b); // 외적
 		static HDFLOAT3 Normalize(const HDFLOAT3& val); // 정규화
+
+		static const HDFLOAT3 zero;
+		static const HDFLOAT3 one;
+		static const HDFLOAT3 forward;
+		static const HDFLOAT3 up;
+		static const HDFLOAT3 right;
 	};
 
 	struct HDFLOAT4
@@ -149,6 +156,7 @@ namespace HDMaths
 		HDFLOAT4 operator-() const; // 음수 변환
 		HDFLOAT4 operator=(const HDFLOAT4& other); // 대입 연산자
 		HDFLOAT4 operator+(const HDFLOAT4& other) const; // 더하기
+		HDFLOAT4 operator*(const HDFLOAT4& other) const; // 곱하기
 		HDFLOAT4& operator+=(const HDFLOAT4& other); // 더해서 대입
 		HDFLOAT4 operator-(const HDFLOAT4& other) const; // 빼기
 		HDFLOAT4& operator-=(const HDFLOAT4& other); // 빼서 대입
@@ -175,7 +183,7 @@ namespace HDMaths
 		static HDFLOAT4 Normalize(const HDFLOAT4& val); // 정규화
 	};
 
-	struct HDQuternion
+	struct HDQuaternion
 	{
 		float w;
 		float x;
@@ -183,28 +191,35 @@ namespace HDMaths
 		float z;
 
 		// 기본 생성자 (마지막 요소가 1인)
-		HDQuternion();
+		HDQuaternion();
 
 		// 기본 생성자
-		HDQuternion(float w, float x, float y, float z);
+		HDQuaternion(float w, float x, float y, float z);
+
+		HDQuaternion(const HDFLOAT3X3& matrix);
 		
 		// 복사 생성자
-		HDQuternion(const HDQuternion& val);
+		HDQuaternion(const HDQuaternion& val);
 
 		// 이동 생성자
-		HDQuternion(HDQuternion&& val) noexcept = default;
+		HDQuaternion(HDQuaternion&& val) noexcept = default;
 
 		// 연산자 오버로딩
-		HDQuternion operator=(const HDQuternion& other); // 대입 연산자
+		HDQuaternion operator=(const HDQuaternion& other); // 대입 연산자
+		HDQuaternion operator*(const HDQuaternion& other); // 곱하기
+
+		HDFLOAT3 operator*(const HDFLOAT3& other);
 
 		// 비교 연산자
-		bool operator==(const HDQuternion& other);
-		bool operator!=(const HDQuternion& other);
+		bool operator==(const HDQuaternion& other);
+		bool operator!=(const HDQuaternion& other);
 
+
+		static const HDQuaternion Identity;
 
 		// 수학 연산
-		HDQuternion conjugate() const;
-		static HDQuternion Normalize(const HDQuternion& other);
+		HDQuaternion conjugate() const;
+		static HDQuaternion Normalize(const HDQuaternion& other);
 	};
 
 	struct HDFLOAT3X3
@@ -221,7 +236,7 @@ namespace HDMaths
 			float element[3][3];
 		};
 
-		static const HDFLOAT3X3 Identitiy;
+		static const HDFLOAT3X3 Identity;
 
 		// 기본 생성자
 		HDFLOAT3X3();
@@ -260,7 +275,7 @@ namespace HDMaths
 			float element[4][4];
 		};
 
-		static const HDFLOAT4X4 Identitiy;
+		static const HDFLOAT4X4 Identity;
 
 		// 기본 생성자
 		HDFLOAT4X4();
@@ -284,14 +299,18 @@ namespace HDMaths
 		// 수학 연산
 		HDFLOAT4X4 Multiply(const HDFLOAT4X4& left, const HDFLOAT4X4& right);
 		HDFLOAT4X4 Inverse() const;
+		HDFLOAT3X3 ToMatrix3x3() const;
 	};
 
 	// 기타 수학 연산
 	static HDFLOAT4 HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right);
 	static HDFLOAT4 HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right);
-	static HDFLOAT4 QuaternionToFloat4(const HDQuternion& val);
-	static HDQuternion Float4ToQuaternion(const HDFLOAT4& val);
-
+	static HDFLOAT4 QuaternionToFloat4(const HDQuaternion& val);
+	static HDQuaternion Float4ToQuaternion(const HDFLOAT4& val);
+	static HDFLOAT4X4 GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale);
+	static HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM);
+	static HDQuaternion GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM);
+	static HDFLOAT3 GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM);
 
 	// TODO) 로켓에 있는 라디안 회전과 transform 행렬식을 수학 라이브러리가 가지고 있는게 맞나?
 };

@@ -54,7 +54,9 @@
     <ClInclude Include="Transform.h">
       <Filter>Transform</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Collision.h">
+      <Filter>Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
