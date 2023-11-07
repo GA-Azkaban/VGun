@@ -24,6 +24,7 @@ namespace hodoEngine
 	class HODO_API GameObject
 	{
 	public:
+		friend Component::Component();
 		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
 		GameObject() = default;
 		~GameObject() = default;
@@ -69,22 +70,27 @@ namespace hodoEngine
 		
 		void DeleteComponent(Component* component);
 
-		Transform* GetTransform() const { return transform; }
+		GameObject* GetParentGameObject() { return _parentGameObject; }
+		Transform* GetTransform() const { return _transform; }
 
-		void SetSelfActive(bool active) {
-			selfActive = active;
-			// 자식 오브젝트도 모두 꺼줘야 함.
-		}
+		void SetSelfActive(bool active);
 
 	private:
 		GameObject(GameObject* parent);
+<<<<<<< HEAD
 		std::unordered_set<Component*> components;
 		GameObject* parentGameObject;
 		std::vector<GameObject*> childrenGameObject;
 		Transform* transform;
 		bool selfActive = true;
 		std::string objName;
+=======
+		std::unordered_set<Component*> _components;
+		GameObject* _parentGameObject;
+		std::vector<GameObject*> _childrenGameObjects;
+		Transform* _transform;
+		bool _selfActive = true;
+>>>>>>> MJKIM-GameObjectAndComponent
 
-		friend Component::Component();
 	};
 }

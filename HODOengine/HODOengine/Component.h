@@ -16,6 +16,8 @@ namespace hodoEngine
 	class HODO_API Component
 	{
 	public:
+		friend GameObject;
+
 		// 비활성화 된 게임 오브젝트가 활성화 될 때 호출되는 콜백 함수입니다.
 		virtual void OnEnable() {};
 		// 활성화 된 게임 오브젝트가 비활성화 될 때 호출되는 콜백 함수입니다.
@@ -38,27 +40,26 @@ namespace hodoEngine
 		virtual void OnCollisionExit(const Collision& collision) {};
 		virtual ~Component() {};
 
-		GameObject* GetGameObject() const { return gameObject; };
+		GameObject* GetGameObject() const { return _gameObject; };
 
-		bool GetActive() { return isActive; };
+		bool GetActive() { return _isActive; };
 
 		void SetActive(bool active) {
-			if (!isActive && active)
+			if (!_isActive && active)
 				OnEnable();
-			if (isActive && !active)
+			if (_isActive && !active)
 				OnDisable();
 
-			isActive = active;
+			_isActive = active;
 		};
 
 	protected:
-		Component() : gameObject(nullptr), isActive(true) {};
+		Component() : _gameObject(nullptr), _isActive(true) {};
 
 	private:
-		GameObject* gameObject;
-		bool isActive;
+		GameObject* _gameObject;
+		bool _isActive;
 
-		friend GameObject;
 	};
 }
 
