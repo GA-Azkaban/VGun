@@ -102,7 +102,7 @@ void hodoEngine::Transform::SetWorldRotation(const HDMaths::HDQuaternion& rotati
 		HDMaths::HDFLOAT4X4 worldTM = GetTransformMatrix(_position, rotation, _scale);
 		HDMaths::HDFLOAT4X4 invParent = HDMaths::HDFLOAT4X4::Identity;
 		invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
-		_rotation = HDMaths::GetLocalRotationFromLocalTM(invParent * worldTM);
+		_rotation = GetLocalRotationFromLocalTM(invParent * worldTM);
 	}
 }
 
@@ -117,7 +117,7 @@ void hodoEngine::Transform::SetWorldScale(const HDMaths::HDFLOAT3& scale)
 		HDMaths::HDFLOAT4X4 worldTM = GetTransformMatrix(_position, _rotation, scale);
 		HDMaths::HDFLOAT4X4 invParent = HDMaths::HDFLOAT4X4::Identity;
 		invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
-		_scale = HDMaths::GetLocalScaleFromLocalTM(invParent * worldTM);
+		_scale = GetLocalScaleFromLocalTM(invParent * worldTM);
 	}
 }
 
