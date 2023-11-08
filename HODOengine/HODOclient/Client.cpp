@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "TestScene.h"
 
 Client::Client()
 {
@@ -13,11 +14,14 @@ Client::~Client()
 
 void Client::Initialize()
 {
+	_test = new TestScene;
+	_test->Start();
 }
 
 void Client::Loop()
 {
 	_engine->Loop();
+	_test->Update();
 }
 
 void Client::Finalize()

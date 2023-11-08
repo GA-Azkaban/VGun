@@ -1,7 +1,7 @@
 #pragma once
 #include "dllExporter.h"
 #include "Component.h"
-#include "HODOmath.h"
+#include "../HODOmath/HODOmath.h"
 
 namespace hodoEngine
 {

@@ -408,8 +408,6 @@ namespace HDMaths
 		return scaleTM * rotationTM * translateTM;
 	}
 
-
-
 	HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		return HDFLOAT3{ localTM._41, localTM._42, localTM._43 };
@@ -449,8 +447,6 @@ namespace HDMaths
 
 		return scale;
 	}
-
-
 };
 
 
