@@ -31,8 +31,8 @@ namespace hodoEngine
 		GameObject(std::string name = "");
 		GameObject(const Component&) = delete;
 		GameObject(Component&&) = delete;
-		GameObject& operator=(const Component&) = delete;
-		GameObject& operator=(Component&&) = delete;
+		GameObject& operator=(const GameObject&) = delete;
+		GameObject& operator=(GameObject&&) = delete;
 
 		template <typename ComponentType>
 		ComponentType* AddComponent() {
