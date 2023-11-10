@@ -33,6 +33,9 @@
     <ClInclude Include="Client.h">
       <Filter>02_Client\1. Client</Filter>
     </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>02_Client\2. Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -56,6 +59,9 @@
     </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>02_Client\1. Client</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>02_Client\2. Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

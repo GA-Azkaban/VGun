@@ -43,6 +43,9 @@
     <Filter Include="01_EngineProcess\2. API">
       <UniqueIdentifier>{12a6450c-cedd-43ae-aa71-17378d599a71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="10_TestScene">
+      <UniqueIdentifier>{29bb3646-e1a3-4279-acf5-7e73eae134e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -87,6 +90,9 @@
     <ClInclude Include="HODO_API.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>10_TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -125,6 +131,9 @@
     </ClCompile>
     <ClCompile Include="HODO_API.cpp">
       <Filter>01_EngineProcess\2. API</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>10_TestScene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

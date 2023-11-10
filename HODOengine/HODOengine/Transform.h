@@ -1,7 +1,7 @@
 #pragma once
 #include "dllExporter.h"
 #include "Component.h"
-#include "HODOmath.h"
+#include "../HODOmath/HODOmath.h"
 
 /// <summary>
 /// Transform은 모든 GameObject가 공통적으로 가지고 있는 컴포넌트입니다.

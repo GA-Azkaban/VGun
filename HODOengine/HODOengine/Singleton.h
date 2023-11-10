@@ -1,5 +1,7 @@
 #pragma once
 
+
+
 template <typename T>
 class Singleton
 {
@@ -11,6 +13,7 @@ public:
 	}
 
 protected:
+	// 이 클래스를 상속받은 친구들만 만들 수 있다
 	Singleton() = default;
 
 private:

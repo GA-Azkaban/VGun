@@ -8,7 +8,7 @@ namespace hodoEngine
 {
 	class Scene;
 
-	class SceneSystem
+	class SceneSystem : public Singleton<SceneSystem>
 	{
 
 	public:
