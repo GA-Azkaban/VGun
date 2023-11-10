@@ -3,16 +3,9 @@
 using namespace hodoEngine;
 
 GameObject::GameObject(std::string name /*= ""*/)
-	:_objectName(name)
-{
-
-}
-
-hodoEngine::GameObject::GameObject(GameObject* parent)
+	:_objectName(name), _parentGameObject(nullptr), _selfActive(true)
 {
 	_transform = AddComponent<Transform>();
-	_parentGameObject = parent;
-	parent->_childrenGameObjects.push_back(this);
 }
 
 void hodoEngine::GameObject::DeleteComponent(Component* component)
@@ -25,6 +18,12 @@ void hodoEngine::GameObject::DeleteComponent(Component* component)
 			break;
 		}
 	}
+}
+
+void GameObject::SetParentObject(GameObject* parentObject)
+{
+	_parentGameObject = parentObject;
+	_parentGameObject->_childrenGameObjects.push_back(this);
 }
 
 void GameObject::SetSelfActive(bool active)

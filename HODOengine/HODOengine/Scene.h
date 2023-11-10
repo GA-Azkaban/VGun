@@ -19,7 +19,7 @@ namespace hodoEngine
 		void Update();
 
 	public:
-		GameObject* CreateObject(std::string objName);
+		GameObject* CreateObject(std::string objName, GameObject* parentObject = nullptr);
 		bool DeleteObject();
 
 		std::vector<GameObject*>& GetObjList();

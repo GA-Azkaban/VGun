@@ -3,6 +3,11 @@
 #include "Component.h"
 #include "HODOmath.h"
 
+/// <summary>
+/// Transform은 모든 GameObject가 공통적으로 가지고 있는 컴포넌트입니다.
+/// Transform은 오브젝트의 position, rotation, scale 정보를 가지고 있습니다.
+/// </summary>
+
 namespace hodoEngine
 {
 	class GameObject;

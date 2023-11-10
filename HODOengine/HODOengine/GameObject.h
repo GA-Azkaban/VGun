@@ -31,8 +31,8 @@ namespace hodoEngine
 		GameObject(std::string name = "");
 		GameObject(const Component&) = delete;
 		GameObject(Component&&) = delete;
-		GameObject& operator=(const Component&) = delete;
-		GameObject& operator=(Component&&) = delete;
+		GameObject& operator=(const GameObject&) = delete;
+		GameObject& operator=(GameObject&&) = delete;
 
 		template <typename ComponentType>
 		ComponentType* AddComponent() {
@@ -73,16 +73,16 @@ namespace hodoEngine
 		GameObject* GetParentGameObject() { return _parentGameObject; }
 		Transform* GetTransform() const { return _transform; }
 
+		void SetParentObject(GameObject* parentObject);
 		void SetSelfActive(bool active);
 
 	private:
-		GameObject(GameObject* parent);
 		std::unordered_set<Component*> _components;
 		std::vector<GameObject*> _childrenGameObjects;
+		std::string _objectName;
 		GameObject* _parentGameObject;
 		Transform* _transform;
-		std::string _objectName;
-		bool _selfActive = true;
+		bool _selfActive;
 
 	};
 }
