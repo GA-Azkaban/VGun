@@ -76,7 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -93,7 +93,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,7 +111,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_EXPORT_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)\HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,12 +140,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HODOengine.h" />
+    <ClInclude Include="HodoGIGlobal.h" />
+    <ClInclude Include="HodoGIObject.h" />
     <ClInclude Include="HODO_API.h" />
     <ClInclude Include="IHODOengine.h" />
     <ClInclude Include="Resource.h" />
@@ -157,10 +160,12 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HODOengine.cpp" />
+    <ClCompile Include="HodoGIObject.cpp" />
     <ClCompile Include="HODO_API.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />

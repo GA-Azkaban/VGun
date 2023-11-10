@@ -46,6 +46,15 @@
     <Filter Include="10_TestScene">
       <UniqueIdentifier>{29bb3646-e1a3-4279-acf5-7e73eae134e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Camera">
+      <UniqueIdentifier>{310f1199-5a6e-4633-a528-0e98573ee3c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07_GIObject">
+      <UniqueIdentifier>{5446721e-6e38-467f-b8b4-bb2a4b38c006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Global">
+      <UniqueIdentifier>{6b711ca3-979f-4ebc-8642-b83d410681c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -93,6 +102,15 @@
     <ClInclude Include="TestScene.h">
       <Filter>10_TestScene</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>05_Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIObject.h">
+      <Filter>07_GIObject</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIGlobal.h">
+      <Filter>08_Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -134,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>10_TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>05_Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoGIObject.cpp">
+      <Filter>07_GIObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
