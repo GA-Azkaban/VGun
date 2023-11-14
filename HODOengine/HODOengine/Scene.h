@@ -6,11 +6,14 @@
 
 namespace hodoEngine
 {
+	using ID = std::string;
+
 	class GameObject;
 
 	class HODO_API Scene
 	{
 	public:
+		Scene() = default;
 		Scene(std::string sceneName);
 		~Scene();
 
@@ -19,22 +22,21 @@ namespace hodoEngine
 		void Update();
 
 	public:
-		GameObject* CreateObject(std::string objName);
-		bool DeleteObject();
+		GameObject* FindObjectByID(ID uuid);
+		bool IsScenePlaying();
 
-		std::vector<GameObject*>& GetObjList();
-		std::vector<GameObject*>& GetActiveObjList();
+		std::vector<ID>& GetObjList();
 
 	private:
-		std::vector<GameObject*> _objList;
-		std::vector<GameObject*> _activeObjList;
+		bool _isPlaying;
+		std::vector<ID> _ObjList;
 
 	public:
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
 	private:
-		std::string _scneneName;
+		std::string _scneneName = "new scene";
 		
 	};
 

@@ -8,5 +8,11 @@ namespace hodoEngine
 	{
 		return SceneSystem::Instance().CreateScene(sceneName);
 	}
+
+	HODO_API Scene* GetCurrentScene()
+	{
+		return SceneSystem::Instance().GetCurrentScene();
+	}
+
 }
 
