@@ -12,10 +12,10 @@ GameObject::GameObject(std::string name /*= ""*/)
 
 }
 
-hodoEngine::GameObject::GameObject(GameObject* parent)
-{
-	_transform = AddComponent<Transform>();
-}
+//hodoEngine::GameObject::GameObject(GameObject* parent)
+//{
+//	_transform = AddComponent<Transform>();
+//}
 
 void hodoEngine::GameObject::DeleteComponent(Component* component)
 {
@@ -33,7 +33,7 @@ GameObject::GameObject()
 {
 	_transform = AddComponent<Transform>();
 	std::string id = IDSystem::Instance().CreateID();
-	_parentGameObject = parentObject;
+	//_parentGameObject = parentObject;
 	_parentGameObject->_childrenGameObjects.push_back(this);
 
 }

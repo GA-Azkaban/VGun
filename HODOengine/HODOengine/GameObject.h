@@ -81,7 +81,6 @@ namespace hodoEngine
 	private:
 		std::unordered_set<Component*> _components;
 		std::vector<GameObject*> _childrenGameObjects;
-		std::string _objectName;
 		GameObject* _parentGameObject;
 		Transform* _transform;
 		std::string _objectName;
