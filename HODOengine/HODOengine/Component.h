@@ -43,7 +43,7 @@ namespace hodoEngine
 		GameObject* GetGameObject() const { return _gameObject; };
 
 		bool GetActive() { return _isActive; };
-
+		
 		void SetActive(bool active) {
 			if (!_isActive && active)
 				OnEnable();

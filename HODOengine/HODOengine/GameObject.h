@@ -21,14 +21,16 @@ namespace hodoEngine
 	class Component;
 	class Transform;
 
-	class GameObject
+	using ID = std::string;
+
+	class HODO_API GameObject
 	{
 	public:
 		friend Component::Component();
 		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
-		GameObject() = default;
+		GameObject();
 		~GameObject() = default;
-		GameObject(std::string name = "");
+		GameObject(std::string name);
 		GameObject(const Component&) = delete;
 		GameObject(Component&&) = delete;
 		GameObject& operator=(const GameObject&) = delete;
@@ -82,7 +84,9 @@ namespace hodoEngine
 		std::string _objectName;
 		GameObject* _parentGameObject;
 		Transform* _transform;
-		bool _selfActive;
+		std::string _objectName;
+		ID _objectID;
+		bool _selfActive = true;
 
 	};
 }

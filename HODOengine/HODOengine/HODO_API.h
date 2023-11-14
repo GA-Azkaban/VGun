@@ -28,5 +28,6 @@ namespace hodoEngine
 {
 	/// 씬을 생성하기 위한 함수
 	HODO_API Scene* CreateScene(std::string sceneName);
+	HODO_API Scene* GetCurrentScene();
 }
 
