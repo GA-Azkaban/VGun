@@ -1,0 +1,60 @@
+#include "Scene.h"
+#include "GameObject.h"
+
+namespace hodoEngine
+{
+
+
+	Scene::Scene(std::string sceneName)
+	{
+		// 씬이 생성될 때 반드시 Directional Light와 Camera를 가지고 있어야 한다
+	}
+
+	Scene::~Scene()
+	{
+
+	}
+
+	void Scene::Start()
+	{
+
+	}
+
+	void Scene::Update()
+	{
+
+	}
+
+<<<<<<< HEAD
+	hodoEngine::GameObject* Scene::CreateObject(std::string objName, GameObject* parentObject = nullptr)
+	{
+		GameObject* one = new GameObject(objName);
+		_objList.push_back(one);
+		if (parentObject != nullptr)
+		{
+			one->SetParentObject(parentObject);
+		}
+		return one;
+=======
+	bool Scene::IsScenePlaying()
+	{
+		return _isPlaying;
+>>>>>>> suan--DLLEXPORT
+	}
+
+	std::vector<ID>& Scene::GetObjList()
+	{
+		return _ObjList;
+	}
+
+	std::string Scene::GetSceneName()
+	{
+		return _scneneName;
+	}
+
+	void Scene::SetSceneName(std::string sceneName)
+	{
+		_scneneName = sceneName;
+	}
+
+}
