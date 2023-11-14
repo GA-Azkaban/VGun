@@ -21,6 +21,9 @@ namespace hodoEngine
 	class Component;
 	class Transform;
 
+	template <class ComponentType>
+	concept ComponentConcept = std::is_base_of<Component, ComponentType>::value;
+
 	class GameObject
 	{
 	public:
@@ -29,23 +32,21 @@ namespace hodoEngine
 		GameObject() = default;
 		~GameObject() = default;
 		GameObject(std::string name = "");
-		GameObject(const Component&) = delete;
-		GameObject(Component&&) = delete;
+		GameObject(const GameObject&) = delete;
+		GameObject(GameObject&&) = delete;
 		GameObject& operator=(const GameObject&) = delete;
 		GameObject& operator=(GameObject&&) = delete;
 
-		template <typename ComponentType>
+		template <ComponentConcept ComponentType>
 		ComponentType* AddComponent() {
-			static_assert(std::is_base_of<Component, ComponentType>::value, "Only derived class from Component class is allowed.");
 			ComponentType* component = new ComponentType();
 			component->_gameObject = this;
 			_components.emplace(component);
 			return component;
 		}
 
-		template <typename ComponentType>
+		template <ComponentConcept ComponentType>
 		ComponentType* GetComponent() const {
-			static_assert(std::is_base_of<Component, ComponentType>::value, "Only derived class from Component class is allowed.");
 			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
 			{
 				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
@@ -55,10 +56,9 @@ namespace hodoEngine
 			return nullptr;
 		}
 
-		template<typename ComponentType>
+		template<ComponentConcept ComponentType>
 		std::vector<ComponentType*> GetComponents() const {
 			std::vector<ComponentType*> ret;
-			static_assert(std::is_base_of<Component, ComponentType>::value, "Only derived class from Component class is allowed.");
 			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
 			{
 				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
