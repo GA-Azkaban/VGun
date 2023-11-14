@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ASEParser">
+      <UniqueIdentifier>{46077a27-6380-49f9-a54a-c154a9ab4867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASEParser\Lexer">
+      <UniqueIdentifier>{147e5160-9279-4ecb-ab6c-5f2910b81c7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBXLoader">
+      <UniqueIdentifier>{5bd7b0df-2742-40c9-a8d1-d23114ed3006}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ASEFile.h">
+      <Filter>ASEParser\Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="Lexer.h">
+      <Filter>ASEParser\Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="CASEParser.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="CParsingDataClass.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>ASEParser</Filter>
+    </ClInclude>
+    <ClInclude Include="FbxLoader.h">
+      <Filter>FBXLoader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ASEFile.cpp">
+      <Filter>ASEParser\Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="Lexer.cpp">
+      <Filter>ASEParser\Lexer</Filter>
+    </ClCompile>
+    <ClCompile Include="CASEParser.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="CParsingDataClass.cpp">
+      <Filter>ASEParser</Filter>
+    </ClCompile>
+    <ClCompile Include="FbxLoader.cpp">
+      <Filter>FBXLoader</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

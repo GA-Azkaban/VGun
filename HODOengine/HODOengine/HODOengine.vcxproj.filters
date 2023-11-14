@@ -43,6 +43,15 @@
     <Filter Include="01_EngineProcess\2. API">
       <UniqueIdentifier>{12a6450c-cedd-43ae-aa71-17378d599a71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Camera">
+      <UniqueIdentifier>{13aa89ad-ac55-4c82-a9bd-5c644eb40510}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\Global">
+      <UniqueIdentifier>{ba604ffb-dfe8-40a0-ba04-f661d3c9348b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\GIObject">
+      <UniqueIdentifier>{a4adf035-8d24-4d5c-b5c5-f3a740a5364d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -87,6 +96,15 @@
     <ClInclude Include="HODO_API.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>05_Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIGlobal.h">
+      <Filter>06_System\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIObject.h">
+      <Filter>06_System\GIObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -125,6 +143,12 @@
     </ClCompile>
     <ClCompile Include="HODO_API.cpp">
       <Filter>01_EngineProcess\2. API</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>05_Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoGIObject.cpp">
+      <Filter>06_System\GIObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
