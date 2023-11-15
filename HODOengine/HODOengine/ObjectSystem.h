@@ -7,10 +7,11 @@
 namespace hodoEngine
 {
 	class GameObject;
+	class Scene;
 
 	using ID = std::string;
 
-	class ObjectSystem : Singleton<ObjectSystem>
+	class ObjectSystem : public Singleton<ObjectSystem>
 	{
 		friend Singleton;
 
@@ -24,8 +25,7 @@ namespace hodoEngine
 		void FlushEnable();
 
 	public:
-		GameObject* CreateObject();
-		GameObject* CreateObject(std::string objName);
+		GameObject* CreateObject(Scene* now, GameObject* parent = nullptr);
 
 	private:
 		std::vector<GameObject*> _runningObjectList;

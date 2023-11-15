@@ -45,20 +45,15 @@ namespace hodoEngine
 		
 	}
 
-	hodoEngine::GameObject* ObjectSystem::CreateObject()
+	hodoEngine::GameObject* ObjectSystem::CreateObject(Scene* now, GameObject* parent /*= nullptr*/)
 	{
 		GameObject* obj = new GameObject();
 		ID id = IDSystem::Instance().CreateID();
 
-		_allObjectList.insert({id, obj});
-
-		return obj;
-	}
-
-	hodoEngine::GameObject* ObjectSystem::CreateObject(std::string objName)
-	{
-		GameObject* obj = new GameObject(objName);
-		ID id = IDSystem::Instance().CreateID();
+		if (parent != nullptr)
+		{
+			obj->SetParentObject(parent);
+		}
 
 		_allObjectList.insert({ id, obj });
 

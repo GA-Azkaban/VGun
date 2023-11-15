@@ -25,16 +25,10 @@ namespace hodoEngine
 
 	}
 
-	//hodoEngine::GameObject* Scene::CreateObject(std::string objName, GameObject* parentObject = nullptr)
-	//{
-	//	GameObject* one = new GameObject(objName);
-	//	_ObjList.push_back(one);
-	//	if (parentObject != nullptr)
-	//	{
-	//		one->SetParentObject(parentObject);
-	//	}
-	//	return one;
-	//}
+	void Scene::AddObj(ID id)
+	{
+		_ObjList.push_back(id);
+	}
 
 	std::vector<ID>& Scene::GetObjList()
 	{

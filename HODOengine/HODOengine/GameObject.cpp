@@ -1,15 +1,11 @@
 #include "GameObject.h"
 #include "Transform.h"
-#include "IDSystem.h"
 using namespace hodoEngine;
 
 GameObject::GameObject(std::string name /*= ""*/)
 	:_objectName(name), _parentGameObject(nullptr), _selfActive(true)
 {
 	_transform = AddComponent<Transform>();
-
-	std::string id = IDSystem::Instance().CreateID();
-
 }
 
 //hodoEngine::GameObject::GameObject(GameObject* parent)
@@ -29,13 +25,14 @@ void hodoEngine::GameObject::DeleteComponent(Component* component)
 	}
 }
 
+void GameObject::SetParentObject(GameObject* parentObject)
+{
+
+}
+
 GameObject::GameObject()
 {
 	_transform = AddComponent<Transform>();
-	std::string id = IDSystem::Instance().CreateID();
-	//_parentGameObject = parentObject;
-	_parentGameObject->_childrenGameObjects.push_back(this);
-
 }
 
 void GameObject::SetSelfActive(bool active)

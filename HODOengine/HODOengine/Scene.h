@@ -22,7 +22,7 @@ namespace hodoEngine
 		void Update();
 
 	public:
-		GameObject* FindObjectByID(ID uuid);
+		void AddObj(ID id);
 		bool IsScenePlaying();
 
 		std::vector<ID>& GetObjList();
