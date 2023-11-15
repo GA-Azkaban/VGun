@@ -13,8 +13,8 @@ namespace hodoGI
 	{
 	public:
 		virtual ICamera* CreateCamera() = 0;
-		//virtual IStaticMesh* CreateStaticMesh() = 0;
-		//virtual ISkinnedMesh* CreateSkinnedMesh() = 0;
-		//virtual IDirectionalLight* CreateDirectionalLight() = 0;
+		virtual ICamera* CreateStaticMesh() = 0;
+		virtual ICamera* CreateSkinnedMesh() = 0;
+		virtual ICamera* CreateDirectionalLight() = 0;
 	};
 }

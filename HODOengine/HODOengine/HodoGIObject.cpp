@@ -13,7 +13,4 @@ void hodoEngine::HodoGIObject::LoadDLL(const std::wstring& dllFileName)
 
 	auto createFactoryFunc = reinterpret_cast<CreateFactoryFunc>(GetProcAddress(hInstDLL, "CreateFactory"));
 	hodoGI::Global::CreateFactory = createFactoryFunc;
-	assert(hodoGI::Global::CreateFactory != nullptr, "CreateFactory Function is not found.");
-
-	factory = hodoGI::Global::CreateFactory();
 }

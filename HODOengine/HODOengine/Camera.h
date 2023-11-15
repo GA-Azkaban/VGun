@@ -19,7 +19,7 @@ namespace hodoEngine
 	protected:
 		virtual void Update() override;
 	private:
-		hodoGI::ICamera* _camera;
+		std::unique_ptr<hodoGI::ICamera> _camera;
 		static Camera* _mainCamera;
 	};
 }

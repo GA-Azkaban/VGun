@@ -11,6 +11,8 @@
 
 // 엔진의 포인터를 받아오는...
 
+class TestScene;
+
 class Client
 {
 public:
@@ -23,6 +25,6 @@ public:
 	void Finalize();
 
 private:
-	IHODOengine* _engine;
+
 };
 

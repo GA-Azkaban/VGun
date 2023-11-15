@@ -13,8 +13,9 @@ Client::~Client()
 
 void Client::Initialize()
 {
-	_engine->Initialize();
-}
+
+	test.Start();
+
 
 void Client::Loop()
 {
