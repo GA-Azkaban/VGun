@@ -7,7 +7,7 @@
 //#define ENGINE_PATH L"Engine\\RocketEngine.dll" 
 #endif // _DEBUG
 
-#include "../HODOengine/IHODOengine.h"
+
 
 // 엔진의 포인터를 받아오는...
 
@@ -21,10 +21,8 @@ public:
 
 public:
 	void Initialize();
-	void Loop();
-	void Finalize();
 
 private:
-
+	
 };
 

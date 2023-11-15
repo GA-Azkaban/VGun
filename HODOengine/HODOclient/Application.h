@@ -6,6 +6,8 @@
 /// 
 /// </summary>
 
+#include "../HODOengine/IHODOengine.h"
+
 class Application
 {
 public:
@@ -16,6 +18,7 @@ public:
 	void Run();
 
 private:
+	IHODOengine* _engine;
 	Client* _client;
 };
 

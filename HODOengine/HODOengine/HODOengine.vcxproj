@@ -150,7 +150,10 @@
     <ClInclude Include="HodoGIGlobal.h" />
     <ClInclude Include="HodoGIObject.h" />
     <ClInclude Include="HODO_API.h" />
+    <ClInclude Include="IDSystem.h" />
     <ClInclude Include="IHODOengine.h" />
+    <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="ObjectSystem.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
@@ -166,6 +169,9 @@
     <ClCompile Include="HODOengine.cpp" />
     <ClCompile Include="HodoGIObject.cpp" />
     <ClCompile Include="HODO_API.cpp" />
+    <ClCompile Include="IDSystem.cpp" />
+    <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="ObjectSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Transform.cpp" />
