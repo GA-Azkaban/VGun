@@ -14,7 +14,7 @@
 #include "UIImage.h"
 #include "UIText.h"
 
-#include "../Yunu3DLib/ASEParser.h"
+#include "ASEParser.h"
 #include "SkinnedMesh.h"
 
 MZRenderer::LazyObjects<DeferredRenderer> DeferredRenderer::Instance;
