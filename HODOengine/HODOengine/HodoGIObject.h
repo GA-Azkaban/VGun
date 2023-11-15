@@ -14,7 +14,7 @@ namespace hodoEngine
 	class HodoGIObject : public Singleton<HodoGIObject>
 	{
 	public:
-		hodoGI::IFactory* _factory;
+		hodoGI::IFactory* factory;
 		// renderer, resourceManager, eventHandler, ...
 		void LoadDLL(const std::wstring& dllFileName);
 	};
