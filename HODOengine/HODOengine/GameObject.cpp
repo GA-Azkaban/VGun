@@ -36,11 +36,6 @@ void GameObject::SetParentObject(GameObject* parentObject)
 	_parentGameObject->_childrenGameObjects.push_back(this);
 }
 
-GameObject::GameObject()
-{
-	_transform = AddComponent<Transform>();
-}
-
 void GameObject::SetSelfActive(bool active)
 {
 	_selfActive = active;
