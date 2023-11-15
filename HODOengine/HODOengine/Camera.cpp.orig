@@ -1,0 +1,17 @@
+#include "Camera.h"
+using namespace hodoEngine;
+
+Camera* hodoEngine::Camera::_mainCamera = nullptr;
+
+hodoEngine::Camera::Camera()
+{
+<<<<<<< HEAD
+	_camera = HodoGIObject::Instance().factory->CreateCamera();
+	if (_mainCamera == nullptr)
+	{
+		SetMainCamera();
+	}
+=======
+	//_camera = 
+>>>>>>> bf8b07029c8801f1e91cb6e67c39ed90f2dfaf75
+}

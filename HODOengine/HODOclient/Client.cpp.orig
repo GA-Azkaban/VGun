@@ -1,0 +1,37 @@
+#include "Client.h"
+#include "TestScene.h"
+
+Client::Client()
+{
+<<<<<<< HEAD
+	_engine = CreateEngine();
+=======
+
+>>>>>>> bf8b07029c8801f1e91cb6e67c39ed90f2dfaf75
+}
+
+Client::~Client()
+{
+	ReleaseEngine(_engine);
+}
+
+void Client::Initialize()
+{
+<<<<<<< HEAD
+	_engine->Initialize();
+}
+
+void Client::Loop()
+{
+	_engine->Loop();
+}
+
+void Client::Finalize()
+{
+	_engine->Finalize();
+}
+=======
+	TestScene test;
+	test.Start();
+}
+>>>>>>> bf8b07029c8801f1e91cb6e67c39ed90f2dfaf75
