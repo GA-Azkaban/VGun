@@ -3,7 +3,6 @@
 
 #include <windows.h>
 #include "HODOengine.h"
-#include "TestScene.h"
 
 IHODOengine* CreateEngine()
 {
@@ -31,8 +30,6 @@ void HODOengine::Initialize()
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
-
-	//_test = new TestScene;
 }
 
 void HODOengine::Loop()
@@ -49,8 +46,6 @@ void HODOengine::Loop()
 	{
 		return;
 	}
-
-	//_test->Start();
 
 	while (1)
 	{
@@ -77,7 +72,7 @@ void HODOengine::Finalize()
 
 void HODOengine::Run()
 {
-	//_test->Update();
+
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
