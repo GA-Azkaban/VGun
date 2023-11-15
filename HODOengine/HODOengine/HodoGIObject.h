@@ -9,7 +9,7 @@ namespace hodoEngine
 	class HodoGIObject : public Singleton<HodoGIObject>
 	{
 	public:
-		std::unique_ptr<hodoGI::IFactory> _factory;
+		hodoGI::IFactory* factory;
 		// renderer, resourceManager, eventHandler, ...
 		void LoadDLL(const std::wstring& dllFileName);
 	};
