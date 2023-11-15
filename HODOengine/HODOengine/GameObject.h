@@ -29,7 +29,6 @@ namespace hodoEngine
 	public:
 		friend Component::Component();
 		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
-		GameObject() = default;
 		~GameObject() = default;
 		GameObject(std::string name = "");
 		GameObject(const GameObject&) = delete;
@@ -67,6 +66,8 @@ namespace hodoEngine
 			}
 			return ret;
 		}
+
+		const std::unordered_set<Component*>& GetAllComponents() const;
 		
 		void DeleteComponent(Component* component);
 
