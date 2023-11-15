@@ -40,11 +40,10 @@ namespace hodoEngine
 		virtual void OnCollisionExit(const Collision& collision) {};
 		virtual ~Component() {};
 
-		GameObject* GetGameObject() const;
-		Transform* GetTransform() const;
+		GameObject* GetGameObject() const { return _gameObject; };
 
 		bool GetActive() { return _isActive; };
-
+		
 		void SetActive(bool active) {
 			if (!_isActive && active)
 				OnEnable();

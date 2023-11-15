@@ -29,6 +29,4 @@ private:
 	int _screenHeight;
 	const WCHAR* _appName;
 
-	//TestScene* _test;
-
 };

@@ -81,11 +81,16 @@ namespace hodoEngine
 	private:
 		std::unordered_set<Component*> _components;
 		std::vector<GameObject*> _childrenGameObjects;
+		std::string _objectName;
 		GameObject* _parentGameObject;
 		Transform* _transform;
+<<<<<<< HEAD
+		bool _selfActive;
+=======
 		std::string _objectName;
 		ID _objectID;
 		bool _selfActive = true;
+>>>>>>> suan--DLLEXPORT
 
 	};
 }

@@ -7,16 +7,36 @@
 namespace hodoEngine
 {
 	class Scene;
+	class GameObject;
 
 	class SceneSystem : public Singleton<SceneSystem>
 	{
-
-	public:
-		Scene* CreateScene(std::string sceneName);
+		friend Singleton;
 
 	private:
-		// 아이디를 갖게 하도록 수정하고 싶음
+		SceneSystem() = default;
+
+	public:
+		void Initialize();
+		void Update();
+
+	public:
+		Scene* CreateScene();
+		Scene* CreateScene(std::string sceneName);
+		bool LoadScene(ID id);
+		
+	private:
 		std::unordered_map<std::string, Scene*> _sceneList;
+
+	public:
+		void SetCurrentSceneByName(std::string sceneName);
+		Scene* GetCurrentScene();
+		bool GetIsCurrentSceneChange();
+
+	private:
+		Scene* _currentScene;
+		Scene* _prevScene;
+		bool _isSceneChange;
 	};
 
 }

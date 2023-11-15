@@ -43,14 +43,23 @@
     <Filter Include="01_EngineProcess\2. API">
       <UniqueIdentifier>{12a6450c-cedd-43ae-aa71-17378d599a71}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\Camera">
-      <UniqueIdentifier>{13aa89ad-ac55-4c82-a9bd-5c644eb40510}</UniqueIdentifier>
+    <Filter Include="06_System\InputSystem">
+      <UniqueIdentifier>{05740da4-93e0-4789-a9d4-c679447bab1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06_System\Global">
-      <UniqueIdentifier>{ba604ffb-dfe8-40a0-ba04-f661d3c9348b}</UniqueIdentifier>
+    <Filter Include="06_System\ObjectSystem">
+      <UniqueIdentifier>{92dbd339-a43a-422e-8f1a-0baacaf99ab7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06_System\GIObject">
-      <UniqueIdentifier>{a4adf035-8d24-4d5c-b5c5-f3a740a5364d}</UniqueIdentifier>
+    <Filter Include="06_System\DebugSystem">
+      <UniqueIdentifier>{8fa2bf0e-70a6-4703-ae78-22adbc772aff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\LogSystem">
+      <UniqueIdentifier>{13641af9-b372-40b0-b98d-8c66dd02e480}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\TimeSystem">
+      <UniqueIdentifier>{1dc7e8a8-e616-4e15-9f53-371bcdbe878d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\IDSystem">
+      <UniqueIdentifier>{42b0db42-55c8-440f-9a90-5ec2ab1ea37e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -96,14 +105,20 @@
     <ClInclude Include="HODO_API.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>05_Component\Camera</Filter>
+    <ClInclude Include="InputSystem.h">
+      <Filter>06_System\InputSystem</Filter>
     </ClInclude>
-    <ClInclude Include="HodoGIGlobal.h">
-      <Filter>06_System\Global</Filter>
+    <ClInclude Include="eKeyState.h">
+      <Filter>06_System\InputSystem</Filter>
     </ClInclude>
-    <ClInclude Include="HodoGIObject.h">
-      <Filter>06_System\GIObject</Filter>
+    <ClInclude Include="TimeSystem.h">
+      <Filter>06_System\TimeSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSystem.h">
+      <Filter>06_System\ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="IDSystem.h">
+      <Filter>06_System\IDSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -144,11 +159,17 @@
     <ClCompile Include="HODO_API.cpp">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>05_Component\Camera</Filter>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>06_System\InputSystem</Filter>
     </ClCompile>
-    <ClCompile Include="HodoGIObject.cpp">
-      <Filter>06_System\GIObject</Filter>
+    <ClCompile Include="TimeSystem.cpp">
+      <Filter>06_System\TimeSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSystem.cpp">
+      <Filter>06_System\ObjectSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="IDSystem.cpp">
+      <Filter>06_System\IDSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

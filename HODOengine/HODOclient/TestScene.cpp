@@ -14,8 +14,3 @@ void TestScene::Start()
 {
 
 }
-
-void TestScene::Update()
-{
-
-}

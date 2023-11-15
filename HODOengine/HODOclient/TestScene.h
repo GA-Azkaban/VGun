@@ -8,7 +8,6 @@ public:
 	~TestScene();
 
 	void Start();
-	void Update();
 
 private:
 	hodoEngine::Scene* _scene;

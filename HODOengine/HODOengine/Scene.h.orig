@@ -22,8 +22,13 @@ namespace hodoEngine
 		void Update();
 
 	public:
-		void AddObj(ID id);
+<<<<<<< HEAD
+		GameObject* CreateObject(std::string objName, GameObject* parentObject = nullptr);
+		bool DeleteObject();
+=======
+		GameObject* FindObjectByID(ID uuid);
 		bool IsScenePlaying();
+>>>>>>> suan--DLLEXPORT
 
 		std::vector<ID>& GetObjList();
 

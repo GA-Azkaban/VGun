@@ -25,9 +25,21 @@ namespace hodoEngine
 
 	}
 
-	void Scene::AddObj(ID id)
+<<<<<<< HEAD
+	hodoEngine::GameObject* Scene::CreateObject(std::string objName, GameObject* parentObject = nullptr)
 	{
-		_ObjList.push_back(id);
+		GameObject* one = new GameObject(objName);
+		_objList.push_back(one);
+		if (parentObject != nullptr)
+		{
+			one->SetParentObject(parentObject);
+		}
+		return one;
+=======
+	bool Scene::IsScenePlaying()
+	{
+		return _isPlaying;
+>>>>>>> suan--DLLEXPORT
 	}
 
 	std::vector<ID>& Scene::GetObjList()
