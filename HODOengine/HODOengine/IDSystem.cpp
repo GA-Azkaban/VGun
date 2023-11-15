@@ -7,7 +7,7 @@ namespace hodoEngine
 	{
 		UUID one;
 		RPC_STATUS s;
-		std::string newID;
+		char* newID;
 
 		UuidCreate(&one);
 		UuidToStringA(&one, (RPC_CSTR*)&newID);
