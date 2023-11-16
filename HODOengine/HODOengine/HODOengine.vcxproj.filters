@@ -61,6 +61,15 @@
     <Filter Include="06_System\IDSystem">
       <UniqueIdentifier>{42b0db42-55c8-440f-9a90-5ec2ab1ea37e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Camera">
+      <UniqueIdentifier>{5cdb65ec-11e5-4551-96d6-ea642ec28523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\Global">
+      <UniqueIdentifier>{f88470fc-6a92-4913-9811-7c881ec0e07b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07_GraphicInterfaceObject">
+      <UniqueIdentifier>{47b4a989-3e4f-4323-b412-2dc0ee2755cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -105,9 +114,6 @@
     <ClInclude Include="HODO_API.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="HodoGIGlobal.h" />
-    <ClInclude Include="HodoGIObject.h" />
     <ClInclude Include="IDSystem.h">
       <Filter>06_System\IDSystem</Filter>
     </ClInclude>
@@ -116,6 +122,15 @@
     </ClInclude>
     <ClInclude Include="ObjectSystem.h">
       <Filter>06_System\ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>05_Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIGlobal.h">
+      <Filter>06_System\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIObject.h">
+      <Filter>07_GraphicInterfaceObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -156,8 +171,6 @@
     <ClCompile Include="HODO_API.cpp">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="HodoGIObject.cpp" />
     <ClCompile Include="IDSystem.cpp">
       <Filter>06_System\IDSystem</Filter>
     </ClCompile>
@@ -166,6 +179,12 @@
     </ClCompile>
     <ClCompile Include="ObjectSystem.cpp">
       <Filter>06_System\ObjectSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>05_Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoGIObject.cpp">
+      <Filter>07_GraphicInterfaceObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

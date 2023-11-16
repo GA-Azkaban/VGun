@@ -72,7 +72,12 @@ void HODOengine::Finalize()
 
 void HODOengine::Run()
 {
-
+	// Time Update
+	// Destroy List -> GameObject OnDestroy, Clear
+	// Update Components
+	// Invoke Collision Events
+	// Renderer Update
+	// Renderer Render
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

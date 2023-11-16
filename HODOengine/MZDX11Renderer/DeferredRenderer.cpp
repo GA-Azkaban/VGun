@@ -73,15 +73,15 @@ void DeferredRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pD
 	
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_max2.ASE");
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/Rob02Trang.ASE");
-	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/Ground_Small_1.ASE");
+	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/Beam_Small.ASE");
 	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/fox_reverse.dds");
 	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/red.dds");
 	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/000000002406_b_reverse.dds");
 	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/000000002405_reverse.dds");
 	//ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/Rob02Blue_AlbedoTransparency_reverse.dds");
 	//ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/Rob02_Normal_reverse.dds");
-	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/Ground_NM_reverse.dds");
-	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/Ground_ALB_reverse.dds");
+	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/Walls_NM_reverse.dds");
+	ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/Walls_ALB_reverse.dds");
 
 	//UIImage* uiImage = new UIImage(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), RasterizerState::SolidRS.Get());
 	//uiImage->SetImage((LPCSTR)"Textures/fox_reverse.dds");
@@ -402,19 +402,19 @@ void DeferredRenderer::SetLights()
 {
 	/// Set Directional Lights
 	m_dirLights[0].Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 0.5f);
-	m_dirLights[0].Diffuse = XMFLOAT4(30.0f, 30.0f, 30.0f, 1.0f);
+	m_dirLights[0].Diffuse = XMFLOAT4(20.0f, 20.0f, 20.0f, 1.0f);
 	m_dirLights[0].Specular = XMFLOAT4(0.0f, 0.2f, 0.2f, 1.0f);
 	m_dirLights[0].Direction = XMFLOAT3(0.70f, 0.707f, -0.707f);
 
-	/*m_dirLights[1].Ambient = XMFLOAT4(0.0f, 0.1f, 0.1f, 0.1f);
-	m_dirLights[1].Diffuse = XMFLOAT4(10.0f, 10.0f, 10.0f, 1.0f);
+	m_dirLights[1].Ambient = XMFLOAT4(0.0f, 0.1f, 0.1f, 0.1f);
+	m_dirLights[1].Diffuse = XMFLOAT4(15.0f, 15.0f, 10.0f, 1.0f);
 	m_dirLights[1].Specular = XMFLOAT4(0.25f, 0.25f, 0.25f, 1.0f);
 	m_dirLights[1].Direction = XMFLOAT3(-0.57735f, 0.57735f, 0.57735f);
 
-	m_dirLights[2].Ambient = XMFLOAT4(0.2f, 0.1f, 0.1f, 1.0f);
-	m_dirLights[2].Diffuse = XMFLOAT4(10.5f, 10.5f, 10.0f, 1.0f);
-	m_dirLights[2].Specular = XMFLOAT4(0.2f, 0.2f, 0.3f, 0.1f);
-	m_dirLights[2].Direction = XMFLOAT3(0.0f, 0.0f, -10.0f);*/
+	//m_dirLights[2].Ambient = XMFLOAT4(0.2f, 0.1f, 0.1f, 1.0f);
+	//m_dirLights[2].Diffuse = XMFLOAT4(10.5f, 10.5f, 10.0f, 1.0f);
+	//m_dirLights[2].Specular = XMFLOAT4(0.2f, 0.2f, 0.3f, 0.1f);
+	//m_dirLights[2].Direction = XMFLOAT3(0.0f, 0.0f, -10.0f);
 
 	/// Set Point Lights
 	/*m_pointLights[0].Ambient = XMFLOAT4(10.0f, 0.0f, 0.0f, 1.0f);

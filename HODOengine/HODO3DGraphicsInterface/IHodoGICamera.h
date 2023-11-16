@@ -1,5 +1,9 @@
 #pragma once
-#include "HODOmath.h"
+
+namespace HDMaths
+{
+	struct HDFLOAT4X4;
+}
 
 namespace hodoGI
 {
