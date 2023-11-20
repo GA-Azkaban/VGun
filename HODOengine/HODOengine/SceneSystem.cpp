@@ -26,22 +26,22 @@ namespace hodoEngine
 		}
 	}
 
-	hodoEngine::Scene* SceneSystem::CreateScene()
+	hodoData::Scene* SceneSystem::CreateScene()
 	{
 		std::string id = IDSystem::Instance().CreateID();
-		Scene* scene = new Scene();
+		hodoData::Scene* scene = new hodoData::Scene();
 		_sceneList.insert({ id, scene });
 		return scene;
 	}
 
-	hodoEngine::Scene* SceneSystem::CreateScene(std::string sceneName)
+	hodoData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
-		Scene* scene = new Scene(sceneName);
+		hodoData::Scene* scene = new hodoData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
 		return scene;
 	}
 
-	bool SceneSystem::LoadScene(ID id)
+	bool SceneSystem::LoadScene(std::string id)
 	{
 		auto scene = _sceneList.find(id);
 		assert(scene == _sceneList.end(), "Scene not found");
@@ -61,7 +61,7 @@ namespace hodoEngine
 		}
 	}
 
-	hodoEngine::Scene* SceneSystem::GetCurrentScene()
+	hodoData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
 	}

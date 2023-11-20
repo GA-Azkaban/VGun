@@ -6,8 +6,8 @@
 
 namespace hodoEngine
 {
-	class Scene;
-	class GameObject;
+	class hodoData::Scene;
+	class hodoData::GameObject;
 
 	class SceneSystem : public Singleton<SceneSystem>
 	{
@@ -21,21 +21,21 @@ namespace hodoEngine
 		void Update();
 
 	public:
-		Scene* CreateScene();
-		Scene* CreateScene(std::string sceneName);
-		bool LoadScene(ID id);
+		hodoData::Scene* CreateScene();
+		hodoData::Scene* CreateScene(std::string sceneName);
+		bool LoadScene(std::string id);
 		
 	private:
-		std::unordered_map<std::string, Scene*> _sceneList;
+		std::unordered_map<std::string, hodoData::Scene*> _sceneList;
 
 	public:
 		void SetCurrentSceneByName(std::string sceneName);
-		Scene* GetCurrentScene();
+		hodoData::Scene* GetCurrentScene();
 		bool GetIsCurrentSceneChange();
 
 	private:
-		Scene* _currentScene;
-		Scene* _prevScene;
+		hodoData::Scene* _currentScene;
+		hodoData::Scene* _prevScene;
 		bool _isSceneChange;
 	};
 

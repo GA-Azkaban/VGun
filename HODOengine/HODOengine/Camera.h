@@ -8,7 +8,7 @@
 /// 2023.11.09 ±ËπŒ¡§
 /// </summary>
 
-namespace hodoEngine
+namespace hodoData
 {
 	class HODO_API Camera : public Component
 	{

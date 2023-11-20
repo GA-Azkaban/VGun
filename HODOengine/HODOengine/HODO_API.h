@@ -21,12 +21,14 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "Transform.h"
+#include "Script.h"
 
-#include "SceneSystem.h"
 
-namespace hodoEngine
+namespace hodoData
 {
 	/// 씬을 생성하기 위한 함수
 	HODO_API Scene* CreateScene(std::string sceneName);
+
+	HODO_API GameObject* CreateObject(Scene* now, GameObject* parent = nullptr);
 }
 

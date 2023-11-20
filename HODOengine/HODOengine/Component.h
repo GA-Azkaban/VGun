@@ -7,7 +7,7 @@
 /// 2023.11.01 ±ËπŒ¡§
 /// </summary>
 
-namespace hodoEngine
+namespace hodoData
 {
 	class GameObject;
 	class Transform;

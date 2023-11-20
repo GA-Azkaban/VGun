@@ -8,7 +8,7 @@
 /// Transform은 오브젝트의 position, rotation, scale 정보를 가지고 있습니다.
 /// </summary>
 
-namespace hodoEngine
+namespace hodoData
 {
 	class GameObject;
 	class HODO_API Transform : public Component

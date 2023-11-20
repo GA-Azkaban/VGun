@@ -4,7 +4,7 @@
 
 #include "dllExporter.h"
 
-namespace hodoEngine
+namespace hodoData
 {
 	using ID = std::string;
 

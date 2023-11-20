@@ -2,7 +2,7 @@
 
 TestScene::TestScene()
 {
-	_scene = hodoEngine::CreateScene("Test");
+	_scene = hodoData::CreateScene("Test");
 }
 
 TestScene::~TestScene()
@@ -12,5 +12,7 @@ TestScene::~TestScene()
 
 void TestScene::Start()
 {
-
+	hodoData::GameObject* test = hodoData::CreateObject(_scene);
+	test->GetComponent<hodoData::Transform>();
+	test->AddComponent<hodoData::Script>();
 }

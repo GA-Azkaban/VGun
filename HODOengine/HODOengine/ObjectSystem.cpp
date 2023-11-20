@@ -3,10 +3,8 @@
 #include "GameObject.h"
 #include "IDSystem.h"
 
-
 namespace hodoEngine
 {
-
 
 	void ObjectSystem::Initialize()
 	{
@@ -48,9 +46,9 @@ namespace hodoEngine
 		
 	}
 
-	hodoEngine::GameObject* ObjectSystem::CreateObject(Scene* now, GameObject* parent /*= nullptr*/)
+	hodoData::GameObject* ObjectSystem::CreateObject(hodoData::Scene* now, hodoData::GameObject* parent)
 	{
-		GameObject* obj = new GameObject();
+		hodoData::GameObject* obj = new hodoData::GameObject();
 		ID id = IDSystem::Instance().CreateID();
 
 		if (parent != nullptr)

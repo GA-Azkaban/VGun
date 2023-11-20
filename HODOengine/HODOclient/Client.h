@@ -23,6 +23,5 @@ public:
 	void Initialize();
 
 private:
-	
 };
 

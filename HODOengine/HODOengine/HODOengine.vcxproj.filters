@@ -70,6 +70,9 @@
     <Filter Include="07_GraphicInterfaceObject">
       <UniqueIdentifier>{47b4a989-3e4f-4323-b412-2dc0ee2755cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Script">
+      <UniqueIdentifier>{7104ad00-713f-4193-b1aa-16b61916561b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -132,6 +135,9 @@
     <ClInclude Include="HodoGIObject.h">
       <Filter>07_GraphicInterfaceObject</Filter>
     </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>05_Component\Script</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -185,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="HodoGIObject.cpp">
       <Filter>07_GraphicInterfaceObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>05_Component\Script</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -2,13 +2,13 @@
 #include "GameObject.h"
 
 
-hodoEngine::Transform::Transform()
+hodoData::Transform::Transform()
 	:_position(), _rotation(), _scale(HDMaths::HDFLOAT3::one)
 {
 
 }
 
-HDMaths::HDFLOAT3 hodoEngine::Transform::GetWorldPosition() const
+HDMaths::HDFLOAT3 hodoData::Transform::GetWorldPosition() const
 {
 	/// 이득우의 게임수학 p.619 참조
 	// 내 로컬 포지션에 부모의 월드 트랜스폼을 반영해 내 월드 포지션을 구한다.
@@ -24,7 +24,7 @@ HDMaths::HDFLOAT3 hodoEngine::Transform::GetWorldPosition() const
 	return parentPosition + parentRotation * (parentScale * _position);
 }
 
-HDMaths::HDQuaternion hodoEngine::Transform::GetWorldRotation() const
+HDMaths::HDQuaternion hodoData::Transform::GetWorldRotation() const
 {
 	if (GetGameObject()->GetParentGameObject() == nullptr)
 	{
@@ -34,7 +34,7 @@ HDMaths::HDQuaternion hodoEngine::Transform::GetWorldRotation() const
 	return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation() * _rotation;
 }
 
-HDMaths::HDFLOAT3 hodoEngine::Transform::GetWorldScale() const
+HDMaths::HDFLOAT3 hodoData::Transform::GetWorldScale() const
 {
 	if (GetGameObject()->GetParentGameObject() == nullptr)
 	{
@@ -44,22 +44,22 @@ HDMaths::HDFLOAT3 hodoEngine::Transform::GetWorldScale() const
 	return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale() * _scale;
 }
 
-HDMaths::HDFLOAT3 hodoEngine::Transform::GetLocalPosition() const
+HDMaths::HDFLOAT3 hodoData::Transform::GetLocalPosition() const
 {
 	return _position;
 }
 
-HDMaths::HDQuaternion hodoEngine::Transform::GetLocalRotation() const
+HDMaths::HDQuaternion hodoData::Transform::GetLocalRotation() const
 {
 	return _rotation;
 }
 
-HDMaths::HDFLOAT3 hodoEngine::Transform::GetLocalScale() const
+HDMaths::HDFLOAT3 hodoData::Transform::GetLocalScale() const
 {
 	return _scale;
 }
 
-HDMaths::HDFLOAT4X4 hodoEngine::Transform::GetWorldTM() const
+HDMaths::HDFLOAT4X4 hodoData::Transform::GetWorldTM() const
 {
 	if (GetGameObject()->GetParentGameObject() == nullptr)
 	{
@@ -68,12 +68,12 @@ HDMaths::HDFLOAT4X4 hodoEngine::Transform::GetWorldTM() const
 	return GetTransformMatrix(GetWorldPosition(), GetWorldRotation(), GetWorldScale());
 }
 
-HDMaths::HDFLOAT4X4 hodoEngine::Transform::GetLocalTM() const
+HDMaths::HDFLOAT4X4 hodoData::Transform::GetLocalTM() const
 {
 	return GetTransformMatrix(_position, _rotation, _scale);
 }
 
-void hodoEngine::Transform::SetWorldPosition(const HDMaths::HDFLOAT3& position)
+void hodoData::Transform::SetWorldPosition(const HDMaths::HDFLOAT3& position)
 {
 	if (GetGameObject()->GetParentGameObject() == nullptr)
 	{
@@ -91,7 +91,7 @@ void hodoEngine::Transform::SetWorldPosition(const HDMaths::HDFLOAT3& position)
 	}
 }
 
-void hodoEngine::Transform::SetWorldRotation(const HDMaths::HDQuaternion& rotation)
+void hodoData::Transform::SetWorldRotation(const HDMaths::HDQuaternion& rotation)
 {
 	if (GetGameObject()->GetParentGameObject() == nullptr)
 	{
@@ -106,7 +106,7 @@ void hodoEngine::Transform::SetWorldRotation(const HDMaths::HDQuaternion& rotati
 	}
 }
 
-void hodoEngine::Transform::SetWorldScale(const HDMaths::HDFLOAT3& scale)
+void hodoData::Transform::SetWorldScale(const HDMaths::HDFLOAT3& scale)
 {
 	if (GetGameObject()->GetParentGameObject() == nullptr)
 	{
@@ -121,17 +121,17 @@ void hodoEngine::Transform::SetWorldScale(const HDMaths::HDFLOAT3& scale)
 	}
 }
 
-void hodoEngine::Transform::SetLocalPosition(const HDMaths::HDFLOAT3& position)
+void hodoData::Transform::SetLocalPosition(const HDMaths::HDFLOAT3& position)
 {
 	_position = position;
 }
 
-void hodoEngine::Transform::SetLocalRotation(const HDMaths::HDQuaternion& rotation)
+void hodoData::Transform::SetLocalRotation(const HDMaths::HDQuaternion& rotation)
 {
 	_rotation = rotation;
 }
 
-void hodoEngine::Transform::SetLocalScale(const HDMaths::HDFLOAT3& scale)
+void hodoData::Transform::SetLocalScale(const HDMaths::HDFLOAT3& scale)
 {
 	_scale = scale;
 }

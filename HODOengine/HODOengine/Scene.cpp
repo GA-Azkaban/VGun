@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-namespace hodoEngine
+namespace hodoData
 {
 
 
