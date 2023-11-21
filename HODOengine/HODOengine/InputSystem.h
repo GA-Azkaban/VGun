@@ -15,7 +15,7 @@ namespace hodoEngine
 	{
 		friend Singleton;
 	private:
-		InputSystem();
+		InputSystem() = default;
 
 	public:
 		void Initialize(int hWnd, int screenWidth, int screenHeight);

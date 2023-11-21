@@ -1,7 +1,18 @@
 #include "Script.h"
 
 
-namespace HODOdata
+namespace hodoData
 {
 
+	//hodoData::Script::Script()
+	//{
+
+	//}
+
+	//hodoData::Script::~Script()
+	//{
+
+	//}
+
 }
+

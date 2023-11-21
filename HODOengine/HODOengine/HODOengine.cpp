@@ -4,6 +4,11 @@
 #include <windows.h>
 #include "HODOengine.h"
 
+#include "SceneSystem.h"
+#include "ObjectSystem.h"
+#include "TimeSystem.h"
+#include "InputSystem.h"
+
 IHODOengine* CreateEngine()
 {
 	return new HODOengine();
@@ -15,7 +20,11 @@ void ReleaseEngine(IHODOengine* instance)
 }
 
 HODOengine::HODOengine()
-	:_appName(L"HODO")
+	:_appName(L"HODO"),
+	_sceneSystem(hodoEngine::SceneSystem::Instance()),
+	_objectSystem(hodoEngine::ObjectSystem::Instance()),
+	_timeSystem(hodoEngine::TimeSystem::Instance()),
+	_inputSystem(hodoEngine::InputSystem::Instance())
 {
 
 }
@@ -30,6 +39,11 @@ void HODOengine::Initialize()
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
+
+	_timeSystem.Initialize();
+	_sceneSystem.Initialize();
+	_objectSystem.Initialize();
+	_inputSystem.Initialize((int)_hWnd, _screenWidth, _screenHeight);
 }
 
 void HODOengine::Loop()
@@ -73,6 +87,7 @@ void HODOengine::Finalize()
 void HODOengine::Run()
 {
 	// Time Update
+	_timeSystem.Update();
 	// Destroy List -> GameObject OnDestroy, Clear
 	// Update Components
 	// Invoke Collision Events

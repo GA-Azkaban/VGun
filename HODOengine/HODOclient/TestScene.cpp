@@ -14,5 +14,5 @@ void TestScene::Start()
 {
 	hodoData::GameObject* test = hodoData::CreateObject(_scene);
 	test->GetComponent<hodoData::Transform>();
-	test->AddComponent<hodoData::Script>();
+	//test->AddComponent<hodoData::Script>();
 }

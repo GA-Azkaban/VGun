@@ -138,6 +138,9 @@
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
     </ClInclude>
+    <ClInclude Include="TimeSystem.h">
+      <Filter>06_System\TimeSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -194,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeSystem.cpp">
+      <Filter>06_System\TimeSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
