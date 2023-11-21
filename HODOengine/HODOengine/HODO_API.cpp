@@ -6,7 +6,7 @@
 namespace hodoData
 {
 
-	HODO_API Scene* hodoData::CreateScene(std::string sceneName)
+	HODO_API hodoData::Scene* hodoData::CreateScene(std::string sceneName)
 	{
 		return hodoEngine::SceneSystem::Instance().CreateScene(sceneName);
 	}

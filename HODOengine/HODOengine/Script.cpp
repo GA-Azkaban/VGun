@@ -1,8 +1,16 @@
 #include "Script.h"
 
+hodoData::Script::Script()
 {
 
-	void hodoData::Script::Start()
+}
+
+hodoData::Script::~Script()
+{
+
+}
+
+void hodoData::Script::Start()
 {
 
 }
@@ -15,5 +23,4 @@ void hodoData::Script::Update()
 void hodoData::Script::FixedUpdate()
 {
 
-}
 }
