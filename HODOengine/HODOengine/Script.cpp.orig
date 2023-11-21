@@ -1,0 +1,42 @@
+#include "Script.h"
+
+<<<<<<< HEAD
+
+namespace hodoData
+=======
+hodoData::Script::Script()
+{
+
+}
+
+hodoData::Script::~Script()
+{
+
+}
+
+void hodoData::Script::Start()
+{
+
+}
+
+void hodoData::Script::Update()
+{
+
+}
+
+void hodoData::Script::FixedUpdate()
+>>>>>>> suan--ScriptComponent
+{
+
+	//hodoData::Script::Script()
+	//{
+
+	//}
+
+	//hodoData::Script::~Script()
+	//{
+
+	//}
+
+}
+

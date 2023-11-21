@@ -3,16 +3,19 @@
 
 namespace hodoData
 {
-	//class Script : public Component
-	//{
-	//public:
-	//	Script();
-	//	virtual ~Script();
+class HODO_API Script : public Component
+	{
 
-	//public:
-	//	virtual void Start() override {};
-	//	virtual void Update() override {};
-	//};
+
+
+	public:
+		Script();
+		virtual ~Script();
+
+	virtual void Start() override;
+		virtual void Update() override;
+		virtual void FixedUpdate() override;
+
 }
 
 
