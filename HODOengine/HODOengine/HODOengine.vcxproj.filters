@@ -73,6 +73,9 @@
     <Filter Include="05_Component\Script">
       <UniqueIdentifier>{7104ad00-713f-4193-b1aa-16b61916561b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06_System\PhysicsSystem">
+      <UniqueIdentifier>{2f38b02a-0c5d-4842-b60d-48474a0330f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -138,6 +141,9 @@
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>06_System\PhysicsSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -194,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>06_System\PhysicsSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
