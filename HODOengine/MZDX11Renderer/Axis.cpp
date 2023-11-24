@@ -34,7 +34,7 @@ void Axis::Update(MZCamera* pCamera, float deltaTime)
 	m_proj = pCamera->Proj();
 }
 
-void Axis::RenderToTexture()
+void Axis::RenderDeferred()
 {
 #ifdef _DEBUG
 	if (!m_isActive)

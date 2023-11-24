@@ -1,6 +1,6 @@
 #include "dllExporter.h"
 #include "Component.h"
-#include "IHodoGICamera.h"
+#include "../HODO3DGraphicsInterface/IHodoGICamera.h"
 #include <memory>
 
 /// <summary>

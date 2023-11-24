@@ -32,6 +32,8 @@ public:
 
     float GetScreenWidth() { return m_screenWidth; }
     float GetScreenHeight() { return m_screenHeight; }
+    ID3D11RenderTargetView* GetRenderTargetView() { return m_backBufferRTV.Get(); }
+    ID3D11DepthStencilView* GetDepthStencilView() { return m_depthStencilView.Get(); }
 
     // 엔진 초기화
     bool Initialize();
@@ -85,11 +87,10 @@ private:
     ComPtr<ID3D11Device> m_d3dDevice;					// D3D11 디바이스	
     ComPtr<ID3D11DeviceContext> m_d3dImmediateContext;		// 디바이스 컨텍스트	
     ComPtr<IDXGISwapChain> m_swapChain;					// 스왑체인
-    //ComPtr<ID3D11Texture2D> m_depthStencilBuffer;		// 뎁스 스텐실 버퍼
+    ComPtr<ID3D11Texture2D> m_depthStencilBuffer;		// 뎁스 스텐실 버퍼
     ComPtr<ID3D11RenderTargetView> m_backBufferRTV;	// 백버퍼 렌더 타겟 뷰
-    //ComPtr<ID3D11DepthStencilView> m_depthStencilView;	// 뎁스 스텐실 뷰
-    //D3D11_VIEWPORT m_viewPort;							// 뷰 포트
-    ComPtr<ID3D11Texture2D> m_backBufferTexture;
+    ComPtr<ID3D11DepthStencilView> m_depthStencilView;	// 뎁스 스텐실 뷰
+    D3D11_VIEWPORT m_viewPort;							// 뷰 포트
     D3D_DRIVER_TYPE m_d3dDriverType;
     D3D_FEATURE_LEVEL m_featureLevel;
 
@@ -103,12 +104,6 @@ private:
     POINT m_lastMousePos;
     float m_deltaTime;
 
-    /// Builder
-    //GridBuilder* m_gridBuilder;
-
-private:
-
-	XLParticleSystem* m_pParticleSystem;
 };
 
 extern "C" __declspec(dllexport) MZ3DAPI::I3DRenderer * CreateDX11GraphicsInstance();

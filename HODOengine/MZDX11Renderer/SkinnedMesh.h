@@ -46,7 +46,7 @@ public:
     void SetRasterizerState(ID3D11RasterizerState* pRS) {};
 
     virtual void Update(MZCamera* pCamera, float deltaTime) override;
-    virtual void RenderToTexture() override;
+    virtual void RenderDeferred() override;
     virtual void SetWorldTM(const XMMATRIX& tm) override { 
 		if (!m_isActive)
 			return;

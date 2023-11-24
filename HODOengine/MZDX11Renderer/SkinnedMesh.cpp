@@ -388,7 +388,7 @@ void SkinnedMesh::UpdateAnimation(float deltaTime)
 
 }
 
-void SkinnedMesh::RenderToTexture()
+void SkinnedMesh::RenderDeferred()
 {
 	if (!m_isActive)
 		return;

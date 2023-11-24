@@ -246,7 +246,7 @@ void Genji::Update(MZCamera* pCamera, float deltaTime)
 	//mEyePosW = XMFLOAT3(pCamera->GetPosition().x, pCamera->GetPosition().y, pCamera->GetPosition().z);
 }
 
-void Genji::RenderToTexture()
+void Genji::RenderDeferred()
 {
 	if (!m_isActive)
 		return;

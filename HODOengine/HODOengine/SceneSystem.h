@@ -2,7 +2,6 @@
 #include <unordered_map>
 
 #include "Singleton.h"
-#include "Scene.h" 
 
 namespace hodoEngine
 {
@@ -14,29 +13,22 @@ namespace hodoEngine
 		friend Singleton;
 
 	private:
-		SceneSystem() = default;
+		SceneSystem();
 
 	public:
-		void Initialize();
-		void Update();
-
-	public:
-		hodoData::Scene* CreateScene();
-		hodoData::Scene* CreateScene(std::string sceneName);
-		bool LoadScene(std::string id);
+		Scene* CreateScene(std::string sceneName = "");
+		void LoadScene(std::string sceneName);
+		void LoadScene(Scene* scene);
 		
 	private:
 		std::unordered_map<std::string, hodoData::Scene*> _sceneList;
 
 	public:
-		void SetCurrentSceneByName(std::string sceneName);
 		hodoData::Scene* GetCurrentScene();
 		bool GetIsCurrentSceneChange();
 
 	private:
-		hodoData::Scene* _currentScene;
-		hodoData::Scene* _prevScene;
-		bool _isSceneChange;
+		Scene* _currentScene;
 	};
 
 }

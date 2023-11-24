@@ -169,7 +169,7 @@ void Pig::Update(MZCamera* pCamera, float deltaTime)
 		m_timeElapsed = m_startFrame - 1; // 애니메이션 연속 재생
 }
 
-void Pig::RenderToTexture()
+void Pig::RenderDeferred()
 {
 	if (boneCount > 0)
 		Effects::SkinnedMeshFX->SetBoneTransforms(&boneTransforms[0], boneCount);

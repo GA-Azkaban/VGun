@@ -24,6 +24,8 @@
     <ClInclude Include="ASEParser.h" />
     <ClInclude Include="Hodo3DCameraAdapter.h" />
     <ClInclude Include="Hodo3DFactoryAdapter.h" />
+    <ClInclude Include="Hodo3DRendererAdapter.h" />
+    <ClInclude Include="HodoDebugCubeAdapter.h" />
     <ClInclude Include="IDebugObject.h" />
     <ClInclude Include="IMeshObject.h" />
     <ClInclude Include="IUIObject.h" />
@@ -93,6 +95,8 @@
   <ItemGroup>
     <ClCompile Include="ASEFile.cpp" />
     <ClCompile Include="ASEParser.cpp" />
+    <ClCompile Include="HodoDebugCubeAdapter.cpp" />
+    <ClCompile Include="HodoGIExports.cpp" />
     <ClCompile Include="IDebugObject.cpp" />
     <ClCompile Include="IMeshObject.cpp" />
     <ClCompile Include="IUIObject.cpp" />
@@ -357,22 +361,22 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>Intermediate\$(Platform)\$(Configuration)\</IntDir>
     <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -384,7 +388,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)Yunu3DGraphicsInterface;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -410,7 +414,7 @@ xcopy "$(projectdir)RuntimeDependency\$(platform)\$(configuration)" "$(targetdir
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)Yunu3DGraphicsInterface;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -436,7 +440,7 @@ xcopy "$(projectdir)RuntimeDependency\$(platform)\$(configuration)" "$(targetdir
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)include\XLParticleSystem;$(SolutionDir)Yunu3DGraphicsInterface;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)include\XLParticleSystem;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
@@ -463,7 +467,7 @@ xcopy "$(projectdir)RuntimeDependency\$(platform)\$(configuration)" "$(targetdir
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)include\XLParticleSystem;$(SolutionDir)Yunu3DGraphicsInterface;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\fbx sdk;$(SolutionDir)include\DXTK;$(SolutionDir)MZParser;$(SolutionDir)include\XLParticleSystem;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOmath</AdditionalIncludeDirectories>
       <UndefinePreprocessorDefinitions>
       </UndefinePreprocessorDefinitions>
       <LanguageStandard>stdcpp20</LanguageStandard>

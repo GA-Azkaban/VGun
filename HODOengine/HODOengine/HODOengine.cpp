@@ -3,6 +3,10 @@
 
 #include <windows.h>
 #include "HODOengine.h"
+#include "GraphicsRenderer.h"
+#include "SceneSystem.h"
+#include "Scene.h"
+#include "GameObject.h"
 
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
@@ -39,6 +43,9 @@ void HODOengine::Initialize()
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
+
+	hodoEngine::GraphicsRenderer::Instance().LoadGraphicsDll(L"MZDX11Renderer.dll");
+	hodoEngine::GraphicsRenderer::Instance().SetOutputWindow(_hWnd);
 
 	_timeSystem.Initialize();
 	_sceneSystem.Initialize();
@@ -89,10 +96,29 @@ void HODOengine::Run()
 	// Time Update
 	_timeSystem.Update();
 	// Destroy List -> GameObject OnDestroy, Clear
+	for (auto destroyObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
+	{
+		for (auto component : destroyObj->GetAllComponents())
+		{
+			component->OnDestroy();
+		}
+		hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
+	}
+	hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
+
 	// Update Components
+	for (auto gameObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
+	{
+		for (auto component : gameObj->GetAllComponents())
+		{
+			component->Update();
+		}
+	}
 	// Invoke Collision Events
 	// Renderer Update
+	hodoEngine::GraphicsRenderer::Instance().Update(0.05f);
 	// Renderer Render
+	hodoEngine::GraphicsRenderer::Instance().Render();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

@@ -176,7 +176,7 @@ void Fox::Update(MZCamera* pCamera, float deltaTime)
 	//mEyePosW = XMFLOAT3(pCamera->GetPosition().x, pCamera->GetPosition().y, pCamera->GetPosition().z);
 }
 
-void Fox::RenderToTexture()
+void Fox::RenderDeferred()
 {
 	// 입력 배치 객체 셋팅
 	m_d3dImmediateContext->IASetInputLayout(InputLayouts::StaticMeshGBufferInputLayout);

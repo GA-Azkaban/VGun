@@ -24,7 +24,7 @@ public:
 public:
 	virtual void Update(MZCamera* pCamera, float deltaTime) override;
 	void Update(const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
-	virtual void RenderToTexture() override;
+	virtual void RenderDeferred() override;
 	virtual void SetWorldTM(const XMMATRIX& tm) override 
 	{ 
 		m_world = tm; 

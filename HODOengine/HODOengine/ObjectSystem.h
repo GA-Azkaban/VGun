@@ -3,6 +3,8 @@
 
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
+#include <set>
 
 namespace hodoData
 {
@@ -19,6 +21,7 @@ namespace hodoEngine
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
 		friend Singleton;
+		friend class HODOengine;
 
 	private:
 		ObjectSystem() = default;
@@ -30,12 +33,12 @@ namespace hodoEngine
 		void FlushEnable();
 
 	public:
-		GameObject* CreateObject(hodoData::Scene* now, GameObject* parent = nullptr);
+		GameObject* CreateObject(Scene* scene, std::string objectName = "", GameObject * parent = nullptr);
+		void DestroyObject(Scene* scene, GameObject* gameObject);
 
 	private:
-		std::vector<GameObject*> _runningObjectList;
+		std::unordered_set<GameObject*> _runningObjectList;
 		std::unordered_map<ID, GameObject*> _allObjectList;
-
 	};
 
 }

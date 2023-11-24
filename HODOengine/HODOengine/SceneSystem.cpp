@@ -1,29 +1,17 @@
 #include "SceneSystem.h"
+#include "Scene.h"
 
 #include <cassert>
 
 #include "IDSystem.h"
-#include "ObjectSystem.h"
 
 namespace hodoEngine
 {
 
-	void SceneSystem::Initialize()
+	SceneSystem::SceneSystem()
+		:_currentScene(nullptr)
 	{
-		_prevScene = nullptr;
-		_currentScene = nullptr;
-	}
 
-	void SceneSystem::Update()
-	{
-		if (_prevScene != _currentScene)
-		{
-			_isSceneChange = true;
-		}
-		else
-		{
-			_isSceneChange = false;
-		}
 	}
 
 	hodoData::Scene* SceneSystem::CreateScene()
@@ -41,34 +29,24 @@ namespace hodoEngine
 		return scene;
 	}
 
-	bool SceneSystem::LoadScene(std::string id)
+	void SceneSystem::LoadScene(std::string sceneName)
 	{
-		auto scene = _sceneList.find(id);
-		assert(scene == _sceneList.end(), "Scene not found");
-		_prevScene = _currentScene;
-		_currentScene = scene->second;
-		return true;
+		auto sceneIter = _sceneList.find(sceneName);
+		if (sceneIter == _sceneList.end())
+		{
+			return;
+		}
+		_currentScene = sceneIter->second;
 	}
 
-	void SceneSystem::SetCurrentSceneByName(std::string sceneName)
+	void SceneSystem::LoadScene(Scene* scene)
 	{
-		for (const auto& scene : _sceneList)
-		{
-			if (scene.second->GetSceneName() == sceneName)
-			{
-				_currentScene = scene.second;
-			}
-		}
+		_currentScene = scene;
 	}
 
 	hodoData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
-	}
-
-	bool SceneSystem::GetIsCurrentSceneChange()
-	{
-		return _isSceneChange;
 	}
 
 }

@@ -144,9 +144,9 @@ void UIText::Render()
 	if (!m_isActive)
 		return;
 
-	RenderToTexture();
+	RenderDeferred();
 
-	DeferredRenderer::Instance.Get().SetRenderTargets();
+	DeferredRenderer::Instance.Get().SetRenderTarget(MZDX11Renderer::Instance.Get().GetRenderTargetView(), MZDX11Renderer::Instance.Get().GetDepthStencilView());
 	
 	m_diffuseMapSRV = m_pShaderResourceView;
 
@@ -403,7 +403,7 @@ void UIText::ClearRenderTargets(const float color[4])
 	m_d3dImmediateContext.Get()->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-void UIText::RenderToTexture()
+void UIText::RenderDeferred()
 {
 	SetRenderTargets();
 	ClearRenderTargets(DirectX::Colors::Black);
@@ -434,6 +434,6 @@ void UIText::RenderToTexture()
 		m_d3dImmediateContext->DrawIndexed(6, 0, 0);
 	}
 	//if (m_debugCube != nullptr)
-	//	m_debugCube->RenderToTexture();
+	//	m_debugCube->RenderDeferred();
 	DrawText();
 }

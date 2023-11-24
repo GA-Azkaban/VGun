@@ -4,16 +4,22 @@
 #include "ObjectSystem.h"
 
 namespace hodoData
+extern "C"
 {
-
-	HODO_API hodoData::Scene* hodoData::CreateScene(std::string sceneName)
+	namespace hodoEngine 
 	{
-		return hodoEngine::SceneSystem::Instance().CreateScene(sceneName);
-	}
-
-	HODO_API GameObject* CreateObject(Scene* now, GameObject* parent /*= nullptr*/)
+		HODO_API Scene* hodoEngine::CreateScene(std::string sceneName)
+		{
+			return SceneSystem::Instance().CreateScene(sceneName);
+		}
+		HODO_API void LoadScene(Scene* scene)
+		{
+			SceneSystem::Instance().LoadScene(scene);
+		}
+	HODO_API GameObject* hodoEngine::CreateObject(Scene* scene, std::string objectName, GameObject* parentObject)
 	{
-		return hodoEngine::ObjectSystem::Instance().CreateObject(now, parent);
+		return ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 	}
+	
 }
 

@@ -3,15 +3,9 @@
 #include "DXTKFont.h"
 #include "MZCamera.h"
 #include "DeferredRenderer.h"
-//#include "GridBuilder.h"
-
-#include "XLParticleEffect.h"
-#include "XLParticleSystem.h"
 
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "dxgi.lib" )	// adapter info
-
-#pragma comment( lib, "XLParticleSystem.lib")
 
 MZRenderer::LazyObjects<MZDX11Renderer> MZDX11Renderer::Instance;
 
@@ -32,7 +26,7 @@ MZDX11Renderer::MZDX11Renderer()
 	: m_hWnd(0), m_screenWidth(1920), m_screenHeight(1080), m_4xMsaaQuality(0), m_enable4xMsaa(false),
 	m_d3dDriverType(D3D_DRIVER_TYPE_HARDWARE), m_pFont(nullptr), switcher(0)
 {
-	//ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
+	ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
 
 	m_pFont = new DXTKFont();
 	m_pCamera = new MZCamera();
@@ -62,7 +56,6 @@ MZDX11Renderer::~MZDX11Renderer()
 	ReleaseCOM(m_d3dDevice);
 
 }
-
 
 bool MZDX11Renderer::Initialize()
 {
@@ -102,33 +95,7 @@ bool MZDX11Renderer::Initialize()
 	m_pFont->SetLineSpacing(12.0f);
 	m_fontLineSpace = m_pFont->GetLineSpacing();
 
-	//m_grid = new Grid(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), m_wireframeRS);
-	//m_grid->Initialize();
-
-	// Construct Objects
-	// 그리드
-	/// 빌더패턴?
-	/// 그런데 이 방식이 new Grid(ID3D11Device*, ID3D11DeviceContext*, ID3D11RasterizerState*)에
-	/// 비해 더 나은 점이 무엇일까?
-	/*IRenderableObject* grid = (new GridBuilder())->
-		SetDevice(m_d3dDevice.Get())->
-		SetDeviceContext(m_d3dImmediateContext.Get())->
-		SetRasterizerState(m_wireframeRS)->
-		Build();
-
-	objectsList.emplace_back(grid);*/
-
 	GetAdapterInfo();
-
-
-	/// Particle System 관련
-	//m_pParticleSystem = new XLParticleSystem();
-	//m_pParticleSystem->Init(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), 5000);
-
-	//FireParticleEffect* fire = new FireParticleEffect();
-
-	//m_pParticleSystem->AddParticleEffect(fire);
-
 
 	return true;
 }
@@ -238,13 +205,7 @@ void MZDX11Renderer::Update(float deltaTime)
 
 	//m_pCamera->UpdateViewMatrix();
 
-	//m_grid->Update(XMMatrixIdentity(), m_pCamera->View(), m_pCamera->Proj());
 	DeferredRenderer::Instance.Get().Update(MZCamera::GetMainCamera(), deltaTime);
-
-
-	/// Particle System 관련
-	//m_pParticleSystem->Update(deltaTime, 0, nullptr);
-
 }
 
 
@@ -252,22 +213,15 @@ void MZDX11Renderer::BeginRender()
 {
 	assert(m_d3dImmediateContext);
 
-	DeferredRenderer::Instance.Get().SwapBackBuffer();
-	m_backBufferTexture = DeferredRenderer::Instance.Get().GetBackBufferTexture();
-	HR(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(m_backBufferTexture.GetAddressOf())));
-
-	//m_d3dImmediateContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
-	//m_d3dImmediateContext->ClearRenderTargetView(m_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Black));
-	//m_d3dImmediateContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	m_d3dImmediateContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
+	m_d3dImmediateContext->ClearRenderTargetView(m_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Black));
+	m_d3dImmediateContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 
 void MZDX11Renderer::Render()
 {
 	BeginRender();
-
-	/// Particle System 관련
-	//m_pParticleSystem->Render();
 
 	DeferredRenderer::Instance.Get().RenderToBackBuffer();
 
@@ -283,10 +237,8 @@ void MZDX11Renderer::Render()
 
 void MZDX11Renderer::EndRender()
 {
-	//m_d3dImmediateContext->Flush();
-	//assert(m_swapChain);
-	if(m_swapChain)
-		HR(m_swapChain->Present(0, 0));
+	assert(m_swapChain);
+	HR(m_swapChain->Present(0, 0));
 }
 
 
@@ -309,10 +261,10 @@ void MZDX11Renderer::OnResize()
 	assert(m_d3dDevice);
 	assert(m_swapChain);
 
-	//ReleaseCOM(m_backBufferRTV);
+	ReleaseCOM(m_backBufferRTV);
 
-	//ReleaseCOM(m_depthStencilView);
-	//ReleaseCOM(m_depthStencilBuffer);
+	ReleaseCOM(m_depthStencilView);
+	ReleaseCOM(m_depthStencilBuffer);
 
 	//swap chain resize & recreate render target view
 	HR(m_swapChain->ResizeBuffers(1, m_screenWidth, m_screenHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0));
@@ -330,51 +282,50 @@ void MZDX11Renderer::OnResize()
 		.MiscFlags = 0,
 	};
 
-	HR(m_d3dDevice->CreateTexture2D(&bTextureDescription, NULL, m_backBufferTexture.GetAddressOf()));
-	/*ID3D11Texture2D* backBuffer;
+	ID3D11Texture2D* backBuffer;
 	HR(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
 	HR(m_d3dDevice->CreateRenderTargetView(backBuffer, 0, &m_backBufferRTV));
-	backBuffer->Release();*/
+	backBuffer->Release();
 
 	// create depth stencil view
-	//D3D11_TEXTURE2D_DESC depthStencilDesc;
-	//depthStencilDesc.Width = m_screenWidth;
-	//depthStencilDesc.Height = m_screenHeight;
-	//depthStencilDesc.MipLevels = 1;
-	//depthStencilDesc.ArraySize = 1;
-	//depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
+	depthStencilDesc.Width = m_screenWidth;
+	depthStencilDesc.Height = m_screenHeight;
+	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
+	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
-	//if (m_enable4xMsaa)
-	//{
-	//	depthStencilDesc.SampleDesc.Count = 4;
-	//	depthStencilDesc.SampleDesc.Quality = m_4xMsaaQuality - 1;
-	//}
-	//else
-	//{
-	//	depthStencilDesc.SampleDesc.Count = 1;
-	//	depthStencilDesc.SampleDesc.Quality = 0;
-	//}
+	if (m_enable4xMsaa)
+	{
+		depthStencilDesc.SampleDesc.Count = 4;
+		depthStencilDesc.SampleDesc.Quality = m_4xMsaaQuality - 1;
+	}
+	else
+	{
+		depthStencilDesc.SampleDesc.Count = 1;
+		depthStencilDesc.SampleDesc.Quality = 0;
+	}
 
-	//depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-	//depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	//depthStencilDesc.CPUAccessFlags = 0;
-	//depthStencilDesc.MiscFlags = 0;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
 
-	//HR(m_d3dDevice->CreateTexture2D(&depthStencilDesc, 0, &m_depthStencilBuffer));
-	//HR(m_d3dDevice->CreateDepthStencilView(m_depthStencilBuffer.Get(), 0, &m_depthStencilView));
+	HR(m_d3dDevice->CreateTexture2D(&depthStencilDesc, 0, &m_depthStencilBuffer));
+	HR(m_d3dDevice->CreateDepthStencilView(m_depthStencilBuffer.Get(), 0, &m_depthStencilView));
 
 	// bind render target view and depth/stencil view
-	//m_d3dImmediateContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
+	m_d3dImmediateContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
 
 	// set the viewport transform
-	/*m_viewPort.TopLeftX = 0;
+	m_viewPort.TopLeftX = 0;
 	m_viewPort.TopLeftY = 0;
 	m_viewPort.Width = static_cast<float>(m_screenWidth);
 	m_viewPort.Height = static_cast<float>(m_screenHeight);
 	m_viewPort.MinDepth = 0.0f;
 	m_viewPort.MaxDepth = 1.0f;
 
-	m_d3dImmediateContext->RSSetViewports(1, &m_viewPort);*/
+	m_d3dImmediateContext->RSSetViewports(1, &m_viewPort);
 
 	// 투영 행렬 재계산
 	m_pCamera->SetFrustum(0.25f * MathHelper::Pi, GetAspectRatio(), 1.0f, 1000.0f);
@@ -396,12 +347,10 @@ void MZDX11Renderer::OnMouseDown(int btnState, int x, int y)
 	}
 }
 
-
 void MZDX11Renderer::OnMouseUp(int x, int y)
 {
 	ReleaseCapture();
 }
-
 
 void MZDX11Renderer::OnMouseMove(int btnState, int x, int y)
 {
