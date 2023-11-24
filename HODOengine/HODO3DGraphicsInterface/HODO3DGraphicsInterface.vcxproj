@@ -19,8 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HodoGIColor.h" />
+    <ClInclude Include="IDebugCube.h" />
+    <ClInclude Include="IDebugObject.h" />
     <ClInclude Include="IHodoGICamera.h" />
     <ClInclude Include="IHodoGIFactory.h" />
+    <ClInclude Include="IHodoGIRenderer.h" />
+    <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="ISkinnedMesh.h" />
+    <ClInclude Include="IStaticMesh.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

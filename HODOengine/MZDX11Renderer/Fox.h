@@ -12,7 +12,7 @@ public:
 
 public:
 	virtual void Update(MZCamera* pCamera, float deltaTime) override;
-	virtual void RenderToTexture() override;
+	virtual void RenderDeferred() override;
 	virtual void SetWorldTM(const XMMATRIX& tm) override { m_world = tm; };
 	virtual void SetActive(bool isActive) override {};
 	virtual bool Pick(MZCamera* pCamera, float x, float y) override { return false; };

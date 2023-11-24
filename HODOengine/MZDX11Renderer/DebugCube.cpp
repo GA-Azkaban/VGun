@@ -48,7 +48,7 @@ void DebugCube::Update(const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& p
 	XMStoreFloat4x4(&m_proj, proj);
 }
 
-void DebugCube::RenderToTexture()
+void DebugCube::RenderDeferred()
 {
 #ifdef _DEBUG
 	if (!m_isActive) 

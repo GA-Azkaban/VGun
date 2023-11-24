@@ -112,6 +112,12 @@
     <Filter Include="Hodo3DGIAdapter\HodoGICameraAdapter">
       <UniqueIdentifier>{5f78ef35-d9e1-47af-a609-f8b89c0e188a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Hodo3DGIAdapter\Hodo3DRendererAdapter">
+      <UniqueIdentifier>{c9d236bb-22f8-46ba-b259-7a2cc8ccf523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Hodo3DGIAdapter\HodoDebugCubeAdapter">
+      <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MZDX11Renderer.h">
@@ -265,6 +271,12 @@
     <ClInclude Include="Hodo3DCameraAdapter.h">
       <Filter>Hodo3DGIAdapter\HodoGICameraAdapter</Filter>
     </ClInclude>
+    <ClInclude Include="Hodo3DRendererAdapter.h">
+      <Filter>Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoDebugCubeAdapter.h">
+      <Filter>Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MZDX11Renderer.cpp">
@@ -368,6 +380,12 @@
     <ClCompile Include="ASEParser.cpp" />
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="ParsingDataClass.cpp" />
+    <ClCompile Include="HodoGIExports.cpp">
+      <Filter>Hodo3DGIAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoDebugCubeAdapter.cpp">
+      <Filter>Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="wire.fx">

@@ -70,6 +70,15 @@
     <Filter Include="07_GraphicInterfaceObject">
       <UniqueIdentifier>{47b4a989-3e4f-4323-b412-2dc0ee2755cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08_GraphicsRenderer">
+      <UniqueIdentifier>{7d706f32-fa3d-4165-8090-c298cd517dde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderable">
+      <UniqueIdentifier>{b93861c3-8cf9-4011-a951-3e57ce21eeb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderable\DebugCube">
+      <UniqueIdentifier>{d27a474d-e105-4916-961d-7e04b8b11f66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -132,6 +141,15 @@
     <ClInclude Include="HodoGIObject.h">
       <Filter>07_GraphicInterfaceObject</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsRenderer.h">
+      <Filter>08_GraphicsRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>05_Component\Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoDebugCube.h">
+      <Filter>05_Component\Renderable\DebugCube</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -185,6 +203,12 @@
     </ClCompile>
     <ClCompile Include="HodoGIObject.cpp">
       <Filter>07_GraphicInterfaceObject</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsRenderer.cpp">
+      <Filter>08_GraphicsRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoDebugCube.cpp">
+      <Filter>05_Component\Renderable\DebugCube</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

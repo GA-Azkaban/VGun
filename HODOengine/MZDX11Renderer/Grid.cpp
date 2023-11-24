@@ -34,7 +34,7 @@ void Grid::Update(MZCamera* pCamera, float deltaTime)
 	m_proj = pCamera->Proj();
 }
 
-void Grid::RenderToTexture()
+void Grid::RenderDeferred()
 {
 #ifdef _DEBUG
 	if (!m_isActive)

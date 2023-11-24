@@ -1,5 +1,6 @@
 #include "ResourceManager.h"
 #include "DeferredRenderer.h"
+#include "MZDX11Renderer.h"
 #include "DeferredBuffers.h"
 #include "Grid.h"
 #include "Axis.h"
@@ -23,7 +24,7 @@ DeferredRenderer::DeferredRenderer()
 	: m_depthStencilStateEnable(0), m_depthStencilStateDisable(0),
 	switcher(0)
 {
-	ZeroMemory(&m_viewport, sizeof(D3D11_VIEWPORT));
+
 }
 
 DeferredRenderer::~DeferredRenderer()
@@ -42,10 +43,7 @@ void DeferredRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pD
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 
-	SetUpViewport();
-
-	// 렌더 타겟뷰, 뎁스 스텐실뷰 등을 생성한다.
-	CreateResources();
+	CreateDepthStecilStates();
 
 	DeferredBuffers::Instance.Get().Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
 
@@ -70,7 +68,7 @@ void DeferredRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pD
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"FBXFile/genji_max.fbx");
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"FBXFile/Rob02Trang.fbx");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"FBXFile/fps_modeling.fbx");
-	
+
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_max2.ASE");
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/Rob02Trang.ASE");
 	ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/Beam_Small.ASE");
@@ -90,17 +88,17 @@ void DeferredRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pD
 	//worldTM.r[1].m128_f32[1] = 0.5f;
 	//worldTM.r[2].m128_f32[2] = 0.5f;
 	//uiImage->SetWorldTM(worldTM);
-	
+
 	// Mesh Objects 
 
 	/*Pig* pig = new Pig(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), m_solidRS.Get());
 	pig->SetScaleMatrix(0.05f);
 	IRenderableObject::renderables.emplace_back(pig);
 
-    Pig* pig2 = new Pig(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), m_solidRS.Get());
-    pig2->SetTranslateMatrix(5.0f, 0.0f, 5.0f);
-    pig2->SetScaleMatrix(0.07f);
-    IRenderableObject::renderables.emplace_back(pig2);*/
+	Pig* pig2 = new Pig(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), m_solidRS.Get());
+	pig2->SetTranslateMatrix(5.0f, 0.0f, 5.0f);
+	pig2->SetScaleMatrix(0.07f);
+	IRenderableObject::renderables.emplace_back(pig2);*/
 
 	//StaticMesh* genji = new StaticMesh(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), RasterizerState::SolidRS.Get());
 	//genji->LoadDiffuseTexture(L"Textures/000000002405_reverse.dds");
@@ -142,27 +140,27 @@ void DeferredRenderer::Initialize(ID3D11Device* pDevice, ID3D11DeviceContext* pD
 	   //fox->SetScaleMatrix(0.01f);
 	   //IRenderableObject::renderables.emplace_back(fox);
 
-       //std::unique_ptr<ASEParser> m_pASEParser = make_unique<ASEParser>();
-       //m_pASEParser->Init();
-       ////m_pASEParser->Load((LPSTR)"ASEFile/babypig_idle_6x.ASE");
+	   //std::unique_ptr<ASEParser> m_pASEParser = make_unique<ASEParser>();
+	   //m_pASEParser->Init();
+	   ////m_pASEParser->Load((LPSTR)"ASEFile/babypig_idle_6x.ASE");
 
-    //auto skinnedMesh = new SkinnedMesh(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), RasterizerState::SolidRS.Get());
-    //skinnedMesh->LoadMesh("FBXFile/fox.fbx");
-    //skinnedMesh->GetAnim().SetAnimation("FBXFile/fox.fbx-Take 001");
-    //skinnedMesh->GetAnim().SetLoopMode(true);
-    //skinnedMesh->GetAnim().Play();
-    //skinnedMesh->materialPath = L"./Textures/";
-    ////skinnedMesh->LoadGeometry(m_pASEParser->GetMeshes(), m_pASEParser->nodeIdxByBoneIdx);
-    ////skinnedMesh->LoadAnimation(m_pASEParser->m_list_animation, m_pASEParser->m_scenedata);
-    ////skinnedMesh->LoadDiffuseMap(m_pASEParser->m_list_materialdata[0]->m_map_diffuse->m_bitmap);
-    //skinnedMesh->SetDiffuseMap("Textures/fox_reverse.dds");
-    //skinnedMesh->SetRootTM(
-    //    //XMMatrixScaling(0.1f, -0.1f, 0.1f) *
-    //    XMMatrixRotationAxis({ 1,0,0 }, -1.57f) *
-    //    //XMMatrixTranslation(0, 50, 50)*
-    //    XMMatrixScaling(0.01f, 0.01f, 0.01f)
-    //);
-    //IRenderableObject::renderables.push_back(skinnedMesh);
+	//auto skinnedMesh = new SkinnedMesh(m_d3dDevice.Get(), m_d3dImmediateContext.Get(), RasterizerState::SolidRS.Get());
+	//skinnedMesh->LoadMesh("FBXFile/fox.fbx");
+	//skinnedMesh->GetAnim().SetAnimation("FBXFile/fox.fbx-Take 001");
+	//skinnedMesh->GetAnim().SetLoopMode(true);
+	//skinnedMesh->GetAnim().Play();
+	//skinnedMesh->materialPath = L"./Textures/";
+	////skinnedMesh->LoadGeometry(m_pASEParser->GetMeshes(), m_pASEParser->nodeIdxByBoneIdx);
+	////skinnedMesh->LoadAnimation(m_pASEParser->m_list_animation, m_pASEParser->m_scenedata);
+	////skinnedMesh->LoadDiffuseMap(m_pASEParser->m_list_materialdata[0]->m_map_diffuse->m_bitmap);
+	//skinnedMesh->SetDiffuseMap("Textures/fox_reverse.dds");
+	//skinnedMesh->SetRootTM(
+	//    //XMMatrixScaling(0.1f, -0.1f, 0.1f) *
+	//    XMMatrixRotationAxis({ 1,0,0 }, -1.57f) *
+	//    //XMMatrixTranslation(0, 50, 50)*
+	//    XMMatrixScaling(0.01f, 0.01f, 0.01f)
+	//);
+	//IRenderableObject::renderables.push_back(skinnedMesh);
 	//skinnedMesh->SetActive(false);
 
 	// Texture Boxes
@@ -201,19 +199,18 @@ void DeferredRenderer::Update(MZCamera* pCamera, float deltaTime)
 				object->SetActive(true);
 			}
 		}
-		
 	}
 
 	for (auto& object : IMeshObject::meshObjects)
-	{		
+	{
 		object->Update(pCamera, deltaTime);
 	}
 	for (auto& object : IDebugObject::debugObjects)
-	{		
+	{
 		object->Update(pCamera, deltaTime);
 	}
 	for (auto& object : IUIObject::uiObjects)
-	{		
+	{
 		object->Update(pCamera, deltaTime);
 	}
 
@@ -238,18 +235,18 @@ void DeferredRenderer::RenderToBackBuffer()
 
 	// 첫번째 Tech를 돌면서 Render Target들에 텍스처들을 저장한다.
 	for (auto object : IMeshObject::meshObjects)
-	{		
-		object->RenderToTexture();
+	{
+		object->RenderDeferred();
 	}
 	for (auto object : IDebugObject::debugObjects)
-	{		
-		object->RenderToTexture();
+	{
+		object->RenderDeferred();
 	}
 
 	// 최종적으로 하나의 Render Target에 모두 합쳐서 그린다.
 
-	SetRenderTargets();
-	ClearRenderTargets(reinterpret_cast<const float*>(&DirectX::Colors::Black));
+	SetRenderTarget(MZDX11Renderer::Instance.Get().GetRenderTargetView(), MZDX11Renderer::Instance.Get().GetDepthStencilView());
+	ClearRenderTarget(MZDX11Renderer::Instance.Get().GetRenderTargetView(), MZDX11Renderer::Instance.Get().GetDepthStencilView(), reinterpret_cast<const float*>(&DirectX::Colors::Black));
 	DisableZBuffering();
 
 	RenderAll();
@@ -266,13 +263,6 @@ void DeferredRenderer::RenderToBackBuffer()
 		if (switcher == 1)
 			m_textureBoxes[i]->Render();
 	}
-
-	/*ID3D11ShaderResourceView* shaderResView = NULL;
-	Effects::DeferredFX->SetShaderResource(shaderResView, 0);
-	Effects::DeferredFX->SetShaderResource(shaderResView, 1);
-	Effects::DeferredFX->SetShaderResource(shaderResView, 2);
-	Effects::DeferredFX->SetShaderResource(shaderResView, 3);
-	Effects::DeferredFX->SetShaderResource(shaderResView, 4);*/
 
 	ID3D11ShaderResourceView* shaderResView = NULL;
 	m_d3dImmediateContext->PSSetShaderResources(0, 1, &shaderResView);
@@ -291,16 +281,6 @@ void DeferredRenderer::RenderAll()
 
 	// 렌더 스테이트
 	m_d3dImmediateContext->RSSetState(RasterizerState::SolidRS.Get());
-
-	/// WVP TM등을 셋팅
-	// Set constants
-	//XMMATRIX view = XMLoadFloat4x4(&m_view);
-	//XMMATRIX proj = XMLoadFloat4x4(&m_proj);
-	//XMMATRIX world = XMLoadFloat4x4(&m_world);
-	//XMMATRIX worldViewProj = world * view * proj;
-
-	// 월드의 역행렬
-	//XMMATRIX worldInvTranspose = MathHelper::InverseTranspose(world);
 
 	// Set per frame constants.
 	Effects::PBRFX->SetDirLights(m_dirLights);
@@ -330,31 +310,6 @@ void DeferredRenderer::RenderAll()
 
 }
 
-void DeferredRenderer::SetRenderTargets()
-{
-	// Sets the render targets in the array as the location where the shaders will write to
-	m_d3dImmediateContext.Get()->OMSetRenderTargets(1, m_backBufferRTV[frontBufferIndex].GetAddressOf(), m_depthStencilView.Get());
-}
-
-void DeferredRenderer::ClearRenderTargets(const float color[4])
-{
-	// 렌더 타겟 클리어
-	m_d3dImmediateContext.Get()->ClearRenderTargetView(m_backBufferRTV[frontBufferIndex].Get(), color);
-	// 뎁스 스텐실 뷰 클리어
-	//m_d3dImmediateContext.Get()->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-	m_d3dImmediateContext.Get()->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-}
-
-void* DeferredRenderer::GetSharedBackBufferTextureHandle()
-{
-	return m_backBufferSharedHandles[backBufferIndex];
-}
-void DeferredRenderer::SwapBackBuffer()
-{
-	backBufferIndex = frontBufferIndex;
-	++frontBufferIndex %= BACK_BUFFER_COUNT;
-}
-
 IRenderableObject* DeferredRenderer::Pick(MZCamera* pCamera, float normalizedX, float normalizedY)
 {
 	float _screenCoordX = normalizedX * m_screenWidth;
@@ -382,8 +337,8 @@ IRenderableObject* DeferredRenderer::Pick(MZCamera* pCamera, float normalizedX, 
 		}
 	}
 
-    for (auto& object : IMeshObject::meshObjects)
-    {
+	for (auto& object : IMeshObject::meshObjects)
+	{
 		if (object->Pick(pCamera, vx, vy))
 		{
 			float depth = object->GetDepth();
@@ -394,7 +349,7 @@ IRenderableObject* DeferredRenderer::Pick(MZCamera* pCamera, float normalizedX, 
 			return pickedObjects.begin()->second;
 		}
 	}
-	
+
 	return nullptr;
 }
 
@@ -512,6 +467,17 @@ void DeferredRenderer::BuildQuadBuffers()
 	HR(m_d3dDevice->CreateBuffer(&ibd, &iinitData, &m_QuadIB));
 }
 
+void DeferredRenderer::SetRenderTarget(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv)
+{
+	m_d3dImmediateContext->OMSetRenderTargets(1, &rtv, dsv);
+}
+
+void DeferredRenderer::ClearRenderTarget(ID3D11RenderTargetView* rtv, ID3D11DepthStencilView* dsv, const float color[4])
+{
+	m_d3dImmediateContext->ClearRenderTargetView(rtv, color);
+	m_d3dImmediateContext->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
 void DeferredRenderer::EnableZBuffering()
 {
 	m_d3dImmediateContext->OMSetDepthStencilState(m_depthStencilStateEnable.Get(), 1);
@@ -522,21 +488,7 @@ void DeferredRenderer::DisableZBuffering()
 	m_d3dImmediateContext->OMSetDepthStencilState(m_depthStencilStateDisable.Get(), 1);
 }
 
-void DeferredRenderer::SetUpViewport()
-{
-	// set the viewport transform
-	m_viewport.TopLeftX = 0;
-	m_viewport.TopLeftY = 0;
-	m_viewport.Width = static_cast<float>(m_screenWidth);
-	m_viewport.Height = static_cast<float>(m_screenHeight);
-	m_viewport.MinDepth = 0.0f;
-	m_viewport.MaxDepth = 1.0f;
-
-	// Set the viewport
-	m_d3dImmediateContext.Get()->RSSetViewports(1, &m_viewport);
-}
-
-void DeferredRenderer::CreateResources()
+void DeferredRenderer::CreateDepthStecilStates()
 {
 	// Initialize the depth stencil states
 	D3D11_DEPTH_STENCIL_DESC enableDepthStencilDescription;
@@ -585,70 +537,5 @@ void DeferredRenderer::CreateResources()
 	// Create the depth stencil state for disabling Z buffering
 	HR(m_d3dDevice->CreateDepthStencilState(&disableDepthStencilDescription, &m_depthStencilStateDisable));
 
-	// 백버퍼 텍스처들을 필요한 만큼 생성한다.
-	D3D11_TEXTURE2D_DESC bTextureDescription
-	{
-		.Width = (UINT)m_screenWidth,
-		.Height = (UINT)m_screenHeight,
-		.MipLevels = 1,
-		.ArraySize = 1,
-		.Format = DXGI_FORMAT_R32G32B32A32_FLOAT,
-		.SampleDesc{.Count = 1, .Quality = 0 },
-		.Usage = D3D11_USAGE_DEFAULT,
-		.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET,
-		.CPUAccessFlags = 0,
-		.MiscFlags = D3D11_RESOURCE_MISC_SHARED,
-	};
-
-	for (unsigned int iTextureIndex = 0; iTextureIndex < BACK_BUFFER_COUNT; iTextureIndex++)
-	{
-		HR(m_d3dDevice->CreateTexture2D(&bTextureDescription, NULL, m_backBufferTextures[iTextureIndex].GetAddressOf()));
-		IDXGIResource* dxgiResource{ nullptr };
-		m_backBufferTextures[iTextureIndex]->QueryInterface<IDXGIResource>(&dxgiResource);
-		dxgiResource->GetSharedHandle(&m_backBufferSharedHandles[iTextureIndex]);
-		dxgiResource->Release();
-	}
-
-	// ----------------------------------------------------------------------------
-	// 텍스처마다 렌더타겟 뷰를 생성한다.
-	// 렌더타겟 뷰는 밉맵의 갯수를 받는다.
-	D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDescription
-	{
-		.Format = bTextureDescription.Format,
-		.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D,
-		.Texture2D{.MipSlice = 0}
-	};
-
-	for (int iTextureIndex = 0; iTextureIndex < BACK_BUFFER_COUNT; iTextureIndex++)
-		HR(m_d3dDevice->CreateRenderTargetView(m_backBufferTextures[iTextureIndex].Get(),
-			&renderTargetViewDescription, m_backBufferRTV[iTextureIndex].GetAddressOf()));
-
-	// 뎁스 스텐실 버퍼를 생성한다.
-	D3D11_TEXTURE2D_DESC depthStencilDesc
-	{
-		.Width = (UINT)m_screenWidth,
-		.Height = (UINT)m_screenHeight,
-		.MipLevels = 1,
-		.ArraySize = 1,
-		.Format = DXGI_FORMAT_D24_UNORM_S8_UINT,
-		.SampleDesc{.Count = 1, .Quality = 0},
-		.Usage = D3D11_USAGE_DEFAULT,
-		.BindFlags = D3D11_BIND_DEPTH_STENCIL,
-		.CPUAccessFlags = 0,
-		.MiscFlags = 0,
-	};
-	HR(m_d3dDevice->CreateTexture2D(&depthStencilDesc, NULL, &m_depthStencilBuffer));
-
-	// 뎁스 스텐실 뷰를 생성한다.
-	D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc
-	{
-		.Format = DXGI_FORMAT_D24_UNORM_S8_UINT,
-		.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D,
-		.Flags = 0,
-		.Texture2D{.MipSlice = 0},
-	};
-	HR(m_d3dDevice->CreateDepthStencilView(m_depthStencilBuffer.Get(),
-		&depthStencilViewDesc,
-		m_depthStencilView.GetAddressOf()));
 }
 

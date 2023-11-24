@@ -1,42 +1,34 @@
 #pragma once
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "dllExporter.h"
 
 namespace hodoEngine
 {
-	using ID = std::string;
-
 	class GameObject;
 
 	class HODO_API Scene
 	{
 	public:
-		Scene() = default;
-		Scene(std::string sceneName);
+		Scene(std::string sceneName = "");
+		Scene(const Scene&) = delete;
+		Scene(Scene&&) = delete;
+		Scene& operator=(const Scene&) = delete;
+		Scene& operator=(Scene&&) = delete;
 		~Scene();
 
 	public:
-		void Start();
-		void Update();
-
-	public:
-		void AddObj(ID id);
-		bool IsScenePlaying();
-
-		std::vector<ID>& GetObjList();
-
-	private:
-		bool _isPlaying;
-		std::vector<ID> _ObjList;
-
-	public:
+		std::unordered_set<GameObject*>& GetGameObjectList();
+		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
 	private:
-		std::string _scneneName = "new scene";
+		std::unordered_set<GameObject*> _gameObjects;
+		std::vector<GameObject*> _destroyObjects;
+		std::string _sceneName;
 		
 	};
 

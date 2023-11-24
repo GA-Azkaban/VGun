@@ -8,6 +8,27 @@
     <Filter Include="Factory">
       <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{9eebf368-d994-4754-b2d0-4d45b408782d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderable">
+      <UniqueIdentifier>{051ba127-460d-4151-9c21-0478391e2c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderable\DebugObject">
+      <UniqueIdentifier>{5fc00043-1acb-4a68-888a-2fba4edf2eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderable\MeshObject">
+      <UniqueIdentifier>{e8cf3103-d589-4fd1-8d93-a0a6f3a8a86f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderable\MeshObject\StaticMesh">
+      <UniqueIdentifier>{982b6af9-e2df-470d-b43c-ecaf6281d7e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderable\MeshObject\SkinnedMesh">
+      <UniqueIdentifier>{11f9e053-7cc9-4787-beab-a221337560c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Color">
+      <UniqueIdentifier>{596ec413-0ff5-44d3-8950-596f00ce8b70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IHodoGICamera.h">
@@ -15,6 +36,27 @@
     </ClInclude>
     <ClInclude Include="IHodoGIFactory.h">
       <Filter>Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="IHodoGIRenderer.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>Renderable</Filter>
+    </ClInclude>
+    <ClInclude Include="IDebugObject.h">
+      <Filter>Renderable\DebugObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IStaticMesh.h">
+      <Filter>Renderable\MeshObject\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ISkinnedMesh.h">
+      <Filter>Renderable\MeshObject\SkinnedMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoGIColor.h">
+      <Filter>Color</Filter>
+    </ClInclude>
+    <ClInclude Include="IDebugCube.h">
+      <Filter>Renderable\DebugObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

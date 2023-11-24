@@ -347,7 +347,7 @@ void StaticMesh::Update(MZCamera* pCamera, float deltaTime)
         m_debugCube->Update(pCamera, deltaTime);
 }
 
-void StaticMesh::RenderToTexture()
+void StaticMesh::RenderDeferred()
 {
     if (!m_isActive)
         return;
@@ -410,5 +410,5 @@ void StaticMesh::RenderToTexture()
     //mTech->GetPassByIndex(0)->Apply(0, m_d3dImmediateContext.Get());
     //m_d3dImmediateContext->Draw(IndexCount, 0);
     if (m_debugCube != nullptr)
-        m_debugCube->RenderToTexture();
+        m_debugCube->RenderDeferred();
 }

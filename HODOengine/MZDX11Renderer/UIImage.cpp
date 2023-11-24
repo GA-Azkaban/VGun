@@ -157,7 +157,7 @@ void UIImage::Render()
 		m_d3dImmediateContext->DrawIndexed(6, 0, 0);
 	}
 	//if (m_debugCube != nullptr)
-	//	m_debugCube->RenderToTexture();
+	//	m_debugCube->RenderDeferred();
 }
 
 void UIImage::BuildGeometryBuffers()

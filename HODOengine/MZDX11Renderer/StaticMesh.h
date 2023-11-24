@@ -21,7 +21,7 @@ public:
 
 public:
 	virtual void Update(MZCamera* pCamera, float deltaTime) override;
-	virtual void RenderToTexture() override;
+	virtual void RenderDeferred() override;
 	virtual bool Pick(MZCamera* pCamera, float x, float y) override;
 	virtual void SetPickingMode(bool isPickingModeOn) { m_isPickingOn = isPickingModeOn; };
 

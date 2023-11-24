@@ -48,7 +48,7 @@ private:
 	void ClearRenderTargets(const float color[4]);
 	void DrawText();
 
-	void RenderToTexture();
+	void RenderDeferred();
 
 private:
 	ComPtr<ID3D11Device> m_d3dDevice;						/// D3D11 디바이스
