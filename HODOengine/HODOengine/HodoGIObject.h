@@ -1,6 +1,6 @@
 #pragma once
 #include "Singleton.h"
-#include "IHodoGIRenderer.h"
+#include "../HODO3DGraphicsInterface/IHodoGIRenderer.h"
 #include "IHodoGIFactory.h"
 #include <memory>
 #include <string>

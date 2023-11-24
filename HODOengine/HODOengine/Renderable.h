@@ -12,7 +12,7 @@
 namespace hodoEngine
 {
 	template <class RenderObjectType> requires std::derived_from<RenderObjectType, hodoGI::IRenderable>
-	class Renderable : public Component
+	class Renderable : public hodoData::Component
 	{
 	public:
 		virtual ~Renderable()

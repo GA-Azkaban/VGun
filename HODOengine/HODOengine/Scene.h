@@ -29,9 +29,6 @@ namespace hodoData
 		std::unordered_set<GameObject*> _gameObjects;
 		std::vector<GameObject*> _destroyObjects;
 		std::string _sceneName;
-		
 	};
-
 }
-
 

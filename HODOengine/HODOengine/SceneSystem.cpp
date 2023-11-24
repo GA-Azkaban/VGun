@@ -14,14 +14,6 @@ namespace hodoEngine
 
 	}
 
-	hodoData::Scene* SceneSystem::CreateScene()
-	{
-		std::string id = IDSystem::Instance().CreateID();
-		hodoData::Scene* scene = new hodoData::Scene();
-		_sceneList.insert({ id, scene });
-		return scene;
-	}
-
 	hodoData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
 		hodoData::Scene* scene = new hodoData::Scene(sceneName);
@@ -39,7 +31,7 @@ namespace hodoEngine
 		_currentScene = sceneIter->second;
 	}
 
-	void SceneSystem::LoadScene(Scene* scene)
+	void SceneSystem::LoadScene(hodoData::Scene* scene)
 	{
 		_currentScene = scene;
 	}

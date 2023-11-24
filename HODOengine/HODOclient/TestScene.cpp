@@ -7,10 +7,10 @@
 
 TestScene::TestScene()
 {
-	_scene = hodoData::CreateScene("Test");
+	_scene = hodoEngine::CreateScene("Test");
 
 	auto camera = hodoEngine::CreateObject(_scene);
-	camera->AddComponent<hodoEngine::Camera>()->SetMainCamera();
+	camera->AddComponent<hodoData::Camera>()->SetMainCamera();
 	camera->GetTransform()->SetWorldPosition(HDMaths::HDFLOAT3{ 0.0f, 0.0f, -5.0f });
 
 	auto gameObject = hodoEngine::CreateObject(_scene);
@@ -28,6 +28,6 @@ TestScene::~TestScene()
 
 void TestScene::Start()
 {
-	hodoData::GameObject* test = hodoData::CreateObject(_scene);
-test->AddComponent<ScriptTest>();
+	hodoData::GameObject* test = hodoEngine::CreateObject(_scene);
+	//test->AddComponent<ScriptTest>();
 }

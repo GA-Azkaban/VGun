@@ -14,22 +14,24 @@ namespace hodoData
 		return _components;
 	}
 
-const std::unordered_set<GameObject*>& GameObject::GetChildGameObjects() const
-{
-	return _childGameObjects;
-
-void GameObject::SetParentObject(GameObject* parentObject)
-{
-	_parentGameObject = parentObject;
-	_parentGameObject->_childGameObjects.insert(this);
-}
-
-	_selfActive = active;
-
-	// 자식 오브젝트도 모두 활성화/비활성화
-	for (auto child : _childGameObjects)
+	const std::unordered_set<GameObject*>& GameObject::GetChildGameObjects() const
 	{
-		child->SetSelfActive(active);
+		return _childGameObjects;
 	}
-}
+	void GameObject::SetParentObject(GameObject* parentObject)
+	{
+		_parentGameObject = parentObject;
+		_parentGameObject->_childGameObjects.insert(this);
+	}
+
+	void GameObject::SetSelfActive(bool active)
+	{
+		_selfActive = active;
+
+		// 자식 오브젝트도 모두 활성화/비활성화
+		for (auto child : _childGameObjects)
+		{
+			child->SetSelfActive(active);
+		}
+	}
 }

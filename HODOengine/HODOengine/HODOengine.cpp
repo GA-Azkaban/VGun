@@ -48,8 +48,6 @@ void HODOengine::Initialize()
 	hodoEngine::GraphicsRenderer::Instance().SetOutputWindow(_hWnd);
 
 	_timeSystem.Initialize();
-	_sceneSystem.Initialize();
-	_objectSystem.Initialize();
 	_inputSystem.Initialize((int)_hWnd, _screenWidth, _screenHeight);
 }
 

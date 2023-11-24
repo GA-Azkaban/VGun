@@ -3,11 +3,14 @@
 
 #include "Singleton.h"
 
+namespace hodoData
+{
+	class Scene;
+	class GameObject;
+}
+
 namespace hodoEngine
 {
-	class hodoData::Scene;
-	class hodoData::GameObject;
-
 	class SceneSystem : public Singleton<SceneSystem>
 	{
 		friend Singleton;
@@ -16,9 +19,9 @@ namespace hodoEngine
 		SceneSystem();
 
 	public:
-		Scene* CreateScene(std::string sceneName = "");
+		hodoData::Scene* CreateScene(std::string sceneName = "");
 		void LoadScene(std::string sceneName);
-		void LoadScene(Scene* scene);
+		void LoadScene(hodoData::Scene* scene);
 		
 	private:
 		std::unordered_map<std::string, hodoData::Scene*> _sceneList;
@@ -28,7 +31,7 @@ namespace hodoEngine
 		bool GetIsCurrentSceneChange();
 
 	private:
-		Scene* _currentScene;
+		hodoData::Scene* _currentScene;
 	};
 
 }

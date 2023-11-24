@@ -15,8 +15,6 @@ namespace hodoData
 namespace hodoEngine
 {
 	using ID = std::string;
-	using hodoData::GameObject;
-
 
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
@@ -27,18 +25,12 @@ namespace hodoEngine
 		ObjectSystem() = default;
 
 	public:
-		void Initialize();
-		void Update();
-		void LateUpdate();
-		void FlushEnable();
-
-	public:
-		GameObject* CreateObject(Scene* scene, std::string objectName = "", GameObject * parent = nullptr);
-		void DestroyObject(Scene* scene, GameObject* gameObject);
+		hodoData::GameObject* CreateObject(hodoData::Scene* scene, std::string objectName = "", hodoData::GameObject * parent = nullptr);
+		void DestroyObject(hodoData::Scene* scene, hodoData::GameObject* gameObject);
 
 	private:
-		std::unordered_set<GameObject*> _runningObjectList;
-		std::unordered_map<ID, GameObject*> _allObjectList;
+		//std::unordered_set<hodoData::GameObject*> _runningObjectList;
+		//std::unordered_map<ID, hodoData::GameObject*> _allObjectList;
 	};
 
 }

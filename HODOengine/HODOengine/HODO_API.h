@@ -25,16 +25,14 @@
 
 #include "ObjectSystem.h"
 
-namespace hodoData
-extern "C"
+namespace hodoEngine
 {
-	namespace hodoEngine
+	extern "C"
 	{
 		/// 씬을 생성하기 위한 함수
-		HODO_API Scene* CreateScene(std::string sceneName);
-		HODO_API void LoadScene(Scene* scene);
-		HODO_API GameObject* CreateObject(Scene* scene, std::string objectName = "", GameObject * parentObject = nullptr);
+		HODO_API hodoData::Scene* CreateScene(std::string sceneName);
+		HODO_API void LoadScene(hodoData::Scene* scene);
+		HODO_API hodoData::GameObject* CreateObject(hodoData::Scene* scene, std::string objectName = "", hodoData::GameObject* parentObject = nullptr);
 	}
-
-	HODO_API GameObject* CreateObject(Scene* now, GameObject* parent = nullptr);
 }
+
