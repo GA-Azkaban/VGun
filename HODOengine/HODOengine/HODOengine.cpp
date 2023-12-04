@@ -114,7 +114,7 @@ void HODOengine::Run()
 	}
 	// Invoke Collision Events
 	// Renderer Update
-	hodoEngine::GraphicsRenderer::Instance().Update(0.05f);
+	hodoEngine::GraphicsRenderer::Instance().Update(hodoEngine::TimeSystem::Instance().GetDeltaTime());
 	// Renderer Render
 	hodoEngine::GraphicsRenderer::Instance().Render();
 }
