@@ -23,11 +23,10 @@ namespace hodoEngine
 		int GetFramePerSecond();
 
 	private:
-		float			_frequency;
-		float			_startTime;
-		float			_stopTime;
-		float			_timeScale;
-		float			_deltaTime;
+		LARGE_INTEGER			_frequency;
+		LARGE_INTEGER			_startTime;
+		LARGE_INTEGER			_stopTime;
+		float					_deltaTime;
 
 	};
 }
