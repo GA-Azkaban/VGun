@@ -437,7 +437,7 @@ void MZDX11Renderer::DrawStatus()
 	m_pFont->DrawText(0, _yPos += 2 * m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Client Resolution: %dx%d", m_screenWidth, m_screenHeight);
 
 	// 카메라 정보
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Camera Pos : %.2f / %.2f / %.2f", m_pCamera->GetPosition().x, m_pCamera->GetPosition().y, m_pCamera->GetPosition().z);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Camera Pos : %.2f / %.2f / %.2f", MZCamera::GetMainCamera()->GetPosition().x, MZCamera::GetMainCamera()->GetPosition().y, MZCamera::GetMainCamera()->GetPosition().z);
 }
 
 

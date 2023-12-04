@@ -7,7 +7,6 @@ Camera* hodoData::Camera::_mainCamera = nullptr;
 
 hodoData::Camera::Camera()
 {
-
 	_camera = hodoEngine::HodoGIObject::Instance().factory->CreateCamera();
 	if (_mainCamera == nullptr)
 	{

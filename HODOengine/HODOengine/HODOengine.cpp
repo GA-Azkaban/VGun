@@ -152,7 +152,7 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 
 	RECT rect;
 
-	GetClientRect(_hWnd, &rect);
+	GetWindowRect(_hWnd, &rect);
 
 	_screenWidth = rect.right - rect.left;
 	_screenHeight = rect.bottom - rect.top;
