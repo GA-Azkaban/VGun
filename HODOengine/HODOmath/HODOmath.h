@@ -213,7 +213,7 @@ namespace HDMaths
 		HDQuaternion operator=(const HDQuaternion& other); // 대입 연산자
 		HDQuaternion operator*(const HDQuaternion& other); // 곱하기
 
-		HDFLOAT3 operator*(const HDFLOAT3& other);
+		HDFLOAT3 operator*(const HDFLOAT3& other) const;
 
 		// 비교 연산자
 		bool operator==(const HDQuaternion& other);
@@ -224,6 +224,9 @@ namespace HDMaths
 
 		// 수학 연산
 		HDQuaternion conjugate() const;
+		HDFLOAT3 Right() const;
+		HDFLOAT3 Up() const;
+		HDFLOAT3 Forward() const;
 		static HDQuaternion Normalize(const HDQuaternion& other);
 	};
 

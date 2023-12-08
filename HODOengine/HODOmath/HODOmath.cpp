@@ -637,6 +637,21 @@ namespace HDMaths
 		return HDQuaternion(w, -x, -y, -z);
 	}
 
+	HDMaths::HDFLOAT3 HDQuaternion::Right() const
+	{
+		return *this * HDFLOAT3::right;
+	}
+
+	HDMaths::HDFLOAT3 HDQuaternion::Up() const
+	{
+		return *this * HDFLOAT3::up;
+	}
+
+	HDMaths::HDFLOAT3 HDQuaternion::Forward() const
+	{
+		return *this * HDFLOAT3::forward;
+	}
+
 	const HDQuaternion HDQuaternion::Identity{ 0.f, 0.f, 0.f, 1.f };
 
 	HDQuaternion HDQuaternion::Normalize(const HDQuaternion& other)
@@ -665,7 +680,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other)
+	HDMaths::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other) const
 	{
 		HDFLOAT3 q(x, y, z);
 		HDFLOAT3 t = HDFLOAT3::Cross(q, other) * 2.0f;

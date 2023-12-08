@@ -1,31 +1,28 @@
 #include "InputSystem.h"
-
+#include "HODOengine.h"
 #include <windows.h>
 
 
-void hodoEngine::InputSystem::Initialize(int hWnd, int screenWidth, int screenHeight)
+void hodoEngine::InputSystem::Initialize()
 {
-	_hWnd = (HWND)hWnd;
-	_screenWidth = screenWidth;
-	_screenHeight = screenHeight;
-
-	for (int i = 0; i < 256; ++i)
+	for (int keyCode = 0; keyCode < 256; ++keyCode)
 	{
-		_currentKeyState[i] = false;
+		_previousKeyState[keyCode] = false;
+		_currentKeyState[keyCode] = false;
 	}
 }
 
 void hodoEngine::InputSystem::Update()
 {
+	for (int keyCode = 0; keyCode < 256; ++keyCode)
+	{
+		_previousKeyState[keyCode] = _currentKeyState[keyCode];
+	}
 	// 현재 키 상태를 계속 체크한다
 	for (int keyCode = 0; keyCode < 256; ++keyCode)
 	{
 		_currentKeyState[keyCode] = GetAsyncKeyState(keyCode);
 	}
-
-	// 현재 마우스 좌표를 계속 받아온다
-	GetCursorPos(&_mousePosition);
-	// TODO) 클라이언트 크기에 맞춰야 함
 }
 
 bool hodoEngine::InputSystem::GetKeyDown(int keyCode)
@@ -43,7 +40,20 @@ bool hodoEngine::InputSystem::GetKeyPressing(int keyCode)
 	return _previousKeyState[keyCode] && _currentKeyState[keyCode];
 }
 
-POINT hodoEngine::InputSystem::GetMousePosition()
+HDMaths::HDFLOAT2 hodoEngine::InputSystem::GetMousePosition()
 {
-	return _mousePosition;
+	POINT mousePosition;
+	GetCursorPos(&mousePosition);
+	ScreenToClient(HODOengine::Instance().GetHWND(), &mousePosition);
+	return HDMaths::HDFLOAT2(mousePosition.x, mousePosition.y);
+}
+
+HDMaths::HDFLOAT2 hodoEngine::InputSystem::GetMousePositionNormalized()
+{
+	HDMaths::HDFLOAT2 ret = GetMousePosition();
+	RECT rect;
+	GetClientRect(HODOengine::Instance().GetHWND(), &rect);
+	ret.x /= static_cast<float>(rect.right) - rect.left;
+	ret.y /= static_cast<float>(rect.bottom) - rect.top;
+	return ret;
 }

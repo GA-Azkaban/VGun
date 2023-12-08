@@ -3,6 +3,8 @@
 
 #include "../HODOmath/HODOmath.h"
 #include "Singleton.h"
+#include <unordered_map>
+#include <unordered_set>
 /// <summary>
 /// 오수안
 /// 키 인풋을 위한 기초 시스템
@@ -18,30 +20,21 @@ namespace hodoEngine
 		InputSystem() = default;
 
 	public:
-		void Initialize(int hWnd, int screenWidth, int screenHeight);
+		void Initialize();
 		void Update();
-
-	private:
-		HWND _hWnd;
 
 	public:
 		bool GetKeyDown(int keyCode);
 		bool GetKeyUp(int keyCode);
 		bool GetKeyPressing(int keyCode);
+
+	public:
+		HDMaths::HDFLOAT2 GetMousePosition();
+		HDMaths::HDFLOAT2 GetMousePositionNormalized();
 		
 	private:
 		bool _currentKeyState[256];
 		bool _previousKeyState[256];
-
-	public:
-		POINT GetMousePosition();
-
-	private:
-		POINT _mousePosition;
-		HDMaths::HDFLOAT2 _clientMousePos;
-		int _screenWidth;
-		int _screenHeight;
-
 	};
 }
 

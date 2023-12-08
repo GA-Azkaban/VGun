@@ -13,9 +13,12 @@
 #include "TimeSystem.h"
 #include "InputSystem.h"
 
+HODOengine* HODOengine::_instance = nullptr;
+
 IHODOengine* CreateEngine()
 {
-	return new HODOengine();
+	HODOengine::_instance = new HODOengine();
+	return HODOengine::_instance;
 }
 
 void ReleaseEngine(IHODOengine* instance)
@@ -38,6 +41,15 @@ HODOengine::~HODOengine()
 
 }
 
+HODOengine& HODOengine::Instance()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new HODOengine();
+	}
+	return *_instance;
+}
+
 void HODOengine::Initialize()
 {
 	HINSTANCE ins = GetModuleHandle(NULL);
@@ -48,24 +60,11 @@ void HODOengine::Initialize()
 	hodoEngine::GraphicsRenderer::Instance().SetOutputWindow(_hWnd);
 
 	_timeSystem.Initialize();
-	_inputSystem.Initialize((int)_hWnd, _screenWidth, _screenHeight);
+	_inputSystem.Initialize();
 }
 
 void HODOengine::Loop()
 {
-	// 프로세스 내에서 하나의 엔진 인스턴스만 돌고 있을 수 있도록 함
-	static HODOengine* _instance;
-
-	if (_instance == nullptr)
-	{
-		_instance = this;
-	}
-
-	if (_instance != this)
-	{
-		return;
-	}
-
 	while (1)
 	{
 		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))
@@ -89,10 +88,20 @@ void HODOengine::Finalize()
 
 }
 
+HWND HODOengine::GetHWND()
+{
+	return _hWnd;
+}
+
+
 void HODOengine::Run()
 {
 	// Time Update
 	_timeSystem.Update();
+
+	// Input Update
+	hodoEngine::InputSystem::Instance().Update();
+
 	// Destroy List -> GameObject OnDestroy, Clear
 	for (auto destroyObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
 	{
@@ -152,7 +161,7 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 
 	RECT rect;
 
-	GetWindowRect(_hWnd, &rect);
+	GetClientRect(_hWnd, &rect);
 
 	_screenWidth = rect.right - rect.left;
 	_screenHeight = rect.bottom - rect.top;

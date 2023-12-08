@@ -92,7 +92,7 @@ bool MZDX11Renderer::Initialize()
 
 	// 폰트
 	m_pFont->Initialize(m_d3dDevice.Get(), (TCHAR*)L"Font/gulim9k.spritefont");
-	m_pFont->SetLineSpacing(12.0f);
+	m_pFont->SetLineSpacing(15.0f);
 	m_fontLineSpace = m_pFont->GetLineSpacing();
 
 	GetAdapterInfo();
@@ -104,7 +104,7 @@ void MZDX11Renderer::SetOutputWindow(unsigned int hWnd)
 {
 	m_hWnd = (HWND)hWnd;
 	RECT rect;
-	GetWindowRect(m_hWnd, &rect);
+	GetClientRect(m_hWnd, &rect);
 	m_screenWidth = rect.right - rect.left;
 	m_screenHeight = rect.bottom - rect.top;
 
@@ -159,7 +159,7 @@ void MZDX11Renderer::Update(float deltaTime)
 {
 	m_deltaTime = deltaTime;
 
-	if (GetAsyncKeyState('O') & 0x0001)
+	if (GetAsyncKeyState('O') & 0x8000)
 	{
 		if (switcher == 1)
 		{
@@ -226,7 +226,7 @@ void MZDX11Renderer::Render()
 	DeferredRenderer::Instance.Get().RenderToBackBuffer();
 
 	// 피처레벨, 어댑터 상태 등 출력
-	if(switcher == 1)
+	if (switcher == 1)
 		DrawStatus();
 
 	m_d3dImmediateContext->RSSetState(0);
@@ -238,7 +238,7 @@ void MZDX11Renderer::Render()
 void MZDX11Renderer::EndRender()
 {
 	assert(m_swapChain);
-	HR(m_swapChain->Present(0, 0));
+	HR(m_swapChain->Present(1, 0));
 }
 
 
@@ -414,30 +414,32 @@ void MZDX11Renderer::DrawStatus()
 		deltaTimeMS = m_deltaTime * 1000.0f;
 		accumulatedTime = 0.0f;
 	}
+
+	int _yPos = 10;
+
 	accumulatedTime += m_deltaTime;
-	m_pFont->DrawText(0, 10, 1.0f, _color, (TCHAR*)L"FPS : %.2f", fps);
-	m_pFont->DrawText(0, 10 + m_fontLineSpace, 1.0f, _color, (TCHAR*)L"DeltaTime : %.4f ms", deltaTimeMS);
+	m_pFont->DrawText(0, _yPos, 1.0f, _color, (TCHAR*)L"FPS : %.2f", fps);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"DeltaTime : %.4f ms", deltaTimeMS);
 
 	// 피쳐레벨
-	int _yPos = 50;
-	m_pFont->DrawText(0, _yPos, 1.0f, _color, (TCHAR*)L"Feature Level : %x", m_featureLevel);
+	m_pFont->DrawText(0, _yPos += 2 * m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"Feature Level : %x", m_featureLevel);
 
 	// 어댑터 정보
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Description: %s", m_AdapterDesc1.Description);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"VendorID: %u", m_AdapterDesc1.VendorId);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"DeviceID: %u", m_AdapterDesc1.DeviceId);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"SubSysID: %u", m_AdapterDesc1.SubSysId);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Revision: %u", m_AdapterDesc1.Revision);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"VideoMemory: %lu MB", m_AdapterDesc1.DedicatedVideoMemory / 1024 / 1024);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"SystemMemory: %lu MB", m_AdapterDesc1.DedicatedSystemMemory / 1024 / 1024);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"SharedSysMemory: %lu MB", m_AdapterDesc1.SharedSystemMemory / 1024 / 1024);
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"AdpaterLuid: %u.%d", m_AdapterDesc1.AdapterLuid.HighPart, m_AdapterDesc1.AdapterLuid.LowPart);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"Description: %s", m_AdapterDesc1.Description);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"VendorID: %u", m_AdapterDesc1.VendorId);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"DeviceID: %u", m_AdapterDesc1.DeviceId);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"SubSysID: %u", m_AdapterDesc1.SubSysId);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"Revision: %u", m_AdapterDesc1.Revision);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"VideoMemory: %lu MB", m_AdapterDesc1.DedicatedVideoMemory / 1024 / 1024);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"SystemMemory: %lu MB", m_AdapterDesc1.DedicatedSystemMemory / 1024 / 1024);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"SharedSysMemory: %lu MB", m_AdapterDesc1.SharedSystemMemory / 1024 / 1024);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"AdpaterLuid: %u.%d", m_AdapterDesc1.AdapterLuid.HighPart, m_AdapterDesc1.AdapterLuid.LowPart);
 
 	// 클라이언트 영역의 해상도
-	m_pFont->DrawText(0, _yPos += 2 * m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Client Resolution: %dx%d", m_screenWidth, m_screenHeight);
+	m_pFont->DrawText(0, _yPos += 2 * m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"Client Resolution: %dx%d", static_cast<int>(m_screenWidth), static_cast<int>(m_screenHeight));
 
 	// 카메라 정보
-	m_pFont->DrawText(0, _yPos += m_fontLineSpace, 1.0f, _color, (TCHAR*)L"Camera Pos : %.2f / %.2f / %.2f", MZCamera::GetMainCamera()->GetPosition().x, MZCamera::GetMainCamera()->GetPosition().y, MZCamera::GetMainCamera()->GetPosition().z);
+	m_pFont->DrawText(0, _yPos += m_fontLineSpace + 2.5f, 1.0f, _color, (TCHAR*)L"Camera Pos : %.2f / %.2f / %.2f", MZCamera::GetMainCamera()->GetPosition().x, MZCamera::GetMainCamera()->GetPosition().y, MZCamera::GetMainCamera()->GetPosition().z);
 }
 
 
