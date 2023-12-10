@@ -141,8 +141,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="HodoDebugCube.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="framework.h" />
@@ -162,14 +163,18 @@
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StaticBoxCollider.h" />
+    <ClInclude Include="StaticCollider.h" />
+    <ClInclude Include="StaticPlaneCollider.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DynamicCollider.cpp" />
     <ClCompile Include="HodoDebugCube.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsRenderer.cpp" />
@@ -182,6 +187,9 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="StaticBoxCollider.cpp" />
+    <ClCompile Include="StaticCollider.cpp" />
+    <ClCompile Include="StaticPlaneCollider.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
