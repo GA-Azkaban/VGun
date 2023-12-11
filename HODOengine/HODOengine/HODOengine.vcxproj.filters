@@ -192,6 +192,9 @@
     <ClInclude Include="DynamicCollider.h">
       <Filter>05_Component\Collider\DynamicCollider\DynamicColliderBase</Filter>
     </ClInclude>
+    <ClInclude Include="DebugSystem.h">
+      <Filter>06_System\DebugSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -269,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="DynamicCollider.cpp">
       <Filter>05_Component\Collider\DynamicCollider\DynamicColliderBase</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugSystem.cpp">
+      <Filter>06_System\DebugSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

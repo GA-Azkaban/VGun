@@ -1,8 +1,10 @@
 #include "Collider.h"
+#include "DebugSystem.h"
 
 hodoData::Collider::Collider()
 {
-
+	HDMaths::HDFLOAT4 color = { 1.f, 0.f, 0.f, 0.f };
+	hodoEngine::DebugSystem::Instance().DrawColliderDebug(GetGameObject(), color);
 }
 
 void hodoData::Collider::SetPositionOffset(HDMaths::HDFLOAT3 pos)
