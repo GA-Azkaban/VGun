@@ -20,8 +20,6 @@ TestScene::TestScene()
 
 	auto debugtest = gameObject = hodoEngine::CreateObject(_scene);
 
-	auto debugtest = gameObject = hodoEngine::CreateObject(_scene);
-
 	hodoEngine::LoadScene(_scene);
 }
 

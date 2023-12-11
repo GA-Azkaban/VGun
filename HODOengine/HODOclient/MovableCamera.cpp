@@ -25,33 +25,33 @@ void MovableCamera::Update()
 
 	if (GetKeyPressing('W'))
 	{
-		position -= HDMaths::HDFLOAT3(0.0f, 0.0f, 1.0f) * _moveSpeed * GetDeltaTime();
+		position += HDMaths::HDFLOAT3(0.0f, 0.0f, 1.0f) * _moveSpeed * GetDeltaTime();
 	}
 	if (GetKeyPressing('A'))
 	{
-		position += HDMaths::HDFLOAT3(1.0f, 0.0f, 0.0f) * _moveSpeed * GetDeltaTime();
+		position -= HDMaths::HDFLOAT3(1.0f, 0.0f, 0.0f) * _moveSpeed * GetDeltaTime();
 	}
 	if (GetKeyPressing('S'))
 	{
-		position += HDMaths::HDFLOAT3(0.0f, 0.0f, 1.0f) * _moveSpeed * GetDeltaTime();
+		position -= HDMaths::HDFLOAT3(0.0f, 0.0f, 1.0f) * _moveSpeed * GetDeltaTime();
 	}
 	if (GetKeyPressing('D'))
 	{
-		position -= HDMaths::HDFLOAT3(1.0f, 0.0f, 0.0f) * _moveSpeed * GetDeltaTime();
+		position += HDMaths::HDFLOAT3(1.0f, 0.0f, 0.0f) * _moveSpeed * GetDeltaTime();
 	}
 	if (GetKeyPressing('Q'))
 	{
-		position += HDMaths::HDFLOAT3(0.0f, 1.0f, 0.0f) * _moveSpeed * GetDeltaTime();
+		position -= HDMaths::HDFLOAT3(0.0f, 1.0f, 0.0f) * _moveSpeed * GetDeltaTime();
 	}
 	if (GetKeyPressing('E'))
 	{
-		position -= HDMaths::HDFLOAT3(0.0f, 1.0f, 0.0f) * _moveSpeed * GetDeltaTime();
+		position += HDMaths::HDFLOAT3(0.0f, 1.0f, 0.0f) * _moveSpeed * GetDeltaTime();
 	}
 	if (GetKeyPressing(VK_RBUTTON))
 	{
 		HDMaths::HDFLOAT3 newForward = rotation.Forward() - 
-			rotation.Forward() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.05f +
-			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.05f;
+			rotation.Forward() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.025f +
+			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.025f;
 		HDMaths::HDFLOAT3 newUp = HDMaths::HDFLOAT3::up;
 		HDMaths::HDFLOAT3 newRight = HDMaths::HDFLOAT3::Cross(newUp, newForward);
 
