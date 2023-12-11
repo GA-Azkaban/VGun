@@ -15,7 +15,6 @@ namespace hodoEngine
 	{
 		if (_isDebugMode)
 		{
-			int test = 0;
 		}
 	}
 
@@ -23,14 +22,14 @@ namespace hodoEngine
 	{
 		auto component = obj->AddComponent<hodoEngine::DebugCube>();
 		component->Get()->SetFillModeWireframe();
-		//component->Get()->SetColor(color);
+		component->Get()->SetColor(color);
 	}
 
 	void DebugSystem::SetDebugOn(int index)
 	{
 		_isDebugMode = true;
 		_index = index;
-		// TODO) �ε����� ���õ� ��ü�� �������ϵ���
+		// TODO) 인덱스가 일치하는 오브젝트만 렌더링되도록.......
 	}
 
 	void DebugSystem::SetDebugOff()
