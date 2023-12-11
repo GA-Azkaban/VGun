@@ -23,6 +23,8 @@
 #include "Component.h"
 #include "Transform.h"
 #include "Script.h"
+#include "Collider.h"
+#include "StaticBoxCollider.h"
 
 #include "ObjectSystem.h"
 
