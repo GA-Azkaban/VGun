@@ -140,7 +140,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="ScriptTest.cpp" />
     <ClCompile Include="MovableCamera.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="TestScript.cpp" />
