@@ -18,9 +18,13 @@ public:
 	~HODOengine();
 
 public:
+	friend IHODOengine* CreateEngine();
+	static HODOengine& Instance();
 	void Initialize() override;
 	void Loop() override;
 	void Finalize() override;
+
+	HWND GetHWND();
 
 private:
 	void Run();
@@ -32,6 +36,7 @@ private:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
+	static HODOengine* _instance;
 	HWND _hWnd;
 	MSG _msg;
 	int _screenWidth;
@@ -39,8 +44,6 @@ private:
 	const WCHAR* _appName;
 
 private:
-
-
 	hodoEngine::SceneSystem& _sceneSystem;
 	hodoEngine::ObjectSystem& _objectSystem;
 	hodoEngine::TimeSystem& _timeSystem;

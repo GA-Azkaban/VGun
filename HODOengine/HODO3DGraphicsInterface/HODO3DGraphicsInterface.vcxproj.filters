@@ -52,9 +52,6 @@
     <ClInclude Include="ISkinnedMesh.h">
       <Filter>Renderable\MeshObject\SkinnedMesh</Filter>
     </ClInclude>
-    <ClInclude Include="HodoGIColor.h">
-      <Filter>Color</Filter>
-    </ClInclude>
     <ClInclude Include="IDebugCube.h">
       <Filter>Renderable\DebugObject</Filter>
     </ClInclude>

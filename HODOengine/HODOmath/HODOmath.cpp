@@ -637,12 +637,41 @@ namespace HDMaths
 		return HDQuaternion(w, -x, -y, -z);
 	}
 
+	HDMaths::HDFLOAT3 HDQuaternion::Right() const
+	{
+		return *this * HDFLOAT3::right;
+	}
+
+	HDMaths::HDFLOAT3 HDQuaternion::Up() const
+	{
+		return *this * HDFLOAT3::up;
+	}
+
+	HDMaths::HDFLOAT3 HDQuaternion::Forward() const
+	{
+		return *this * HDFLOAT3::forward;
+	}
+
 	const HDQuaternion HDQuaternion::Identity{ 0.f, 0.f, 0.f, 1.f };
 
 	HDQuaternion HDQuaternion::Normalize(const HDQuaternion& other)
 	{
 		float length = std::sqrt(other.w * other.w + other.x * other.x + other.y * other.y + other.z * other.z);
 		return { other.w / length, other.x / length, other.y / length, other.z / length };
+	}
+
+	HDQuaternion HDQuaternion::FromLocalAxes(HDFLOAT3 right, HDFLOAT3 up, HDFLOAT3 forward)
+	{
+		HDFLOAT3 rightNorm = HDFLOAT3::Normalize(right);
+		HDFLOAT3 upNorm = HDFLOAT3::Normalize(up);
+		HDFLOAT3 forwardNorm = HDFLOAT3::Normalize(forward);
+		return HDQuaternion{
+			HDFLOAT3X3{
+				right.x, right.y, right.z,
+				up.x, up.y, up.z,
+				forward.x, forward.y, forward.z
+			}
+		};
 	}
 
 	HDMaths::HDQuaternion HDQuaternion::operator=(const HDQuaternion& other)
@@ -665,7 +694,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other)
+	HDMaths::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other) const
 	{
 		HDFLOAT3 q(x, y, z);
 		HDFLOAT3 t = HDFLOAT3::Cross(q, other) * 2.0f;
