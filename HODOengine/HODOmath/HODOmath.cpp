@@ -537,7 +537,7 @@ namespace HDMaths
 	}
 
 	HDQuaternion::HDQuaternion()
-		: w(0.f), x(0.f), y(0.f), z(1.0)
+		: w(1.f), x(0.f), y(0.f), z(0.0)
 	{
 
 	}

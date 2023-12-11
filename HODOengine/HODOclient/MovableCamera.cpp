@@ -50,8 +50,8 @@ void MovableCamera::Update()
 	if (GetKeyPressing(VK_RBUTTON))
 	{
 		HDMaths::HDFLOAT3 newForward = rotation.Forward() - 
-			rotation.Forward() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.1f +
-			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.1f;
+			rotation.Forward() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.05f +
+			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.05f;
 		HDMaths::HDFLOAT3 newUp = HDMaths::HDFLOAT3::up;
 		HDMaths::HDFLOAT3 newRight = HDMaths::HDFLOAT3::Cross(newUp, newForward);
 
