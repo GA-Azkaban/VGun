@@ -18,6 +18,8 @@ TestScene::TestScene()
 	comp->Get()->SetFillModeWireframe();
 	comp->Get()->SetColor(hodoGI::Color{ 1.0f, 0.0f, 0.0f, 0.0f });
 
+	auto debugtest = gameObject = hodoEngine::CreateObject(_scene);
+
 	hodoEngine::LoadScene(_scene);
 }
 

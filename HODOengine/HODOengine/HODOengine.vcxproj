@@ -143,6 +143,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="HodoDebugCube.h" />
     <ClInclude Include="dllExporter.h" />
@@ -174,6 +175,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="DynamicCollider.cpp" />
     <ClCompile Include="HodoDebugCube.cpp" />
     <ClCompile Include="GameObject.cpp" />
