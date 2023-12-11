@@ -456,3 +456,9 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/c++,windows,visualstudio
+HODOengine/Include/physX/.gitignore
+HODOengine/Include/physX/CHANGELOG.md
+HODOengine/Include/physX/generate_projects.bat
+HODOengine/Include/physX/generate_projects.sh
+HODOengine/Include/physX/README.md
+HODOengine/Include/physX/version.txt
