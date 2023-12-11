@@ -228,6 +228,7 @@ namespace HDMaths
 		HDFLOAT3 Up() const;
 		HDFLOAT3 Forward() const;
 		static HDQuaternion Normalize(const HDQuaternion& other);
+		static HDQuaternion FromLocalAxes(HDFLOAT3 right, HDFLOAT3 up, HDFLOAT3 forward);
 	};
 
 	struct HDFLOAT3X3

@@ -16,7 +16,7 @@ TestScene::TestScene()
 	auto gameObject = hodoEngine::CreateObject(_scene);
 	auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
 	comp->Get()->SetFillModeWireframe();
-	comp->Get()->SetColor(hodoGI::Color{ 1.0f, 0.0f, 0.0f, 0.0f });
+	comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
 	hodoEngine::LoadScene(_scene);
 }

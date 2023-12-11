@@ -44,7 +44,7 @@ void hodoGIAdapter::DebugCubeAdapter::SetFillModeWireframe()
 	_debugCube->SetFillModeWireframe();
 }
 
-void hodoGIAdapter::DebugCubeAdapter::SetColor(const hodoGI::Color& color)
+void hodoGIAdapter::DebugCubeAdapter::SetColor(const HDMaths::HDFLOAT4& color)
 {
-	_debugCube->SetColor(DirectX::XMFLOAT4{ color.rgba });
+	_debugCube->SetColor(DirectX::XMFLOAT4{ color.r, color.g, color.b, color.a });
 }

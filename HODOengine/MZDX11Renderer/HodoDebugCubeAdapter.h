@@ -17,7 +17,7 @@ namespace hodoGIAdapter
 		virtual void SetActive(bool isActive) override;
 		virtual void SetFillModeSolid() override;
 		virtual void SetFillModeWireframe() override;
-		virtual void SetColor(const hodoGI::Color& color) override;
+		virtual void SetColor(const HDMaths::HDFLOAT4& color) override;
 
 	private:
 		std::unique_ptr<DebugCube> _debugCube;

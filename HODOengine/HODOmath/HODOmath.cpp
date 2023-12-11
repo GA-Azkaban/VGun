@@ -660,6 +660,20 @@ namespace HDMaths
 		return { other.w / length, other.x / length, other.y / length, other.z / length };
 	}
 
+	HDQuaternion HDQuaternion::FromLocalAxes(HDFLOAT3 right, HDFLOAT3 up, HDFLOAT3 forward)
+	{
+		HDFLOAT3 rightNorm = HDFLOAT3::Normalize(right);
+		HDFLOAT3 upNorm = HDFLOAT3::Normalize(up);
+		HDFLOAT3 forwardNorm = HDFLOAT3::Normalize(forward);
+		return HDQuaternion{
+			HDFLOAT3X3{
+				right.x, right.y, right.z,
+				up.x, up.y, up.z,
+				forward.x, forward.y, forward.z
+			}
+		};
+	}
+
 	HDMaths::HDQuaternion HDQuaternion::operator=(const HDQuaternion& other)
 	{
 		this->w = other.w;

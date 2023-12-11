@@ -49,16 +49,13 @@ void MovableCamera::Update()
 	}
 	if (GetKeyPressing(VK_RBUTTON))
 	{
-		HDMaths::HDFLOAT3 newForward = HDMaths::HDFLOAT3::Normalize(rotation.Forward() +
-			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.1f);
-		/*HDMaths::HDFLOAT3 newUp = HDMaths::HDFLOAT3::Normalize(rotation.Up() -
-			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.1f);*/
+		HDMaths::HDFLOAT3 newForward = rotation.Forward() - 
+			rotation.Forward() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.1f +
+			rotation.Right() * deltaMousePos.x * _moveSpeed * GetDeltaTime() * 0.1f;
 		HDMaths::HDFLOAT3 newUp = HDMaths::HDFLOAT3::up;
 		HDMaths::HDFLOAT3 newRight = HDMaths::HDFLOAT3::Cross(newUp, newForward);
-		HDMaths::HDQuaternion newRot{ 
-			HDMaths::HDFLOAT3X3(newRight.x, newRight.y, newRight.z,
-								newUp.x, newUp.y, newUp.z,
-								newForward.x, newForward.y, newForward.z) };
+
+		HDMaths::HDQuaternion newRot = HDMaths::HDQuaternion::FromLocalAxes(newRight, newUp, newForward);
 		GetTransform()->SetWorldRotation(newRot);
 	}
 	GetTransform()->SetWorldPosition(position);
