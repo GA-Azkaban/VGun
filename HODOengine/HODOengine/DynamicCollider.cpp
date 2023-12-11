@@ -22,5 +22,5 @@ void hodoData::DynamicCollider::Collide()
 
 bool hodoData::DynamicCollider::GetIsCollided()
 {
-
+	return _isCollided;
 }

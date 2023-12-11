@@ -11,7 +11,6 @@ namespace hodoData
 {
 	class GameObject;
 	class Transform;
-	class Collision;
 
 	class HODO_API Component
 	{
@@ -33,11 +32,11 @@ namespace hodoData
 
 		// 충돌 관련
 		// 충돌체들이 서로 충돌을 시작할 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionEnter(const Collision& collision) {};
+		virtual void OnCollisionEnter() {};
 		// 충돌체들이 서로 충돌하고 있는 상태일 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionStay(const Collision& collision) {};
+		virtual void OnCollisionStay() {};
 		// 충돌체들의 충돌이 끝나고 서로 떨어져나갈 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionExit(const Collision& collision) {};
+		virtual void OnCollisionExit() {};
 		virtual ~Component() {};
 
 		GameObject* GetGameObject() const;
