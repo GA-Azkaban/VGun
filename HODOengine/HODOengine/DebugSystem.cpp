@@ -15,7 +15,7 @@ namespace hodoEngine
 	{
 		if (_isDebugMode)
 		{
-
+			int test = 0;
 		}
 	}
 
