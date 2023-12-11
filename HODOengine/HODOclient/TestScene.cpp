@@ -11,7 +11,7 @@ TestScene::TestScene()
 
 	auto camera = hodoEngine::CreateObject(_scene);
 	camera->AddComponent<MovableCamera>()->SetMainCamera();
-	camera->GetTransform()->SetWorldPosition(HDMaths::HDFLOAT3{ 0.0f, 0.0f, -5.0f });
+	camera->GetTransform()->SetWorldPosition(HDMaths::HDFLOAT3{ 0.0f, 0.0f, -10.0f });
 
 	auto gameObject = hodoEngine::CreateObject(_scene);
 	auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
