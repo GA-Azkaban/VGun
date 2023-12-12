@@ -41,7 +41,7 @@ namespace hodoData
 		// 종류별 렌더링을 위한 플래그 값
 		// 클라이언트에서 설정 가능하도록......
 	public:
-		void SetFlag(int flag);
+		void Setflag(int flag);
 		int GetFlag();
 
 	protected:

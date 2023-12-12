@@ -3,8 +3,7 @@
 
 hodoData::Collider::Collider()
 {
-	HDMaths::HDFLOAT4 color = { 1.f, 0.f, 0.f, 0.f };
-	hodoEngine::DebugSystem::Instance().DrawColliderDebug(GetGameObject(), color);
+
 }
 
 void hodoData::Collider::SetPositionOffset(HDMaths::HDFLOAT3 pos)
@@ -96,9 +95,10 @@ HDMaths::HDFLOAT4X4 hodoData::Collider::GetTransformMatrix()
 	return GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
 }
 
-void hodoData::Collider::SetFlag(int flag)
+void hodoData::Collider::Setflag(int flag)
 {
 	_flag = flag;
+	hodoEngine::DebugSystem::Instance().AddDebugData(flag, GetGameObject(), HDMaths::HDFLOAT4{1.f, 0.f, 0.f, 0.f});
 }
 
 int hodoData::Collider::GetFlag()

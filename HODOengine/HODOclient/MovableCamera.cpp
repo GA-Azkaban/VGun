@@ -1,6 +1,6 @@
 #include "MovableCamera.h"
 #include "../HODOengine/HODO_API.h"
-using namespace hodoEngine;
+using namespace API;
 
 MovableCamera::MovableCamera()
 	: _moveSpeed(3.0f)
