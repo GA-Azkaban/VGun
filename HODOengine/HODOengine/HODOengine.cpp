@@ -12,6 +12,7 @@
 #include "ObjectSystem.h"
 #include "TimeSystem.h"
 #include "InputSystem.h"
+#include "DebugSystem.h"
 
 HODOengine* HODOengine::_instance = nullptr;
 
@@ -31,7 +32,8 @@ HODOengine::HODOengine()
 	_sceneSystem(hodoEngine::SceneSystem::Instance()),
 	_objectSystem(hodoEngine::ObjectSystem::Instance()),
 	_timeSystem(hodoEngine::TimeSystem::Instance()),
-	_inputSystem(hodoEngine::InputSystem::Instance())
+	_inputSystem(hodoEngine::InputSystem::Instance()),
+	_debugSystem(hodoEngine::DebugSystem::Instance())
 {
 
 }
@@ -61,6 +63,7 @@ void HODOengine::Initialize()
 
 	_timeSystem.Initialize();
 	_inputSystem.Initialize();
+	_debugSystem.Initialize();
 }
 
 void HODOengine::Loop()
@@ -101,6 +104,7 @@ void HODOengine::Run()
 
 	// Input Update
 	hodoEngine::InputSystem::Instance().Update();
+	hodoEngine::DebugSystem::Instance().Update();
 
 	// Destroy List -> GameObject OnDestroy, Clear
 	for (auto destroyObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())

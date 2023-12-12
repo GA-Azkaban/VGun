@@ -5,23 +5,35 @@
 #include "../HODOengine/HodoDebugCube.h"
 #include "MovableCamera.h"
 
+enum eColliderType
+{
+	PLAYER = 1,
+	BOX = 2
+};
+
 TestScene::TestScene()
 {
-	_scene = hodoEngine::CreateScene("Test");
+	_scene = API::CreateScene("Test");
 
-	auto camera = hodoEngine::CreateObject(_scene);
+	auto camera = API::CreateObject(_scene);
 	camera->AddComponent<MovableCamera>()->SetMainCamera();
 	camera->GetTransform()->SetWorldPosition(HDMaths::HDFLOAT3{ 0.0f, 0.0f, -10.0f });
 
 	//auto gameObject = hodoEngine::CreateObject(_scene);
 	//auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
+	////auto test = comp->GetGameObject();
 	//comp->Get()->SetFillModeWireframe();
 	//comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
-	//auto debugtest = hodoEngine::CreateObject(_scene);
-	//debugtest->AddComponent<hodoData::StaticBoxCollider>();
+	HDMaths::HDFLOAT4 red = { 1.0f, 0.0f, 0.0f, 0.0f };
 
-	hodoEngine::LoadScene(_scene);
+	auto debugtest = API::CreateObject(_scene);
+	auto colli = debugtest->AddComponent<hodoData::StaticBoxCollider>();
+	colli->Setflag(eColliderType::PLAYER);
+
+	API::DebugModeOn(eColliderType::PLAYER);
+
+	API::LoadScene(_scene);
 }
 
 TestScene::~TestScene()

@@ -28,7 +28,7 @@
 
 #include "ObjectSystem.h"
 
-namespace hodoEngine
+namespace API
 {
 	extern "C"
 	{
@@ -42,6 +42,8 @@ namespace hodoEngine
 		HODO_API bool GetKeyPressing(int keyCode);
 		HODO_API HDMaths::HDFLOAT2 GetMousePosition();
 		HODO_API HDMaths::HDFLOAT2 GetMousePositionNormalized();
+
+		HODO_API void DebugModeOn(int flag);
 
 		HODO_API float GetDeltaTime();
 	}

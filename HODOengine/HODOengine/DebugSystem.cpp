@@ -13,12 +13,26 @@ namespace hodoEngine
 
 	void DebugSystem::Update()
 	{
-		if (_isDebugMode)
+		// 콜라이더 데이터 출력
+		for (const auto& colli : _colliderDebugData)
 		{
+			if (colli->flag == _index)
+			{
+				DrawColliderDebug(colli->obj, colli->color);
+			}
 		}
 	}
 
-	void DebugSystem::DrawColliderDebug(hodoData::GameObject* obj, HDMaths::HDFLOAT4& color)
+	void DebugSystem::AddDebugData(int flag = 0, hodoData::GameObject* obj = nullptr, HDMaths::HDFLOAT4 color = HDMaths::HDFLOAT4{ 1.f, 0.f, 0.f, 0.f })
+	{
+		debugData* one = new debugData();
+		one->flag = flag;
+		one->color = color;
+		one->obj = obj;
+		_colliderDebugData.push_back(one);
+	}
+
+	void DebugSystem::DrawColliderDebug(hodoData::GameObject* obj, HDMaths::HDFLOAT4 color)
 	{
 		auto component = obj->AddComponent<hodoEngine::DebugCube>();
 		component->Get()->SetFillModeWireframe();
@@ -27,14 +41,12 @@ namespace hodoEngine
 
 	void DebugSystem::SetDebugOn(int index)
 	{
-		_isDebugMode = true;
 		_index = index;
-		// TODO) 인덱스가 일치하는 오브젝트만 렌더링되도록.......
 	}
 
 	void DebugSystem::SetDebugOff()
 	{
-		_isDebugMode = false;
+		_index = -1;
 	}
 
 }
