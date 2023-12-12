@@ -25,12 +25,13 @@ TestScene::TestScene()
 	//comp->Get()->SetFillModeWireframe();
 	//comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
-	HDMaths::HDFLOAT4 red = { 1.0f, 0.0f, 0.0f, 0.0f };
-
 	auto debugtest = API::CreateObject(_scene);
+	debugtest->GetComponent<hodoData::Transform>()->SetWorldScale(HDMaths::HDFLOAT3{5.f, 5.f, 5.f});
 	auto colli = debugtest->AddComponent<hodoData::StaticBoxCollider>();
 	colli->Setflag(eColliderType::PLAYER);
 
+	
+	// 디버그 모드 활성화 (활성화하고 싶은 플래그를 인자로 넣음)
 	API::DebugModeOn(eColliderType::PLAYER);
 
 	API::LoadScene(_scene);
