@@ -9,6 +9,7 @@ namespace hodoEngine
 	class InputSystem;
 	class TimeSystem;
 	class IDSystem;
+	class DebugSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -48,4 +49,5 @@ private:
 	hodoEngine::ObjectSystem& _objectSystem;
 	hodoEngine::TimeSystem& _timeSystem;
 	hodoEngine::InputSystem& _inputSystem;
+	hodoEngine::DebugSystem& _debugSystem;
 };
