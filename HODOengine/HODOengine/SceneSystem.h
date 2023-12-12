@@ -3,13 +3,13 @@
 #include <string>
 #include "Singleton.h"
 
-namespace hodoData
+namespace HDData
 {
 	class Scene;
 	class GameObject;
 }
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class SceneSystem : public Singleton<SceneSystem>
 	{
@@ -19,19 +19,19 @@ namespace hodoEngine
 		SceneSystem();
 
 	public:
-		hodoData::Scene* CreateScene(std::string sceneName = "");
+		HDData::Scene* CreateScene(std::string sceneName = "");
 		void LoadScene(std::string sceneName);
-		void LoadScene(hodoData::Scene* scene);
+		void LoadScene(HDData::Scene* scene);
 		
 	private:
-		std::unordered_map<std::string, hodoData::Scene*> _sceneList;
+		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 
 	public:
-		hodoData::Scene* GetCurrentScene();
+		HDData::Scene* GetCurrentScene();
 		bool GetIsCurrentSceneChange();
 
 	private:
-		hodoData::Scene* _currentScene;
+		HDData::Scene* _currentScene;
 	};
 
 }

@@ -1,13 +1,11 @@
 #include "Camera.h"
-#include "HodoGIObject.h"
 #include "Transform.h"
-using namespace hodoData;
+using namespace HDData;
 
-Camera* hodoData::Camera::_mainCamera = nullptr;
+Camera* HDData::Camera::_mainCamera = nullptr;
 
-hodoData::Camera::Camera()
+HDData::Camera::Camera()
 {
-	_camera = hodoEngine::HodoGIObject::Instance().factory->CreateCamera();
 	if (_mainCamera == nullptr)
 	{
 		SetMainCamera();
@@ -17,15 +15,15 @@ hodoData::Camera::Camera()
 void Camera::SetMainCamera()
 {
 	_mainCamera = this;
-	_camera->SetAsMainCamera();
+	//_camera->SetAsMainCamera();
 }
 
-hodoData::Camera* Camera::GetMainCamera()
+HDData::Camera* Camera::GetMainCamera()
 {
 	return _mainCamera;
 }
 
 void Camera::Update()
 {
-	_camera->SetWorldTM(GetTransform()->GetWorldTM());
+	//_camera->SetWorldTM(GetTransform()->GetWorldTM());
 }

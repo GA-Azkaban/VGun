@@ -1,26 +1,26 @@
 #include "DynamicCollider.h"
 
-hodoData::DynamicCollider::DynamicCollider()
+HDData::DynamicCollider::DynamicCollider()
 {
 
 }
 
-void hodoData::DynamicCollider::UpdateToPhysics()
+void HDData::DynamicCollider::UpdateToPhysics()
 {
 
 }
 
-void hodoData::DynamicCollider::UpdateFromPhysics()
+void HDData::DynamicCollider::UpdateFromPhysics()
 {
 
 }
 
-void hodoData::DynamicCollider::Collide()
+void HDData::DynamicCollider::Collide()
 {
 
 }
 
-bool hodoData::DynamicCollider::GetIsCollided()
+bool HDData::DynamicCollider::GetIsCollided()
 {
 	return _isCollided;
 }

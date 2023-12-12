@@ -5,7 +5,7 @@
 
 
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class TimeSystem : public Singleton<TimeSystem>
 	{

@@ -1,16 +1,16 @@
 #include "StaticPlaneCollider.h"
 
-hodoData::StaticPlaneCollider::StaticPlaneCollider()
+HDData::StaticPlaneCollider::StaticPlaneCollider()
 {
 
 }
 
-void hodoData::StaticPlaneCollider::Start()
+void HDData::StaticPlaneCollider::Start()
 {
 
 }
 
-void hodoData::StaticPlaneCollider::Update()
+void HDData::StaticPlaneCollider::Update()
 {
 
 }

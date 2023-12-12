@@ -5,7 +5,7 @@
 
 #include "dllExporter.h"
 
-namespace hodoData
+namespace HDData
 {
 	class GameObject;
 

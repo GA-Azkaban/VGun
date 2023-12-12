@@ -10,7 +10,7 @@
 /// 키 인풋을 위한 기초 시스템
 /// </summary>
 
-namespace hodoEngine
+namespace HDEngine
 {
 
 	class InputSystem : public Singleton<InputSystem>
@@ -29,8 +29,8 @@ namespace hodoEngine
 		bool GetKeyPressing(int keyCode);
 
 	public:
-		HDMaths::HDFLOAT2 GetMousePosition();
-		HDMaths::HDFLOAT2 GetMousePositionNormalized();
+		HDMath::HDFLOAT2 GetMousePosition();
+		HDMath::HDFLOAT2 GetMousePositionNormalized();
 		
 	private:
 		bool _currentKeyState[256];

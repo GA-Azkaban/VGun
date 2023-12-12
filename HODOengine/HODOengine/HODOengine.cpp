@@ -3,7 +3,6 @@
 
 #include <windows.h>
 #include "HODOengine.h"
-#include "GraphicsRenderer.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -28,10 +27,10 @@ void ReleaseEngine(IHODOengine* instance)
 
 HODOengine::HODOengine()
 	:_appName(L"HODO"),
-	_sceneSystem(hodoEngine::SceneSystem::Instance()),
-	_objectSystem(hodoEngine::ObjectSystem::Instance()),
-	_timeSystem(hodoEngine::TimeSystem::Instance()),
-	_inputSystem(hodoEngine::InputSystem::Instance())
+	_sceneSystem(HDEngine::SceneSystem::Instance()),
+	_objectSystem(HDEngine::ObjectSystem::Instance()),
+	_timeSystem(HDEngine::TimeSystem::Instance()),
+	_inputSystem(HDEngine::InputSystem::Instance())
 {
 
 }
@@ -56,8 +55,6 @@ void HODOengine::Initialize()
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
 
-	hodoEngine::GraphicsRenderer::Instance().LoadGraphicsDll(L"MZDX11Renderer.dll");
-	hodoEngine::GraphicsRenderer::Instance().SetOutputWindow(_hWnd);
 
 	_timeSystem.Initialize();
 	_inputSystem.Initialize();
@@ -100,21 +97,21 @@ void HODOengine::Run()
 	_timeSystem.Update();
 
 	// Input Update
-	hodoEngine::InputSystem::Instance().Update();
+	HDEngine::InputSystem::Instance().Update();
 
 	// Destroy List -> GameObject OnDestroy, Clear
-	for (auto destroyObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
+	for (auto destroyObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
 	{
 		for (auto component : destroyObj->GetAllComponents())
 		{
 			component->OnDestroy();
 		}
-		hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
+		HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
 	}
-	hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
+	HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
 
 	// Update Components
-	for (auto gameObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
+	for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
 	{
 		for (auto component : gameObj->GetAllComponents())
 		{
@@ -122,10 +119,6 @@ void HODOengine::Run()
 		}
 	}
 	// Invoke Collision Events
-	// Renderer Update
-	hodoEngine::GraphicsRenderer::Instance().Update(hodoEngine::TimeSystem::Instance().GetDeltaTime());
-	// Renderer Render
-	hodoEngine::GraphicsRenderer::Instance().Render();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

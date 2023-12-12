@@ -1,12 +1,12 @@
 #include "Component.h"
 #include "GameObject.h"
 
-hodoData::GameObject* hodoData::Component::GetGameObject() const
+HDData::GameObject* HDData::Component::GetGameObject() const
 {
 	return _gameObject;
 }
 
-hodoData::Transform* hodoData::Component::GetTransform() const
+HDData::Transform* HDData::Component::GetTransform() const
 {
 	return _gameObject->GetTransform();
 }

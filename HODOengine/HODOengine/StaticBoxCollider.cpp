@@ -1,47 +1,47 @@
 #include "StaticBoxCollider.h"
 
-hodoData::StaticBoxCollider::StaticBoxCollider()
+HDData::StaticBoxCollider::StaticBoxCollider()
 	: _width(0.f), _height(0.f), _depth(0.f)
 {
 
 }
 
-void hodoData::StaticBoxCollider::Start()
+void HDData::StaticBoxCollider::Start()
 {
 
 }
 
-void hodoData::StaticBoxCollider::Update()
+void HDData::StaticBoxCollider::Update()
 {
 
 }
 
-float hodoData::StaticBoxCollider::GetHeight()
+float HDData::StaticBoxCollider::GetHeight()
 {
 	return _height;
 }
 
-float hodoData::StaticBoxCollider::GetWidth()
+float HDData::StaticBoxCollider::GetWidth()
 {
 	return _width;
 }
 
-float hodoData::StaticBoxCollider::GetDepth()
+float HDData::StaticBoxCollider::GetDepth()
 {
 	return _depth;
 }
 
-void hodoData::StaticBoxCollider::SetHeight(float val)
+void HDData::StaticBoxCollider::SetHeight(float val)
 {
 	_height = val;
 }
 
-void hodoData::StaticBoxCollider::SetWidth(float val)
+void HDData::StaticBoxCollider::SetWidth(float val)
 {
 	_width = val;
 }
 
-void hodoData::StaticBoxCollider::SetDepth(float val)
+void HDData::StaticBoxCollider::SetDepth(float val)
 {
 	_depth = val;
 }

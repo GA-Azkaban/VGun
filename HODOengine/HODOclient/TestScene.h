@@ -10,6 +10,6 @@ public:
 	void Start();
 
 private:
-	hodoData::Scene* _scene;
+	HDData::Scene* _scene;
 };
 

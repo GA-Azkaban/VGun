@@ -6,19 +6,19 @@
 #include "TimeSystem.h"
 #include "GameObject.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 	extern "C"
 	{
-		HODO_API hodoData::Scene* CreateScene(std::string sceneName)
+		HODO_API HDData::Scene* CreateScene(std::string sceneName)
 		{
 			return SceneSystem::Instance().CreateScene(sceneName);
 		}
-		HODO_API void LoadScene(hodoData::Scene* scene)
+		HODO_API void LoadScene(HDData::Scene* scene)
 		{
 			SceneSystem::Instance().LoadScene(scene);
 		}
-		HODO_API hodoData::GameObject* CreateObject(hodoData::Scene* scene, std::string objectName, hodoData::GameObject* parentObject)
+		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName, HDData::GameObject* parentObject)
 		{
 			return ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 		}
@@ -34,11 +34,11 @@ namespace hodoEngine
 		{
 			return InputSystem::Instance().GetKeyPressing(keyCode);
 		}
-		HODO_API HDMaths::HDFLOAT2 GetMousePosition()
+		HODO_API HDMath::HDFLOAT2 GetMousePosition()
 		{
 			return InputSystem::Instance().GetMousePosition();
 		}
-		HODO_API HDMaths::HDFLOAT2 GetMousePositionNormalized()
+		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized()
 		{
 			return InputSystem::Instance().GetMousePositionNormalized();
 		}

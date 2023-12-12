@@ -3,9 +3,9 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "IDSystem.h"
-using namespace hodoData;
+using namespace HDData;
 
-namespace hodoEngine
+namespace HDEngine
 {
 	GameObject* ObjectSystem::CreateObject(Scene* scene, std::string objectName, GameObject* parent)
 	{

@@ -61,21 +61,6 @@
     <Filter Include="05_Component\Camera">
       <UniqueIdentifier>{5cdb65ec-11e5-4551-96d6-ea642ec28523}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06_System\Global">
-      <UniqueIdentifier>{f88470fc-6a92-4913-9811-7c881ec0e07b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="07_GraphicInterfaceObject">
-      <UniqueIdentifier>{47b4a989-3e4f-4323-b412-2dc0ee2755cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08_GraphicsRenderer">
-      <UniqueIdentifier>{7d706f32-fa3d-4165-8090-c298cd517dde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderable">
-      <UniqueIdentifier>{b93861c3-8cf9-4011-a951-3e57ce21eeb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderable\DebugCube">
-      <UniqueIdentifier>{d27a474d-e105-4916-961d-7e04b8b11f66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Script">
       <UniqueIdentifier>{7104ad00-713f-4193-b1aa-16b61916561b}</UniqueIdentifier>
     </Filter>
@@ -102,6 +87,15 @@
     </Filter>
     <Filter Include="05_Component\Collider\DynamicCollider\DynamicColliderBase">
       <UniqueIdentifier>{04cdc952-59f0-4be4-ac1c-94badf4492ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\RenderSystem">
+      <UniqueIdentifier>{885f02bb-befc-4a85-a865-68431d10cd0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer">
+      <UniqueIdentifier>{7ebc400f-1d65-4d9d-bdb5-bc892c822d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\BaseClass">
+      <UniqueIdentifier>{28355368-a12d-47d8-b52f-9b3f960396bf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,21 +150,6 @@
     <ClInclude Include="Camera.h">
       <Filter>05_Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="HodoGIGlobal.h">
-      <Filter>06_System\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="HodoGIObject.h">
-      <Filter>07_GraphicInterfaceObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsRenderer.h">
-      <Filter>08_GraphicsRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderable.h">
-      <Filter>05_Component\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="HodoDebugCube.h">
-      <Filter>05_Component\Renderable\DebugCube</Filter>
-    </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
     </ClInclude>
@@ -194,6 +173,12 @@
     </ClInclude>
     <ClInclude Include="DebugSystem.h">
       <Filter>06_System\DebugSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>06_System\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,15 +228,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>05_Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="HodoGIObject.cpp">
-      <Filter>07_GraphicInterfaceObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsRenderer.cpp">
-      <Filter>08_GraphicsRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="HodoDebugCube.cpp">
-      <Filter>05_Component\Renderable\DebugCube</Filter>
-    </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
     </ClCompile>
@@ -275,6 +251,12 @@
     </ClCompile>
     <ClCompile Include="DebugSystem.cpp">
       <Filter>06_System\DebugSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>06_System\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

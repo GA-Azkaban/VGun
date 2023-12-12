@@ -8,7 +8,7 @@
 /// 2023.11.09 ±ËπŒ¡§
 /// </summary>
 
-namespace hodoData
+namespace HDData
 {
 	class HODO_API Camera : public Component
 	{
@@ -19,7 +19,7 @@ namespace hodoData
 	protected:
 		virtual void Update() override;
 	private:
-		hodoGI::ICamera* _camera;
+		HDEngine::ICamera* _camera;
 		static Camera* _mainCamera;
 	};
 }

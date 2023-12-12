@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 
-namespace hodoData
+namespace HDData
 {
 	Scene::Scene(std::string sceneName)
 		: _sceneName(sceneName)

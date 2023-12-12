@@ -1,8 +1,7 @@
 ﻿#include "DebugSystem.h"
-#include "HodoDebugCube.h"
 #include "GameObject.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 
 
@@ -19,10 +18,10 @@ namespace hodoEngine
 		}
 	}
 
-	void DebugSystem::DrawColliderDebug(hodoData::GameObject* obj, HDMaths::HDFLOAT4& color)
+	void DebugSystem::DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4& color)
 	{
-		auto component = obj->AddComponent<hodoEngine::DebugCube>();
-		component->Get()->SetFillModeWireframe();
+// 		auto component = obj->AddComponent<HDEngine::DebugCube>();
+// 		component->Get()->SetFillModeWireframe();
 		//component->Get()->SetColor(color);
 	}
 
