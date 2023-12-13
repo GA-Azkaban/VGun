@@ -6,7 +6,7 @@
 #include "../Include/physx/PxPhysics.h"
 #include "../Include/physx/PxPhysicsAPI.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class PhysicsSystem : public Singleton<PhysicsSystem>
 	{

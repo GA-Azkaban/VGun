@@ -14,9 +14,9 @@ TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
 
-	auto camera = API::CreateObject(_scene);
-	camera->AddComponent<MovableCamera>()->SetMainCamera();
-	camera->GetTransform()->SetWorldPosition(HDMaths::HDFLOAT3{ 0.0f, 0.0f, -10.0f });
+	//auto camera = API::CreateObject(_scene);
+	//camera->AddComponent<MovableCamera>()->SetMainCamera();
+	//camera->GetTransform()->SetWorldPosition(HDMath::HDFLOAT3{ 0.0f, 0.0f, -10.0f });
 
 	//auto gameObject = hodoEngine::CreateObject(_scene);
 	//auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
@@ -25,8 +25,8 @@ TestScene::TestScene()
 	//comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
 	auto debugtest = API::CreateObject(_scene);
-	debugtest->GetComponent<hodoData::Transform>()->SetWorldScale(HDMaths::HDFLOAT3{5.f, 5.f, 5.f});
-	auto colli = debugtest->AddComponent<hodoData::StaticBoxCollider>();
+	debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
+	auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
 	colli->Setflag(eColliderType::PLAYER);
 
 	

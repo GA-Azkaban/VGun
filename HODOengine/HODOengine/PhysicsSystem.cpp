@@ -1,6 +1,6 @@
 #include "PhysicsSystem.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 
 	void PhysicsSystem::Initialize()

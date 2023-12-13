@@ -35,8 +35,8 @@ HODOengine::HODOengine()
 	_timeSystem(HDEngine::TimeSystem::Instance()),
 	_inputSystem(HDEngine::InputSystem::Instance()),
 	_renderSystem(HDEngine::RenderSystem::Instance()),
-	_debugSystem(hodoEngine::DebugSystem::Instance()),
-	_physicsSystem(hodoEngine::PhysicsSystem::Instance())
+	_debugSystem(HDEngine::DebugSystem::Instance()),
+	_physicsSystem(HDEngine::PhysicsSystem::Instance())
 {
 
 }
@@ -66,7 +66,7 @@ void HODOengine::Initialize()
 	_inputSystem.Initialize();
 	_debugSystem.Initialize();
 	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
-	_physicsSystem.Initialize();
+	//_physicsSystem.Initialize();
 }
 
 void HODOengine::Loop()
@@ -107,7 +107,7 @@ void HODOengine::Run()
 
 	// Input Update
 	HDEngine::InputSystem::Instance().Update();
-	hodoEngine::DebugSystem::Instance().Update();
+	HDEngine::DebugSystem::Instance().Update();
 
 	// Destroy List -> GameObject OnDestroy, Clear
 	for (auto destroyObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
@@ -133,7 +133,7 @@ void HODOengine::Run()
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
-	hodoEngine::PhysicsSystem::Instance().Update();
+	//HDEngine::PhysicsSystem::Instance().Update();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

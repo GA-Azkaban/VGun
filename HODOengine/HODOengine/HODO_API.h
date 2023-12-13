@@ -28,7 +28,7 @@
 
 #include "ObjectSystem.h"
 
-namespace HDEngine
+namespace API
 {
 	extern "C"
 	{

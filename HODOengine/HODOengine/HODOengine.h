@@ -2,7 +2,7 @@
 #include "dllExporter.h"
 #include "IHODOengine.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class SceneSystem;
 	class ObjectSystem;
@@ -11,6 +11,7 @@ namespace hodoEngine
 	class IDSystem;
 	class DebugSystem;
 	class PhysicsSystem;
+	class RenderSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -46,10 +47,11 @@ private:
 	const WCHAR* _appName;
 
 private:
-	hodoEngine::SceneSystem& _sceneSystem;
-	hodoEngine::ObjectSystem& _objectSystem;
-	hodoEngine::TimeSystem& _timeSystem;
-	hodoEngine::InputSystem& _inputSystem;
-	hodoEngine::DebugSystem& _debugSystem;
-	hodoEngine::PhysicsSystem& _physicsSystem;
+	HDEngine::SceneSystem& _sceneSystem;
+	HDEngine::ObjectSystem& _objectSystem;
+	HDEngine::TimeSystem& _timeSystem;
+	HDEngine::InputSystem& _inputSystem;
+	HDEngine::DebugSystem& _debugSystem;
+	HDEngine::PhysicsSystem& _physicsSystem;
+	HDEngine::RenderSystem& _renderSystem;
 };

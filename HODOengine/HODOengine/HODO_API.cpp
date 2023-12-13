@@ -7,49 +7,49 @@
 #include "GameObject.h"
 #include "DebugSystem.h"
 
-namespace HDEngine
+namespace API
 {
 	extern "C"
 	{
 		HODO_API HDData::Scene* CreateScene(std::string sceneName)
 		{
-			return hodoEngine::SceneSystem::Instance().CreateScene(sceneName);
+			return HDEngine::SceneSystem::Instance().CreateScene(sceneName);
 		}
 		HODO_API void LoadScene(HDData::Scene* scene)
 		{
-			hodoEngine::SceneSystem::Instance().LoadScene(scene);
+			HDEngine::SceneSystem::Instance().LoadScene(scene);
 		}
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName, HDData::GameObject* parentObject)
 		{
-			return hodoEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			return HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 		}
 		HODO_API bool GetKeyDown(int keyCode)
 		{
-			return hodoEngine::InputSystem::Instance().GetKeyDown(keyCode);
+			return HDEngine::InputSystem::Instance().GetKeyDown(keyCode);
 		}
 		HODO_API bool GetKeyUp(int keyCode)
 		{
-			return hodoEngine::InputSystem::Instance().GetKeyUp(keyCode);
+			return HDEngine::InputSystem::Instance().GetKeyUp(keyCode);
 		}
 		HODO_API bool GetKeyPressing(int keyCode)
 		{
-			return hodoEngine::InputSystem::Instance().GetKeyPressing(keyCode);
+			return HDEngine::InputSystem::Instance().GetKeyPressing(keyCode);
 		}
 		HODO_API HDMath::HDFLOAT2 GetMousePosition()
 		{
-			return hodoEngine::InputSystem::Instance().GetMousePosition();
+			return HDEngine::InputSystem::Instance().GetMousePosition();
 		}
 		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized()
 		{
-			return hodoEngine::InputSystem::Instance().GetMousePositionNormalized();
+			return HDEngine::InputSystem::Instance().GetMousePositionNormalized();
 		}
 		HODO_API float GetDeltaTime()
 		{
-			return hodoEngine::TimeSystem::Instance().GetDeltaTime();
+			return HDEngine::TimeSystem::Instance().GetDeltaTime();
 		}
 		HODO_API void DebugModeOn(int flag)
 		{
-			hodoEngine::DebugSystem::Instance().SetDebugOn(flag);
+			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
 	}
 
