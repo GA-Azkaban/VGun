@@ -10,6 +10,7 @@ namespace hodoEngine
 	class TimeSystem;
 	class IDSystem;
 	class DebugSystem;
+	class PhysicsSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -50,4 +51,5 @@ private:
 	hodoEngine::TimeSystem& _timeSystem;
 	hodoEngine::InputSystem& _inputSystem;
 	hodoEngine::DebugSystem& _debugSystem;
+	hodoEngine::PhysicsSystem& _physicsSystem;
 };
