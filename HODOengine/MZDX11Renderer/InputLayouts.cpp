@@ -1,5 +1,4 @@
 #include "InputLayouts.h"
-#include "Effects.h"
 
 #pragma region InputLayoutDesc
 

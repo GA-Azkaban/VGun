@@ -10,11 +10,7 @@
 class DXTKFont;
 class MZCamera;
 class IRenderableObject;
-class GridBuilder;
 class DeferredRenderer;
-
-class XLParticleEffect;
-class XLParticleSystem;
 
 namespace yunuGIAdapter
 {
@@ -28,7 +24,6 @@ public:
 
     static MZRenderer::LazyObjects<MZDX11Renderer> Instance;
     friend MZRenderer::LazyObjects<MZDX11Renderer>;
-    friend yunuGIAdapter::RendererAdapter;
 
     float GetScreenWidth() { return m_screenWidth; }
     float GetScreenHeight() { return m_screenHeight; }
@@ -37,7 +32,10 @@ public:
 
     // 엔진 초기화
     bool Initialize();
+
+    // 윈도우 창 초기화
     void SetOutputWindow(unsigned int hWnd);
+
     // 업데이트
     void Update(float deltaTime);
 
@@ -71,12 +69,11 @@ private:
     DXGI_ADAPTER_DESC1 m_AdapterDesc1;
     HRESULT GetAdapterInfo();
 
-
 private:
     void BeginRender();
     void EndRender();
+   
     // 디버깅 정보 출력
-    int switcher;
     void DrawStatus();
 
 private:
@@ -104,6 +101,8 @@ private:
     POINT m_lastMousePos;
     float m_deltaTime;
 
+	// 디버깅 정보 출력 On/Off
+	int switcher;
 };
 
 extern "C" __declspec(dllexport) MZ3DAPI::I3DRenderer * CreateDX11GraphicsInstance();

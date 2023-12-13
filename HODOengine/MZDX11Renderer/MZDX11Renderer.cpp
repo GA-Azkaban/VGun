@@ -1,5 +1,4 @@
 #include "MZDX11Renderer.h"
-#include "Effects.h"
 #include "DXTKFont.h"
 #include "MZCamera.h"
 #include "DeferredRenderer.h"
@@ -12,7 +11,6 @@ MZRenderer::LazyObjects<MZDX11Renderer> MZDX11Renderer::Instance;
 MZ3DAPI::I3DRenderer* CreateDX11GraphicsInstance()
 {
 	return new MZDX11Renderer();
-	//return Instance.Get();
 }
 
 
@@ -38,14 +36,9 @@ MZDX11Renderer::~MZDX11Renderer()
 {
 	RasterizerState::DestroyRenderStates();
 	InputLayouts::DestroyAll();
-	Effects::DestroyAll();
 
 	SafeDelete(m_pCamera);
 	SafeDelete(m_pFont);
-
-	//ReleaseCOM(m_depthStencilView);
-	//ReleaseCOM(m_swapChain);
-	//ReleaseCOM(m_depthStencilBuffer);
 
 	if (m_d3dImmediateContext)
 	{
@@ -81,12 +74,13 @@ bool MZDX11Renderer::Initialize()
 
 	// 멀티샘플링 체크
 	HR(m_d3dDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &m_4xMsaaQuality));
-	assert(m_4xMsaaQuality > 0);
+	if (m_4xMsaaQuality > 0)
+	{
+		m_enable4xMsaa = true;
+	}
 
-	// Effects
-	/// 입력 배치(InputLayout)가 쉐이더 시그니처(sementics/의미소)에 의존하기 때문에, 이펙트를 먼저 초기화해야 함.
-	// Must init Effects first since InputLayouts depend on shader signatures.
-	Effects::InitAll(m_d3dDevice.Get());
+	GetAdapterInfo();
+
 	InputLayouts::InitAll(m_d3dDevice.Get());
 	RasterizerState::CreateRenderStates(m_d3dDevice.Get());
 
@@ -94,8 +88,6 @@ bool MZDX11Renderer::Initialize()
 	m_pFont->Initialize(m_d3dDevice.Get(), (TCHAR*)L"Font/gulim9k.spritefont");
 	m_pFont->SetLineSpacing(15.0f);
 	m_fontLineSpace = m_pFont->GetLineSpacing();
-
-	GetAdapterInfo();
 
 	return true;
 }
@@ -238,7 +230,7 @@ void MZDX11Renderer::Render()
 void MZDX11Renderer::EndRender()
 {
 	assert(m_swapChain);
-	HR(m_swapChain->Present(1, 0));
+	HR(m_swapChain->Present(0, 0));
 }
 
 

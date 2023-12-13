@@ -19,9 +19,6 @@
     <Filter Include="Objects\MeshObject">
       <UniqueIdentifier>{81008999-5c49-4eb4-807f-f2837182a83e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Builder">
-      <UniqueIdentifier>{1704174d-374f-495b-9627-7d27e3d2993b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Factory">
       <UniqueIdentifier>{255796b9-f7ee-476c-964a-2a4d1114b1ba}</UniqueIdentifier>
     </Filter>
@@ -118,6 +115,9 @@
     <Filter Include="Hodo3DGIAdapter\HodoDebugCubeAdapter">
       <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderStruct">
+      <UniqueIdentifier>{2aced9ac-e843-408c-b3c5-654f557624a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MZDX11Renderer.h">
@@ -129,20 +129,11 @@
     <ClInclude Include="Grid.h">
       <Filter>Objects\HelperObject</Filter>
     </ClInclude>
-    <ClInclude Include="GridBuilder.h">
-      <Filter>Builder</Filter>
-    </ClInclude>
-    <ClInclude Include="IBuilder.h">
-      <Filter>Builder</Filter>
-    </ClInclude>
     <ClInclude Include="IFactory.h">
       <Filter>Factory</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
       <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Effects.h">
-      <Filter>Util\HeaderFile</Filter>
     </ClInclude>
     <ClInclude Include="InputLayouts.h">
       <Filter>Util\HeaderFile</Filter>
@@ -233,9 +224,6 @@
     <ClInclude Include="DX11Define.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="d3dx11effect.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Objects\MeshObject\StaticMesh\FBXLoaderTest</Filter>
     </ClInclude>
@@ -277,6 +265,12 @@
     <ClInclude Include="HodoDebugCubeAdapter.h">
       <Filter>Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>ShaderStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>ShaderStruct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MZDX11Renderer.cpp">
@@ -287,12 +281,6 @@
     </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Objects\HelperObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GridBuilder.cpp">
-      <Filter>Builder</Filter>
-    </ClCompile>
-    <ClCompile Include="Effects.cpp">
-      <Filter>Util\SourceFile</Filter>
     </ClCompile>
     <ClCompile Include="InputLayouts.cpp">
       <Filter>Util\SourceFile</Filter>
@@ -385,6 +373,12 @@
     </ClCompile>
     <ClCompile Include="HodoDebugCubeAdapter.cpp">
       <Filter>Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>ShaderStruct</Filter>
+    </ClCompile>
+    <ClCompile Include="IShader.cpp">
+      <Filter>ShaderStruct</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
