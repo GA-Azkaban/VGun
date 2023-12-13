@@ -1,7 +1,7 @@
 ﻿#include "HODOmath.h"
 #include <cmath>
 
-namespace HDMaths 
+namespace HDMath 
 {
 	/// Vector2
 
@@ -35,7 +35,7 @@ namespace HDMaths
 		return Add(*this, other);
 	}
 
-	HDMaths::HDFLOAT2& HDFLOAT2::operator+=(const HDFLOAT2& other)
+	HDMath::HDFLOAT2& HDFLOAT2::operator+=(const HDFLOAT2& other)
 	{
 		*this = Add(*this, other);
 		return *this;
@@ -68,7 +68,7 @@ namespace HDMaths
 		return Divide(*this, scalar);
 	}
 
-	HDMaths::HDFLOAT2& HDFLOAT2::operator/=(float scalar)
+	HDMath::HDFLOAT2& HDFLOAT2::operator/=(float scalar)
 	{
 		*this = Divide(*this, scalar);
 		return *this;
@@ -216,7 +216,7 @@ namespace HDMaths
 		return Divide(*this, scalar);
 	}
 
-	HDMaths::HDFLOAT3& HDFLOAT3::operator/=(float scalar)
+	HDMath::HDFLOAT3& HDFLOAT3::operator/=(float scalar)
 	{
 		*this = Divide(*this, scalar);
 		return *this;
@@ -385,7 +385,7 @@ namespace HDMaths
 		return HDFLOAT4{ x * other.x, y * other.y, z * other.z, w * other.w };
 	}
 
-	HDMaths::HDFLOAT4& HDFLOAT4::operator+=(const HDFLOAT4& other)
+	HDMath::HDFLOAT4& HDFLOAT4::operator+=(const HDFLOAT4& other)
 	{
 		*this = Add(*this, other);
 		return *this;
@@ -507,7 +507,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDFLOAT4 HDFLOAT4::Divide(const HDFLOAT4& val, float scalar)
+	HDMath::HDFLOAT4 HDFLOAT4::Divide(const HDFLOAT4& val, float scalar)
 	{
 		return HDFLOAT4
 		{
@@ -637,17 +637,17 @@ namespace HDMaths
 		return HDQuaternion(w, -x, -y, -z);
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::Right() const
+	HDMath::HDFLOAT3 HDQuaternion::Right() const
 	{
 		return *this * HDFLOAT3::right;
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::Up() const
+	HDMath::HDFLOAT3 HDQuaternion::Up() const
 	{
 		return *this * HDFLOAT3::up;
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::Forward() const
+	HDMath::HDFLOAT3 HDQuaternion::Forward() const
 	{
 		return *this * HDFLOAT3::forward;
 	}
@@ -674,7 +674,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDQuaternion HDQuaternion::operator=(const HDQuaternion& other)
+	HDMath::HDQuaternion HDQuaternion::operator=(const HDQuaternion& other)
 	{
 		this->w = other.w;
 		this->x = other.x;
@@ -684,7 +684,7 @@ namespace HDMaths
 		return *this;
 	}
 
-	HDMaths::HDQuaternion HDQuaternion::operator*(const HDQuaternion& other)
+	HDMath::HDQuaternion HDQuaternion::operator*(const HDQuaternion& other)
 	{
 		return HDQuaternion{
 			w * other.w - x * other.x - y * other.y - z * other.z,
@@ -694,7 +694,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other) const
+	HDMath::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other) const
 	{
 		HDFLOAT3 q(x, y, z);
 		HDFLOAT3 t = HDFLOAT3::Cross(q, other) * 2.0f;
@@ -910,7 +910,7 @@ namespace HDMaths
 		return inv;
 	}
 
-	HDMaths::HDFLOAT3X3 HDFLOAT4X4::ToMatrix3x3() const
+	HDMath::HDFLOAT3X3 HDFLOAT4X4::ToMatrix3x3() const
 	{
 		return HDFLOAT3X3{
 			_11, _12, _13,
@@ -919,7 +919,7 @@ namespace HDMaths
 		};
 	}
 
-	HDFLOAT4 HDMaths::HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right)
+	HDFLOAT4 HDMath::HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right)
 	{
 		HDFLOAT4 result;
 
@@ -950,23 +950,23 @@ namespace HDMaths
 		return result;
 	}
 
-	HDFLOAT4 HDMaths::HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
+	HDFLOAT4 HDMath::HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
 	{
 		HDFLOAT4 result = HDFloat4MultiplyMatrix({ left.x, left.y, left.z, 1.0f }, right);
 		return { result.x ,result.y, result.z };
 	}
 
-	HDFLOAT4 HDMaths::QuaternionToFloat4(const HDQuaternion& val)
+	HDFLOAT4 HDMath::QuaternionToFloat4(const HDQuaternion& val)
 	{
 		return { val.x, val.y, val.z, val.w };
 	}
 
-	HDQuaternion HDMaths::Float4ToQuaternion(const HDFLOAT4& val)
+	HDQuaternion HDMath::Float4ToQuaternion(const HDFLOAT4& val)
 	{
 		return { val.w, val.x, val.y, val.z };
 	}
 
-	HDFLOAT4X4 HDMaths::GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale)
+	HDFLOAT4X4 HDMath::GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale)
 	{
 		HDFLOAT4X4 translateTM
 		{
@@ -1010,12 +1010,12 @@ namespace HDMaths
 		return scaleTM * rotationTM * translateTM;
 	}
 
-	HDFLOAT3 HDMaths::GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
+	HDFLOAT3 HDMath::GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		return HDFLOAT3{ localTM._41, localTM._42, localTM._43 };
 	}
 
-	HDQuaternion HDMaths::GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM)
+	HDQuaternion HDMath::GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		HDFLOAT3 scale = GetLocalScaleFromLocalTM(localTM);
 		HDFLOAT3X3 rotScaleMatrix = localTM.ToMatrix3x3();
@@ -1037,7 +1037,7 @@ namespace HDMaths
 		return rotation;
 	}	
 
-	HDFLOAT3 HDMaths::GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM)
+	HDFLOAT3 HDMath::GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		HDFLOAT3 scale;
 		const float squareSumX = localTM._11 * localTM._11 + localTM._12 * localTM._12 + localTM._13 * localTM._13;
@@ -1048,6 +1048,56 @@ namespace HDMaths
 		if (squareSumZ > 1.0f) { scale.z = sqrtf(squareSumZ); }
 
 		return scale;
+	}
+
+	HDQuaternion HDRotateQuaternion(const HDQuaternion& quaternion, const HDFLOAT3& axis, float radian)
+	{
+		// 축 벡터를 정규화합니다.
+		HDFLOAT3 normalizedAxis = HDFLOAT3::Normalize(axis);
+
+		// 회전 각도의 반을 구합니다.
+		float halfAngleRad = radian * 0.5f;
+
+		// 회전 각도의 부호를 쿼터니언에 반영합니다.
+		float cosHalfAngle = std::cos(halfAngleRad);
+		float sinHalfAngle = std::sin(halfAngleRad);
+
+		float w = cosHalfAngle;
+		float x = normalizedAxis.x * sinHalfAngle;
+		float y = normalizedAxis.y * sinHalfAngle;
+		float z = normalizedAxis.z * sinHalfAngle;
+
+		// 회전 쿼터니언을 정규화하여 사용합니다.
+		HDQuaternion rotation = { w, x, y, z };
+		rotation = HDQuaternion::Normalize(rotation);
+
+		// 원본 쿼터니언과 회전 쿼터니언의 곱으로 결과 쿼터니언을 계산합니다.
+		HDQuaternion result;
+		//	result = RMQuaternionMultiply(quaternion, rotation);
+		result.w = rotation.w * quaternion.w - rotation.x * quaternion.x - rotation.y * quaternion.y - rotation.z * quaternion.z;
+		result.x = rotation.w * quaternion.x + rotation.x * quaternion.w + rotation.y * quaternion.z - rotation.z * quaternion.y;
+		result.y = rotation.w * quaternion.y - rotation.x * quaternion.z + rotation.y * quaternion.w + rotation.z * quaternion.x;
+		result.z = rotation.w * quaternion.z + rotation.x * quaternion.y - rotation.y * quaternion.x + rotation.z * quaternion.w;
+
+		return result;
+	}
+
+	HDQuaternion HDQuaternionMultiply(const HDQuaternion& lhs, const HDQuaternion& rhs)
+	{
+		HDQuaternion lhsNorm = HDQuaternion::Normalize(lhs);
+		HDQuaternion rhsNorm = HDQuaternion::Normalize(rhs);
+
+		// 원본 쿼터니언과 회전 쿼터니언의 곱으로 결과 쿼터니언을 계산합니다.
+		HDQuaternion result;
+
+		result.w = rhsNorm.w * lhsNorm.w - rhsNorm.x * lhsNorm.x - rhsNorm.y * lhsNorm.y - rhsNorm.z * lhsNorm.z;
+		result.x = rhsNorm.w * lhsNorm.x + rhsNorm.x * lhsNorm.w + rhsNorm.y * lhsNorm.z - rhsNorm.z * lhsNorm.y;
+		result.y = rhsNorm.w * lhsNorm.y - rhsNorm.x * lhsNorm.z + rhsNorm.y * lhsNorm.w + rhsNorm.z * lhsNorm.x;
+		result.z = rhsNorm.w * lhsNorm.z + rhsNorm.x * lhsNorm.y - rhsNorm.y * lhsNorm.x + rhsNorm.z * lhsNorm.w;
+
+		result = HDQuaternion::Normalize(result);
+
+		return result;
 	}
 
 }

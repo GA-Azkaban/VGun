@@ -5,7 +5,7 @@
 /// 2023.11.10 ±ËπŒ¡§
 /// </summary>
 
-namespace hodoGI
+namespace HDEngine
 {
 	class ICamera;
 	class IDebugCube;

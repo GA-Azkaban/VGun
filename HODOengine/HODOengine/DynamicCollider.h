@@ -1,7 +1,7 @@
 #pragma once
 #include "Collider.h"
 
-namespace hodoData
+namespace HDData
 {
 	class DynamicCollider : public Collider
 	{

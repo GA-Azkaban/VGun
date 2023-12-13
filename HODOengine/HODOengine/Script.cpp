@@ -1,26 +1,26 @@
 #include "Script.h"
 
-hodoData::Script::Script()
+HDData::Script::Script()
 {
 
 }
 
-hodoData::Script::~Script()
+HDData::Script::~Script()
 {
 
 }
 
-void hodoData::Script::Start()
+void HDData::Script::Start()
 {
 
 }
 
-void hodoData::Script::Update()
+void HDData::Script::Update()
 {
 
 }
 
-void hodoData::Script::FixedUpdate()
+void HDData::Script::FixedUpdate()
 {
 
 }

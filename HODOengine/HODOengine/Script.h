@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace hodoData
+namespace HDData
 {
 	class HODO_API Script : public Component
 	{

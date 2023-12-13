@@ -1,7 +1,7 @@
 #pragma once
 #include "../HODOengine/Camera.h"
 
-class MovableCamera : public hodoData::Camera
+class MovableCamera : public HDData::Camera
 {
 public:
 	MovableCamera();

@@ -2,7 +2,7 @@
 #include "dllExporter.h"
 #include "StaticCollider.h"
 
-namespace hodoData
+namespace HDData
 {
 	class HODO_API StaticBoxCollider : public StaticCollider
 	{

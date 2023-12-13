@@ -5,12 +5,12 @@
 #include "Singleton.h"
 #include "../HODOmath/HODOmath.h"
 
-namespace hodoData
+namespace HDData
 {
 	class GameObject;
 }
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class DebugSystem : public Singleton<DebugSystem>
 	{
@@ -23,24 +23,18 @@ namespace hodoEngine
 		void Initialize();
 		void Update();
 
-	/// <summary>
-	///  디버그 관련 함수
-	/// </summary>
-	public:
-		// 콜라이더의 디버그 데이터를 추가해두는 함수
-		void AddDebugData(int flag, hodoData::GameObject* obj ,HDMaths::HDFLOAT4 color);
 		// 콜라이더가 있는 오브젝트에 디버그 형태를 그려주는 함수.
-		void DrawColliderDebug(hodoData::GameObject* obj, HDMaths::HDFLOAT4 color);
+		// 콜라이더 생성 시 자동으로 호출된다.
+		void DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4& color);
 	
-		struct debugData
+	private:
+		struct DebugData
 		{
-			int flag = 0;
-			hodoData::GameObject* obj = nullptr;
-			HDMaths::HDFLOAT4 color = HDMaths::HDFLOAT4{1.f, 0.f, 0.f, 0.f};
+			int index;
+			HDMath::HDFLOAT4 color;
 		};
 
-	private:
-		std::vector<debugData*> _colliderDebugData;
+		std::vector<DebugData> _debugObj;
 
 	public:
 		void SetDebugOn(int index);

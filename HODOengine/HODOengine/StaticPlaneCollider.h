@@ -2,7 +2,7 @@
 #include "StaticCollider.h"
 
 
-namespace hodoData
+namespace HDData
 {
 	class StaticPlaneCollider : public StaticCollider
 	{

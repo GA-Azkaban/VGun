@@ -1,7 +1,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-namespace hodoData
+namespace HDData
 {
 	GameObject::GameObject(std::string name /*= ""*/)
 		:_objectName(name), _parentGameObject(nullptr), _selfActive(true)

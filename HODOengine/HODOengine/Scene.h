@@ -5,9 +5,10 @@
 
 #include "dllExporter.h"
 
-namespace hodoData
+namespace HDData
 {
 	class GameObject;
+	class Camera;
 
 	class HODO_API Scene
 	{
@@ -29,6 +30,13 @@ namespace hodoData
 		std::unordered_set<GameObject*> _gameObjects;
 		std::vector<GameObject*> _destroyObjects;
 		std::string _sceneName;
+		
+	public:
+		Camera* GetMainCamera();
+		void SetMainCamera(Camera* camera);
+
+	private:
+		Camera* _mainCamera;
 	};
 }
 

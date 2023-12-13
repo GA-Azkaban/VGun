@@ -1,44 +1,45 @@
 #include "Collider.h"
 #include "DebugSystem.h"
 
-hodoData::Collider::Collider()
+HDData::Collider::Collider()
 {
-
+	HDMath::HDFLOAT4 color = { 1.f, 0.f, 0.f, 0.f };
+	HDEngine::DebugSystem::Instance().DrawColliderDebug(GetGameObject(), color);
 }
 
-void hodoData::Collider::SetPositionOffset(HDMaths::HDFLOAT3 pos)
+void HDData::Collider::SetPositionOffset(HDMath::HDFLOAT3 pos)
 {
 	_positionOffset = pos;
 }
 
-void hodoData::Collider::SetRotationOffset(float x, float y, float z)
+void HDData::Collider::SetRotationOffset(float x, float y, float z)
 {
 	
 }
 
-void hodoData::Collider::SetScaleOffset(HDMaths::HDFLOAT3 sca)
+void HDData::Collider::SetScaleOffset(HDMath::HDFLOAT3 sca)
 {
 	_scaleOffset = sca;
 }
 
-HDMaths::HDFLOAT3 hodoData::Collider::GetPositionOffset()
+HDMath::HDFLOAT3 HDData::Collider::GetPositionOffset()
 {
 	return _positionOffset;
 }
 
-HDMaths::HDQuaternion hodoData::Collider::GetRotationOffset()
+HDMath::HDQuaternion HDData::Collider::GetRotationOffset()
 {
 	return _rotationOffset;
 }
 
-HDMaths::HDFLOAT3 hodoData::Collider::GetScaleOffset()
+HDMath::HDFLOAT3 HDData::Collider::GetScaleOffset()
 {
 	return _scaleOffset;
 }
 
-HDMaths::HDFLOAT4X4 hodoData::Collider::GetTranslateMatrix()
+HDMath::HDFLOAT4X4 HDData::Collider::GetTranslateMatrix()
 {
-	HDMaths::HDFLOAT4X4 translateMatrix =
+	HDMath::HDFLOAT4X4 translateMatrix =
 	{
 		1,					0,					0,					0,
 		0,					1,					0,					0,
@@ -49,9 +50,9 @@ HDMaths::HDFLOAT4X4 hodoData::Collider::GetTranslateMatrix()
 	return translateMatrix;
 }
 
-HDMaths::HDFLOAT4X4 hodoData::Collider::GetRotationMatrix()
+HDMath::HDFLOAT4X4 HDData::Collider::GetRotationMatrix()
 {
-	HDMaths::HDFLOAT4X4 scaleMatrix =
+	HDMath::HDFLOAT4X4 scaleMatrix =
 	{
 		_scaleOffset.x,		0,					0,					0,
 		0,					_scaleOffset.y,		0,					0,
@@ -62,9 +63,9 @@ HDMaths::HDFLOAT4X4 hodoData::Collider::GetRotationMatrix()
 	return scaleMatrix;
 }
 
-HDMaths::HDFLOAT4X4 hodoData::Collider::GetScaleMatrix()
+HDMath::HDFLOAT4X4 HDData::Collider::GetScaleMatrix()
 {
-	HDMaths::HDFLOAT4X4 rotationMatrix =
+	HDMath::HDFLOAT4X4 rotationMatrix =
 	{
 		1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
 		2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
@@ -90,18 +91,17 @@ HDMaths::HDFLOAT4X4 hodoData::Collider::GetScaleMatrix()
 	return rotationMatrix;
 }
 
-HDMaths::HDFLOAT4X4 hodoData::Collider::GetTransformMatrix()
+HDMath::HDFLOAT4X4 HDData::Collider::GetTransformMatrix()
 {
 	return GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
 }
 
-void hodoData::Collider::Setflag(int flag)
+void HDData::Collider::SetFlag(int flag)
 {
 	_flag = flag;
-	hodoEngine::DebugSystem::Instance().AddDebugData(flag, GetGameObject(), HDMaths::HDFLOAT4{1.f, 0.f, 0.f, 0.f});
 }
 
-int hodoData::Collider::GetFlag()
+int HDData::Collider::GetFlag()
 {
 	return _flag;
 }

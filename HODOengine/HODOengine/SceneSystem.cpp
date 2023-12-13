@@ -5,7 +5,7 @@
 
 #include "IDSystem.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 
 	SceneSystem::SceneSystem()
@@ -14,9 +14,9 @@ namespace hodoEngine
 
 	}
 
-	hodoData::Scene* SceneSystem::CreateScene(std::string sceneName)
+	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
-		hodoData::Scene* scene = new hodoData::Scene(sceneName);
+		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
 		return scene;
 	}
@@ -31,12 +31,12 @@ namespace hodoEngine
 		_currentScene = sceneIter->second;
 	}
 
-	void SceneSystem::LoadScene(hodoData::Scene* scene)
+	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
 		_currentScene = scene;
 	}
 
-	hodoData::Scene* SceneSystem::GetCurrentScene()
+	HDData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
 	}

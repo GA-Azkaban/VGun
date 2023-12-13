@@ -3,7 +3,7 @@
 #include <windows.h>
 
 
-void hodoEngine::InputSystem::Initialize()
+void HDEngine::InputSystem::Initialize()
 {
 	for (int keyCode = 0; keyCode < 256; ++keyCode)
 	{
@@ -12,7 +12,7 @@ void hodoEngine::InputSystem::Initialize()
 	}
 }
 
-void hodoEngine::InputSystem::Update()
+void HDEngine::InputSystem::Update()
 {
 	for (int keyCode = 0; keyCode < 256; ++keyCode)
 	{
@@ -25,32 +25,32 @@ void hodoEngine::InputSystem::Update()
 	}
 }
 
-bool hodoEngine::InputSystem::GetKeyDown(int keyCode)
+bool HDEngine::InputSystem::GetKeyDown(int keyCode)
 {
 	return !_previousKeyState[keyCode] && _currentKeyState[keyCode];
 }
 
-bool hodoEngine::InputSystem::GetKeyUp(int keyCode)
+bool HDEngine::InputSystem::GetKeyUp(int keyCode)
 {
 	return _previousKeyState[keyCode] && !_currentKeyState[keyCode];
 }
 
-bool hodoEngine::InputSystem::GetKeyPressing(int keyCode)
+bool HDEngine::InputSystem::GetKeyPressing(int keyCode)
 {
 	return _previousKeyState[keyCode] && _currentKeyState[keyCode];
 }
 
-HDMaths::HDFLOAT2 hodoEngine::InputSystem::GetMousePosition()
+HDMath::HDFLOAT2 HDEngine::InputSystem::GetMousePosition()
 {
 	POINT mousePosition;
 	GetCursorPos(&mousePosition);
 	ScreenToClient(HODOengine::Instance().GetHWND(), &mousePosition);
-	return HDMaths::HDFLOAT2(mousePosition.x, mousePosition.y);
+	return HDMath::HDFLOAT2(mousePosition.x, mousePosition.y);
 }
 
-HDMaths::HDFLOAT2 hodoEngine::InputSystem::GetMousePositionNormalized()
+HDMath::HDFLOAT2 HDEngine::InputSystem::GetMousePositionNormalized()
 {
-	HDMaths::HDFLOAT2 ret = GetMousePosition();
+	HDMath::HDFLOAT2 ret = GetMousePosition();
 	RECT rect;
 	GetClientRect(HODOengine::Instance().GetHWND(), &rect);
 	ret.x /= static_cast<float>(rect.right) - rect.left;
