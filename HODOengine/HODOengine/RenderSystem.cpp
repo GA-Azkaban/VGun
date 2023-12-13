@@ -65,7 +65,9 @@ namespace HDEngine
 
 	void RenderSystem::UpdateRenderData()
 	{
-
+		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		HDData::Camera* mainCam = currentScene->GetMainCamera();
+		_dx11Renderer->UpdateCamera(mainCam->GetCameraData());
 	}
 
 	void RenderSystem::DrawCurrentScene()

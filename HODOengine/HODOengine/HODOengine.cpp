@@ -11,6 +11,7 @@
 #include "ObjectSystem.h"
 #include "TimeSystem.h"
 #include "InputSystem.h"
+#include "RenderSystem.h"
 
 HODOengine* HODOengine::_instance = nullptr;
 
@@ -30,7 +31,8 @@ HODOengine::HODOengine()
 	_sceneSystem(HDEngine::SceneSystem::Instance()),
 	_objectSystem(HDEngine::ObjectSystem::Instance()),
 	_timeSystem(HDEngine::TimeSystem::Instance()),
-	_inputSystem(HDEngine::InputSystem::Instance())
+	_inputSystem(HDEngine::InputSystem::Instance()),
+	_renderSystem(HDEngine::RenderSystem::Instance())
 {
 
 }
@@ -58,6 +60,7 @@ void HODOengine::Initialize()
 
 	_timeSystem.Initialize();
 	_inputSystem.Initialize();
+	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 }
 
 void HODOengine::Loop()
@@ -119,6 +122,8 @@ void HODOengine::Run()
 		}
 	}
 	// Invoke Collision Events
+
+	_renderSystem.DrawProcess();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

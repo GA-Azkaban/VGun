@@ -9,6 +9,7 @@ namespace HDEngine
 	class InputSystem;
 	class TimeSystem;
 	class IDSystem;
+	class RenderSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -48,4 +49,5 @@ private:
 	HDEngine::ObjectSystem& _objectSystem;
 	HDEngine::TimeSystem& _timeSystem;
 	HDEngine::InputSystem& _inputSystem;
+	HDEngine::RenderSystem& _renderSystem;
 };
