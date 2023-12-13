@@ -13,6 +13,7 @@
 #include "TimeSystem.h"
 #include "InputSystem.h"
 #include "DebugSystem.h"
+#include "PhysicsSystem.h"
 
 HODOengine* HODOengine::_instance = nullptr;
 
@@ -33,7 +34,8 @@ HODOengine::HODOengine()
 	_objectSystem(hodoEngine::ObjectSystem::Instance()),
 	_timeSystem(hodoEngine::TimeSystem::Instance()),
 	_inputSystem(hodoEngine::InputSystem::Instance()),
-	_debugSystem(hodoEngine::DebugSystem::Instance())
+	_debugSystem(hodoEngine::DebugSystem::Instance()),
+	_physicsSystem(hodoEngine::PhysicsSystem::Instance())
 {
 
 }
@@ -64,6 +66,7 @@ void HODOengine::Initialize()
 	_timeSystem.Initialize();
 	_inputSystem.Initialize();
 	_debugSystem.Initialize();
+	_physicsSystem.Initialize();
 }
 
 void HODOengine::Loop()
@@ -130,6 +133,9 @@ void HODOengine::Run()
 	hodoEngine::GraphicsRenderer::Instance().Update(hodoEngine::TimeSystem::Instance().GetDeltaTime());
 	// Renderer Render
 	hodoEngine::GraphicsRenderer::Instance().Render();
+
+	// physicsUpdate, temporary location
+	hodoEngine::PhysicsSystem::Instance().Update();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

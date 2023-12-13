@@ -114,9 +114,6 @@
     <ClInclude Include="Component.h">
       <Filter>05_Component\ComponentBase</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>05_Component\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="HODO_API.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
@@ -141,6 +138,16 @@
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="DebugSystem.h" />
+    <ClInclude Include="DynamicCollider.h" />
+    <ClInclude Include="HodoDebugCube.h" />
+    <ClInclude Include="GraphicsRenderer.h" />
+    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="StaticBoxCollider.h" />
+    <ClInclude Include="StaticCollider.h" />
+    <ClInclude Include="StaticPlaneCollider.h" />
+    <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="PhysicsSystem.h">
       <Filter>06_System\PhysicsSystem</Filter>
     </ClInclude>
@@ -167,9 +174,6 @@
     </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>05_Component\Transform</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>05_Component\Collision</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>03_Scene</Filter>
@@ -201,6 +205,15 @@
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DebugSystem.cpp" />
+    <ClCompile Include="DynamicCollider.cpp" />
+    <ClCompile Include="HodoDebugCube.cpp" />
+    <ClCompile Include="GraphicsRenderer.cpp" />
+    <ClCompile Include="StaticBoxCollider.cpp" />
+    <ClCompile Include="StaticCollider.cpp" />
+    <ClCompile Include="StaticPlaneCollider.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>06_System\PhysicsSystem</Filter>
     </ClCompile>
