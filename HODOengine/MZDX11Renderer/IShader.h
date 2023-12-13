@@ -8,4 +8,12 @@ public:
 	virtual ~IShader();
 
 	void LoadShaderFile(LPCWSTR shaderFile);
+
+protected:
+	virtual void CreateShader(ID3DBlob* shaderBlob) = 0;
+
+protected:
+	ID3D11Device* device;
+	ID3D11DeviceContext* deviceContext;
+	ID3DBlob* shaderBlob;
 };

@@ -22,9 +22,6 @@
     <Filter Include="Factory">
       <UniqueIdentifier>{255796b9-f7ee-476c-964a-2a4d1114b1ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{673dc7b1-fe90-42d4-b8c0-fda25fbf2b9b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{26b39938-7d25-4921-88f8-a17e43f065b0}</UniqueIdentifier>
     </Filter>
@@ -115,7 +112,10 @@
     <Filter Include="Hodo3DGIAdapter\HodoDebugCubeAdapter">
       <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ShaderStruct">
+    <Filter Include="HLSL">
+      <UniqueIdentifier>{673dc7b1-fe90-42d4-b8c0-fda25fbf2b9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
       <UniqueIdentifier>{2aced9ac-e843-408c-b3c5-654f557624a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -266,10 +266,10 @@
       <Filter>Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
-      <Filter>ShaderStruct</Filter>
+      <Filter>Shaders</Filter>
     </ClInclude>
     <ClInclude Include="IShader.h">
-      <Filter>ShaderStruct</Filter>
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -375,57 +375,57 @@
       <Filter>Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
-      <Filter>ShaderStruct</Filter>
+      <Filter>Shaders</Filter>
     </ClCompile>
     <ClCompile Include="IShader.cpp">
-      <Filter>ShaderStruct</Filter>
+      <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="wire.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="LightHelper.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="SkinnedMeshDeferred.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Sky.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="StaticMeshDeferred.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="YunuSkinnedMeshDeferred.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PBR.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PBRLightHelper.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="Basic.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="BasicTex.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="color.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="ComputeLight.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="DebugObject.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="UIObject.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
     <FxCompile Include="UIText.fx">
-      <Filter>Shader</Filter>
+      <Filter>HLSL</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
