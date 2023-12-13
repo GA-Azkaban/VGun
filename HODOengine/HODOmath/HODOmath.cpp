@@ -1050,4 +1050,54 @@ namespace HDMath
 		return scale;
 	}
 
+	HDQuaternion HDRotateQuaternion(const HDQuaternion& quaternion, const HDFLOAT3& axis, float radian)
+	{
+		// 축 벡터를 정규화합니다.
+		HDFLOAT3 normalizedAxis = HDFLOAT3::Normalize(axis);
+
+		// 회전 각도의 반을 구합니다.
+		float halfAngleRad = radian * 0.5f;
+
+		// 회전 각도의 부호를 쿼터니언에 반영합니다.
+		float cosHalfAngle = std::cos(halfAngleRad);
+		float sinHalfAngle = std::sin(halfAngleRad);
+
+		float w = cosHalfAngle;
+		float x = normalizedAxis.x * sinHalfAngle;
+		float y = normalizedAxis.y * sinHalfAngle;
+		float z = normalizedAxis.z * sinHalfAngle;
+
+		// 회전 쿼터니언을 정규화하여 사용합니다.
+		HDQuaternion rotation = { w, x, y, z };
+		rotation = HDQuaternion::Normalize(rotation);
+
+		// 원본 쿼터니언과 회전 쿼터니언의 곱으로 결과 쿼터니언을 계산합니다.
+		HDQuaternion result;
+		//	result = RMQuaternionMultiply(quaternion, rotation);
+		result.w = rotation.w * quaternion.w - rotation.x * quaternion.x - rotation.y * quaternion.y - rotation.z * quaternion.z;
+		result.x = rotation.w * quaternion.x + rotation.x * quaternion.w + rotation.y * quaternion.z - rotation.z * quaternion.y;
+		result.y = rotation.w * quaternion.y - rotation.x * quaternion.z + rotation.y * quaternion.w + rotation.z * quaternion.x;
+		result.z = rotation.w * quaternion.z + rotation.x * quaternion.y - rotation.y * quaternion.x + rotation.z * quaternion.w;
+
+		return result;
+	}
+
+	HDQuaternion HDQuaternionMultiply(const HDQuaternion& lhs, const HDQuaternion& rhs)
+	{
+		HDQuaternion lhsNorm = HDQuaternion::Normalize(lhs);
+		HDQuaternion rhsNorm = HDQuaternion::Normalize(rhs);
+
+		// 원본 쿼터니언과 회전 쿼터니언의 곱으로 결과 쿼터니언을 계산합니다.
+		HDQuaternion result;
+
+		result.w = rhsNorm.w * lhsNorm.w - rhsNorm.x * lhsNorm.x - rhsNorm.y * lhsNorm.y - rhsNorm.z * lhsNorm.z;
+		result.x = rhsNorm.w * lhsNorm.x + rhsNorm.x * lhsNorm.w + rhsNorm.y * lhsNorm.z - rhsNorm.z * lhsNorm.y;
+		result.y = rhsNorm.w * lhsNorm.y - rhsNorm.x * lhsNorm.z + rhsNorm.y * lhsNorm.w + rhsNorm.z * lhsNorm.x;
+		result.z = rhsNorm.w * lhsNorm.z + rhsNorm.x * lhsNorm.y - rhsNorm.y * lhsNorm.x + rhsNorm.z * lhsNorm.w;
+
+		result = HDQuaternion::Normalize(result);
+
+		return result;
+	}
+
 }

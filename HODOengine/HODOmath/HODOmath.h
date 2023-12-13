@@ -306,21 +306,22 @@ namespace HDMath
 		
 
 		// 수학 연산
-		HDFLOAT4X4 Multiply(const HDFLOAT4X4& left, const HDFLOAT4X4& right);
-		HDFLOAT4X4 Inverse() const;
-		HDFLOAT3X3 ToMatrix3x3() const;
+		HDFLOAT4X4 Multiply		(const HDFLOAT4X4& left, const HDFLOAT4X4& right);
+		HDFLOAT4X4 Inverse		() const;
+		HDFLOAT3X3 ToMatrix3x3	() const;
 	};
 
 	// 기타 수학 연산
-	HDFLOAT4 HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right);
-	HDFLOAT4 HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right);
-	HDFLOAT4 QuaternionToFloat4(const HDQuaternion& val);
-	HDQuaternion Float4ToQuaternion(const HDFLOAT4& val);
-	HDFLOAT4X4 GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale);
-	HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM);
-	HDQuaternion GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM);
-	HDFLOAT3 GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM);
-
+	HDFLOAT4		HDFloat4MultiplyMatrix		(const HDFLOAT4& left, const HDFLOAT4X4& right);
+	HDFLOAT4		HDFloat3MultiplyMatrix		(const HDFLOAT3& left, const HDFLOAT4X4& right);
+	HDFLOAT4		QuaternionToFloat4			(const HDQuaternion& val);
+	HDQuaternion	Float4ToQuaternion			(const HDFLOAT4& val);
+	HDFLOAT4X4		GetTransformMatrix			(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale);
+	HDFLOAT3		GetLocalPositionFromLocalTM	(const HDFLOAT4X4& localTM);
+	HDQuaternion	GetLocalRotationFromLocalTM	(const HDFLOAT4X4& localTM);
+	HDFLOAT3		GetLocalScaleFromLocalTM	(const HDFLOAT4X4& localTM);
+	HDQuaternion	HDRotateQuaternion			(const HDQuaternion& quaternion, const HDFLOAT3& axis, float radian);
+	HDQuaternion	HDQuaternionMultiply		(const HDQuaternion& lhs, const HDQuaternion& rhs);
 };
 
 
