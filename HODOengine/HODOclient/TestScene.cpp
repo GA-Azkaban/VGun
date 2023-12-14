@@ -2,7 +2,7 @@
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
-#include "MovableCamera.h"
+#include "CameraMove.h"
 
 enum eColliderType
 {
@@ -13,6 +13,8 @@ enum eColliderType
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
+	auto mainCam = _scene->GetMainCamera()->GetGameObject();
+	mainCam->AddComponent<CameraMove>();
 
 	//auto camera = API::CreateObject(_scene);
 	//camera->AddComponent<MovableCamera>()->SetMainCamera();

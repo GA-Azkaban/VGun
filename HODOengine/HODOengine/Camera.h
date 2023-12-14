@@ -15,9 +15,6 @@ namespace HDData
 	public:
 		Camera();
 
-	protected:
-		virtual void Start() override;
-
 	public:
 		HDEngine::CameraData& GetCameraData();
 
@@ -45,16 +42,6 @@ namespace HDData
 		void SetFarZ(float farZ);
 		void SetAspect(float aspect);
 		void SetFovY(float fovY);
-
-	public:
-		void Strafe(float delta);
-		void Walk(float delta);
-		void WorldUpDown(float delta);
-
-		void Yaw(float angle);
-		void Pitch(float radian);
-		void Roll(float angle);
-		void RotateY(float angle);
 
 	private:
 		float _nearZ;				// frustum의 가까운 평면까지의 거리

@@ -10,3 +10,9 @@ HDData::Transform* HDData::Component::GetTransform() const
 {
 	return _gameObject->GetTransform();
 }
+
+HDData::Component::Component()
+	: _gameObject(nullptr), _isActive(true), _isStarted(false)
+{
+
+}

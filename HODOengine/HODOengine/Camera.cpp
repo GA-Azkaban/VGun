@@ -21,11 +21,6 @@ namespace HDData
 
 	}
 
-	void Camera::Start()
-	{
-
-	}
-
 	HDEngine::CameraData& Camera::GetCameraData()
 	{
 		// 		float screenWidth = (float)RocketCore::RenderSystem::Instance().GetScreenWidth();
@@ -132,47 +127,4 @@ namespace HDData
 	{
 		_cameraData.fovY = fovY;
 	}
-
-	void Camera::Strafe(float delta)
-	{
-		HDMath::HDFLOAT3 rightVec = GetGameObject()->GetTransform()->GetRight();
-		rightVec.x *= delta;
-		rightVec.y *= delta;
-		rightVec.z *= delta;
-
-		GetGameObject()->GetTransform()->Translate(rightVec);
-	}
-
-	void Camera::Walk(float delta)
-	{
-		HDMath::HDFLOAT3 forwardVec = GetGameObject()->GetTransform()->GetForward();
-		forwardVec.x *= delta;
-		forwardVec.y *= delta;
-		forwardVec.z *= delta;
-
-		GetGameObject()->GetTransform()->Translate(forwardVec);
-	}
-
-	void Camera::WorldUpDown(float delta)
-	{
-		HDMath::HDFLOAT3 worldUpDelta = { 0.0f,delta,0.0f };
-		GetGameObject()->GetTransform()->Translate(worldUpDelta);
-	}
-
-	void Camera::Pitch(float radian)
-	{
-		//RMQuaternion newRot = RMRotateQuaternion(gameObject->transform.GetLocalRotation(), gameObject->transform.GetRight(), angle);
-		HDMath::HDFLOAT4 r{ 1.0f,0.0f,0.0f,1.0f };
-		r = HDFloat4MultiplyMatrix(r, GetGameObject()->GetTransform()->GetLocalTM());
-		HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, radian);
-		GetGameObject()->GetTransform()->SetLocalRotation(newRot);
-	}
-
-	void Camera::RotateY(float angle)
-	{
-		HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
-		GetGameObject()->GetTransform()->SetLocalRotation(newRot);
-	}
-
-
 }

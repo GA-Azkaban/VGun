@@ -7,6 +7,8 @@
 /// 2023.11.01 김민정
 /// </summary>
 
+class HODOengine;
+
 namespace HDData
 {
 	class GameObject;
@@ -16,6 +18,7 @@ namespace HDData
 	{
 	public:
 		friend GameObject;
+		friend HODOengine;
 
 		// 비활성화 된 게임 오브젝트가 활성화 될 때 호출되는 콜백 함수입니다.
 		virtual void OnEnable() {};
@@ -54,11 +57,12 @@ namespace HDData
 		};
 
 	protected:
-		Component() : _gameObject(nullptr), _isActive(true) {};
+		Component();
 
 	private:
 		GameObject* _gameObject;
 		bool _isActive;
+		bool _isStarted;
 
 	};
 }

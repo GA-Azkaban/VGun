@@ -120,6 +120,19 @@ void HODOengine::Run()
 	}
 	HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
 
+	// Start Components
+	for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
+	{
+		for (auto component : gameObj->GetAllComponents())
+		{
+			if (!component->_isStarted)
+			{
+				component->Start();
+				component->_isStarted = true;
+			}
+		}
+	}
+
 	// Update Components
 	for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
 	{
@@ -128,6 +141,7 @@ void HODOengine::Run()
 			component->Update();
 		}
 	}
+
 	// Invoke Collision Events
 
 	_renderSystem.DrawProcess();

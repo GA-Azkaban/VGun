@@ -22,6 +22,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "Transform.h"
+#include "Camera.h"
 #include "Script.h"
 #include "Collider.h"
 #include "StaticBoxCollider.h"

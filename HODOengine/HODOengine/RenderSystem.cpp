@@ -70,16 +70,6 @@ namespace HDEngine
 		_dx11Renderer->UpdateCamera(mainCam->GetCameraData());
 	}
 
-	void RenderSystem::DrawCurrentScene()
-	{
-
-	}
-
-	void RenderSystem::DrawCurrentUI()
-	{
-
-	}
-
 	int RenderSystem::GetScreenWidth() const
 	{
 		return _screenWidth;

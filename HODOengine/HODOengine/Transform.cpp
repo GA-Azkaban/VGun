@@ -18,11 +18,13 @@ namespace HDData
 			return _position;
 		}
 
-		HDMath::HDFLOAT3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
-		HDMath::HDQuaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
-		HDMath::HDFLOAT3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale();
+		return HDMath::HDFloat3MultiplyMatrix(_position, GetWorldTM());
 
-		return parentPosition + parentRotation * (parentScale * _position);
+// 		HDMath::HDFLOAT3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
+// 		HDMath::HDQuaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
+// 		HDMath::HDFLOAT3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale();
+// 
+// 		return parentPosition + parentRotation * (parentScale * _position);
 	}
 
 	HDMath::HDQuaternion Transform::GetWorldRotation() const
@@ -66,7 +68,8 @@ namespace HDData
 		{
 			return GetLocalTM();
 		}
-		return GetTransformMatrix(GetWorldPosition(), GetWorldRotation(), GetWorldScale());
+
+		return GetLocalTM() * GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM();
 	}
 
 	HDMath::HDFLOAT4X4 Transform::GetLocalTM() const
@@ -76,20 +79,17 @@ namespace HDData
 
 	HDMath::HDFLOAT3 Transform::GetForward() const
 	{
-		HDMath::HDFLOAT4 temp = HDFloat4MultiplyMatrix(HDMath::HDFLOAT4(0.0f, 0.0f, 1.0f, 0.0f), GetWorldTM());
-		return HDMath::HDFLOAT3(temp.x, temp.y, temp.z);
+		return GetWorldRotation() * HDMath::HDFLOAT3(0.0f, 0.0f, 1.0f);
 	}
 
 	HDMath::HDFLOAT3 Transform::GetUp() const
 	{
-		HDMath::HDFLOAT4 temp = HDFloat4MultiplyMatrix(HDMath::HDFLOAT4(0.0f, 1.0f, 0.0f, 0.0f), GetWorldTM());
-		return HDMath::HDFLOAT3(temp.x, temp.y, temp.z);
+		return GetWorldRotation() * HDMath::HDFLOAT3(0.0f, 1.0f, 0.0f);
 	}
 
 	HDMath::HDFLOAT3 Transform::GetRight() const
 	{
-		HDMath::HDFLOAT4 temp = HDFloat4MultiplyMatrix(HDMath::HDFLOAT4(1.0f, 0.0f, 0.0f, 0.0f), GetWorldTM());
-		return HDMath::HDFLOAT3(temp.x, temp.y, temp.z);
+		return GetWorldRotation() * HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
 	}
 
 	void Transform::SetWorldPosition(const HDMath::HDFLOAT3& position)

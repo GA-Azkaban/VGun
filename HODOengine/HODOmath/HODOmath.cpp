@@ -950,7 +950,7 @@ namespace HDMath
 		return result;
 	}
 
-	HDFLOAT4 HDMath::HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
+	HDFLOAT3 HDMath::HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
 	{
 		HDFLOAT4 result = HDFloat4MultiplyMatrix({ left.x, left.y, left.z, 1.0f }, right);
 		return { result.x ,result.y, result.z };

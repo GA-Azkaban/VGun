@@ -12,9 +12,10 @@ namespace HDEngine
 	class I3DRenderer
 	{
 	public:
-		//그래픽스 엔진을 초기화한다.
+		// 그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) abstract;
 
+		// virtual void UpdateRenderData(const RenderData& renderData) abstract;
 		virtual void UpdateCamera(const CameraData& cameraData) abstract;
 
 		virtual void Render() abstract;

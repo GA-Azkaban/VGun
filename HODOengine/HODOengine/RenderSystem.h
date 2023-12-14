@@ -40,10 +40,6 @@ namespace HDEngine
 
 	private:
 		void UpdateRenderData();
-		void DrawCurrentScene();
-
-	private:
-		void DrawCurrentUI();
 
 	public:
 		int GetScreenWidth() const;

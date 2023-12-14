@@ -313,7 +313,7 @@ namespace HDMath
 
 	// 기타 수학 연산
 	HDFLOAT4		HDFloat4MultiplyMatrix		(const HDFLOAT4& left, const HDFLOAT4X4& right);
-	HDFLOAT4		HDFloat3MultiplyMatrix		(const HDFLOAT3& left, const HDFLOAT4X4& right);
+	HDFLOAT3		HDFloat3MultiplyMatrix		(const HDFLOAT3& left, const HDFLOAT4X4& right);
 	HDFLOAT4		QuaternionToFloat4			(const HDQuaternion& val);
 	HDQuaternion	Float4ToQuaternion			(const HDFLOAT4& val);
 	HDFLOAT4X4		GetTransformMatrix			(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale);

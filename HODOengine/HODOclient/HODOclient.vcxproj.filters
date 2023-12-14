@@ -22,6 +22,9 @@
     <Filter Include="02_Client\3. Camera">
       <UniqueIdentifier>{452574f4-8788-440d-9974-13fadcb63a1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ClientComponent">
+      <UniqueIdentifier>{69729690-07e4-442d-86e9-4c689c12d0c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -42,9 +45,11 @@
     <ClInclude Include="TestScript.h">
       <Filter>02_Client\2. Scene</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptTest.h" />
     <ClInclude Include="MovableCamera.h">
       <Filter>02_Client\3. Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMove.h">
+      <Filter>ClientComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,9 +81,11 @@
     <ClCompile Include="TestScript.cpp">
       <Filter>02_Client\2. Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ScriptTest.cpp" />
     <ClCompile Include="MovableCamera.cpp">
       <Filter>02_Client\3. Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMove.cpp">
+      <Filter>ClientComponent</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
