@@ -6,7 +6,6 @@
 namespace HDData
 {
 	class Scene;
-	class GameObject;
 }
 
 namespace HDEngine
@@ -22,17 +21,11 @@ namespace HDEngine
 		HDData::Scene* CreateScene(std::string sceneName = "");
 		void LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);
-		void UpdateScene();
-		
+
+		HDData::Scene* GetCurrentScene();
+
 	private:
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
-
-	public:
-		HDData::Scene* GetCurrentScene();
-		HDData::Scene* GetPrevScene();
-
-	private:
-		HDData::Scene* _previousScene;
 		HDData::Scene* _currentScene;
 	};
 

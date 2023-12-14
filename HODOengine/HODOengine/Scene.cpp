@@ -12,7 +12,7 @@ namespace HDData
 		: _sceneName(sceneName)
 	{
 		// 씬이 생성될 때 반드시 Directional Light와 Camera를 가지고 있어야 한다
-		GameObject* camObj = HDEngine::ObjectSystem::Instance().CreateObject(this, "MainCamera");
+		GameObject* camObj = CreateObject("MainCamera");
 		Camera* mainCam = camObj->AddComponent<Camera>();
 		SetMainCamera(mainCam);
 		camObj->GetTransform()->SetWorldPosition(0.0f, 5.0f, 20.0f);
@@ -22,6 +22,73 @@ namespace HDData
 	Scene::~Scene()
 	{
 		
+	}
+
+	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
+	{
+		return HDEngine::ObjectSystem::Instance().CreateObject(this, objectName, parent);
+	}
+
+	void Scene::DestroyObject(HDData::GameObject* gameObject)
+	{
+		HDEngine::ObjectSystem::Instance().DestroyObject(this, gameObject);
+	}
+
+	void Scene::FlushDestroyObjectList()
+	{
+		for (auto& destroyObj : _destroyObjects)
+		{
+			for (auto& component : destroyObj->GetAllComponents())
+			{
+				component->OnDestroy();
+			}
+			_gameObjects.erase(destroyObj);
+		}
+		_destroyObjects.clear();
+	}
+
+	void Scene::Start()
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->Start();
+			}
+		}
+	}
+
+	void Scene::Update()
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->Update();
+			}
+		}
+	}
+
+	void Scene::LateUpdate()
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->LateUpdate();
+			}
+		}
+	}
+
+	void Scene::FixedUpdate()
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->FixedUpdate();
+			}
+		}
 	}
 
 	std::unordered_set<GameObject*>& Scene::GetGameObjectList()

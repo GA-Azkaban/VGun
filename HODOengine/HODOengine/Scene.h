@@ -21,6 +21,16 @@ namespace HDData
 		~Scene();
 
 	public:
+		HDData::GameObject* CreateObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
+		void DestroyObject(HDData::GameObject* gameObject);
+
+		void FlushDestroyObjectList();
+
+		void Start();
+		void Update();
+		void LateUpdate();
+		void FixedUpdate();
+
 		std::unordered_set<GameObject*>& GetGameObjectList();
 		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();

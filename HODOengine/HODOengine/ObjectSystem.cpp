@@ -76,6 +76,13 @@ namespace HDEngine
 		return newObject;
 	}
 
+	HDData::GameObject* ObjectSystem::CreateStaticObject(std::string objectName /*= ""*/)
+	{
+		GameObject* newObject = new GameObject(objectName);
+		_staticObjectList.insert(newObject);
+		return newObject;
+	}
+
 	void ObjectSystem::DestroyObject(Scene* scene, GameObject* gameObject)
 	{
 		if (!gameObject)
@@ -87,4 +94,68 @@ namespace HDEngine
 			DestroyObject(scene, child);
 		}
 	}
+
+	void ObjectSystem::DestroyStaticObject(HDData::GameObject* gameObject)
+	{
+		if (!gameObject)
+			return;
+
+		_destroyStaticObjectList.insert(gameObject);
+	}
+
+	void ObjectSystem::FlushDestroyObjectList()
+	{
+		for (auto& destroyStaticObj : _destroyStaticObjectList)
+		{
+			for (auto& component : destroyStaticObj->GetAllComponents())
+			{
+				component->OnDestroy();
+			}
+			_staticObjectList.erase(destroyStaticObj);
+		}
+		_destroyStaticObjectList.clear();
+
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		currentScene->FlushDestroyObjectList();
+	}
+
+	void ObjectSystem::StartCurrentSceneObjects()
+	{
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		if (currentScene == nullptr)
+			return;
+
+		for (auto& staticObject : _staticObjectList)
+		{
+			staticObject->Start();
+		}
+
+		currentScene->Start();
+	}
+
+	void ObjectSystem::UpdateCurrentSceneObjects()
+	{
+
+	}
+
+	void ObjectSystem::LateUpdateCurrentSceneObjects()
+	{
+
+	}
+
+	void ObjectSystem::FixedUpdateCurrentSceneObjects()
+	{
+
+	}
+
+	std::unordered_set<HDData::GameObject*>& ObjectSystem::GetStaticObjectList()
+	{
+		return _staticObjectList;
+	}
+
+	std::unordered_set<HDData::GameObject*>& ObjectSystem::GetDestroyStaticObjectList()
+	{
+		return _destroyStaticObjectList;
+	}
+
 }

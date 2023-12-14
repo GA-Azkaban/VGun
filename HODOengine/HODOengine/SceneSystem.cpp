@@ -20,6 +20,13 @@ namespace HDEngine
 
 	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
+		// 이미 있는 씬 이름이라면 그 씬을 반환해준다.
+		auto iter = _sceneList.find(sceneName);
+		if (iter != _sceneList.end())
+		{
+			return _sceneList[sceneName];
+		}
+
 		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
 		return scene;

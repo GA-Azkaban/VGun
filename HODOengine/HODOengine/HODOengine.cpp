@@ -102,18 +102,16 @@ HWND HODOengine::GetHWND()
 
 void HODOengine::Run()
 {
-	// Time Update
 	_timeSystem.Update();
 
-	// Input, Debug Update
-	HDEngine::InputSystem::Instance().Update();
-	HDEngine::DebugSystem::Instance().Update();
+	_objectSystem.FlushDestroyObjectList();
 
-	// Update Static Object
-	HDEngine::ObjectSystem::Instance().Update();
+	_inputSystem.Update();
+	_debugSystem.Update();
 
-	// Update, Destroy Scene Object and Components
-	HDEngine::SceneSystem::Instance().UpdateScene();
+	_objectSystem.StartCurrentSceneObjects();
+	_objectSystem.UpdateCurrentSceneObjects();
+	_objectSystem.LateUpdateCurrentSceneObjects();
 
 
 	// draw

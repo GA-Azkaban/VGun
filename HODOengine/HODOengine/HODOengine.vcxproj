@@ -157,7 +157,6 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
-    <ClInclude Include="Renderable.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
