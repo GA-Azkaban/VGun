@@ -1,115 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="00_Default">
-      <UniqueIdentifier>{7041e5c9-9e25-4096-8397-072bf5b1c330}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01_Entry">
-      <UniqueIdentifier>{21a354cc-f058-4d07-9664-27bbb88e59fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client">
-      <UniqueIdentifier>{23e3daf6-fc42-4d9c-afd0-e6ca5f3d2b8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\0. App">
-      <UniqueIdentifier>{d8e2c6dc-cc08-4763-afa9-f3963ec746da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\1. Client">
-      <UniqueIdentifier>{2d0b935b-c7d7-4c9b-bbb3-0667f3805ddf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\2. Scene">
-      <UniqueIdentifier>{f32f4ee0-94f1-45ec-85d7-4fafc965b6c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\3. Camera">
-      <UniqueIdentifier>{452574f4-8788-440d-9974-13fadcb63a1d}</UniqueIdentifier>
-    </Filter>
-<<<<<<< Updated upstream
-    <Filter Include="ClientComponent">
-      <UniqueIdentifier>{69729690-07e4-442d-86e9-4c689c12d0c1}</UniqueIdentifier>
-=======
-    <Filter Include="03_Manager">
-      <UniqueIdentifier>{79bd025b-e399-4e82-a132-143efb2bdcc4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_Scene">
-      <UniqueIdentifier>{a7d06d98-5f4a-4f70-8eed-048c9fc7ad5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Script">
-      <UniqueIdentifier>{8de8384a-2a1e-4984-b788-a4b42b61c7b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Script\PlayerMove">
-      <UniqueIdentifier>{ec8a02f0-e643-40a6-8b4e-9070220ca9d7}</UniqueIdentifier>
->>>>>>> Stashed changes
-    </Filter>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CameraMove.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="MovableCamera.cpp" />
+    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TestScript.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>00_Default</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>00_Default</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>02_Client\0. App</Filter>
-    </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>02_Client\1. Client</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>02_Client\2. Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScript.h">
-      <Filter>02_Client\2. Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="MovableCamera.h">
-      <Filter>02_Client\3. Camera</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-    <ClInclude Include="CameraMove.h">
-      <Filter>ClientComponent</Filter>
-=======
-    <ClInclude Include="PlayerMove.h">
-      <Filter>05_Script\PlayerMove</Filter>
->>>>>>> Stashed changes
-    </ClInclude>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="CameraMove.h" />
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="MovableCamera.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestScene.h" />
+    <ClInclude Include="TestScript.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>00_Default</Filter>
-    </Image>
-    <Image Include="HODOclient.ico">
-      <Filter>00_Default</Filter>
-    </Image>
+    <ResourceCompile Include="HODOclient.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="HODOclient.rc">
-      <Filter>00_Default</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Entry.cpp">
-      <Filter>01_Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>02_Client\0. App</Filter>
-    </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>02_Client\1. Client</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>02_Client\2. Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="TestScript.cpp">
-      <Filter>02_Client\2. Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="MovableCamera.cpp">
-      <Filter>02_Client\3. Camera</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="CameraMove.cpp">
-      <Filter>ClientComponent</Filter>
-=======
-    <ClCompile Include="PlayerMove.cpp">
-      <Filter>05_Script\PlayerMove</Filter>
->>>>>>> Stashed changes
-    </ClCompile>
+    <Image Include="HODOclient.ico" />
+    <Image Include="small.ico" />
   </ItemGroup>
 </Project>

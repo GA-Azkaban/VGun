@@ -110,11 +110,10 @@ void HODOengine::Run()
 
 	// Update Static Object
 
+	// Update, Destroy Scene Object and Components
 	HDEngine::SceneSystem::Instance().UpdateScene();
 
-	// Update, Destroy Scene Object and Components
 	// Invoke Collision Events
-
 
 	// draw
 	_renderSystem.DrawProcess();
