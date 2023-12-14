@@ -5,11 +5,6 @@ CameraMove::CameraMove()
 {
 }
 
-void CameraMove::Start()
-{
-
-}
-
 void CameraMove::Update()
 {
 	//float deltaTime = rocket.GetDeltaTime();
