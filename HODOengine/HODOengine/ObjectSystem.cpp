@@ -10,21 +10,46 @@ namespace HDEngine
 
 	void ObjectSystem::Start()
 	{
+		// 매니저 뒤에 objectsystem을 한번 돌려주고...
 		for (const auto& staticObj : GetStaticObjectList())
 		{
 			for (const auto& comp : staticObj->GetAllComponents())
 			{
-				if (!comp->GetIsStarted())
-				{
-					comp->Start();
-				}
+				comp->Start();
 			}
 		}
+
+		for (const auto& staticObj : GetStaticObjectList())
+		{
+			GetRunningStaticObjectList().push_back(staticObj);
+		}
+
+		GetStaticObjectList().clear();
 	}
 
 	void ObjectSystem::Update()
 	{
-		for (const auto& staticObj : GetStaticObjectList())
+		// 중간에 static 오브젝트가 추가된다면.... 
+		if (!GetStaticObjectList().empty())
+		{
+			for (const auto& staticObj : GetStaticObjectList())
+			{
+				for (const auto& comp : staticObj->GetAllComponents())
+				{
+					comp->Start();
+				}
+			}
+
+			for (const auto& staticObj : GetStaticObjectList())
+			{
+				GetRunningStaticObjectList().push_back(staticObj);
+			}
+
+			GetStaticObjectList().clear();
+		}
+
+		// static한 오브젝트들의 업데이트를 돌려준다
+		for (const auto& staticObj : GetRunningStaticObjectList())
 		{
 			for (const auto& comp : staticObj->GetAllComponents())
 			{

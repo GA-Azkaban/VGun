@@ -6,6 +6,9 @@
 
 #include "IDSystem.h"
 
+
+// TODO) 게임오브젝트 구조가 바뀌면 대대적인 수정이 필요할 듯
+
 namespace HDEngine
 {
 
@@ -65,6 +68,7 @@ namespace HDEngine
 
 	void SceneSystem::UpdateScene()
 	{
+		// 지워야 할 오브젝트에 대한 수행
 		for (auto destroyObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
 		{
 			for (auto component : destroyObj->GetAllComponents())
@@ -75,6 +79,7 @@ namespace HDEngine
 		}
 		HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
 
+		// 업데이트를 돌아야 할 오브젝트에 대한 수행
 		for (const auto& one : _currentScene->GetGameObjectList())
 		{
 			for (const auto& comp : one->GetAllComponents())
