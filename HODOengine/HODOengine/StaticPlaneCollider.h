@@ -10,7 +10,6 @@ namespace HDData
 		StaticPlaneCollider();
 
 	public:
-		void Start() override;
 		void Update() override;
 	};
 }

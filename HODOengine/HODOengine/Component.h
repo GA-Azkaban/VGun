@@ -25,7 +25,7 @@ namespace HDData
 		// 활성화 된 게임 오브젝트가 비활성화 될 때 호출되는 콜백 함수입니다.
 		virtual void OnDisable() {};
 		// 최초로 Update가 호출될 때 호출되는 콜백 함수입니다.
-		virtual void Start() {};
+		virtual void Start() { _isStarted = true;  };
 		// 매 프레임마다 호출되는 콜백 함수입니다.
 		virtual void Update() {};
 		// 정확한 시간 간격으로 호출되는 콜백 함수입니다.
@@ -46,6 +46,7 @@ namespace HDData
 		Transform* GetTransform() const;
 
 		bool GetActive() { return _isActive; };
+		bool GetIsStarted() { return _isStarted; };
 
 		void SetActive(bool active) {
 			if (!_isActive && active)
@@ -63,7 +64,6 @@ namespace HDData
 		GameObject* _gameObject;
 		bool _isActive;
 		bool _isStarted;
-
 	};
 }
 

@@ -29,8 +29,10 @@ namespace HDEngine
 
 	public:
 		HDData::Scene* GetCurrentScene();
+		HDData::Scene* GetPrevScene();
 
 	private:
+		HDData::Scene* _previousScene;
 		HDData::Scene* _currentScene;
 	};
 

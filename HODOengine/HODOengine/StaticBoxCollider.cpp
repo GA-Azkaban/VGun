@@ -6,11 +6,6 @@ HDData::StaticBoxCollider::StaticBoxCollider()
 
 }
 
-void HDData::StaticBoxCollider::Start()
-{
-
-}
-
 void HDData::StaticBoxCollider::Update()
 {
 

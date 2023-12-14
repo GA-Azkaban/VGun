@@ -10,7 +10,6 @@ namespace HDData
 		StaticBoxCollider();
 
 	public:
-		void Start() override;
 		void Update() override;
 
 	public:

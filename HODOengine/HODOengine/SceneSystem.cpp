@@ -24,17 +24,43 @@ namespace HDEngine
 
 	void SceneSystem::LoadScene(std::string sceneName)
 	{
+		// 새로운 씬을 찾는다
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{
 			return;
 		}
 		_currentScene = sceneIter->second;
+
+		// Start Components, 씬이 새로 로드될 때 오브젝트와 컴포넌트를 활성화한다
+		for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
+		{
+			for (auto component : gameObj->GetAllComponents())
+			{
+				if (!component->GetIsStarted())
+				{
+					component->Start();
+				}
+			}
+		}
 	}
 
 	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
 		_currentScene = scene;
+
+		// Start Components, 씬이 새로 로드될 때 오브젝트와 컴포넌트를 활성화한다
+		for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
+		{
+			for (auto component : gameObj->GetAllComponents())
+			{
+				if (!component->GetIsStarted())
+				{
+					component->Start();
+				}
+			}
+		}
+
 	}
 
 	void SceneSystem::UpdateScene()
@@ -61,6 +87,11 @@ namespace HDEngine
 	HDData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
+	}
+
+	HDData::Scene* SceneSystem::GetPrevScene()
+	{
+		return _previousScene;
 	}
 
 }

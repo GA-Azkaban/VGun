@@ -2,8 +2,7 @@
 #include "Singleton.h"
 
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
+#include <vector>
 #include <set>
 
 namespace HDData
@@ -19,7 +18,6 @@ namespace HDEngine
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
 		friend Singleton;
-		friend class HODOengine;
 
 	private:
 		ObjectSystem() = default;
@@ -27,12 +25,16 @@ namespace HDEngine
 	public:
 		void Start();
 		void Update();
+
+		std::vector<HDData::GameObject*> GetStaticObjectList();
+		std::vector<HDData::GameObject*> GetRunningStaticObjectList();
+		HDData::GameObject* CreateStaticObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
 		HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject * parent = nullptr);
 		void DestroyObject(HDData::Scene* scene, HDData::GameObject* gameObject);
 
 	private:
-		//std::unordered_set<HDData::GameObject*> _runningObjectList;
-		//std::unordered_map<ID, HDData::GameObject*> _allObjectList;
+		std::vector<HDData::GameObject*> _staticObjectList;
+		std::vector<HDData::GameObject*> _runningStaticObjectList;
 	};
 
 }

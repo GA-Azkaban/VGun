@@ -18,6 +18,7 @@ namespace HDData
 	{
 		return _childGameObjects;
 	}
+
 	void GameObject::SetParentObject(GameObject* parentObject)
 	{
 		_parentGameObject = parentObject;
@@ -27,6 +28,11 @@ namespace HDData
 	void GameObject::SetSelfActive(bool active)
 	{
 		_selfActive = active;
+
+		for (const auto& comp : GetAllComponents())
+		{
+			comp->SetActive(active);
+		}
 
 		// 자식 오브젝트도 모두 활성화/비활성화
 		for (auto child : _childGameObjects)
