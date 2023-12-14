@@ -7,7 +7,7 @@
 #include "IDSystem.h"
 
 
-// TODO) °ÔÀÓ¿ÀºêÁ§Æ® ±¸Á¶°¡ ¹Ù²î¸é ´ë´ëÀûÀÎ ¼öÁ¤ÀÌ ÇÊ¿äÇÒ µí
+// TODO) ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½
 
 namespace HDEngine
 {
@@ -20,7 +20,7 @@ namespace HDEngine
 
 	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
-		// ÀÌ¹Ì ÀÖ´Â ¾À ÀÌ¸§ÀÌ¶ó¸é ±× ¾ÀÀ» ¹ÝÈ¯ÇØÁØ´Ù.
+		// ï¿½Ì¹ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ø´ï¿½.
 		auto iter = _sceneList.find(sceneName);
 		if (iter != _sceneList.end())
 		{
@@ -34,7 +34,7 @@ namespace HDEngine
 
 	void SceneSystem::LoadScene(std::string sceneName)
 	{
-		// »õ·Î¿î ¾ÀÀ» Ã£´Â´Ù
+		// ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Â´ï¿½
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{

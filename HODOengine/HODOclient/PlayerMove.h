@@ -3,6 +3,11 @@
 
 class PlayerMove : public HDData::Script
 {
+public:
+	PlayerMove();
+
+public:
+	void Start() override;
+	void Update() override;
 
 };
-

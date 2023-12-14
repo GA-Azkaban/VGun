@@ -101,7 +101,7 @@ namespace HDEngine
 			GetStaticObjectList().clear();
 		}
 
-		// staticÇÑ ¿ÀºêÁ§Æ®µéÀÇ ¾÷µ¥ÀÌÆ®¸¦ µ¹·ÁÁØ´Ù
+		// staticï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½
 		for (const auto& staticObj : GetRunningStaticObjectList())
 		{
 			for (const auto& comp : staticObj->GetAllComponents())
@@ -110,7 +110,7 @@ namespace HDEngine
 			}
 		}
 
-		// ÇöÀç ¾ÀÀÇ ¿ÀºêÁ§Æ®µéÀ» ¾÷µ¥ÀÌÆ®
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
 		if (currentScene == nullptr)
 			return;

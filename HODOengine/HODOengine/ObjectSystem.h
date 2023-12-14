@@ -37,9 +37,9 @@ namespace HDEngine
 		std::unordered_set<HDData::GameObject*>& GetDestroyStaticObjectList();
 
 	private:
+		std::unordered_set<HDData::GameObject*> _destroyStaticObjectList;
 		std::unordered_set<HDData::GameObject*> _staticObjectList;
 		std::unordered_set<HDData::GameObject*> _runningStaticObjectList;
-		std::unordered_set<HDData::GameObject*> _destroyStaticObjectList;
 	};
 
 }
