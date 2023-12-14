@@ -1,4 +1,5 @@
 #include "PhysicsSystem.h"
+#include "windows.h"
 
 namespace HDEngine
 {
@@ -25,18 +26,26 @@ namespace HDEngine
 		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
 		_pxScene->addActor(*groundPlane);
 
-		physx::PxTransform localTm(physx::PxVec3(2.0f, 2.0f, 2.0f));
-		physx::PxRigidDynamic* dynamic = _physics->createRigidDynamic(localTm);
-		dynamic->setAngularDamping(0.5f);
-		dynamic->setLinearDamping(0.5f);
-		_pxScene->addActor(*dynamic);
+		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
+		physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
+		_dynamic = _physics->createRigidDynamic(localTm);
+		_dynamic->attachShape(*shape);
+		_dynamic->setAngularDamping(0.5f);
+		_dynamic->setLinearDamping(0.5f);
+		_pxScene->addActor(*_dynamic);
 
 	}
 
 	void PhysicsSystem::Update()
 	{
-		_pxScene->simulate(0.0167f);
+		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
+
+		// temporary phys simulation test on pvd
+		if (GetAsyncKeyState(VK_SPACE))
+		{
+			_dynamic->addForce(physx::PxVec3(0.0f, 0.1f, 0.0f),physx::PxForceMode::eIMPULSE);
+		}
 	}
 
 	void PhysicsSystem::Finalize()

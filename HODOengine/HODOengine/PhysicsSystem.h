@@ -32,6 +32,8 @@ namespace HDEngine
 		physx::PxScene* _pxScene;
 		physx::PxMaterial* _material;
 		physx::PxPvd* _pvd;
+
+		physx::PxRigidDynamic* _dynamic;
 	};
 }
 

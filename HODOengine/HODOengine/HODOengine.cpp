@@ -65,7 +65,7 @@ void HODOengine::Initialize()
 	_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 	_debugSystem.Initialize();
 	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
-	//_physicsSystem.Initialize();
+	_physicsSystem.Initialize();
 }
 
 void HODOengine::Loop()
@@ -119,7 +119,7 @@ void HODOengine::Run()
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
-	//HDEngine::PhysicsSystem::Instance().Update();
+	HDEngine::PhysicsSystem::Instance().Update();
 
 	// refresh input for next frame
 	_inputSystem.Flush();
