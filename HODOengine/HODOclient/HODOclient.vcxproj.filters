@@ -22,8 +22,22 @@
     <Filter Include="02_Client\3. Camera">
       <UniqueIdentifier>{452574f4-8788-440d-9974-13fadcb63a1d}</UniqueIdentifier>
     </Filter>
+<<<<<<< Updated upstream
     <Filter Include="ClientComponent">
       <UniqueIdentifier>{69729690-07e4-442d-86e9-4c689c12d0c1}</UniqueIdentifier>
+=======
+    <Filter Include="03_Manager">
+      <UniqueIdentifier>{79bd025b-e399-4e82-a132-143efb2bdcc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_Scene">
+      <UniqueIdentifier>{a7d06d98-5f4a-4f70-8eed-048c9fc7ad5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Script">
+      <UniqueIdentifier>{8de8384a-2a1e-4984-b788-a4b42b61c7b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Script\PlayerMove">
+      <UniqueIdentifier>{ec8a02f0-e643-40a6-8b4e-9070220ca9d7}</UniqueIdentifier>
+>>>>>>> Stashed changes
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,8 +62,13 @@
     <ClInclude Include="MovableCamera.h">
       <Filter>02_Client\3. Camera</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="CameraMove.h">
       <Filter>ClientComponent</Filter>
+=======
+    <ClInclude Include="PlayerMove.h">
+      <Filter>05_Script\PlayerMove</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -84,8 +103,13 @@
     <ClCompile Include="MovableCamera.cpp">
       <Filter>02_Client\3. Camera</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="CameraMove.cpp">
       <Filter>ClientComponent</Filter>
+=======
+    <ClCompile Include="PlayerMove.cpp">
+      <Filter>05_Script\PlayerMove</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
 </Project>

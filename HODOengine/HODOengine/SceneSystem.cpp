@@ -1,4 +1,5 @@
 #include "SceneSystem.h"
+#include "GameObject.h"
 #include "Scene.h"
 
 #include <cassert>
@@ -34,6 +35,27 @@ namespace HDEngine
 	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
 		_currentScene = scene;
+	}
+
+	void SceneSystem::UpdateScene()
+	{
+		for (auto destroyObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
+		{
+			for (auto component : destroyObj->GetAllComponents())
+			{
+				component->OnDestroy();
+			}
+			HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
+		}
+		HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
+
+		for (const auto& one : _currentScene->GetGameObjectList())
+		{
+			for (const auto& comp : one->GetAllComponents())
+			{
+				comp->Update();
+			}
+		}
 	}
 
 	HDData::Scene* SceneSystem::GetCurrentScene()

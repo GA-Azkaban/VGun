@@ -22,13 +22,13 @@ namespace HDEngine
 		HDData::Scene* CreateScene(std::string sceneName = "");
 		void LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);
+		void UpdateScene();
 		
 	private:
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 
 	public:
 		HDData::Scene* GetCurrentScene();
-		bool GetIsCurrentSceneChange();
 
 	private:
 		HDData::Scene* _currentScene;

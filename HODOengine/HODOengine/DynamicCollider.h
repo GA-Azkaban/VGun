@@ -18,6 +18,7 @@ namespace HDData
 		bool GetIsCollided();
 
 	private:
+		bool _isJumping;
 		bool _isCollided;
 
 	};

@@ -25,12 +25,14 @@ namespace HDEngine
 		ObjectSystem() = default;
 
 	public:
+		void Start();
+		void Update();
 		HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject * parent = nullptr);
 		void DestroyObject(HDData::Scene* scene, HDData::GameObject* gameObject);
 
 	private:
-		//std::unordered_set<hodoData::GameObject*> _runningObjectList;
-		//std::unordered_map<ID, hodoData::GameObject*> _allObjectList;
+		//std::unordered_set<HDData::GameObject*> _runningObjectList;
+		//std::unordered_map<ID, HDData::GameObject*> _allObjectList;
 	};
 
 }

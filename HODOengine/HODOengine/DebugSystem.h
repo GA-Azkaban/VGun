@@ -23,18 +23,24 @@ namespace HDEngine
 		void Initialize();
 		void Update();
 
+	/// <summary>
+	///  디버그 관련 함수
+	/// </summary>
+	public:
+		// 콜라이더의 디버그 데이터를 추가해두는 함수
+		void AddDebugData(int flag, HDData::GameObject* obj ,HDMath::HDFLOAT4 color);
 		// 콜라이더가 있는 오브젝트에 디버그 형태를 그려주는 함수.
-		// 콜라이더 생성 시 자동으로 호출된다.
-		void DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4& color);
+		void DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4 color);
 	
-	private:
-		struct DebugData
+		struct debugData
 		{
-			int index;
-			HDMath::HDFLOAT4 color;
+			int flag = 0;
+			HDData::GameObject* obj = nullptr;
+			HDMath::HDFLOAT4 color = HDMath::HDFLOAT4{1.f, 0.f, 0.f, 0.f};
 		};
 
-		std::vector<DebugData> _debugObj;
+	private:
+		std::vector<debugData*> _colliderDebugData;
 
 	public:
 		void SetDebugOn(int index);

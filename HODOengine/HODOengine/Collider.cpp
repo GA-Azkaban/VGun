@@ -6,8 +6,6 @@ namespace HDData
 
 	Collider::Collider()
 	{
-		HDMath::HDFLOAT4 color = { 1.f, 0.f, 0.f, 0.f };
-		HDEngine::DebugSystem::Instance().DrawColliderDebug(GetGameObject(), color);
 	}
 
 	void HDData::Collider::SetPositionOffset(HDMath::HDFLOAT3 pos)

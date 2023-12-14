@@ -1,4 +1,4 @@
-﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
@@ -61,9 +61,8 @@ void HODOengine::Initialize()
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
 
-
 	_timeSystem.Initialize();
-	_inputSystem.Initialize();
+	_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 	_debugSystem.Initialize();
 	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 	//_physicsSystem.Initialize();
@@ -109,45 +108,22 @@ void HODOengine::Run()
 	HDEngine::InputSystem::Instance().Update();
 	HDEngine::DebugSystem::Instance().Update();
 
-	// Destroy List -> GameObject OnDestroy, Clear
-	for (auto destroyObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
-	{
-		for (auto component : destroyObj->GetAllComponents())
-		{
-			component->OnDestroy();
-		}
-		HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
-	}
-	HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
+	// Update Static Object
 
-	// Start Components
-	for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
-	{
-		for (auto component : gameObj->GetAllComponents())
-		{
-			if (!component->_isStarted)
-			{
-				component->Start();
-				component->_isStarted = true;
-			}
-		}
-	}
+	HDEngine::SceneSystem::Instance().UpdateScene();
 
-	// Update Components
-	for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
-	{
-		for (auto component : gameObj->GetAllComponents())
-		{
-			component->Update();
-		}
-	}
-
+	// Update, Destroy Scene Object and Components
 	// Invoke Collision Events
 
+
+	// draw
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
 	//HDEngine::PhysicsSystem::Instance().Update();
+
+	// refresh input for next frame
+	_inputSystem.Flush();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

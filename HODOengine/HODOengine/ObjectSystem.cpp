@@ -7,10 +7,20 @@ using namespace HDData;
 
 namespace HDEngine
 {
+
+	void ObjectSystem::Start()
+	{
+
+	}
+
+	void ObjectSystem::Update()
+	{
+
+	}
+
 	GameObject* ObjectSystem::CreateObject(Scene* scene, std::string objectName, GameObject* parent)
 	{
 		GameObject* newObject = new GameObject(objectName);
-		//ID id = IDSystem::Instance().CreateID();
 
 		if (parent != nullptr)
 		{
