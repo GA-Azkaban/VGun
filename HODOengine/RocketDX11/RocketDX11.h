@@ -17,6 +17,7 @@ namespace RocketCore::Graphics
 {
 	class Grid;
 	class Axis;
+	class Cube;
 	class VertexShader;
 	class PixelShader;
 	
@@ -81,6 +82,7 @@ namespace RocketCore::Graphics
 	private:
 		Grid* _grid;
 		Axis* _axis;
+		Cube* _cube;
 		Camera _camera;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;

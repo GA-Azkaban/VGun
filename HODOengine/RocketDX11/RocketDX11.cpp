@@ -1,6 +1,7 @@
 #include "RocketDX11.h"
 #include "Grid.h"
 #include "Axis.h"
+#include "Cube.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -197,6 +198,9 @@ namespace RocketCore::Graphics
 
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
+
+		_cube = new Cube();
+		_cube->Initialize(_device.Get());
 	}
 
 	void RocketDX11::BeginRender()
@@ -319,6 +323,8 @@ namespace RocketCore::Graphics
 		_grid->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
 		_axis->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
 		_axis->Render();
+		_cube->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+		_cube->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
 		RenderMesh();
 		EndRender();
 	}
