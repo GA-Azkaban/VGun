@@ -7,7 +7,7 @@ namespace HDData
 }
 
 
-class CameraMove : public HDData::Component
+class CameraMove : public HDData::Script
 {
 public:
 	CameraMove();

@@ -1,23 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="CameraMove.cpp" />
-    <ClCompile Include="Client.cpp" />
-    <ClCompile Include="Entry.cpp" />
-    <ClCompile Include="MovableCamera.cpp" />
-    <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="TestScript.cpp" />
+    <ClCompile Include="Entry.cpp">
+      <Filter>00_Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp">
+      <Filter>00_Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>01_Client</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMove.cpp">
+      <Filter>01_Client\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>01_Client\TestScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="CameraMove.h" />
-    <ClInclude Include="Client.h" />
-    <ClInclude Include="MovableCamera.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestScene.h" />
-    <ClInclude Include="TestScript.h" />
+    <ClInclude Include="Application.h">
+      <Filter>00_Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>01_Client</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMove.h">
+      <Filter>01_Client\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>01_Client\TestScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />
@@ -25,5 +39,16 @@
   <ItemGroup>
     <Image Include="HODOclient.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="00_Entry">
+      <UniqueIdentifier>{ec036ad7-dbea-4944-8e77-563788987386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_Client">
+      <UniqueIdentifier>{342fcac3-0837-43be-b602-048e7ce5726e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01_Client\TestScene">
+      <UniqueIdentifier>{8664440e-bf82-4337-b7ec-0f46723b1ee6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
