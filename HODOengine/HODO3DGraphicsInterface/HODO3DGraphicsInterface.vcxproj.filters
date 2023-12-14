@@ -32,6 +32,9 @@
     <Filter Include="Data">
       <UniqueIdentifier>{1dc65efd-f035-4999-8c55-8533d279690f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enum">
+      <UniqueIdentifier>{c6131c01-33e1-444a-a27e-e910d00d9cb8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IHodoGICamera.h">
@@ -60,6 +63,9 @@
     </ClInclude>
     <ClInclude Include="CameraData.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="eMeshList.h">
+      <Filter>Enum</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -97,6 +97,12 @@
     <Filter Include="05_Component\Renderer\BaseClass">
       <UniqueIdentifier>{28355368-a12d-47d8-b52f-9b3f960396bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Renderer\PrimitiveRenderer">
+      <UniqueIdentifier>{96883d50-3ae0-4e94-9ae9-8e673c6c0325}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{35c2f958-b961-483f-892f-754d84cffe72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -186,6 +192,12 @@
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="CubeRenderer.h">
+      <Filter>05_Component\Renderer\PrimitiveRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -269,5 +281,11 @@
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="CubeRenderer.cpp">
+      <Filter>05_Component\Renderer\PrimitiveRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

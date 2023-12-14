@@ -137,6 +137,7 @@
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
+    <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +154,7 @@
     <ClInclude Include="RocketDX11.h" />
     <ClInclude Include="RocketMacroDX11.h" />
     <ClInclude Include="IShader.h" />
+    <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>

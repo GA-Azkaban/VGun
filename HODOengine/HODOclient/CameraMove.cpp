@@ -48,12 +48,12 @@ void CameraMove::Update()
 
 	if (API::GetKeyPressing(VK_LEFT))
 	{
-		RotateY(-moveSpeed * deltaTime);
+		RotateY(-moveSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(VK_RIGHT))
 	{
-		RotateY(moveSpeed * deltaTime);
+		RotateY(moveSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(VK_DOWN))

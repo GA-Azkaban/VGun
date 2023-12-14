@@ -37,7 +37,7 @@ namespace RocketCore::Graphics
 
 		// 입력 배치 객체 셋팅
 		deviceContext->IASetInputLayout(inputLayout);
-		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		// 인덱스버퍼와 버텍스버퍼 셋팅
 		UINT stride = sizeof(Vertex);
@@ -75,22 +75,17 @@ namespace RocketCore::Graphics
 
 	void Cube::BuildGeometryBuffers(ID3D11Device* device)
 	{
-		Vertex vertices[8];
-
-		vertices[0].Pos = DirectX::XMFLOAT3(-0.5f, 0.5f, -0.5f);
-		vertices[1].Pos = DirectX::XMFLOAT3(0.5f, 0.5f, -0.5f);
-		vertices[2].Pos = DirectX::XMFLOAT3(-0.5f, 0.5f, 0.5f);
-		vertices[3].Pos = DirectX::XMFLOAT3(0.5f, 0.5f, 0.5f);
-		vertices[4].Pos = DirectX::XMFLOAT3(-0.5f, -0.5f, -0.5f);
-		vertices[5].Pos = DirectX::XMFLOAT3(0.5f, -0.5f, -0.5f);
-		vertices[6].Pos = DirectX::XMFLOAT3(-0.5f, -0.5f, 0.5f);
-		vertices[7].Pos = DirectX::XMFLOAT3(0.5f, -0.5f, 0.5f);
-
-
-		for (int i = 0; i < 8; i++)
+		Vertex vertices[8] =
 		{
-			vertices[i].Color = DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green);
-		}
+			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Yellow)},
+			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Pink)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Purple)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Orange)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::White)}
+		};
 
 		D3D11_BUFFER_DESC vbd;
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;
@@ -107,18 +102,18 @@ namespace RocketCore::Graphics
 
 		UINT indices[36] =
 		{
-			0,2,1,
-			2,3,1,
-			0,1,4,
-			1,5,4,
-			2,0,6,
+			0,2,3,
+			0,3,1,
+			2,6,7,
+			2,7,3,
+			6,4,5,
+			6,5,7,
+			0,5,4,
+			0,1,5,
+			1,3,7,
+			1,7,5,
 			0,4,6,
-			7,3,2,
-			6,7,2,
-			4,5,7,
-			4,7,6,
-			1,3,5,
-			5,3,7
+			0,6,2
 		};
 
 		

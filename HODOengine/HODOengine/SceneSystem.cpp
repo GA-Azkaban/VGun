@@ -36,6 +36,11 @@ namespace HDEngine
 		_currentScene = scene;
 	}
 
+	std::unordered_map<std::string, HDData::Scene*>& SceneSystem::GetAllScenes()
+	{
+		return _sceneList;
+	}
+
 	HDData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;

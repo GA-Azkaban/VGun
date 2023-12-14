@@ -13,6 +13,11 @@
 #define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
 #endif // _DEBUG
 
+namespace HDData
+{
+	class Renderer;
+}
+
 namespace HDEngine
 {
 	class IRenderable;
@@ -28,11 +33,14 @@ namespace HDEngine
 
 		/// 시스템 초기화 관련
 	public:
-		void Initialize(HWND hWnd, int screenWidth, int screenHeight, bool isEditor = false);
+		void Initialize(HWND hWnd, int screenWidth, int screenHeight);
 		void Finalize();
 
+	public:
+		void MakeAndLinkRenderable();
+
 	private:
-		bool _isEditor = false;
+		std::unordered_map<HDData::Renderer*, IRenderable*> _renderMap;
 
 		/// 렌더링 관련
 	public:

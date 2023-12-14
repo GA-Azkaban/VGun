@@ -15,8 +15,7 @@ namespace HDData
 		GameObject* camObj = HDEngine::ObjectSystem::Instance().CreateObject(this, "MainCamera");
 		Camera* mainCam = camObj->AddComponent<Camera>();
 		SetMainCamera(mainCam);
-		camObj->GetTransform()->SetWorldPosition(0.0f, 5.0f, 20.0f);
-		camObj->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
+		camObj->GetTransform()->SetWorldPosition(0.0f, 2.0f, -10.0f);
 	}
 
 	Scene::~Scene()

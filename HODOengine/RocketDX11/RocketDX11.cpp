@@ -45,7 +45,7 @@ namespace RocketCore::Graphics
 
 	}
 
-	void RocketDX11::Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor /*= false*/)
+	void RocketDX11::Initialize(void* hWnd, int screenWidth, int screenHeight)
 	{
 		// 매크로로 변경하려고 작업중
 		HRESULT hr = S_OK;
@@ -187,14 +187,14 @@ namespace RocketCore::Graphics
 		// Render State
 		CreateRenderStates();
 
-		_axis = new Axis(_device.Get(), _deviceContext.Get(), _wireframeRenderState.Get());
-		_axis->Initialize();
-		
 		_vertexShader = new VertexShader();
 		_vertexShader->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
 
 		_pixelShader = new PixelShader();
 		_pixelShader->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
+
+		_axis = new Axis();
+		_axis->Initialize(_device.Get());
 
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
@@ -322,9 +322,9 @@ namespace RocketCore::Graphics
 		_grid->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
 		_grid->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
 		_axis->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
-		_axis->Render();
+		_axis->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
 		_cube->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
-		_cube->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
+		_cube->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _solidRenderState.Get());
 		RenderMesh();
 		EndRender();
 	}

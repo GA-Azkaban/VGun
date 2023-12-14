@@ -25,9 +25,6 @@
     <Filter Include="Object\HelperObject">
       <UniqueIdentifier>{ad16b830-a53c-4ee0-b153-f753003fb0dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\MeshObject">
-      <UniqueIdentifier>{6631cd88-eb46-4f41-869f-f611a8b4e9ec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Factory">
       <UniqueIdentifier>{8e06a945-0e27-4271-88a7-c0df8b93c968}</UniqueIdentifier>
     </Filter>
@@ -55,6 +52,15 @@
     <Filter Include="Object\Shader\PixelShader">
       <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Cube">
+      <UniqueIdentifier>{90fb9f77-90ab-413f-9096-77a94629e80f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\StaticMesh">
+      <UniqueIdentifier>{6631cd88-eb46-4f41-869f-f611a8b4e9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\SkinnedMesh">
+      <UniqueIdentifier>{9b1a4f56-f64b-4952-9bfb-f0758a6c41f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -78,14 +84,17 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Object\MeshObject</Filter>
-    </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Object\Shader\VertexShader</Filter>
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Object\Shader\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Object\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>Object\StaticMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,9 +128,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Object\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Object\MeshObject</Filter>
-    </ClInclude>
     <ClInclude Include="IShader.h">
       <Filter>Object\Shader\Interface</Filter>
     </ClInclude>
@@ -130,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="PixelShader.h">
       <Filter>Object\Shader\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Object\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>Object\StaticMesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,7 @@ namespace RocketCore::Graphics
 
 	public:
 		//그래픽스 엔진을 초기화한다.
-		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) override;
+		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
 		virtual void UpdateCamera(const HDEngine::CameraData& cameraData) override;
 

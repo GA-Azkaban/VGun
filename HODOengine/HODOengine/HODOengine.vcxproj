@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="IDSystem.h" />
     <ClInclude Include="IHODOengine.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectSystem.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderSystem.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -181,6 +184,7 @@
     <ClCompile Include="HODO_API.cpp" />
     <ClCompile Include="IDSystem.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderSystem.cpp" />

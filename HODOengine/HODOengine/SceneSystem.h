@@ -27,6 +27,7 @@ namespace HDEngine
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 
 	public:
+		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();
 		bool GetIsCurrentSceneChange();
 

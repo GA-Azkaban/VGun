@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraData.h" />
+    <ClInclude Include="eMeshList.h" />
     <ClInclude Include="IDebugCube.h" />
     <ClInclude Include="IDebugObject.h" />
     <ClInclude Include="IHodoGICamera.h" />
