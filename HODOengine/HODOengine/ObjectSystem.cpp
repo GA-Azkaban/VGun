@@ -78,6 +78,8 @@ namespace HDEngine
 		}
 		
 		GetStaticObjectList().push_back(newObject);
+
+		return newObject;
 	}
 
 	GameObject* ObjectSystem::CreateObject(Scene* scene, std::string objectName, GameObject* parent)
