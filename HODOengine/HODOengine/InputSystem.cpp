@@ -56,7 +56,7 @@ void HDEngine::InputSystem::Flush()
 	LONG x = 0;
 	LONG y = 0;
 
-	/// 마우스 위치 이동 방식
+	/*/// 마우스 위치 이동 방식
 	if (windowRect.right - 1 <= _mousePoint.x)
 	{
 		x = windowRect.left + 2;
@@ -92,7 +92,7 @@ void HDEngine::InputSystem::Flush()
 		ScreenToClient(_hWnd, &mousePoint);
 		_previousMousePosition = { static_cast<float>(mousePoint.x - _widthOffset), static_cast<float>(mousePoint.y - _heightOffset) };
 		mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
-	}
+	}*/
 }
 
 bool HDEngine::InputSystem::GetKeyDown(int keyCode)

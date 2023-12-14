@@ -23,7 +23,6 @@ namespace HDEngine
 		ObjectSystem() = default;
 
 	public:
-		void Start();
 		void Update();
 
 		std::vector<HDData::GameObject*> GetStaticObjectList();
