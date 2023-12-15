@@ -29,6 +29,15 @@
     <Filter Include="Data">
       <UniqueIdentifier>{1dc65efd-f035-4999-8c55-8533d279690f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sketchable">
+      <UniqueIdentifier>{65997900-f228-4e10-8e8a-d76c351ed68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sketchable\ImageUI">
+      <UniqueIdentifier>{c3b69451-c3aa-4546-bd99-b7a34ba57d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sketchable\TextUI">
+      <UniqueIdentifier>{cf2933be-79bf-4fc2-ad2c-a7cb007b8c1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IHodoGICamera.h">
@@ -57,6 +66,15 @@
     </ClInclude>
     <ClInclude Include="CameraData.h">
       <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ISketchable.h">
+      <Filter>Sketchable</Filter>
+    </ClInclude>
+    <ClInclude Include="ISketchableImage.h">
+      <Filter>Sketchable\ImageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ISketchableText.h">
+      <Filter>Sketchable\TextUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,11 +1,7 @@
 #pragma once
 #include "Component.h"
+#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
 #include <memory>
-
-namespace HDEngine
-{
-	class IStaticMesh;
-}
 
 namespace HDData
 {

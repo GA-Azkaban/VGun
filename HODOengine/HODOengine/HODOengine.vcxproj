@@ -146,12 +146,15 @@
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="dllExporter.h" />
+    <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="EventSystem.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HODOengine.h" />
     <ClInclude Include="HODO_API.h" />
     <ClInclude Include="IDSystem.h" />
     <ClInclude Include="IHODOengine.h" />
+    <ClInclude Include="ImageUI.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ObjectSystem.h" />
     <ClInclude Include="MeshRenderer.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SkinnedMeshRenderer.h" />
     <ClInclude Include="StaticBoxCollider.h" />
     <ClInclude Include="StaticCollider.h" />
     <ClInclude Include="StaticPlaneCollider.h" />
@@ -175,10 +179,13 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="DynamicCollider.cpp" />
+    <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="EventSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HODOengine.cpp" />
     <ClCompile Include="HODO_API.cpp" />
     <ClCompile Include="IDSystem.cpp" />
+    <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
@@ -187,6 +194,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SkinnedMeshRenderer.cpp" />
     <ClCompile Include="StaticBoxCollider.cpp" />
     <ClCompile Include="StaticCollider.cpp" />
     <ClCompile Include="StaticPlaneCollider.cpp" />

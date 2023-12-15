@@ -1,5 +1,4 @@
 #include "MeshRenderer.h"
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
 #include "Transform.h"
 
 namespace HDData
