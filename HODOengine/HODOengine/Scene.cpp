@@ -5,6 +5,7 @@
 #include "Camera.h"
 
 #include "ObjectSystem.h"
+#include <algorithm>
 
 namespace HDData
 {
@@ -42,7 +43,7 @@ namespace HDData
 			{
 				component->OnDestroy();
 			}
-			_gameObjects.erase(destroyObj);
+			_gameObjects.erase(std::remove_if(_destroyObjects.begin(), _destroyObjects.end(), [&](HDData::GameObject* gameObject)->bool { return gameObject == destroyObj; }));
 		}
 		_destroyObjects.clear();
 	}
@@ -91,7 +92,7 @@ namespace HDData
 		}
 	}
 
-	std::unordered_set<GameObject*>& Scene::GetGameObjectList()
+	std::vector<GameObject*>& Scene::GetGameObjectList()
 	{
 		return _gameObjects;
 	}

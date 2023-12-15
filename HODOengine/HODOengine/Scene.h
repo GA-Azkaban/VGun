@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <unordered_set>
 #include <vector>
 
 #include "dllExporter.h"
@@ -31,13 +30,13 @@ namespace HDData
 		void LateUpdate();
 		void FixedUpdate();
 
-		std::unordered_set<GameObject*>& GetGameObjectList();
+		std::vector<GameObject*>& GetGameObjectList();
 		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
 	private:
-		std::unordered_set<GameObject*> _gameObjects;
+		std::vector<GameObject*> _gameObjects;
 		std::vector<GameObject*> _destroyObjects;
 		std::string _sceneName;
 		

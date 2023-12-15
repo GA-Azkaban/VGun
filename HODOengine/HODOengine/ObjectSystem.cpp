@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "IDSystem.h"
+#include <algorithm>
 using namespace HDData;
 
 namespace HDEngine
@@ -17,7 +18,7 @@ namespace HDEngine
 			newObject->SetParentObject(parent);
 		}
 
-		_staticObjectList.insert(newObject);
+		_staticObjectList.push_back(newObject);
 
 		return newObject;
 	}
@@ -31,7 +32,7 @@ namespace HDEngine
 			newObject->SetParentObject(parent);
 		}
 
-		scene->GetGameObjectList().insert(newObject);
+		scene->GetGameObjectList().push_back(newObject);
 
 		return newObject;
 	}
@@ -53,7 +54,7 @@ namespace HDEngine
 		if (!gameObject)
 			return;
 
-		_destroyStaticObjectList.insert(gameObject);
+		_destroyStaticObjectList.push_back(gameObject);
 	}
 
 	void ObjectSystem::FlushDestroyObjectList()
@@ -64,7 +65,7 @@ namespace HDEngine
 			{
 				component->OnDestroy();
 			}
-			_staticObjectList.erase(destroyStaticObj);
+			_staticObjectList.erase(std::remove_if(_destroyStaticObjectList.begin(), _destroyStaticObjectList.end(), [&](HDData::GameObject* gameObject) { return gameObject == destroyStaticObj; }));
 		}
 		_destroyStaticObjectList.clear();
 
@@ -83,26 +84,21 @@ namespace HDEngine
 
 	void ObjectSystem::UpdateCurrentSceneObjects()
 	{
-		if (!GetStaticObjectList().empty())
+		if (!_staticObjectList.empty())
 		{
-			for (const auto& staticObj : GetStaticObjectList())
+			for (const auto& staticObj : _staticObjectList)
 			{
 				for (const auto& comp : staticObj->GetAllComponents())
 				{
 					comp->Start();
 				}
+				_runningStaticObjectList.push_back(staticObj);
 			}
-
-			for (const auto& staticObj : GetStaticObjectList())
-			{
-				GetRunningStaticObjectList().insert(staticObj);
-			}
-
-			GetStaticObjectList().clear();
+			_staticObjectList.clear();
 		}
 
 		// static�� ������Ʈ���� ������Ʈ�� �����ش�
-		for (const auto& staticObj : GetRunningStaticObjectList())
+		for (const auto& staticObj : _runningStaticObjectList)
 		{
 			for (const auto& comp : staticObj->GetAllComponents())
 			{
@@ -119,7 +115,7 @@ namespace HDEngine
 
 	void ObjectSystem::LateUpdateCurrentSceneObjects()
 	{
-		for (const auto& staticObj : GetRunningStaticObjectList())
+		for (const auto& staticObj : _runningStaticObjectList)
 		{
 			for (const auto& comp : staticObj->GetAllComponents())
 			{
@@ -136,7 +132,7 @@ namespace HDEngine
 
 	void ObjectSystem::FixedUpdateCurrentSceneObjects()
 	{
-		for (const auto& staticObj : GetRunningStaticObjectList())
+		for (const auto& staticObj : _runningStaticObjectList)
 		{
 			for (const auto& comp : staticObj->GetAllComponents())
 			{
@@ -151,17 +147,17 @@ namespace HDEngine
 		currentScene->FixedUpdate();
 	}
 
-	std::unordered_set<HDData::GameObject*>& ObjectSystem::GetStaticObjectList()
+	std::vector<HDData::GameObject*>& ObjectSystem::GetStaticObjectList()
 	{
 		return _staticObjectList;
 	}
 
-	std::unordered_set<HDData::GameObject*>& ObjectSystem::GetRunningStaticObjectList()
+	std::vector<HDData::GameObject*>& ObjectSystem::GetRunningStaticObjectList()
 	{
 		return _runningStaticObjectList;
 	}
 
-	std::unordered_set<HDData::GameObject*>& ObjectSystem::GetDestroyStaticObjectList()
+	std::vector<HDData::GameObject*>& ObjectSystem::GetDestroyStaticObjectList()
 	{
 		return _destroyStaticObjectList;
 	}
