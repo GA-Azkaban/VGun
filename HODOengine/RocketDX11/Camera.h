@@ -1,40 +1,34 @@
 #pragma once
-
 #include <DirectXMath.h>
-#include <cmath>
 
+#include "..\\HODO3DGraphicsInterface\\ICamera.h"
 
 namespace RocketCore::Graphics
 {
 /// <summary>
 /// 카메라 클래스
 /// </summary>
-	class Camera
+	class Camera : public HDEngine::ICamera
 	{
 	public:
 		Camera();
 		~Camera();
 
 	public:
+		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& matrix) override;
+		virtual void SetNearZ(float near) override;
+		virtual void SetFarZ(float far) override;
+		virtual void SetAspect(float aspect) override;
+		virtual void SetFOVY(float fov) override;
+		virtual void SetNearHeight(float height) override;
+		virtual void SetFarHeight(float height) override;
+
+	public:
 		DirectX::XMFLOAT3 GetPosition() const;
 		void SetPosition(float x, float y, float z);
 		void SetRotation(float w, float x, float y, float z);
 
-		float GetNearZ() const;
-		float GetFarZ() const;
-		float GetAspect() const;		// 카메라 비율 screen.width/screen.height
-		float GetFovX() const;			// FovX값을 60분법으로 반환
-		float GetRadianFovX() const;	// FovX값을 호도법으로 반환
-		float GetFovY() const;			// FovY값을 60분법으로 반환
-		float GetRadianFovY() const;	// FovY값을 호도법으로 반환
-
-		float GetNearWindowWidth() const;
-		float GetNearWindowHeight() const;
-		float GetFarWindowWidth() const;
-		float GetFarWindowHeight() const;
-
-		void SetFrustum(float fovY, float aspect, float nearZ, float farZ);
-
+		void UpdateProjectionMatrix();
 		void UpdateViewMatrix();
 
 		DirectX::XMMATRIX GetViewMatrix() const;				// 카메라의 로컬좌표'계'를 반환
@@ -56,7 +50,8 @@ namespace RocketCore::Graphics
 		float _nearWindowHeight;		// frustum의 가까운 평면의 높이
 		float _farWindowHeight;			// frustum의 먼 평면의 높이
 
-		DirectX::XMFLOAT4X4 _viewMatrix;			// 카메라의 로컬좌표'계'
+		DirectX::XMFLOAT4X4 _worldMatrix;		// 카메라 worldTM
+		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
 	};
 }

@@ -308,16 +308,16 @@ namespace RocketCore::Graphics
 
 	}
 
-	void RocketDX11::UpdateCamera(const HDEngine::CameraData & cameraData)
+	void RocketDX11::Update()
 	{
-		_camera.SetPosition(cameraData.position.x, cameraData.position.y, cameraData.position.z);
-		_camera.SetRotation(cameraData.rotation.w, cameraData.rotation.x, cameraData.rotation.y, cameraData.rotation.z);
-		_camera.SetFrustum(cameraData.fovY, cameraData.aspect, cameraData.nearZ, cameraData.farZ);
 		_camera.UpdateViewMatrix();
+		_camera.UpdateProjectionMatrix();
 	}
 
 	void RocketDX11::Render()
 	{
+		Update();
+
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
 		_grid->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
 		_grid->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
@@ -334,4 +334,7 @@ namespace RocketCore::Graphics
 		delete _grid;
 		delete _axis;
 	}
+
+
+
 }

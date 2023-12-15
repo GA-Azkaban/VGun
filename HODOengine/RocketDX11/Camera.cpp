@@ -1,4 +1,6 @@
+#include <cmath>
 #include "Camera.h"
+#include "..\\HODOmath\\HODOmath.h"
 
 using namespace DirectX;
 
@@ -11,7 +13,7 @@ namespace RocketCore::Graphics
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
 	{
-		SetFrustum(_fovY, _aspect, _nearZ, _farZ);
+
 	}
 
 	Camera::~Camera()
@@ -34,81 +36,22 @@ namespace RocketCore::Graphics
 		_rotation = { x,y,z,w };
 	}
 
-	float Camera::GetNearZ() const
-	{
-		return _nearZ;
-	}
-
-	float Camera::GetFarZ() const
-	{
-		return _farZ;
-	}
-
-	float Camera::GetAspect() const
-	{
-		return _aspect;
-	}
-
-	float Camera::GetFovX() const
-	{
-		return XMConvertToDegrees(GetRadianFovX());
-	}
-
-	float Camera::GetRadianFovX() const
-	{
-		float halfWidth = GetNearWindowWidth() / 2;
-		return 2.0f * atan(halfWidth / _nearZ);
-	}
-
-	float Camera::GetFovY() const
-	{
-		return _fovY;
-	}
-
-	float Camera::GetRadianFovY() const
-	{
-		return XMConvertToRadians(_fovY);
-	}
-
-	float Camera::GetNearWindowWidth() const
-	{
-		return _aspect * _nearWindowHeight;
-	}
-
-	float Camera::GetNearWindowHeight() const
-	{
-		return _nearWindowHeight;
-	}
-
-	float Camera::GetFarWindowWidth() const
-	{
-		return _aspect * _farWindowHeight;
-	}
-
-	float Camera::GetFarWindowHeight() const
-	{
-		return _farWindowHeight;
-	}
-
 	/// 카메라의 세팅을 설정한다.
 	/// 들어온 값에 맞춰 여러 멤버들도 재설정해준다.
 	/// 지금은 XMMatrixPerspectiveFovLH 함수를 이용해서 투영행렬을 만든다.
 	/// 이 부분은 내가 직접 투영행렬을 만들어보고 싶다.
 	/// 
 	/// 23.04.20 강석원 인재원
-	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
-	{
-		_fovY = fovY;
-		_aspect = aspect;
-		_nearZ = nearZ;
-		_farZ = farZ;
-
-		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
-		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
-
-		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
-		XMStoreFloat4x4(&_projectionMatrix, temp);
-	}
+// 	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
+// 	{
+// 		_fovY = fovY;
+// 		_aspect = aspect;
+// 		_nearZ = nearZ;
+// 		_farZ = farZ;
+// 
+// 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
+// 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+// 	}
 
 	/// ViewMatrix를 갱신해준다.
 	/// 교수님 코드에서는 잘못된 벡터가 되어있을 시 look을 기준으로 다시 점검해서 변경하는 듯 하다.
@@ -119,6 +62,12 @@ namespace RocketCore::Graphics
 	/// 23.04.20 강석원 인재원
 	void Camera::UpdateViewMatrix()
 	{
+		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
+		XMVECTOR det = XMMatrixDeterminant(world);
+		XMStoreFloat4x4(&_viewMatrix, XMMatrixInverse(&det, world));
+
+		return;
+
 		XMVECTOR R = GetRight();
 		XMVECTOR U = GetUp();
 		XMVECTOR L = GetForward();
@@ -212,4 +161,50 @@ namespace RocketCore::Graphics
 		return result;
 	}
 
+	void Camera::SetWorldTM(const HDMath::HDFLOAT4X4& matrix)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				_worldMatrix.m[i][j] = matrix.element[i][j];
+			}
+		}
+	}
+
+	void Camera::SetNearZ(float near)
+	{
+		_nearZ = near;
+	}
+
+	void Camera::SetFarZ(float far)
+	{
+		_farZ = far;
+	}
+
+	void Camera::SetAspect(float aspect)
+	{
+		_aspect = aspect;
+	}
+
+	void Camera::SetFOVY(float fov)
+	{
+		_fovY = fov;
+	}
+
+	void Camera::SetNearHeight(float height)
+	{
+		_nearWindowHeight = height;
+	}
+
+	void Camera::SetFarHeight(float height)
+	{
+		_farWindowHeight = height;
+	}
+
+	void Camera::UpdateProjectionMatrix()
+	{
+		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
+		XMStoreFloat4x4(&_projectionMatrix, temp);
+	}
 }

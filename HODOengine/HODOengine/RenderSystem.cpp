@@ -99,7 +99,7 @@ namespace HDEngine
 	{
 		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 		HDData::Camera* mainCam = currentScene->GetMainCamera();
-		_dx11Renderer->UpdateCamera(mainCam->GetCameraData());
+		//mainCam->
 	}
 
 	int RenderSystem::GetScreenWidth() const

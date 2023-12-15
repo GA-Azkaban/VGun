@@ -10,7 +10,6 @@ namespace RocketCore::Graphics
 		virtual void SetMesh(const std::string& modelPath) override;
 		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
 		virtual void SetActive(bool isActive) override;
-
 	};
 }
 	
