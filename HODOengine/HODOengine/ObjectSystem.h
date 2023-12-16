@@ -2,7 +2,7 @@
 #include "Singleton.h"
 
 #include <string>
-#include <unordered_set>
+#include <vector>
 
 namespace HDData
 {
@@ -32,14 +32,14 @@ namespace HDEngine
 		void LateUpdateCurrentSceneObjects();
 		void FixedUpdateCurrentSceneObjects();
 
-		std::unordered_set<HDData::GameObject*>& GetStaticObjectList();
-		std::unordered_set<HDData::GameObject*>& GetRunningStaticObjectList();
-		std::unordered_set<HDData::GameObject*>& GetDestroyStaticObjectList();
+		std::vector<HDData::GameObject*>& GetStaticObjectList();
+		std::vector<HDData::GameObject*>& GetRunningStaticObjectList();
+		std::vector<HDData::GameObject*>& GetDestroyStaticObjectList();
 
 	private:
-		std::unordered_set<HDData::GameObject*> _destroyStaticObjectList;
-		std::unordered_set<HDData::GameObject*> _staticObjectList;
-		std::unordered_set<HDData::GameObject*> _runningStaticObjectList;
+		std::vector<HDData::GameObject*> _destroyStaticObjectList;
+		std::vector<HDData::GameObject*> _staticObjectList;
+		std::vector<HDData::GameObject*> _runningStaticObjectList;
 	};
 
 }

@@ -171,7 +171,6 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DynamicCollider.h" />
-    <ClInclude Include="Renderable.h" />
     <ClInclude Include="StaticBoxCollider.h" />
     <ClInclude Include="StaticCollider.h" />
     <ClInclude Include="StaticPlaneCollider.h" />
@@ -196,7 +195,7 @@
     <ClInclude Include="RenderSystem.h">
       <Filter>06_System\RenderSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="MeshRenderer.h">
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="TimeSystem.h">
@@ -283,8 +282,10 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>06_System\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="MeshRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
   </ItemGroup>
 </Project>

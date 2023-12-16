@@ -154,7 +154,7 @@
     <ClInclude Include="IHODOengine.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ObjectSystem.h" />
-    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Resource.h" />
@@ -181,7 +181,7 @@
     <ClCompile Include="IDSystem.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
-    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
