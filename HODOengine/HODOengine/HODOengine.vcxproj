@@ -158,6 +158,7 @@
     <ClInclude Include="IHODOengine.h" />
     <ClInclude Include="ImageUI.h" />
     <ClInclude Include="InputSystem.h" />
+    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectSystem.h" />
     <ClInclude Include="RendererBase.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -194,6 +195,7 @@
     <ClCompile Include="IDSystem.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputSystem.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
     <ClCompile Include="RendererBase.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
