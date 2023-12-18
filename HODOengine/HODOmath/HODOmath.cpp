@@ -1100,4 +1100,9 @@ namespace HDMath
 		return result;
 	}
 
+	float HDFLOAT3Length(const HDFLOAT3& val)
+	{
+		return sqrt(val.x * val.x + val.y * val.y + val.z * val.z);
+	}
+
 }

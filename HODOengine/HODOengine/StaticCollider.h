@@ -15,6 +15,7 @@ namespace HDData
 	public:
 		void Collided();
 		bool GetIsCollided();
+		void Flush();
 
 	private:
 		bool _isCollided;

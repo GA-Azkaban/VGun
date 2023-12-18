@@ -1,4 +1,5 @@
 #include "StaticPlaneCollider.h"
+#include "GameObject.h"
 
 HDData::StaticPlaneCollider::StaticPlaneCollider()
 {
@@ -10,13 +11,13 @@ void HDData::StaticPlaneCollider::Update()
 
 }
 
-HDMaths::HDFLOAT3 hodoData::StaticPlaneCollider::GetNormalVector() const
+HDMath::HDFLOAT3 HDData::StaticPlaneCollider::GetNormalVector() const
 {
-	//HDMaths::HDFLOAT3 axis = GetGameObject().GetTransform()->GetRight();
-	return {};
+	HDMath::HDFLOAT3 axis = GetGameObject()->GetTransform()->GetRight();
+	return axis.Normalize(axis);
 }
 
-float hodoData::StaticPlaneCollider::GetDistance() const
+float HDData::StaticPlaneCollider::GetDistance() const
 {
-	return {};
+	return HDMath::HDFLOAT3Length(GetGameObject()->GetTransform()->GetLocalPosition());
 }

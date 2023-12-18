@@ -322,6 +322,8 @@ namespace HDMath
 	HDFLOAT3		GetLocalScaleFromLocalTM	(const HDFLOAT4X4& localTM);
 	HDQuaternion	HDRotateQuaternion			(const HDQuaternion& quaternion, const HDFLOAT3& axis, float radian);
 	HDQuaternion	HDQuaternionMultiply		(const HDQuaternion& lhs, const HDQuaternion& rhs);
+	float			HDFLOAT3Length				(const HDFLOAT3& val);
+
 };
 
 
