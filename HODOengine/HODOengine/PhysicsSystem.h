@@ -23,6 +23,8 @@ namespace HDEngine
 	public:
 		void CreatePhysXScene();
 
+		void TempMove();
+
 	private:
 		physx::PxDefaultAllocator		_allocator;
 		physx::PxDefaultErrorCallback	_errorCallback;
