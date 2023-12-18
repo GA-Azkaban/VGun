@@ -11,6 +11,7 @@ namespace HDData
 
 		virtual void Start() override;
 		virtual void Update() override;
+		virtual void LateUpdate() override;
 		virtual void FixedUpdate() override;
 	};
 }

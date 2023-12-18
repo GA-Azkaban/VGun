@@ -127,6 +127,9 @@
     <Filter Include="05_Component\UserInterface\TextUI">
       <UniqueIdentifier>{878e0c14-ee81-422c-8501-272fad0b1847}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HELP">
+      <UniqueIdentifier>{54b483d9-4056-45c3-849c-53496e8af94a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -183,12 +186,6 @@
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h" />
-    <ClInclude Include="DebugSystem.h" />
-    <ClInclude Include="DynamicCollider.h" />
-    <ClInclude Include="StaticBoxCollider.h" />
-    <ClInclude Include="StaticCollider.h" />
-    <ClInclude Include="StaticPlaneCollider.h" />
     <ClInclude Include="Collider.h">
       <Filter>05_Component\Collider\Base</Filter>
     </ClInclude>
@@ -219,12 +216,8 @@
     <ClInclude Include="EventHandler.h">
       <Filter>05_Component\EventHandler</Filter>
     </ClInclude>
-    <ClInclude Include="SkinnedMeshRenderer.h" />
     <ClInclude Include="EventSystem.h">
       <Filter>06_System\EventSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="RendererBase.h">
       <Filter>05_Component\Renderer\BaseClass</Filter>
@@ -234,6 +227,34 @@
     </ClInclude>
     <ClInclude Include="TextUI.h">
       <Filter>05_Component\UserInterface\TextUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Collider.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugSystem.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="DLL_Loader.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicCollider.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObjFactory.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMeshRenderer.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticBoxCollider.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticCollider.h">
+      <Filter>HELP</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticPlaneCollider.h">
+      <Filter>HELP</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -286,12 +307,6 @@
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="DebugSystem.cpp" />
-    <ClCompile Include="DynamicCollider.cpp" />
-    <ClCompile Include="StaticBoxCollider.cpp" />
-    <ClCompile Include="StaticCollider.cpp" />
-    <ClCompile Include="StaticPlaneCollider.cpp" />
     <ClCompile Include="Collider.cpp">
       <Filter>05_Component\Collider\Base</Filter>
     </ClCompile>
@@ -313,17 +328,11 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>06_System\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp" />
-    <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="EventHandler.cpp">
       <Filter>05_Component\EventHandler</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedMeshRenderer.cpp" />
     <ClCompile Include="EventSystem.cpp">
       <Filter>06_System\EventSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="RendererBase.cpp">
       <Filter>05_Component\Renderer\BaseClass</Filter>
@@ -339,6 +348,40 @@
     </ClCompile>
     <ClCompile Include="TextUI.cpp">
       <Filter>05_Component\UserInterface\TextUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugSystem.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="DLL_Loader.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicCollider.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsObjFactory.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMeshRenderer.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBoxCollider.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticCollider.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticPlaneCollider.cpp">
+      <Filter>HELP</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeSystem.cpp">
+      <Filter>HELP</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

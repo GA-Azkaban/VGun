@@ -20,6 +20,11 @@ void HDData::Script::Update()
 
 }
 
+void HDData::Script::LateUpdate()
+{
+
+}
+
 void HDData::Script::FixedUpdate()
 {
 

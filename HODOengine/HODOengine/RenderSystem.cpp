@@ -9,8 +9,6 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "TimeSystem.h"
-#include "Renderer.h"
-#include "CubeRenderer.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
@@ -60,8 +58,8 @@ namespace HDEngine
 // 
 // 			for (auto& object : sceneIter.second->GetGameObjectList())
 // 			{
-// 				// °¢°¢ÀÇ °´Ã¼°¡ º»ÀÎµéÀ» ±×¸®´Â °ÍÀÌ ¾Æ´Ñ
-// 				// RenderSystem¿¡¼­ °¢°¢ÀÇ °´Ã¼ÀÇ Á¤º¸¸¦ ¹ÙÅÁÀ¸·Î Graphics¿¡°Ô ±×¸®¶ó°í ½ÃÅ°´Â °Í
+// 				// ê°ê°ì˜ ê°ì²´ê°€ ë³¸ì¸ë“¤ì„ ê·¸ë¦¬ëŠ” ê²ƒì´ ì•„ë‹Œ
+// 				// RenderSystemì—ì„œ ê°ê°ì˜ ê°ì²´ì˜ ì •ë³´ë¥¼ ë°”íƒ•ìœ¼ë¡œ Graphicsì—ê²Œ ê·¸ë¦¬ë¼ê³  ì‹œí‚¤ëŠ” ê²ƒ
 // 				// object->GetRenderData();
 // 
 // 				HDData::Renderer* renderer = object->GetComponent<HDData::BoxRenderer>();
@@ -82,7 +80,7 @@ namespace HDEngine
 
 	void RenderSystem::DrawProcess()
 	{
-		UpdateRenderData(); //SetRenderData + ÀüÃ¼ ·»´õ ½ÃÀÛ,
+		UpdateRenderData(); //SetRenderData + ì „ì²´ ë Œë” ì‹œìž‘,
 		_dx11Renderer->Render();
 	}
 

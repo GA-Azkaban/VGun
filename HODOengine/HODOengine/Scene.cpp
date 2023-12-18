@@ -12,7 +12,7 @@ namespace HDData
 	Scene::Scene(std::string sceneName)
 		: _sceneName(sceneName)
 	{
-		// ¾ÀÀÌ »ý¼ºµÉ ¶§ ¹Ýµå½Ã Directional Light¿Í Camera¸¦ °¡Áö°í ÀÖ¾î¾ß ÇÑ´Ù
+		// ì”¬ì´ ìƒì„±ë  ë•Œ ë°˜ë“œì‹œ Directional Lightì™€ Cameraë¥¼ ê°€ì§€ê³  ìžˆì–´ì•¼ í•œë‹¤
 		GameObject* camObj = CreateObject("MainCamera");
 		Camera* mainCam = camObj->AddComponent<Camera>();
 		SetMainCamera(mainCam);
@@ -62,7 +62,7 @@ namespace HDData
 			_gameObjects.clear();
 		}
 
-		for (auto& gameObject : _gameObjects)
+		for (auto& gameObject : _runningObjects)
 		{
 			if (gameObject->IsActive())
 			{

@@ -32,7 +32,7 @@ TestScene::TestScene()
 	colli->Setflag(eColliderType::PLAYER);
 
 	
-	// ����� ��� Ȱ��ȭ (Ȱ��ȭ�ϰ� ���� �÷��׸� ���ڷ� ����)
+	// 디버그 모드 활성화 (활성화하고 싶은 플래그를 인자로 넣음)
 	API::DebugModeOn(eColliderType::PLAYER);
 
 	API::LoadScene(_scene);

@@ -140,7 +140,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
@@ -159,10 +158,10 @@
     <ClInclude Include="IHODOengine.h" />
     <ClInclude Include="ImageUI.h" />
     <ClInclude Include="InputSystem.h" />
-    <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="ObjectSystem.h" />
-    <ClInclude Include="MeshRenderer.h" />
-    <ClInclude Include="RendererBase.h" />
+    <ClInclude Include="RendererBase.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Resource.h" />
@@ -180,7 +179,6 @@
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CubeRenderer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -196,10 +194,10 @@
     <ClCompile Include="IDSystem.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputSystem.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
-    <ClCompile Include="MeshRenderer.cpp" />
-    <ClCompile Include="RendererBase.cpp" />
+    <ClCompile Include="RendererBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
