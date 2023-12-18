@@ -1,4 +1,4 @@
-﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
@@ -15,6 +15,7 @@
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "GraphicsObjFactory.h"
+#include "EventSystem.h"
 
 #include "DLL_Loader.h"
 
@@ -47,7 +48,8 @@ HODOengine::HODOengine()
 	_renderSystem(HDEngine::RenderSystem::Instance()),
 	_debugSystem(HDEngine::DebugSystem::Instance()),
 	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
-	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance())
+	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
+	_eventSystem(HDEngine::EventSystem::Instance())
 {
 	
 }
@@ -129,12 +131,13 @@ void HODOengine::Run()
 	_objectSystem.UpdateCurrentSceneObjects();
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
-
 	// draw
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
 	HDEngine::PhysicsSystem::Instance().Update();
+
+	_eventSystem.InvokeEvent();
 
 	// refresh input for next frame
 	_inputSystem.Flush();

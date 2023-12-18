@@ -1,77 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="RendererInterface">
-      <UniqueIdentifier>{9eebf368-d994-4754-b2d0-4d45b408782d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectInterface">
-      <UniqueIdentifier>{fd080201-aea3-4781-a0de-dc16f9476c10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectInterface\Camera">
+    <Filter Include="Camera">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="ObjectInterface\Renderable">
-      <UniqueIdentifier>{a67aee29-e180-4279-afaa-1507342812a4}</UniqueIdentifier>
+    <Filter Include="Factory">
+      <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Deprecated">
-      <UniqueIdentifier>{36313e95-d92e-4ac6-b1cc-0ab2c4012886}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Deprecated\Data">
-      <UniqueIdentifier>{1dc65efd-f035-4999-8c55-8533d279690f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Deprecated\Enum">
-      <UniqueIdentifier>{c6131c01-33e1-444a-a27e-e910d00d9cb8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Deprecated\Renderable">
+    <Filter Include="Renderable">
       <UniqueIdentifier>{051ba127-460d-4151-9c21-0478391e2c9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Deprecated\Renderable\DebugObject">
+    <Filter Include="Renderable\DebugObject">
       <UniqueIdentifier>{5fc00043-1acb-4a68-888a-2fba4edf2eca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Deprecated\Renderable\MeshObject">
+    <Filter Include="Renderable\MeshObject">
       <UniqueIdentifier>{e8cf3103-d589-4fd1-8d93-a0a6f3a8a86f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Deprecated\Renderable\MeshObject\StaticMesh">
+    <Filter Include="Renderable\MeshObject\StaticMesh">
       <UniqueIdentifier>{982b6af9-e2df-470d-b43c-ecaf6281d7e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Deprecated\Renderable\MeshObject\SkinnedMesh">
+    <Filter Include="Renderable\MeshObject\SkinnedMesh">
       <UniqueIdentifier>{11f9e053-7cc9-4787-beab-a221337560c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FactoryInterface">
-      <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
+    <Filter Include="RendererInterface">
+      <UniqueIdentifier>{9eebf368-d994-4754-b2d0-4d45b408782d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{1dc65efd-f035-4999-8c55-8533d279690f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sketchable">
+      <UniqueIdentifier>{65997900-f228-4e10-8e8a-d76c351ed68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sketchable\ImageUI">
+      <UniqueIdentifier>{c3b69451-c3aa-4546-bd99-b7a34ba57d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sketchable\TextUI">
+      <UniqueIdentifier>{cf2933be-79bf-4fc2-ad2c-a7cb007b8c1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ICamera.h">
-      <Filter>ObjectInterface\Camera</Filter>
+    <ClInclude Include="IHodoGICamera.h">
+      <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="IFactory.h">
-      <Filter>FactoryInterface</Filter>
+    <ClInclude Include="IHodoGIFactory.h">
+      <Filter>Factory</Filter>
     </ClInclude>
     <ClInclude Include="I3DRenderer.h">
       <Filter>RendererInterface</Filter>
     </ClInclude>
+    <ClInclude Include="IRenderable.h">
+      <Filter>Renderable</Filter>
+    </ClInclude>
     <ClInclude Include="IDebugObject.h">
-      <Filter>Deprecated\Renderable\DebugObject</Filter>
+      <Filter>Renderable\DebugObject</Filter>
     </ClInclude>
     <ClInclude Include="IStaticMesh.h">
-      <Filter>Deprecated\Renderable\MeshObject\StaticMesh</Filter>
+      <Filter>Renderable\MeshObject\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="ISkinnedMesh.h">
-      <Filter>Deprecated\Renderable\MeshObject\SkinnedMesh</Filter>
+      <Filter>Renderable\MeshObject\SkinnedMesh</Filter>
     </ClInclude>
     <ClInclude Include="IDebugCube.h">
-      <Filter>Deprecated\Renderable\DebugObject</Filter>
+      <Filter>Renderable\DebugObject</Filter>
     </ClInclude>
     <ClInclude Include="CameraData.h">
-      <Filter>Deprecated\Data</Filter>
+      <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="eMeshList.h">
-      <Filter>Deprecated\Enum</Filter>
+    <ClInclude Include="ISketchable.h">
+      <Filter>Sketchable</Filter>
     </ClInclude>
-    <ClInclude Include="IRenderable.h">
-      <Filter>ObjectInterface\Renderable</Filter>
+    <ClInclude Include="ISketchableImage.h">
+      <Filter>Sketchable\ImageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ISketchableText.h">
+      <Filter>Sketchable\TextUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

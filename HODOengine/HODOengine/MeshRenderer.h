@@ -1,25 +1,15 @@
 #pragma once
-#include "Component.h"
+#include "RendererBase.h"
+#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
 #include <memory>
-
-namespace HDEngine
-{
-	class IStaticMesh;
-}
 
 namespace HDData
 {
-	class MeshRenderer : public Component
+	class MeshRenderer : public RendererBase
 	{
 	public:
 		MeshRenderer();
-
-		virtual void Update() override;
-
-		void SetActive(bool active);
-		void LoadMesh(const char* fileName);
-		void LoadDiffuseMap(const char* fileName);
-		void LoadNormalMap(const char* fileName);
+		HDEngine::IStaticMesh& Get();
 
 	private:
 		std::unique_ptr<HDEngine::IStaticMesh> _staticMesh;

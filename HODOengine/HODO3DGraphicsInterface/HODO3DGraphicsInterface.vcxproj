@@ -27,6 +27,9 @@
     <ClInclude Include="IFactory.h" />
     <ClInclude Include="I3DRenderer.h" />
     <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="ISketchable.h" />
+    <ClInclude Include="ISketchableImage.h" />
+    <ClInclude Include="ISketchableText.h" />
     <ClInclude Include="ISkinnedMesh.h" />
     <ClInclude Include="IStaticMesh.h" />
   </ItemGroup>

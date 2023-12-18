@@ -14,6 +14,7 @@ namespace HDEngine
 	class PhysicsSystem;
 	class RenderSystem;
 	class GraphicsObjFactory;
+	class EventSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -60,4 +61,5 @@ private:
 	HDEngine::PhysicsSystem& _physicsSystem;
 	HDEngine::RenderSystem& _renderSystem;
 	HDEngine::GraphicsObjFactory& _graphicsObjFactory;
+	HDEngine::EventSystem& _eventSystem;
 };
