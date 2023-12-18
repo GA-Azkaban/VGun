@@ -1,5 +1,4 @@
 #pragma once
-
 #include "CameraData.h"
 
 /// <summary>
@@ -9,18 +8,19 @@
 
 namespace HDEngine
 {
+	class IRenderable;
+
 	class I3DRenderer
 	{
 	public:
 		// 그래픽스 엔진을 초기화한다.
-		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) abstract;
-
-		// virtual void UpdateRenderData(const RenderData& renderData) abstract;
-		virtual void UpdateCamera(const CameraData& cameraData) abstract;
+		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) abstract;
 
 		virtual void Render() abstract;
 
 		virtual void Finalize() abstract;
+
+		// virtual IRenderable* CreateRenderable(const std::string& modelPath) abstract;
 	};
 
 	/// dllexport 하는 렌더러를 반환하는 팩토리 함수.

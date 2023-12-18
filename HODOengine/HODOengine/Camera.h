@@ -1,25 +1,26 @@
 #include "dllExporter.h"
 #include "Component.h"
 #include "..\\HODOmath\\HODOmath.h"
-#include "..\\HODO3DGraphicsInterface\\CameraData.h"
 
 /// <summary>
 /// 카메라는 화면에 그려질 그래픽 요소들을 출력하는 데 쓰이는 객체입니다.
 /// 2023.11.09 김민정
 /// </summary>
 
+namespace HDEngine
+{
+	class ICamera;
+}
+
 namespace HDData
 {
+	class Scene;
+
 	class HODO_API Camera : public Component
 	{
+		friend Scene;
 	public:
 		Camera();
-
-	public:
-		HDEngine::CameraData& GetCameraData();
-
-	private:
-		HDEngine::CameraData _cameraData;
 
 	public:
 		float GetNearZ() const;
@@ -43,6 +44,12 @@ namespace HDData
 		void SetAspect(float aspect);
 		void SetFovY(float fovY);
 
+	public:
+		void UpdateRenderData();
+
+	private:
+		void SetAsMainCamera();	// main 카메라로 바꾸는 함수. Scene에서만 호출했으면 좋겠음.
+
 	private:
 		float _nearZ;				// frustum의 가까운 평면까지의 거리
 		float _farZ;				// frustum의 먼 평면까지의 거리
@@ -53,5 +60,8 @@ namespace HDData
 
 		HDMath::HDFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계'
 		HDMath::HDFLOAT4X4 _projMatrix;		// 카메라의 투영 행렬
+
+	private:
+		HDEngine::ICamera* _graphicsCamera;
 	};
 }

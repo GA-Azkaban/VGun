@@ -22,6 +22,7 @@ namespace HDEngine
 		void LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);
 
+		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();
 
 	private:

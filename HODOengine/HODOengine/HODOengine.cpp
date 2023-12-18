@@ -1,4 +1,4 @@
-// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
@@ -14,6 +14,15 @@
 #include "DebugSystem.h"
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
+#include "GraphicsObjFactory.h"
+
+#include "DLL_Loader.h"
+
+#ifdef _DEBUG
+#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#else
+#define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
+#endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
 
@@ -30,15 +39,17 @@ void ReleaseEngine(IHODOengine* instance)
 
 HODOengine::HODOengine()
 	:_appName(L"HODO"),
+	_dllLoader(new HDEngine::DLL_Loader()),
 	_sceneSystem(HDEngine::SceneSystem::Instance()),
 	_objectSystem(HDEngine::ObjectSystem::Instance()),
 	_timeSystem(HDEngine::TimeSystem::Instance()),
 	_inputSystem(HDEngine::InputSystem::Instance()),
 	_renderSystem(HDEngine::RenderSystem::Instance()),
 	_debugSystem(HDEngine::DebugSystem::Instance()),
-	_physicsSystem(HDEngine::PhysicsSystem::Instance())
+	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
+	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance())
 {
-
+	
 }
 
 HODOengine::~HODOengine()
@@ -60,13 +71,14 @@ void HODOengine::Initialize()
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
+	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
 	_timeSystem.Initialize();
 	_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 	_debugSystem.Initialize();
-	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
+	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_physicsSystem.Initialize();
-	//_physicsSystem.Initialize();
+	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 }
 
 void HODOengine::Loop()
@@ -91,7 +103,12 @@ void HODOengine::Loop()
 
 void HODOengine::Finalize()
 {
-
+	_physicsSystem.Finalize();
+	_renderSystem.Finalize();
+	// _debugSystem.Finalize();
+	// _inputSystem.Finalize();
+	// _timeSystem.Finalize();
+	_graphicsObjFactory.Finalize();
 }
 
 HWND HODOengine::GetHWND()

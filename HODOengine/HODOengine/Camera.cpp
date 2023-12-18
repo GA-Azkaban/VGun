@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "..\\HODO3DGraphicsInterface\\ICamera.h"
+#include "GraphicsObjFactory.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
@@ -16,29 +18,10 @@ namespace HDData
 		_aspect(16.0f / 9.0f),
 		_fovY(70.0f),
 		_nearWindowHeight(),
-		_farWindowHeight()
+		_farWindowHeight(),
+		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera())
 	{
 
-	}
-
-	HDEngine::CameraData& Camera::GetCameraData()
-	{
-		// 		float screenWidth = (float)RocketCore::RenderSystem::Instance().GetScreenWidth();
-		// 		float screenHeight = (float)RocketCore::RenderSystem::Instance().GetScreenHeight();
-		// 		_aspect = screenWidth / screenHeight;
-
-
-		_cameraData.nearZ = _nearZ;
-		_cameraData.farZ = _farZ;
-		_cameraData.aspect = _aspect;
-		_cameraData.fovY = _fovY;
-		_cameraData.nearWindowHeight = _nearWindowHeight;
-		_cameraData.farWindowHeight = _farWindowHeight;
-
-		_cameraData.position = GetGameObject()->GetTransform()->GetWorldPosition();
-		_cameraData.rotation = GetGameObject()->GetTransform()->GetWorldRotation();
-
-		return _cameraData;
 	}
 
 	float Camera::GetNearZ() const
@@ -110,21 +93,35 @@ namespace HDData
 	void Camera::SetNearZ(float nearZ)
 	{
 		_nearZ = nearZ;
-		_cameraData.nearZ = nearZ;
+		_graphicsCamera->SetNearZ(nearZ);
 	}
 
 	void Camera::SetFarZ(float farZ)
 	{
-		_cameraData.farZ = farZ;
+		_farZ = farZ;
+		_graphicsCamera->SetFarZ(farZ);
 	}
 
 	void Camera::SetAspect(float aspect)
 	{
-		_cameraData.aspect = aspect;
+		_aspect = aspect;
+		_graphicsCamera->SetAspect(aspect);
 	}
 
 	void Camera::SetFovY(float fovY)
 	{
-		_cameraData.fovY = fovY;
+		_fovY = fovY;
+		_graphicsCamera->SetFOVY(fovY);
+	}
+
+	void Camera::UpdateRenderData()
+	{
+		_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
+		// _graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
+	}
+
+	void Camera::SetAsMainCamera()
+	{
+		_graphicsCamera->SetAsMainCamera();
 	}
 }

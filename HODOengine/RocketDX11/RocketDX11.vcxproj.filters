@@ -10,9 +10,6 @@
     <Filter Include="Builder\Interface">
       <UniqueIdentifier>{678a5b82-b9c3-4e3f-8f8d-4aa902c766d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GraphicsEngine">
-      <UniqueIdentifier>{11c77221-a681-4070-85a2-6e01f7b6d202}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{22c35920-33c7-49ee-93e4-a0ba4a627ed2}</UniqueIdentifier>
     </Filter>
@@ -25,12 +22,6 @@
     <Filter Include="Object\HelperObject">
       <UniqueIdentifier>{ad16b830-a53c-4ee0-b153-f753003fb0dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\MeshObject">
-      <UniqueIdentifier>{6631cd88-eb46-4f41-869f-f611a8b4e9ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Factory">
-      <UniqueIdentifier>{8e06a945-0e27-4271-88a7-c0df8b93c968}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Interface">
       <UniqueIdentifier>{af9e05cf-3026-4dc9-9324-2cfb964f3da7}</UniqueIdentifier>
     </Filter>
@@ -39,9 +30,6 @@
     </Filter>
     <Filter Include="Object\Shader">
       <UniqueIdentifier>{d1db05f7-9ff0-41f6-92da-cbecec9aea3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Camera">
-      <UniqueIdentifier>{3225d4ac-ebcc-46d9-bca8-abe63a7fd42c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\Shader\HLSL">
       <UniqueIdentifier>{bb4107b1-7dd3-44b6-be03-6574cf1a5916}</UniqueIdentifier>
@@ -54,6 +42,27 @@
     </Filter>
     <Filter Include="Object\Shader\PixelShader">
       <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Cube">
+      <UniqueIdentifier>{90fb9f77-90ab-413f-9096-77a94629e80f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\StaticMesh">
+      <UniqueIdentifier>{6631cd88-eb46-4f41-869f-f611a8b4e9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\SkinnedMesh">
+      <UniqueIdentifier>{9b1a4f56-f64b-4952-9bfb-f0758a6c41f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectFactory">
+      <UniqueIdentifier>{8e06a945-0e27-4271-88a7-c0df8b93c968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsEngine">
+      <UniqueIdentifier>{11c77221-a681-4070-85a2-6e01f7b6d202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Camera">
+      <UniqueIdentifier>{3225d4ac-ebcc-46d9-bca8-abe63a7fd42c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dllExporter">
+      <UniqueIdentifier>{46b21e4f-6b9f-4bb2-aa28-84e873e8b930}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,14 +87,20 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Object\MeshObject</Filter>
-    </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Object\Shader\VertexShader</Filter>
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Object\Shader\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Object\Cube</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>Object\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectFactory.cpp">
+      <Filter>ObjectFactory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,9 +134,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Object\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Object\MeshObject</Filter>
-    </ClInclude>
     <ClInclude Include="IShader.h">
       <Filter>Object\Shader\Interface</Filter>
     </ClInclude>
@@ -130,6 +142,21 @@
     </ClInclude>
     <ClInclude Include="PixelShader.h">
       <Filter>Object\Shader\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Object\Cube</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>Object\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectFactory.h">
+      <Filter>ObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="dllExporter.h">
+      <Filter>dllExporter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

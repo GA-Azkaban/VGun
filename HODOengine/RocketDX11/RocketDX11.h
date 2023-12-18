@@ -17,6 +17,7 @@ namespace RocketCore::Graphics
 {
 	class Grid;
 	class Axis;
+	class Cube;
 	class VertexShader;
 	class PixelShader;
 	
@@ -28,13 +29,14 @@ namespace RocketCore::Graphics
 
 	public:
 		//그래픽스 엔진을 초기화한다.
-		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight, bool isEditor = false) override;
-
-		virtual void UpdateCamera(const HDEngine::CameraData& cameraData) override;
+		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
 		virtual void Render() override;
 
 		virtual void Finalize() override;
+
+	private:
+		void Update();
 
 		/// 렌더스테이트 제작 함수
 	private:
@@ -81,7 +83,7 @@ namespace RocketCore::Graphics
 	private:
 		Grid* _grid;
 		Axis* _axis;
-		Camera _camera;
+		Cube* _cube;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 	};
