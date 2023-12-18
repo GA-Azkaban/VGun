@@ -310,8 +310,8 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Update()
 	{
-		_camera.UpdateViewMatrix();
-		_camera.UpdateProjectionMatrix();
+		Camera::GetMainCamera()->UpdateViewMatrix();
+		Camera::GetMainCamera()->UpdateProjectionMatrix();
 	}
 
 	void RocketDX11::Render()
@@ -319,11 +319,11 @@ namespace RocketCore::Graphics
 		Update();
 
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
-		_grid->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
 		_grid->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
-		_axis->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
 		_axis->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
-		_cube->Update(DirectX::XMMatrixIdentity(), _camera.GetViewMatrix(), _camera.GetProjectionMatrix());
+		_cube->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
 		_cube->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _solidRenderState.Get());
 		RenderMesh();
 		EndRender();

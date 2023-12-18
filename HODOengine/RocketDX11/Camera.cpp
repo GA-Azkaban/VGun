@@ -1,11 +1,14 @@
 #include <cmath>
 #include "Camera.h"
 #include "..\\HODOmath\\HODOmath.h"
+#include "ResourceManager.h"
 
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
+	Camera* Camera::_mainCamera;
+
 	Camera::Camera()
 		: _position(0.0f, 2.0f, -10.0f),
 		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
@@ -62,11 +65,11 @@ namespace RocketCore::Graphics
 	/// 23.04.20 강석원 인재원
 	void Camera::UpdateViewMatrix()
 	{
-		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
-		XMVECTOR det = XMMatrixDeterminant(world);
-		XMStoreFloat4x4(&_viewMatrix, XMMatrixInverse(&det, world));
-
-		return;
+// 		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
+// 		XMVECTOR det = XMMatrixDeterminant(world);
+// 		XMStoreFloat4x4(&_viewMatrix, XMMatrixInverse(&det, world));
+// 
+// 		return;
 
 		XMVECTOR R = GetRight();
 		XMVECTOR U = GetUp();
@@ -207,4 +210,21 @@ namespace RocketCore::Graphics
 		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
 		XMStoreFloat4x4(&_projectionMatrix, temp);
 	}
+
+	void Camera::SetAsMainCamera()
+	{
+		_mainCamera = this;
+	}
+
+	Camera* Camera::GetMainCamera()
+	{
+		return _mainCamera;
+	}
+
+	void Camera::SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot)
+	{
+		SetPosition(pos.x, pos.y, pos.z);
+		SetRotation(rot.w, rot.x, rot.y, rot.z);
+	}
+
 }

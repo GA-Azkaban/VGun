@@ -84,7 +84,6 @@ namespace RocketCore::Graphics
 		Grid* _grid;
 		Axis* _axis;
 		Cube* _cube;
-		Camera _camera;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 	};

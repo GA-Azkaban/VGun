@@ -4,6 +4,7 @@
 
 namespace HDEngine
 {
+	class DLL_Loader;
 	class SceneSystem;
 	class ObjectSystem;
 	class InputSystem;
@@ -12,6 +13,7 @@ namespace HDEngine
 	class DebugSystem;
 	class PhysicsSystem;
 	class RenderSystem;
+	class GraphicsObjFactory;
 }
 
 class HODOengine final : public IHODOengine
@@ -47,6 +49,9 @@ private:
 	const WCHAR* _appName;
 
 private:
+	HDEngine::DLL_Loader* _dllLoader;
+
+private:
 	HDEngine::SceneSystem& _sceneSystem;
 	HDEngine::ObjectSystem& _objectSystem;
 	HDEngine::TimeSystem& _timeSystem;
@@ -54,4 +59,5 @@ private:
 	HDEngine::DebugSystem& _debugSystem;
 	HDEngine::PhysicsSystem& _physicsSystem;
 	HDEngine::RenderSystem& _renderSystem;
+	HDEngine::GraphicsObjFactory& _graphicsObjFactory;
 };

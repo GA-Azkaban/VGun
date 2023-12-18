@@ -7,12 +7,6 @@
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Singleton.h"
 
-#ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
-#else
-#define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
-#endif // _DEBUG
-
 namespace HDData
 {
 	class Renderer;
@@ -33,7 +27,7 @@ namespace HDEngine
 
 		/// 시스템 초기화 관련
 	public:
-		void Initialize(HWND hWnd, int screenWidth, int screenHeight);
+		void Initialize(HWND hWnd, HMODULE hModule, int screenWidth, int screenHeight);
 		void Finalize();
 
 	public:
@@ -61,7 +55,7 @@ namespace HDEngine
 
 		/// DLL 관련
 	private:
-		HMODULE hGraphicsModule;
+		HMODULE _dllHandle;
 		std::unique_ptr<HDEngine::I3DRenderer> _dx11Renderer;
 	};
 };

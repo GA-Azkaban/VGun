@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include "dllExporter.h"
 
 #include "..\\HODO3DGraphicsInterface\\ICamera.h"
 
@@ -14,6 +15,9 @@ namespace RocketCore::Graphics
 		Camera();
 		~Camera();
 
+
+		virtual void SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot) override;
+
 	public:
 		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& matrix) override;
 		virtual void SetNearZ(float near) override;
@@ -22,6 +26,7 @@ namespace RocketCore::Graphics
 		virtual void SetFOVY(float fov) override;
 		virtual void SetNearHeight(float height) override;
 		virtual void SetFarHeight(float height) override;
+		virtual void SetAsMainCamera() override;
 
 	public:
 		DirectX::XMFLOAT3 GetPosition() const;
@@ -53,5 +58,11 @@ namespace RocketCore::Graphics
 		DirectX::XMFLOAT4X4 _worldMatrix;		// 카메라 worldTM
 		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
+
+	public:
+		static Camera* GetMainCamera();
+
+	private:
+		static Camera* _mainCamera;
 	};
 }

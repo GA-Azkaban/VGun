@@ -103,6 +103,12 @@
     <Filter Include="05_Component\Renderer\MeshRenderer">
       <UniqueIdentifier>{35c2f958-b961-483f-892f-754d84cffe72}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06_System\GraphicsObjectFactory">
+      <UniqueIdentifier>{8eea1c60-cd23-4e2c-967d-5e3312da96a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DLL_Loader">
+      <UniqueIdentifier>{cf79f820-556c-4988-823c-1990b894a59d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -198,6 +204,12 @@
     <ClInclude Include="MeshRenderer.h">
       <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="GraphicsObjFactory.h">
+      <Filter>06_System\GraphicsObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="DLL_Loader.h">
+      <Filter>DLL_Loader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -286,6 +298,12 @@
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsObjFactory.cpp">
+      <Filter>06_System\GraphicsObjectFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="DLL_Loader.cpp">
+      <Filter>DLL_Loader</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

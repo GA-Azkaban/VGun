@@ -24,7 +24,7 @@
     <ClInclude Include="IDebugCube.h" />
     <ClInclude Include="IDebugObject.h" />
     <ClInclude Include="ICamera.h" />
-    <ClInclude Include="IHodoGIFactory.h" />
+    <ClInclude Include="IFactory.h" />
     <ClInclude Include="I3DRenderer.h" />
     <ClInclude Include="IRenderable.h" />
     <ClInclude Include="ISkinnedMesh.h" />

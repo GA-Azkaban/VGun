@@ -38,7 +38,7 @@
     <Filter Include="Deprecated\Renderable\MeshObject\SkinnedMesh">
       <UniqueIdentifier>{11f9e053-7cc9-4787-beab-a221337560c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Factory">
+    <Filter Include="FactoryInterface">
       <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -46,8 +46,8 @@
     <ClInclude Include="ICamera.h">
       <Filter>ObjectInterface\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="IHodoGIFactory.h">
-      <Filter>Factory</Filter>
+    <ClInclude Include="IFactory.h">
+      <Filter>FactoryInterface</Filter>
     </ClInclude>
     <ClInclude Include="I3DRenderer.h">
       <Filter>RendererInterface</Filter>

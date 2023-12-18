@@ -145,10 +145,12 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugSystem.h" />
+    <ClInclude Include="DLL_Loader.h" />
     <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GraphicsObjFactory.h" />
     <ClInclude Include="HODOengine.h" />
     <ClInclude Include="HODO_API.h" />
     <ClInclude Include="IDSystem.h" />
@@ -178,8 +180,10 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
+    <ClCompile Include="DLL_Loader.cpp" />
     <ClCompile Include="DynamicCollider.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GraphicsObjFactory.cpp" />
     <ClCompile Include="HODOengine.cpp" />
     <ClCompile Include="HODO_API.cpp" />
     <ClCompile Include="IDSystem.cpp" />

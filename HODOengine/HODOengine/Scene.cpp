@@ -52,5 +52,6 @@ namespace HDData
 	void Scene::SetMainCamera(Camera* camera)
 	{
 		_mainCamera = camera;
+		_mainCamera->SetAsMainCamera();
 	}
 }

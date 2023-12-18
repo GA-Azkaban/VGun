@@ -28,23 +28,15 @@ namespace HDEngine
 {
 	RenderSystem::RenderSystem()
 		:_hWnd(), _screenWidth(), _screenHeight(),
-		hGraphicsModule(LoadLibrary(GRAPHICSDLL_PATH)),
 		_dx11Renderer()
 	{
-		DWORD error_code = GetLastError();
-		assert(hGraphicsModule);
-
-		auto a = GetProcAddress(hGraphicsModule, GRAPHICS_CREATE_NAME);
-		error_code = GetLastError();
-
-		_dx11Renderer.reset((reinterpret_cast<GRAPHICS_CREATE_SIGNATURE>(GetProcAddress(hGraphicsModule, GRAPHICS_CREATE_NAME)))());
-
-		//extern "C" __declspec(dllexport) IRocketGraphics * CreateGraphicsInstance();
-		//extern "C" __declspec(dllexport) void ReleaseGraphicsInstance(IRocketGraphics * instance);
 	}
 
-	void RenderSystem::Initialize(HWND hWnd, int screenWidth, int screenHeight)
+	void RenderSystem::Initialize(HWND hWnd, HMODULE hModule, int screenWidth, int screenHeight)
 	{
+		_dllHandle = hModule;
+		_dx11Renderer.reset((reinterpret_cast<GRAPHICS_CREATE_SIGNATURE>(GetProcAddress(_dllHandle, GRAPHICS_CREATE_NAME)))());
+
 		_hWnd = hWnd;
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
@@ -54,8 +46,7 @@ namespace HDEngine
 
 	void RenderSystem::Finalize()
 	{
-		reinterpret_cast<GRAPHICS_RELEASE_SIGNATURE>(GetProcAddress(hGraphicsModule, GRAPHICS_RELEASE_NAME))(_dx11Renderer.release());
-		FreeLibrary(hGraphicsModule);
+		reinterpret_cast<GRAPHICS_RELEASE_SIGNATURE>(GetProcAddress(_dllHandle, GRAPHICS_RELEASE_NAME))(_dx11Renderer.release());
 	}
 
 	void RenderSystem::MakeAndLinkRenderable()
@@ -99,7 +90,7 @@ namespace HDEngine
 	{
 		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 		HDData::Camera* mainCam = currentScene->GetMainCamera();
-		//mainCam->
+		mainCam->UpdateRenderData();
 	}
 
 	int RenderSystem::GetScreenWidth() const
