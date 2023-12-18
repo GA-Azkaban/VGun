@@ -21,6 +21,8 @@ public:
 public:
 	void CreatePhysXScene();
 
+	void TempMove();
+
 private:
 	physx::PxDefaultAllocator		_allocator;
 	physx::PxDefaultErrorCallback	_errorCallback;
@@ -30,4 +32,6 @@ private:
 	physx::PxScene* _pxScene;
 	physx::PxMaterial* _material;
 	physx::PxPvd* _pvd;
+
+	physx::PxRigidDynamic* dynamic;
 };

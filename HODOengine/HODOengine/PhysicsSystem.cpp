@@ -1,4 +1,5 @@
 #include "PhysicsSystem.h"
+#include <winuser.h>
 
 void PhysicsSystem::Initialize()
 {
@@ -23,7 +24,7 @@ void PhysicsSystem::Initialize()
 	_pxScene->addActor(*groundPlane);
 
 	physx::PxTransform localTm(physx::PxVec3(2.0f, 2.0f, 2.0f));
-	physx::PxRigidDynamic* dynamic = _physics->createRigidDynamic(localTm);
+	dynamic = _physics->createRigidDynamic(localTm);
 	dynamic->setAngularDamping(0.5f);
 	dynamic->setLinearDamping(0.5f);
 	_pxScene->addActor(*dynamic);
@@ -34,6 +35,8 @@ void PhysicsSystem::Update()
 {
 	_pxScene->simulate(0.0167f);
 	_pxScene->fetchResults(true);
+
+	TempMove();
 }
 
 void PhysicsSystem::Finalize()
@@ -69,5 +72,14 @@ void PhysicsSystem::CreatePhysXScene()
 		pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
 		pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
 		pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+	}
+}
+
+void PhysicsSystem::TempMove()
+{
+	// temporary phys simulation test on pvd
+	if (GetAsyncKeyState(VK_SPACE))
+	{
+		dynamic->addForce(physx::PxVec3(0.0f, 0.1f, 0.0f), physx::PxForceMode::eIMPULSE);
 	}
 }
