@@ -65,7 +65,12 @@ void HODOengine::Initialize()
 	_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
 	_debugSystem.Initialize();
 	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
+<<<<<<< HEAD
 	_physicsSystem.Initialize();
+=======
+	//_physicsSystem.Initialize();
+
+>>>>>>> a3562f91cd7d2a8229e060d51b6651f73cd47629
 }
 
 void HODOengine::Loop()
@@ -104,16 +109,16 @@ void HODOengine::Run()
 	// Time Update
 	_timeSystem.Update();
 
-	// Input Update
+	// Input, Debug Update
 	HDEngine::InputSystem::Instance().Update();
 	HDEngine::DebugSystem::Instance().Update();
 
 	// Update Static Object
+	HDEngine::ObjectSystem::Instance().Update();
 
 	// Update, Destroy Scene Object and Components
 	HDEngine::SceneSystem::Instance().UpdateScene();
 
-	// Invoke Collision Events
 
 	// draw
 	_renderSystem.DrawProcess();
