@@ -41,11 +41,7 @@ namespace HDEngine
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
 
-		// temporary phys simulation test on pvd
-		if (GetAsyncKeyState(VK_SPACE))
-		{
-			_dynamic->addForce(physx::PxVec3(0.0f, 0.1f, 0.0f),physx::PxForceMode::eIMPULSE);
-		}
+		TempMove();
 	}
 
 	void PhysicsSystem::Finalize()
@@ -81,6 +77,15 @@ namespace HDEngine
 			pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
 			pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
 			pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+		}
+	}
+
+	void PhysicsSystem::TempMove()
+	{
+		// temporary phys simulation test on pvd
+		if (GetAsyncKeyState(VK_SPACE))
+		{
+			_dynamic->addForce(physx::PxVec3(0.0f, 0.1f, 0.0f), physx::PxForceMode::eIMPULSE);
 		}
 	}
 }
