@@ -81,8 +81,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>HODOmath.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HODOmath.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Lib\x64\Debug\physx;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -111,13 +111,13 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_EXPORT_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)Include;$(SolutionDir)Include\physX</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>HODOmath.lib;PhysX_64.lib;PhysXFoundation_64.lib;PhysXCommon_64.lib;PhysXExtensions_static_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Lib\x64\Debug\physX;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HODOmath.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Lib\x64\Debug\physx;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,43 +141,56 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugSystem.h" />
+    <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HODOengine.h" />
-    <ClInclude Include="HodoGIGlobal.h" />
-    <ClInclude Include="HodoGIObject.h" />
     <ClInclude Include="HODO_API.h" />
     <ClInclude Include="IDSystem.h" />
     <ClInclude Include="IHODOengine.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ObjectSystem.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneSystem.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StaticBoxCollider.h" />
+    <ClInclude Include="StaticCollider.h" />
+    <ClInclude Include="StaticPlaneCollider.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DebugSystem.cpp" />
+    <ClCompile Include="DynamicCollider.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="HODOengine.cpp" />
-    <ClCompile Include="HodoGIObject.cpp" />
     <ClCompile Include="HODO_API.cpp" />
     <ClCompile Include="IDSystem.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="StaticBoxCollider.cpp" />
+    <ClCompile Include="StaticCollider.cpp" />
+    <ClCompile Include="StaticPlaneCollider.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>

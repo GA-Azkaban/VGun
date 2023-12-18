@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="00_Default">
@@ -27,9 +27,6 @@
     </Filter>
     <Filter Include="05_Component\Transform">
       <UniqueIdentifier>{1d994bc1-3cba-48ef-bd78-d8a7e3880a99}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Collision">
-      <UniqueIdentifier>{ff76b52b-9184-49be-88ea-cf3a2f8b2cfa}</UniqueIdentifier>
     </Filter>
     <Filter Include="06_System">
       <UniqueIdentifier>{0e13d6ef-847d-45f8-ac32-f23e63fcdccd}</UniqueIdentifier>
@@ -64,17 +61,56 @@
     <Filter Include="05_Component\Camera">
       <UniqueIdentifier>{5cdb65ec-11e5-4551-96d6-ea642ec28523}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06_System\Global">
-      <UniqueIdentifier>{f88470fc-6a92-4913-9811-7c881ec0e07b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="07_GraphicInterfaceObject">
-      <UniqueIdentifier>{47b4a989-3e4f-4323-b412-2dc0ee2755cd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Script">
       <UniqueIdentifier>{7104ad00-713f-4193-b1aa-16b61916561b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Collider">
+      <UniqueIdentifier>{ff76b52b-9184-49be-88ea-cf3a2f8b2cfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\StaticCollider">
+      <UniqueIdentifier>{35266207-6012-4879-b155-b000a5dd9a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider">
+      <UniqueIdentifier>{50365d41-0b8a-4865-b760-1662ff02270d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\Base">
+      <UniqueIdentifier>{88adfa4e-8af2-4a67-bc51-4ff2e4d4e142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\StaticCollider\StaticColliderBase">
+      <UniqueIdentifier>{e9d56e4a-f821-43e6-8353-1203fef87647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\StaticCollider\StaticBoxCollider">
+      <UniqueIdentifier>{7999e865-7bae-4ae8-b470-006ae620de4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\StaticCollider\StaticPlaneCollider">
+      <UniqueIdentifier>{b520d522-4732-43f3-94a3-22e3945aca58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicColliderBase">
+      <UniqueIdentifier>{04cdc952-59f0-4be4-ac1c-94badf4492ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\RenderSystem">
+      <UniqueIdentifier>{885f02bb-befc-4a85-a865-68431d10cd0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer">
+      <UniqueIdentifier>{7ebc400f-1d65-4d9d-bdb5-bc892c822d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\BaseClass">
+      <UniqueIdentifier>{28355368-a12d-47d8-b52f-9b3f960396bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface">
+      <UniqueIdentifier>{2a67aadc-6c14-4966-8f34-f7ae6fb5fe7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicBoxCollider">
+      <UniqueIdentifier>{4681b789-43ce-4f2c-a4d0-28abaf6d01b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicCapsuleCollider">
+      <UniqueIdentifier>{1988af81-4a97-412b-9d70-1aaa5c73089a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicSphereCollider">
+      <UniqueIdentifier>{d7b98d27-f34c-4a16-bad3-150a6eddcf5f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="06_System\PhysicsSystem">
-      <UniqueIdentifier>{2f38b02a-0c5d-4842-b60d-48474a0330f5}</UniqueIdentifier>
+      <UniqueIdentifier>{3018ff56-a38b-464a-a666-ed7e8c4bee6a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -114,9 +150,6 @@
     <ClInclude Include="Component.h">
       <Filter>05_Component\ComponentBase</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>05_Component\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="HODO_API.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
@@ -132,14 +165,41 @@
     <ClInclude Include="Camera.h">
       <Filter>05_Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="HodoGIGlobal.h">
-      <Filter>06_System\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="HodoGIObject.h">
-      <Filter>07_GraphicInterfaceObject</Filter>
-    </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="DebugSystem.h" />
+    <ClInclude Include="DynamicCollider.h" />
+    <ClInclude Include="StaticBoxCollider.h" />
+    <ClInclude Include="StaticCollider.h" />
+    <ClInclude Include="StaticPlaneCollider.h" />
+    <ClInclude Include="Collider.h">
+      <Filter>05_Component\Collider\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticCollider.h">
+      <Filter>05_Component\Collider\StaticCollider\StaticColliderBase</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticBoxCollider.h">
+      <Filter>05_Component\Collider\StaticCollider\StaticBoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticPlaneCollider.h">
+      <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicColliderBase</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugSystem.h">
+      <Filter>06_System\DebugSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>06_System\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeSystem.h">
+      <Filter>06_System\TimeSystem</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsSystem.h">
       <Filter>06_System\PhysicsSystem</Filter>
@@ -168,9 +228,6 @@
     <ClCompile Include="Transform.cpp">
       <Filter>05_Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>05_Component\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>03_Scene</Filter>
     </ClCompile>
@@ -195,14 +252,44 @@
     <ClCompile Include="Camera.cpp">
       <Filter>05_Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="HodoGIObject.cpp">
-      <Filter>07_GraphicInterfaceObject</Filter>
-    </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DebugSystem.cpp" />
+    <ClCompile Include="DynamicCollider.cpp" />
+    <ClCompile Include="StaticBoxCollider.cpp" />
+    <ClCompile Include="StaticCollider.cpp" />
+    <ClCompile Include="StaticPlaneCollider.cpp" />
+    <ClCompile Include="Collider.cpp">
+      <Filter>05_Component\Collider\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticCollider.cpp">
+      <Filter>05_Component\Collider\StaticCollider\StaticColliderBase</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBoxCollider.cpp">
+      <Filter>05_Component\Collider\StaticCollider\StaticBoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticPlaneCollider.cpp">
+      <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicColliderBase</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugSystem.cpp">
+      <Filter>06_System\DebugSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>06_System\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>06_System\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeSystem.cpp">
+      <Filter>06_System\TimeSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

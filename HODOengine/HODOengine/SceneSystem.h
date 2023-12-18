@@ -1,42 +1,32 @@
 #pragma once
 #include <unordered_map>
-
+#include <string>
 #include "Singleton.h"
-#include "Scene.h" 
 
-namespace hodoEngine
+namespace HDData
 {
-	class hodoData::Scene;
-	class hodoData::GameObject;
+	class Scene;
+}
 
+namespace HDEngine
+{
 	class SceneSystem : public Singleton<SceneSystem>
 	{
 		friend Singleton;
 
 	private:
-		SceneSystem() = default;
+		SceneSystem();
 
 	public:
-		void Initialize();
-		void Update();
+		HDData::Scene* CreateScene(std::string sceneName = "");
+		void LoadScene(std::string sceneName);
+		void LoadScene(HDData::Scene* scene);
 
-	public:
-		hodoData::Scene* CreateScene();
-		hodoData::Scene* CreateScene(std::string sceneName);
-		bool LoadScene(std::string id);
-		
-	private:
-		std::unordered_map<std::string, hodoData::Scene*> _sceneList;
-
-	public:
-		void SetCurrentSceneByName(std::string sceneName);
-		hodoData::Scene* GetCurrentScene();
-		bool GetIsCurrentSceneChange();
+		HDData::Scene* GetCurrentScene();
 
 	private:
-		hodoData::Scene* _currentScene;
-		hodoData::Scene* _prevScene;
-		bool _isSceneChange;
+		std::unordered_map<std::string, HDData::Scene*> _sceneList;
+		HDData::Scene* _currentScene;
 	};
 
 }

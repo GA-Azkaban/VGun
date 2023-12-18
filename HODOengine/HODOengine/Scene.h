@@ -4,42 +4,48 @@
 
 #include "dllExporter.h"
 
-namespace hodoData
+namespace HDData
 {
-	using ID = std::string;
-
 	class GameObject;
+	class Camera;
 
 	class HODO_API Scene
 	{
 	public:
-		Scene() = default;
-		Scene(std::string sceneName);
+		Scene(std::string sceneName = "");
+		Scene(const Scene&) = delete;
+		Scene(Scene&&) = delete;
+		Scene& operator=(const Scene&) = delete;
+		Scene& operator=(Scene&&) = delete;
 		~Scene();
 
 	public:
-		void Start();
+		HDData::GameObject* CreateObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
+		void DestroyObject(HDData::GameObject* gameObject);
+
+		void FlushDestroyObjectList();
+
 		void Update();
+		void LateUpdate();
+		void FixedUpdate();
 
-	public:
-		void AddObj(ID id);
-		bool IsScenePlaying();
-
-		std::vector<ID>& GetObjList();
-
-	private:
-		bool _isPlaying;
-		std::vector<ID> _ObjList;
-
-	public:
+		std::vector<GameObject*>& GetGameObjectList();
+		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
 	private:
-		std::string _scneneName = "new scene";
+		std::vector<GameObject*> _gameObjects;
+		std::vector<GameObject*> _runningObjects;
+		std::vector<GameObject*> _destroyObjects;
+		std::string _sceneName;
 		
+	public:
+		Camera* GetMainCamera();
+		void SetMainCamera(Camera* camera);
+
+	private:
+		Camera* _mainCamera;
 	};
-
 }
-
 

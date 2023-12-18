@@ -1,7 +1,26 @@
 #include "Script.h"
 
+HDData::Script::Script()
+{
 
-namespace HODOdata
+}
+
+HDData::Script::~Script()
+{
+
+}
+
+void HDData::Script::Start()
+{
+
+}
+
+void HDData::Script::Update()
+{
+
+}
+
+void HDData::Script::FixedUpdate()
 {
 
 }

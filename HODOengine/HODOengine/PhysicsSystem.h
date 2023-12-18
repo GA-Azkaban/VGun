@@ -6,32 +6,35 @@
 #include "../Include/physx/PxPhysics.h"
 #include "../Include/physx/PxPhysicsAPI.h"
 
-class PhysicsSystem : public Singleton<PhysicsSystem>
+namespace HDEngine
 {
-	friend Singleton;
+	class PhysicsSystem : public Singleton<PhysicsSystem>
+	{
+		friend Singleton;
 
-private:
-	PhysicsSystem() = default;
+	private:
+		PhysicsSystem() = default;
 
-public:
-	void Initialize();
-	void Update();
-	void Finalize();
+	public:
+		void Initialize();
+		void Update();
+		void Finalize();
 
-public:
-	void CreatePhysXScene();
+	public:
+		void CreatePhysXScene();
 
-	void TempMove();
+		void TempMove();
 
-private:
-	physx::PxDefaultAllocator		_allocator;
-	physx::PxDefaultErrorCallback	_errorCallback;
-	physx::PxFoundation* _foundation;
-	physx::PxPhysics* _physics;
-	physx::PxDefaultCpuDispatcher* _dispatcher;
-	physx::PxScene* _pxScene;
-	physx::PxMaterial* _material;
-	physx::PxPvd* _pvd;
+	private:
+		physx::PxDefaultAllocator		_allocator;
+		physx::PxDefaultErrorCallback	_errorCallback;
+		physx::PxFoundation* _foundation;
+		physx::PxPhysics* _physics;
+		physx::PxDefaultCpuDispatcher* _dispatcher;
+		physx::PxScene* _pxScene;
+		physx::PxMaterial* _material;
+		physx::PxPvd* _pvd;
 
-	physx::PxRigidDynamic* dynamic;
-};
+		physx::PxRigidDynamic* _dynamic;
+	};
+}

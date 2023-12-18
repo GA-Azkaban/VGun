@@ -8,6 +8,7 @@
 
 #include "DLLExporter.h"
 
+#include <windows.h>
 #include <string>
 #include "..\HODOmath\HODOmath.h"
 
@@ -21,14 +22,31 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "Transform.h"
+#include "Camera.h"
 #include "Script.h"
+#include "Collider.h"
+#include "StaticBoxCollider.h"
 
+#include "ObjectSystem.h"
 
-namespace hodoData
+namespace API
 {
-	/// 씬을 생성하기 위한 함수
-	HODO_API Scene* CreateScene(std::string sceneName);
+	extern "C"
+	{
+		/// 씬을 생성하기 위한 함수
+		HODO_API HDData::Scene* CreateScene(std::string sceneName);
+		HODO_API void LoadScene(HDData::Scene* scene);
+		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		
+		HODO_API bool GetKeyDown(int keyCode);
+		HODO_API bool GetKeyUp(int keyCode);
+		HODO_API bool GetKeyPressing(int keyCode);
+		HODO_API HDMath::HDFLOAT2 GetMousePosition();
+		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized();
 
-	HODO_API GameObject* CreateObject(Scene* now, GameObject* parent = nullptr);
+		HODO_API void DebugModeOn(int flag);
+
+		HODO_API float GetDeltaTime();
+	}
 }
 

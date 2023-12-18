@@ -1,74 +1,55 @@
 #include "SceneSystem.h"
+#include "GameObject.h"
+#include "Scene.h"
 
 #include <cassert>
 
 #include "IDSystem.h"
-#include "ObjectSystem.h"
 
-namespace hodoEngine
+
+// TODO) ���ӿ�����Ʈ ������ �ٲ�� ������� ������ �ʿ��� ��
+
+namespace HDEngine
 {
 
-	void SceneSystem::Initialize()
+	SceneSystem::SceneSystem()
+		:_currentScene(nullptr)
 	{
-		_prevScene = nullptr;
-		_currentScene = nullptr;
+
 	}
 
-	void SceneSystem::Update()
+	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
-		if (_prevScene != _currentScene)
+		// �̹� �ִ� �� �̸��̶�� �� ���� ��ȯ���ش�.
+		auto iter = _sceneList.find(sceneName);
+		if (iter != _sceneList.end())
 		{
-			_isSceneChange = true;
+			return _sceneList[sceneName];
 		}
-		else
-		{
-			_isSceneChange = false;
-		}
-	}
 
-	hodoData::Scene* SceneSystem::CreateScene()
-	{
-		std::string id = IDSystem::Instance().CreateID();
-		hodoData::Scene* scene = new hodoData::Scene();
-		_sceneList.insert({ id, scene });
-		return scene;
-	}
-
-	hodoData::Scene* SceneSystem::CreateScene(std::string sceneName)
-	{
-		hodoData::Scene* scene = new hodoData::Scene(sceneName);
+		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
 		return scene;
 	}
 
-	bool SceneSystem::LoadScene(std::string id)
+	void SceneSystem::LoadScene(std::string sceneName)
 	{
-		auto scene = _sceneList.find(id);
-		assert(scene == _sceneList.end(), "Scene not found");
-		_prevScene = _currentScene;
-		_currentScene = scene->second;
-		return true;
-	}
-
-	void SceneSystem::SetCurrentSceneByName(std::string sceneName)
-	{
-		for (const auto& scene : _sceneList)
+		// ���ο� ���� ã�´�
+		auto sceneIter = _sceneList.find(sceneName);
+		if (sceneIter == _sceneList.end())
 		{
-			if (scene.second->GetSceneName() == sceneName)
-			{
-				_currentScene = scene.second;
-			}
+			return;
 		}
+		_currentScene = sceneIter->second;
 	}
 
-	hodoData::Scene* SceneSystem::GetCurrentScene()
+	void SceneSystem::LoadScene(HDData::Scene* scene)
+	{
+		_currentScene = scene;
+	}
+
+	HDData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
 	}
-
-	bool SceneSystem::GetIsCurrentSceneChange()
-	{
-		return _isSceneChange;
-	}
-
 }

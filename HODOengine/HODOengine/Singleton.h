@@ -1,6 +1,5 @@
 #pragma once
-
-
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 template <typename T>
 class Singleton

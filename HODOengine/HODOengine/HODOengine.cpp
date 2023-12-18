@@ -1,12 +1,26 @@
-﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
 #include "HODOengine.h"
+#include "SceneSystem.h"
+#include "Scene.h"
+#include "GameObject.h"
+
+#include "SceneSystem.h"
+#include "ObjectSystem.h"
+#include "TimeSystem.h"
+#include "InputSystem.h"
+#include "DebugSystem.h"
+#include "RenderSystem.h"
+#include "PhysicsSystem.h"
+
+HODOengine* HODOengine::_instance = nullptr;
 
 IHODOengine* CreateEngine()
 {
-	return new HODOengine();
+	HODOengine::_instance = new HODOengine();
+	return HODOengine::_instance;
 }
 
 void ReleaseEngine(IHODOengine* instance)
@@ -15,7 +29,14 @@ void ReleaseEngine(IHODOengine* instance)
 }
 
 HODOengine::HODOengine()
-	:_appName(L"HODO")
+	:_appName(L"HODO"),
+	_sceneSystem(HDEngine::SceneSystem::Instance()),
+	_objectSystem(HDEngine::ObjectSystem::Instance()),
+	_timeSystem(HDEngine::TimeSystem::Instance()),
+	_inputSystem(HDEngine::InputSystem::Instance()),
+	_renderSystem(HDEngine::RenderSystem::Instance()),
+	_debugSystem(HDEngine::DebugSystem::Instance()),
+	_physicsSystem(HDEngine::PhysicsSystem::Instance())
 {
 
 }
@@ -25,28 +46,31 @@ HODOengine::~HODOengine()
 
 }
 
+HODOengine& HODOengine::Instance()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new HODOengine();
+	}
+	return *_instance;
+}
+
 void HODOengine::Initialize()
 {
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
+
+	_timeSystem.Initialize();
+	_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
+	_debugSystem.Initialize();
+	_renderSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
+	_physicsSystem.Initialize();
+	//_physicsSystem.Initialize();
 }
 
 void HODOengine::Loop()
 {
-	// 프로세스 내에서 하나의 엔진 인스턴스만 돌고 있을 수 있도록 함
-	static HODOengine* _instance;
-
-	if (_instance == nullptr)
-	{
-		_instance = this;
-	}
-
-	if (_instance != this)
-	{
-		return;
-	}
-
 	while (1)
 	{
 		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))
@@ -70,14 +94,33 @@ void HODOengine::Finalize()
 
 }
 
+HWND HODOengine::GetHWND()
+{
+	return _hWnd;
+}
+
+
 void HODOengine::Run()
 {
-	// Time Update
-	// Destroy List -> GameObject OnDestroy, Clear
-	// Update Components
-	// Invoke Collision Events
-	// Renderer Update
-	// Renderer Render
+	_timeSystem.Update();
+
+	_objectSystem.FlushDestroyObjectList();
+
+	_inputSystem.Update();
+	_debugSystem.Update();
+
+	_objectSystem.UpdateCurrentSceneObjects();
+	_objectSystem.LateUpdateCurrentSceneObjects();
+
+
+	// draw
+	_renderSystem.DrawProcess();
+
+	// physicsUpdate, temporary location
+	HDEngine::PhysicsSystem::Instance().Update();
+
+	// refresh input for next frame
+	_inputSystem.Flush();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

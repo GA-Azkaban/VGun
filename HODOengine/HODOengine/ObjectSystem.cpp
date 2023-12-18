@@ -1,64 +1,156 @@
 #include "ObjectSystem.h"
 #include "SceneSystem.h"
+#include "Scene.h"
 #include "GameObject.h"
 #include "IDSystem.h"
+#include <algorithm>
+using namespace HDData;
 
-namespace hodoEngine
+namespace HDEngine
 {
 
-	void ObjectSystem::Initialize()
+	HDData::GameObject* ObjectSystem::CreateStaticObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
 	{
-
-	}
-
-	void ObjectSystem::Update()
-	{
-		for (const auto& obj : _runningObjectList)
-		{
-			/*for (const auto& comp : )
-			{
-				
-			}*/
-		}
-	}
-
-	void ObjectSystem::LateUpdate()
-	{
-		// ¿©±â¼­ ÇöÀç ¾ÀÀÌ º¯°æµÇ¾î È°¼ºÈ­µÈ ¿ÀºêÁ§Æ®°¡ ´Þ¶óÁ³´ÂÁö Ã¼Å©ÇÑ´Ù
-		if (SceneSystem::Instance().GetIsCurrentSceneChange())
-		{
-			for (auto& nowobj : _runningObjectList)
-			{
-				nowobj->SetSelfActive(false);
-			}
-
-			_runningObjectList.clear();
-
-			auto objs = SceneSystem::Instance().GetCurrentScene()->GetObjList();
-
-			for (const auto& obj : objs)
-			{
-				auto one = _allObjectList.find(obj)->second;
-				one->SetSelfActive(true);
-				_runningObjectList.push_back(one);
-			}
-		}
-		
-	}
-
-	hodoData::GameObject* ObjectSystem::CreateObject(hodoData::Scene* now, hodoData::GameObject* parent)
-	{
-		hodoData::GameObject* obj = new hodoData::GameObject();
-		ID id = IDSystem::Instance().CreateID();
+		GameObject* newObject = new GameObject(objectName);
 
 		if (parent != nullptr)
 		{
-			obj->SetParentObject(parent);
+			newObject->SetParentObject(parent);
 		}
 
-		_allObjectList.insert({ id, obj });
+		_staticObjectList.push_back(newObject);
 
-		return obj;
+		return newObject;
+	}
+
+	GameObject* ObjectSystem::CreateObject(Scene* scene, std::string objectName, GameObject* parent)
+	{
+		GameObject* newObject = new GameObject(objectName);
+
+		if (parent != nullptr)
+		{
+			newObject->SetParentObject(parent);
+		}
+
+		scene->GetGameObjectList().push_back(newObject);
+
+		return newObject;
+	}
+
+	void ObjectSystem::DestroyObject(Scene* scene, GameObject* gameObject)
+	{
+		if (!gameObject)
+			return;
+
+		scene->GetDestroyObjectList().push_back(gameObject);
+		for (auto child : gameObject->GetChildGameObjects())
+		{
+			DestroyObject(scene, child);
+		}
+	}
+
+	void ObjectSystem::DestroyStaticObject(HDData::GameObject* gameObject)
+	{
+		if (!gameObject)
+			return;
+
+		_destroyStaticObjectList.push_back(gameObject);
+	}
+
+	void ObjectSystem::FlushDestroyObjectList()
+	{
+		for (auto& destroyStaticObj : _destroyStaticObjectList)
+		{
+			for (auto& component : destroyStaticObj->GetAllComponents())
+			{
+				component->OnDestroy();
+			}
+			_staticObjectList.erase(std::remove_if(_destroyStaticObjectList.begin(), _destroyStaticObjectList.end(), [&](HDData::GameObject* gameObject) { return gameObject == destroyStaticObj; }));
+		}
+		_destroyStaticObjectList.clear();
+
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		currentScene->FlushDestroyObjectList();
+	}
+
+	void ObjectSystem::UpdateCurrentSceneObjects()
+	{
+		if (!_staticObjectList.empty())
+		{
+			for (const auto& staticObj : _staticObjectList)
+			{
+				for (const auto& comp : staticObj->GetAllComponents())
+				{
+					comp->Start();
+				}
+				_runningStaticObjectList.push_back(staticObj);
+			}
+			_staticObjectList.clear();
+		}
+
+		// staticï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½
+		for (const auto& staticObj : _runningStaticObjectList)
+		{
+			for (const auto& comp : staticObj->GetAllComponents())
+			{
+				comp->Update();
+			}
+		}
+
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		if (currentScene == nullptr)
+			return;
+		currentScene->Update();
+	}
+
+	void ObjectSystem::LateUpdateCurrentSceneObjects()
+	{
+		for (const auto& staticObj : _runningStaticObjectList)
+		{
+			for (const auto& comp : staticObj->GetAllComponents())
+			{
+				comp->LateUpdate();
+			}
+		}
+
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		if (currentScene == nullptr)
+			return;
+
+		currentScene->LateUpdate();
+	}
+
+	void ObjectSystem::FixedUpdateCurrentSceneObjects()
+	{
+		for (const auto& staticObj : _runningStaticObjectList)
+		{
+			for (const auto& comp : staticObj->GetAllComponents())
+			{
+				comp->FixedUpdate();
+			}
+		}
+
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		if (currentScene == nullptr)
+			return;
+
+		currentScene->FixedUpdate();
+	}
+
+	std::vector<HDData::GameObject*>& ObjectSystem::GetStaticObjectList()
+	{
+		return _staticObjectList;
+	}
+
+	std::vector<HDData::GameObject*>& ObjectSystem::GetRunningStaticObjectList()
+	{
+		return _runningStaticObjectList;
+	}
+
+	std::vector<HDData::GameObject*>& ObjectSystem::GetDestroyStaticObjectList()
+	{
+		return _destroyStaticObjectList;
 	}
 
 }

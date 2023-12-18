@@ -2,20 +2,16 @@
 #include "Singleton.h"
 
 #include <string>
-#include <unordered_map>
+#include <vector>
 
-namespace hodoData
+namespace HDData
 {
 	class GameObject;
 	class Scene;
 }
 
-namespace hodoEngine
+namespace HDEngine
 {
-	using ID = std::string;
-	using hodoData::GameObject;
-
-
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
 		friend Singleton;
@@ -24,18 +20,25 @@ namespace hodoEngine
 		ObjectSystem() = default;
 
 	public:
-		void Initialize();
-		void Update();
-		void LateUpdate();
-		void FlushEnable();
+		HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parent = nullptr);
+		HDData::GameObject* CreateStaticObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
+		void DestroyObject(HDData::Scene* scene, HDData::GameObject* gameObject);
+		void DestroyStaticObject(HDData::GameObject* gameObject);
 
-	public:
-		GameObject* CreateObject(hodoData::Scene* now, GameObject* parent = nullptr);
+		void FlushDestroyObjectList();
+
+		void UpdateCurrentSceneObjects();
+		void LateUpdateCurrentSceneObjects();
+		void FixedUpdateCurrentSceneObjects();
+
+		std::vector<HDData::GameObject*>& GetStaticObjectList();
+		std::vector<HDData::GameObject*>& GetRunningStaticObjectList();
+		std::vector<HDData::GameObject*>& GetDestroyStaticObjectList();
 
 	private:
-		std::vector<GameObject*> _runningObjectList;
-		std::unordered_map<ID, GameObject*> _allObjectList;
-
+		std::vector<HDData::GameObject*> _destroyStaticObjectList;
+		std::vector<HDData::GameObject*> _staticObjectList;
+		std::vector<HDData::GameObject*> _runningStaticObjectList;
 	};
 
 }

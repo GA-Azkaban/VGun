@@ -14,8 +14,8 @@ Application::~Application()
 
 void Application::Run()
 {
-	_client->Initialize();
 	_engine->Initialize();
+	_client->Initialize();
 	_engine->Loop();
 	_engine->Finalize();
 }
