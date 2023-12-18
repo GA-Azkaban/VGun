@@ -17,7 +17,6 @@ namespace HDData
 		void SetWorldSpace();
 		void SetImage(const char* fileName);
 		
-
 	private:
 		std::unique_ptr<HDEngine::ISketchableImage> _imageUI;
 	};

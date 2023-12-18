@@ -1,6 +1,10 @@
 #pragma once
 #include "Singleton.h"
 
+/// <summary>
+/// EventSystemì€ Renderable ì˜¤ë¸Œì íŠ¸ì— ë¶€ì°©ëœ EventHandlerì˜ Eventë¥¼ í˜¸ì¶œí•œë‹¤.
+/// </summary>
+
 namespace HDEngine
 {
 	class EventSystem : public Singleton<EventSystem>
@@ -9,9 +13,11 @@ namespace HDEngine
 
 	public:
 		EventSystem();
+		void InvokeEvent();
 
-		// x, y ÁÂÇ¥´Â ¸¶¿ì½º°¡ Å¬¸¯µÈ ÁÂÇ¥¸¦ ¹Ş½À´Ï´Ù.
-		// ¹ŞÀº ÁÂÇ¥´Â ÇÔ¼ö ³»¿¡¼­ 0¿¡¼­ 1 »çÀÌÀÇ °ªÀ¸·Î Á¤±ÔÈ­µË´Ï´Ù.
+	private:
+		// x, y is mouse input coordinate.
+		// InvokeClickEvent() is called when user clicked the mouse.
 		void InvokeClickEvent(float x, float y);
 		void InvokeHoverEvent(float x, float y);
 	};

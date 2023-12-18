@@ -158,6 +158,7 @@
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="ObjectSystem.h" />
     <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="RendererBase.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="Resource.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="StaticCollider.h" />
     <ClInclude Include="StaticPlaneCollider.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextUI.h" />
     <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
@@ -189,6 +191,7 @@
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="ObjectSystem.cpp" />
     <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="RendererBase.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -198,6 +201,7 @@
     <ClCompile Include="StaticBoxCollider.cpp" />
     <ClCompile Include="StaticCollider.cpp" />
     <ClCompile Include="StaticPlaneCollider.cpp" />
+    <ClCompile Include="TextUI.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>

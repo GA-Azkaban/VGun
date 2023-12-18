@@ -12,8 +12,6 @@ namespace HDData
 
 	void ImageUI::Update()
 	{
-		// World Space에 그릴 때와
-		// Screen Space에 그릴 때?
 		_imageUI->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 

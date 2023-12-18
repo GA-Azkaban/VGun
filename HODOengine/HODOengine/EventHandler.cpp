@@ -1,4 +1,5 @@
 #include "EventHandler.h"
+#include "RendererBase.h"
 
 namespace HDData
 {
@@ -16,7 +17,15 @@ namespace HDData
 
 	void EventHandler::CallEvents(HDEngine::IRenderable* renderable, std::function<void(EventHandler*)> todo)
 	{
-		//GameObject* gameObject = renderable.GetGameObject
+		if (renderable == nullptr)
+			return;
+
+		auto renderableIter = RendererBase::_renderableMap.find(renderable);
+		if (renderableIter == RendererBase::_renderableMap.end())
+			return;
+		RendererBase* renderer = renderableIter->second;
+
+		GameObject* gameObject = renderer->GetGameObject();
 		for (auto& eachHandler : _eventHandlers[gameObject])
 		{
 			todo(eachHandler);

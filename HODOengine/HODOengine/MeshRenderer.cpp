@@ -4,34 +4,14 @@
 namespace HDData
 {
 	MeshRenderer::MeshRenderer()
-		:_staticMesh(nullptr //RenderSystem.CreateStaticMesh()
-		)
+		: RendererBase(nullptr//RenderSystem.CreateStaticMesh()
+		)		
 	{
-
+		_staticMesh = std::make_unique<HDEngine::IStaticMesh>(dynamic_cast<HDEngine::IStaticMesh*>(RendererBase::_renderable.get()));
 	}
 
-	void MeshRenderer::Update()
+	HDEngine::IStaticMesh& MeshRenderer::Get()
 	{
-		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());
-	}
-
-	void MeshRenderer::SetActive(bool active)
-	{
-		_staticMesh->SetActive(active);
-	}
-
-	void MeshRenderer::LoadMesh(const char* fileName)
-	{
-		_staticMesh->LoadMesh(fileName);
-	}
-
-	void MeshRenderer::LoadDiffuseMap(const char* fileName)
-	{
-		_staticMesh->LoadDiffuseMap(fileName);
-	}
-
-	void MeshRenderer::LoadNormalMap(const char* fileName)
-	{
-		_staticMesh->LoadNormalMap(fileName);
+		return *_staticMesh;
 	}
 }

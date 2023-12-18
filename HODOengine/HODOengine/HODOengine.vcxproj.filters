@@ -118,6 +118,15 @@
     <Filter Include="06_System\EventSystem">
       <UniqueIdentifier>{174da3be-b5d9-484f-aa5e-04127c2c0967}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{e5056f7f-e0db-4d7c-9e2d-4af7bb15d033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\ImageUI">
+      <UniqueIdentifier>{246f47f1-9c14-4284-98c1-316cb14d73eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\TextUI">
+      <UniqueIdentifier>{878e0c14-ee81-422c-8501-272fad0b1847}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -201,9 +210,6 @@
     <ClInclude Include="RenderSystem.h">
       <Filter>06_System\RenderSystem</Filter>
     </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>05_Component\Renderer\BaseClass</Filter>
-    </ClInclude>
     <ClInclude Include="TimeSystem.h">
       <Filter>06_System\TimeSystem</Filter>
     </ClInclude>
@@ -213,12 +219,21 @@
     <ClInclude Include="EventHandler.h">
       <Filter>05_Component\EventHandler</Filter>
     </ClInclude>
-    <ClInclude Include="ImageUI.h">
-      <Filter>05_Component\UserInterface</Filter>
-    </ClInclude>
     <ClInclude Include="SkinnedMeshRenderer.h" />
     <ClInclude Include="EventSystem.h">
       <Filter>06_System\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererBase.h">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageUI.h">
+      <Filter>05_Component\UserInterface\ImageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="TextUI.h">
+      <Filter>05_Component\UserInterface\TextUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,20 +313,26 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>06_System\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>05_Component\Renderer\BaseClass</Filter>
-    </ClCompile>
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="EventHandler.cpp">
       <Filter>05_Component\EventHandler</Filter>
     </ClCompile>
-    <ClCompile Include="ImageUI.cpp">
-      <Filter>05_Component\UserInterface</Filter>
-    </ClCompile>
     <ClCompile Include="SkinnedMeshRenderer.cpp" />
     <ClCompile Include="EventSystem.cpp">
       <Filter>06_System\EventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererBase.cpp">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUI.cpp">
+      <Filter>05_Component\UserInterface\ImageUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TextUI.cpp">
+      <Filter>05_Component\UserInterface\TextUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

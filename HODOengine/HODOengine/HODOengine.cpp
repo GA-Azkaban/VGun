@@ -14,6 +14,7 @@
 #include "DebugSystem.h"
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
+#include "EventSystem.h"
 
 HODOengine* HODOengine::_instance = nullptr;
 
@@ -36,7 +37,8 @@ HODOengine::HODOengine()
 	_inputSystem(HDEngine::InputSystem::Instance()),
 	_renderSystem(HDEngine::RenderSystem::Instance()),
 	_debugSystem(HDEngine::DebugSystem::Instance()),
-	_physicsSystem(HDEngine::PhysicsSystem::Instance())
+	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
+	_eventSystem(HDEngine::EventSystem::Instance())
 {
 
 }
@@ -113,12 +115,13 @@ void HODOengine::Run()
 	_objectSystem.UpdateCurrentSceneObjects();
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
-
 	// draw
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
 	//HDEngine::PhysicsSystem::Instance().Update();
+
+	_eventSystem.InvokeEvent();
 
 	// refresh input for next frame
 	_inputSystem.Flush();

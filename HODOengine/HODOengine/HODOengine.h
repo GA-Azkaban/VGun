@@ -12,6 +12,7 @@ namespace HDEngine
 	class DebugSystem;
 	class PhysicsSystem;
 	class RenderSystem;
+	class EventSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -54,4 +55,5 @@ private:
 	HDEngine::DebugSystem& _debugSystem;
 	HDEngine::PhysicsSystem& _physicsSystem;
 	HDEngine::RenderSystem& _renderSystem;
+	HDEngine::EventSystem& _eventSystem;
 };
