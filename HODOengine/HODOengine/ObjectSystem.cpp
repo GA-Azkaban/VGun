@@ -73,15 +73,6 @@ namespace HDEngine
 		currentScene->FlushDestroyObjectList();
 	}
 
-	void ObjectSystem::StartCurrentSceneObjects()
-	{
-		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
-		if (currentScene == nullptr)
-			return;
-
-		currentScene->Start();
-	}
-
 	void ObjectSystem::UpdateCurrentSceneObjects()
 	{
 		if (!_staticObjectList.empty())

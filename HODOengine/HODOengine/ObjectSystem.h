@@ -27,7 +27,6 @@ namespace HDEngine
 
 		void FlushDestroyObjectList();
 
-		void StartCurrentSceneObjects();
 		void UpdateCurrentSceneObjects();
 		void LateUpdateCurrentSceneObjects();
 		void FixedUpdateCurrentSceneObjects();

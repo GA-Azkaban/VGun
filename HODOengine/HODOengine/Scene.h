@@ -25,7 +25,6 @@ namespace HDData
 
 		void FlushDestroyObjectList();
 
-		void Start();
 		void Update();
 		void LateUpdate();
 		void FixedUpdate();
@@ -37,6 +36,7 @@ namespace HDData
 
 	private:
 		std::vector<GameObject*> _gameObjects;
+		std::vector<GameObject*> _runningObjects;
 		std::vector<GameObject*> _destroyObjects;
 		std::string _sceneName;
 		

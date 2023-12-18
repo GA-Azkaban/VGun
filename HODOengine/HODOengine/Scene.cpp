@@ -48,19 +48,21 @@ namespace HDData
 		_destroyObjects.clear();
 	}
 
-	void Scene::Start()
-	{
-		for (auto& gameObject : _gameObjects)
-		{
-			if (gameObject->IsActive())
-			{
-				gameObject->Start();
-			}
-		}
-	}
-
 	void Scene::Update()
 	{
+		if (!_gameObjects.empty())
+		{
+			for (auto& gameObject : _gameObjects)
+			{
+				if (gameObject->IsActive())
+				{
+					gameObject->Start();
+				}
+				_runningObjects.push_back(gameObject);
+			}
+			_gameObjects.clear();
+		}
+
 		for (auto& gameObject : _gameObjects)
 		{
 			if (gameObject->IsActive())
