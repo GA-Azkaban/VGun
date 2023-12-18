@@ -37,6 +37,18 @@ namespace HDData
 		GameObject& operator=(const GameObject&) = delete;
 		GameObject& operator=(GameObject&&) = delete;
 
+		void OnEnable();
+		void OnDisable();
+		void Start();
+		void Update();
+		void LateUpdate();
+		void FixedUpdate();
+		void OnDestroy();
+
+		void OnCollisionEnter();
+		void OnCollisionStay();
+		void OnCollisionExit();
+
 		template <ComponentConcept ComponentType>
 		ComponentType* AddComponent() {
 			ComponentType* component = new ComponentType();
@@ -86,6 +98,7 @@ namespace HDData
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
 		Transform* GetTransform() const { return _transform; }
+		bool IsActive() { return _selfActive; }
 
 		void SetParentObject(GameObject* parentObject);
 		void SetSelfActive(bool active);

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <set>
 
 namespace HDData
 {
@@ -13,8 +12,6 @@ namespace HDData
 
 namespace HDEngine
 {
-	using ID = std::string;
-
 	class ObjectSystem : public Singleton<ObjectSystem>
 	{
 		friend Singleton;
@@ -23,15 +20,24 @@ namespace HDEngine
 		ObjectSystem() = default;
 
 	public:
-		void Update();
-
-		std::vector<HDData::GameObject*> GetStaticObjectList();
-		std::vector<HDData::GameObject*> GetRunningStaticObjectList();
+		HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parent = nullptr);
 		HDData::GameObject* CreateStaticObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
-		HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject * parent = nullptr);
 		void DestroyObject(HDData::Scene* scene, HDData::GameObject* gameObject);
+		void DestroyStaticObject(HDData::GameObject* gameObject);
+
+		void FlushDestroyObjectList();
+
+		void StartCurrentSceneObjects();
+		void UpdateCurrentSceneObjects();
+		void LateUpdateCurrentSceneObjects();
+		void FixedUpdateCurrentSceneObjects();
+
+		std::vector<HDData::GameObject*>& GetStaticObjectList();
+		std::vector<HDData::GameObject*>& GetRunningStaticObjectList();
+		std::vector<HDData::GameObject*>& GetDestroyStaticObjectList();
 
 	private:
+		std::vector<HDData::GameObject*> _destroyStaticObjectList;
 		std::vector<HDData::GameObject*> _staticObjectList;
 		std::vector<HDData::GameObject*> _runningStaticObjectList;
 	};

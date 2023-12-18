@@ -2,53 +2,75 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Entry.cpp">
-      <Filter>00_Entry</Filter>
+      <Filter>01_Entry</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
-      <Filter>00_Entry</Filter>
+      <Filter>01_Entry</Filter>
     </ClCompile>
     <ClCompile Include="Client.cpp">
-      <Filter>01_Client</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraMove.cpp">
-      <Filter>01_Client\TestScene</Filter>
+      <Filter>02_Client</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>01_Client\TestScene</Filter>
+      <Filter>02_Client\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMove.cpp">
+      <Filter>02_Client\TestScene\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMove.cpp">
+      <Filter>02_Client\TestScene\Scripts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
     <ClInclude Include="Application.h">
-      <Filter>00_Entry</Filter>
+      <Filter>01_Entry</Filter>
     </ClInclude>
     <ClInclude Include="Client.h">
-      <Filter>01_Client</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraMove.h">
-      <Filter>01_Client\TestScene</Filter>
+      <Filter>02_Client</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
-      <Filter>01_Client\TestScene</Filter>
+      <Filter>02_Client\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMove.h">
+      <Filter>02_Client\TestScene\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMove.h">
+      <Filter>02_Client\TestScene\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>00_default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>00_default</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="HODOclient.rc" />
+    <Image Include="HODOclient.ico">
+      <Filter>00_default</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>00_default</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="HODOclient.ico" />
-    <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="00_Entry">
+    <Filter Include="01_Entry">
       <UniqueIdentifier>{ec036ad7-dbea-4944-8e77-563788987386}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01_Client">
+    <Filter Include="02_Client">
       <UniqueIdentifier>{342fcac3-0837-43be-b602-048e7ce5726e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01_Client\TestScene">
+    <Filter Include="02_Client\TestScene">
       <UniqueIdentifier>{8664440e-bf82-4337-b7ec-0f46723b1ee6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_Client\TestScene\Scripts">
+      <UniqueIdentifier>{86ee13c8-2323-4661-8522-0a2947d039a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_default">
+      <UniqueIdentifier>{c6d687a0-25a1-46f1-8015-03125a0d679d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HODOclient.rc">
+      <Filter>00_default</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

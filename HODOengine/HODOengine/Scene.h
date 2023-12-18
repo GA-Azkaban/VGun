@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <unordered_set>
 #include <vector>
 
 #include "dllExporter.h"
@@ -21,13 +20,23 @@ namespace HDData
 		~Scene();
 
 	public:
-		std::unordered_set<GameObject*>& GetGameObjectList();
+		HDData::GameObject* CreateObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
+		void DestroyObject(HDData::GameObject* gameObject);
+
+		void FlushDestroyObjectList();
+
+		void Start();
+		void Update();
+		void LateUpdate();
+		void FixedUpdate();
+
+		std::vector<GameObject*>& GetGameObjectList();
 		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
 	private:
-		std::unordered_set<GameObject*> _gameObjects;
+		std::vector<GameObject*> _gameObjects;
 		std::vector<GameObject*> _destroyObjects;
 		std::string _sceneName;
 		

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="00_Default">
@@ -97,6 +97,9 @@
     <Filter Include="05_Component\Renderer\BaseClass">
       <UniqueIdentifier>{28355368-a12d-47d8-b52f-9b3f960396bf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\UserInterface">
+      <UniqueIdentifier>{2a67aadc-6c14-4966-8f34-f7ae6fb5fe7b}</UniqueIdentifier>
+    </Filter>
     <Filter Include="05_Component\Collider\DynamicCollider\DynamicBoxCollider">
       <UniqueIdentifier>{4681b789-43ce-4f2c-a4d0-28abaf6d01b3}</UniqueIdentifier>
     </Filter>
@@ -168,7 +171,6 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DynamicCollider.h" />
-    <ClInclude Include="Renderable.h" />
     <ClInclude Include="StaticBoxCollider.h" />
     <ClInclude Include="StaticCollider.h" />
     <ClInclude Include="StaticPlaneCollider.h" />
@@ -193,7 +195,7 @@
     <ClInclude Include="RenderSystem.h">
       <Filter>06_System\RenderSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="MeshRenderer.h">
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="TimeSystem.h">
@@ -280,14 +282,10 @@
     <ClCompile Include="RenderSystem.cpp">
       <Filter>06_System\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="MeshRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClCompile>
-    <ClCompile Include="TimeSystem.cpp">
-      <Filter>06_System\TimeSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>06_System\PhysicsSystem</Filter>
-    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
   </ItemGroup>
 </Project>

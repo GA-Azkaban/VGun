@@ -7,7 +7,7 @@
 #include "IDSystem.h"
 
 
-// TODO) °ÔÀÓ¿ÀºêÁ§Æ® ±¸Á¶°¡ ¹Ù²î¸é ´ë´ëÀûÀÎ ¼öÁ¤ÀÌ ÇÊ¿äÇÒ µí
+// TODO) ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½
 
 namespace HDEngine
 {
@@ -20,6 +20,13 @@ namespace HDEngine
 
 	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
+		// ï¿½Ì¹ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ø´ï¿½.
+		auto iter = _sceneList.find(sceneName);
+		if (iter != _sceneList.end())
+		{
+			return _sceneList[sceneName];
+		}
+
 		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
 		return scene;
@@ -27,76 +34,22 @@ namespace HDEngine
 
 	void SceneSystem::LoadScene(std::string sceneName)
 	{
-		// »õ·Î¿î ¾ÀÀ» Ã£´Â´Ù
+		// ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Â´ï¿½
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{
 			return;
 		}
 		_currentScene = sceneIter->second;
-
-		// Start Components, ¾ÀÀÌ »õ·Î ·ÎµåµÉ ¶§ ¿ÀºêÁ§Æ®¿Í ÄÄÆ÷³ÍÆ®¸¦ È°¼ºÈ­ÇÑ´Ù
-		for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
-		{
-			for (auto component : gameObj->GetAllComponents())
-			{
-				if (!component->GetIsStarted())
-				{
-					component->Start();
-				}
-			}
-		}
 	}
 
 	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
 		_currentScene = scene;
-
-		// Start Components, ¾ÀÀÌ »õ·Î ·ÎµåµÉ ¶§ ¿ÀºêÁ§Æ®¿Í ÄÄÆ÷³ÍÆ®¸¦ È°¼ºÈ­ÇÑ´Ù
-		for (auto gameObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
-		{
-			for (auto component : gameObj->GetAllComponents())
-			{
-				if (!component->GetIsStarted())
-				{
-					component->Start();
-				}
-			}
-		}
-
-	}
-
-	void SceneSystem::UpdateScene()
-	{
-		// Áö¿ö¾ß ÇÒ ¿ÀºêÁ§Æ®¿¡ ´ëÇÑ ¼öÇà
-		for (auto destroyObj : HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
-		{
-			for (auto component : destroyObj->GetAllComponents())
-			{
-				component->OnDestroy();
-			}
-			HDEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
-		}
-		HDEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
-
-		// ¾÷µ¥ÀÌÆ®¸¦ µ¹¾Æ¾ß ÇÒ ¿ÀºêÁ§Æ®¿¡ ´ëÇÑ ¼öÇà
-		for (const auto& one : _currentScene->GetGameObjectList())
-		{
-			for (const auto& comp : one->GetAllComponents())
-			{
-				comp->Update();
-			}
-		}
 	}
 
 	HDData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
 	}
-
-	HDData::Scene* SceneSystem::GetPrevScene()
-	{
-		return _previousScene;
-	}
-
 }

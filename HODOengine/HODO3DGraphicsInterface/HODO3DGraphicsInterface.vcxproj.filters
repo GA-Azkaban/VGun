@@ -23,9 +23,6 @@
     <Filter Include="Renderable\MeshObject\SkinnedMesh">
       <UniqueIdentifier>{11f9e053-7cc9-4787-beab-a221337560c9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Color">
-      <UniqueIdentifier>{596ec413-0ff5-44d3-8950-596f00ce8b70}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RendererInterface">
       <UniqueIdentifier>{9eebf368-d994-4754-b2d0-4d45b408782d}</UniqueIdentifier>
     </Filter>
