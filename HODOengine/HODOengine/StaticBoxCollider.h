@@ -10,10 +10,6 @@ namespace hodoData
 		StaticBoxCollider();
 
 	public:
-		void Start() override;
-		void Update() override;
-
-	public:
 		float GetHeight();
 		float GetWidth();
 		float GetDepth();

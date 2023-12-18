@@ -6,16 +6,6 @@ hodoData::StaticBoxCollider::StaticBoxCollider()
 
 }
 
-void hodoData::StaticBoxCollider::Start()
-{
-
-}
-
-void hodoData::StaticBoxCollider::Update()
-{
-
-}
-
 float hodoData::StaticBoxCollider::GetHeight()
 {
 	return _height;
