@@ -207,9 +207,6 @@
     <ClInclude Include="EventSystem.h">
       <Filter>06_System\EventSystem</Filter>
     </ClInclude>
-    <ClInclude Include="RendererBase.h">
-      <Filter>05_Component\Renderer\BaseClass</Filter>
-    </ClInclude>
     <ClInclude Include="TextUI.h">
       <Filter>05_Component\UserInterface\TextUI</Filter>
     </ClInclude>
@@ -225,9 +222,6 @@
     <ClInclude Include="StaticBoxCollider.h" />
     <ClInclude Include="StaticCollider.h" />
     <ClInclude Include="StaticPlaneCollider.h" />
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>05_Component\Renderer\MeshRenderer</Filter>
-    </ClInclude>
     <ClInclude Include="SkinnedMeshRenderer.h">
       <Filter>05_Component\Renderer\SkinnedMeshRenderer</Filter>
     </ClInclude>
@@ -251,6 +245,12 @@
     </ClInclude>
     <ClInclude Include="StaticPlaneCollider.h">
       <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererBase.h">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -312,9 +312,6 @@
     <ClCompile Include="EventSystem.cpp">
       <Filter>06_System\EventSystem</Filter>
     </ClCompile>
-    <ClCompile Include="RendererBase.cpp">
-      <Filter>05_Component\Renderer\BaseClass</Filter>
-    </ClCompile>
     <ClCompile Include="ImageUI.cpp">
       <Filter>05_Component\UserInterface\ImageUI</Filter>
     </ClCompile>
@@ -335,9 +332,6 @@
     <ClCompile Include="StaticCollider.cpp" />
     <ClCompile Include="StaticPlaneCollider.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>05_Component\Renderer\MeshRenderer</Filter>
-    </ClCompile>
     <ClCompile Include="SkinnedMeshRenderer.cpp">
       <Filter>05_Component\Renderer\SkinnedMeshRenderer</Filter>
     </ClCompile>
@@ -364,6 +358,12 @@
     </ClCompile>
     <ClCompile Include="TimeSystem.cpp">
       <Filter>06_System\TimeSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererBase.cpp">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -40,12 +40,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IHodoGICamera.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="IHodoGIFactory.h">
-      <Filter>Factory</Filter>
-    </ClInclude>
     <ClInclude Include="I3DRenderer.h">
       <Filter>RendererInterface</Filter>
     </ClInclude>
@@ -75,6 +69,15 @@
     </ClInclude>
     <ClInclude Include="ISketchableText.h">
       <Filter>Sketchable\TextUI</Filter>
+    </ClInclude>
+    <ClInclude Include="eMeshList.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="IFactory.h">
+      <Filter>Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="ICamera.h">
+      <Filter>Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
