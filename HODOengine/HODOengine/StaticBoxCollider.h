@@ -10,9 +10,6 @@ namespace HDData
 		StaticBoxCollider();
 
 	public:
-		void Update() override;
-
-	public:
 		float GetHeight();
 		float GetWidth();
 		float GetDepth();
