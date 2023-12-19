@@ -252,6 +252,15 @@
     <ClInclude Include="MeshRenderer.h">
       <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="DynamicBoxCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicBoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicCapsuleCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicCapsuleCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicSphereCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicSphereCollider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -364,6 +373,15 @@
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicBoxCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicBoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicCapsuleCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicCapsuleCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicSphereCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicSphereCollider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -9,7 +9,12 @@ namespace HDData
 		DynamicCollider();
 
 	public:
-		// PhysX ¾À°ú µ¥ÀÌÅÍ¸¦ ÁÖ°í¹Ş´Â ÇÔ¼ö
+		virtual float GetWidth() const abstract;
+		virtual float GetHeight() const abstract;
+		virtual float GetDepth() const abstract;
+
+	public:
+		// PhysX ì”¬ê³¼ ë°ì´í„°ë¥¼ ì£¼ê³ ë°›ëŠ” í•¨ìˆ˜
 		void UpdateToPhysics() override;
 		void UpdateFromPhysics();
 

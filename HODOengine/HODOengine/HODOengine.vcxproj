@@ -145,8 +145,11 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DLL_Loader.h" />
+    <ClInclude Include="DynamicBoxCollider.h" />
+    <ClInclude Include="DynamicCapsuleCollider.h" />
     <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="dllExporter.h" />
+    <ClInclude Include="DynamicSphereCollider.h" />
     <ClInclude Include="EventHandler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -198,7 +201,10 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="DLL_Loader.cpp" />
+    <ClCompile Include="DynamicBoxCollider.cpp" />
+    <ClCompile Include="DynamicCapsuleCollider.cpp" />
     <ClCompile Include="DynamicCollider.cpp" />
+    <ClCompile Include="DynamicSphereCollider.cpp" />
     <ClCompile Include="EventHandler.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
