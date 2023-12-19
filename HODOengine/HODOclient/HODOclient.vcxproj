@@ -131,18 +131,22 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CameraMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />

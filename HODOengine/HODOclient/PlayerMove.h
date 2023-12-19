@@ -14,19 +14,29 @@ public:
 	void Start() override;
 	void Update() override;
 
+private:
+	bool _isMoveActive;
+	float _deltaTime;
 
 private:
+	void CheckMoveDirection();
 	void CheckLookDirection();
 	void Move(int direction);
 
 private:
 	// 마우스에 따른 카메라 회전 체크
-	void Pitch();
-	void Roll(); // roll 필요한가? 옆으로 살짝 기울이는...
-	void Yaw();
+	void Pitch(float radian);
+	void Yaw(float radian);
 
-private:
 	float _moveSpeed;
 	int _moveDirection;
+
+private:
+	void Jump();
+
+private:
+	bool _isJump;
+	float _jumpCoolTime;
 	
+
 };
