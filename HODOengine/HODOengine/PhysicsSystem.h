@@ -6,6 +6,11 @@
 #include "../Include/physx/PxPhysics.h"
 #include "../Include/physx/PxPhysicsAPI.h"
 
+namespace HDData
+{
+	class GameObject;
+}
+
 namespace HDEngine
 {
 	class PhysicsSystem : public Singleton<PhysicsSystem>
@@ -25,6 +30,14 @@ namespace HDEngine
 
 		void TempMove();
 
+	public:
+		physx::PxScene* GetScene() const;
+
+	public:
+		void CreateRigidBodies();
+		void CreateStaticPlaneCollider(HDData::GameObject* object);
+		void CreateStaticBoxCollider(HDData::GameObject* object);
+
 	private:
 		physx::PxDefaultAllocator		_allocator;
 		physx::PxDefaultErrorCallback	_errorCallback;
@@ -38,4 +51,3 @@ namespace HDEngine
 		physx::PxRigidDynamic* _dynamic;
 	};
 }
-

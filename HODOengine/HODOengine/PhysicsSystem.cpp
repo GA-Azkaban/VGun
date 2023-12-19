@@ -1,9 +1,16 @@
 #include "PhysicsSystem.h"
-#include "windows.h"
+#include "SceneSystem.h"
+#include "Scene.h"
+#include "GameObject.h"
+
+#include "Collider.h"
+#include "StaticPlaneCollider.h"
+#include "StaticBoxCollider.h"
+
+#include <windows.h>
 
 namespace HDEngine
 {
-
 	void PhysicsSystem::Initialize()
 	{
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
@@ -23,6 +30,7 @@ namespace HDEngine
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.25f, 0.2f, 0.4f);
 
+		// 임시로 평면과 박스 하나를 만들어 둠
 		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
 		_pxScene->addActor(*groundPlane);
 
@@ -33,7 +41,9 @@ namespace HDEngine
 		_dynamic->setAngularDamping(0.5f);
 		_dynamic->setLinearDamping(0.5f);
 		_pxScene->addActor(*_dynamic);
-
+		
+		// 강체를 싹 다 만들고 시작하는 부분
+		//CreateRigidBodies();
 	}
 
 	void PhysicsSystem::Update()
@@ -80,6 +90,62 @@ namespace HDEngine
 		}
 	}
 
+	void PhysicsSystem::CreateRigidBodies()
+	{
+		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
+
+		for (auto& object : sceneIter->GetGameObjectList())
+		{
+			CreateStaticPlaneCollider(object);
+		}
+	}
+
+	void PhysicsSystem::CreateStaticPlaneCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::StaticPlaneCollider>();
+
+		if (isCorrectType)
+		{
+			auto colliderVector = object->GetComponents<HDData::StaticPlaneCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::StaticPlaneCollider* planeCollider = dynamic_cast<HDData::StaticPlaneCollider*>(collider);
+				HDMath::HDFLOAT3 normal = planeCollider->GetNormalVector();
+				physx::PxPlane pxPlane(normal.x, normal.y, normal.z, planeCollider->GetDistance());
+
+				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
+				_pxScene->addActor(*planeRigid);
+
+				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
+			}
+		}
+	}
+
+	void PhysicsSystem::CreateStaticBoxCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::StaticBoxCollider>();
+
+		if (isCorrectType)
+		{
+			auto colliderVector = object->GetComponents<HDData::StaticBoxCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::StaticBoxCollider* box = dynamic_cast<HDData::StaticBoxCollider*>(collider);
+
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth()/2, box->GetHeight()/2, box->GetDepth()/2), *_material);
+
+				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
+				boxRigid->attachShape(*shape);
+
+				_pxScene->addActor(*boxRigid);
+				shape->release();
+				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
+			}
+		}
+	}
+
 	void PhysicsSystem::TempMove()
 	{
 		// temporary phys simulation test on pvd
@@ -87,5 +153,10 @@ namespace HDEngine
 		{
 			_dynamic->addForce(physx::PxVec3(0.0f, 0.1f, 0.0f), physx::PxForceMode::eIMPULSE);
 		}
+	}
+
+	physx::PxScene* PhysicsSystem::GetScene() const
+	{
+		return _pxScene;
 	}
 }
