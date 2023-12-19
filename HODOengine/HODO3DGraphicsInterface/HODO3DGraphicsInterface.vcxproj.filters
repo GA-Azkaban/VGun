@@ -5,9 +5,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Factory">
-      <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Renderable">
       <UniqueIdentifier>{051ba127-460d-4151-9c21-0478391e2c9a}</UniqueIdentifier>
     </Filter>
@@ -26,9 +23,6 @@
     <Filter Include="RendererInterface">
       <UniqueIdentifier>{9eebf368-d994-4754-b2d0-4d45b408782d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Data">
-      <UniqueIdentifier>{1dc65efd-f035-4999-8c55-8533d279690f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Sketchable">
       <UniqueIdentifier>{65997900-f228-4e10-8e8a-d76c351ed68d}</UniqueIdentifier>
     </Filter>
@@ -37,6 +31,9 @@
     </Filter>
     <Filter Include="Sketchable\TextUI">
       <UniqueIdentifier>{cf2933be-79bf-4fc2-ad2c-a7cb007b8c1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FactoryInterface">
+      <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,9 +55,6 @@
     <ClInclude Include="IDebugCube.h">
       <Filter>Renderable\DebugObject</Filter>
     </ClInclude>
-    <ClInclude Include="CameraData.h">
-      <Filter>Data</Filter>
-    </ClInclude>
     <ClInclude Include="ISketchable.h">
       <Filter>Sketchable</Filter>
     </ClInclude>
@@ -70,14 +64,14 @@
     <ClInclude Include="ISketchableText.h">
       <Filter>Sketchable\TextUI</Filter>
     </ClInclude>
-    <ClInclude Include="eMeshList.h">
-      <Filter>Camera</Filter>
-    </ClInclude>
     <ClInclude Include="IFactory.h">
-      <Filter>Factory</Filter>
+      <Filter>FactoryInterface</Filter>
     </ClInclude>
     <ClInclude Include="ICamera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="eMeshList.h">
+      <Filter>Renderable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
