@@ -1,4 +1,4 @@
-#include <DirectXColors.h>	// ÀÌ¹Ì ¸¹Àº ºÎºÐ DX11°ú °ãÄ£´Ù.
+#include <DirectXColors.h>	// ì´ë¯¸ ë§Žì€ ë¶€ë¶„ DX11ê³¼ ê²¹ì¹œë‹¤.
 #include "Cube.h"
 #include "RocketMacroDX11.h"
 
@@ -31,15 +31,15 @@ namespace RocketCore::Graphics
 
 	void Cube::Render(ID3D11DeviceContext* deviceContext, ID3D11VertexShader* vertexShader, ID3D11PixelShader* pixelShader, ID3D11Buffer* matrixBuffer, ID3D11InputLayout* inputLayout, ID3D11RasterizerState* renderstate)
 	{
-		// Grid°¡ ¾²´Â Shader deviceContext ÀÌ¿ëÇØ ¿¬°á.
+		// Gridê°€ ì“°ëŠ” Shader deviceContext ì´ìš©í•´ ì—°ê²°.
 		deviceContext->VSSetShader(vertexShader, nullptr, 0);
 		deviceContext->PSSetShader(pixelShader, nullptr, 0);
 
-		// ÀÔ·Â ¹èÄ¡ °´Ã¼ ¼ÂÆÃ
+		// ìž…ë ¥ ë°°ì¹˜ ê°ì²´ ì…‹íŒ…
 		deviceContext->IASetInputLayout(inputLayout);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		// ÀÎµ¦½º¹öÆÛ¿Í ¹öÅØ½º¹öÆÛ ¼ÂÆÃ
+		// ì¸ë±ìŠ¤ë²„í¼ì™€ ë²„í…ìŠ¤ë²„í¼ ì…‹íŒ…
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 		deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -67,7 +67,7 @@ namespace RocketCore::Graphics
 
 		deviceContext->VSSetConstantBuffers(bufferNumber, 1, &matrixBuffer);
 
-		// ·»´õ½ºÅ×ÀÌÆ®
+		// ë Œë”ìŠ¤í…Œì´íŠ¸
 		deviceContext->RSSetState(renderstate);
 
 		deviceContext->DrawIndexed(36, 0, 0);
@@ -88,7 +88,7 @@ namespace RocketCore::Graphics
 		};
 
 		D3D11_BUFFER_DESC vbd;
-		vbd.Usage = D3D11_USAGE_IMMUTABLE;
+		vbd.Usage = D3D11_USAGE_IMMUTABLE;    
 		vbd.ByteWidth = sizeof(Vertex) * 8;
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;

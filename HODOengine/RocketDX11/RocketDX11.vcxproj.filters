@@ -64,6 +64,27 @@
     <Filter Include="dllExporter">
       <UniqueIdentifier>{46b21e4f-6b9f-4bb2-aa28-84e873e8b930}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\2DResource">
+      <UniqueIdentifier>{c9f1bc06-b3f3-41ae-9618-39f8d9cc079d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader">
+      <UniqueIdentifier>{dad1e232-9fc1-403c-bd33-72520cf50809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D">
+      <UniqueIdentifier>{e6960d65-d481-4543-941d-fbbedb5396ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\Primitive">
+      <UniqueIdentifier>{d317e1d1-45f8-4cbd-b666-459d0c586ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\BaseClass">
+      <UniqueIdentifier>{95fd2463-fd92-4e31-8716-98047843eb58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\VertexShader">
+      <UniqueIdentifier>{f722f166-5cdc-43dd-9688-5150f1308340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\PixelShader">
+      <UniqueIdentifier>{b034b25b-8e07-4357-90e6-8a345c094f6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -93,14 +114,17 @@
     <ClCompile Include="PixelShader.cpp">
       <Filter>Object\Shader\PixelShader</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Object\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticMesh.cpp">
+    <ClCompile Include="StaticMeshObject.cpp">
       <Filter>Object\StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>ObjectFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Resource\Resource3D\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>Resource\Resource3D\BaseClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,10 +167,7 @@
     <ClInclude Include="PixelShader.h">
       <Filter>Object\Shader\PixelShader</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Object\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticMesh.h">
+    <ClInclude Include="StaticMeshObject.h">
       <Filter>Object\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
@@ -157,6 +178,12 @@
     </ClInclude>
     <ClInclude Include="dllExporter.h">
       <Filter>dllExporter</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Resource\Resource3D\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>Resource\Resource3D\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
