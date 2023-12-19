@@ -3,6 +3,8 @@
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
 #include "CameraMove.h"
+#include "Player.h"
+#include "PlayerMove.h"
 
 enum eColliderType
 {
@@ -30,6 +32,13 @@ TestScene::TestScene()
 	debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
 	auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
 	colli->Setflag(eColliderType::PLAYER);
+
+
+	// �÷��̾� �׽�Ʈ
+	auto playerTest = API::CreateObject(_scene);
+	playerTest->AddComponent<Player>();
+	playerTest->AddComponent<PlayerMove>();
+	//auto playerColli = playerTest->AddComponent<HDData::>
 
 	
 	// 디버그 모드 활성화 (활성화하고 싶은 플래그를 인자로 넣음)

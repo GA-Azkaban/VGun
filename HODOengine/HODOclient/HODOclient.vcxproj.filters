@@ -7,40 +7,52 @@
     <ClCompile Include="Application.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>02_Client</Filter>
-    </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>02_Client\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="CameraMove.cpp">
-      <Filter>02_Client\TestScene\Scripts</Filter>
+      <Filter>02_Client\TestScene\Camera</Filter>
     </ClCompile>
     <ClCompile Include="PlayerMove.cpp">
-      <Filter>02_Client\TestScene\Scripts</Filter>
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>01_Entry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
       <Filter>01_Entry</Filter>
     </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>02_Client</Filter>
-    </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>02_Client\TestScene</Filter>
     </ClInclude>
     <ClInclude Include="CameraMove.h">
-      <Filter>02_Client\TestScene\Scripts</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerMove.h">
-      <Filter>02_Client\TestScene\Scripts</Filter>
+      <Filter>02_Client\TestScene\Camera</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>00_default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>00_default</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMove.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>01_Entry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -61,11 +73,17 @@
     <Filter Include="02_Client\TestScene">
       <UniqueIdentifier>{8664440e-bf82-4337-b7ec-0f46723b1ee6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\TestScene\Scripts">
-      <UniqueIdentifier>{86ee13c8-2323-4661-8522-0a2947d039a8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_default">
       <UniqueIdentifier>{c6d687a0-25a1-46f1-8015-03125a0d679d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Camera">
+      <UniqueIdentifier>{86ee13c8-2323-4661-8522-0a2947d039a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Player">
+      <UniqueIdentifier>{e9acabb0-cb8a-4c2a-92fc-47be2c4bbcc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Weapon">
+      <UniqueIdentifier>{ac6e43e2-0c45-4b33-886f-5f2e52942ec8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
