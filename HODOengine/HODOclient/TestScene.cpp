@@ -34,17 +34,18 @@ TestScene::TestScene()
 	colli->Setflag(eColliderType::PLAYER);
 
 
-	// �÷��̾� �׽�Ʈ
+	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	//auto playerColli = playerTest->AddComponent<HDData::>
 
 	
-	// 디버그 모드 활성화 (활성화하고 싶은 플래그를 인자로 넣음)
-	API::DebugModeOn(eColliderType::PLAYER);
 
 	API::LoadScene(_scene);
+
+	// 디버그 모드를 시작하는 함수
+	API::DebugModeOn(eColliderType::PLAYER);
 }
 
 TestScene::~TestScene()
