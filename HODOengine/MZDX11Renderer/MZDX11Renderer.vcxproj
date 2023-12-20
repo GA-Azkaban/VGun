@@ -32,6 +32,7 @@
     <ClInclude Include="IUIObject.h" />
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="ParsingDataClass.h" />
+    <ClInclude Include="ShaderStruct.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="UIImage.h" />
     <ClInclude Include="UIText.h" />

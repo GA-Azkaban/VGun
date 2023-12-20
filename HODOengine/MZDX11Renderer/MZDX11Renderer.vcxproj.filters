@@ -118,6 +118,9 @@
     <Filter Include="Shaders">
       <UniqueIdentifier>{2aced9ac-e843-408c-b3c5-654f557624a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\ShaderStruct">
+      <UniqueIdentifier>{e185f205-640c-43c8-9b7c-322b1b60ec7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MZDX11Renderer.h">
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="IShader.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderStruct.h">
+      <Filter>Shaders\ShaderStruct</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
