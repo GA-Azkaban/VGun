@@ -26,7 +26,9 @@
     <ClInclude Include="ICamera.h" />
     <ClInclude Include="IFactory.h" />
     <ClInclude Include="I3DRenderer.h" />
+    <ClInclude Include="IMaterial.h" />
     <ClInclude Include="IRenderable.h" />
+    <ClInclude Include="IResourceManager.h" />
     <ClInclude Include="ISketchable.h" />
     <ClInclude Include="ISketchableImage.h" />
     <ClInclude Include="ISketchableText.h" />
