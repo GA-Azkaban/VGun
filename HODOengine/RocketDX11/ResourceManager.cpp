@@ -1,5 +1,8 @@
 #include "ResourceManager.h"
 #include "Camera.h"
+#include "CubeMesh.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
 
 namespace RocketCore::Graphics
 {
@@ -8,17 +11,27 @@ namespace RocketCore::Graphics
 
 	}
 
-	Camera* ResourceManager::CreateCamera()
+	void ResourceManager::Initialize(ID3D11Device* device)
 	{
-		Camera* temp = new Camera();
-		_cameraList.emplace_back(temp);
-		
-// 		if (!_mainCamera)
-// 		{
-// 			_mainCamera = temp;
-// 		}
+		_device = device;
+		_cubeMesh = new CubeMesh();
+		_cubeMesh->Initialize(_device.Get());
 
-		return temp;
+		_vertexShader = new VertexShader();
+		GetVertexShader()->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
+
+		_pixelShader = new PixelShader();
+		GetPixelShader()->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
+	}
+
+	VertexShader* ResourceManager::GetVertexShader()
+	{
+		return _vertexShader;
+	}
+
+	PixelShader* ResourceManager::GetPixelShader()
+	{
+		return _pixelShader;
 	}
 
 }

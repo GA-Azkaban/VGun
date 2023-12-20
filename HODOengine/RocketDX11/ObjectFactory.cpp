@@ -1,6 +1,7 @@
 #include "ObjectFactory.h"
-#include "ResourceManager.h"
+#include "ObjectManager.h"
 #include "Camera.h"
+#include "StaticMeshObject.h"
 
 namespace HDEngine
 {
@@ -19,6 +20,12 @@ namespace RocketCore::Graphics
 {
 	HDEngine::ICamera* ObjectFactory::CreateCamera()
 	{
-		return ResourceManager::Instance().CreateCamera();
+		return ObjectManager::Instance().CreateCamera();
 	}
+
+	HDEngine::IStaticMesh* ObjectFactory::CreateStaticMeshObject()
+	{
+		return ObjectManager::Instance().CreateStaticMeshObject();
+	}
+
 }

@@ -11,6 +11,6 @@ namespace RocketCore::Graphics
 	class IResource
 	{
 	public:
-
+		virtual void Initialize(ID3D11Device* device) = 0;
 	};
 }

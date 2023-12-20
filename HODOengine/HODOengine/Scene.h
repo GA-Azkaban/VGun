@@ -30,6 +30,7 @@ namespace HDData
 		void FixedUpdate();
 
 		std::vector<GameObject*>& GetGameObjectList();
+		std::vector<GameObject*>& GetRunningObjectList();
 		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);

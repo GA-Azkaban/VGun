@@ -176,14 +176,14 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void Camera::SetNearZ(float near)
+	void Camera::SetNearZ(float nearZ)
 	{
-		_nearZ = near;
+		_nearZ = nearZ;
 	}
 
-	void Camera::SetFarZ(float far)
+	void Camera::SetFarZ(float farZ)
 	{
-		_farZ = far;
+		_farZ = farZ;
 	}
 
 	void Camera::SetAspect(float aspect)

@@ -7,8 +7,6 @@
 
 namespace HDEngine
 {
-	class IRenderable;
-
 	class I3DRenderer
 	{
 	public:
@@ -18,8 +16,6 @@ namespace HDEngine
 		virtual void Render() abstract;
 
 		virtual void Finalize() abstract;
-
-		// virtual IRenderable* CreateRenderable(const std::string& modelPath) abstract;
 	};
 
 	/// dllexport 하는 렌더러를 반환하는 팩토리 함수.

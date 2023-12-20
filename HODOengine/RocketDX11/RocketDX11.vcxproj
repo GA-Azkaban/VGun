@@ -130,7 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Axis.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -145,7 +145,7 @@
   <ItemGroup>
     <ClInclude Include="Axis.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Cube.h" />
+    <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="ObjectFactory.h" />

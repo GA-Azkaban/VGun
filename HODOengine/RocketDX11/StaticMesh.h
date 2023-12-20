@@ -13,11 +13,20 @@ namespace RocketCore::Graphics
 	class StaticMesh : public IResource
 	{
 	public:
+		virtual void Initialize(ID3D11Device* device) override;
 
-		virtual void BuildGeometryBuffers(ID3D11Device* device) = 0;
+		int GetVertexCount() const;
+		int GetIndexCount() const;
+
+		ID3D11Buffer* GetVertexBuffer() const;
+		ID3D11Buffer* GetIndexBuffer() const;
+		ID3D11Buffer** GetAddressOfVertexBuffer();
+		ID3D11Buffer** GetAddressOfIndexBuffer();
 
 	private:
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
+		int vertexCount;
+		int indexCount;
 	};
 }

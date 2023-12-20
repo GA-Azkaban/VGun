@@ -70,8 +70,5 @@
     <ClInclude Include="ICamera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="eMeshList.h">
-      <Filter>Renderable</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

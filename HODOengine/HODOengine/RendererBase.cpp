@@ -1,25 +1,28 @@
 #include "RendererBase.h"
 #include "Transform.h"
+#include "GraphicsObjFactory.h"
+#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h";
 
-std::unordered_map<HDEngine::IRenderable*, HDData::RendererBase*> HDData::RendererBase::_renderableMap;
-
-HDData::RendererBase::RendererBase(HDEngine::IRenderable* renderable)
-	:_renderable(renderable)
+namespace HDData
 {
-	_renderableMap[renderable] = this;
-}
+	RendererBase::RendererBase()
+		:_renderable(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
+	{
 
-void HDData::RendererBase::Update()
-{
-	_renderable->SetWorldTM(GetTransform()->GetWorldTM());
-}
+	}
 
-void HDData::RendererBase::OnEnable()
-{
-	_renderable->SetActive(true);
-}
+	void RendererBase::UpdateRenderData()
+	{
+		_renderable->SetWorldTM(GetTransform()->GetWorldTM());
+	}
 
-void HDData::RendererBase::OnDisable()
-{
-	_renderable->SetActive(false);
+	void RendererBase::OnEnable()
+	{
+		_renderable->SetActive(true);
+	}
+
+	void RendererBase::OnDisable()
+	{
+		_renderable->SetActive(false);
+	}
 }

@@ -70,4 +70,9 @@ namespace RocketCore::Graphics
 		return _inputLayout.Get();
 	}
 
+	ID3D11Buffer** VertexShader::GetAddressOfMatrixBuffer()
+	{
+		return _matrixBuffer.GetAddressOf();
+	}
+
 }

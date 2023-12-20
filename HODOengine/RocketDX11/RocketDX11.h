@@ -17,9 +17,10 @@ namespace RocketCore::Graphics
 {
 	class Grid;
 	class Axis;
-	class Cube;
+	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
+	class ResourceManager;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
 	{
@@ -28,7 +29,7 @@ namespace RocketCore::Graphics
 		~RocketDX11();
 
 	public:
-		//±×·¡ÇÈ½º ¿£ÁøÀ» ÃÊ±âÈ­ÇÑ´Ù.
+		//ê·¸ë˜í”½ìŠ¤ ì—”ì§„ì„ ì´ˆê¸°í™”í•œë‹¤.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
 		virtual void Render() override;
@@ -38,7 +39,7 @@ namespace RocketCore::Graphics
 	private:
 		void Update();
 
-		/// ·»´õ½ºÅ×ÀÌÆ® Á¦ÀÛ ÇÔ¼ö
+		/// ë Œë”ìŠ¤í…Œì´íŠ¸ ì œì‘ í•¨ìˆ˜
 	private:
 		void CreateRenderStates();
 
@@ -57,7 +58,7 @@ namespace RocketCore::Graphics
 		int _screenHeight;
 		bool _vSyncEnabled;
 
-		/// ÃÊ±âÈ­ °ü·Ã
+		/// ì´ˆê¸°í™” ê´€ë ¨
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;	// immediateContext
@@ -73,18 +74,18 @@ namespace RocketCore::Graphics
 		D3D11_VIEWPORT _viewport;
 
 		/// Render State
-		// ¹Ì¸® ¿©·¯ ¼¼Æ®¸¦ ¸¸µé¾îµÎ°í ½ºÀ§ÄªÇÑ´Ù.
+		// ë¯¸ë¦¬ ì—¬ëŸ¬ ì„¸íŠ¸ë¥¼ ë§Œë“¤ì–´ë‘ê³  ìŠ¤ìœ„ì¹­í•œë‹¤.
 	private:
 		ComPtr<ID3D11RasterizerState> _wireframeRenderState;
 		ComPtr<ID3D11RasterizerState> _solidRenderState;
-		// ÆùÆ®¶§¹®¿¡ µª½º½ºÅÄ½Ç ½ºÅ×ÀÌÆ®°¡ °­Á¦°¡ µÆ´Ù.
+		// í°íŠ¸ë•Œë¬¸ì— ëìŠ¤ìŠ¤íƒ ì‹¤ ìŠ¤í…Œì´íŠ¸ê°€ ê°•ì œê°€ ëë‹¤.
 		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
 
 	private:
 		Grid* _grid;
 		Axis* _axis;
-		Cube* _cube;
-		VertexShader* _vertexShader;
-		PixelShader* _pixelShader;
+
+	private:
+		ResourceManager& _resourceManager;
 	};
 }
