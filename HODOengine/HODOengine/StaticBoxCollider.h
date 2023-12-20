@@ -8,6 +8,7 @@ namespace HDData
 	{
 	public:
 		StaticBoxCollider();
+		StaticBoxCollider(float width, float height, float depth);
 
 	public:
 		float GetHeight();

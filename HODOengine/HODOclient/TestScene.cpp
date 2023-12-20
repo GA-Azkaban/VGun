@@ -30,18 +30,21 @@ TestScene::TestScene()
 
 	auto debugtest = API::CreateObject(_scene);
 	debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
-	auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
+	debugtest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 10.f, 1.f});
+	auto colli = debugtest->AddComponent<HDData::DynamicBoxCollider>();
+
 	colli->Setflag(eColliderType::PLAYER);
+	
+	
 
-
-	// �÷��̾� �׽�Ʈ
+	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	//auto playerColli = playerTest->AddComponent<HDData::>
 
 	
-	// 디버그 모드 활성화 (활성화하고 싶은 플래그를 인자로 넣음)
+	// ?붾쾭洹?紐⑤뱶 ?쒖꽦??(?쒖꽦?뷀븯怨??띠? ?뚮옒洹몃? ?몄옄濡??ｌ쓬)
 	API::DebugModeOn(eColliderType::PLAYER);
 
 	API::LoadScene(_scene);

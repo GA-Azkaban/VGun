@@ -1,9 +1,9 @@
 #pragma once
 
 /// <summary>
-/// ¿À¼ö¾È
-/// ÀÏ´Ü ÀÓ½Ã·Î ÇÏ³ªÀÇ API Å¬·¡½º·Î ÅëÇÕÇØµĞ´Ù.
-/// ÃßÈÄ¿¡ ±â´Éº°·Î ÁøÀÔÇØ¼­? »ç¿ëÇÒ ¼ö ÀÖµµ·Ï ¿¹»Ú°Ô ·¡ÇÎÇÒ ¿¹Á¤
+/// ì˜¤ìˆ˜ì•ˆ
+/// ì¼ë‹¨ ì„ì‹œë¡œ í•˜ë‚˜ì˜ API í´ë˜ìŠ¤ë¡œ í†µí•©í•´ë‘”ë‹¤.
+/// ì¶”í›„ì— ê¸°ëŠ¥ë³„ë¡œ ì§„ì…í•´ì„œ? ì‚¬ìš©í•  ìˆ˜ ìˆë„ë¡ ì˜ˆì˜ê²Œ ë˜í•‘í•  ì˜ˆì •
 /// </summary>
 
 #include "DLLExporter.h"
@@ -26,6 +26,7 @@
 #include "Script.h"
 #include "Collider.h"
 #include "StaticBoxCollider.h"
+#include "DynamicBoxCollider.h"
 
 #include "ObjectSystem.h"
 
@@ -33,7 +34,7 @@ namespace API
 {
 	extern "C"
 	{
-		/// ¾ÀÀ» »ı¼ºÇÏ±â À§ÇÑ ÇÔ¼ö
+		/// ì”¬ì„ ìƒì„±í•˜ê¸° ìœ„í•œ í•¨ìˆ˜
 		HODO_API HDData::Scene* CreateScene(std::string sceneName);
 		HODO_API void LoadScene(HDData::Scene* scene);
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);

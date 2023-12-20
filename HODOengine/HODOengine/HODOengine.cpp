@@ -85,6 +85,8 @@ void HODOengine::Initialize()
 
 void HODOengine::Loop()
 {
+	_physicsSystem.PreparePhysics();
+
 	while (1)
 	{
 		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))

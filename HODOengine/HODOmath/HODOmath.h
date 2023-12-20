@@ -1,10 +1,12 @@
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
+
 #pragma once
 #include <functional>
 
 /// <summary>
-/// 23.10.31 ¿À¼ö¾È
-/// °ø¿ë ¼öÇĞ ¶óÀÌºê·¯¸®
-/// RocketMath¿Í OverloadÀÇ OvMath Âü°í
+/// 23.10.31 ì˜¤ìˆ˜ì•ˆ
+/// ê³µìš© ìˆ˜í•™ ë¼ì´ë¸ŒëŸ¬ë¦¬
+/// RocketMathì™€ Overloadì˜ OvMath ì°¸ê³ 
 /// </summary>
 
 namespace HDMath
@@ -33,40 +35,40 @@ namespace HDMath
 		float x;
 		float y;
 
-		// ±âº» »ı¼ºÀÚ
+		// ê¸°ë³¸ ìƒì„±ì
 		HDFLOAT2(float x = 0.0f, float y = 0.0f);
 
-		// º¹»ç »ı¼ºÀÚ
+		// ë³µì‚¬ ìƒì„±ì
 		HDFLOAT2(const HDFLOAT2& val);
 
-		// ÀÌµ¿ »ı¼ºÀÚ
+		// ì´ë™ ìƒì„±ì
 		HDFLOAT2(HDFLOAT2&& val) noexcept = default;
 
-		// ¿¬»êÀÚ ¿À¹ö·Îµù
-		HDFLOAT2 operator-() const; // À½¼ö º¯È¯
-		HDFLOAT2 operator=(const HDFLOAT2& other); // ´ëÀÔ ¿¬»êÀÚ
-		HDFLOAT2 operator+(const HDFLOAT2& other) const; // ´õÇÏ±â
-		HDFLOAT2& operator+=(const HDFLOAT2& other); // ´õÇØ¼­ ´ëÀÔ
-		HDFLOAT2 operator-(const HDFLOAT2& other) const; // »©±â
-		HDFLOAT2& operator-=(const HDFLOAT2& other); // »©¼­ ´ëÀÔ
+		// ì—°ì‚°ì ì˜¤ë²„ë¡œë”©
+		HDFLOAT2 operator-() const; // ìŒìˆ˜ ë³€í™˜
+		HDFLOAT2 operator=(const HDFLOAT2& other); // ëŒ€ì… ì—°ì‚°ì
+		HDFLOAT2 operator+(const HDFLOAT2& other) const; // ë”í•˜ê¸°
+		HDFLOAT2& operator+=(const HDFLOAT2& other); // ë”í•´ì„œ ëŒ€ì…
+		HDFLOAT2 operator-(const HDFLOAT2& other) const; // ë¹¼ê¸°
+		HDFLOAT2& operator-=(const HDFLOAT2& other); // ë¹¼ì„œ ëŒ€ì…
 
-		// º¤ÅÍ¿Í ½ºÄ®¶ó ¿¬»ê
-		HDFLOAT2 operator* (float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó °ö
-		HDFLOAT2& operator*=(float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó °ö ´ëÀÔ
-		HDFLOAT2 operator/ (float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó ³ª´°¼À
-		HDFLOAT2& operator/=(float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó ³ª´©°í ´ëÀÔ
+		// ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ì—°ì‚°
+		HDFLOAT2 operator* (float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ê³±
+		HDFLOAT2& operator*=(float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ê³± ëŒ€ì…
+		HDFLOAT2 operator/ (float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ë‚˜ëˆ—ì…ˆ
+		HDFLOAT2& operator/=(float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ë‚˜ëˆ„ê³  ëŒ€ì…
 
-		// ºñ±³¿¬»êÀÚ
+		// ë¹„êµì—°ì‚°ì
 		bool operator==(const HDFLOAT2& other);
 		bool operator!=(const HDFLOAT2& other);
 
-		// ¼öÇĞ ¿¬»ê
+		// ìˆ˜í•™ ì—°ì‚°
 		static HDFLOAT2 Add(const HDFLOAT2& left, const HDFLOAT2& right);
 		static HDFLOAT2 Substract(const HDFLOAT2& left, const HDFLOAT2& right);
 		static HDFLOAT2 Multiply(const HDFLOAT2& val, float scalar);
 		static HDFLOAT2 Divide(const HDFLOAT2& val, float scalar);
-		static float Dot(const HDFLOAT2& left, const HDFLOAT2& right); // ³»Àû
-		static HDFLOAT2 Normalize(const HDFLOAT2& val); // Á¤±ÔÈ­
+		static float Dot(const HDFLOAT2& left, const HDFLOAT2& right); // ë‚´ì 
+		static HDFLOAT2 Normalize(const HDFLOAT2& val); // ì •ê·œí™”
 
 	};
 
@@ -76,31 +78,31 @@ namespace HDMath
 		float y;
 		float z;
 
-		// ±âº» »ı¼ºÀÚ
+		// ê¸°ë³¸ ìƒì„±ì
 		HDFLOAT3(float x = 0.0f, float y = 0.0f, float z = 0.0f);
 
-		// º¹»ç »ı¼ºÀÚ
+		// ë³µì‚¬ ìƒì„±ì
 		HDFLOAT3(const HDFLOAT3& val);
 
-		// ÀÌµ¿ »ı¼ºÀÚ
+		// ì´ë™ ìƒì„±ì
 		HDFLOAT3(HDFLOAT3&& val) noexcept = default;
 
-		// ¿¬»êÀÚ ¿À¹ö·Îµù
-		HDFLOAT3 operator-() const; // À½¼ö º¯È¯
-		HDFLOAT3 operator=(const HDFLOAT3& other); // ´ëÀÔ ¿¬»êÀÚ
-		HDFLOAT3 operator+(const HDFLOAT3& other) const; // ´õÇÏ±â
-		HDFLOAT3 operator*(const HDFLOAT3& other) const; // °öÇÏ±â
-		HDFLOAT3& operator+=(const HDFLOAT3& other); // ´õÇØ¼­ ´ëÀÔ
-		HDFLOAT3 operator-(const HDFLOAT3& other) const; // »©±â
-		HDFLOAT3& operator-=(const HDFLOAT3& other); // »©¼­ ´ëÀÔ
+		// ì—°ì‚°ì ì˜¤ë²„ë¡œë”©
+		HDFLOAT3 operator-() const; // ìŒìˆ˜ ë³€í™˜
+		HDFLOAT3 operator=(const HDFLOAT3& other); // ëŒ€ì… ì—°ì‚°ì
+		HDFLOAT3 operator+(const HDFLOAT3& other) const; // ë”í•˜ê¸°
+		HDFLOAT3 operator*(const HDFLOAT3& other) const; // ê³±í•˜ê¸°
+		HDFLOAT3& operator+=(const HDFLOAT3& other); // ë”í•´ì„œ ëŒ€ì…
+		HDFLOAT3 operator-(const HDFLOAT3& other) const; // ë¹¼ê¸°
+		HDFLOAT3& operator-=(const HDFLOAT3& other); // ë¹¼ì„œ ëŒ€ì…
 
-		// º¤ÅÍ¿Í ½ºÄ®¶ó ¿¬»ê
-		HDFLOAT3 operator* (float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó °ö
-		HDFLOAT3& operator*=(float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó °ö ´ëÀÔ
-		HDFLOAT3 operator/ (float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó ³ª´°¼À
-		HDFLOAT3& operator/=(float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó ³ª´©°í ´ëÀÔ
+		// ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ì—°ì‚°
+		HDFLOAT3 operator* (float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ê³±
+		HDFLOAT3& operator*=(float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ê³± ëŒ€ì…
+		HDFLOAT3 operator/ (float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ë‚˜ëˆ—ì…ˆ
+		HDFLOAT3& operator/=(float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ë‚˜ëˆ„ê³  ëŒ€ì…
 
-		// ºñ±³¿¬»êÀÚ
+		// ë¹„êµì—°ì‚°ì
 		bool operator==(const HDFLOAT3& other);
 		bool operator!=(const HDFLOAT3& other);
 		bool operator<(const HDFLOAT3& other);
@@ -108,14 +110,14 @@ namespace HDMath
 		bool operator>(const HDFLOAT3& other);
 		bool operator>=(const HDFLOAT3& other);
 
-		// ¼öÇĞ ¿¬»ê
+		// ìˆ˜í•™ ì—°ì‚°
 		static HDFLOAT3 Add(const HDFLOAT3& left, const HDFLOAT3& right);
 		static HDFLOAT3 Substract(const HDFLOAT3& left, const HDFLOAT3& right);
 		static HDFLOAT3 Multiply(const HDFLOAT3& val, float scalar);
 		static HDFLOAT3 Divide(const HDFLOAT3& val, float scalar);
-		static float Dot(const HDFLOAT3& left, const HDFLOAT3& right); // ³»Àû
-		static HDFLOAT3 Cross(const HDFLOAT3& a, const HDFLOAT3& b); // ¿ÜÀû
-		static HDFLOAT3 Normalize(const HDFLOAT3& val); // Á¤±ÔÈ­
+		static float Dot(const HDFLOAT3& left, const HDFLOAT3& right); // ë‚´ì 
+		static HDFLOAT3 Cross(const HDFLOAT3& a, const HDFLOAT3& b); // ì™¸ì 
+		static HDFLOAT3 Normalize(const HDFLOAT3& val); // ì •ê·œí™”
 
 		static const HDFLOAT3 zero;
 		static const HDFLOAT3 one;
@@ -146,31 +148,31 @@ namespace HDMath
 
 		};
 		
-		// ±âº» »ı¼ºÀÚ
+		// ê¸°ë³¸ ìƒì„±ì
 		HDFLOAT4(float x = 0.0f, float y = 0.0f, float z = 0.0f, float w = 0.0f);
 
-		// º¹»ç »ı¼ºÀÚ
+		// ë³µì‚¬ ìƒì„±ì
 		HDFLOAT4(const HDFLOAT4& val);
 
-		// ÀÌµ¿ »ı¼ºÀÚ
+		// ì´ë™ ìƒì„±ì
 		HDFLOAT4(HDFLOAT4&& val) noexcept = default;
 
-		// ¿¬»êÀÚ ¿À¹ö·Îµù
-		HDFLOAT4 operator-() const; // À½¼ö º¯È¯
-		HDFLOAT4 operator=(const HDFLOAT4& other); // ´ëÀÔ ¿¬»êÀÚ
-		HDFLOAT4 operator+(const HDFLOAT4& other) const; // ´õÇÏ±â
-		HDFLOAT4 operator*(const HDFLOAT4& other) const; // °öÇÏ±â
-		HDFLOAT4& operator+=(const HDFLOAT4& other); // ´õÇØ¼­ ´ëÀÔ
-		HDFLOAT4 operator-(const HDFLOAT4& other) const; // »©±â
-		HDFLOAT4& operator-=(const HDFLOAT4& other); // »©¼­ ´ëÀÔ
+		// ì—°ì‚°ì ì˜¤ë²„ë¡œë”©
+		HDFLOAT4 operator-() const; // ìŒìˆ˜ ë³€í™˜
+		HDFLOAT4 operator=(const HDFLOAT4& other); // ëŒ€ì… ì—°ì‚°ì
+		HDFLOAT4 operator+(const HDFLOAT4& other) const; // ë”í•˜ê¸°
+		HDFLOAT4 operator*(const HDFLOAT4& other) const; // ê³±í•˜ê¸°
+		HDFLOAT4& operator+=(const HDFLOAT4& other); // ë”í•´ì„œ ëŒ€ì…
+		HDFLOAT4 operator-(const HDFLOAT4& other) const; // ë¹¼ê¸°
+		HDFLOAT4& operator-=(const HDFLOAT4& other); // ë¹¼ì„œ ëŒ€ì…
 
-		// º¤ÅÍ¿Í ½ºÄ®¶ó ¿¬»ê
-		HDFLOAT4 operator* (float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó °ö
-		HDFLOAT4& operator*=(float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó °ö ´ëÀÔ
-		HDFLOAT4 operator/ (float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó ³ª´°¼À
-		HDFLOAT4& operator/=(float scalar); // º¤ÅÍ¿Í ½ºÄ®¶ó ³ª´©°í ´ëÀÔ
+		// ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ì—°ì‚°
+		HDFLOAT4 operator* (float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ê³±
+		HDFLOAT4& operator*=(float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ê³± ëŒ€ì…
+		HDFLOAT4 operator/ (float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ë‚˜ëˆ—ì…ˆ
+		HDFLOAT4& operator/=(float scalar); // ë²¡í„°ì™€ ìŠ¤ì¹¼ë¼ ë‚˜ëˆ„ê³  ëŒ€ì…
 
-		// ºñ±³¿¬»êÀÚ
+		// ë¹„êµì—°ì‚°ì
 		bool operator==(const HDFLOAT4& other);
 		bool operator!=(const HDFLOAT4& other);
 		bool operator<(const HDFLOAT4& other);
@@ -178,12 +180,12 @@ namespace HDMath
 		bool operator>(const HDFLOAT4& other);
 		bool operator>=(const HDFLOAT4& other);
 
-		// ¼öÇĞ ¿¬»ê
+		// ìˆ˜í•™ ì—°ì‚°
 		static HDFLOAT4 Add(const HDFLOAT4& left, const HDFLOAT4& right);
 		static HDFLOAT4 Substract(const HDFLOAT4& left, const HDFLOAT4& right);
 		static HDFLOAT4 Multiply(const HDFLOAT4& val, float scalar);
 		static HDFLOAT4 Divide(const HDFLOAT4& val, float scalar);
-		static HDFLOAT4 Normalize(const HDFLOAT4& val); // Á¤±ÔÈ­
+		static HDFLOAT4 Normalize(const HDFLOAT4& val); // ì •ê·œí™”
 	};
 
 	struct HDQuaternion
@@ -193,36 +195,36 @@ namespace HDMath
 		float y;
 		float z;
 
-		// ±âº» »ı¼ºÀÚ (¸¶Áö¸· ¿ä¼Ò°¡ 1ÀÎ)
+		// ê¸°ë³¸ ìƒì„±ì (ë§ˆì§€ë§‰ ìš”ì†Œê°€ 1ì¸)
 		HDQuaternion();
 
-		// ±âº» »ı¼ºÀÚ
+		// ê¸°ë³¸ ìƒì„±ì
 		HDQuaternion(float w, float x, float y, float z);
 
-		// ¸ÅÆ®¸¯½º¸¦ ÄõÅÍ´Ï¾ğÀ¸·Î º¯È¯ÇÏ´Â »ı¼ºÀÚ
+		// ë§¤íŠ¸ë¦­ìŠ¤ë¥¼ ì¿¼í„°ë‹ˆì–¸ìœ¼ë¡œ ë³€í™˜í•˜ëŠ” ìƒì„±ì
 		HDQuaternion(const HDFLOAT3X3& matrix);
 		
 		
-		// º¹»ç »ı¼ºÀÚ
+		// ë³µì‚¬ ìƒì„±ì
 		HDQuaternion(const HDQuaternion& val);
 
-		// ÀÌµ¿ »ı¼ºÀÚ
+		// ì´ë™ ìƒì„±ì
 		HDQuaternion(HDQuaternion&& val) noexcept = default;
 
-		// ¿¬»êÀÚ ¿À¹ö·Îµù
-		HDQuaternion operator=(const HDQuaternion& other); // ´ëÀÔ ¿¬»êÀÚ
-		HDQuaternion operator*(const HDQuaternion& other); // °öÇÏ±â
+		// ì—°ì‚°ì ì˜¤ë²„ë¡œë”©
+		HDQuaternion operator=(const HDQuaternion& other); // ëŒ€ì… ì—°ì‚°ì
+		HDQuaternion operator*(const HDQuaternion& other); // ê³±í•˜ê¸°
 
 		HDFLOAT3 operator*(const HDFLOAT3& other) const;
 
-		// ºñ±³ ¿¬»êÀÚ
+		// ë¹„êµ ì—°ì‚°ì
 		bool operator==(const HDQuaternion& other);
 		bool operator!=(const HDQuaternion& other);
 
 
 		static const HDQuaternion Identity;
 
-		// ¼öÇĞ ¿¬»ê
+		// ìˆ˜í•™ ì—°ì‚°
 		HDQuaternion conjugate() const;
 		HDFLOAT3 Right() const;
 		HDFLOAT3 Up() const;
@@ -247,23 +249,23 @@ namespace HDMath
 
 		static const HDFLOAT3X3 Identity;
 
-		// ±âº» »ı¼ºÀÚ
+		// ê¸°ë³¸ ìƒì„±ì
 		HDFLOAT3X3();
 		HDFLOAT3X3(	float val11, float val12, float val13,
 					float val21, float val22, float val23,
 					float val31, float val32, float val33 );
 
-		// º¹»ç »ı¼ºÀÚ
+		// ë³µì‚¬ ìƒì„±ì
 		HDFLOAT3X3(const HDFLOAT3X3& val);
 
-		// ´ëÀÔ ¿¬»êÀÚ (±íÀº º¹»ç)
+		// ëŒ€ì… ì—°ì‚°ì (ê¹Šì€ ë³µì‚¬)
 		HDFLOAT3X3& operator=(const HDFLOAT3X3& val);
 
-		// ¿¬»êÀÚ ¿À¹ö·Îµù
+		// ì—°ì‚°ì ì˜¤ë²„ë¡œë”©
 		HDFLOAT3X3 operator*(const HDFLOAT3X3& val);
 		HDFLOAT3X3& operator*=(const HDFLOAT3X3& val);
 
-		// ¼öÇĞ ¿¬»ê
+		// ìˆ˜í•™ ì—°ì‚°
 		HDFLOAT3X3 Multiply(const HDFLOAT3X3& left, const HDFLOAT3X3& right);
 		HDFLOAT3X3 Inverse() const;
 
@@ -286,32 +288,32 @@ namespace HDMath
 
 		static const HDFLOAT4X4 Identity;
 
-		// ±âº» »ı¼ºÀÚ
+		// ê¸°ë³¸ ìƒì„±ì
 		HDFLOAT4X4();
 		HDFLOAT4X4(float val11, float val12, float val13, float val14,
 			float val21, float val22, float val23, float val24,
 			float val31, float val32, float val33, float val34,
 			float val41, float val42, float val43, float val44);
 
-		// º¹»ç »ı¼ºÀÚ
+		// ë³µì‚¬ ìƒì„±ì
 		HDFLOAT4X4(const HDFLOAT3X3& val);
 
 
-		// ´ëÀÔ ¿¬»êÀÚ
+		// ëŒ€ì… ì—°ì‚°ì
 		HDFLOAT4X4& operator=(const HDFLOAT4X4& val);
 
-		// ¿¬»êÀÚ ¿À¹ö·Îµù (¿ªÇà·Ä, Çà·Ä°ö)
+		// ì—°ì‚°ì ì˜¤ë²„ë¡œë”© (ì—­í–‰ë ¬, í–‰ë ¬ê³±)
 		HDFLOAT4X4 operator*(const HDFLOAT4X4& val);
 		HDFLOAT4X4& operator*=(const HDFLOAT4X4& val);
 		
 
-		// ¼öÇĞ ¿¬»ê
+		// ìˆ˜í•™ ì—°ì‚°
 		HDFLOAT4X4 Multiply		(const HDFLOAT4X4& left, const HDFLOAT4X4& right);
 		HDFLOAT4X4 Inverse		() const;
 		HDFLOAT3X3 ToMatrix3x3	() const;
 	};
 
-	// ±âÅ¸ ¼öÇĞ ¿¬»ê
+	// ê¸°íƒ€ ìˆ˜í•™ ì—°ì‚°
 	HDFLOAT4		HDFloat4MultiplyMatrix		(const HDFLOAT4& left, const HDFLOAT4X4& right);
 	HDFLOAT3		HDFloat3MultiplyMatrix		(const HDFLOAT3& left, const HDFLOAT4X4& right);
 	HDFLOAT4		QuaternionToFloat4			(const HDQuaternion& val);

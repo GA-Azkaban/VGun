@@ -21,7 +21,10 @@ namespace API
 		}
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName, HDData::GameObject* parentObject)
 		{
-			return HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			scene->GetGameObjectList().push_back(obj);
+
+			return obj;
 		}
 		HODO_API bool GetKeyDown(int keyCode)
 		{

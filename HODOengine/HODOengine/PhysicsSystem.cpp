@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "StaticPlaneCollider.h"
 #include "StaticBoxCollider.h"
+#include "DynamicBoxCollider.h"
 
 #include <windows.h>
 
@@ -15,35 +16,38 @@ namespace HDEngine
 	{
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
 
-		// visual debugger ¼¼ÆÃ, ·ÎÄÃ¿¡ ¿¬°á
+		// visual debugger ì„¸íŒ…, ë¡œì»¬ì— ì—°ê²°
 		_pvd = PxCreatePvd(*_foundation);
 		physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
 		_pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
 
-		// ¹öÀü, ¼¼ÆÃ, ´ÜÀ§ µîÀÇ Á¤º¸¸¦ ÁöÁ¤ÇØ ¹°¸® ¾ÀÀ» »ı¼º
+		// ë²„ì „, ì„¸íŒ…, ë‹¨ìœ„ ë“±ì˜ ì •ë³´ë¥¼ ì§€ì •í•´ ë¬¼ë¦¬ ì”¬ì„ ìƒì„±
 		_physics = PxCreatePhysics(PX_PHYSICS_VERSION, *_foundation, physx::PxTolerancesScale(), true, _pvd);
 
 		//PxInitExtensions(*_physics, _pvd);
 
 		CreatePhysXScene();
 
-		// ¸¶Âû°ú Åº¼ºÀ» ÁöÁ¤ÇØ ¸ÓÆ¼¸®¾ó »ı¼º
+		// ë§ˆì°°ê³¼ íƒ„ì„±ì„ ì§€ì •í•´ ë¨¸í‹°ë¦¬ì–¼ ìƒì„±
 		_material = _physics->createMaterial(0.25f, 0.2f, 0.4f);
 
-		// ÀÓ½Ã·Î Æò¸é°ú ¹Ú½º ÇÏ³ª¸¦ ¸¸µé¾î µÒ
+		// ì„ì‹œë¡œ í‰ë©´ê³¼ ë°•ìŠ¤ í•˜ë‚˜ë¥¼ ë§Œë“¤ì–´ ë‘ 
 		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
 		_pxScene->addActor(*groundPlane);
 
-		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
-		physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
-		_dynamic = _physics->createRigidDynamic(localTm);
-		_dynamic->attachShape(*shape);
-		_dynamic->setAngularDamping(0.5f);
-		_dynamic->setLinearDamping(0.5f);
-		_pxScene->addActor(*_dynamic);
-		
-		// °­Ã¼¸¦ ½Ï ´Ù ¸¸µé°í ½ÃÀÛÇÏ´Â ºÎºĞ
-		//CreateRigidBodies();
+		//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
+		//physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
+		//physx::PxRigidDynamic* _dynamic = _physics->createRigidDynamic(localTm);
+		//_dynamic->attachShape(*shape);
+		//_dynamic->setAngularDamping(0.5f);
+		//_dynamic->setLinearDamping(0.5f);
+		//_rigidDynamics.push_back(_dynamic);
+		//_pxScene->addActor(*_dynamic);
+	}
+
+	void PhysicsSystem::PreparePhysics()
+	{
+		CreateRigidBodies();
 	}
 
 	void PhysicsSystem::Update()
@@ -51,16 +55,34 @@ namespace HDEngine
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
 
-		TempMove();
+		HDMath::HDFLOAT3 pos;
+		HDMath::HDQuaternion rot;
+		physx::PxTransform temp;
+
+		for (auto& rigid : _rigidDynamics)
+		{
+			temp = rigid->getGlobalPose();
+
+			pos.x = temp.p.x;
+			pos.y = temp.p.y;
+			pos.z = temp.p.z;
+
+			rot.x = temp.q.x;
+			rot.y = temp.q.y;
+			rot.z = temp.q.z;
+			rot.w = temp.q.w;
+
+			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+		}
 	}
 
 	void PhysicsSystem::Finalize()
 	{
-		// initPhysics¿¡¼­ ÃÊ±âÈ­ÇØÁØ Àü¿ª º¯¼öµéÀ» release
+		// initPhysicsì—ì„œ ì´ˆê¸°í™”í•´ì¤€ ì „ì—­ ë³€ìˆ˜ë“¤ì„ release
 		PX_RELEASE(_pxScene);
 		PX_RELEASE(_dispatcher);
 		PX_RELEASE(_physics);
-		// visual debuggerµµ release
+		// visual debuggerë„ release
 		if (_pvd)
 		{
 			physx::PxPvdTransport* transport = _pvd->getTransport();
@@ -72,7 +94,7 @@ namespace HDEngine
 
 	void PhysicsSystem::CreatePhysXScene()
 	{
-		// ¾À¿¡ ´ëÇÑ ¼³Á¤
+		// ì”¬ì— ëŒ€í•œ ì„¤ì •
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
@@ -80,7 +102,7 @@ namespace HDEngine
 		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 		_pxScene = _physics->createScene(sceneDesc);
 
-		// Pvd¿¡ Á¤º¸ º¸³»±â
+		// Pvdì— ì •ë³´ ë³´ë‚´ê¸°
 		physx::PxPvdSceneClient* pvdClient = _pxScene->getScenePvdClient();
 		if (pvdClient)
 		{
@@ -97,6 +119,8 @@ namespace HDEngine
 		for (auto& object : sceneIter->GetGameObjectList())
 		{
 			CreateStaticPlaneCollider(object);
+			CreateStaticBoxCollider(object);
+			CreateDynamicBoxCollider(object);
 		}
 	}
 
@@ -116,7 +140,7 @@ namespace HDEngine
 				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
 				_pxScene->addActor(*planeRigid);
 
-				// º»Ã¼¿Í ¹°¸®¿¡¼­ ¼­·ÎÀÇ rigid, collider¸¦ °Çµå¸± ¼ö ÀÖ°Ô ÇØÁÖ´Â ºÎºĞ. Ãß°¡?
+				// ë³¸ì²´ì™€ ë¬¼ë¦¬ì—ì„œ ì„œë¡œì˜ rigid, colliderë¥¼ ê±´ë“œë¦´ ìˆ˜ ìˆê²Œ í•´ì£¼ëŠ” ë¶€ë¶„. ì¶”ê°€?
 			}
 		}
 	}
@@ -141,17 +165,49 @@ namespace HDEngine
 
 				_pxScene->addActor(*boxRigid);
 				shape->release();
-				// º»Ã¼¿Í ¹°¸®¿¡¼­ ¼­·ÎÀÇ rigid, collider¸¦ °Çµå¸± ¼ö ÀÖ°Ô ÇØÁÖ´Â ºÎºĞ. Ãß°¡?
+				// ë³¸ì²´ì™€ ë¬¼ë¦¬ì—ì„œ ì„œë¡œì˜ rigid, colliderë¥¼ ê±´ë“œë¦´ ìˆ˜ ìˆê²Œ í•´ì£¼ëŠ” ë¶€ë¶„. ì¶”ê°€?
 			}
 		}
 	}
 
-	void PhysicsSystem::TempMove()
+	void PhysicsSystem::CreateStaticBoxCollider(float width, float height, float depth)
 	{
-		// temporary phys simulation test on pvd
-		if (GetAsyncKeyState(VK_SPACE))
+		HDData::StaticBoxCollider* box = new HDData::StaticBoxCollider(width, height, depth);
+		
+		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
+
+		physx::PxTransform localTransform(physx::PxVec3(0.0f, box->GetHeight() / 2, 0.0f));
+		physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
+		boxRigid->attachShape(*shape);
+
+		_pxScene->addActor(*boxRigid);
+		shape->release();
+	}
+
+	void PhysicsSystem::CreateDynamicBoxCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::DynamicBoxCollider>();
+
+		if (isCorrectType)
 		{
-			_dynamic->addForce(physx::PxVec3(0.0f, 0.1f, 0.0f), physx::PxForceMode::eIMPULSE);
+			auto colliderVector = object->GetComponents<HDData::DynamicBoxCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::DynamicBoxCollider* box = dynamic_cast<HDData::DynamicBoxCollider*>(collider);
+
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
+
+				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
+				boxRigid->attachShape(*shape);
+
+				_pxScene->addActor(*boxRigid);
+				_rigidDynamics.push_back(boxRigid);
+				boxRigid->userData = box;
+				shape->release();
+				// ë³¸ì²´ì™€ ë¬¼ë¦¬ì—ì„œ ì„œë¡œì˜ rigid, colliderë¥¼ ê±´ë“œë¦´ ìˆ˜ ìˆê²Œ í•´ì£¼ëŠ” ë¶€ë¶„. ì¶”ê°€?
+			}
 		}
 	}
 
