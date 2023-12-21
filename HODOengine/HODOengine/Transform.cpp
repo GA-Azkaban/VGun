@@ -18,7 +18,7 @@ namespace HDData
 			return _position;
 		}
 
-		return HDMath::HDFloat3MultiplyMatrix(_position, GetWorldTM());
+		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition() * _position;
 
 // 		HDMath::HDFLOAT3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
 // 		HDMath::HDQuaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
