@@ -1,5 +1,7 @@
 #include "ObjectFactory.h"
 #include "ObjectManager.h"
+#include "ResourceManager.h"
+
 #include "Camera.h"
 #include "StaticMeshObject.h"
 

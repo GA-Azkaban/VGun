@@ -1,9 +1,16 @@
 #include "ObjectManager.h"
+
+#include "..\\HODO3DGraphicsInterface\\IRenderable.h"
+
 #include "Camera.h"
 #include "StaticMeshObject.h"
 
 namespace RocketCore::Graphics
 {
+	ObjectManager::ObjectManager()
+	{
+
+	}
 
 	Camera* ObjectManager::CreateCamera()
 	{
@@ -20,5 +27,4 @@ namespace RocketCore::Graphics
 
 		return temp;
 	}
-
 }
