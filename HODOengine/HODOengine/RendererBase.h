@@ -1,6 +1,4 @@
 #pragma once
-#include <memory>
-
 #include "Component.h"
 #include "..\\HODO3DGraphicsInterface\\IRenderable.h"
 
@@ -12,11 +10,11 @@ namespace HDData
 		RendererBase();
 		void UpdateRenderData();
 
-	protected:
-		virtual void OnEnable();
-		virtual void OnDisable();
+// 	public:
+// 		virtual void OnEnable() override;
+// 		virtual void OnDisable() override;
 
-		std::unique_ptr<HDEngine::IRenderable> _renderable;
+		HDEngine::IRenderable* _renderable;
 	};
 }
 

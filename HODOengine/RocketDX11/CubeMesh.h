@@ -27,9 +27,5 @@ namespace RocketCore::Graphics
 
 	private:
 		void BuildGeometryBuffers(ID3D11Device* device);
-
-	private:
-		ComPtr<ID3D11Buffer> _vertexBuffer;
-		ComPtr<ID3D11Buffer> _indexBuffer;
 	};
 }

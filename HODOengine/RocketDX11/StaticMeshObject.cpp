@@ -53,6 +53,14 @@ namespace RocketCore::Graphics
 		_pixelShader = shader;
 	}
 
+	void StaticMeshObject::LoadVertexShader(const std::string& fileName)
+	{
+	}
+
+	void StaticMeshObject::LoadPixelShader(const std::string& fileName)
+	{
+	}
+
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 	}
@@ -111,6 +119,11 @@ namespace RocketCore::Graphics
 		deviceContext->RSSetState(renderstate);
 
 		deviceContext->DrawIndexed(_mesh->GetIndexCount(), 0, 0);
+	}
+
+	StaticMeshObject::StaticMeshObject()
+	{
+
 	}
 
 }

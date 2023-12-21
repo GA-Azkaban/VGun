@@ -4,15 +4,15 @@
 namespace HDData
 {
 	Transform::Transform()
-		:_position(), _rotation(), _scale(HDMath::HDFLOAT3::one)
+		:_position(0.0f,0.0f,0.0f), _rotation(1.0f,0.0f,0.0f,0.0f), _scale(HDMath::HDFLOAT3::one)
 	{
 
 	}
 
 	HDMath::HDFLOAT3 Transform::GetWorldPosition() const
 	{
-		/// ÀÌµæ¿ìÀÇ °ÔÀÓ¼öÇĞ p.619 ÂüÁ¶
-		// ³» ·ÎÄÃ Æ÷Áö¼Ç¿¡ ºÎ¸ğÀÇ ¿ùµå Æ®·£½ºÆûÀ» ¹İ¿µÇØ ³» ¿ùµå Æ÷Áö¼ÇÀ» ±¸ÇÑ´Ù.
+		/// ì´ë“ìš°ì˜ ê²Œì„ìˆ˜í•™ p.619 ì°¸ì¡°
+		// ë‚´ ë¡œì»¬ í¬ì§€ì…˜ì— ë¶€ëª¨ì˜ ì›”ë“œ íŠ¸ëœìŠ¤í¼ì„ ë°˜ì˜í•´ ë‚´ ì›”ë“œ í¬ì§€ì…˜ì„ êµ¬í•œë‹¤.
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
 			return _position;
@@ -101,8 +101,8 @@ namespace HDData
 		else
 		{
 			// world position = position;
-			// ¿ùµå Æ÷Áö¼ÇÀ» ÅëÇØ ·ÎÄÃ Æ÷Áö¼Ç °»½Å
-			// ºÎ¸ğ ¿ùµå ¿ªÇà·Ä¿¡ ³» ¿ùµå¸¦ °öÇÏ¸é ·ÎÄÃ
+			// ì›”ë“œ í¬ì§€ì…˜ì„ í†µí•´ ë¡œì»¬ í¬ì§€ì…˜ ê°±ì‹ 
+			// ë¶€ëª¨ ì›”ë“œ ì—­í–‰ë ¬ì— ë‚´ ì›”ë“œë¥¼ ê³±í•˜ë©´ ë¡œì»¬
 			HDMath::HDFLOAT4X4 worldTM = GetTransformMatrix(position, _rotation, _scale);
 			HDMath::HDFLOAT4X4 invParent = HDMath::HDFLOAT4X4::Identity;
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
@@ -185,12 +185,12 @@ namespace HDData
 		float radianY = HDMath::ToRadian(angleY);
 		float radianZ = HDMath::ToRadian(angleZ);
 
-		// È¸Àü °¢µµ¸¦ ¹İÀ¸·Î ³ª´©¾î ÁØºñÇÕ´Ï´Ù.
+		// íšŒì „ ê°ë„ë¥¼ ë°˜ìœ¼ë¡œ ë‚˜ëˆ„ì–´ ì¤€ë¹„í•©ë‹ˆë‹¤.
 		float half_radianX = radianX * 0.5f;
 		float half_radianY = radianY * 0.5f;
 		float half_radianZ = radianZ * 0.5f;
 
-		// °¢ ÃàÀÇ ÄõÅÍ´Ï¾ğ ¿ä¼Ò¸¦ °è»êÇÕ´Ï´Ù.
+		// ê° ì¶•ì˜ ì¿¼í„°ë‹ˆì–¸ ìš”ì†Œë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
 		float sin_half_radianX = sin(half_radianX);
 		float sin_half_radianY = sin(half_radianY);
 		float sin_half_radianZ = sin(half_radianZ);
@@ -198,21 +198,21 @@ namespace HDData
 		float cos_half_radianY = cos(half_radianY);
 		float cos_half_radianZ = cos(half_radianZ);
 
-		// ÄõÅÍ´Ï¾ğ ¿ä¼Ò¸¦ °è»êÇÕ´Ï´Ù.
+		// ì¿¼í„°ë‹ˆì–¸ ìš”ì†Œë¥¼ ê³„ì‚°í•©ë‹ˆë‹¤.
 		HDMath::HDFLOAT4 rotQuat;
 		rotQuat.x = sin_half_radianX * cos_half_radianY * cos_half_radianZ + cos_half_radianX * sin_half_radianY * sin_half_radianZ;
 		rotQuat.y = cos_half_radianX * sin_half_radianY * cos_half_radianZ - sin_half_radianX * cos_half_radianY * sin_half_radianZ;
 		rotQuat.z = cos_half_radianX * cos_half_radianY * sin_half_radianZ + sin_half_radianX * sin_half_radianY * cos_half_radianZ;
 		rotQuat.w = cos_half_radianX * cos_half_radianY * cos_half_radianZ - sin_half_radianX * sin_half_radianY * sin_half_radianZ;
 
-		// ¿øº» ÄõÅÍ´Ï¾ğ°ú È¸Àü ÄõÅÍ´Ï¾ğÀÇ °öÀ¸·Î °á°ú ÄõÅÍ´Ï¾ğÀ» °è»êÇÕ´Ï´Ù.
+		// ì›ë³¸ ì¿¼í„°ë‹ˆì–¸ê³¼ íšŒì „ ì¿¼í„°ë‹ˆì–¸ì˜ ê³±ìœ¼ë¡œ ê²°ê³¼ ì¿¼í„°ë‹ˆì–¸ì„ ê³„ì‚°í•©ë‹ˆë‹¤.
 		HDMath::HDQuaternion result;
 		result.x = _rotation.w * rotQuat.x + _rotation.x * rotQuat.w + _rotation.y * rotQuat.z - _rotation.z * rotQuat.y;
 		result.y = _rotation.w * rotQuat.y - _rotation.x * rotQuat.z + _rotation.y * rotQuat.w + _rotation.z * rotQuat.x;
 		result.z = _rotation.w * rotQuat.z + _rotation.x * rotQuat.y - _rotation.y * rotQuat.x + _rotation.z * rotQuat.w;
 		result.w = _rotation.w * rotQuat.w - _rotation.x * rotQuat.x - _rotation.y * rotQuat.y - _rotation.z * rotQuat.z;
 
-		// °á°ú¸¦ ÀúÀåÇÕ´Ï´Ù.
+		// ê²°ê³¼ë¥¼ ì €ì¥í•©ë‹ˆë‹¤.
 		_rotation = result;
 	}
 

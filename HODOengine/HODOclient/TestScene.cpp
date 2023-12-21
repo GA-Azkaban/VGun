@@ -34,14 +34,15 @@ TestScene::TestScene()
 	colli->Setflag(eColliderType::PLAYER);
 
 
-	// �÷��̾� �׽�Ʈ
+	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
+	playerTest->AddComponent<HDData::MeshRenderer>();
 	//auto playerColli = playerTest->AddComponent<HDData::>
 
 	
-	// 디버그 모드 활성화 (활성화하고 싶은 플래그를 인자로 넣음)
+	// ?붾쾭洹?紐⑤뱶 ?쒖꽦??(?쒖꽦?뷀븯怨??띠? ?뚮옒洹몃? ?몄옄濡??ｌ쓬)
 	API::DebugModeOn(eColliderType::PLAYER);
 
 	API::LoadScene(_scene);

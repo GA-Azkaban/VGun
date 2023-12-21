@@ -18,20 +18,25 @@ namespace RocketCore::Graphics
 		_cubeMesh->Initialize(_device.Get());
 
 		_vertexShader = new VertexShader();
-		GetVertexShader()->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
+		GetDefaultVertexShader()->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
 
 		_pixelShader = new PixelShader();
-		GetPixelShader()->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
+		GetDefaultPixelShader()->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
 	}
 
-	VertexShader* ResourceManager::GetVertexShader()
+	VertexShader* ResourceManager::GetDefaultVertexShader()
 	{
 		return _vertexShader;
 	}
 
-	PixelShader* ResourceManager::GetPixelShader()
+	PixelShader* ResourceManager::GetDefaultPixelShader()
 	{
 		return _pixelShader;
+	}
+
+	RocketCore::Graphics::CubeMesh* ResourceManager::GetCubeMesh()
+	{
+		return _cubeMesh;
 	}
 
 }

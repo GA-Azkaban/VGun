@@ -27,7 +27,7 @@ namespace RocketCore::Graphics
 		_pixelShader.Reset();
 	}
 
-	void PixelShader::CreateShader(ID3D11Device* device, std::string path)
+	void PixelShader::CreateShader(ID3D11Device* device, const std::string& path)
 	{
 		std::ifstream psFile(path, std::ios::binary);
 		std::vector<char> psData = { std::istreambuf_iterator<char>(psFile), std::istreambuf_iterator<char>() };

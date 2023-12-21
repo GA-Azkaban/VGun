@@ -27,7 +27,7 @@ namespace RocketCore::Graphics
 		_vertexShader.Reset();
 	}
 
-	void VertexShader::CreateShader(ID3D11Device* device, std::string path)
+	void VertexShader::CreateShader(ID3D11Device* device, const std::string& path)
 	{
 		std::ifstream vsFile(path, std::ios::binary);
 		std::vector<char> vsData = { std::istreambuf_iterator<char>(vsFile), std::istreambuf_iterator<char>() };

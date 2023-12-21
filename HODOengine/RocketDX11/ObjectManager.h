@@ -3,10 +3,6 @@
 
 #include "Singleton.h"
 
-namespace HDEngine
-{
-	class IRenderable;
-}
 
 namespace RocketCore::Graphics
 {
@@ -20,11 +16,14 @@ namespace RocketCore::Graphics
 		ObjectManager();
 
 	public:
+		std::vector<StaticMeshObject*>& GetStaticMeshObjList();
+
+	public:
 		Camera* CreateCamera();
 		StaticMeshObject* CreateStaticMeshObject();
 
 	private:
 		std::vector<Camera*> _cameraList;
-		std::vector<HDEngine::IRenderable*> _renderObjectList;
+		std::vector<StaticMeshObject*> _staticMeshObjectList;
 	};
 }

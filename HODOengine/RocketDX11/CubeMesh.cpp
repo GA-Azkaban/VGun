@@ -5,7 +5,6 @@
 namespace RocketCore::Graphics
 {
 	CubeMesh::CubeMesh()
-		: _vertexBuffer(nullptr), _indexBuffer(nullptr)
 	{
 
 	}
@@ -37,7 +36,7 @@ namespace RocketCore::Graphics
 
 		D3D11_BUFFER_DESC vbd;
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;    
-		vbd.ByteWidth = sizeof(Vertex) * 8;
+		vbd.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;
 		vbd.MiscFlags = 0;
@@ -76,6 +75,9 @@ namespace RocketCore::Graphics
 		D3D11_SUBRESOURCE_DATA iinitData;
 		iinitData.pSysMem = indices;
 		HR(device->CreateBuffer(&ibd, &iinitData, &_indexBuffer));
+
+		vertexCount = ARRAYSIZE(vertices);
+		indexCount = ARRAYSIZE(indices);
 	}
 }
 

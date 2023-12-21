@@ -17,11 +17,16 @@ namespace RocketCore::Graphics
 	class StaticMeshObject : public HDEngine::IStaticMesh
 	{
 	public:
+		StaticMeshObject();
+
+	public:
 		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
 		virtual void SetActive(bool isActive) override;
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
+		virtual void LoadVertexShader(const std::string& fileName) override;
+		virtual void LoadPixelShader(const std::string& fileName) override;
 
 	public:
 		void Render(ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* renderstate, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
@@ -36,6 +41,9 @@ namespace RocketCore::Graphics
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 		DirectX::XMMATRIX _worldTM;
+
+
+
 
 
 	};

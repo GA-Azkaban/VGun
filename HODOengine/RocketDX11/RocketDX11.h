@@ -46,7 +46,8 @@ namespace RocketCore::Graphics
 	private:
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
-		void RenderMesh();
+		void RenderHelperObject();
+		void RenderStaticMesh();
 		void RenderText();
 		void RenderTexture();
 		void EndRender();
@@ -78,7 +79,7 @@ namespace RocketCore::Graphics
 	private:
 		ComPtr<ID3D11RasterizerState> _wireframeRenderState;
 		ComPtr<ID3D11RasterizerState> _solidRenderState;
-		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다.
+		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다. 
 		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
 
 	private:

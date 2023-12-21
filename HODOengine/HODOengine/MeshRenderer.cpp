@@ -1,11 +1,15 @@
 #include "MeshRenderer.h"
 #include "Transform.h"
+#include "GraphicsObjFactory.h"
+#include "RenderSystem.h"
 
 namespace HDData
 {
 	MeshRenderer::MeshRenderer()
+		: _staticMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
 	{
-		_staticMesh = std::make_unique<HDEngine::IStaticMesh>(dynamic_cast<HDEngine::IStaticMesh*>(RendererBase::_renderable.get()));
+		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		_renderable = _staticMesh;
 	}
 
 	HDEngine::IStaticMesh& MeshRenderer::Get()

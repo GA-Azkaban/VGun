@@ -23,7 +23,7 @@ namespace RocketCore::Graphics
 		ID3D11Buffer** GetAddressOfVertexBuffer();
 		ID3D11Buffer** GetAddressOfIndexBuffer();
 
-	private:
+	protected:
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
 		int vertexCount;

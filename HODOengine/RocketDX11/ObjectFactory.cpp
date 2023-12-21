@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "StaticMeshObject.h"
+#include "CubeMesh.h"
 
 namespace HDEngine
 {
@@ -27,7 +28,16 @@ namespace RocketCore::Graphics
 
 	HDEngine::IStaticMesh* ObjectFactory::CreateStaticMeshObject()
 	{
-		return ObjectManager::Instance().CreateStaticMeshObject();
+		ObjectManager& objMgr = ObjectManager::Instance();
+		ResourceManager& rscMgr = ResourceManager::Instance();
+
+		StaticMeshObject* obj = objMgr.CreateStaticMeshObject();
+
+		obj->SetMesh(rscMgr.GetCubeMesh());
+		obj->SetVertexShader(rscMgr.GetDefaultVertexShader());
+		obj->SetPixelShader(rscMgr.GetDefaultPixelShader());
+
+		return obj;
 	}
 
 }

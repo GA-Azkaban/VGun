@@ -23,8 +23,14 @@ namespace RocketCore::Graphics
 	StaticMeshObject* ObjectManager::CreateStaticMeshObject()
 	{
 		StaticMeshObject* temp = new StaticMeshObject();
-		_renderObjectList.emplace_back(temp);
+		_staticMeshObjectList.emplace_back(temp);
 
 		return temp;
 	}
+
+	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()
+	{
+		return _staticMeshObjectList;
+	}
+
 }

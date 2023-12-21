@@ -11,6 +11,9 @@
 #include "DeviceBuilderDX11.h"
 
 #include "ResourceManager.h"
+#include "ObjectManager.h"
+
+#include "StaticMeshObject.h"
 
 namespace HDEngine
 {
@@ -235,9 +238,14 @@ namespace RocketCore::Graphics
 		return;
 	}
 
-	void RocketDX11::RenderMesh()
+	void RocketDX11::RenderStaticMesh()
 	{
-		// 관리하는 RenderableObject를 그리는 것
+		Camera* mainCam = Camera::GetMainCamera();
+
+		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
+		{
+			staticMeshObj->Render(_deviceContext.Get(), _wireframeRenderState.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+		}
 
 	}
 
@@ -312,15 +320,9 @@ namespace RocketCore::Graphics
 	{
 		Update();
 
-		auto vs = _resourceManager.GetVertexShader();
-		auto ps = _resourceManager.GetPixelShader();
-
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
-		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
-		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
-		RenderMesh();
+		RenderHelperObject();
+		RenderStaticMesh();
 		EndRender();
 	}
 
@@ -330,6 +332,16 @@ namespace RocketCore::Graphics
 		delete _axis;
 	}
 
+	void RocketDX11::RenderHelperObject()
+	{
+		auto vs = _resourceManager.GetDefaultVertexShader();
+		auto ps = _resourceManager.GetDefaultPixelShader();
+
+		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
+		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
+		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
+		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
+	}
 
 
 }
