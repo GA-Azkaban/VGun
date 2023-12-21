@@ -36,7 +36,6 @@ TestScene::TestScene()
 	colli->Setflag(eColliderType::PLAYER);
 	
 	
-
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene);
 	playerTest->AddComponent<Player>();
@@ -48,6 +47,9 @@ TestScene::TestScene()
 	API::DebugModeOn(eColliderType::PLAYER);
 
 	API::LoadScene(_scene);
+
+	// 디버그 모드를 시작하는 함수
+	API::DebugModeOn(eColliderType::PLAYER);
 }
 
 TestScene::~TestScene()

@@ -38,6 +38,12 @@
     <Filter Include="Sketchable\TextUI">
       <UniqueIdentifier>{cf2933be-79bf-4fc2-ad2c-a7cb007b8c1e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{d1e72854-0b7a-43d4-9f7f-e80ed20f6bfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{08a72f2f-1fe6-459d-840b-63790ae16ca8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -78,6 +84,12 @@
     </ClInclude>
     <ClInclude Include="ICamera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="IResourceManager.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="IMaterial.h">
+      <Filter>Material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
