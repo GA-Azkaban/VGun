@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "AudioListener.h"
 
 #include "ObjectSystem.h"
 #include <algorithm>
@@ -17,6 +18,8 @@ namespace HDData
 		Camera* mainCam = camObj->AddComponent<Camera>();
 		SetMainCamera(mainCam);
 		camObj->GetTransform()->SetWorldPosition(0.0f, 2.0f, -10.0f);
+		// 씬이 생성될 때 메인카메라에 오디오리스너 컴포넌트를 생성하여 부착한다
+		camObj->AddComponent<AudioListner>();
 	}
 
 	Scene::~Scene()
