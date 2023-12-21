@@ -7,6 +7,7 @@ namespace RocketCore::Graphics
 	{
 	public:
 		virtual HDEngine::ICamera* CreateCamera() override;
+		virtual HDEngine::IStaticMesh* CreateStaticMeshObject() override;
 	};
 }
 

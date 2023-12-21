@@ -1,17 +1,17 @@
 #pragma once
 #include "RendererBase.h"
+#include "dllExporter.h"
 #include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
-#include <memory>
 
 namespace HDData
 {
-	class MeshRenderer : public RendererBase
+	class HODO_API MeshRenderer : public RendererBase
 	{
 	public:
 		MeshRenderer();
 		HDEngine::IStaticMesh& Get();
 
 	private:
-		std::unique_ptr<HDEngine::IStaticMesh> _staticMesh;
+		HDEngine::IStaticMesh* _staticMesh;
 	};
 }

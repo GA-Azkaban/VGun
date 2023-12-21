@@ -1,35 +1,30 @@
 #pragma once
-#include "CameraData.h"
 
 /// <summary>
-/// ·»´õ·¯´Â Ãâ·ÂÈ­¸éÀ» Á¦¾îÇÏ°í, ±×·Á³¾ ´ë»óÀ» ±×·Á³»´Â ¿ªÇÒÀ» ÇÑ´Ù.
-/// ·»´õ·¯´Â ±×·Á³¾ °´Ã¼¸¦ »ı¼ºÇÏÁö ¾ÊÀ¸¸ç, ±×·Á³»´Â ¿ªÇÒ¸¸À» ¼öÇàÇÑ´Ù.
+/// ë Œë”ëŸ¬ëŠ” ì¶œë ¥í™”ë©´ì„ ì œì–´í•˜ê³ , ê·¸ë ¤ë‚¼ ëŒ€ìƒì„ ê·¸ë ¤ë‚´ëŠ” ì—­í• ì„ í•œë‹¤.
+/// ë Œë”ëŸ¬ëŠ” ê·¸ë ¤ë‚¼ ê°ì²´ë¥¼ ìƒì„±í•˜ì§€ ì•Šìœ¼ë©°, ê·¸ë ¤ë‚´ëŠ” ì—­í• ë§Œì„ ìˆ˜í–‰í•œë‹¤.
 /// </summary>
 
 namespace HDEngine
 {
-	class IRenderable;
-
 	class I3DRenderer
 	{
 	public:
-		// ±×·¡ÇÈ½º ¿£ÁøÀ» ÃÊ±âÈ­ÇÑ´Ù.
+		// ê·¸ë˜í”½ìŠ¤ ì—”ì§„ì„ ì´ˆê¸°í™”í•œë‹¤.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) abstract;
 
 		virtual void Render() abstract;
 
 		virtual void Finalize() abstract;
-
-		// virtual IRenderable* CreateRenderable(const std::string& modelPath) abstract;
 	};
 
-	/// dllexport ÇÏ´Â ·»´õ·¯¸¦ ¹İÈ¯ÇÏ´Â ÆÑÅä¸® ÇÔ¼ö.
+	/// dllexport í•˜ëŠ” ë Œë”ëŸ¬ë¥¼ ë°˜í™˜í•˜ëŠ” íŒ©í† ë¦¬ í•¨ìˆ˜.
 
-	// IRocketGraphics¸¦ »ó¼Ó¹Ş´Â ·»´õ·¯¸¦ »ı¼ºÇØ¼­ ¾÷Ä³½ºÆÃÇÏ¿© ¹İÈ¯ÇÑ´Ù.
+	// IRocketGraphicsë¥¼ ìƒì†ë°›ëŠ” ë Œë”ëŸ¬ë¥¼ ìƒì„±í•´ì„œ ì—…ìºìŠ¤íŒ…í•˜ì—¬ ë°˜í™˜í•œë‹¤.
 	extern "C" __declspec(dllexport) I3DRenderer* CreateGraphicsInstance();
 
-	// ·»´õ·¯¸¦ ·ÎµåÇÑÂÊ¿¡¼­ ·»´õ·¯¸¦ ÇØÁ¦ÇÒ¶§ »ç¿ëÇÏ´Â ÇÔ¼ö.
-	// ·ÎµåÇÏ´ÂÂÊ¿¡¼­ deleteÇÏÁö ¾Ê°í dllÇÑÅ× ¿äÃ»ÇÏ´Â ½ÄÀ¸·Î ±¸¼ºÇß´Ù.
-	// °¢°¢ÀÇ ·»´õ·¯¿¡ ¸Â´Â Release µ¿ÀÛÀÌ Á¤ÀÇµÇ¾î ÀÖÀ» °ÍÀÌ´Ù.
+	// ë Œë”ëŸ¬ë¥¼ ë¡œë“œí•œìª½ì—ì„œ ë Œë”ëŸ¬ë¥¼ í•´ì œí• ë•Œ ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜.
+	// ë¡œë“œí•˜ëŠ”ìª½ì—ì„œ deleteí•˜ì§€ ì•Šê³  dllí•œí…Œ ìš”ì²­í•˜ëŠ” ì‹ìœ¼ë¡œ êµ¬ì„±í–ˆë‹¤.
+	// ê°ê°ì˜ ë Œë”ëŸ¬ì— ë§ëŠ” Release ë™ì‘ì´ ì •ì˜ë˜ì–´ ìˆì„ ê²ƒì´ë‹¤.
 	extern "C" __declspec(dllexport) void ReleaseGraphicsInstance(I3DRenderer* instance);
 }

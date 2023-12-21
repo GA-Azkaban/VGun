@@ -1,14 +1,19 @@
+#include <cassert>
+
 #include "RocketDX11.h"
 #include "Grid.h"
 #include "Axis.h"
-#include "Cube.h"
+#include "CubeMesh.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
 #include "RocketMacroDX11.h"
 #include "DeviceBuilderDX11.h"
 
-#include <cassert>
+#include "ResourceManager.h"
+#include "ObjectManager.h"
+
+#include "StaticMeshObject.h"
 
 namespace HDEngine
 {
@@ -23,10 +28,10 @@ namespace HDEngine
 	}
 }
 
-/// IRocketGraphics.h ¿¡ ÀÖ´Â dllexport ÇÔ¼öµé.
-/// USE_DX11 ¸¦ ÀüÃ³¸®±â¿¡ ³Ö¾îÁÖ¸é DX11¿ë dllÀÌ ¸¸µé¾îÁø´Ù.
+/// IRocketGraphics.h ì— ìˆëŠ” dllexport í•¨ìˆ˜ë“¤.
+/// USE_DX11 ë¥¼ ì „ì²˜ë¦¬ê¸°ì— ë„£ì–´ì£¼ë©´ DX11ìš© dllì´ ë§Œë“¤ì–´ì§„ë‹¤.
 /// 
-/// 23.06.16 °­¼®¿ø ÀÎÀç¿ø.
+/// 23.06.16 ê°•ì„ì› ì¸ì¬ì›.
 namespace RocketCore::Graphics
 {
 	RocketDX11::RocketDX11()
@@ -35,7 +40,8 @@ namespace RocketCore::Graphics
 		_featureLevel(),_m4xMsaaQuality(),
 		_swapChain(), _backBuffer(),
 		_renderTargetView(), _depthStencilBuffer(), _depthStencilView(),
-		_viewport(), _wireframeRenderState(), _solidRenderState(), _NormalDepthStencilState()
+		_viewport(), _wireframeRenderState(), _solidRenderState(), _NormalDepthStencilState(),
+		_resourceManager(ResourceManager::Instance())
 	{
 
 	}
@@ -47,33 +53,33 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Initialize(void* hWnd, int screenWidth, int screenHeight)
 	{
-		// ¸ÅÅ©·Î·Î º¯°æÇÏ·Á°í ÀÛ¾÷Áß
+		// ë§¤í¬ë¡œë¡œ ë³€ê²½í•˜ë ¤ê³  ì‘ì—…ì¤‘
 		HRESULT hr = S_OK;
 
 		_hWnd = static_cast<HWND>(hWnd);
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
 
-		// device ºô´õ Å¬·¡½º¸¦ ÀÌ¿ëÇØ device¿Í deviceContext »ı¼º.
+		// device ë¹Œë” í´ë˜ìŠ¤ë¥¼ ì´ìš©í•´ deviceì™€ deviceContext ìƒì„±.
 		DeviceBuilderDX11 deviceBuilder;
 		deviceBuilder.SetDevice(_device.GetAddressOf());
 		deviceBuilder.SetLevelHolder(&_featureLevel);
 		deviceBuilder.SetDeviceContext(_deviceContext.GetAddressOf());
 		HR(deviceBuilder.Build());
 
-		/// ¾Æ·¡ if¹®Àº ¿ëÃ¥¿¡¼­ÀÇ ÄÚµå
-		/// ¹öÀüÀÌ 11_0ÀÌ ¾Æ´Ò¶§ false¸¦ ¸®ÅÏÇÑ´Ù.
-		/// ³» ÄÚµå¿¡¼­´Â 11_1À» »ç¿ëÇÏ´Âµ¥ ÀÌ·¡µµ µÇ´Â°Ç°¡?!
-		/// 23.04.07 °­¼®¿ø ÀÎÀç¿ø
+		/// ì•„ë˜ ifë¬¸ì€ ìš©ì±…ì—ì„œì˜ ì½”ë“œ
+		/// ë²„ì „ì´ 11_0ì´ ì•„ë‹ë•Œ falseë¥¼ ë¦¬í„´í•œë‹¤.
+		/// ë‚´ ì½”ë“œì—ì„œëŠ” 11_1ì„ ì‚¬ìš©í•˜ëŠ”ë° ì´ë˜ë„ ë˜ëŠ”ê±´ê°€?!
+		/// 23.04.07 ê°•ì„ì› ì¸ì¬ì›
 	// 	if (_featureLevel != D3D_FEATURE_LEVEL_11_0)
 	// 	{
 	// 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
 	// 		return false;
 	// 	}
 
-		/// ¸ÖÆ¼ »ùÇÃ¸µ Ç°Áú·¹º§ Ã¼Å©
-		/// Direct11 ¿¡¼­´Â Ç×»ó Áö¿øµÇ¹Ç·Î, ¹İÈ¯µÈ Ç°Áú ¼öÁØ °ªÀº ¹İµå½Ã 0º¸´Ù Ä¿¾ß ÇÑ´Ù.
-		/// 23.04.07 °­¼®¿ø ÀÎÀç¿ø
+		/// ë©€í‹° ìƒ˜í”Œë§ í’ˆì§ˆë ˆë²¨ ì²´í¬
+		/// Direct11 ì—ì„œëŠ” í•­ìƒ ì§€ì›ë˜ë¯€ë¡œ, ë°˜í™˜ëœ í’ˆì§ˆ ìˆ˜ì¤€ ê°’ì€ ë°˜ë“œì‹œ 0ë³´ë‹¤ ì»¤ì•¼ í•œë‹¤.
+		/// 23.04.07 ê°•ì„ì› ì¸ì¬ì›
 		hr = _device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 4, &_m4xMsaaQuality);
 		assert(_m4xMsaaQuality > 0);
 
@@ -85,22 +91,22 @@ namespace RocketCore::Graphics
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 		swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-		swapChainDesc.SampleDesc.Count = 4;      //multisampling setting	// ³ª´Â 4x¸¦ »ç¿ëÇÏ¹Ç·Î 4
-		swapChainDesc.SampleDesc.Quality = _m4xMsaaQuality - 1;	//vendor-specific flag	// À§¿¡¼­ ¹Ş¾Æ¿Â Ä÷¸®Æ¼ ·¹º§À» ³Ö¾îÁØ´Ù.	// -1 À» ¿ÖÇØÁÙ±î?
+		swapChainDesc.SampleDesc.Count = 4;      //multisampling setting	// ë‚˜ëŠ” 4xë¥¼ ì‚¬ìš©í•˜ë¯€ë¡œ 4
+		swapChainDesc.SampleDesc.Quality = _m4xMsaaQuality - 1;	//vendor-specific flag	// ìœ„ì—ì„œ ë°›ì•„ì˜¨ í€„ë¦¬í‹° ë ˆë²¨ì„ ë„£ì–´ì¤€ë‹¤.	// -1 ì„ ì™œí•´ì¤„ê¹Œ?
 		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-		swapChainDesc.BufferCount = 1;		// ÀÌ°É 2·Î ÇÏ°ÔµÇ¸é ·»´õÅ¸°Ù ºä¸¦ °¢°¢ÀÇ ¹öÆÛ¿¡ ´ëÇØ °¡Áö°í ÀÖ¾î¾ßÇÏ³ª?
+		swapChainDesc.BufferCount = 1;		// ì´ê±¸ 2ë¡œ í•˜ê²Œë˜ë©´ ë Œë”íƒ€ê²Ÿ ë·°ë¥¼ ê°ê°ì˜ ë²„í¼ì— ëŒ€í•´ ê°€ì§€ê³  ìˆì–´ì•¼í•˜ë‚˜?
 		swapChainDesc.OutputWindow = _hWnd;
 		swapChainDesc.Windowed = TRUE; // Sets the initial state of full-screen mode.
-		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;	// ±³È¯È¿°ú. DXGI_SWAP_EFFECT_DISCARD´Â µğ½ºÇÃ·¹ÀÌ ±¸µ¿±â°¡ °¡Àå È¿À²ÀûÀÎ Á¦½Ã ¹æ¹ıÀ» ¼±ÅÃÇÏ°Ô ÇÔ
-		//desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;	// MSDN ±×´ë·Î µû¶ó Ä£ °Í.
+		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;	// êµí™˜íš¨ê³¼. DXGI_SWAP_EFFECT_DISCARDëŠ” ë””ìŠ¤í”Œë ˆì´ êµ¬ë™ê¸°ê°€ ê°€ì¥ íš¨ìœ¨ì ì¸ ì œì‹œ ë°©ë²•ì„ ì„ íƒí•˜ê²Œ í•¨
+		//desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;	// MSDN ê·¸ëŒ€ë¡œ ë”°ë¼ ì¹œ ê²ƒ.
 		swapChainDesc.Flags = 0;
 
-		/// DXGIDevice·Î DXGIAdapter¸¦ ¸¸µé°í
-		/// DXGIAdapter·Î DXGIFactory¸¦ ¸¸µé°í
-		/// DXGIFactory·Î SwapChainÀ» ¸¸µç´Ù!
-		/// À§ÀÇ swapchain ¸í¼¼¸¦ ÀÌ¿ëÇØ ¸í¼¼¿¡ ÀûÈù´ë·Î swapchainÀ» ¸¸µå´Â °Í!
+		/// DXGIDeviceë¡œ DXGIAdapterë¥¼ ë§Œë“¤ê³ 
+		/// DXGIAdapterë¡œ DXGIFactoryë¥¼ ë§Œë“¤ê³ 
+		/// DXGIFactoryë¡œ SwapChainì„ ë§Œë“ ë‹¤!
+		/// ìœ„ì˜ swapchain ëª…ì„¸ë¥¼ ì´ìš©í•´ ëª…ì„¸ì— ì íŒëŒ€ë¡œ swapchainì„ ë§Œë“œëŠ” ê²ƒ!
 		/// 
-		/// 23.04.10 °­¼®¿ø ÀÎÀç¿ø
+		/// 23.04.10 ê°•ì„ì› ì¸ì¬ì›
 		// Create the DXGI device object to use in other factories, such as Direct2D.
 		Microsoft::WRL::ComPtr<IDXGIDevice3> dxgiDevice;
 		_device.As(&dxgiDevice);
@@ -170,7 +176,7 @@ namespace RocketCore::Graphics
 			&_depthStencilView
 		);
 
-		/// RenderTargetView ¿Í DepthStencilBuffer¸¦ Ãâ·Â º´ÇÕ ´Ü°è(Output Merger Stage)¿¡ ¹ÙÀÎµù
+		/// RenderTargetView ì™€ DepthStencilBufferë¥¼ ì¶œë ¥ ë³‘í•© ë‹¨ê³„(Output Merger Stage)ì— ë°”ì¸ë”©
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
 
 		ZeroMemory(&_viewport, sizeof(D3D11_VIEWPORT));
@@ -187,20 +193,13 @@ namespace RocketCore::Graphics
 		// Render State
 		CreateRenderStates();
 
-		_vertexShader = new VertexShader();
-		_vertexShader->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
-
-		_pixelShader = new PixelShader();
-		_pixelShader->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
+		_resourceManager.Initialize(_device.Get());
 
 		_axis = new Axis();
 		_axis->Initialize(_device.Get());
 
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
-
-		_cube = new Cube();
-		_cube->Initialize(_device.Get());
 	}
 
 	void RocketDX11::BeginRender()
@@ -239,9 +238,14 @@ namespace RocketCore::Graphics
 		return;
 	}
 
-	void RocketDX11::RenderMesh()
+	void RocketDX11::RenderStaticMesh()
 	{
-		// °ü¸®ÇÏ´Â RenderableObject¸¦ ±×¸®´Â °Í
+		Camera* mainCam = Camera::GetMainCamera();
+
+		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
+		{
+			staticMeshObj->Render(_deviceContext.Get(), _wireframeRenderState.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+		}
 
 	}
 
@@ -272,11 +276,9 @@ namespace RocketCore::Graphics
 		return;
 	}
 
-
-
 	void RocketDX11::CreateRenderStates()
 	{
-		// Render State Áß Rasterizer State
+		// Render State ì¤‘ Rasterizer State
 		D3D11_RASTERIZER_DESC solidDesc;
 		ZeroMemory(&solidDesc, sizeof(D3D11_RASTERIZER_DESC));
 		solidDesc.FillMode = D3D11_FILL_SOLID;
@@ -296,12 +298,12 @@ namespace RocketCore::Graphics
 		HR(_device->CreateRasterizerState(&wireframeDesc, &_wireframeRenderState));
 
 		//
-		// ÆùÆ®¿ë DSS
+		// í°íŠ¸ìš© DSS
 		//
 		D3D11_DEPTH_STENCIL_DESC equalsDesc;
 		ZeroMemory(&equalsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
 		equalsDesc.DepthEnable = true;
-		equalsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;		// ±íÀÌ¹öÆÛ¿¡ ¾²±â´Â ÇÑ´Ù
+		equalsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;		// ê¹Šì´ë²„í¼ì— ì“°ê¸°ëŠ” í•œë‹¤
 		equalsDesc.DepthFunc = D3D11_COMPARISON_LESS;
 
 		HR(_device->CreateDepthStencilState(&equalsDesc, &_NormalDepthStencilState));
@@ -319,13 +321,8 @@ namespace RocketCore::Graphics
 		Update();
 
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
-		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_grid->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
-		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_axis->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _wireframeRenderState.Get());
-		_cube->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_cube->Render(_deviceContext.Get(), _vertexShader->GetVertexShader(), _pixelShader->GetPixelShader(), _vertexShader->GetMatrixBuffer(), _vertexShader->GetInputLayout(), _solidRenderState.Get());
-		RenderMesh();
+		RenderHelperObject();
+		RenderStaticMesh();
 		EndRender();
 	}
 
@@ -335,6 +332,16 @@ namespace RocketCore::Graphics
 		delete _axis;
 	}
 
+	void RocketDX11::RenderHelperObject()
+	{
+		auto vs = _resourceManager.GetDefaultVertexShader();
+		auto ps = _resourceManager.GetDefaultPixelShader();
+
+		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
+		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
+		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
+		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
+	}
 
 
 }

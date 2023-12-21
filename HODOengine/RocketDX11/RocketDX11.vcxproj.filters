@@ -28,24 +28,6 @@
     <Filter Include="ObjectManager">
       <UniqueIdentifier>{29fd3f0b-e069-4c6e-946d-62a3f083f0b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Shader">
-      <UniqueIdentifier>{d1db05f7-9ff0-41f6-92da-cbecec9aea3d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Shader\HLSL">
-      <UniqueIdentifier>{bb4107b1-7dd3-44b6-be03-6574cf1a5916}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Shader\VertexShader">
-      <UniqueIdentifier>{432a0a45-8dfd-4a92-a33c-ee223f44104a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Shader\Interface">
-      <UniqueIdentifier>{29efc75b-6165-429a-91b3-ac525dfbe18f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Shader\PixelShader">
-      <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Cube">
-      <UniqueIdentifier>{90fb9f77-90ab-413f-9096-77a94629e80f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\StaticMesh">
       <UniqueIdentifier>{6631cd88-eb46-4f41-869f-f611a8b4e9ec}</UniqueIdentifier>
     </Filter>
@@ -63,6 +45,33 @@
     </Filter>
     <Filter Include="dllExporter">
       <UniqueIdentifier>{46b21e4f-6b9f-4bb2-aa28-84e873e8b930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\2DResource">
+      <UniqueIdentifier>{c9f1bc06-b3f3-41ae-9618-39f8d9cc079d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader">
+      <UniqueIdentifier>{dad1e232-9fc1-403c-bd33-72520cf50809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D">
+      <UniqueIdentifier>{e6960d65-d481-4543-941d-fbbedb5396ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\Primitive">
+      <UniqueIdentifier>{d317e1d1-45f8-4cbd-b666-459d0c586ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\BaseClass">
+      <UniqueIdentifier>{95fd2463-fd92-4e31-8716-98047843eb58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\PixelShader">
+      <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\VertexShader">
+      <UniqueIdentifier>{432a0a45-8dfd-4a92-a33c-ee223f44104a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\Interface">
+      <UniqueIdentifier>{29efc75b-6165-429a-91b3-ac525dfbe18f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL">
+      <UniqueIdentifier>{bb4107b1-7dd3-44b6-be03-6574cf1a5916}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,19 +97,22 @@
       <Filter>Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
-      <Filter>Object\Shader\VertexShader</Filter>
+      <Filter>Resource\Shader\VertexShader</Filter>
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
-      <Filter>Object\Shader\PixelShader</Filter>
+      <Filter>Resource\Shader\PixelShader</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Object\Cube</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticMesh.cpp">
+    <ClCompile Include="StaticMeshObject.cpp">
       <Filter>Object\StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>ObjectFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMesh.cpp">
+      <Filter>Resource\Resource3D\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>Resource\Resource3D\BaseClass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,18 +147,15 @@
       <Filter>Object\Camera</Filter>
     </ClInclude>
     <ClInclude Include="IShader.h">
-      <Filter>Object\Shader\Interface</Filter>
+      <Filter>Resource\Shader\Interface</Filter>
     </ClInclude>
     <ClInclude Include="VertexShader.h">
-      <Filter>Object\Shader\VertexShader</Filter>
+      <Filter>Resource\Shader\VertexShader</Filter>
     </ClInclude>
     <ClInclude Include="PixelShader.h">
-      <Filter>Object\Shader\PixelShader</Filter>
+      <Filter>Resource\Shader\PixelShader</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Object\Cube</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticMesh.h">
+    <ClInclude Include="StaticMeshObject.h">
       <Filter>Object\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
@@ -158,13 +167,19 @@
     <ClInclude Include="dllExporter.h">
       <Filter>dllExporter</Filter>
     </ClInclude>
+    <ClInclude Include="CubeMesh.h">
+      <Filter>Resource\Resource3D\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>Resource\Resource3D\BaseClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
-      <Filter>Object\Shader\HLSL</Filter>
+      <Filter>Resource\Shader\HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
-      <Filter>Object\Shader\HLSL</Filter>
+      <Filter>Resource\Shader\HLSL</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

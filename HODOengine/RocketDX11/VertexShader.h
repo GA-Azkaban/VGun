@@ -11,11 +11,12 @@ namespace RocketCore::Graphics
 		~VertexShader();
 
 	public:
-		virtual void CreateShader(ID3D11Device* device, std::string path) override;
+		virtual void CreateShader(ID3D11Device* device, const std::string& path) override;
 
 	public:
 		ID3D11VertexShader* GetVertexShader() const;
 		ID3D11Buffer* GetMatrixBuffer() const;
+		ID3D11Buffer** GetAddressOfMatrixBuffer();
 		ID3D11InputLayout* GetInputLayout() const;
 
 	private:

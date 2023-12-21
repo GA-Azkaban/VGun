@@ -12,11 +12,12 @@ namespace RocketCore::Graphics
 	Camera::Camera()
 		: _position(0.0f, 2.0f, -10.0f),
 		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
-		_nearZ(0.01f), _farZ(50.0f), _aspect(1.0f), _fovY(90.0f),
+		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f ), _fovY(70.0f),
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
 	{
-
+		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
 	}
 
 	Camera::~Camera()
@@ -39,12 +40,12 @@ namespace RocketCore::Graphics
 		_rotation = { x,y,z,w };
 	}
 
-	/// Ä«¸Ş¶óÀÇ ¼¼ÆÃÀ» ¼³Á¤ÇÑ´Ù.
-	/// µé¾î¿Â °ª¿¡ ¸ÂÃç ¿©·¯ ¸â¹öµéµµ Àç¼³Á¤ÇØÁØ´Ù.
-	/// Áö±İÀº XMMatrixPerspectiveFovLH ÇÔ¼ö¸¦ ÀÌ¿ëÇØ¼­ Åõ¿µÇà·ÄÀ» ¸¸µç´Ù.
-	/// ÀÌ ºÎºĞÀº ³»°¡ Á÷Á¢ Åõ¿µÇà·ÄÀ» ¸¸µé¾îº¸°í ½Í´Ù.
+	/// ì¹´ë©”ë¼ì˜ ì„¸íŒ…ì„ ì„¤ì •í•œë‹¤.
+	/// ë“¤ì–´ì˜¨ ê°’ì— ë§ì¶° ì—¬ëŸ¬ ë©¤ë²„ë“¤ë„ ì¬ì„¤ì •í•´ì¤€ë‹¤.
+	/// ì§€ê¸ˆì€ XMMatrixPerspectiveFovLH í•¨ìˆ˜ë¥¼ ì´ìš©í•´ì„œ íˆ¬ì˜í–‰ë ¬ì„ ë§Œë“ ë‹¤.
+	/// ì´ ë¶€ë¶„ì€ ë‚´ê°€ ì§ì ‘ íˆ¬ì˜í–‰ë ¬ì„ ë§Œë“¤ì–´ë³´ê³  ì‹¶ë‹¤.
 	/// 
-	/// 23.04.20 °­¼®¿ø ÀÎÀç¿ø
+	/// 23.04.20 ê°•ì„ì› ì¸ì¬ì›
 // 	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
 // 	{
 // 		_fovY = fovY;
@@ -56,13 +57,13 @@ namespace RocketCore::Graphics
 // 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
 // 	}
 
-	/// ViewMatrix¸¦ °»½ÅÇØÁØ´Ù.
-	/// ±³¼ö´Ô ÄÚµå¿¡¼­´Â Àß¸øµÈ º¤ÅÍ°¡ µÇ¾îÀÖÀ» ½Ã lookÀ» ±âÁØÀ¸·Î ´Ù½Ã Á¡°ËÇØ¼­ º¯°æÇÏ´Â µí ÇÏ´Ù.
-	/// ³ª´Â ±×³É viewMatrix¸¸ °»½ÅÇØÁá´Ù.
+	/// ViewMatrixë¥¼ ê°±ì‹ í•´ì¤€ë‹¤.
+	/// êµìˆ˜ë‹˜ ì½”ë“œì—ì„œëŠ” ì˜ëª»ëœ ë²¡í„°ê°€ ë˜ì–´ìˆì„ ì‹œ lookì„ ê¸°ì¤€ìœ¼ë¡œ ë‹¤ì‹œ ì ê²€í•´ì„œ ë³€ê²½í•˜ëŠ” ë“¯ í•˜ë‹¤.
+	/// ë‚˜ëŠ” ê·¸ëƒ¥ viewMatrixë§Œ ê°±ì‹ í•´ì¤¬ë‹¤.
 	/// 
-	/// ±×¸®°í positionÀº À½¼ö·Î Áà¾ßÇÑ´Ù! ¿Ö³ÄÇÏ¸é Ä«¸Ş¶ó ±âÁØÀ¸·Î ¿Å±â´Â°Å´Ï±î!
+	/// ê·¸ë¦¬ê³  positionì€ ìŒìˆ˜ë¡œ ì¤˜ì•¼í•œë‹¤! ì™œëƒí•˜ë©´ ì¹´ë©”ë¼ ê¸°ì¤€ìœ¼ë¡œ ì˜®ê¸°ëŠ”ê±°ë‹ˆê¹Œ!
 	/// 
-	/// 23.04.20 °­¼®¿ø ÀÎÀç¿ø
+	/// 23.04.20 ê°•ì„ì› ì¸ì¬ì›
 	void Camera::UpdateViewMatrix()
 	{
 // 		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
@@ -175,14 +176,14 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void Camera::SetNearZ(float near)
+	void Camera::SetNearZ(float nearZ)
 	{
-		_nearZ = near;
+		_nearZ = nearZ;
 	}
 
-	void Camera::SetFarZ(float far)
+	void Camera::SetFarZ(float farZ)
 	{
-		_farZ = far;
+		_farZ = farZ;
 	}
 
 	void Camera::SetAspect(float aspect)

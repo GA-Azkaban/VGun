@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="00_Default">
@@ -127,9 +127,6 @@
     <Filter Include="05_Component\UserInterface\TextUI">
       <UniqueIdentifier>{878e0c14-ee81-422c-8501-272fad0b1847}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06_System\Factory">
-      <UniqueIdentifier>{15d6e3bd-3a10-4eed-b430-9de5b55d9c36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02_DLL_Loader">
       <UniqueIdentifier>{720c6713-406e-4b35-b087-ae83782d68a0}</UniqueIdentifier>
     </Filter>
@@ -150,6 +147,9 @@
     </Filter>
     <Filter Include="05_Component\AudioListener">
       <UniqueIdentifier>{1dd74274-e9f8-4bfe-88a6-4f581ac2a4db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\GraphicsObjectFactory">
+      <UniqueIdentifier>{15d6e3bd-3a10-4eed-b430-9de5b55d9c36}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,7 +226,7 @@
       <Filter>05_Component\UserInterface\TextUI</Filter>
     </ClInclude>
     <ClInclude Include="GraphicsObjFactory.h">
-      <Filter>06_System\Factory</Filter>
+      <Filter>06_System\GraphicsObjectFactory</Filter>
     </ClInclude>
     <ClInclude Include="DLL_Loader.h">
       <Filter>02_DLL_Loader</Filter>
@@ -358,7 +358,7 @@
       <Filter>05_Component\UserInterface\TextUI</Filter>
     </ClCompile>
     <ClCompile Include="GraphicsObjFactory.cpp">
-      <Filter>06_System\Factory</Filter>
+      <Filter>06_System\GraphicsObjectFactory</Filter>
     </ClCompile>
     <ClCompile Include="DLL_Loader.cpp">
       <Filter>02_DLL_Loader</Filter>
