@@ -46,6 +46,14 @@ HDEngine::SoundSystem::~SoundSystem()
 
 void HDEngine::SoundSystem::Update()
 {
+	const HDMath::HDFLOAT3& listenerPos = _audioListner->GetTransform()->GetWorldPosition();
+	const HDMath::HDFLOAT3& listenerForward = _audioListner->GetTransform()->GetForward();
+	const HDMath::HDFLOAT3& listenerUp = _audioListner->GetTransform()->GetUp();
+	FMOD_VECTOR listenerPosVec{ listenerPos.x, listenerPos.y, listenerPos.z };
+	FMOD_VECTOR listenerForwardVec{ listenerForward.x, listenerForward.y, listenerForward.z };
+	FMOD_VECTOR listenerUpVec{ listenerUp.x, listenerUp.y, listenerUp.z };
+	
+	_fmodSystem->set3DListenerAttributes(0, &listenerPosVec, 0, &listenerForwardVec, &listenerUpVec);
 	_fmodSystem->update();
 }
 
@@ -110,13 +118,12 @@ void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, HDMath::HDFLOAT3 s
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
 	{
-		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
-		const HDMath::HDFLOAT3& listenerPos = _audioListner->GetTransform()->GetWorldPosition();
-		FMOD_VECTOR destination{ listenerPos.x, listenerPos.y, listenerPos.z };
+		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };		
+		FMOD_VECTOR velocity{ 0, 0, 0 };
 		soundIter->second.sound->setMode(FMOD_LOOP_OFF);
 		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
 			true, &(soundIter->second.channel));
-		soundIter->second.channel->set3DAttributes(&startPosition, &destination);
+		soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
 		soundIter->second.channel->setPaused(false);
 	}
 }
@@ -126,13 +133,12 @@ void HDEngine::SoundSystem::Play3DRepeat(std::string soundPath, HDMath::HDFLOAT3
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
 	{
-		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
-		const HDMath::HDFLOAT3& listenerPos = _audioListner->GetTransform()->GetWorldPosition();
-		FMOD_VECTOR destination{ listenerPos.x, listenerPos.y, listenerPos.z };
+		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };		
+		FMOD_VECTOR velocity{ 0, 0, 0 };
 		soundIter->second.sound->setMode(FMOD_LOOP_NORMAL);
 		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
 			true, &(soundIter->second.channel));
-		soundIter->second.channel->set3DAttributes(&startPosition, &destination);
+		soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
 		soundIter->second.channel->setPaused(false);
 	}
 }
@@ -244,6 +250,11 @@ bool HDEngine::SoundSystem::IsSoundPlaying(std::string soundPath)
 		return isPlaying;
 	}
 	return false;
+}
+
+std::unordered_map<std::string, std::string>& HDEngine::SoundSystem::GetSoundPathList()
+{
+	return _soundPathList;
 }
 
 std::unordered_map<std::string, HDData::AudioClip>& HDEngine::SoundSystem::GetSoundList()

@@ -4,7 +4,6 @@
 #include "SoundGroup.h"
 #include "HODOmath.h"
 #include <string>
-#include <unordered_map>
 
 namespace HDEngine
 {
@@ -12,7 +11,7 @@ namespace HDEngine
 }
 
 /// <summary>
-/// 씬 내에서 음원을 재생하는 컴포넌트
+/// 씬 내에서 음원을 추가, 재생하는 컴포넌트
 /// </summary>
 
 namespace HDData
@@ -53,6 +52,5 @@ namespace HDData
 
 	private:
 		HDEngine::SoundSystem& _soundSystem;
-		std::unordered_map<std::string, std::string> _soundPathList;	// <soundName, soundPath>
 	};
 }

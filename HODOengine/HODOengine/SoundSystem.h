@@ -73,6 +73,7 @@ namespace HDEngine
 
 		bool IsSoundPlaying(std::string soundPath);
 
+		std::unordered_map<std::string, std::string>& GetSoundPathList();
 		std::unordered_map<std::string, HDData::AudioClip>& GetSoundList();
 
 	private:
@@ -81,6 +82,7 @@ namespace HDEngine
 		FMOD::System* _fmodSystem;
 		FMOD::ChannelGroup* _channelGroupMaster;	// 오디오 채널 전체 그룹(_channelGroup 묶음)
 		std::vector<FMOD::ChannelGroup*> _channelGroups;	// 오디오 채널 그룹
+		std::unordered_map<std::string, std::string> _soundPathList;	// <soundName, soundPath>
 		std::unordered_map<std::string, HDData::AudioClip> _soundList;
 
 		/// FMOD 제어에 필요한 변수들
