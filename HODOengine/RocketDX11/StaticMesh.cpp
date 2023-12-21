@@ -2,25 +2,40 @@
 
 namespace RocketCore::Graphics
 {
-	void StaticMesh::SetMesh(eMeshList mesh)
+
+	void StaticMesh::Initialize(ID3D11Device* device)
 	{
 
 	}
 
-	void StaticMesh::SetMesh(const std::string& modelPath)
+	ID3D11Buffer* StaticMesh::GetVertexBuffer() const
 	{
-
+		return _vertexBuffer.Get();
 	}
 
-	void StaticMesh::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	ID3D11Buffer* StaticMesh::GetIndexBuffer() const
 	{
-
+		return _indexBuffer.Get();
 	}
 
-	void StaticMesh::SetActive(bool isActive)
+	ID3D11Buffer** StaticMesh::GetAddressOfVertexBuffer()
 	{
-
+		return _vertexBuffer.GetAddressOf();
 	}
 
+	ID3D11Buffer** StaticMesh::GetAddressOfIndexBuffer()
+	{
+		return _indexBuffer.GetAddressOf();
+	}
+
+	int StaticMesh::GetVertexCount() const
+	{
+		return vertexCount;
+	}
+
+	int StaticMesh::GetIndexCount() const
+	{
+		return indexCount;
+	}
 
 }

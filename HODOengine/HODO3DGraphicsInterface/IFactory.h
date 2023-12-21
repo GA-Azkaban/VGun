@@ -1,28 +1,24 @@
 #pragma once
 
 /// <summary>
-/// ÆÑÅä¸® °´Ã¼´Â Ä«¸Ş¶ó, ¸Ş½¬, ¶óÀÌÆ®¿Í °°Àº ·»´õ¸µ¿¡ ÇÊ¿äÇÑ °´Ã¼µéÀ» »ı¼ºÇÑ´Ù.
-/// 2023.11.10 ±è¹ÎÁ¤
+/// íŒ©í† ë¦¬ ê°ì²´ëŠ” ì¹´ë©”ë¼, ë©”ì‰¬, ë¼ì´íŠ¸ì™€ ê°™ì€ ë Œë”ë§ì— í•„ìš”í•œ ê°ì²´ë“¤ì„ ìƒì„±í•œë‹¤.
+/// 2023.11.10 ê¹€ë¯¼ì •
 /// </summary>
 
 namespace HDEngine
 {
 	class ICamera;
-	class IRenderable;
+	class IStaticMesh;
 
 	class IFactory
 	{
 	public:
 		virtual ICamera* CreateCamera() = 0;
+		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 	};
 
-	/// dllexport ÇÏ´Â ·»´õ·¯¸¦ ¹İÈ¯ÇÏ´Â ÆÑÅä¸® ÇÔ¼ö.
+	/// dllexport í•˜ëŠ” ì˜¤ë¸Œì íŠ¸íŒ©í† ë¦¬ë¥¼ ë°˜í™˜í•˜ëŠ” íŒ©í† ë¦¬ í•¨ìˆ˜.
 
-// IRocketGraphics¸¦ »ó¼Ó¹Ş´Â ·»´õ·¯¸¦ »ı¼ºÇØ¼­ ¾÷Ä³½ºÆÃÇÏ¿© ¹İÈ¯ÇÑ´Ù.
 	extern "C" __declspec(dllexport) IFactory* CreateGraphicsObjectFactory();
-
-	// ·»´õ·¯¸¦ ·ÎµåÇÑÂÊ¿¡¼­ ·»´õ·¯¸¦ ÇØÁ¦ÇÒ¶§ »ç¿ëÇÏ´Â ÇÔ¼ö.
-	// ·ÎµåÇÏ´ÂÂÊ¿¡¼­ deleteÇÏÁö ¾Ê°í dllÇÑÅ× ¿äÃ»ÇÏ´Â ½ÄÀ¸·Î ±¸¼ºÇß´Ù.
-	// °¢°¢ÀÇ ·»´õ·¯¿¡ ¸Â´Â Release µ¿ÀÛÀÌ Á¤ÀÇµÇ¾î ÀÖÀ» °ÍÀÌ´Ù.
 	extern "C" __declspec(dllexport) void ReleaseFactory(IFactory* instance);
 }

@@ -9,7 +9,7 @@
 
 namespace HDData
 {
-	class Renderer;
+	class RendererBase;
 }
 
 namespace HDEngine
@@ -23,20 +23,14 @@ namespace HDEngine
 	{
 		friend Singleton;
 	private:
-		RenderSystem();		// ½Ì±ÛÅÏÀÌ±â ¶§¹®¿¡ ¿ÜºÎ¿¡¼­ »ı¼ºÇÒ ¼ö ¾øµµ·Ï.
+		RenderSystem();		// ì‹±ê¸€í„´ì´ê¸° ë•Œë¬¸ì— ì™¸ë¶€ì—ì„œ ìƒì„±í•  ìˆ˜ ì—†ë„ë¡.
 
-		/// ½Ã½ºÅÛ ÃÊ±âÈ­ °ü·Ã
+		/// ì‹œìŠ¤í…œ ì´ˆê¸°í™” ê´€ë ¨
 	public:
 		void Initialize(HWND hWnd, HMODULE hModule, int screenWidth, int screenHeight);
 		void Finalize();
 
-	public:
-		void MakeAndLinkRenderable();
-
-	private:
-		std::unordered_map<HDData::Renderer*, IRenderable*> _renderMap;
-
-		/// ·»´õ¸µ °ü·Ã
+		/// ë Œë”ë§ ê´€ë ¨
 	public:
 		void DrawProcess();
 
@@ -47,15 +41,20 @@ namespace HDEngine
 		int GetScreenWidth() const;
 		int GetScreenHeight() const;
 
-		/// ±âº» Á¤º¸(À©µµ¿ì ÇÚµé, À©µµ¿ì »çÀÌÁî µî)
+		/// ê¸°ë³¸ ì •ë³´(ìœˆë„ìš° í•¸ë“¤, ìœˆë„ìš° ì‚¬ì´ì¦ˆ ë“±)
 	private:
 		HWND _hWnd;
 		int _screenWidth;
 		int _screenHeight;
 
-		/// DLL °ü·Ã
+		/// DLL ê´€ë ¨
 	private:
 		HMODULE _dllHandle;
-		std::unique_ptr<HDEngine::I3DRenderer> _dx11Renderer;
+		std::unique_ptr<I3DRenderer> _dx11Renderer;
+
+	public:
+		void PushRenderComponent(HDData::RendererBase* comp);
+	private:
+		std::vector<HDData::RendererBase*> _rendererList;
 	};
 };

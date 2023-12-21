@@ -57,12 +57,12 @@ namespace HDData
 				{
 					gameObject->Start();
 				}
-				_runningObjects.push_back(gameObject);
+				GetRunningObjectList().push_back(gameObject);
 			}
 			_gameObjects.clear();
 		}
 
-		for (auto& gameObject : _runningObjects)
+		for (auto& gameObject : GetRunningObjectList())
 		{
 			if (gameObject->IsActive())
 			{
@@ -96,6 +96,11 @@ namespace HDData
 	std::vector<GameObject*>& Scene::GetGameObjectList()
 	{
 		return _gameObjects;
+	}
+
+	std::vector<GameObject*>& Scene::GetRunningObjectList()
+	{
+		return _runningObjects;
 	}
 
 	std::vector<GameObject*>& Scene::GetDestroyObjectList()

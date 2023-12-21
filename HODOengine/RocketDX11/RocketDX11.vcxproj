@@ -130,21 +130,22 @@
   <ItemGroup>
     <ClCompile Include="Axis.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="PixelShader.cpp" />
+    <ClCompile Include="StaticMesh.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RocketDX11.cpp" />
-    <ClCompile Include="StaticMesh.cpp" />
+    <ClCompile Include="StaticMeshObject.cpp" />
     <ClCompile Include="VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Cube.h" />
+    <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="ObjectFactory.h" />
@@ -153,12 +154,13 @@
     <ClInclude Include="IResource.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="StaticMesh.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RocketDX11.h" />
     <ClInclude Include="RocketMacroDX11.h" />
     <ClInclude Include="IShader.h" />
     <ClInclude Include="Singleton.h" />
-    <ClInclude Include="StaticMesh.h" />
+    <ClInclude Include="StaticMeshObject.h" />
     <ClInclude Include="VertexShader.h" />
   </ItemGroup>
   <ItemGroup>
