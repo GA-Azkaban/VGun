@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
+	: _radius(1.0f), _halfHeight(1.0f)
 {
 
 }

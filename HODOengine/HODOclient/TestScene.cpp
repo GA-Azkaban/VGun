@@ -42,12 +42,19 @@ TestScene::TestScene()
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
-	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 10.f, 1.f});
+
+	auto playerColli = playerTest->AddComponent<HDData::DynamicCapsuleCollider>();
 	playerColli->Setflag(eColliderType::PLAYER);
 
-	
-	// ?붾쾭洹?紐⑤뱶 ?쒖꽦??(?쒖꽦?뷀븯怨??띠? ?뚮옒洹몃? ?몄옄濡??ｌ쓬)
-	API::DebugModeOn(eColliderType::PLAYER);
+	// collider 여러 개를 만들어 보자.
+	auto boxTest = API::CreateObject(_scene);
+	boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 10.f, 1.f});
+	auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
+
+	auto sphereTest = API::CreateObject(_scene);
+	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
+	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
 	API::LoadScene(_scene);
 

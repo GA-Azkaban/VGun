@@ -30,7 +30,6 @@ namespace HDData
 	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
 	{
 		auto obj = HDEngine::ObjectSystem::Instance().CreateObject(this, objectName, parent);
-		_gameObjects.push_back(obj);
 
 		return obj;
 	}

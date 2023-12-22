@@ -22,7 +22,6 @@ namespace API
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName, HDData::GameObject* parentObject)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-			scene->GetGameObjectList().push_back(obj);
 
 			return obj;
 		}
