@@ -2,9 +2,11 @@
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
+#include "../HODOengine/AudioSource.h"
 #include "CameraMove.h"
 #include "Player.h"
 #include "PlayerMove.h"
+#include "TestSound.h"
 
 enum eColliderType
 {
@@ -39,6 +41,8 @@ TestScene::TestScene()
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
+	playerTest->AddComponent<HDData::AudioSource>();
+	playerTest->AddComponent<TestSound>();
 	//auto playerColli = playerTest->AddComponent<HDData::>
 
 	

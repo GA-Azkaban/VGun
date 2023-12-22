@@ -1,6 +1,7 @@
 #include "SoundSystem.h"
 #include "AudioListener.h"
 #include "Transform.h"
+#include "TimeSystem.h"
 
 HDEngine::SoundSystem::SoundSystem()
 	: _audioListner(), _fmodSystem(), _channelGroupMaster(),
@@ -46,14 +47,24 @@ HDEngine::SoundSystem::~SoundSystem()
 
 void HDEngine::SoundSystem::Update()
 {
+	static FMOD_VECTOR lastListnerPos = { 0.0f, 0.0f, 0.0f };
+
 	const HDMath::HDFLOAT3& listenerPos = _audioListner->GetTransform()->GetWorldPosition();
 	const HDMath::HDFLOAT3& listenerForward = _audioListner->GetTransform()->GetForward();
 	const HDMath::HDFLOAT3& listenerUp = _audioListner->GetTransform()->GetUp();
+
 	FMOD_VECTOR listenerPosVec{ listenerPos.x, listenerPos.y, listenerPos.z };
 	FMOD_VECTOR listenerForwardVec{ listenerForward.x, listenerForward.y, listenerForward.z };
 	FMOD_VECTOR listenerUpVec{ listenerUp.x, listenerUp.y, listenerUp.z };
-	
-	_fmodSystem->set3DListenerAttributes(0, &listenerPosVec, 0, &listenerForwardVec, &listenerUpVec);
+
+	FMOD_VECTOR velocity; // velocity = how far we moved last FRAME(m/f), the time compensate it to SECONDS(m/s)
+	velocity.x = (listenerPos.x - lastListnerPos.x) * (1 / TimeSystem::Instance().GetDeltaTime());
+	velocity.y = (listenerPos.y - lastListnerPos.y) * (1 / TimeSystem::Instance().GetDeltaTime());
+	velocity.z = (listenerPos.z - lastListnerPos.z) * (1 / TimeSystem::Instance().GetDeltaTime());
+
+	lastListnerPos = FMOD_VECTOR{ listenerPos.x, listenerPos.y, listenerPos.z };
+
+	_fmodSystem->set3DListenerAttributes(0, &listenerPosVec, &velocity, &listenerForwardVec, &listenerUpVec);
 	_fmodSystem->update();
 }
 
@@ -96,6 +107,10 @@ void HDEngine::SoundSystem::PlayOnce(std::string soundPath)
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
 	{
+		/*bool isPlaying = false;
+		soundIter->second.channel->isPlaying(&isPlaying);
+		if (isPlaying)
+			return;*/
 		soundIter->second.sound->setMode(FMOD_LOOP_OFF);
 		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
 			false, &(soundIter->second.channel));
@@ -107,6 +122,7 @@ void HDEngine::SoundSystem::PlayRepeat(std::string soundPath)
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
 	{
+		soundIter->second.channel->stop();
 		soundIter->second.sound->setMode(FMOD_LOOP_NORMAL);
 		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
 			false, &(soundIter->second.channel));
@@ -118,7 +134,11 @@ void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, HDMath::HDFLOAT3 s
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
 	{
-		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };		
+		/*bool isPlaying = false;
+		soundIter->second.channel->isPlaying(&isPlaying);
+		if (isPlaying)
+			return;*/
+		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
 		FMOD_VECTOR velocity{ 0, 0, 0 };
 		soundIter->second.sound->setMode(FMOD_LOOP_OFF);
 		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
@@ -133,7 +153,8 @@ void HDEngine::SoundSystem::Play3DRepeat(std::string soundPath, HDMath::HDFLOAT3
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
 	{
-		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };		
+		soundIter->second.channel->stop();
+		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
 		FMOD_VECTOR velocity{ 0, 0, 0 };
 		soundIter->second.sound->setMode(FMOD_LOOP_NORMAL);
 		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],

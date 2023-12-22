@@ -54,6 +54,9 @@
     <ClInclude Include="Client.h">
       <Filter>01_Entry</Filter>
     </ClInclude>
+    <ClInclude Include="TestSound.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

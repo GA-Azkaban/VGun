@@ -2,7 +2,7 @@
 #include "dllExporter.h"
 #include "Component.h"
 #include "SoundGroup.h"
-#include "HODOmath.h"
+#include "../HODOmath//HODOmath.h"
 #include <string>
 
 namespace HDEngine
