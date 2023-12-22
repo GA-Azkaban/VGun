@@ -27,6 +27,7 @@
 #include "Collider.h"
 #include "StaticBoxCollider.h"
 #include "DynamicBoxCollider.h"
+#include "MeshRenderer.h"
 
 #include "ObjectSystem.h"
 

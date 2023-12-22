@@ -15,6 +15,7 @@ namespace HDEngine
 	class RenderSystem;
 	class GraphicsObjFactory;
 	class EventSystem;
+	class SoundSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -62,4 +63,5 @@ private:
 	HDEngine::RenderSystem& _renderSystem;
 	HDEngine::GraphicsObjFactory& _graphicsObjFactory;
 	HDEngine::EventSystem& _eventSystem;
+	HDEngine::SoundSystem& _soundSystem;
 };

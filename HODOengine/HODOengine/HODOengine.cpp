@@ -16,6 +16,7 @@
 #include "PhysicsSystem.h"
 #include "GraphicsObjFactory.h"
 #include "EventSystem.h"
+#include "SoundSystem.h"
 
 #include "DLL_Loader.h"
 
@@ -49,7 +50,8 @@ HODOengine::HODOengine()
 	_debugSystem(HDEngine::DebugSystem::Instance()),
 	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
 	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
-	_eventSystem(HDEngine::EventSystem::Instance())
+	_eventSystem(HDEngine::EventSystem::Instance()),
+	_soundSystem(HDEngine::SoundSystem::Instance())
 {
 	
 }
@@ -131,6 +133,8 @@ void HODOengine::Run()
 	_debugSystem.Update();
 
 	_objectSystem.UpdateCurrentSceneObjects();
+	_soundSystem.Update();
+
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
 	// draw

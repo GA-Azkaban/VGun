@@ -1,15 +1,32 @@
 #pragma once
-#include "..\\HODO3DGraphicsInterface\\IRenderable.h"
+#include <d3d11.h>
+#include <dxgi.h>
+#include <DirectXMath.h>
+#include <wrl.h>
+
+#include "IResource.h"
+
+using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
-	class StaticMesh : public HDEngine::IRenderable
+	class StaticMesh : public IResource
 	{
 	public:
-		virtual void SetMesh(eMeshList mesh) override;
-		virtual void SetMesh(const std::string& modelPath) override;
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
-		virtual void SetActive(bool isActive) override;
+		virtual void Initialize(ID3D11Device* device) override;
+
+		int GetVertexCount() const;
+		int GetIndexCount() const;
+
+		ID3D11Buffer* GetVertexBuffer() const;
+		ID3D11Buffer* GetIndexBuffer() const;
+		ID3D11Buffer** GetAddressOfVertexBuffer();
+		ID3D11Buffer** GetAddressOfIndexBuffer();
+
+	protected:
+		ComPtr<ID3D11Buffer> _vertexBuffer;
+		ComPtr<ID3D11Buffer> _indexBuffer;
+		int vertexCount;
+		int indexCount;
 	};
 }
-	

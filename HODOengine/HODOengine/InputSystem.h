@@ -6,8 +6,8 @@
 #include <unordered_map>
 #include <unordered_set>
 /// <summary>
-/// ¿À¼ö¾È
-/// Å° ÀÎÇ²À» À§ÇÑ ±âÃÊ ½Ã½ºÅÛ
+/// ì˜¤ìˆ˜ì•ˆ
+/// í‚¤ ì¸í’‹ì„ ìœ„í•œ ê¸°ì´ˆ ì‹œìŠ¤í…œ
 /// </summary>
 
 namespace HDEngine
@@ -19,11 +19,11 @@ namespace HDEngine
 		InputSystem() = default;
 
 	public:
-		// ÃÊ±âÈ­
+		// ì´ˆê¸°í™”
 		void Initialize(HWND hWnd, int screenWidth, int screenHeight);
-		// ÀÎÇ² ½Ã½ºÅÛ ¾÷µ¥ÀÌÆ®
+		// ì¸í’‹ ì‹œìŠ¤í…œ ì—…ë°ì´íŠ¸
 		void Update();
-		// ´ÙÀ½ ½ÎÀÌÅ¬ Á÷Àü¿¡ Á¤¸®ÇÒ °Íµé
+		// ë‹¤ìŒ ì‹¸ì´í´ ì§ì „ì— ì •ë¦¬í•  ê²ƒë“¤
 		void Flush();
 
 	public:

@@ -40,6 +40,7 @@ TestScene::TestScene()
 	auto playerTest = API::CreateObject(_scene);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
+	playerTest->AddComponent<HDData::MeshRenderer>();
 	//auto playerColli = playerTest->AddComponent<HDData::>
 
 	

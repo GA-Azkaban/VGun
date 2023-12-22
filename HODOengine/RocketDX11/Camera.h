@@ -7,7 +7,7 @@
 namespace RocketCore::Graphics
 {
 /// <summary>
-/// Ä«¸Ş¶ó Å¬·¡½º
+/// ì¹´ë©”ë¼ í´ë˜ìŠ¤
 /// </summary>
 	class Camera : public HDEngine::ICamera
 	{
@@ -20,8 +20,8 @@ namespace RocketCore::Graphics
 
 	public:
 		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& matrix) override;
-		virtual void SetNearZ(float near) override;
-		virtual void SetFarZ(float far) override;
+		virtual void SetNearZ(float nearZ) override;
+		virtual void SetFarZ(float farZ) override;
 		virtual void SetAspect(float aspect) override;
 		virtual void SetFOVY(float fov) override;
 		virtual void SetNearHeight(float height) override;
@@ -36,28 +36,28 @@ namespace RocketCore::Graphics
 		void UpdateProjectionMatrix();
 		void UpdateViewMatrix();
 
-		DirectX::XMMATRIX GetViewMatrix() const;				// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è'¸¦ ¹İÈ¯
-		DirectX::XMMATRIX GetProjectionMatrix() const;		// Ä«¸Ş¶óÀÇ Åõ¿µÇà·ÄÀ» ¹İÈ¯
-		DirectX::XMMATRIX GetViewProjectionMatrix() const;	// À§ÀÇ µÎ Çà·ÄÀ» ÀûÀıÈ÷ °öÇØ¼­ ¹İÈ¯(viewÀÇ ¿ªÇà·ÄÀ» °öÇØÁÖ°ÚÁö?)
+		DirectX::XMMATRIX GetViewMatrix() const;				// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„'ë¥¼ ë°˜í™˜
+		DirectX::XMMATRIX GetProjectionMatrix() const;		// ì¹´ë©”ë¼ì˜ íˆ¬ì˜í–‰ë ¬ì„ ë°˜í™˜
+		DirectX::XMMATRIX GetViewProjectionMatrix() const;	// ìœ„ì˜ ë‘ í–‰ë ¬ì„ ì ì ˆíˆ ê³±í•´ì„œ ë°˜í™˜(viewì˜ ì—­í–‰ë ¬ì„ ê³±í•´ì£¼ê² ì§€?)
 
 		DirectX::XMVECTOR GetForward() const;
 		DirectX::XMVECTOR GetUp() const;
 		DirectX::XMVECTOR GetRight() const;
 
 	private:
-		DirectX::XMFLOAT3 _position;				// À§Ä¡ (¿ùµå)
-		DirectX::XMFLOAT4 _rotation;				// ÄõÅÍ´Ï¾ğ (¿ùµå)
+		DirectX::XMFLOAT3 _position;				// ìœ„ì¹˜ (ì›”ë“œ)
+		DirectX::XMFLOAT4 _rotation;				// ì¿¼í„°ë‹ˆì–¸ (ì›”ë“œ)
 
-		float _nearZ;					// frustumÀÇ °¡±î¿î Æò¸é±îÁöÀÇ °Å¸®
-		float _farZ;					// frustumÀÇ ¸Õ Æò¸é±îÁöÀÇ °Å¸®
-		float _aspect;					// °¡·Î / ¼¼·Î ºñÀ²
-		float _fovY;					// fov°¢µµ¸¦ 60ºĞ¹ıÀ¸·Î °®°íÀÖÀ½
-		float _nearWindowHeight;		// frustumÀÇ °¡±î¿î Æò¸éÀÇ ³ôÀÌ
-		float _farWindowHeight;			// frustumÀÇ ¸Õ Æò¸éÀÇ ³ôÀÌ
+		float _nearZ;					// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _farZ;					// frustumì˜ ë¨¼ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _aspect;					// ê°€ë¡œ / ì„¸ë¡œ ë¹„ìœ¨
+		float _fovY;					// fovê°ë„ë¥¼ 60ë¶„ë²•ìœ¼ë¡œ ê°–ê³ ìˆìŒ
+		float _nearWindowHeight;		// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ì˜ ë†’ì´
+		float _farWindowHeight;			// frustumì˜ ë¨¼ í‰ë©´ì˜ ë†’ì´
 
-		DirectX::XMFLOAT4X4 _worldMatrix;		// Ä«¸Ş¶ó worldTM
-		DirectX::XMFLOAT4X4 _viewMatrix;		// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è' ¶Ç´Â Ä«¸Ş¶ó worldTMÀÇ ¿ªÇà·Ä
-		DirectX::XMFLOAT4X4 _projectionMatrix;	// Ä«¸Ş¶óÀÇ Åõ¿µ Çà·Ä
+		DirectX::XMFLOAT4X4 _worldMatrix;		// ì¹´ë©”ë¼ worldTM
+		DirectX::XMFLOAT4X4 _viewMatrix;		// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„' ë˜ëŠ” ì¹´ë©”ë¼ worldTMì˜ ì—­í–‰ë ¬
+		DirectX::XMFLOAT4X4 _projectionMatrix;	// ì¹´ë©”ë¼ì˜ íˆ¬ì˜ í–‰ë ¬
 
 	public:
 		static Camera* GetMainCamera();
