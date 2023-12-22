@@ -17,9 +17,9 @@ public:
 		// 배경음
 		_audioSource->AddAudio("ingame_bgm", "../Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
 		// 효과음1
-		_audioSource->AddAudio3D("Gun_sound", "../Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound, 100, 5000);
+		_audioSource->AddAudio3D("Gun_sound", "../Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound, 1, 10000);
 		// 효과음2
-		_audioSource->AddAudio3D("parts_buy", "../Sound/PartsBuy/parts_buy.wav", HDData::SoundGroup::EffectSound, 100, 5000);
+		_audioSource->AddAudio3D("parts_buy", "../Sound/PartsBuy/parts_buy.wav", HDData::SoundGroup::EffectSound, 1, 10000);
 	}
 	virtual void Update() override
 	{

@@ -1,4 +1,4 @@
-﻿#include "HODOmath.h"
+#include "HODOmath.h"
 #include <cmath>
 
 namespace HDMath 
@@ -341,6 +341,11 @@ namespace HDMath
 		{
 			return HDFLOAT3(0.0f, 0.0f, 0.0f);
 		}
+	}
+
+	float HDFLOAT3::Magnitude(const HDFLOAT3& val)
+	{
+		return sqrt(val.x * val.x + val.y * val.y + val.z * val.z);
 	}
 
 	const HDFLOAT3 HDFLOAT3::zero = HDFLOAT3(0, 0, 0);
