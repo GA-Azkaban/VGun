@@ -28,20 +28,22 @@ TestScene::TestScene()
 	//comp->Get()->SetFillModeWireframe();
 	//comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
+	/*
 	auto debugtest = API::CreateObject(_scene);
 	debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
 	debugtest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 10.f, 1.f});
 	auto colli = debugtest->AddComponent<HDData::DynamicBoxCollider>();
 
 	colli->Setflag(eColliderType::PLAYER);
-	
+	*/
 	
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
-	//auto playerColli = playerTest->AddComponent<HDData::>
+	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	playerColli->Setflag(eColliderType::PLAYER);
 
 	
 	// ?붾쾭洹?紐⑤뱶 ?쒖꽦??(?쒖꽦?뷀븯怨??띠? ?뚮옒洹몃? ?몄옄濡??ｌ쓬)
