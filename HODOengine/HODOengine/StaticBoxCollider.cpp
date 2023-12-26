@@ -1,9 +1,16 @@
 #include "StaticBoxCollider.h"
+#include "PhysicsSystem.h"
 
 HDData::StaticBoxCollider::StaticBoxCollider()
-	: _width(0.f), _height(0.f), _depth(0.f)
+	: _width(1.0f), _height(1.0f), _depth(1.0f)
 {
+	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
+}
 
+HDData::StaticBoxCollider::StaticBoxCollider(float width, float height, float depth)
+	: _width(width), _height(height), _depth(depth)
+{
+	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
 }
 
 float HDData::StaticBoxCollider::GetHeight()

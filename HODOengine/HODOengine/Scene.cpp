@@ -29,7 +29,9 @@ namespace HDData
 
 	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
 	{
-		return HDEngine::ObjectSystem::Instance().CreateObject(this, objectName, parent);
+		auto obj = HDEngine::ObjectSystem::Instance().CreateObject(this, objectName, parent);
+
+		return obj;
 	}
 
 	void Scene::DestroyObject(HDData::GameObject* gameObject)

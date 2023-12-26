@@ -1,6 +1,8 @@
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #pragma once
 
+#include <vector>
+
 #include "Singleton.h"
 
 #include "../Include/physx/PxPhysics.h"
@@ -22,13 +24,12 @@ namespace HDEngine
 
 	public:
 		void Initialize();
+		void PreparePhysics();
 		void Update();
 		void Finalize();
 
 	public:
 		void CreatePhysXScene();
-
-		void TempMove();
 
 	public:
 		physx::PxScene* GetScene() const;
@@ -37,6 +38,10 @@ namespace HDEngine
 		void CreateRigidBodies();
 		void CreateStaticPlaneCollider(HDData::GameObject* object);
 		void CreateStaticBoxCollider(HDData::GameObject* object);
+		void CreateStaticBoxCollider(float width, float height, float depth);
+		void CreateDynamicBoxCollider(HDData::GameObject* object);
+		void CreateDynamicCapsuleCollider(HDData::GameObject* object);
+		void CreateDynamicSphereCollider(HDData::GameObject* object);
 
 	private:
 		physx::PxDefaultAllocator		_allocator;
@@ -48,6 +53,7 @@ namespace HDEngine
 		physx::PxMaterial* _material;
 		physx::PxPvd* _pvd;
 
-		physx::PxRigidDynamic* _dynamic;
+	private:
+		std::vector<physx::PxRigidDynamic*> _rigidDynamics;
 	};
 }
