@@ -1,9 +1,10 @@
 #pragma once
+#include "dllExporter.h"
 #include "DynamicCollider.h"
 
 namespace HDData
 {
-	class DynamicCapsuleCollider : public DynamicCollider
+	class HODO_API DynamicCapsuleCollider : public DynamicCollider
 	{
 
 	public:

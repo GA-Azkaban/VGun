@@ -1,3 +1,5 @@
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
+
 #pragma once
 #include <functional>
 
@@ -116,7 +118,10 @@ namespace HDMath
 		static float Dot(const HDFLOAT3& left, const HDFLOAT3& right); // 내적
 		static HDFLOAT3 Cross(const HDFLOAT3& a, const HDFLOAT3& b); // 외적
 		static HDFLOAT3 Normalize(const HDFLOAT3& val); // 정규화
+<<<<<<< HEAD
 		static float Magnitude(const HDFLOAT3& val);
+=======
+>>>>>>> MergePhysXToDevelop
 
 		static const HDFLOAT3 zero;
 		static const HDFLOAT3 one;

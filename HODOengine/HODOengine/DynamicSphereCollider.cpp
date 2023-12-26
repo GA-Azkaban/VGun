@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 HDData::DynamicSphereCollider::DynamicSphereCollider()
+	: _radius(1.0f)
 {
 
 }
