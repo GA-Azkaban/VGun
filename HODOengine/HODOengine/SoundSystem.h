@@ -88,6 +88,6 @@ namespace HDEngine
 		/// FMOD 제어에 필요한 변수들
 		const unsigned int MAXCHANNELGROUP;
 		const unsigned int MAXSOUNDCOUNT = 64;
-		const float DISTANCEFACTOR = 1.0f;
+		const float DISTANCEFACTOR = 0.1f;
 	};
 }

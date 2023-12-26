@@ -57,14 +57,7 @@ void HDEngine::SoundSystem::Update()
 	FMOD_VECTOR listenerForwardVec{ listenerForward.x, listenerForward.y, listenerForward.z };
 	FMOD_VECTOR listenerUpVec{ listenerUp.x, listenerUp.y, listenerUp.z };
 
-	FMOD_VECTOR velocity; // velocity = how far we moved last FRAME(m/f), the time compensate it to SECONDS(m/s)
-	velocity.x = (listenerPos.x - lastListnerPos.x) * (1 / TimeSystem::Instance().GetDeltaTime());
-	velocity.y = (listenerPos.y - lastListnerPos.y) * (1 / TimeSystem::Instance().GetDeltaTime());
-	velocity.z = (listenerPos.z - lastListnerPos.z) * (1 / TimeSystem::Instance().GetDeltaTime());
-
-	lastListnerPos = FMOD_VECTOR{ listenerPos.x, listenerPos.y, listenerPos.z };
-
-	_fmodSystem->set3DListenerAttributes(0, &listenerPosVec, &velocity, &listenerForwardVec, &listenerUpVec);
+	_fmodSystem->set3DListenerAttributes(0, &listenerPosVec, 0, &listenerForwardVec, &listenerUpVec);
 	_fmodSystem->update();
 }
 
@@ -90,7 +83,7 @@ void HDEngine::SoundSystem::CreateSound(std::string soundPath, HDData::SoundGrou
 void HDEngine::SoundSystem::CreateSound3D(std::string soundPath, HDData::SoundGroup soundGroup, float minDistance, float maxDistance)
 {
 	HDData::AudioClip audioClip;
-	_fmodSystem->createSound(soundPath.c_str(), FMOD_3D, NULL, &(audioClip.sound));
+	_fmodSystem->createSound(soundPath.c_str(), FMOD_3D | FMOD_3D_LINEARROLLOFF, NULL, &(audioClip.sound));
 	audioClip.sound->set3DMinMaxDistance(minDistance * DISTANCEFACTOR, maxDistance * DISTANCEFACTOR);
 
 	audioClip.soundPath = soundPath;
