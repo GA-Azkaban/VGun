@@ -69,7 +69,7 @@ namespace HDEngine
 			pos.y = temp.p.y;
 			pos.z = temp.p.z;
 
-			rot.x = temp.q.x;
+			rot.x = -temp.q.x;
 			rot.y = temp.q.y;
 			rot.z = temp.q.z;
 			rot.w = temp.q.w;
@@ -160,7 +160,7 @@ namespace HDEngine
 			{
 				HDData::StaticBoxCollider* box = dynamic_cast<HDData::StaticBoxCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth()/2, box->GetHeight()/2, box->GetDepth()/2), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
 
 				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -177,7 +177,7 @@ namespace HDEngine
 	void PhysicsSystem::CreateStaticBoxCollider(float width, float height, float depth)
 	{
 		HDData::StaticBoxCollider* box = new HDData::StaticBoxCollider(width, height, depth);
-		
+
 		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
 
 		physx::PxTransform localTransform(physx::PxVec3(0.0f, box->GetHeight() / 2, 0.0f));
@@ -267,6 +267,59 @@ namespace HDEngine
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
 		}
+	}
+
+	void PhysicsSystem::GetKeyInput()
+	{
+		// 키 입력 합산
+		if (API::GetKeyPressing('W'))
+		{
+			if (API::GetKeyPressing('S'))
+			{
+				_directionZ = 0;
+			}
+			else
+			{
+				_directionZ = 1;
+			}
+		}
+		else if (API::GetKeyPressing('S'))
+		{
+			_directionZ = -1;
+		}
+		else
+		{
+			_directionZ = 0;
+		}
+		if (API::GetKeyPressing('D'))
+		{
+			if (API::GetKeyPressing('A'))
+			{
+				_directionX = 0;
+			}
+			else
+			{
+				_directionX = 1;
+			}
+		}
+		else if (API::GetKeyPressing('A'))
+		{
+			_directionX = -1;
+		}
+		else
+		{
+			_directionX = 0;
+		}
+	}
+
+	void PhysicsSystem::MovePlayer(HDData::GameObject* object)
+	{
+		int directionNum = _directionX * 3 + _directionZ;
+
+		//if (directionNum == -4)
+		//{
+		//	object->GetComponent<HDData::DynamicBoxCollider>()->
+		//}
 	}
 
 	physx::PxScene* PhysicsSystem::GetScene() const

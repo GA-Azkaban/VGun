@@ -51,7 +51,7 @@ TestScene::TestScene()
 
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 10.f, 1.f});
 
-	auto playerColli = playerTest->AddComponent<HDData::DynamicCapsuleCollider>();
+	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	playerColli->Setflag(eColliderType::PLAYER);
 
 	// collider 여러 개를 만들어 보자.

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Singleton.h"
+#include "HODO_API.h"
 
 #include "../Include/physx/PxPhysics.h"
 #include "../Include/physx/PxPhysicsAPI.h"
@@ -43,6 +44,10 @@ namespace HDEngine
 		void CreateDynamicCapsuleCollider(HDData::GameObject* object);
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
 
+	public:
+		void GetKeyInput();
+		void MovePlayer(HDData::GameObject* object);
+
 	private:
 		physx::PxDefaultAllocator		_allocator;
 		physx::PxDefaultErrorCallback	_errorCallback;
@@ -55,5 +60,7 @@ namespace HDEngine
 
 	private:
 		std::vector<physx::PxRigidDynamic*> _rigidDynamics;
+		int _directionX;
+		int _directionZ;
 	};
 }
