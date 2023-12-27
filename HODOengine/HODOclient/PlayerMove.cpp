@@ -1,4 +1,5 @@
 #include "PlayerMove.h"
+#include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
 {
@@ -7,58 +8,59 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-
+	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	_moveSpeed = 10.0f;
 }
 
 void PlayerMove::Update()
 {
-	// µ¨Å¸ Å¸ÀÓ Ã¼Å©
+	// ë¸íƒ€ íƒ€ì„ ì²´í¬
 	_deltaTime = API::GetDeltaTime();
 
-	// ¸¶¿ì½º¿¡ µû¸¥ ÇÃ·¹ÀÌ¾î È¸Àü Ã¼Å©
+	// ë§ˆìš°ìŠ¤ì— ë”°ë¥¸ í”Œë ˆì´ì–´ íšŒì „ ì²´í¬
 	CheckLookDirection();
 
-	// Å°º¸µå¿¡ µû¸¥ ÇÃ·¹ÀÌ¾î ÀÌµ¿ ¹æÇâ Ã¼Å©
+	// í‚¤ë³´ë“œì— ë”°ë¥¸ í”Œë ˆì´ì–´ ì´ë™ ë°©í–¥ ì²´í¬
 	CheckMoveDirection();
 
-	// ÀÌµ¿
+	// ì´ë™
 	Move(_moveDirection);
 }
 
-// Á¶ÀÌ½ºÆ½ °³³ä
+// ì¡°ì´ìŠ¤í‹± ê°œë…
 void PlayerMove::CheckMoveDirection()
 {
 	_moveDirection = 5;
 
-	if (API::GetKeyPressing('W'))
+	if (API::GetKeyPressing('I'))
 	{
 		_moveDirection = 8;
 	}
-	if (API::GetKeyPressing('D'))
+	if (API::GetKeyPressing('L'))
 	{
 		_moveDirection = 6;
 	}
-	if (API::GetKeyPressing('S'))
+	if (API::GetKeyPressing('K'))
 	{
 		_moveDirection = 2;
 	}
-	if (API::GetKeyPressing('A'))
+	if (API::GetKeyPressing('J'))
 	{
 		_moveDirection = 4;
 	}
-	if (API::GetKeyPressing('W') && API::GetKeyPressing('A'))
+	if (API::GetKeyPressing('I') && API::GetKeyPressing('J'))
 	{
 		_moveDirection = 7;
 	}
-	if (API::GetKeyPressing('W') && API::GetKeyPressing('D'))
+	if (API::GetKeyPressing('I') && API::GetKeyPressing('L'))
 	{
 		_moveDirection = 9;
 	}
-	if (API::GetKeyPressing('A') && API::GetKeyPressing('S'))
+	if (API::GetKeyPressing('J') && API::GetKeyPressing('K'))
 	{
 		_moveDirection = 1;
 	}
-	if (API::GetKeyPressing('S') && API::GetKeyPressing('D'))
+	if (API::GetKeyPressing('K') && API::GetKeyPressing('L'))
 	{
 		_moveDirection = 3;
 	}
@@ -76,20 +78,81 @@ void PlayerMove::CheckLookDirection()
 
 void PlayerMove::Move(int direction)
 {
-	// Á¶ÀÌ½ºÆ½
+	// ì¡°ì´ìŠ¤í‹±
 	// 7 8 9
 	// 4 5 6
 	// 1 2 3
 
 	HDMath::HDFLOAT3 moveStep;
 
-	switch (direction)
+	//switch (direction)
+	//{
+	//	case 1:
+	//	{
+	//		moveStep =
+	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed
+	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+	//	}
+	//	break;
+	//	case 2:
+	//	{
+	//		moveStep = GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed;
+	//	}
+	//	break;
+	//	case 3:
+	//	{
+	//		moveStep =
+	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed
+	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+	//	}
+	//	break;
+	//	case 4:
+	//	{
+	//		moveStep = GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+	//	}
+	//	break;
+	//	case 5:
+	//	{
+	//		// ì •ì§€ ìƒíƒœ
+	//	}
+	//	break;
+	//	case 6:
+	//	{
+	//		moveStep = GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+	//	}
+	//	break;
+	//	case 7:
+	//	{
+	//		moveStep =
+	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed
+	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+	//	}
+	//	break;
+	//	case 8:
+	//	{
+	//		moveStep = GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed;
+	//	}
+	//	break;
+	//	case 9:
+	//	{
+	//		moveStep =
+	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed
+	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+	//	}
+	//	break;
+	//	default:
+	//	{
+
+	//	}
+	//	break;
+	//}
+	switch (_moveDirection)
 	{
 		case 1:
 		{
 			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+				GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
+				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
 		}
 		break;
 		case 2:
@@ -100,8 +163,8 @@ void PlayerMove::Move(int direction)
 		case 3:
 		{
 			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+				GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
+				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
 		}
 		break;
 		case 4:
@@ -111,7 +174,7 @@ void PlayerMove::Move(int direction)
 		break;
 		case 5:
 		{
-			// Á¤Áö »óÅÂ
+			// ì •ì§€ ìƒíƒœ
 		}
 		break;
 		case 6:
@@ -122,8 +185,8 @@ void PlayerMove::Move(int direction)
 		case 7:
 		{
 			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+				GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
+				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
 		}
 		break;
 		case 8:
@@ -134,8 +197,8 @@ void PlayerMove::Move(int direction)
 		case 9:
 		{
 			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+				GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
+				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
 		}
 		break;
 		default:
@@ -145,20 +208,31 @@ void PlayerMove::Move(int direction)
 		break;
 	}
 
-	// PhysX·Î ¿ÀºêÁ§Æ® ¿Å°ÜÁÖ±â
+	// PhysXë¡œ ì˜¤ë¸Œì íŠ¸ ì˜®ê²¨ì£¼ê¸°
+	if (_moveDirection == 5)
+	{
+		_playerCollider->Sleep();
+	}
+	else
+	{
+		_playerCollider->Move(moveStep);
+	}
 }
 
 void PlayerMove::Jump()
 {
 	if (_isJump == false)
 	{
-		// Á¡ÇÁ
+		// ì í”„
 		_isJump = true;
 	}
+
+	// ì„ì‹œë¡œ, ë…¸ì¿¨ ì í”„
+	_playerCollider->Jump();
 }
 
 
-// ¸¶¿ì½º ÀÌµ¿¿¡ µû¸¥ ½Ã¾ß º¯°æÀ» À§ÇÑ ÇÔ¼ö
+// ë§ˆìš°ìŠ¤ ì´ë™ì— ë”°ë¥¸ ì‹œì•¼ ë³€ê²½ì„ ìœ„í•œ í•¨ìˆ˜
 void PlayerMove::Pitch(float radian)
 {
 	
