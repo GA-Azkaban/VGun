@@ -30,9 +30,11 @@ private:
 
 	float _moveSpeed;
 	int _moveDirection;
+	int _prevDirection;
 
 private:
 	void Jump();
+	HDMath::HDFLOAT3 DecideMovement(int direction);
 
 private:
 	bool _isJump;

@@ -31,7 +31,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.25f, 0.2f, 0.5f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.5f);
 
 		// 임시로 평면과 박스 하나를 만들어 둠
 		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);

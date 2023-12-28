@@ -83,8 +83,6 @@ void PlayerMove::Move(int direction)
 	// 4 5 6
 	// 1 2 3
 
-	HDMath::HDFLOAT3 moveStep;
-
 	//switch (direction)
 	//{
 	//	case 1:
@@ -146,7 +144,40 @@ void PlayerMove::Move(int direction)
 	//	}
 	//	break;
 	//}
-	switch (_moveDirection)
+	// PhysX로 오브젝트 옮겨주기
+	if (_moveDirection == 5)
+	{
+		if (_prevDirection != 0)
+		{
+			_playerCollider->Move(DecideMovement(_prevDirection) * -30.0f);
+		}
+	}
+	else
+	{
+		_playerCollider->Move(DecideMovement(_moveDirection));
+	}
+
+	_prevDirection = _moveDirection;
+}
+
+void PlayerMove::Jump()
+{
+	if (_isJump == false)
+	{
+		// 점프
+		_isJump = true;
+	}
+
+	// 임시로, 노쿨 점프
+	_playerCollider->Jump();
+}
+
+
+HDMath::HDFLOAT3 PlayerMove::DecideMovement(int direction)
+{
+	HDMath::HDFLOAT3 moveStep;
+
+	switch (direction)
 	{
 		case 1:
 		{
@@ -174,7 +205,7 @@ void PlayerMove::Move(int direction)
 		break;
 		case 5:
 		{
-			// 정지 상태
+			moveStep = 0;
 		}
 		break;
 		case 6:
@@ -208,29 +239,8 @@ void PlayerMove::Move(int direction)
 		break;
 	}
 
-	// PhysX로 오브젝트 옮겨주기
-	if (_moveDirection == 5)
-	{
-		_playerCollider->Sleep();
-	}
-	else
-	{
-		_playerCollider->Move(moveStep);
-	}
+	return moveStep;
 }
-
-void PlayerMove::Jump()
-{
-	if (_isJump == false)
-	{
-		// 점프
-		_isJump = true;
-	}
-
-	// 임시로, 노쿨 점프
-	_playerCollider->Jump();
-}
-
 
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float radian)
