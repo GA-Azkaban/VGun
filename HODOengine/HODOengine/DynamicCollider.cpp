@@ -30,6 +30,11 @@ void HDData::DynamicCollider::Sleep()
 	//_physXRigid->putToSleep();
 }
 
+void HDData::DynamicCollider::Stop()
+{
+	_physXRigid->setLinearVelocity(physx::PxVec3(0.f, _physXRigid->getLinearVelocity().y, 0.f));
+}
+
 void HDData::DynamicCollider::UpdateToPhysics()
 {
 

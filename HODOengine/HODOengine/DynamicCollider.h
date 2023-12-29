@@ -25,6 +25,7 @@ namespace HDData
 		void Move(HDMath::HDFLOAT3 moveStep);
 		void Jump();
 		void Sleep();
+		void Stop();
 
 	public:
 		// PhysX 씬과 데이터를 주고받는 함수

@@ -149,7 +149,8 @@ void PlayerMove::Move(int direction)
 	{
 		if (_prevDirection != 0)
 		{
-			_playerCollider->Move(DecideMovement(_prevDirection) * -30.0f);
+			//_playerCollider->Move(DecideMovement(_prevDirection) * -30.0f);
+			_playerCollider->Stop();
 		}
 	}
 	else
