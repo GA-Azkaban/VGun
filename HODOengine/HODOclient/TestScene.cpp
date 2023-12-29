@@ -44,21 +44,21 @@ TestScene::TestScene()
 
 	playerTest->AddComponent<HDData::AudioSource>();
 	playerTest->AddComponent<TestSound>();
-	playerTest->AddComponent<HDData::StaticBoxCollider>();
+	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 
 	
 
-	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
-	playerColli->Setflag(eColliderType::PLAYER);
+	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	//playerColli->Setflag(eColliderType::PLAYER);
 
 	// collider 여러 개를 만들어 보자.
 	auto boxTest = API::CreateObject(_scene);
 	boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 10.f, 1.f});
-	auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
+	//auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
 
 	auto sphereTest = API::CreateObject(_scene);
 	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
-	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
 	API::LoadScene(_scene);
 
