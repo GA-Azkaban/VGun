@@ -1,7 +1,6 @@
 #include "DeferredBuffers.h"
 
-
-MZRenderer::LazyObjects<DeferredBuffers> DeferredBuffers::Instance;
+LazyObjects<DeferredBuffers> DeferredBuffers::Instance;
 
 DeferredBuffers::DeferredBuffers()
 {
@@ -11,10 +10,7 @@ DeferredBuffers::DeferredBuffers()
 		m_pRenderTagetViews[iIndex] = nullptr;
 		m_pShaderResourceViews[iIndex] = nullptr;
 	}
-
-	//m_pDepthStencilBuffer = nullptr;
 	m_pDepthStencilView = nullptr;
-
 }
 
 DeferredBuffers::~DeferredBuffers()
@@ -46,7 +42,7 @@ void DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int tex
 	// Create textures
 	for (int i = 0; i < (int)BUFFERTYPE::GBUFFER_COUNT; ++i)
 	{
-		HR(device->CreateTexture2D(&textureDesc, NULL, &m_pRenderTargetTextures[i]));
+		device->CreateTexture2D(&textureDesc, NULL, &m_pRenderTargetTextures[i]);
 	}
 
 	// Create render target view to be able to access the render target textures
@@ -59,8 +55,8 @@ void DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int tex
 	// Create render target views
 	for (int i = 0; i < (int)BUFFERTYPE::GBUFFER_COUNT; ++i)
 	{
-		HR(device->CreateRenderTargetView(m_pRenderTargetTextures[i].Get(),
-			&rtvDesc, m_pRenderTagetViews[i].GetAddressOf()));
+		device->CreateRenderTargetView(m_pRenderTargetTextures[i].Get(),
+			&rtvDesc, m_pRenderTagetViews[i].GetAddressOf());
 	}
 
 	// Create the shader resource views for each texture
@@ -74,8 +70,8 @@ void DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int tex
 	// Create the shader resource views
 	for (int i = 0; i < (int)BUFFERTYPE::GBUFFER_COUNT; ++i)
 	{
-		HR(device->CreateShaderResourceView(m_pRenderTargetTextures[i].Get(),
-			&srvDesc, m_pShaderResourceViews[i].GetAddressOf()));
+		device->CreateShaderResourceView(m_pRenderTargetTextures[i].Get(),
+			&srvDesc, m_pShaderResourceViews[i].GetAddressOf());
 	}
 
 	// Create the depth/stencil buffer and view
@@ -97,7 +93,7 @@ void DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int tex
 	depthBufferDesc.MiscFlags = 0;
 
 	// Create the texture for the depth buffer
-	HR(device->CreateTexture2D(&depthBufferDesc, NULL, &_pDepthStencilBuffer));
+	device->CreateTexture2D(&depthBufferDesc, NULL, &_pDepthStencilBuffer);
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvDesc;
 	ZeroMemory(&dsvDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
@@ -108,35 +104,21 @@ void DeferredBuffers::Initialize(ID3D11Device* device, int textureWidth, int tex
 	dsvDesc.Flags = 0;
 
 	// Create the depth/stencil view
-	HR(device->CreateDepthStencilView(_pDepthStencilBuffer,
-		&dsvDesc, &m_pDepthStencilView));
+	device->CreateDepthStencilView(_pDepthStencilBuffer,
+		&dsvDesc, &m_pDepthStencilView);
 
-	SafeRelease(_pDepthStencilBuffer);
-
-	/*D3D11_SHADER_RESOURCE_VIEW_DESC depthSRVDesc;
-	ZeroMemory(&depthSRVDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
-	depthSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
-	depthSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	depthSRVDesc.Texture2D.MostDetailedMip = 0;
-	depthSRVDesc.Texture2D.MipLevels = 1;
-
-	HR(device->CreateShaderResourceView(m_pDepthStencilBuffer,
-		&depthSRVDesc, &m_pZBufferRSV));*/
+	_pDepthStencilBuffer->Release();
 }
 
 void DeferredBuffers::Finalize()
 {
 	for (int i = 0; i < (int)BUFFERTYPE::GBUFFER_COUNT; ++i)
 	{
-		ReleaseCOM(m_pRenderTargetTextures[i]);
-		ReleaseCOM(m_pRenderTagetViews[i]);
-		ReleaseCOM(m_pShaderResourceViews[i]);
+		m_pRenderTargetTextures[i]->Release();
+		m_pRenderTagetViews[i]->Release();
+		m_pShaderResourceViews[i]->Release();
 	}
-	//SafeRelease(m_pZBufferRSV);
-	//SafeRelease(m_pDepthStencilBuffer);
-	/*if (m_pDepthStencilView.Get())
-		m_pDepthStencilView->Release();*/
-	ReleaseCOM(m_pDepthStencilView);
+	m_pDepthStencilView->Release();
 }
 
 void DeferredBuffers::SetRenderTargets(ID3D11DeviceContext* deviceContext)
@@ -156,5 +138,3 @@ void DeferredBuffers::ClearRenderTargets(ID3D11DeviceContext* deviceContext, XMV
 	// Clear the depth/stencil buffer
 	deviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
-
-

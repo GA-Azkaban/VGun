@@ -22,9 +22,9 @@ public:
 	};
 
 public:
-	virtual void Update(MZCamera* pCamera, float deltaTime) abstract;
+	virtual void Update(float deltaTime) abstract;
 	virtual void Render() abstract;
-	virtual bool Pick(MZCamera* pCamera, float x, float y) abstract;
+	virtual bool Pick(float x, float y) abstract;
 	virtual void SetPickingMode(bool isPickingModeOn) abstract;
 	virtual float GetDepth() abstract;
 	virtual void SetScreenSpace() abstract;

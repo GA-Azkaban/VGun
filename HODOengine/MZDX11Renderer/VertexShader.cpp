@@ -1,4 +1,5 @@
 #include "VertexShader.h"
+#include "MZMacro.h"
 
 VertexShader::VertexShader(ID3D11Device* device, ID3D11DeviceContext* context)
 	:IShader(device, context), shader(nullptr), inputLayout(nullptr)
@@ -123,8 +124,8 @@ bool VertexShader::CreateShader(ID3DBlob* shaderBlob)
 	}
 
 	// Try to create input layout
-	HRESULT hr = device->CreateInputLayout(&inputLayoutDesc[0], inputLayoutDesc.size(),
-		shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout);
+	HR(device->CreateInputLayout(&inputLayoutDesc[0], inputLayoutDesc.size(),
+		shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout));
 
 	// All done, clean up
 	refl->Release();
@@ -135,7 +136,16 @@ bool VertexShader::CreateShader(ID3DBlob* shaderBlob)
 // for future DirectX drawing
 void VertexShader::SetShaderAndConstantBuffers()
 {
-	// TODO
+	// Set tha shader and input layout
+	deviceContext->IASetInputLayout(inputLayout);
+	deviceContext->VSSetShader(shader, 0, 0);
+
+	// Set the constant buffers
+	for (unsigned int i = 0; i < constantBufferCount; ++i)
+	{
+		deviceContext->VSSetConstantBuffers(constantBuffers[i].BindIndex, 1,
+			&constantBuffers[i].ConstantBuffer);
+	}
 }
 
 void VertexShader::CleanUp()

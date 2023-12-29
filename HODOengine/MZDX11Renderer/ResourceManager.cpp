@@ -6,31 +6,29 @@
 #include <stack>
 #include <numeric>
 #include <algorithm>
-//#include "FbxLoader.h"
 #include "mathConversion.h"
 #include "DDSTextureLoader.h"
-//#include <fbxsdk/>
-//#include "fbx"
+#include "ShaderManager.h"
 
-MZRenderer::LazyObjects<ResourceManager> ResourceManager::Instance;
+LazyObjects<ResourceManager> ResourceManager::Instance;
 
 
 ResourceManager::ResourceManager()
 {
-    //fbxsdk::FbxManager* a;
-    mFbxManager = fbxsdk::FbxManager::Create();
+    
 }
+
 ResourceManager::~ResourceManager()
 {
-    for (auto it = m_meshObjectList.begin(); it != m_meshObjectList.end(); ++it)
-    {
-        delete it->second;
-        it->second = nullptr;
-    }
-
-    if (mFbxManager) mFbxManager->Destroy();
+    
 }
 
+void ResourceManager::Initialize()
+{
+    
+}
+
+/*
 MZMeshData::MeshData* ResourceManager::LoadMeshData(LPCSTR fileName)
 {
     auto meshObjectListIter = m_meshObjectList.find(fileName);
@@ -494,3 +492,4 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
     }
     return meshData;
 }
+*/

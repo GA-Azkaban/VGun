@@ -8,42 +8,41 @@
 /// 2023.06.29 MJKIM
 /// </summary>
 
-class MZCamera;
+class Mesh;
+class Material;
+class VertexShader;
+class PixelShader;
+
 
 class Grid : public IDebugObject
 {
 public:
-	Grid();
-	Grid(ID3D11Device* pDevice, ID3D11DeviceContext* pDeviceContext, ID3D11RasterizerState* pRS);
+	Grid(ID3D11DeviceContext* deviceContext, ::Mesh* mesh, Material* material);
 	~Grid();
 
 public:
-	virtual void Update(MZCamera* pCamera, float deltaTime) override;
-	virtual void RenderDeferred() override;
-	virtual void SetWorldTM(const XMMATRIX& tm) override { 
-		if (!m_isActive)
-			return;
-		m_world = tm; 
-	};
+	virtual void Update(float deltaTime) override;
+	virtual void Render() override;
+	virtual void SetWorldTM(const XMMATRIX& tm) override;
 	virtual void SetActive(bool isActive) override { m_isActive = isActive; };
-	//virtual bool Pick(MZCamera* pCamera, float x, float y) override { return false; };
+
+	void SetPosition(float x, float y, float z) { m_position.x = x; m_position.y = y; m_position.z = z; }
+	void SetRotation(float x, float y, float z) { m_rotation.x = x; m_rotation.y = y; m_rotation.z = z; }
+	void SetScale(float x, float y, float z) { m_scale.x = x; m_scale.y = y; m_scale.z = z; }
 
 private:
-	void BuildGeometryBuffers();
+	ComPtr<ID3D11DeviceContext> m_deviceContext;
+	ComPtr<ID3D11RasterizerState> m_RS;
+	::Mesh* m_mesh;
+	Material* m_material;
+	bool m_isActive;
 
-private:
-	ComPtr<ID3D11Device> m_d3dDevice;
-	ComPtr<ID3D11DeviceContext> m_d3dImmediateContext;
+	VertexShader* m_vertexShader;
+	PixelShader* m_pixelShader;
 
-	ComPtr<ID3D11Buffer> m_VB;
-	ComPtr<ID3D11Buffer> m_IB;
-
-	ComPtr<ID3D11RasterizerState> m_pRS;
-
-	XMMATRIX m_world;
-	XMMATRIX m_view;
-	XMMATRIX m_proj;
-
-	bool m_isActive = true;
+	DirectX::XMMATRIX m_world;
+	DirectX::XMFLOAT3 m_position;
+	DirectX::XMFLOAT4 m_rotation;
+	DirectX::XMFLOAT3 m_scale;
 };
 

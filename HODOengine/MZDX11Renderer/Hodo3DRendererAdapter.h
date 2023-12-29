@@ -8,7 +8,7 @@ namespace hodoGIAdapter
 	{
 	public:
 		RendererAdapter() {
-			MZDX11Renderer::Instance.Get().Initialize();
+			MZDX11Renderer::Instance().Initialize();
 		};
 		virtual ~RendererAdapter() {
 
@@ -18,20 +18,20 @@ namespace hodoGIAdapter
 		//virtual void Initialize() { }
 		// 그림을 그릴 대상 윈도우를 정함
 		virtual void SetOutputWindow(UINT64 hWnd) override { 
-			MZDX11Renderer::Instance.Get().SetOutputWindow(hWnd); 
+			MZDX11Renderer::Instance().SetOutputWindow(hWnd); 
 		};
 		// 업데이트
 		virtual void Update(float deltaTime) override { 
-			MZDX11Renderer::Instance.Get().Update(deltaTime); 
+			MZDX11Renderer::Instance().Update(deltaTime); 
 		};
 		
 		virtual void Render() override { 
-			MZDX11Renderer::Instance.Get().Render(); 
+			MZDX11Renderer::Instance().Render(); 
 		};
 
 		// 창 크기가 변했을 때 처리해야 할 것들
 		virtual void ResizeResolution(unsigned int width, unsigned int height) override { 
-			MZDX11Renderer::Instance.Get().ResizeResolution(width, height); 
+			MZDX11Renderer::Instance().ResizeResolution(width, height); 
 		};
 
 	};

@@ -1,28 +1,22 @@
 #pragma once
 #include "DX11Define.h"
-#include "IDebugObject.h"
-
-/// <summary>
-/// 3D공간의 축을 나타내는 오브젝트
-/// 
-/// 2023.07.06 MJKIM
-/// </summary>
+#include "ILightObject.h"
 
 class Mesh;
 class Material;
 class VertexShader;
 class PixelShader;
 
-class Axis : public IDebugObject
+class LightObject : public ILightObject
 {
 public:
-	Axis(ID3D11DeviceContext* deviceContext, ::Mesh* mesh, Material* material);
-	~Axis();
+	LightObject(ID3D11DeviceContext* deviceContext, ::Mesh* mesh, Material* material, DirectX::XMFLOAT3 lightColor);
+	~LightObject();
 
-public:
 	virtual void Update(float deltaTime) override;
 	virtual void Render() override;
-	virtual void SetWorldTM(const XMMATRIX& tm) override;
+
+	virtual void SetWorldTM(const DirectX::XMMATRIX& tm) override;
 	virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 	void SetPosition(float x, float y, float z) { m_position.x = x; m_position.y = y; m_position.z = z; }
@@ -34,6 +28,7 @@ private:
 	ComPtr<ID3D11RasterizerState> m_RS;
 	::Mesh* m_mesh;
 	Material* m_material;
+	DirectX::XMFLOAT3 m_lightColor;
 	bool m_isActive;
 
 	VertexShader* m_vertexShader;
@@ -44,4 +39,3 @@ private:
 	DirectX::XMFLOAT4 m_rotation;
 	DirectX::XMFLOAT3 m_scale;
 };
-

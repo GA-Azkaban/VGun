@@ -67,8 +67,8 @@ public:
     // CScenedata 변환
     bool TranslateToD3DFormat_scene(Scenedata* pscene);
 
-    bool Convert_Optimize(Mesh* pMesh);		// 버텍스(노말), 텍스쳐 값으로 최적화를 해 준다.
-    bool ConvertAll(Mesh* pMesh);			// 모두 그냥 변환 (예시용)
+    bool Convert_Optimize(ASE::Mesh* pMesh);		// 버텍스(노말), 텍스쳐 값으로 최적화를 해 준다.
+    bool ConvertAll(ASE::Mesh* pMesh);			// 모두 그냥 변환 (예시용)
 
 
 private:
@@ -90,8 +90,8 @@ public:
     vector<unique_ptr<ASEMaterial>> m_list_materialdata;	// Material들의 리스트
 
     /// 한 씬에 N개의 메시가 존재할 수 있다.
-    Mesh* m_OneMesh;						// 메시 하나의 데이터가 들어갈 구조체
-    vector<unique_ptr<Mesh>> m_MeshList;				// 메시들
+    ASE::Mesh* m_OneMesh;						// 메시 하나의 데이터가 들어갈 구조체
+    vector<unique_ptr<ASE::Mesh>> m_MeshList;				// 메시들
     // 노드 인덱스에 대응되는 본 인덱스 
     std::map<int, int> nodeIdxByBoneIdx;
 
@@ -108,7 +108,7 @@ public:
     //--------------------------------------------------
     // Export
     //--------------------------------------------------
-    Mesh* GetMesh(int index);
+    ASE::Mesh* GetMesh(int index);
     vector<ASE::Mesh*> GetMeshes();
 
 

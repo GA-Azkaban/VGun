@@ -5,7 +5,7 @@
 
 // Used by shaders to store information about
 // specific variables in constant buffers
-struct ShaderVariable
+struct ShaderVariableInfo
 {
 	unsigned int ByteOffset;
 	unsigned int Size;
@@ -22,7 +22,7 @@ struct ConstantBufferInfo
 	unsigned int BindIndex;
 	ID3D11Buffer* ConstantBuffer;
 	unsigned char* LocalDataBuffer;
-	std::vector<ShaderVariable> Variables;
+	std::vector<ShaderVariableInfo> Variables;
 };
 
 // Contains info about a single SRV in a shader

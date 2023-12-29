@@ -3,7 +3,7 @@
 /// 렌더러의 인터페이스
 /// 2023.06.19 MJKIM
 
-namespace MZ3DAPI
+namespace MZRenderer
 {
 	class I3DRenderer
 	{
@@ -18,16 +18,14 @@ namespace MZ3DAPI
 		virtual void Update(float deltaTime) abstract;
 
 		// 렌더
-		virtual void BeginRender() abstract;
 		virtual void Render() abstract;
-		virtual void EndRender() abstract;
 
 		// 엔진 종료
 		virtual void Finalize() abstract;
 
 	public:
 		// 창 변환 관련
-		virtual void OnResize() abstract;
+		virtual void ResizeResolution(unsigned int width, unsigned int height) abstract;
 
 	public:
 		// 마우스 입력 관련

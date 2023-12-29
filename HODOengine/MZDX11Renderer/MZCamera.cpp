@@ -1,4 +1,5 @@
 #include "MZCamera.h"
+#include "MathHelper.h"
 
 MZCamera* MZCamera::mainCamera = nullptr;
 MZCamera* MZCamera::GetMainCamera()

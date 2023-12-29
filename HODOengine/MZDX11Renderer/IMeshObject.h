@@ -22,11 +22,11 @@ public:
 	};
 
 public:
-	virtual void Update(MZCamera* pCamera, float deltaTime) abstract;
-	virtual void RenderDeferred() abstract;
-	virtual bool Pick(MZCamera* pCamera, float x, float y) abstract;
-	virtual void SetPickingMode(bool isPickingModeOn) abstract;
-	virtual float GetDepth() abstract;
+	virtual void Update(float deltaTime) = 0;
+	virtual void Render() = 0;
+	virtual bool Pick(float x, float y) = 0;
+	virtual void SetPickingMode(bool isPickingModeOn) = 0;
+	virtual float GetDepth() = 0;
 
 private:
 	static std::vector<IMeshObject*> meshObjects;

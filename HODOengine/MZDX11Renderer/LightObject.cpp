@@ -1,23 +1,23 @@
-#include "Axis.h"
-#include "MZCamera.h"
+#include "LightObject.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "RasterizerState.h"
+#include "MZCamera.h"
 #include "DeferredBuffers.h"
 using namespace DirectX;
 
-Axis::Axis(ID3D11DeviceContext* deviceContext, Mesh* mesh, Material* material)
-	: m_deviceContext(deviceContext), m_mesh(mesh), m_material(material), m_isActive(true),
+LightObject::LightObject(ID3D11DeviceContext* deviceContext, Mesh* mesh, Material* material, DirectX::XMFLOAT3 lightColor)
+	: m_deviceContext(deviceContext), m_mesh(mesh), m_material(material), m_lightColor(lightColor), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_position{ 0, 0, 0 }, m_rotation{ 0, 0, 0, 1 }, m_scale{ 1, 1, 1 }
 {
-	m_RS = RasterizerState::Instance.Get().GetWireframeRS();
+	m_RS = RasterizerState::Instance.Get().GetSolidRS();
 	m_vertexShader = m_material->GetVertexShader();
 	m_pixelShader = m_material->GetPixelShader();
 }
 
-Axis::~Axis()
+LightObject::~LightObject()
 {
 	m_deviceContext.Reset();
 	m_RS.Reset();
@@ -28,10 +28,11 @@ Axis::~Axis()
 	delete m_material;
 }
 
-void Axis::Update(float deltaTime)
+void LightObject::Update(float deltaTime)
 {
 	if (!m_isActive)
 		return;
+
 	XMMATRIX trans = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 	XMMATRIX rotX = XMMatrixRotationX(m_rotation.x);
 	XMMATRIX rotY = XMMatrixRotationY(m_rotation.y);
@@ -42,22 +43,20 @@ void Axis::Update(float deltaTime)
 	m_world = XMMatrixTranspose(transformTM);
 }
 
-void Axis::Render()
+void LightObject::Render()
 {
-#ifdef _DEBUG
 	if (!m_isActive)
 		return;
 
 	ID3D11Buffer* vb = m_mesh->GetVertexBuffer();
 	ID3D11Buffer* ib = m_mesh->GetIndexBuffer();
 
-	UINT stride = sizeof(VertexStruct::PosColor);
+	UINT stride = sizeof(VertexStruct::Vertex);
 	UINT offset = 0;
 
 	m_deviceContext->RSSetState(m_RS.Get());
 
-	// 입력 배치 객체 셋팅
-	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_deviceContext->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
 	m_deviceContext->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
 
@@ -70,14 +69,24 @@ void Axis::Render()
 	m_vertexShader->CopyAllBufferData();
 	m_vertexShader->SetShader();
 
+	m_pixelShader->SetShaderResourceView("NormalMap", DeferredBuffers::Instance.Get().GetShaderResourceView(0));
+	m_pixelShader->SetShaderResourceView("Texture", DeferredBuffers::Instance.Get().GetShaderResourceView(1));
+	m_pixelShader->SetShaderResourceView("PositionTexture", DeferredBuffers::Instance.Get().GetShaderResourceView(2));
+
+	m_pixelShader->SetSamplerState("basicSampler", m_material->GetSamplerState());
+
+	m_pixelShader->SetFloat3("cameraPosition", MZCamera::GetMainCamera()->GetPosition());
+
+	m_pixelShader->SetFloat3("lightColor", m_lightColor);
+	m_pixelShader->SetFloat3("lightPosition", m_position);
+
 	m_pixelShader->CopyAllBufferData();
 	m_pixelShader->SetShader();
 
 	m_deviceContext->DrawIndexed(m_mesh->GetIndexCount(), 0, 0);
-#endif
 }
 
-void Axis::SetWorldTM(const XMMATRIX& tm)
+void LightObject::SetWorldTM(const DirectX::XMMATRIX& tm)
 {
 	m_world = tm;
 
@@ -91,3 +100,4 @@ void Axis::SetWorldTM(const XMMATRIX& tm)
 	XMStoreFloat4(&m_rotation, rot);
 	XMStoreFloat3(&m_scale, sc);
 }
+

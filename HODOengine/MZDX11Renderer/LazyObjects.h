@@ -1,30 +1,27 @@
 #pragma once
 
-namespace MZRenderer
+template <class T>
+class LazyObjects
 {
-	template <class T>
-	class LazyObjects
+public:
+	T& Get()
 	{
-	public:
-		T& Get()
-		{
-			if (!instance)
-				instance = new T();
-			return *instance;
-		}
+		if (!instance)
+			instance = new T();
+		return *instance;
+	}
 
-		void Release()
-		{
-			if (!instance)
-				return;
+	void Release()
+	{
+		if (!instance)
+			return;
 
-			delete instance;
-			instance = nullptr;
-		}
+		delete instance;
+		instance = nullptr;
+	}
 
-	private:
-		T* instance = nullptr;
-	};
-}
+private:
+	T* instance = nullptr;
+};
 
 

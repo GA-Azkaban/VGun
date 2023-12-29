@@ -1,5 +1,13 @@
 #include "RasterizerState.h"
 
+LazyObjects<RasterizerState> RasterizerState::Instance;
+
+RasterizerState::RasterizerState()
+	: m_wireframeRS(0), m_solidRS(0)
+{
+	
+}
+
 void RasterizerState::CreateRenderStates(ID3D11Device* device)
 {
 	D3D11_RASTERIZER_DESC solidDesc;
@@ -9,7 +17,7 @@ void RasterizerState::CreateRenderStates(ID3D11Device* device)
 	solidDesc.FrontCounterClockwise = false;
 	solidDesc.DepthClipEnable = true;
 
-	HR(device->CreateRasterizerState(&solidDesc, SolidRS.GetAddressOf()));
+	device->CreateRasterizerState(&solidDesc, m_solidRS.GetAddressOf());
 
 	D3D11_RASTERIZER_DESC wireframeDesc;
 	ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -18,14 +26,11 @@ void RasterizerState::CreateRenderStates(ID3D11Device* device)
 	wireframeDesc.FrontCounterClockwise = false;
 	wireframeDesc.DepthClipEnable = true;
 
-	HR(device->CreateRasterizerState(&wireframeDesc, WireframeRS.GetAddressOf()));
+	device->CreateRasterizerState(&wireframeDesc, m_wireframeRS.GetAddressOf());
 }
 
 void RasterizerState::DestroyRenderStates()
 {
-	ReleaseCOM(SolidRS);
-	ReleaseCOM(WireframeRS);
+	m_solidRS.Reset();
+	m_wireframeRS.Reset();
 }
-
-ComPtr<ID3D11RasterizerState> RasterizerState::WireframeRS = 0;
-ComPtr<ID3D11RasterizerState> RasterizerState::SolidRS = 0;

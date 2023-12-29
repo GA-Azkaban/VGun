@@ -1,5 +1,6 @@
 #pragma once
-#include "DeferredRenderer.h"
+#include "MZDX11Renderer.h"
+#include "RasterizerState.h"
 #include "IHodoGIFactory.h"
 #include "Hodo3DCameraAdapter.h"
 #include "DebugCube.h"
@@ -17,7 +18,7 @@ namespace hodoGIAdapter
 
 		virtual hodoGI::IDebugCube* CreateDebugCube() override
 		{
-			DebugCube* debugCube{ new DebugCube(DeferredRenderer::Instance.Get().GetDevice(), DeferredRenderer::Instance.Get().GetDeviceContext(), RasterizerState::WireframeRS.Get()) };
+			DebugCube* debugCube{ new DebugCube(MZDX11Renderer::Instance().GetDevice(), MZDX11Renderer::Instance().GetDeviceContext(), RasterizerState::Instance.Get().GetWireframeRS()) };
 			return new hodoGIAdapter::DebugCubeAdapter(debugCube);
 		}
 	};

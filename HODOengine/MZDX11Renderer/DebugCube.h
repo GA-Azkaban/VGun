@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DX11Define.h"
-#include "d3dx11Effect.h"	// effect, tech
 #include "IDebugObject.h"
 
 /// <summary>
@@ -22,9 +21,8 @@ public:
 	void SetColor(XMFLOAT4 color);
 
 public:
-	virtual void Update(MZCamera* pCamera, float deltaTime) override;
-	void Update(const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
-	virtual void RenderDeferred() override;
+	virtual void Update(float deltaTime) override;
+	virtual void Render() override;
 	virtual void SetWorldTM(const XMMATRIX& tm) override 
 	{ 
 		m_world = tm; 
@@ -36,11 +34,11 @@ public:
 		s_IsActive = isActive;
 		m_isActive = isActive; 
 	};
-	//virtual bool Pick(MZCamera* pCamera, float x, float y) override { return false; }
+	//virtual bool Pick(float x, float y) override { return false; }
 
 public:
-	void SetFillModeSolid() { m_pRenderstate = RasterizerState::SolidRS.Get(); };
-	void SetFillModeWireframe() { m_pRenderstate = RasterizerState::WireframeRS.Get(); };
+	void SetFillModeSolid();
+	void SetFillModeWireframe();
 
 private:
 	void BuildGeometryBuffers();

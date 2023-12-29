@@ -12,7 +12,7 @@ namespace hodoGIAdapter
 		MZCamera mzCamera;
 
 		CameraAdapter() {
-			mzCamera.SetFrustum(0.25f * MathHelper::Pi, MZDX11Renderer::Instance.Get().GetAspectRatio(), 1.0f, 1000.0f);
+			mzCamera.SetFrustum(0.25f * MathHelper::Pi, MZDX11Renderer::Instance().GetAspectRatio(), 1.0f, 1000.0f);
 		};
 		virtual ~CameraAdapter() {};
 

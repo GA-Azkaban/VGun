@@ -132,7 +132,7 @@ bool IShader::LoadShaderFile(LPCWSTR shaderFile)
 			var->GetDesc(&varDesc);
 
 			// Create the variable struct
-			ShaderVariable varStruct;
+			ShaderVariableInfo varStruct;
 			varStruct.ConstantBufferIndex = b;
 			varStruct.ByteOffset = varDesc.StartOffset;
 			varStruct.Size = varDesc.Size;
@@ -141,7 +141,7 @@ bool IShader::LoadShaderFile(LPCWSTR shaderFile)
 			std::string varName(varDesc.Name);
 			
 			// Add this variable to the table and the constant buffer
-			variableTable.insert(std::pair<std::string, ShaderVariable>(varName, varStruct));
+			variableTable.insert(std::pair<std::string, ShaderVariableInfo>(varName, varStruct));
 			constantBuffers[b].Variables.push_back(varStruct);
 		}
 	}
@@ -149,6 +149,131 @@ bool IShader::LoadShaderFile(LPCWSTR shaderFile)
 	// All set
 	shaderRefl->Release();
 	return true;
+}
+
+// Sets the shader and associated constant buffers in DirectX
+void IShader::SetShader()
+{
+	// Set the shader and any relevant constant buffers, which
+	// is an overrided method in a subclass
+	SetShaderAndConstantBuffers();
+}
+
+// Copies the relevant data to the all of this
+// shader's constant buffers. To just copy one
+// buffer, use CopyBufferData()
+void IShader::CopyAllBufferData()
+{
+	for (unsigned int i = 0; i < constantBufferCount; ++i)
+	{
+		deviceContext->UpdateSubresource(
+			constantBuffers[i].ConstantBuffer, 0, 0,
+			constantBuffers[i].LocalDataBuffer, 0, 0);
+	}
+}
+
+// Copies local data to the shader's specified constant buffer
+// index - The index of the buffer to copy.
+//			Useful for updating more frequently-changing
+//			variables without having to re-copy all buffers.
+// NOTE : The "index" of the buffer might NOT be the same
+//			as its register, especially if you have buffers
+//			bound to non-sequential registers!
+void IShader::CopyBufferData(unsigned int index)
+{
+	// Validate the index
+	if (index >= constantBufferCount)
+		return;
+
+	// Check for the buffer
+	ConstantBufferInfo* cb = &constantBuffers[index];
+	if (cb == nullptr)
+		return;
+
+	// Copy the data
+	deviceContext->UpdateSubresource(
+		cb->ConstantBuffer, 0, 0,
+		cb->LocalDataBuffer, 0, 0);
+}
+
+void IShader::CopyBufferData(std::string bufferName)
+{
+	// Check for the buffer
+	ConstantBufferInfo* cb = GetConstantBufferInfo(bufferName);
+	if (cb == nullptr)
+		return;
+
+	// Copy the data
+	deviceContext->UpdateSubresource(
+		cb->ConstantBuffer, 0, 0,
+		cb->LocalDataBuffer, 0, 0);
+}
+
+void IShader::SetData(std::string name, const void* data, unsigned int size)
+{
+	ShaderVariableInfo* var = GetVariableInfo(name, size);
+	if (var == nullptr)
+	{
+		return;
+	}
+
+	memcpy(constantBuffers[var->ConstantBufferIndex].LocalDataBuffer + var->ByteOffset,
+		data, size);
+}
+
+void IShader::SetInt(std::string name, int data)
+{
+	SetData(name, (void*)(&data), sizeof(int));
+}
+
+void IShader::SetFloat(std::string name, float data)
+{
+	SetData(name, (void*)(&data), sizeof(float));
+}
+
+void IShader::SetFloat2(std::string name, const float data[2])
+{
+	SetData(name, (void*)data, sizeof(float) * 2);
+}
+
+void IShader::SetFloat2(std::string name, const DirectX::XMFLOAT2 data)
+{
+	SetData(name, &data, sizeof(float) * 2);
+}
+
+void IShader::SetFloat3(std::string name, const float data[3])
+{
+	SetData(name, (void*)data, sizeof(float) * 3);
+}
+
+void IShader::SetFloat3(std::string name, const DirectX::XMFLOAT3 data)
+{
+	SetData(name, &data, sizeof(float) * 3);
+}
+
+void IShader::SetFloat4(std::string name, const float data[4])
+{
+	SetData(name, (void*)data, sizeof(float) * 4);
+}
+
+void IShader::SetFloat4(std::string name, const DirectX::XMFLOAT4 data)
+{
+	SetData(name, &data, sizeof(float) * 4);
+}
+
+void IShader::SetMatrix4x4(std::string name, const float data[16])
+{
+	SetData(name, (void*)data, sizeof(float) * 16);
+}
+
+void IShader::SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4 data)
+{
+	SetData(name, &data, sizeof(float) * 16);
+}
+
+void IShader::SetMatrix4x4(std::string name, const DirectX::XMMATRIX data)
+{
+	SetData(name, &data, sizeof(float) * 16);
 }
 
 const SRVInfo* IShader::GetShaderResourceViewInfo(std::string name)
@@ -223,4 +348,37 @@ void IShader::CleanUp()
 	variableTable.clear();
 	textureTable.clear();
 	samplerTable.clear();
+}
+
+ShaderVariableInfo* IShader::GetVariableInfo(std::string name, int size)
+{
+	std::unordered_map<std::string, ShaderVariableInfo>::iterator variableTableIter =
+		variableTable.find(name);
+
+	if (variableTableIter == variableTable.end())
+	{
+		return nullptr;
+	}
+
+	ShaderVariableInfo* varInfo = &(variableTableIter->second);
+
+	if (size < 0 || varInfo->Size != size)
+	{
+		return nullptr;
+	}
+
+	return varInfo;
+}
+
+ConstantBufferInfo* IShader::GetConstantBufferInfo(std::string name)
+{
+	std::unordered_map<std::string, ConstantBufferInfo*>::iterator cbTableIter =
+		constantBufferTable.find(name);
+
+	if (cbTableIter == constantBufferTable.end())
+	{
+		return nullptr;
+	}
+
+	return cbTableIter->second;
 }

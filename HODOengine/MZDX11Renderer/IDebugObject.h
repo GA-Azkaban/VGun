@@ -22,9 +22,8 @@ public:
 	};
 
 public:
-	virtual void Update(MZCamera* pCamera, float deltaTime) abstract;
-	virtual void RenderDeferred() abstract;
-	//virtual bool Pick(MZCamera* pCamera, float x, float y) abstract;
+	virtual void Update(float deltaTime) abstract;
+	virtual void Render() abstract;
 
 private:
 	static std::vector<IDebugObject*> debugObjects;

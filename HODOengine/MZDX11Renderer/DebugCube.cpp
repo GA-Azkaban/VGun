@@ -1,8 +1,7 @@
 #include "DebugCube.h"
 #include "MZCamera.h"
 #include "Vertex.h"
-#include "Effects.h"
-
+#include "RasterizerState.h"
 
 bool DebugCube::s_IsActive = true;
 
@@ -26,7 +25,7 @@ void DebugCube::SetColor(XMFLOAT4 color)
 	m_color = color;
 }
 
-void DebugCube::Update(MZCamera* pCamera, float deltaTime)
+void DebugCube::Update(float deltaTime)
 {
 	if (!m_isActive)
 		return;
@@ -35,61 +34,63 @@ void DebugCube::Update(MZCamera* pCamera, float deltaTime)
 	//XMStoreFloat4x4(&m_world, XMMatrixIdentity());
 	//XMStoreFloat4x4(&m_view, pCamera->View());
 	//XMStoreFloat4x4(&m_proj, pCamera->Proj());
-	DirectX::XMMATRIX view = pCamera->View();
+	/*DirectX::XMMATRIX view = pCamera->View();
 	DirectX::XMMATRIX proj = pCamera->Proj();
-	Update(view, proj);
+	Update(view, proj);*/
 }
 
-void DebugCube::Update(const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
-{
-	if (!m_isActive) 
-		return;
-	XMStoreFloat4x4(&m_view, view);
-	XMStoreFloat4x4(&m_proj, proj);
-}
-
-void DebugCube::RenderDeferred()
+void DebugCube::Render()
 {
 #ifdef _DEBUG
 	if (!m_isActive) 
 		return;
-	// 입력 배치 객체 셋팅
-	m_d3dImmediateContext->IASetInputLayout(InputLayouts::PosColor);
-	m_d3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//// 입력 배치 객체 셋팅
+	//m_d3dImmediateContext->IASetInputLayout(InputLayouts::PosColor);
+	//m_d3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	// 렌더 스테이트
-	m_d3dImmediateContext->RSSetState(m_pRenderstate.Get());
+	//// 렌더 스테이트
+	//m_d3dImmediateContext->RSSetState(m_pRenderstate.Get());
 
-	// 버텍스버퍼와 인덱스버퍼 셋팅
-	UINT stride = sizeof(VertexStruct::PosColor);
-	UINT offset = 0;
-	m_d3dImmediateContext->IASetVertexBuffers(0, 1, m_VB.GetAddressOf(), &stride, &offset);
-	m_d3dImmediateContext->IASetIndexBuffer(m_IB.Get(), DXGI_FORMAT_R32_UINT, 0);
+	//// 버텍스버퍼와 인덱스버퍼 셋팅
+	//UINT stride = sizeof(VertexStruct::PosColor);
+	//UINT offset = 0;
+	//m_d3dImmediateContext->IASetVertexBuffers(0, 1, m_VB.GetAddressOf(), &stride, &offset);
+	//m_d3dImmediateContext->IASetIndexBuffer(m_IB.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-	/// WVP TM등을 셋팅
-	// Set constants
-	XMMATRIX view = XMLoadFloat4x4(&m_view);
-	XMMATRIX proj = XMLoadFloat4x4(&m_proj);
-	//XMMATRIX world = XMLoadFloat4x4(&m_world);
-	XMMATRIX worldViewProj = m_world * view * proj;
+	///// WVP TM등을 셋팅
+	//// Set constants
+	//XMMATRIX view = XMLoadFloat4x4(&m_view);
+	//XMMATRIX proj = XMLoadFloat4x4(&m_proj);
+	////XMMATRIX world = XMLoadFloat4x4(&m_world);
+	//XMMATRIX worldViewProj = m_world * view * proj;
 
-	ID3DX11EffectTechnique* mTech = Effects::DebugObjectFX->ColorTech;
+	//ID3DX11EffectTechnique* mTech = Effects::DebugObjectFX->ColorTech;
 
-	// 테크닉은...
-	D3DX11_TECHNIQUE_DESC techDesc;
-	mTech->GetDesc(&techDesc);
+	//// 테크닉은...
+	//D3DX11_TECHNIQUE_DESC techDesc;
+	//mTech->GetDesc(&techDesc);
 
-	Effects::DebugObjectFX->SetWorld(m_world);
-	Effects::DebugObjectFX->SetWorldViewProj(worldViewProj);
-	Effects::DebugObjectFX->SetColor(m_color);
+	//Effects::DebugObjectFX->SetWorld(m_world);
+	//Effects::DebugObjectFX->SetWorldViewProj(worldViewProj);
+	//Effects::DebugObjectFX->SetColor(m_color);
 
-	// 렌더패스는...
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		mTech->GetPassByIndex(p)->Apply(0, m_d3dImmediateContext.Get());
-		m_d3dImmediateContext->DrawIndexed(36, 0, 0);
-	}
+	//// 렌더패스는...
+	//for (UINT p = 0; p < techDesc.Passes; ++p)
+	//{
+	//	mTech->GetPassByIndex(p)->Apply(0, m_d3dImmediateContext.Get());
+	//	m_d3dImmediateContext->DrawIndexed(36, 0, 0);
+	//}
 #endif
+}
+
+void DebugCube::SetFillModeSolid()
+{
+	m_pRenderstate = RasterizerState::Instance.Get().GetSolidRS();
+}
+
+void DebugCube::SetFillModeWireframe()
+{
+	m_pRenderstate = RasterizerState::Instance.Get().GetWireframeRS();
 }
 
 void DebugCube::BuildGeometryBuffers()

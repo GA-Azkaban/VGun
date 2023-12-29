@@ -1,6 +1,5 @@
 #pragma once
 #include "DX11Define.h"
-#include "d3dx11Effect.h"
 #include "Vertex.h"
 #include "IUIObject.h"
 #include "xnacollision.h"
@@ -47,7 +46,7 @@ private:
 	// 렌더스테이트. 렌더링을 어떻게 할 것인가에 대한 것.
 	ComPtr<ID3D11RasterizerState> m_pRenderstate;
 
-	std::vector<VertexStruct::PosTex> vertices;
+	std::vector<VertexStruct::Vertex> vertices;
 
 	// 변환 관련
 	DirectX::XMMATRIX m_world;	// 월드 변환 행렬 (로컬->월드)

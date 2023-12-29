@@ -10,7 +10,6 @@ enum class BUFFERTYPE
 	BUFFER_DIFFUSE,
 	BUFFER_TANGENT,
 	BUFFER_NORMALMAP,
-	//BUFFER_DEPTH,
 
 	GBUFFER_COUNT,
 };
@@ -19,8 +18,8 @@ class DeferredBuffers
 {
 public:
 	~DeferredBuffers();
-	static MZRenderer::LazyObjects<DeferredBuffers> Instance;
-	friend MZRenderer::LazyObjects<DeferredBuffers>;
+	static LazyObjects<DeferredBuffers> Instance;
+	friend LazyObjects<DeferredBuffers>;
 
 	void Initialize(ID3D11Device* device, int textureWidth, int textureHeight);
 	void Finalize();
@@ -39,11 +38,6 @@ public:
 			return nullptr;
 		}
 	}
-	/*inline ID3D11ShaderResourceView* GetZBufferShaderResourceView()
-	{
-		return m_pZBufferRSV;
-	}*/
-
 
 private:
 	DeferredBuffers();
@@ -54,9 +48,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pRenderTargetTextures[(int)BUFFERTYPE::GBUFFER_COUNT];
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTagetViews[(int)BUFFERTYPE::GBUFFER_COUNT];
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pShaderResourceViews[(int)BUFFERTYPE::GBUFFER_COUNT];
-	// Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pZBufferRSV;
-	// Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pDepthStencilBuffer;
 	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
-
 };
 
