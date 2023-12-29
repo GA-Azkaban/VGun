@@ -31,39 +31,39 @@ void PlayerMove::CheckMoveDirection()
 {
 	_moveDirection = 5;
 
-	if (API::GetKeyPressing('I'))
+	if (API::GetKeyPressing(DIK_I))
 	{
 		_moveDirection = 8;
 	}
-	if (API::GetKeyPressing('L'))
+	if (API::GetKeyPressing(DIK_L))
 	{
 		_moveDirection = 6;
 	}
-	if (API::GetKeyPressing('K'))
+	if (API::GetKeyPressing(DIK_K))
 	{
 		_moveDirection = 2;
 	}
-	if (API::GetKeyPressing('J'))
+	if (API::GetKeyPressing(DIK_J))
 	{
 		_moveDirection = 4;
 	}
-	if (API::GetKeyPressing('I') && API::GetKeyPressing('J'))
+	if (API::GetKeyPressing(DIK_I) && API::GetKeyPressing(DIK_J))
 	{
 		_moveDirection = 7;
 	}
-	if (API::GetKeyPressing('I') && API::GetKeyPressing('L'))
+	if (API::GetKeyPressing(DIK_I) && API::GetKeyPressing(DIK_L))
 	{
 		_moveDirection = 9;
 	}
-	if (API::GetKeyPressing('J') && API::GetKeyPressing('K'))
+	if (API::GetKeyPressing(DIK_J) && API::GetKeyPressing(DIK_K))
 	{
 		_moveDirection = 1;
 	}
-	if (API::GetKeyPressing('K') && API::GetKeyPressing('L'))
+	if (API::GetKeyPressing(DIK_K) && API::GetKeyPressing(DIK_L))
 	{
 		_moveDirection = 3;
 	}
-	if (API::GetKeyDown(VK_SPACE))
+	if (API::GetKeyDown(DIK_SPACE))
 	{
 		Jump();
 	}
