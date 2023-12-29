@@ -15,40 +15,64 @@ namespace API
 		{
 			return HDEngine::SceneSystem::Instance().CreateScene(sceneName);
 		}
+
 		HODO_API void LoadScene(HDData::Scene* scene)
 		{
 			HDEngine::SceneSystem::Instance().LoadScene(scene);
 		}
+
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName, HDData::GameObject* parentObject)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 
 			return obj;
 		}
-		HODO_API bool GetKeyDown(int keyCode)
+
+		HODO_API bool GetKeyDown(BYTE keyCode)
 		{
 			return HDEngine::InputSystem::Instance().GetKeyDown(keyCode);
 		}
-		HODO_API bool GetKeyUp(int keyCode)
+
+		HODO_API bool GetKeyUp(BYTE keyCode)
 		{
 			return HDEngine::InputSystem::Instance().GetKeyUp(keyCode);
 		}
-		HODO_API bool GetKeyPressing(int keyCode)
+
+		HODO_API bool GetKeyPressing(BYTE keyCode)
 		{
-			return HDEngine::InputSystem::Instance().GetKeyPressing(keyCode);
+			return HDEngine::InputSystem::Instance().GetKey(keyCode);
 		}
+
+		HODO_API bool GetMouseDown(int keyCode)
+		{
+			return HDEngine::InputSystem::Instance().GetMouseDown(keyCode);
+		}
+
+		HODO_API bool GetMouseUp(int keyCode)
+		{
+			return HDEngine::InputSystem::Instance().GetMouseUp(keyCode);
+		}
+
+		HODO_API bool GetMouseHold(int keyCode)
+		{
+			return HDEngine::InputSystem::Instance().GetMouse(keyCode);
+		}
+
 		HODO_API HDMath::HDFLOAT2 GetMousePosition()
 		{
 			return HDEngine::InputSystem::Instance().GetMousePosition();
 		}
-		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized()
+
+		HODO_API float GetMouseWheel()
 		{
-			return HDEngine::InputSystem::Instance().GetMousePositionNormalized();
+			return HDEngine::InputSystem::Instance().GetMouseWheel();
 		}
+
 		HODO_API float GetDeltaTime()
 		{
 			return HDEngine::TimeSystem::Instance().GetDeltaTime();
 		}
+
 		HODO_API void DebugModeOn(int flag)
 		{
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);

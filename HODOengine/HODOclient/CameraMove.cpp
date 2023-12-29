@@ -11,57 +11,57 @@ void CameraMove::Update()
 	float deltaTime = API::GetDeltaTime();
 	moveSpeed = 5.0f;
 
-	if (API::GetKeyPressing(VK_SHIFT))
+	if (API::GetKeyPressing(DIK_LSHIFT))
 	{
 		moveSpeed *= 2.0f;
 	}
 
-	if (API::GetKeyPressing('W'))
+	if (API::GetKeyPressing(DIK_W))
 	{
 		Walk(moveSpeed * deltaTime);
 	}
 
-	if (API::GetKeyPressing('S'))
+	if (API::GetKeyPressing(DIK_S))
 	{
 		Walk(-moveSpeed * deltaTime);
 	}
 
-	if (API::GetKeyPressing('A'))
+	if (API::GetKeyPressing(DIK_A))
 	{
 		Strafe(-moveSpeed * deltaTime);
 	}
 
-	if (API::GetKeyPressing('D'))
+	if (API::GetKeyPressing(DIK_D))
 	{
 		Strafe(moveSpeed * deltaTime);
 	}
 
-	if (API::GetKeyPressing('Q'))
+	if (API::GetKeyPressing(DIK_Q))
 	{
 		WorldUpDown(-moveSpeed * deltaTime);
 	}
 
-	if (API::GetKeyPressing('E'))
+	if (API::GetKeyPressing(DIK_E))
 	{
 		WorldUpDown(moveSpeed * deltaTime);
 	}
 
-	if (API::GetKeyPressing(VK_LEFT))
+	if (API::GetKeyPressing(DIK_LEFTARROW))
 	{
 		RotateY(-moveSpeed * deltaTime / 4);
 	}
 
-	if (API::GetKeyPressing(VK_RIGHT))
+	if (API::GetKeyPressing(DIK_RIGHTARROW))
 	{
 		RotateY(moveSpeed * deltaTime / 4);
 	}
 
-	if (API::GetKeyPressing(VK_DOWN))
+	if (API::GetKeyPressing(DIK_DOWNARROW))
 	{
 		Pitch(moveSpeed * deltaTime / 4);
 	}
 
-	if (API::GetKeyPressing(VK_UP))
+	if (API::GetKeyPressing(DIK_UPARROW))
 	{
 		Pitch(-moveSpeed * deltaTime / 4);
 	}
@@ -72,7 +72,7 @@ void CameraMove::Update()
 
 void CameraMove::OnMouseMove()
 {
-	if (!API::GetKeyPressing(VK_RBUTTON))
+	if (!API::GetKeyPressing(MOUSE_RIGHT))
 	{
 		return;
 	}

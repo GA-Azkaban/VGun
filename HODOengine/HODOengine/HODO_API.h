@@ -30,6 +30,7 @@
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
 #include "MeshRenderer.h"
+#include "InputData.h"
 
 #include "ObjectSystem.h"
 
@@ -43,11 +44,14 @@ namespace API
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		
 		// 키 입력을 위한 함수
-		HODO_API bool GetKeyDown(int keyCode);
-		HODO_API bool GetKeyUp(int keyCode);
-		HODO_API bool GetKeyPressing(int keyCode);
+		HODO_API bool GetKeyDown(BYTE keyCode);
+		HODO_API bool GetKeyUp(BYTE keyCode);
+		HODO_API bool GetKeyPressing(BYTE keyCode);
+		HODO_API bool GetMouseDown(int keyCode);
+		HODO_API bool GetMouseUp(int keyCode);
+		HODO_API bool GetMouseHold(int keyCode);
 		HODO_API HDMath::HDFLOAT2 GetMousePosition();
-		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized();
+		HODO_API float GetMouseWheel();
 
 		// 디버그 시스템을 위한 함수
 		HODO_API void DebugModeOn(int flag);

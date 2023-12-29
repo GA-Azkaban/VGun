@@ -78,7 +78,7 @@ void HODOengine::Initialize()
 	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
 	_timeSystem.Initialize();
-	_inputSystem.Initialize(_hWnd, _screenWidth, _screenHeight);
+	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
 	_debugSystem.Initialize();
 	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	//_physicsSystem.Initialize();
