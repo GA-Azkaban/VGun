@@ -19,6 +19,7 @@ TestScene::TestScene()
 	_scene = API::CreateScene("Test");
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+	mainCam->GetTransform()->SetWorldPosition(HDMath::HDFLOAT3{ 0.0f, 0.0f, -10.0f });
 
 	//auto camera = API::CreateObject(_scene);
 	//camera->AddComponent<MovableCamera>()->SetMainCamera();
@@ -36,14 +37,14 @@ TestScene::TestScene()
 	//colli->Setflag(eColliderType::PLAYER);
 
 	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene);
+	/*auto playerTest = API::CreateObject(_scene);
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
 
 	playerTest->AddComponent<HDData::AudioSource>();
-	playerTest->AddComponent<TestSound>();
+	playerTest->AddComponent<TestSound>();*/
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 
 	
@@ -52,12 +53,12 @@ TestScene::TestScene()
 	//playerColli->Setflag(eColliderType::PLAYER);
 
 	// collider 여러 개를 만들어 보자.
-	auto boxTest = API::CreateObject(_scene);
-	boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 10.f, 1.f});
-	//auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
+	//auto boxTest = API::CreateObject(_scene);
+	//boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 10.f, 1.f});
+	////auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
 
-	auto sphereTest = API::CreateObject(_scene);
-	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
+	//auto sphereTest = API::CreateObject(_scene);
+	//sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
 	API::LoadScene(_scene);

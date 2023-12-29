@@ -21,7 +21,7 @@
 #include "DLL_Loader.h"
 
 #ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\MZDX11Renderer.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
 #else
 #define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
 #endif // _DEBUG

@@ -116,8 +116,8 @@ namespace HDData
 
 	void Camera::UpdateRenderData()
 	{
-		_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
-		// _graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
+		//_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
+		_graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
 	void Camera::SetAsMainCamera()

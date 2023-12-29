@@ -1,0 +1,537 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header">
+      <UniqueIdentifier>{26b39938-7d25-4921-88f8-a17e43f065b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Rendererer">
+      <UniqueIdentifier>{ee0fff82-2706-4edc-b5e6-c245a479728a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. DeferredRendering">
+      <UniqueIdentifier>{8ca6142a-6c9c-4302-a05b-0dc38c20ddd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. DeferredRendering\DeferredBuffers">
+      <UniqueIdentifier>{7451cf1e-9391-4d59-83ac-fba5037f48d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. DeferredRendering\DeferredRenderer">
+      <UniqueIdentifier>{3b65331d-06af-46ef-97d7-c908f22b58ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. ShaderClass">
+      <UniqueIdentifier>{2aced9ac-e843-408c-b3c5-654f557624a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. ShaderClass\ShaderStruct">
+      <UniqueIdentifier>{e185f205-640c-43c8-9b7c-322b1b60ec7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. ShaderClass\IShader">
+      <UniqueIdentifier>{726c7344-aff3-4e21-8d42-ea225df2a690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. ShaderClass\VertexShader">
+      <UniqueIdentifier>{c05d95bb-56f4-4409-93d8-ba1ac40d0a59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. ShaderClass\PixelShader">
+      <UniqueIdentifier>{f292ea51-d8f3-4073-8be1-4ffd5c0d4bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3. HLSL">
+      <UniqueIdentifier>{673dc7b1-fe90-42d4-b8c0-fda25fbf2b9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager">
+      <UniqueIdentifier>{8d890dcc-586c-4a70-b4fd-18652ddc1aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager\DataStruct">
+      <UniqueIdentifier>{f6185093-44a3-4a97-9934-3946409dc5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager\DataStruct\Animation">
+      <UniqueIdentifier>{5cd750a7-550b-4c4d-a4c9-e2ae58473323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager\DataStruct\MeshData">
+      <UniqueIdentifier>{b4c1bf8f-6f3c-4198-8d56-c97d33117913}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager\DataStruct\Skeleton">
+      <UniqueIdentifier>{803bef12-f294-4e06-aa3e-4bb08c4a8714}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager\ResourceManager">
+      <UniqueIdentifier>{0e6370a4-642c-4455-9737-2f98f5541845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4. Manager\ShaderManager">
+      <UniqueIdentifier>{42f91449-6862-435d-ba4a-0bb1d2cd46a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects">
+      <UniqueIdentifier>{1759284a-1f66-49c0-b826-998a3002318b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\Camera">
+      <UniqueIdentifier>{b826338f-5479-43ef-9cc5-25e58ebf6dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\HelperObject">
+      <UniqueIdentifier>{e69b59d4-4ae9-498d-8cb8-e68bf9a5fd13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\MeshObject">
+      <UniqueIdentifier>{81008999-5c49-4eb4-807f-f2837182a83e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\MeshObject\StaticMesh">
+      <UniqueIdentifier>{caf6fc02-8d2c-4423-974d-b469d6ac8bbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\MeshObject\SkinnedMesh">
+      <UniqueIdentifier>{2ddf9037-1b44-444c-bfd9-747b752cec90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\MeshObject\DebugObject">
+      <UniqueIdentifier>{595c9d70-ba9d-4b22-a156-84ca2d10937d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\MeshObject\DebugObject\DebugSphere">
+      <UniqueIdentifier>{1510d56d-302a-479c-8a11-be76e02c4c02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\MeshObject\DebugObject\DebugCube">
+      <UniqueIdentifier>{913ceb01-211d-4200-901b-f69643d1f1b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\UI">
+      <UniqueIdentifier>{7352261d-b129-4202-82b8-03e336852a66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\Lights">
+      <UniqueIdentifier>{6eb9c3a6-f678-4706-9461-5e5eb440d5d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\0. Interface">
+      <UniqueIdentifier>{c2a4cd6a-0c60-4391-a138-cfb3757ac5b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\0. Interface\IRenderable">
+      <UniqueIdentifier>{43128355-df55-4ea3-9b54-5d3bf15febbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\0. Interface\IDebugObject">
+      <UniqueIdentifier>{09a22399-dba1-4f36-8947-f008d3c2de28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\0. Interface\IMeshObject">
+      <UniqueIdentifier>{0c2f3ce9-9c58-4d63-bc8a-853e25300094}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\0. Interface\IUIObject">
+      <UniqueIdentifier>{b9af29b9-4d5b-418e-b086-50843ed0ec12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\0. Interface\ILightObject">
+      <UniqueIdentifier>{9d5aface-38c8-41f8-93cf-1fd4a1cfb910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Adapter">
+      <UniqueIdentifier>{2df98c61-a3e7-47e8-bd50-7527e74441ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Adapter\Hodo3DGIAdapter">
+      <UniqueIdentifier>{44a5762a-ca28-4225-bb35-6f77d4739e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter">
+      <UniqueIdentifier>{1935bb31-be9d-48e4-b924-486a1736f817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter">
+      <UniqueIdentifier>{5f78ef35-d9e1-47af-a609-f8b89c0e188a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter">
+      <UniqueIdentifier>{c9d236bb-22f8-46ba-b259-7a2cc8ccf523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter">
+      <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components">
+      <UniqueIdentifier>{77c539dd-e2fc-460e-9278-9fd8713290d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\Mesh">
+      <UniqueIdentifier>{c6a04ca9-8b3c-489b-9b40-755da0f35c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\Vertex">
+      <UniqueIdentifier>{6d554c71-05a3-4cd3-8996-ac9bbb1ad79e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\Material">
+      <UniqueIdentifier>{2945b068-eacb-4134-b1ba-cfc157e868ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\Animation">
+      <UniqueIdentifier>{df148319-e817-4fd5-b952-011861238e2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Rendererer\Interface">
+      <UniqueIdentifier>{8d4338b6-1def-4fd2-9e85-673883041484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\RasterizerState">
+      <UniqueIdentifier>{ba38b57f-7ba1-445c-9fa6-5a6b31fbf1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util">
+      <UniqueIdentifier>{0f69de03-2b8d-4516-90f2-80f82a006dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\etc">
+      <UniqueIdentifier>{8df37b81-952b-4903-97c3-f24bb2338974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\MZUtility">
+      <UniqueIdentifier>{ce5d558b-cb81-4ae9-9e72-baa44adaa6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\Singleton">
+      <UniqueIdentifier>{6ac12bce-0cc9-4634-ba06-c01f2eda60dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\DXTK">
+      <UniqueIdentifier>{35695bbe-71a5-4ceb-8809-165818c61125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\TextureLoader">
+      <UniqueIdentifier>{e5927962-15ed-4684-a628-c6675821c39a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\GeometryGenerator">
+      <UniqueIdentifier>{c5bd62c0-8b3e-4113-acb2-c2732d81b0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Util\Macro">
+      <UniqueIdentifier>{7374c818-48d0-4935-baa5-36a637b7c07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Math">
+      <UniqueIdentifier>{3290912d-c1bc-4763-9f2e-8ddaee62f5f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Math\header">
+      <UniqueIdentifier>{5ab0f13e-43e8-4233-bede-9012861dbf01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Math\source">
+      <UniqueIdentifier>{5aa19f90-984b-4d10-8fe1-a3fc92db5c0a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MZDX11Renderer.h">
+      <Filter>0.Rendererer</Filter>
+    </ClInclude>
+    <ClInclude Include="MZCamera.h">
+      <Filter>5. Objects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="TextureBox.h">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Genji.h">
+      <Filter>5. Objects\MeshObject\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Pig.h">
+      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>6. Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="LazyObjects.h">
+      <Filter>8. Util\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedMesh.h">
+      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMesh.h">
+      <Filter>5. Objects\MeshObject\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>4. Manager\DataStruct\MeshData</Filter>
+    </ClInclude>
+    <ClInclude Include="YunuAnimation.h">
+      <Filter>4. Manager\DataStruct\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>4. Manager\DataStruct\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="mathConversion.h">
+      <Filter>7. Math\header</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>7. Math\header</Filter>
+    </ClInclude>
+    <ClInclude Include="xnacollision.h">
+      <Filter>7. Math\header</Filter>
+    </ClInclude>
+    <ClInclude Include="xnamath.h">
+      <Filter>7. Math\header</Filter>
+    </ClInclude>
+    <ClInclude Include="MZUtility.h">
+      <Filter>8. Util\MZUtility</Filter>
+    </ClInclude>
+    <ClInclude Include="YunuAnimInstance.h" />
+    <ClInclude Include="DeferredRenderer.h">
+      <Filter>1. DeferredRendering\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="DXTKFont.h">
+      <Filter>8. Util\DXTK</Filter>
+    </ClInclude>
+    <ClInclude Include="DX11Define.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Axis.h">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugCube.h">
+      <Filter>5. Objects\MeshObject\DebugObject\DebugCube</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>5. Objects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIText.h">
+      <Filter>5. Objects\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="ASEFile.h" />
+    <ClInclude Include="ASEParser.h" />
+    <ClInclude Include="Lexer.h" />
+    <ClInclude Include="ParsingDataClass.h" />
+    <ClInclude Include="Hodo3DFactoryAdapter.h">
+      <Filter>8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="Hodo3DCameraAdapter.h">
+      <Filter>8. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="Hodo3DRendererAdapter.h">
+      <Filter>8. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoDebugCubeAdapter.h">
+      <Filter>8. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderStruct.h">
+      <Filter>2. ShaderClass\ShaderStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>6. Components\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>6. Components\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>2. ShaderClass\IShader</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>2. ShaderClass\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>2. ShaderClass\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>6. Components\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="IRenderableObject.h">
+      <Filter>5. Objects\0. Interface\IRenderable</Filter>
+    </ClInclude>
+    <ClInclude Include="IDebugObject.h">
+      <Filter>5. Objects\0. Interface\IDebugObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IMeshObject.h">
+      <Filter>5. Objects\0. Interface\IMeshObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IUIObject.h">
+      <Filter>5. Objects\0. Interface\IUIObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights.h">
+      <Filter>5. Objects\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="LightObject.h">
+      <Filter>5. Objects\Lights</Filter>
+    </ClInclude>
+    <ClInclude Include="ILightObject.h">
+      <Filter>5. Objects\0. Interface\ILightObject</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredBuffers.h">
+      <Filter>1. DeferredRendering\DeferredBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>4. Manager\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>4. Manager\ShaderManager</Filter>
+    </ClInclude>
+    <ClInclude Include="I3DRenderer.h">
+      <Filter>0.Rendererer\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>8. Util\TextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGenerator.h">
+      <Filter>8. Util\GeometryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerState.h">
+      <Filter>6. Components\RasterizerState</Filter>
+    </ClInclude>
+    <ClInclude Include="MZMacro.h">
+      <Filter>8. Util\Macro</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MZDX11Renderer.cpp">
+      <Filter>0.Rendererer</Filter>
+    </ClCompile>
+    <ClCompile Include="MZCamera.cpp">
+      <Filter>5. Objects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureBox.cpp">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Genji.cpp">
+      <Filter>5. Objects\MeshObject\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Pig.cpp">
+      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>6. Components\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinnedMesh.cpp">
+      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMesh.cpp">
+      <Filter>5. Objects\MeshObject\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>4. Manager\DataStruct\MeshData</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>7. Math\source</Filter>
+    </ClCompile>
+    <ClCompile Include="xnacollision.cpp">
+      <Filter>7. Math\source</Filter>
+    </ClCompile>
+    <ClCompile Include="YunuAnimInstance.cpp" />
+    <ClCompile Include="DeferredRenderer.cpp">
+      <Filter>1. DeferredRendering\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="DXTKFont.cpp">
+      <Filter>8. Util\DXTK</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugCube.cpp">
+      <Filter>5. Objects\MeshObject\DebugObject\DebugCube</Filter>
+    </ClCompile>
+    <ClCompile Include="Axis.cpp">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>5. Objects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIText.cpp">
+      <Filter>5. Objects\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ASEFile.cpp" />
+    <ClCompile Include="ASEParser.cpp" />
+    <ClCompile Include="Lexer.cpp" />
+    <ClCompile Include="ParsingDataClass.cpp" />
+    <ClCompile Include="HodoDebugCubeAdapter.cpp">
+      <Filter>8. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>6. Components\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>6. Components\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="IShader.cpp">
+      <Filter>2. ShaderClass\IShader</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>2. ShaderClass\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>2. ShaderClass\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="IDebugObject.cpp">
+      <Filter>5. Objects\0. Interface\IDebugObject</Filter>
+    </ClCompile>
+    <ClCompile Include="IMeshObject.cpp">
+      <Filter>5. Objects\0. Interface\IMeshObject</Filter>
+    </ClCompile>
+    <ClCompile Include="IUIObject.cpp">
+      <Filter>5. Objects\0. Interface\IUIObject</Filter>
+    </ClCompile>
+    <ClCompile Include="LightObject.cpp">
+      <Filter>5. Objects\Lights</Filter>
+    </ClCompile>
+    <ClCompile Include="ILightObject.cpp">
+      <Filter>5. Objects\0. Interface\ILightObject</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredBuffers.cpp">
+      <Filter>1. DeferredRendering\DeferredBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>4. Manager\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>4. Manager\ShaderManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>8. Util\TextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGenerator.cpp">
+      <Filter>8. Util\GeometryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerState.cpp">
+      <Filter>6. Components\RasterizerState</Filter>
+    </ClCompile>
+    <ClCompile Include="Hodo3DRendererAdapter.cpp">
+      <Filter>8. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="Hodo3DFactoryAdapter.cpp">
+      <Filter>8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="wire.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="LightHelper.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinnedMeshDeferred.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Sky.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshDeferred.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="YunuSkinnedMeshDeferred.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="PBR.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="PBRLightHelper.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="Basic.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="BasicTex.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="color.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="ComputeLight.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugObject.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="UIObject.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="UIText.fx">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugVertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="xnamathvector.inl">
+      <Filter>8. Util\etc</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MZDX11Renderer.rc">
+      <Filter>0.Rendererer</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
