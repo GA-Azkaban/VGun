@@ -1,4 +1,4 @@
-﻿#include "DebugSystem.h"
+#include "DebugSystem.h"
 //#include "HodoDebugCube.h"
 #include "GameObject.h"
 

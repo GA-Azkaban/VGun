@@ -23,13 +23,11 @@ namespace HDEngine
 		void Initialize();
 		void Update();
 
-	/// <summary>
-	///  µğ¹ö±× °ü·Ã ÇÔ¼ö
-	/// </summary>
+		// ë””ë²„ê·¸ ê´€ë ¨ í•¨ìˆ˜
 	public:
-		// Äİ¶óÀÌ´õÀÇ µğ¹ö±× µ¥ÀÌÅÍ¸¦ Ãß°¡ÇØµÎ´Â ÇÔ¼ö
+		// ì½œë¼ì´ë”ì˜ ë””ë²„ê·¸ ë°ì´í„°ë¥¼ ì¶”ê°€í•´ë‘ëŠ” í•¨ìˆ˜
 		void AddDebugData(int flag, HDData::GameObject* obj ,HDMath::HDFLOAT4 color);
-		// Äİ¶óÀÌ´õ°¡ ÀÖ´Â ¿ÀºêÁ§Æ®¿¡ µğ¹ö±× ÇüÅÂ¸¦ ±×·ÁÁÖ´Â ÇÔ¼ö.
+		// ì½œë¼ì´ë”ê°€ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì— ë””ë²„ê·¸ í˜•íƒœë¥¼ ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜.
 		void DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4 color);
 	
 		struct debugData
@@ -45,12 +43,10 @@ namespace HDEngine
 	public:
 		void SetDebugOn(int index);
 		void SetDebugOff();
-		
 
 	private:
 		int _index;
 		bool _isDebugMode = false;
 	};
 }
-
 

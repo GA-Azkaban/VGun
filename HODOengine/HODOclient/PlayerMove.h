@@ -2,7 +2,7 @@
 #include "../HODOengine/HODO_API.h"
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ°ú °ü·ÃµÈ ½ºÅ©¸³Æ®
+/// í”Œë ˆì´ì–´ ì›€ì§ì„ê³¼ ê´€ë ¨ëœ ìŠ¤í¬ë¦½íŠ¸
 /// </summary>
 
 class PlayerMove : public HDData::Script
@@ -24,19 +24,22 @@ private:
 	void Move(int direction);
 
 private:
-	// ¸¶¿ì½º¿¡ µû¸¥ Ä«¸Ş¶ó È¸Àü Ã¼Å©
+	// ë§ˆìš°ìŠ¤ íšŒì „ì— ë”°ë¥¸ ì‹œì•¼ ë³€ê²½ ì²´í¬
 	void Pitch(float radian);
 	void Yaw(float radian);
 
 	float _moveSpeed;
 	int _moveDirection;
 
+	HDMath::HDFLOAT3 _nextPosition;
+	HDMath::HDQuaternion _nextRotation;
+
 private:
+	// ì í”„ ê´€ë ¨
 	void Jump();
 
 private:
 	bool _isJump;
 	float _jumpCoolTime;
-	
 
 };

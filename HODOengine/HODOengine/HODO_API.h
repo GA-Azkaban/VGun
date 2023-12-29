@@ -37,19 +37,22 @@ namespace API
 {
 	extern "C"
 	{
-		/// 씬을 생성하기 위한 함수
+		// 씬을 생성하기 위한 함수
 		HODO_API HDData::Scene* CreateScene(std::string sceneName);
 		HODO_API void LoadScene(HDData::Scene* scene);
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		
+		// 키 입력을 위한 함수
 		HODO_API bool GetKeyDown(int keyCode);
 		HODO_API bool GetKeyUp(int keyCode);
 		HODO_API bool GetKeyPressing(int keyCode);
 		HODO_API HDMath::HDFLOAT2 GetMousePosition();
 		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized();
 
+		// 디버그 시스템을 위한 함수
 		HODO_API void DebugModeOn(int flag);
 
+		// 델타 타임
 		HODO_API float GetDeltaTime();
 	}
 }

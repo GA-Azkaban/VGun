@@ -2,9 +2,9 @@
 #include "../HODOengine/HODO_API.h"
 
 /// <summary>
-/// ÃÑ µ¥ÀÌÅÍ - ¿À¼ö¾È
-/// [µé¾î°¡¾ß ÇÒ °Í]
-/// ÃÑ Å¸ÀÔ, ÀåÅº ¼ö, ÀåÀü ½Ã°£, Åº µ¥¹ÌÁö, ÃÑ °¡°İ
+/// ì´ ë°ì´í„° - ì˜¤ìˆ˜ì•ˆ
+/// [ë“¤ì–´ê°€ì•¼ í•  ê²ƒ]
+/// ì´ íƒ€ì…, ì¥íƒ„ ìˆ˜, ì¥ì „ ì‹œê°„, íƒ„ ë°ë¯¸ì§€, ì´ ê°€ê²©
 /// </summary>
 
 enum class eWeaponType
@@ -17,7 +17,7 @@ enum class eWeaponType
 	SNIPER
 };
 
-// TODO) ÃÑ ºô´õ ¸¸µé±â
+
 struct WeaponData
 {
 	eWeaponType type;
@@ -27,7 +27,7 @@ struct WeaponData
 	int			price;
 };
 
-// ºô´õ Å¬·¡½º
+// ë¬´ê¸° ë¹Œë” í´ë˜ìŠ¤
 class WeaponBuilder
 {
 public:
@@ -38,8 +38,14 @@ public:
 	void SetGunDamage(float damage);
 	void SetGunPrice(int price);
 
+	eWeaponType GetWeaponType();
+	int GetBulletCount();
+	float GetReloadTime();
+	float GetDamage();
+	int GetPrice();
+
 private:
-	WeaponData weapon;
+	WeaponData* _builder;
 };
 
 
@@ -49,10 +55,16 @@ class Weapon : public HDData::Script
 public:
 	Weapon(WeaponBuilder* builder);
 
+public:
+	void Start() override;
+	void Update() override;
+	void LateUpdate() override;
+
 private:
-	int bullet;
-	float reloadTime;
-	float damage;
-	int price;
+	eWeaponType _type;
+	int _bulletCapacity;
+	float _reloadTime;
+	float _damage;
+	int _price;
 };
 

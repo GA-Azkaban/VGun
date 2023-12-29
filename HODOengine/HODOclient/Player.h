@@ -1,11 +1,13 @@
 #pragma once
+#include <vector>
+
 #include "../HODOengine/HODO_API.h"
 #include "Weapon.h"
 
 /// <summary>
-/// ÇÃ·¹ÀÌ¾î Á¤º¸ - ¿À¼ö¾È
-/// [°¡Áö°í ÀÖ¾î¾ß ÇÏ´Â Á¤º¸]
-/// index, Å³ ¼ö, ´ÙÀÌ ¼ö, ÆÀ, Ã¼·Â, ÇöÀç ÃÑ Á¤º¸, ÇöÀç ÃÑ¾Ë ¼ö, ÄÚÀÎ ¼ö, ¼Óµµ, ÇöÀç »óÅÂ, 
+/// í”Œë ˆì´ì–´ ì •ë³´ - ì˜¤ìˆ˜ì•ˆ
+/// [ê°€ì§€ê³  ìˆì–´ì•¼ í•˜ëŠ” ì •ë³´]
+/// index, í‚¬ ìˆ˜, ë‹¤ì´ ìˆ˜, íŒ€, ì²´ë ¥, í˜„ì¬ ì´ ì •ë³´, í˜„ì¬ ì´ì•Œ ìˆ˜, ì½”ì¸ ìˆ˜, ì†ë„, í˜„ì¬ ìƒíƒœ, 
 /// </summary>
 
 class Player : public HDData::Script
@@ -15,20 +17,37 @@ public:
 	void Update() override;
 	void LateUpdate() override;
 
+public:
+	int GetPlayerIndex();
+	int GetTeamIndex();
+	int GetHealth();
+	int GetSpeed();
+	int GetKillCount();
+	int GetDeathCount();
+	eWeaponType GetWeaponNow();
+	std::vector<eWeaponType> GetWeaponList();
+	int GetBulletCount();
+	int GetCoinCount();
+
+	void ChangeWeapon();
+
 private:
 	int _playerIndex;
 	int _teamIndex;
 
 	int _health;
 	float _speed;
-	// state ³ªÁß¿¡ Ãß°¡
+	//  state ë‚˜ì¤‘ì— ì¶”ê°€
 
 	int _kill;
 	int _death;
 
 	eWeaponType _weapon;
+	std::vector<eWeaponType> _weaponList;
 	int _bulletCount;
 
 	int _coin;
+
+	bool _isDie;
 };
 

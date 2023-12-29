@@ -30,26 +30,23 @@ TestScene::TestScene()
 	//comp->Get()->SetFillModeWireframe();
 	//comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
-	/*
-	auto debugtest = API::CreateObject(_scene);
-	debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
-	debugtest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 10.f, 1.f});
-	auto colli = debugtest->AddComponent<HDData::DynamicBoxCollider>();
+	//auto debugtest = API::CreateObject(_scene);
+	//debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
+	//auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
+	//colli->Setflag(eColliderType::PLAYER);
 
-	colli->Setflag(eColliderType::PLAYER);
-	*/
-	
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene);
+	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
 
 	playerTest->AddComponent<HDData::AudioSource>();
 	playerTest->AddComponent<TestSound>();
-	//auto playerColli = playerTest->AddComponent<HDData::>
+	playerTest->AddComponent<HDData::StaticBoxCollider>();
 
-	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 10.f, 1.f});
+	
 
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	playerColli->Setflag(eColliderType::PLAYER);

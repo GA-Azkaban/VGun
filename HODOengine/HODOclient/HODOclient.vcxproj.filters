@@ -88,6 +88,9 @@
     <Filter Include="02_Client\TestScene\Weapon">
       <UniqueIdentifier>{ac6e43e2-0c45-4b33-886f-5f2e52942ec8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03_Manager">
+      <UniqueIdentifier>{d039347b-5cfa-432c-9368-05a320664418}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc">
