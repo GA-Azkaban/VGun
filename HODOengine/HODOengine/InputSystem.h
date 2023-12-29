@@ -1,55 +1,69 @@
 #pragma once
 #include <windows.h>
-
+#include "InputData.h"
 #include "../HODOmath/HODOmath.h"
 #include "Singleton.h"
 #include <unordered_map>
 #include <unordered_set>
 /// <summary>
 /// 오수안
-/// 키 인풋을 위한 기초 시스템
+/// DirectInput을 이용한 개선된 인풋 시스템
 /// </summary>
+
+
 
 namespace HDEngine
 {
 	class InputSystem : public Singleton<InputSystem>
 	{
 		friend Singleton;
+
 	private:
 		InputSystem() = default;
 
 	public:
-		// 초기화
-		void Initialize(HWND hWnd, int screenWidth, int screenHeight);
-		// 인풋 시스템 업데이트
+		void Initialize(HWND hWnd, HINSTANCE instance, int screenWidth, int screenHeight);
 		void Update();
-		// 다음 싸이클 직전에 정리할 것들
+		void Finalize();
+
+		bool GetKey(BYTE key);
+		bool GetKeyDown(BYTE key);
+		bool GetKeyUp(BYTE key);
+
+		bool GetMouse(BYTE key);
+		bool GetMouseDown(BYTE key);
+		bool GetMouseUp(BYTE key);
+
+		HDMath::HDFLOAT2 GetMousePosition();
+		float GetMouseWheel();
+
 		void Flush();
 
-	public:
-		bool GetKeyDown(int keyCode);
-		bool GetKeyUp(int keyCode);
-		bool GetKeyPressing(int keyCode);
+	private:
+		bool StartDXInput();
+		bool FinishDXInput();
 
 	private:
-		bool _currentKeyState[256];
-		bool _previousKeyState[256];
-	
-	public:
-		HDMath::HDFLOAT2 GetMousePosition();
-		HDMath::HDFLOAT2 GetMousePositionNormalized();
-	
-	private:
-		HWND _hWnd;
-		POINT _mousePoint;
+		HWND					_hWnd;
+		HINSTANCE				_instance;
 
-		int _screenWidth;
-		int _screenHeight;
-		int _widthOffset;
-		int _heightOffset;
+		int						_screenWidth;
+		int						_screenHeight;
 
-		HDMath::HDFLOAT2 _currentMousePosition;
-		HDMath::HDFLOAT2 _previousMousePosition;
+		LPDIRECTINPUT8			_DI;
+		LPDIRECTINPUTDEVICE8	_keyboardDevice;
+		LPDIRECTINPUTDEVICE8	_mouseDevice;
+
+		DIMOUSESTATE			_DImouseState;
+		bool					_mouseState[3];
+		bool					_prevMouseState[3];
+		bool					_keyState[256];
+		bool					_prevKeyState[256];
+
+		POINT					_mousePos;
+		int						_mouseWheel;
+		int						_wheelMax;
+		int						_wheelMin;
 	};
 }
 

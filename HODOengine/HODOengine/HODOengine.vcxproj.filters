@@ -291,6 +291,9 @@
     <ClInclude Include="AudioClip.h">
       <Filter>05_Component\AudioSource\AudioClip</Filter>
     </ClInclude>
+    <ClInclude Include="InputData.h">
+      <Filter>06_System\InputSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
