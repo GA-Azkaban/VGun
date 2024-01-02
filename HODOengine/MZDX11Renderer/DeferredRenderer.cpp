@@ -65,20 +65,23 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	CreateDepthStecilStates();
 
 	// Create Mesh
+	GeometryGenerator::DebugMeshData gridMesh;
+	m_geometryGen->CreateGrid(gridMesh);
 	GeometryGenerator::DebugMeshData axisMesh;
 	m_geometryGen->CreateAxis(axisMesh);
+	m_gridMesh = new ::Mesh(&gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size(), m_d3dDevice.Get());
 	m_axisMesh = new ::Mesh(&axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size(), m_d3dDevice.Get());
 
 	// Create material
-	m_axisMaterial = new Material(ShaderManager::Instance.Get().debugVertexShader, ShaderManager::Instance.Get().debugPixelShader, 0, 0, 0);
+	m_debugObjMaterial = new Material(ShaderManager::Instance.Get().debugVertexShader, ShaderManager::Instance.Get().debugPixelShader, 0, 0, 0);
 
 	DeferredBuffers::Instance.Get().Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
 
-	// 그리드
-	//Grid* grid = new Grid(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), RasterizerState::Instance.Get().GetWireframeRS());
-
 	// 축
-	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_axisMaterial);
+	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
+
+	// 그리드
+	Grid* grid = new Grid(m_d3dDeviceContext.Get(), m_gridMesh, m_debugObjMaterial);
 
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_blender.ASE");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");
@@ -275,11 +278,12 @@ IRenderableObject* DeferredRenderer::Pick(float normalizedX, float normalizedY)
 		{
 			float depth = object->GetDepth();
 			pickedObjects.insert(std::make_pair(depth, object));
-		}
-		if (!pickedObjects.empty())
-		{
-			return pickedObjects.begin()->second;
-		}
+		}		
+	}
+
+	if (!pickedObjects.empty())
+	{
+		return pickedObjects.begin()->second;
 	}
 
 	for (auto& object : IMeshObject::meshObjects)
@@ -289,10 +293,11 @@ IRenderableObject* DeferredRenderer::Pick(float normalizedX, float normalizedY)
 			float depth = object->GetDepth();
 			pickedObjects.insert(std::make_pair(depth, object));
 		}
-		if (!pickedObjects.empty())
-		{
-			return pickedObjects.begin()->second;
-		}
+	}
+
+	if (!pickedObjects.empty())
+	{
+		return pickedObjects.begin()->second;
 	}
 
 	return nullptr;

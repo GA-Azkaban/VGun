@@ -56,7 +56,7 @@ void Grid::Render()
 
 	m_deviceContext->RSSetState(m_RS.Get());
 
-	// ÀÔ·Â ¹èÄ¡ °´Ã¼ ¼ÂÆÃ
+	// ì…ë ¥ ë°°ì¹˜ ê°ì²´ ì…‹íŒ…
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 	m_deviceContext->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
 	m_deviceContext->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
@@ -64,8 +64,9 @@ void Grid::Render()
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
 	XMMATRIX proj = MZCamera::GetMainCamera()->Proj();
 	XMMATRIX worldViewProj = m_world * view * proj;
+	XMMATRIX invwvp = XMMatrixTranspose(worldViewProj);
 
-	m_vertexShader->SetMatrix4x4("worldViewProj", worldViewProj);
+	m_vertexShader->SetMatrix4x4("worldViewProj", invwvp);
 
 	m_vertexShader->CopyAllBufferData();
 	m_vertexShader->SetShader();

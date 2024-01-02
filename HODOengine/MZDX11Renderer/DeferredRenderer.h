@@ -43,7 +43,7 @@ private:
 	void ResizeBuffers();
 	HRESULT GetAdapterInfo();
 
-	// µğ¹ö±ë Á¤º¸ Ãâ·Â
+	// ë””ë²„ê¹… ì •ë³´ ì¶œë ¥
 	void DrawStatus();
 	
 private:
@@ -52,12 +52,12 @@ private:
 	ComPtr<ID3D11Device> m_d3dDevice;
 	ComPtr<ID3D11DeviceContext> m_d3dDeviceContext;
 	ComPtr<IDXGISwapChain> m_swapChain;
-	ComPtr<ID3D11Texture2D> m_depthStencilBuffer;		// µª½º ½ºÅÙ½Ç ¹öÆÛ
+	ComPtr<ID3D11Texture2D> m_depthStencilBuffer;		// ëìŠ¤ ìŠ¤í…ì‹¤ ë²„í¼
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateEnable;
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateDisable;
-	ComPtr<ID3D11RenderTargetView> m_backBufferRTV;	// ¹é¹öÆÛ ·»´õ Å¸°Ù ºä
-	ComPtr<ID3D11DepthStencilView> m_depthStencilView;	// µª½º ½ºÅÙ½Ç ºä
-	D3D11_VIEWPORT m_viewPort;							// ºä Æ÷Æ®
+	ComPtr<ID3D11RenderTargetView> m_backBufferRTV;	// ë°±ë²„í¼ ë Œë” íƒ€ê²Ÿ ë·°
+	ComPtr<ID3D11DepthStencilView> m_depthStencilView;	// ëìŠ¤ ìŠ¤í…ì‹¤ ë·°
+	D3D11_VIEWPORT m_viewPort;							// ë·° í¬íŠ¸
 
 	// Adapter Info
 	DXGI_ADAPTER_DESC1 m_AdapterDesc1;
@@ -82,6 +82,7 @@ private:
 	int switcher;
 
 	::Mesh* m_axisMesh;
-	Material* m_axisMaterial;
+	::Mesh* m_gridMesh;
+	Material* m_debugObjMaterial;
 };
 
