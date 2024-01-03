@@ -23,6 +23,8 @@ void PlayerMove::Update()
 	// 키보드에 따른 플레이어 이동 방향 체크
 	CheckMoveDirection();
 
+	_playerCollider->CheckIsOnGround();
+
 	// 이동
 	Move(_moveDirection);
 }
@@ -163,14 +165,12 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::Jump()
 {
-	if (_isJump == false)
+	if ((!_isJumping) && (_isOnGround))
 	{
 		// 점프
-		_isJump = true;
+		_playerCollider->Jump();
+		_isJumping = true;
 	}
-
-	// 임시로, 노쿨 점프
-	_playerCollider->Jump();
 }
 
 
@@ -246,7 +246,7 @@ HDMath::HDFLOAT3 PlayerMove::DecideMovement(int direction)
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float radian)
 {
-	
+
 }
 
 void PlayerMove::Yaw(float radian)

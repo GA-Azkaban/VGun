@@ -35,10 +35,13 @@ namespace HDData
 	public:
 		void Collide();
 		bool GetIsCollided();
+		bool CheckIsOnGround();
+		void Landing();
 
 	private:
 		bool _isJumping;
 		bool _isCollided;
+		bool _isOnGround;
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;

@@ -37,8 +37,8 @@ private:
 	HDMath::HDFLOAT3 DecideMovement(int direction);
 
 private:
-	bool _isJump;
-	float _jumpCoolTime;
+	bool _isJumping;
+	bool _isOnGround;
 	
 private:
 	HDData::DynamicBoxCollider* _playerCollider;
