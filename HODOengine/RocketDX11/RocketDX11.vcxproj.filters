@@ -73,6 +73,9 @@
     <Filter Include="Resource\Shader\HLSL">
       <UniqueIdentifier>{bb4107b1-7dd3-44b6-be03-6574cf1a5916}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Font">
+      <UniqueIdentifier>{0d9ba5f6-cd43-42a8-bb55-c0df40f7ba32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -113,6 +116,9 @@
     </ClCompile>
     <ClCompile Include="StaticMesh.cpp">
       <Filter>Resource\Resource3D\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="StaticMesh.h">
       <Filter>Resource\Resource3D\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

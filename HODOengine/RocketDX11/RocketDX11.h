@@ -21,6 +21,7 @@ namespace RocketCore::Graphics
 	class VertexShader;
 	class PixelShader;
 	class ResourceManager;
+	class Font;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
 	{
@@ -85,6 +86,7 @@ namespace RocketCore::Graphics
 	private:
 		Grid* _grid;
 		Axis* _axis;
+		Font* _font;
 
 	private:
 		ResourceManager& _resourceManager;

@@ -1,7 +1,7 @@
 //--------------------------------------------------------------------------------------
 // File: DirectXHelpers.h
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248929
@@ -28,6 +28,7 @@
 #include <cassert>
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <exception>
 
 //
@@ -54,7 +55,10 @@
 
 namespace DirectX
 {
-    class IEffect;
+    inline namespace DX11
+    {
+        class IEffect;
+    }
 
     // simliar to std::lock_guard for exception-safe Direct3D resource locking
     class MapGuard : public D3D11_MAPPED_SUBRESOURCE
@@ -74,8 +78,8 @@ namespace DirectX
             }
         }
 
-        MapGuard(MapGuard&&) = default;
-        MapGuard& operator= (MapGuard&&) = default;
+        MapGuard(MapGuard&&) = delete;
+        MapGuard& operator= (MapGuard&&) = delete;
 
         MapGuard(MapGuard const&) = delete;
         MapGuard& operator= (MapGuard const&) = delete;
@@ -84,6 +88,12 @@ namespace DirectX
         {
             mContext->Unmap(mResource, mSubresource);
         }
+
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-warning-option"
+#pragma clang diagnostic ignored "-Wunsafe-buffer-usage"
+#endif
 
         uint8_t* get() const noexcept
         {
@@ -103,6 +113,22 @@ namespace DirectX
             return static_cast<uint8_t*>(pData) + (slice * DepthPitch) + (row * RowPitch);
         }
 
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif
+
+        template<typename T>
+        void copy(_In_reads_(count) T const* data, size_t count) noexcept
+        {
+            memcpy(pData, data, count * sizeof(T));
+        }
+
+        template<typename T>
+        void copy(T const& data) noexcept
+        {
+            memcpy(pData, data.data(), data.size() * sizeof(typename T::value_type));
+        }
+
     private:
         ID3D11DeviceContext*    mContext;
         ID3D11Resource*         mResource;
@@ -111,73 +137,80 @@ namespace DirectX
 
 
     // Helper sets a D3D resource name string (used by PIX and debug layer leak reporting).
+    #if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
     template<UINT TNameLength>
     inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const char(&name)[TNameLength]) noexcept
     {
-#if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-#if defined(_XBOX_ONE) && defined(_TITLE)
+    #if defined(_XBOX_ONE) && defined(_TITLE)
         wchar_t wname[MAX_PATH];
         int result = MultiByteToWideChar(CP_UTF8, 0, name, TNameLength, wname, MAX_PATH);
         if (result > 0)
         {
             resource->SetName(wname);
         }
-#else
+    #else
         resource->SetPrivateData(WKPDID_D3DDebugObjectName, TNameLength - 1, name);
-#endif
-#else
-        UNREFERENCED_PARAMETER(resource);
-        UNREFERENCED_PARAMETER(name);
-#endif
+    #endif
     }
+    #else
+    template<UINT TNameLength>
+    inline void SetDebugObjectName(_In_ ID3D11DeviceChild*, _In_z_ const char(&)[TNameLength]) noexcept
+    {
+    }
+    #endif
 
+#if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
     template<UINT TNameLength>
     inline void SetDebugObjectName(_In_ ID3D11DeviceChild* resource, _In_z_ const wchar_t(&name)[TNameLength])
     {
-#if !defined(NO_D3D11_DEBUG_NAME) && ( defined(_DEBUG) || defined(PROFILE) )
-#if defined(_XBOX_ONE) && defined(_TITLE)
+    #if defined(_XBOX_ONE) && defined(_TITLE)
         resource->SetName(name);
-#else
+    #else
         char aname[MAX_PATH];
         int result = WideCharToMultiByte(CP_UTF8, 0, name, TNameLength, aname, MAX_PATH, nullptr, nullptr);
         if (result > 0)
         {
             resource->SetPrivateData(WKPDID_D3DDebugObjectName, TNameLength - 1, aname);
         }
-#endif
+    #endif
+    }
 #else
-        UNREFERENCED_PARAMETER(resource);
-        UNREFERENCED_PARAMETER(name);
+    template<UINT TNameLength>
+    inline void SetDebugObjectName(_In_ ID3D11DeviceChild*, _In_z_ const wchar_t(&)[TNameLength])
+    {
+    }
 #endif
-    }
 
-    // Helper to check for power-of-2
-    template<typename T>
-    constexpr bool IsPowerOf2(T x) noexcept { return ((x != 0) && !(x & (x - 1))); }
-
-    // Helpers for aligning values by a power of 2
-    template<typename T>
-    inline T AlignDown(T size, size_t alignment) noexcept
+    inline namespace DX11
     {
-        if (alignment > 0)
-        {
-            assert(((alignment - 1) & alignment) == 0);
-            auto mask = static_cast<T>(alignment - 1);
-            return size & ~mask;
-        }
-        return size;
-    }
+        // Helper to check for power-of-2
+        template<typename T>
+        constexpr bool IsPowerOf2(T x) noexcept { return ((x != 0) && !(x & (x - 1))); }
 
-    template<typename T>
-    inline T AlignUp(T size, size_t alignment) noexcept
-    {
-        if (alignment > 0)
+        // Helpers for aligning values by a power of 2
+        template<typename T>
+        inline T AlignDown(T size, size_t alignment) noexcept
         {
-            assert(((alignment - 1) & alignment) == 0);
-            auto mask = static_cast<T>(alignment - 1);
-            return (size + mask) & ~mask;
+            if (alignment > 0)
+            {
+                assert(((alignment - 1) & alignment) == 0);
+                auto mask = static_cast<T>(alignment - 1);
+                return size & ~mask;
+            }
+            return size;
         }
-        return size;
+
+        template<typename T>
+        inline T AlignUp(T size, size_t alignment) noexcept
+        {
+            if (alignment > 0)
+            {
+                assert(((alignment - 1) & alignment) == 0);
+                auto mask = static_cast<T>(alignment - 1);
+                return (size + mask) & ~mask;
+            }
+            return size;
+        }
     }
 
     // Helper for creating a Direct3D input layout to match a shader from an IEffect

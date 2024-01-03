@@ -3,6 +3,7 @@
 #include "RocketDX11.h"
 #include "Grid.h"
 #include "Axis.h"
+#include "Font.h"
 #include "CubeMesh.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
@@ -200,6 +201,8 @@ namespace RocketCore::Graphics
 
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
+
+		_font = new Font(_device.Get(), _deviceContext.Get());
 	}
 
 	void RocketDX11::BeginRender()
@@ -251,7 +254,8 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::RenderText()
 	{
-
+		_font->RenderString("ScreenHeight : ", 0.0f, 0.0f);
+		_font->RenderString(_screenHeight, 150.0f, 0.0f);
 	}
 
 	void RocketDX11::RenderTexture()
@@ -321,8 +325,10 @@ namespace RocketCore::Graphics
 		Update();
 
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
+
 		RenderHelperObject();
 		RenderStaticMesh();
+		RenderText();
 		EndRender();
 	}
 
