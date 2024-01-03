@@ -178,6 +178,9 @@
     <Filter Include="7. Math\source">
       <UniqueIdentifier>{5aa19f90-984b-4d10-8fe1-a3fc92db5c0a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="8. Util\MeshLoader">
+      <UniqueIdentifier>{98d86247-1f3c-44ee-b72e-5219c14db0a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MZDX11Renderer.h">
@@ -343,6 +346,9 @@
     <ClInclude Include="MZMacro.h">
       <Filter>8. Util\Macro</Filter>
     </ClInclude>
+    <ClInclude Include="MeshLoader.h">
+      <Filter>8. Util\MeshLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MZDX11Renderer.cpp">
@@ -463,6 +469,9 @@
     </ClCompile>
     <ClCompile Include="Hodo3DFactoryAdapter.cpp">
       <Filter>8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshLoader.cpp">
+      <Filter>8. Util\MeshLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

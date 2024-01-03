@@ -77,11 +77,11 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 
 	DeferredBuffers::Instance.Get().Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
 
-	// 축
-	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
-
 	// 그리드
 	Grid* grid = new Grid(m_d3dDeviceContext.Get(), m_gridMesh, m_debugObjMaterial);
+
+	// 축
+	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
 
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_blender.ASE");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");

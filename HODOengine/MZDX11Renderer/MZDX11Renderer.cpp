@@ -10,6 +10,7 @@
 #pragma comment( lib, "dxguid.lib" )	
 #pragma comment( lib, "d3dcompiler.lib" )	
 #pragma comment( lib, "dxgi.lib" )	// adapter info
+#pragma comment( lib, "assimp-vc143-mt.lib" )	
 
 MZDX11Renderer* MZDX11Renderer::instance = nullptr;
 
