@@ -13,12 +13,6 @@ namespace HDData
 
 		virtual void Update() override;
 
-		void SetActive(bool active);
-		void SetScreenSpace();
-		void SetWorldSpace();
-		void SetText(TCHAR* text);
-		std::string GetText();
-
 	private:
 		std::unique_ptr<HDEngine::ISketchableText> _textUI;
 	};
