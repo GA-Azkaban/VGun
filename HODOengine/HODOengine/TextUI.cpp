@@ -27,9 +27,9 @@ namespace HDData
 		_textUI->SetWorldSpace();
 	}
 
-	void TextUI::SetText(std::string& text)
+	void TextUI::SetText(const std::string& str)
 	{
-		_textUI->SetText(text);
+		_textUI->SetText(str);
 	}
 	
 	std::string TextUI::GetText()

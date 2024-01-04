@@ -60,6 +60,12 @@ TestScene::TestScene()
 	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
+	auto textTest = API::CreateObject(_scene);
+	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	auto textComp = textTest->AddComponent<HDData::TextUI>();
+	textComp->SetText("Stupid");
+
+
 	API::LoadScene(_scene);
 
 	// 디버그 모드를 시작하는 함수

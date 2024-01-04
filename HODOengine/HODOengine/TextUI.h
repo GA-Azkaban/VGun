@@ -1,4 +1,6 @@
 #pragma once
+#include "dllExporter.h"
+
 #include "UIBase.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
 #include <memory>
@@ -6,7 +8,7 @@
 
 namespace HDData
 {
-	class TextUI : public UIBase
+	class HODO_API TextUI : public UIBase
 	{
 	public:
 		TextUI();
@@ -14,7 +16,7 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
-		void SetText(std::string& str);
+		void SetText(const std::string& str);
 		std::string GetText();
 
 	private:

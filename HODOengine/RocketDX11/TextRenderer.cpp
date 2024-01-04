@@ -5,6 +5,8 @@
 RocketCore::Graphics::TextRenderer::TextRenderer()
 {
 	_font = ResourceManager::Instance().GetDefaultFont();
+	_str = "Default Text";
+	_color = DirectX::Colors::White;
 }
 
 RocketCore::Graphics::TextRenderer::~TextRenderer()
@@ -59,6 +61,7 @@ void RocketCore::Graphics::TextRenderer::Render(DirectX::SpriteBatch* spriteBatc
 	std::wstring wstr(_str.begin(), _str.end());
 	_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_xLocation, _yLocation), _color);
 }
+
 
 void RocketCore::Graphics::TextRenderer::SetFloatValue(const float value)
 {

@@ -31,6 +31,7 @@
 #include "DynamicSphereCollider.h"
 #include "MeshRenderer.h"
 #include "InputData.h"
+#include "TextUI.h"
 
 #include "ObjectSystem.h"
 
