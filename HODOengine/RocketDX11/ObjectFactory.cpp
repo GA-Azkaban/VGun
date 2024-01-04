@@ -40,4 +40,9 @@ namespace RocketCore::Graphics
 		return obj;
 	}
 
+	HDEngine::ISketchableText* ObjectFactory::CreateText()
+	{
+		return nullptr;
+	}
+
 }
