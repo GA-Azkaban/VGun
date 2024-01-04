@@ -4,6 +4,7 @@
 #include "Grid.h"
 #include "Axis.h"
 #include "CubeMesh.h"
+#include "TextRenderer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -14,6 +15,7 @@
 #include "ObjectManager.h"
 
 #include "StaticMeshObject.h"
+
 
 namespace HDEngine
 {
@@ -200,6 +202,8 @@ namespace RocketCore::Graphics
 
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
+
+		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 	}
 
 	void RocketDX11::BeginRender()
@@ -251,7 +255,13 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::RenderText()
 	{
-
+		//_TextRenderer->RenderString("Stupid : ",0.0f,0.0f,DirectX::Colors::Red);
+		_spriteBatch->Begin();
+		for (auto textIter : ObjectManager::Instance().GetTextList())
+		{
+			textIter->Render(_spriteBatch);
+		}
+		_spriteBatch->End();
 	}
 
 	void RocketDX11::RenderTexture()
@@ -321,8 +331,10 @@ namespace RocketCore::Graphics
 		Update();
 
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
+
 		RenderHelperObject();
 		RenderStaticMesh();
+		RenderText();
 		EndRender();
 	}
 

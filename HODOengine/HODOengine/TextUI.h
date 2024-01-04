@@ -16,7 +16,7 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
-		void SetText(TCHAR* text);
+		void SetText(std::string& str);
 		std::string GetText();
 
 	private:
