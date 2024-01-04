@@ -10,11 +10,6 @@ namespace HDData
 
 	}
 
-	void ImageUI::Update()
-	{
-		_imageUI->SetWorldTM(GetTransform()->GetWorldTM());
-	}
-
 	void ImageUI::SetActive(bool active)
 	{
 		_imageUI->SetActive(active);

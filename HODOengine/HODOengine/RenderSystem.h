@@ -59,6 +59,6 @@ namespace HDEngine
 
 	private:
 		std::vector<HDData::RendererBase*> _rendererList;
-		std::vector<HDData::UIBase*> _sketchList;
+		std::vector<HDData::UIBase*> _uiList;
 	};
 };
