@@ -11,11 +11,6 @@ namespace HDData
 		ImageUI();
 
 		virtual void Update() override;
-
-		void SetActive(bool active);
-		void SetScreenSpace();
-		void SetWorldSpace();
-		void SetImage(const char* fileName);
 		
 	private:
 		std::unique_ptr<HDEngine::ISketchableImage> _imageUI;
