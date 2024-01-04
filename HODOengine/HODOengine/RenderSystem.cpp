@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "TimeSystem.h"
 #include "RendererBase.h"
+#include "UIBase.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
@@ -64,6 +65,11 @@ namespace HDEngine
 		{
 			rendererBase->UpdateRenderData();
 		}
+
+		for (auto uiBase : _uiList)
+		{
+			uiBase->UpdateRenderData();
+		}
 	}
 
 	int RenderSystem::GetScreenWidth() const
@@ -78,7 +84,12 @@ namespace HDEngine
 
 	void RenderSystem::PushRenderComponent(HDData::RendererBase* comp)
 	{
-		_rendererList.push_back(comp);
+		_rendererList.emplace_back(comp);
+	}
+
+	void RenderSystem::PushSketchComponent(HDData::UIBase* comp)
+	{
+		_uiList.emplace_back(comp);
 	}
 
 }
