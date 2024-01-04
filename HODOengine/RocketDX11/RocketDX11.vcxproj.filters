@@ -76,6 +76,9 @@
     <Filter Include="Font">
       <UniqueIdentifier>{0d9ba5f6-cd43-42a8-bb55-c0df40f7ba32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\TextObject">
+      <UniqueIdentifier>{094e9487-c82a-4cf3-b01d-ab610ca789e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Font</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRenderer.cpp">
+      <Filter>Object\TextObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Font</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>Object\TextObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "StaticMeshObject.h"
+#include "TextRenderer.h"
 
 namespace RocketCore::Graphics
 {
@@ -31,6 +32,18 @@ namespace RocketCore::Graphics
 	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()
 	{
 		return _staticMeshObjectList;
+	}
+
+	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()
+	{
+		TextRenderer* TextObject = new TextRenderer();
+		_textList.emplace_back(TextObject);
+		return TextObject;
+	}
+
+	std::vector<TextRenderer*>& ObjectManager::GetTextList()
+	{
+		return _textList;
 	}
 
 }

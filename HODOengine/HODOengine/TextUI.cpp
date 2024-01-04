@@ -30,7 +30,7 @@ namespace HDData
 		_textUI->SetWorldSpace();
 	}
 
-	void TextUI::SetText(TCHAR* text)
+	void TextUI::SetText(std::string& text)
 	{
 		_textUI->SetText(text);
 	}

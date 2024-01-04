@@ -4,6 +4,7 @@
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <DirectXMath.h>
+#include <DXTK/SpriteBatch.h>
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Camera.h"
@@ -21,7 +22,6 @@ namespace RocketCore::Graphics
 	class VertexShader;
 	class PixelShader;
 	class ResourceManager;
-	class Font;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
 	{
@@ -86,7 +86,7 @@ namespace RocketCore::Graphics
 	private:
 		Grid* _grid;
 		Axis* _axis;
-		Font* _font;
+		DirectX::SpriteBatch* _spriteBatch;
 
 	private:
 		ResourceManager& _resourceManager;
