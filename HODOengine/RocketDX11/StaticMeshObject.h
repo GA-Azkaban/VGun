@@ -41,11 +41,6 @@ namespace RocketCore::Graphics
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 		DirectX::XMMATRIX _worldTM;
-
-
-
-
-
 	};
 }
 	
