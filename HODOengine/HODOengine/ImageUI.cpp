@@ -10,8 +10,23 @@ namespace HDData
 
 	}
 
-	void ImageUI::Update()
+	void ImageUI::SetActive(bool active)
 	{
-		_imageUI->SetWorldTM(GetTransform()->GetWorldTM());
+		_imageUI->SetActive(active);
+	}
+
+	void ImageUI::SetScreenSpace()
+	{
+		_imageUI->SetScereenSpace();
+	}
+
+	void ImageUI::SetWorldSpace()
+	{
+		_imageUI->SetWorldSpace();
+	}
+
+	void ImageUI::SetImage(const char* fileName)
+	{
+		_imageUI->SetImage(fileName);
 	}
 }

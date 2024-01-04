@@ -10,6 +10,7 @@
 namespace HDData
 {
 	class RendererBase;
+	class UIBase;
 }
 
 namespace HDEngine
@@ -54,7 +55,10 @@ namespace HDEngine
 
 	public:
 		void PushRenderComponent(HDData::RendererBase* comp);
+		void PushSketchComponent(HDData::UIBase* comp);
+
 	private:
 		std::vector<HDData::RendererBase*> _rendererList;
+		std::vector<HDData::UIBase*> _uiList;
 	};
 };

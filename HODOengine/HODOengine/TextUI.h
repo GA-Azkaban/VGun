@@ -1,17 +1,15 @@
 #pragma once
-#include "Component.h"
+#include "UIBase.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
 #include <memory>
 #include <string>
 
 namespace HDData
 {
-	class TextUI : public Component
+	class TextUI : public UIBase
 	{
 	public:
 		TextUI();
-
-		virtual void Update() override;
 
 		void SetActive(bool active);
 		void SetScreenSpace();
@@ -20,7 +18,7 @@ namespace HDData
 		std::string GetText();
 
 	private:
-		std::unique_ptr<HDEngine::ISketchableText> _textUI;
+		HDEngine::ISketchableText* _textUI;
 	};
 }
 
