@@ -79,6 +79,9 @@
     <Filter Include="Object\TextObject">
       <UniqueIdentifier>{094e9487-c82a-4cf3-b01d-ab610ca789e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FBXLoader">
+      <UniqueIdentifier>{79a203d5-88d8-4bb0-8db6-7a203dccee94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -125,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Object\TextObject</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>FBXLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
       <Filter>Object\TextObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>FBXLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
