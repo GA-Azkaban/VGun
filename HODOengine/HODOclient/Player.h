@@ -10,6 +10,8 @@
 /// index, 킬 수, 다이 수, 팀, 체력, 현재 총 정보, 현재 총알 수, 코인 수, 속도, 현재 상태, 
 /// </summary>
 
+
+
 class Player : public HDData::Script
 {
 public:
@@ -25,15 +27,16 @@ public:
 	int GetKillCount();
 	int GetDeathCount();
 	eWeaponType GetWeaponNow();
-	std::vector<eWeaponType> GetWeaponList();
 	int GetBulletCount();
 	int GetCoinCount();
 
-	void ChangeWeapon();
+	void ChangeWeapon(eWeaponType type);
 
 private:
 	int _playerIndex;
-	int _teamIndex;
+	std::string _playerName;
+	int _characterType;
+	int _teamID;
 
 	int _health;
 	float _speed;
@@ -43,8 +46,13 @@ private:
 	int _death;
 
 	eWeaponType _weapon;
-	std::vector<eWeaponType> _weaponList;
+	
+	int _bulletMax;
 	int _bulletCount;
+	int _dealBody;
+	int _dealHead;
+	float _reloadTime;
+	float _shootTime;
 
 	int _coin;
 

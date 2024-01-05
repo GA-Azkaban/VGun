@@ -19,11 +19,14 @@
     <ClCompile Include="Player.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>02_Client\TestScene\Weapon</Filter>
-    </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>01_Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>03_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginSceneView.cpp">
+      <Filter>04_SceneView\Login</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -48,14 +51,20 @@
     <ClInclude Include="Player.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>02_Client\TestScene\Weapon</Filter>
-    </ClInclude>
     <ClInclude Include="Client.h">
       <Filter>01_Entry</Filter>
     </ClInclude>
     <ClInclude Include="TestSound.h">
       <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>03_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSceneView.h">
+      <Filter>04_SceneView\Login</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -90,6 +99,18 @@
     </Filter>
     <Filter Include="03_Manager">
       <UniqueIdentifier>{d039347b-5cfa-432c-9368-05a320664418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView">
+      <UniqueIdentifier>{78938400-a81c-486c-be6e-3a5260fff65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\Login">
+      <UniqueIdentifier>{2c023769-6516-4112-b946-88a4ff055bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\Lobby">
+      <UniqueIdentifier>{d4fe9301-7e7c-4f97-b4f1-ade435270749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\InGame">
+      <UniqueIdentifier>{3151c696-7a9f-4315-8832-050cff904af8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
