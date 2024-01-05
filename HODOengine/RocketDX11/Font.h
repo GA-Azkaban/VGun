@@ -26,8 +26,5 @@ namespace RocketCore::Graphics
 		// DXTk 내부 클래스
 		std::unique_ptr<DirectX::SpriteBatch> m_SpriteBatch;
 		std::unique_ptr<DirectX::SpriteFont> m_SpriteFont;
-		//DirectX::SpriteBatch* m_SpriteBatch;
-		//DirectX::SpriteFont* m_SpriteFont;
-
 	};
 }

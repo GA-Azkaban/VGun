@@ -136,7 +136,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeviceBuilderDX11.cpp" />
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -154,7 +153,6 @@
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeviceBuilderDX11.h" />
     <ClInclude Include="dllExporter.h" />
-    <ClInclude Include="Font.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IBuilder.h" />
