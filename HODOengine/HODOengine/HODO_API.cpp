@@ -28,6 +28,27 @@ namespace API
 			return obj;
 		}
 
+		HODO_API HDData::GameObject* CreateImageBox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			// 나중에 스프라이트 렌더러 컴포넌트 추가할 것
+			return obj;
+		}
+
+		HODO_API HDData::GameObject* CreateButton(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			// 나중에 스프라이트 렌더러 컴포넌트 추가할 것
+			return obj;
+		}
+
+		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			// 나중에 스프라이트 렌더러, 텍스트 박스 컴포넌트 추가할 것
+			return obj;
+		}
+
 		HODO_API bool GetKeyDown(BYTE keyCode)
 		{
 			return HDEngine::InputSystem::Instance().GetKeyDown(keyCode);
@@ -78,6 +99,4 @@ namespace API
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
 	}
-
-
 }

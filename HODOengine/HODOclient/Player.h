@@ -7,7 +7,8 @@
 /// <summary>
 /// 플레이어 정보 - 오수안
 /// [가지고 있어야 하는 정보]
-/// index, 킬 수, 다이 수, 팀, 체력, 현재 총 정보, 현재 총알 수, 코인 수, 속도, 현재 상태, 
+/// index, 킬 수, 다이 수, 팀, 체력, 현재 총 정보, 현재 총알 수, 속도, 현재 상태, 
+/// 상점은 죽어야만 열린다
 /// </summary>
 
 
@@ -28,7 +29,6 @@ public:
 	int GetDeathCount();
 	eWeaponType GetWeaponNow();
 	int GetBulletCount();
-	int GetCoinCount();
 
 	void ChangeWeapon(eWeaponType type);
 
@@ -53,8 +53,6 @@ private:
 	int _dealHead;
 	float _reloadTime;
 	float _shootTime;
-
-	int _coin;
 
 	bool _isDie;
 };

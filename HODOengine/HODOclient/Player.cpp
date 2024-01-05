@@ -6,7 +6,6 @@ void Player::Start()
 	_kill = 0;
 	_death = 0;
 	_weapon = eWeaponType::HANDGUN;
-	_coin = 0;
 	_isDie = false;
 }
 
@@ -58,11 +57,6 @@ eWeaponType Player::GetWeaponNow()
 int Player::GetBulletCount()
 {
 	return _bulletCount;
-}
-
-int Player::GetCoinCount()
-{
-	return _coin;
 }
 
 void Player::ChangeWeapon(eWeaponType type)

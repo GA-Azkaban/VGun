@@ -154,6 +154,9 @@
     <Filter Include="05_Component\UserInterface\BaseClass">
       <UniqueIdentifier>{4d7e4089-1476-4110-9044-22eb4ef206bb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\UserInterface\Button">
+      <UniqueIdentifier>{f28fbac0-af1a-4c9a-bcde-7c3eb6b0148d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -300,6 +303,7 @@
     <ClInclude Include="UIBase.h">
       <Filter>05_Component\UserInterface\BaseClass</Filter>
     </ClInclude>
+    <ClInclude Include="Button.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -431,5 +435,6 @@
     <ClCompile Include="UIBase.cpp">
       <Filter>05_Component\UserInterface\BaseClass</Filter>
     </ClCompile>
+    <ClCompile Include="Button.cpp" />
   </ItemGroup>
 </Project>
