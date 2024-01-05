@@ -63,7 +63,7 @@ TestScene::TestScene()
 	auto textTest = API::CreateObject(_scene);
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	auto textComp = textTest->AddComponent<HDData::TextUI>();
-	textComp->SetText("Stupid");
+	textComp->SetText("Korean plz");
 
 
 	API::LoadScene(_scene);
