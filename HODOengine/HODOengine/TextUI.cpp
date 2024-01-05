@@ -1,18 +1,15 @@
 #include "TextUI.h"
 #include "Transform.h"
+#include "GraphicsObjFactory.h"
+#include "RenderSystem.h"
 
 namespace HDData
 {
 	TextUI::TextUI()
-		: _textUI(nullptr //RenderSystem.CreateImageUI()
-		)
+		: _textUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText())
 	{
-
-	}
-
-	void TextUI::Update()
-	{
-		_textUI->SetWorldTM(GetTransform()->GetWorldTM());
+		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
+		_sketchable = _textUI;
 	}
 
 	void TextUI::SetActive(bool active)
@@ -30,9 +27,9 @@ namespace HDData
 		_textUI->SetWorldSpace();
 	}
 
-	void TextUI::SetText(TCHAR* text)
+	void TextUI::SetText(const std::string& str)
 	{
-		_textUI->SetText(text);
+		_textUI->SetText(str);
 	}
 	
 	std::string TextUI::GetText()

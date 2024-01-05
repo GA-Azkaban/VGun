@@ -3,6 +3,7 @@
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <unordered_map>
+#include <DXTK/SpriteFont.h>
 
 #include "Singleton.h"
 
@@ -26,11 +27,16 @@ namespace RocketCore::Graphics
 		CubeMesh* GetCubeMesh();
 		VertexShader* GetDefaultVertexShader();
 		PixelShader* GetDefaultPixelShader();
+		DirectX::SpriteFont* GetDefaultFont();
+
 	private:
 		ComPtr<ID3D11Device> _device;
 
 		// 큐브 메쉬는 기본적으로 들고있게 했음
 		CubeMesh* _cubeMesh;
+
+		// 기본 폰트 들고있음
+		DirectX::SpriteFont* _spriteFont;
 
 		// 우선 기본 셰이더들 들고있음
 		VertexShader* _vertexShader;

@@ -4,6 +4,7 @@
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <DirectXMath.h>
+#include <DXTK/SpriteBatch.h>
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Camera.h"
@@ -85,6 +86,7 @@ namespace RocketCore::Graphics
 	private:
 		Grid* _grid;
 		Axis* _axis;
+		DirectX::SpriteBatch* _spriteBatch;
 
 	private:
 		ResourceManager& _resourceManager;

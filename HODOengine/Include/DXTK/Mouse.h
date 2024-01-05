@@ -1,7 +1,7 @@
 //--------------------------------------------------------------------------------------
 // File: Mouse.h
 //
-// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 //
 // http://go.microsoft.com/fwlink/?LinkId=248929
@@ -10,9 +10,27 @@
 
 #pragma once
 
+#if !defined(USING_XINPUT) && !defined(USING_GAMEINPUT) && !defined(USING_COREWINDOW)
+
+#ifdef _GAMING_DESKTOP
+#include <grdk.h>
+#endif
+
+#if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_GAMES)) || (defined(_GAMING_DESKTOP) && (_GRDK_EDITION >= 220600))
+#define USING_GAMEINPUT
+#elif (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)) || (defined(_XBOX_ONE) && defined(_TITLE))
+#define USING_COREWINDOW
+#endif
+
+#endif // !USING_XINPUT && !USING_GAMEINPUT && !USING_WINDOWS_GAMING_INPUT
+
+#if defined(USING_GAMEINPUT) && !defined(_GAMING_XBOX)
+#pragma comment(lib,"gameinput.lib")
+#endif
+
 #include <memory>
 
-#if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)) || (defined(_XBOX_ONE) && defined(_TITLE) && (_XDK_VER >= 0x42D907D1))
+#ifdef USING_COREWINDOW
 namespace ABI { namespace Windows { namespace UI { namespace Core { struct ICoreWindow; } } } }
 #endif
 
@@ -28,8 +46,9 @@ namespace DirectX
     {
     public:
         Mouse() noexcept(false);
-        Mouse(Mouse&& moveFrom) noexcept;
-        Mouse& operator= (Mouse&& moveFrom) noexcept;
+
+        Mouse(Mouse&&) noexcept;
+        Mouse& operator= (Mouse&&) noexcept;
 
         Mouse(Mouse const&) = delete;
         Mouse& operator=(Mouse const&) = delete;
@@ -72,7 +91,7 @@ namespace DirectX
             ButtonState xButton1;
             ButtonState xButton2;
 
-            #pragma prefast(suppress: 26495, "Reset() performs the initialization")
+        #pragma prefast(suppress: 26495, "Reset() performs the initialization")
             ButtonStateTracker() noexcept { Reset(); }
 
             void __cdecl Update(const State& state) noexcept;
@@ -94,6 +113,9 @@ namespace DirectX
         // Sets mouse mode (defaults to absolute)
         void __cdecl SetMode(Mode mode);
 
+        // Signals the end of frame (recommended, but optional)
+        void __cdecl EndOfInputFrame() noexcept;
+
         // Feature detection
         bool __cdecl IsConnected() const;
 
@@ -101,17 +123,7 @@ namespace DirectX
         bool __cdecl IsVisible() const noexcept;
         void __cdecl SetVisible(bool visible);
 
-    #ifdef WM_USER
-    #if !defined(WINAPI_FAMILY) || (WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP)
-        void __cdecl SetWindow(HWND window);
-        static void __cdecl ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
-    #elif (WINAPI_FAMILY == WINAPI_FAMILY_GAMES)
-        static void __cdecl ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
-        static void __cdecl SetResolution(bool use4k);
-    #endif
-    #endif
-
-    #if (defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP)) || (defined(_XBOX_ONE) && defined(_TITLE) && (_XDK_VER >= 0x42D907D1))
+    #ifdef USING_COREWINDOW
         void __cdecl SetWindow(ABI::Windows::UI::Core::ICoreWindow* window);
     #ifdef __cplusplus_winrt
         void __cdecl SetWindow(Windows::UI::Core::CoreWindow^ window)
@@ -129,7 +141,14 @@ namespace DirectX
     #endif
 
         static void __cdecl SetDpi(float dpi);
-    #endif // WINAPI_FAMILY == WINAPI_FAMILY_APP
+    #elif defined(WM_USER)
+        void __cdecl SetWindow(HWND window);
+        static void __cdecl ProcessMessage(UINT message, WPARAM wParam, LPARAM lParam);
+
+    #ifdef _GAMING_XBOX
+        static void __cdecl SetResolution(float scale);
+    #endif
+    #endif
 
         // Singleton
         static Mouse& __cdecl Get();

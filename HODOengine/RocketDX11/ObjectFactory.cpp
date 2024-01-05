@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "StaticMeshObject.h"
 #include "CubeMesh.h"
+#include "TextRenderer.h"
 
 namespace HDEngine
 {
@@ -38,6 +39,11 @@ namespace RocketCore::Graphics
 		obj->SetPixelShader(rscMgr.GetDefaultPixelShader());
 
 		return obj;
+	}
+
+	HDEngine::ISketchableText* ObjectFactory::CreateText()
+	{
+		return ObjectManager::Instance().CreateText();
 	}
 
 }
