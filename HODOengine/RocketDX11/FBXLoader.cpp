@@ -12,31 +12,28 @@ namespace RocketCore::Graphics
 
 	}
 
-	bool FBXLoader::DoTheImportThing(const std::string& pFile)
+	bool FBXLoader::DoTheImportThing(const std::string& path, Entity* parentEntity)
 	{
-		// Create an instance of the Importer class
-		Assimp::Importer importer;
+        Assimp::Importer importer;
+ 
+        unsigned int flag;
+        flag = aiProcess_Triangulate |
+            aiProcess_JoinIdenticalVertices |
+            aiProcess_CalcTangentSpace |
+            aiProcess_GenNormals |
+            aiProcess_MakeLeftHanded |
+            aiProcess_FlipWindingOrder |
+            aiProcess_FlipUVs;
 
-		// And have it read the given file with some example postprocessing
-		// Usually - if speed is not the most important aspect for you - you'll
-		// probably to request more postprocessing than we do in this example.
-		const aiScene* scene = importer.ReadFile(pFile,
-			aiProcess_MakeLeftHanded |
-			aiProcess_CalcTangentSpace |
-			aiProcess_Triangulate |
-			aiProcess_JoinIdenticalVertices |
-			aiProcess_SortByPType);
-
-		// If the import failed, report it
-		if (nullptr == scene) {
-			// DoTheErrorLogging(importer.GetErrorString());
-			return false;
-		}
-
-		// Now we can access the file's contents.
-		// DoTheSceneProcessing(scene);
-
-		// We're done. Everything will be cleaned up by the importer destructor
-		return true;
+// 		if (RenderAPI::GetAPI() == RenderAPI::API::DirectX11)
+// 			flag |= aiProcess_FlipUVs;
+ 
+        const aiScene* scene = importer.ReadFile(path, flag);
+ 
+        if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+        {
+            std::string error = "Error:Assimp:";
+            QCAT_ASSERT(false, error + importer.GetErrorString());
+        }
 	}
 }

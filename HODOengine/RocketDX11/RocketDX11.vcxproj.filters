@@ -82,6 +82,9 @@
     <Filter Include="FBXLoader">
       <UniqueIdentifier>{79a203d5-88d8-4bb0-8db6-7a203dccee94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Model">
+      <UniqueIdentifier>{3229854e-c518-44f9-910b-98c5d4afb3db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -131,6 +134,9 @@
     </ClCompile>
     <ClCompile Include="FBXLoader.cpp">
       <Filter>FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Resource\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="FBXLoader.h">
       <Filter>FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Resource\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

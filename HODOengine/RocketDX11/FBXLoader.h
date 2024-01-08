@@ -14,7 +14,7 @@ namespace RocketCore::Graphics
 
 		void Initialize();
 
-		bool DoTheImportThing(const std::string& pFile);
+		bool DoTheImportThing(const std::string& path, Entity* parentEntity);
 
 	};
 }
