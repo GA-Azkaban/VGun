@@ -28,6 +28,8 @@ namespace HDData
 		virtual void Start() {};
 		// 매 프레임마다 호출되는 콜백 함수입니다.
 		virtual void Update() {};
+		// Update()가 끝나고 갱신해야 할 때 호출되는 콜백 함수입니다.
+		virtual void LateUpdate() {};
 		// 정확한 시간 간격으로 호출되는 콜백 함수입니다.
 		virtual void FixedUpdate() {};
 		// 게임 오브젝트가 삭제될 때 호출되는 콜백 함수입니다.
