@@ -303,7 +303,9 @@
     <ClInclude Include="UIBase.h">
       <Filter>05_Component\UserInterface\BaseClass</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h" />
+    <ClInclude Include="Button.h">
+      <Filter>05_Component\UserInterface\Button</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -435,6 +437,8 @@
     <ClCompile Include="UIBase.cpp">
       <Filter>05_Component\UserInterface\BaseClass</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Button.cpp">
+      <Filter>05_Component\UserInterface\Button</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
