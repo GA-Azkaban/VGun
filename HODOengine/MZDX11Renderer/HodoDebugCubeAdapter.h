@@ -13,11 +13,11 @@ namespace hodoGIAdapter
 		{
 
 		}
-		virtual void SetWorldTM(const HDMaths::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
 		virtual void SetActive(bool isActive) override;
 		virtual void SetFillModeSolid() override;
 		virtual void SetFillModeWireframe() override;
-		virtual void SetColor(const HDMaths::HDFLOAT4& color) override;
+		virtual void SetColor(const HDMath::HDFLOAT4& color) override;
 
 	private:
 		std::unique_ptr<DebugCube> _debugCube;

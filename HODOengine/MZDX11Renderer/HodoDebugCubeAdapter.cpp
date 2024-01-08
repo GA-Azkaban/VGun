@@ -2,7 +2,7 @@
 #include "HODOmath.h"
 #include <DirectXMath.h>
 
-void hodoGIAdapter::DebugCubeAdapter::SetWorldTM(const HDMaths::HDFLOAT4X4& worldTM)
+void hodoGIAdapter::DebugCubeAdapter::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
 {
 	DirectX::XMMATRIX tm;
 
@@ -44,7 +44,7 @@ void hodoGIAdapter::DebugCubeAdapter::SetFillModeWireframe()
 	_debugCube->SetFillModeWireframe();
 }
 
-void hodoGIAdapter::DebugCubeAdapter::SetColor(const HDMaths::HDFLOAT4& color)
+void hodoGIAdapter::DebugCubeAdapter::SetColor(const HDMath::HDFLOAT4& color)
 {
 	_debugCube->SetColor(DirectX::XMFLOAT4{ color.r, color.g, color.b, color.a });
 }

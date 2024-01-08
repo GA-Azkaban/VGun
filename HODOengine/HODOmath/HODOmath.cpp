@@ -1,7 +1,7 @@
 ﻿#include "HODOmath.h"
 #include <cmath>
 
-namespace HDMaths 
+namespace HDMath
 {
 	/// Vector2
 
@@ -35,7 +35,7 @@ namespace HDMaths
 		return Add(*this, other);
 	}
 
-	HDMaths::HDFLOAT2& HDFLOAT2::operator+=(const HDFLOAT2& other)
+	HDFLOAT2& HDFLOAT2::operator+=(const HDFLOAT2& other)
 	{
 		*this = Add(*this, other);
 		return *this;
@@ -68,7 +68,7 @@ namespace HDMaths
 		return Divide(*this, scalar);
 	}
 
-	HDMaths::HDFLOAT2& HDFLOAT2::operator/=(float scalar)
+	HDFLOAT2& HDFLOAT2::operator/=(float scalar)
 	{
 		*this = Divide(*this, scalar);
 		return *this;
@@ -216,7 +216,7 @@ namespace HDMaths
 		return Divide(*this, scalar);
 	}
 
-	HDMaths::HDFLOAT3& HDFLOAT3::operator/=(float scalar)
+	HDFLOAT3& HDFLOAT3::operator/=(float scalar)
 	{
 		*this = Divide(*this, scalar);
 		return *this;
@@ -385,7 +385,7 @@ namespace HDMaths
 		return HDFLOAT4{ x * other.x, y * other.y, z * other.z, w * other.w };
 	}
 
-	HDMaths::HDFLOAT4& HDFLOAT4::operator+=(const HDFLOAT4& other)
+	HDFLOAT4& HDFLOAT4::operator+=(const HDFLOAT4& other)
 	{
 		*this = Add(*this, other);
 		return *this;
@@ -507,7 +507,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDFLOAT4 HDFLOAT4::Divide(const HDFLOAT4& val, float scalar)
+	HDFLOAT4 HDFLOAT4::Divide(const HDFLOAT4& val, float scalar)
 	{
 		return HDFLOAT4
 		{
@@ -637,17 +637,17 @@ namespace HDMaths
 		return HDQuaternion(w, -x, -y, -z);
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::Right() const
+	HDFLOAT3 HDQuaternion::Right() const
 	{
 		return *this * HDFLOAT3::right;
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::Up() const
+	HDFLOAT3 HDQuaternion::Up() const
 	{
 		return *this * HDFLOAT3::up;
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::Forward() const
+	HDFLOAT3 HDQuaternion::Forward() const
 	{
 		return *this * HDFLOAT3::forward;
 	}
@@ -674,7 +674,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDQuaternion HDQuaternion::operator=(const HDQuaternion& other)
+	HDQuaternion HDQuaternion::operator=(const HDQuaternion& other)
 	{
 		this->w = other.w;
 		this->x = other.x;
@@ -684,7 +684,7 @@ namespace HDMaths
 		return *this;
 	}
 
-	HDMaths::HDQuaternion HDQuaternion::operator*(const HDQuaternion& other)
+	HDQuaternion HDQuaternion::operator*(const HDQuaternion& other)
 	{
 		return HDQuaternion{
 			w * other.w - x * other.x - y * other.y - z * other.z,
@@ -694,7 +694,7 @@ namespace HDMaths
 		};
 	}
 
-	HDMaths::HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other) const
+	HDFLOAT3 HDQuaternion::operator*(const HDFLOAT3& other) const
 	{
 		HDFLOAT3 q(x, y, z);
 		HDFLOAT3 t = HDFLOAT3::Cross(q, other) * 2.0f;
@@ -910,7 +910,7 @@ namespace HDMaths
 		return inv;
 	}
 
-	HDMaths::HDFLOAT3X3 HDFLOAT4X4::ToMatrix3x3() const
+	HDFLOAT3X3 HDFLOAT4X4::ToMatrix3x3() const
 	{
 		return HDFLOAT3X3{
 			_11, _12, _13,
@@ -919,7 +919,7 @@ namespace HDMaths
 		};
 	}
 
-	HDFLOAT4 HDMaths::HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right)
+	HDFLOAT4 HDFloat4MultiplyMatrix(const HDFLOAT4& left, const HDFLOAT4X4& right)
 	{
 		HDFLOAT4 result;
 
@@ -950,23 +950,23 @@ namespace HDMaths
 		return result;
 	}
 
-	HDFLOAT4 HDMaths::HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
+	HDFLOAT4 HDFloat3MultiplyMatrix(const HDFLOAT3& left, const HDFLOAT4X4& right)
 	{
 		HDFLOAT4 result = HDFloat4MultiplyMatrix({ left.x, left.y, left.z, 1.0f }, right);
 		return { result.x ,result.y, result.z };
 	}
 
-	HDFLOAT4 HDMaths::QuaternionToFloat4(const HDQuaternion& val)
+	HDFLOAT4 QuaternionToFloat4(const HDQuaternion& val)
 	{
 		return { val.x, val.y, val.z, val.w };
 	}
 
-	HDQuaternion HDMaths::Float4ToQuaternion(const HDFLOAT4& val)
+	HDQuaternion Float4ToQuaternion(const HDFLOAT4& val)
 	{
 		return { val.w, val.x, val.y, val.z };
 	}
 
-	HDFLOAT4X4 HDMaths::GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale)
+	HDFLOAT4X4 GetTransformMatrix(const HDFLOAT3& position, const HDQuaternion& rotation, const HDFLOAT3& scale)
 	{
 		HDFLOAT4X4 translateTM
 		{
@@ -1010,12 +1010,12 @@ namespace HDMaths
 		return scaleTM * rotationTM * translateTM;
 	}
 
-	HDFLOAT3 HDMaths::GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
+	HDFLOAT3 GetLocalPositionFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		return HDFLOAT3{ localTM._41, localTM._42, localTM._43 };
 	}
 
-	HDQuaternion HDMaths::GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM)
+	HDQuaternion GetLocalRotationFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		HDFLOAT3 scale = GetLocalScaleFromLocalTM(localTM);
 		HDFLOAT3X3 rotScaleMatrix = localTM.ToMatrix3x3();
@@ -1037,7 +1037,7 @@ namespace HDMaths
 		return rotation;
 	}	
 
-	HDFLOAT3 HDMaths::GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM)
+	HDFLOAT3 GetLocalScaleFromLocalTM(const HDFLOAT4X4& localTM)
 	{
 		HDFLOAT3 scale;
 		const float squareSumX = localTM._11 * localTM._11 + localTM._12 * localTM._12 + localTM._13 * localTM._13;

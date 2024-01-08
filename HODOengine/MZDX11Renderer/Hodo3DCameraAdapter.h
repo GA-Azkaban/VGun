@@ -16,7 +16,7 @@ namespace hodoGIAdapter
 		};
 		virtual ~CameraAdapter() {};
 
-		virtual void SetWorldTM(const HDMaths::HDFLOAT4X4& tm) {
+		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& tm) {
 			XMMATRIX xmTM;
 
 			xmTM.r[0].m128_f32[0] = tm._11;
