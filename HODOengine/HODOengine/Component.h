@@ -20,27 +20,25 @@ namespace HDData
 		friend GameObject;
 		friend HODOengine;
 
-		// ��Ȱ��ȭ �� ���� ������Ʈ�� Ȱ��ȭ �� �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 비활성화 된 게임 오브젝트가 활성화 될 때 호출되는 콜백 함수입니다.
 		virtual void OnEnable() {};
-		// Ȱ��ȭ �� ���� ������Ʈ�� ��Ȱ��ȭ �� �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 활성화 된 게임 오브젝트가 비활성화 될 때 호출되는 콜백 함수입니다.
 		virtual void OnDisable() {};
-		// ���ʷ� Update�� ȣ��� �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
-		virtual void Start() { _isStarted = true;  };
-		// �� �����Ӹ��� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 최초로 Update가 호출될 때 호출되는 콜백 함수입니다.
+		virtual void Start() {};
+		// 매 프레임마다 호출되는 콜백 함수입니다.
 		virtual void Update() {};
-		// Update�� ȣ��� �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
-		virtual void LateUpdate() {};
-		// ��Ȯ�� �ð� �������� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 정확한 시간 간격으로 호출되는 콜백 함수입니다.
 		virtual void FixedUpdate() {};
-		// ���� ������Ʈ�� ������ �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 게임 오브젝트가 삭제될 때 호출되는 콜백 함수입니다.
 		virtual void OnDestroy() {};
 
-		// �浹 ����
-		// �浹ü���� ���� �浹�� ������ �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 충돌 관련
+		// 충돌체들이 서로 충돌을 시작할 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionEnter() {};
-		// �浹ü���� ���� �浹�ϰ� �ִ� ������ �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 충돌체들이 서로 충돌하고 있는 상태일 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionStay() {};
-		// �浹ü���� �浹�� ������ ���� ���������� �� ȣ��Ǵ� �ݹ� �Լ��Դϴ�.
+		// 충돌체들의 충돌이 끝나고 서로 떨어져나갈 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionExit() {};
 		virtual ~Component() {};
 
