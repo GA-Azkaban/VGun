@@ -1,7 +1,7 @@
 #pragma once
 #include "IRenderable.h"
 
-namespace hodoGI
+namespace HDEngine
 {
 	class ISkinnedMesh : public IRenderable
 	{

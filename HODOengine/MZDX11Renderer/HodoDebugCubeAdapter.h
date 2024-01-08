@@ -5,7 +5,7 @@
 
 namespace hodoGIAdapter
 {
-	class DebugCubeAdapter : public hodoGI::IDebugCube
+	class DebugCubeAdapter : public HDEngine::IDebugCube
 	{
 	public:
 		DebugCubeAdapter(DebugCube* debugCube)

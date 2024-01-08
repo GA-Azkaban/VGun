@@ -2,7 +2,7 @@
 #include "IRenderable.h"
 #include "../HODOmath/HODOmath.h"
 
-namespace hodoGI
+namespace HDEngine
 {
 	class IDebugObject : public IRenderable
 	{

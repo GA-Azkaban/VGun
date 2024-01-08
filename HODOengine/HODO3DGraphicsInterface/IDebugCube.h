@@ -1,7 +1,7 @@
 #pragma once
 #include "IDebugObject.h"
 
-namespace hodoGI
+namespace HDEngine
 {
 	class IDebugCube : public IDebugObject
 	{
