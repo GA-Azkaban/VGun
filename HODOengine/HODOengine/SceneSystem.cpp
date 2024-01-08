@@ -1,11 +1,15 @@
 #include "SceneSystem.h"
+#include "GameObject.h"
 #include "Scene.h"
 
 #include <cassert>
 
 #include "IDSystem.h"
 
-namespace hodoEngine
+
+// TODO) ���ӿ�����Ʈ ������ �ٲ�� ������� ������ �ʿ��� ��
+
+namespace HDEngine
 {
 
 	SceneSystem::SceneSystem()
@@ -14,15 +18,23 @@ namespace hodoEngine
 
 	}
 
-	hodoData::Scene* SceneSystem::CreateScene(std::string sceneName)
+	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
-		hodoData::Scene* scene = new hodoData::Scene(sceneName);
+		// �̹� �ִ� �� �̸��̶�� �� ���� ��ȯ���ش�.
+		auto iter = _sceneList.find(sceneName);
+		if (iter != _sceneList.end())
+		{
+			return _sceneList[sceneName];
+		}
+
+		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
 		return scene;
 	}
 
 	void SceneSystem::LoadScene(std::string sceneName)
 	{
+		// ���ο� ���� ã�´�
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{
@@ -31,14 +43,18 @@ namespace hodoEngine
 		_currentScene = sceneIter->second;
 	}
 
-	void SceneSystem::LoadScene(hodoData::Scene* scene)
+	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
 		_currentScene = scene;
 	}
 
-	hodoData::Scene* SceneSystem::GetCurrentScene()
+	std::unordered_map<std::string, HDData::Scene*>& SceneSystem::GetAllScenes()
+	{
+		return _sceneList;
+	}
+
+	HDData::Scene* SceneSystem::GetCurrentScene()
 	{
 		return _currentScene;
 	}
-
 }

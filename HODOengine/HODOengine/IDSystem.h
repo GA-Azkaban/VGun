@@ -5,7 +5,7 @@
 
 #include "Singleton.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class IDSystem : public Singleton<IDSystem>
 	{

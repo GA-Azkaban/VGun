@@ -2,7 +2,7 @@
 #include "StaticCollider.h"
 
 
-namespace hodoData
+namespace HDData
 {
 	class StaticPlaneCollider : public StaticCollider
 	{
@@ -10,8 +10,13 @@ namespace hodoData
 		StaticPlaneCollider();
 
 	public:
-		void Start() override;
 		void Update() override;
+
+	public:
+		// plane angle
+		HDMath::HDFLOAT3 GetNormalVector() const;
+		// how far from bottom
+		float GetDistance() const;
 	};
 }
 

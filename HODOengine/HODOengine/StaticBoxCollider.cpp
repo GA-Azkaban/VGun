@@ -1,47 +1,44 @@
 #include "StaticBoxCollider.h"
+#include "PhysicsSystem.h"
 
-hodoData::StaticBoxCollider::StaticBoxCollider()
-	: _width(0.f), _height(0.f), _depth(0.f)
+HDData::StaticBoxCollider::StaticBoxCollider()
+	: _width(1.0f), _height(1.0f), _depth(1.0f)
 {
-
+	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
 }
 
-void hodoData::StaticBoxCollider::Start()
+HDData::StaticBoxCollider::StaticBoxCollider(float width, float height, float depth)
+	: _width(width), _height(height), _depth(depth)
 {
-
+	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
 }
 
-void hodoData::StaticBoxCollider::Update()
-{
-
-}
-
-float hodoData::StaticBoxCollider::GetHeight()
+float HDData::StaticBoxCollider::GetHeight()
 {
 	return _height;
 }
 
-float hodoData::StaticBoxCollider::GetWidth()
+float HDData::StaticBoxCollider::GetWidth()
 {
 	return _width;
 }
 
-float hodoData::StaticBoxCollider::GetDepth()
+float HDData::StaticBoxCollider::GetDepth()
 {
 	return _depth;
 }
 
-void hodoData::StaticBoxCollider::SetHeight(float val)
+void HDData::StaticBoxCollider::SetHeight(float val)
 {
 	_height = val;
 }
 
-void hodoData::StaticBoxCollider::SetWidth(float val)
+void HDData::StaticBoxCollider::SetWidth(float val)
 {
 	_width = val;
 }
 
-void hodoData::StaticBoxCollider::SetDepth(float val)
+void HDData::StaticBoxCollider::SetDepth(float val)
 {
 	_depth = val;
 }

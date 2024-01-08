@@ -7,7 +7,7 @@
 /// RocketMath와 Overload의 OvMath 참고
 /// </summary>
 
-namespace HDMaths
+namespace HDMath
 {
 
 	struct HDFLOAT3X3;

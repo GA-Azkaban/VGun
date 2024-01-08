@@ -2,13 +2,20 @@
 #include "dllExporter.h"
 #include "IHODOengine.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
+	class DLL_Loader;
 	class SceneSystem;
 	class ObjectSystem;
 	class InputSystem;
 	class TimeSystem;
 	class IDSystem;
+	class DebugSystem;
+	class PhysicsSystem;
+	class RenderSystem;
+	class GraphicsObjFactory;
+	class EventSystem;
+	class SoundSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -44,8 +51,17 @@ private:
 	const WCHAR* _appName;
 
 private:
-	hodoEngine::SceneSystem& _sceneSystem;
-	hodoEngine::ObjectSystem& _objectSystem;
-	hodoEngine::TimeSystem& _timeSystem;
-	hodoEngine::InputSystem& _inputSystem;
+	HDEngine::DLL_Loader* _dllLoader;
+
+private:
+	HDEngine::SceneSystem& _sceneSystem;
+	HDEngine::ObjectSystem& _objectSystem;
+	HDEngine::TimeSystem& _timeSystem;
+	HDEngine::InputSystem& _inputSystem;
+	HDEngine::DebugSystem& _debugSystem;
+	HDEngine::PhysicsSystem& _physicsSystem;
+	HDEngine::RenderSystem& _renderSystem;
+	HDEngine::GraphicsObjFactory& _graphicsObjFactory;
+	HDEngine::EventSystem& _eventSystem;
+	HDEngine::SoundSystem& _soundSystem;
 };

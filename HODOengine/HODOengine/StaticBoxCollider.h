@@ -2,16 +2,13 @@
 #include "dllExporter.h"
 #include "StaticCollider.h"
 
-namespace hodoData
+namespace HDData
 {
 	class HODO_API StaticBoxCollider : public StaticCollider
 	{
 	public:
 		StaticBoxCollider();
-
-	public:
-		void Start() override;
-		void Update() override;
+		StaticBoxCollider(float width, float height, float depth);
 
 	public:
 		float GetHeight();

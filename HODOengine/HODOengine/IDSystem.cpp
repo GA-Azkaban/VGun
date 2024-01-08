@@ -1,7 +1,7 @@
 #include "IDSystem.h"
 
 
-namespace hodoEngine
+namespace HDEngine
 {
 	std::string IDSystem::CreateID()
 	{

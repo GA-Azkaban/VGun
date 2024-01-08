@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-namespace hodoData
+namespace HDData
 {
 	class HODO_API Script : public Component
 	{
@@ -11,6 +11,7 @@ namespace hodoData
 
 		virtual void Start() override;
 		virtual void Update() override;
+		virtual void LateUpdate() override;
 		virtual void FixedUpdate() override;
 	};
 }

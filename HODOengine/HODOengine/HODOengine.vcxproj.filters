@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="00_Default">
@@ -61,21 +61,6 @@
     <Filter Include="05_Component\Camera">
       <UniqueIdentifier>{5cdb65ec-11e5-4551-96d6-ea642ec28523}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06_System\Global">
-      <UniqueIdentifier>{f88470fc-6a92-4913-9811-7c881ec0e07b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="07_GraphicInterfaceObject">
-      <UniqueIdentifier>{47b4a989-3e4f-4323-b412-2dc0ee2755cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08_GraphicsRenderer">
-      <UniqueIdentifier>{7d706f32-fa3d-4165-8090-c298cd517dde}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderable">
-      <UniqueIdentifier>{b93861c3-8cf9-4011-a951-3e57ce21eeb3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderable\DebugCube">
-      <UniqueIdentifier>{d27a474d-e105-4916-961d-7e04b8b11f66}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Script">
       <UniqueIdentifier>{7104ad00-713f-4193-b1aa-16b61916561b}</UniqueIdentifier>
     </Filter>
@@ -102,6 +87,72 @@
     </Filter>
     <Filter Include="05_Component\Collider\DynamicCollider\DynamicColliderBase">
       <UniqueIdentifier>{04cdc952-59f0-4be4-ac1c-94badf4492ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\RenderSystem">
+      <UniqueIdentifier>{885f02bb-befc-4a85-a865-68431d10cd0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer">
+      <UniqueIdentifier>{7ebc400f-1d65-4d9d-bdb5-bc892c822d5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\BaseClass">
+      <UniqueIdentifier>{28355368-a12d-47d8-b52f-9b3f960396bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface">
+      <UniqueIdentifier>{2a67aadc-6c14-4966-8f34-f7ae6fb5fe7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicBoxCollider">
+      <UniqueIdentifier>{4681b789-43ce-4f2c-a4d0-28abaf6d01b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicCapsuleCollider">
+      <UniqueIdentifier>{1988af81-4a97-412b-9d70-1aaa5c73089a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Collider\DynamicCollider\DynamicSphereCollider">
+      <UniqueIdentifier>{d7b98d27-f34c-4a16-bad3-150a6eddcf5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\PhysicsSystem">
+      <UniqueIdentifier>{3018ff56-a38b-464a-a666-ed7e8c4bee6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\EventHandler">
+      <UniqueIdentifier>{0faf802a-5b99-4b7d-95a1-206ae8a341ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\EventSystem">
+      <UniqueIdentifier>{174da3be-b5d9-484f-aa5e-04127c2c0967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{e5056f7f-e0db-4d7c-9e2d-4af7bb15d033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\ImageUI">
+      <UniqueIdentifier>{246f47f1-9c14-4284-98c1-316cb14d73eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\TextUI">
+      <UniqueIdentifier>{878e0c14-ee81-422c-8501-272fad0b1847}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_DLL_Loader">
+      <UniqueIdentifier>{720c6713-406e-4b35-b087-ae83782d68a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\SkinnedMeshRenderer">
+      <UniqueIdentifier>{0271c77e-557c-4f5a-8c0e-5f93bb0f3cef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\SoundSystem">
+      <UniqueIdentifier>{9ca4d0cd-bdf1-42a6-bbef-2bc820d92d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\SoundSystem\SoundGroupEnum">
+      <UniqueIdentifier>{92b4eba7-7a2a-47bc-bc91-f543a1b42bd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\AudioSource">
+      <UniqueIdentifier>{16c97c91-118a-4988-b1a1-4b0d69ed5a2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\AudioSource\AudioClip">
+      <UniqueIdentifier>{dfcb16ff-7064-4444-9982-3b24e6b67a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\AudioListener">
+      <UniqueIdentifier>{1dd74274-e9f8-4bfe-88a6-4f581ac2a4db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\GraphicsObjectFactory">
+      <UniqueIdentifier>{15d6e3bd-3a10-4eed-b430-9de5b55d9c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\BaseClass">
+      <UniqueIdentifier>{4d7e4089-1476-4110-9044-22eb4ef206bb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,44 +207,98 @@
     <ClInclude Include="Camera.h">
       <Filter>05_Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="HodoGIGlobal.h">
-      <Filter>06_System\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="HodoGIObject.h">
-      <Filter>07_GraphicInterfaceObject</Filter>
-    </ClInclude>
-    <ClInclude Include="GraphicsRenderer.h">
-      <Filter>08_GraphicsRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderable.h">
-      <Filter>05_Component\Renderable</Filter>
-    </ClInclude>
-    <ClInclude Include="HodoDebugCube.h">
-      <Filter>05_Component\Renderable\DebugCube</Filter>
-    </ClInclude>
     <ClInclude Include="Script.h">
       <Filter>05_Component\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>06_System\RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="TimeSystem.h">
       <Filter>06_System\TimeSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>05_Component\Collider\Base</Filter>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>06_System\PhysicsSystem</Filter>
     </ClInclude>
-    <ClInclude Include="StaticCollider.h">
-      <Filter>05_Component\Collider\StaticCollider\StaticColliderBase</Filter>
+    <ClInclude Include="EventHandler.h">
+      <Filter>05_Component\EventHandler</Filter>
     </ClInclude>
-    <ClInclude Include="StaticBoxCollider.h">
-      <Filter>05_Component\Collider\StaticCollider\StaticBoxCollider</Filter>
+    <ClInclude Include="EventSystem.h">
+      <Filter>06_System\EventSystem</Filter>
     </ClInclude>
-    <ClInclude Include="StaticPlaneCollider.h">
-      <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    <ClInclude Include="TextUI.h">
+      <Filter>05_Component\UserInterface\TextUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObjFactory.h">
+      <Filter>06_System\GraphicsObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="DLL_Loader.h">
+      <Filter>02_DLL_Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="DebugSystem.h" />
+    <ClInclude Include="DynamicCollider.h" />
+    <ClInclude Include="StaticBoxCollider.h" />
+    <ClInclude Include="StaticCollider.h" />
+    <ClInclude Include="StaticPlaneCollider.h" />
+    <ClInclude Include="SkinnedMeshRenderer.h">
+      <Filter>05_Component\Renderer\SkinnedMeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugSystem.h">
+      <Filter>06_System\DebugSystem</Filter>
     </ClInclude>
     <ClInclude Include="DynamicCollider.h">
       <Filter>05_Component\Collider\DynamicCollider\DynamicColliderBase</Filter>
     </ClInclude>
-    <ClInclude Include="DebugSystem.h">
-      <Filter>06_System\DebugSystem</Filter>
+    <ClInclude Include="ImageUI.h">
+      <Filter>05_Component\UserInterface\ImageUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider.h">
+      <Filter>05_Component\Collider\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticBoxCollider.h">
+      <Filter>05_Component\Collider\StaticCollider\StaticBoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticCollider.h">
+      <Filter>05_Component\Collider\StaticCollider\StaticColliderBase</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticPlaneCollider.h">
+      <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererBase.h">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicBoxCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicBoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicCapsuleCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicCapsuleCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicSphereCollider.h">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicSphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>06_System\SoundSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundGroup.h">
+      <Filter>06_System\SoundSystem\SoundGroupEnum</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioSource.h">
+      <Filter>05_Component\AudioSource</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioListener.h">
+      <Filter>05_Component\AudioListener</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioClip.h">
+      <Filter>05_Component\AudioSource\AudioClip</Filter>
+    </ClInclude>
+    <ClInclude Include="InputData.h">
+      <Filter>06_System\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="UIBase.h">
+      <Filter>05_Component\UserInterface\BaseClass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -243,38 +348,88 @@
     <ClCompile Include="Camera.cpp">
       <Filter>05_Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="HodoGIObject.cpp">
-      <Filter>07_GraphicInterfaceObject</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsRenderer.cpp">
-      <Filter>08_GraphicsRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="HodoDebugCube.cpp">
-      <Filter>05_Component\Renderable\DebugCube</Filter>
-    </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>05_Component\Script</Filter>
     </ClCompile>
-    <ClCompile Include="TimeSystem.cpp">
-      <Filter>06_System\TimeSystem</Filter>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>06_System\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>05_Component\Collider\Base</Filter>
+    <ClCompile Include="EventHandler.cpp">
+      <Filter>05_Component\EventHandler</Filter>
     </ClCompile>
-    <ClCompile Include="StaticCollider.cpp">
-      <Filter>05_Component\Collider\StaticCollider\StaticColliderBase</Filter>
+    <ClCompile Include="EventSystem.cpp">
+      <Filter>06_System\EventSystem</Filter>
     </ClCompile>
-    <ClCompile Include="StaticBoxCollider.cpp">
-      <Filter>05_Component\Collider\StaticCollider\StaticBoxCollider</Filter>
+    <ClCompile Include="ImageUI.cpp">
+      <Filter>05_Component\UserInterface\ImageUI</Filter>
     </ClCompile>
-    <ClCompile Include="StaticPlaneCollider.cpp">
-      <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    <ClCompile Include="TextUI.cpp">
+      <Filter>05_Component\UserInterface\TextUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsObjFactory.cpp">
+      <Filter>06_System\GraphicsObjectFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="DLL_Loader.cpp">
+      <Filter>02_DLL_Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="DebugSystem.cpp" />
+    <ClCompile Include="DynamicCollider.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="StaticBoxCollider.cpp" />
+    <ClCompile Include="StaticCollider.cpp" />
+    <ClCompile Include="StaticPlaneCollider.cpp" />
+    <ClCompile Include="TimeSystem.cpp" />
+    <ClCompile Include="SkinnedMeshRenderer.cpp">
+      <Filter>05_Component\Renderer\SkinnedMeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugSystem.cpp">
+      <Filter>06_System\DebugSystem</Filter>
     </ClCompile>
     <ClCompile Include="DynamicCollider.cpp">
       <Filter>05_Component\Collider\DynamicCollider\DynamicColliderBase</Filter>
     </ClCompile>
-    <ClCompile Include="DebugSystem.cpp">
-      <Filter>06_System\DebugSystem</Filter>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>06_System\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider.cpp">
+      <Filter>05_Component\Collider\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticBoxCollider.cpp">
+      <Filter>05_Component\Collider\StaticCollider\StaticBoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticCollider.cpp">
+      <Filter>05_Component\Collider\StaticCollider\StaticColliderBase</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticPlaneCollider.cpp">
+      <Filter>05_Component\Collider\StaticCollider\StaticPlaneCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeSystem.cpp">
+      <Filter>06_System\TimeSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="RendererBase.cpp">
+      <Filter>05_Component\Renderer\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicBoxCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicBoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicCapsuleCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicCapsuleCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicSphereCollider.cpp">
+      <Filter>05_Component\Collider\DynamicCollider\DynamicSphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>06_System\SoundSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSource.cpp">
+      <Filter>05_Component\AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="UIBase.cpp">
+      <Filter>05_Component\UserInterface\BaseClass</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

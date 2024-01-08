@@ -1,9 +1,8 @@
-﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
 #include "HODOengine.h"
-#include "GraphicsRenderer.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -12,6 +11,20 @@
 #include "ObjectSystem.h"
 #include "TimeSystem.h"
 #include "InputSystem.h"
+#include "DebugSystem.h"
+#include "RenderSystem.h"
+#include "PhysicsSystem.h"
+#include "GraphicsObjFactory.h"
+#include "EventSystem.h"
+#include "SoundSystem.h"
+
+#include "DLL_Loader.h"
+
+#ifdef _DEBUG
+#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\MZDX11Renderer.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#else
+#define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
+#endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
 
@@ -28,12 +41,19 @@ void ReleaseEngine(IHODOengine* instance)
 
 HODOengine::HODOengine()
 	:_appName(L"HODO"),
-	_sceneSystem(hodoEngine::SceneSystem::Instance()),
-	_objectSystem(hodoEngine::ObjectSystem::Instance()),
-	_timeSystem(hodoEngine::TimeSystem::Instance()),
-	_inputSystem(hodoEngine::InputSystem::Instance())
+	_dllLoader(new HDEngine::DLL_Loader()),
+	_sceneSystem(HDEngine::SceneSystem::Instance()),
+	_objectSystem(HDEngine::ObjectSystem::Instance()),
+	_timeSystem(HDEngine::TimeSystem::Instance()),
+	_inputSystem(HDEngine::InputSystem::Instance()),
+	_renderSystem(HDEngine::RenderSystem::Instance()),
+	_debugSystem(HDEngine::DebugSystem::Instance()),
+	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
+	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
+	_eventSystem(HDEngine::EventSystem::Instance()),
+	_soundSystem(HDEngine::SoundSystem::Instance())
 {
-
+	
 }
 
 HODOengine::~HODOengine()
@@ -52,19 +72,25 @@ HODOengine& HODOengine::Instance()
 
 void HODOengine::Initialize()
 {
+	_debugSystem.Initialize();
+	
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
+	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
-	hodoEngine::GraphicsRenderer::Instance().LoadGraphicsDll(L"MZDX11Renderer.dll");
-	hodoEngine::GraphicsRenderer::Instance().SetOutputWindow(_hWnd);
-
+	// 렌더 먼저 그다음에 인풋
+	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
+	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 	_timeSystem.Initialize();
-	_inputSystem.Initialize();
+	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
+	//_physicsSystem.Initialize();
 }
 
 void HODOengine::Loop()
 {
+	_physicsSystem.PreparePhysics();
+
 	while (1)
 	{
 		if (PeekMessage(&_msg, NULL, 0, 0, PM_REMOVE))
@@ -85,7 +111,12 @@ void HODOengine::Loop()
 
 void HODOengine::Finalize()
 {
-
+	_physicsSystem.Finalize();
+	_renderSystem.Finalize();
+	// _debugSystem.Finalize();
+	// _inputSystem.Finalize();
+	// _timeSystem.Finalize();
+	_graphicsObjFactory.Finalize();
 }
 
 HWND HODOengine::GetHWND()
@@ -96,36 +127,28 @@ HWND HODOengine::GetHWND()
 
 void HODOengine::Run()
 {
-	// Time Update
 	_timeSystem.Update();
 
-	// Input Update
-	hodoEngine::InputSystem::Instance().Update();
+	_objectSystem.FlushDestroyObjectList();
 
-	// Destroy List -> GameObject OnDestroy, Clear
-	for (auto destroyObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList())
-	{
-		for (auto component : destroyObj->GetAllComponents())
-		{
-			component->OnDestroy();
-		}
-		hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList().erase(destroyObj);
-	}
-	hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetDestroyObjectList().clear();
+	_inputSystem.Update();
+	_debugSystem.Update();
 
-	// Update Components
-	for (auto gameObj : hodoEngine::SceneSystem::Instance().GetCurrentScene()->GetGameObjectList())
-	{
-		for (auto component : gameObj->GetAllComponents())
-		{
-			component->Update();
-		}
-	}
-	// Invoke Collision Events
-	// Renderer Update
-	hodoEngine::GraphicsRenderer::Instance().Update(hodoEngine::TimeSystem::Instance().GetDeltaTime());
-	// Renderer Render
-	hodoEngine::GraphicsRenderer::Instance().Render();
+	_objectSystem.UpdateCurrentSceneObjects();
+	_soundSystem.Update();
+
+	_objectSystem.LateUpdateCurrentSceneObjects();
+
+	// draw
+	_renderSystem.DrawProcess();
+
+	// physicsUpdate, temporary location
+	//HDEngine::PhysicsSystem::Instance().Update();
+
+	_eventSystem.InvokeEvent();
+
+	// refresh input for next frame
+	_inputSystem.Flush();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

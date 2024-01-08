@@ -1,12 +1,25 @@
+#include <cassert>
+
 #include "Scene.h"
 #include "GameObject.h"
+#include "Camera.h"
+#include "AudioListener.h"
 
-namespace hodoData
+#include "ObjectSystem.h"
+#include <algorithm>
+
+namespace HDData
 {
 	Scene::Scene(std::string sceneName)
 		: _sceneName(sceneName)
 	{
-		// ¾ÀÀÌ »ý¼ºµÉ ¶§ ¹Ýµå½Ã Directional Light¿Í Camera¸¦ °¡Áö°í ÀÖ¾î¾ß ÇÑ´Ù
+		// ì”¬ì´ ìƒì„±ë  ë•Œ ë°˜ë“œì‹œ Directional Lightì™€ Cameraë¥¼ ê°€ì§€ê³  ìžˆì–´ì•¼ í•œë‹¤
+		GameObject* camObj = CreateObject("MainCamera");
+		Camera* mainCam = camObj->AddComponent<Camera>();
+		SetMainCamera(mainCam);
+		camObj->GetTransform()->SetWorldPosition(0.0f, 2.0f, -10.0f);
+		// ì”¬ì´ ìƒì„±ë  ë•Œ ë©”ì¸ì¹´ë©”ë¼ì— ì˜¤ë””ì˜¤ë¦¬ìŠ¤ë„ˆ ì»´í¬ë„ŒíŠ¸ë¥¼ ìƒì„±í•˜ì—¬ ë¶€ì°©í•œë‹¤
+		camObj->AddComponent<AudioListner>();
 	}
 
 	Scene::~Scene()
@@ -14,9 +27,85 @@ namespace hodoData
 		
 	}
 
-	std::unordered_set<GameObject*>& Scene::GetGameObjectList()
+	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
+	{
+		auto obj = HDEngine::ObjectSystem::Instance().CreateObject(this, objectName, parent);
+
+		return obj;
+	}
+
+	void Scene::DestroyObject(HDData::GameObject* gameObject)
+	{
+		HDEngine::ObjectSystem::Instance().DestroyObject(this, gameObject);
+	}
+
+	void Scene::FlushDestroyObjectList()
+	{
+		for (auto& destroyObj : _destroyObjects)
+		{
+			for (auto& component : destroyObj->GetAllComponents())
+			{
+				component->OnDestroy();
+			}
+			_gameObjects.erase(std::remove_if(_destroyObjects.begin(), _destroyObjects.end(), [&](HDData::GameObject* gameObject)->bool { return gameObject == destroyObj; }));
+		}
+		_destroyObjects.clear();
+	}
+
+	void Scene::Update()
+	{
+		if (!_gameObjects.empty())
+		{
+			for (auto& gameObject : _gameObjects)
+			{
+				if (gameObject->IsActive())
+				{
+					gameObject->Start();
+				}
+				GetRunningObjectList().push_back(gameObject);
+			}
+			_gameObjects.clear();
+		}
+
+		for (auto& gameObject : GetRunningObjectList())
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->Update();
+			}
+		}
+	}
+
+	void Scene::LateUpdate()
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->LateUpdate();
+			}
+		}
+	}
+
+	void Scene::FixedUpdate()
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->IsActive())
+			{
+				gameObject->FixedUpdate();
+			}
+		}
+	}
+
+	std::vector<GameObject*>& Scene::GetGameObjectList()
 	{
 		return _gameObjects;
+	}
+
+	std::vector<GameObject*>& Scene::GetRunningObjectList()
+	{
+		return _runningObjects;
 	}
 
 	std::vector<GameObject*>& Scene::GetDestroyObjectList()
@@ -34,4 +123,15 @@ namespace hodoData
 		_sceneName = sceneName;
 	}
 
+	HDData::Camera* Scene::GetMainCamera()
+	{
+		assert(_mainCamera);
+		return _mainCamera;
+	}
+
+	void Scene::SetMainCamera(Camera* camera)
+	{
+		_mainCamera = camera;
+		_mainCamera->SetAsMainCamera();
+	}
 }

@@ -1,16 +1,22 @@
 #include "StaticPlaneCollider.h"
 
-hodoData::StaticPlaneCollider::StaticPlaneCollider()
+HDData::StaticPlaneCollider::StaticPlaneCollider()
 {
 
 }
 
-void hodoData::StaticPlaneCollider::Start()
+void HDData::StaticPlaneCollider::Update()
 {
 
 }
 
-void hodoData::StaticPlaneCollider::Update()
+HDMath::HDFLOAT3 HDData::StaticPlaneCollider::GetNormalVector() const
 {
+	//HDMaths::HDFLOAT3 axis = GetGameObject().GetTransform()->GetRight();
+	return {};
+}
 
+float HDData::StaticPlaneCollider::GetDistance() const
+{
+	return {};
 }

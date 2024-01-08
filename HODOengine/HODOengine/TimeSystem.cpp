@@ -1,6 +1,6 @@
 #include "TimeSystem.h"
 
-namespace hodoEngine
+namespace HDEngine
 {
 
 

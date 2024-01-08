@@ -1,22 +1,22 @@
 #include "StaticCollider.h"
 
-hodoData::StaticCollider::StaticCollider()
+HDData::StaticCollider::StaticCollider()
 	: _isCollided(false)
 {
 
 }
 
-void hodoData::StaticCollider::UpdateToPhysics()
+void HDData::StaticCollider::UpdateToPhysics()
 {
 	// physics 씬을 가져와서 콜라이더의 transform 값을 보낸다
 }
 
-void hodoData::StaticCollider::Collided()
+void HDData::StaticCollider::Collided()
 {
 	_isCollided = true;
 }
 
-bool hodoData::StaticCollider::GetIsCollided()
+bool HDData::StaticCollider::GetIsCollided()
 {
 	return _isCollided;
 }

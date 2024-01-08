@@ -1,23 +1,30 @@
 #pragma once
+#include "dllExporter.h"
 #include "Collider.h"
 
-namespace hodoData
+namespace HDData
 {
-	class DynamicCollider : public Collider
+	class HODO_API DynamicCollider : public Collider
 	{
 	public:
 		DynamicCollider();
 
 	public:
-		// PhysX ¾À°ú µ¥ÀÌÅÍ¸¦ ÁÖ°í¹Ş´Â ÇÔ¼ö
+		virtual float GetWidth() const abstract;
+		virtual float GetHeight() const abstract;
+		virtual float GetDepth() const abstract;
+
+	public:
+		// PhysX ì”¬ê³¼ ë°ì´í„°ë¥¼ ì£¼ê³ ë°›ëŠ” í•¨ìˆ˜
 		void UpdateToPhysics() override;
-		void UpdateFromPhysics();
+		void UpdateFromPhysics(HDMath::HDFLOAT3 pos, HDMath::HDQuaternion quat);
 
 	public:
 		void Collide();
 		bool GetIsCollided();
 
 	private:
+		bool _isJumping;
 		bool _isCollided;
 
 	};

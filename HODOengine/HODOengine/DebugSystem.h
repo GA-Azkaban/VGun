@@ -5,12 +5,12 @@
 #include "Singleton.h"
 #include "../HODOmath/HODOmath.h"
 
-namespace hodoData
+namespace HDData
 {
 	class GameObject;
 }
 
-namespace hodoEngine
+namespace HDEngine
 {
 	class DebugSystem : public Singleton<DebugSystem>
 	{
@@ -23,28 +23,30 @@ namespace hodoEngine
 		void Initialize();
 		void Update();
 
-		// Äİ¶óÀÌ´õ°¡ ÀÖ´Â ¿ÀºêÁ§Æ®¿¡ µğ¹ö±× ÇüÅÂ¸¦ ±×·ÁÁÖ´Â ÇÔ¼ö.
-		// Äİ¶óÀÌ´õ »ı¼º ½Ã ÀÚµ¿À¸·Î È£ÃâµÈ´Ù.
-		void DrawColliderDebug(hodoData::GameObject* obj, HDMaths::HDFLOAT4& color);
+		// ë””ë²„ê·¸ ê´€ë ¨ í•¨ìˆ˜
+	public:
+		// ì½œë¼ì´ë”ì˜ ë””ë²„ê·¸ ë°ì´í„°ë¥¼ ì¶”ê°€í•´ë‘ëŠ” í•¨ìˆ˜
+		void AddDebugData(int flag, HDData::GameObject* obj ,HDMath::HDFLOAT4 color);
+		// ì½œë¼ì´ë”ê°€ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ì— ë””ë²„ê·¸ í˜•íƒœë¥¼ ê·¸ë ¤ì£¼ëŠ” í•¨ìˆ˜.
+		void DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4 color);
 	
-	private:
-		struct DebugData
+		struct debugData
 		{
-			int index;
-			HDMaths::HDFLOAT4 color;
+			int flag = 0;
+			HDData::GameObject* obj = nullptr;
+			HDMath::HDFLOAT4 color = HDMath::HDFLOAT4{1.f, 0.f, 0.f, 0.f};
 		};
 
-		std::vector<DebugData> _debugObj;
+	private:
+		std::vector<debugData*> _colliderDebugData;
 
 	public:
 		void SetDebugOn(int index);
 		void SetDebugOff();
-		
 
 	private:
 		int _index;
 		bool _isDebugMode = false;
 	};
 }
-
 

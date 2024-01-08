@@ -1,5 +1,6 @@
 #pragma once
 #include "dllExporter.h"
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 ///
 /// 231026

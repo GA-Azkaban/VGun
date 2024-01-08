@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
-#include <unordered_set>
 #include <vector>
 
 #include "dllExporter.h"
 
-namespace hodoData
+namespace HDData
 {
 	class GameObject;
+	class Camera;
 
 	class HODO_API Scene
 	{
@@ -20,15 +20,33 @@ namespace hodoData
 		~Scene();
 
 	public:
-		std::unordered_set<GameObject*>& GetGameObjectList();
+		HDData::GameObject* CreateObject(std::string objectName = "", HDData::GameObject* parent = nullptr);
+		void DestroyObject(HDData::GameObject* gameObject);
+
+		void FlushDestroyObjectList();
+
+		void Update();
+		void LateUpdate();
+		void FixedUpdate();
+
+		std::vector<GameObject*>& GetGameObjectList();
+		std::vector<GameObject*>& GetRunningObjectList();
 		std::vector<GameObject*>& GetDestroyObjectList();
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
 	private:
-		std::unordered_set<GameObject*> _gameObjects;
+		std::vector<GameObject*> _gameObjects;
+		std::vector<GameObject*> _runningObjects;
 		std::vector<GameObject*> _destroyObjects;
 		std::string _sceneName;
+		
+	public:
+		Camera* GetMainCamera();
+		void SetMainCamera(Camera* camera);
+
+	private:
+		Camera* _mainCamera;
 	};
 }
 
