@@ -27,7 +27,8 @@ Mesh::~Mesh()
 
 void Mesh::BindBuffers()
 {
-	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &m_singleVertexSize, 0);
+	UINT offset = 0;
+	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &m_singleVertexSize, &offset);
 	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 }
 
@@ -127,7 +128,7 @@ void Mesh::CreateBuffers(VertexStruct::Vertex* vertexArray, int vertexNum, unsig
 	};
 	D3D11_SUBRESOURCE_DATA initialVertexData;
 	initialVertexData.pSysMem = vertexArray;
-	device->CreateBuffer(&vbd, &initialVertexData, &m_vertexBuffer);
+	device->CreateBuffer(&vbd, &initialVertexData, m_vertexBuffer.GetAddressOf());
 
 	// Create the index buffer
 	D3D11_BUFFER_DESC ibd
@@ -141,7 +142,7 @@ void Mesh::CreateBuffers(VertexStruct::Vertex* vertexArray, int vertexNum, unsig
 	};
 	D3D11_SUBRESOURCE_DATA initialIndexData;
 	initialIndexData.pSysMem = indexArray;
-	device->CreateBuffer(&ibd, &initialIndexData, &m_indexBuffer);
+	device->CreateBuffer(&ibd, &initialIndexData, m_indexBuffer.GetAddressOf());
 
 	// Save the indices
 	m_numIndices = indicesNum;
@@ -163,7 +164,7 @@ void Mesh::CreateBuffers(VertexStruct::PosColor* vertexArray, int vertexNum, uns
 	};
 	D3D11_SUBRESOURCE_DATA initialVertexData;
 	initialVertexData.pSysMem = vertexArray;
-	device->CreateBuffer(&vbd, &initialVertexData, &m_vertexBuffer);
+	device->CreateBuffer(&vbd, &initialVertexData, m_vertexBuffer.GetAddressOf());
 
 	// Create the index buffer
 	D3D11_BUFFER_DESC ibd
@@ -177,7 +178,7 @@ void Mesh::CreateBuffers(VertexStruct::PosColor* vertexArray, int vertexNum, uns
 	};
 	D3D11_SUBRESOURCE_DATA initialIndexData;
 	initialIndexData.pSysMem = indexArray;
-	device->CreateBuffer(&ibd, &initialIndexData, &m_indexBuffer);
+	device->CreateBuffer(&ibd, &initialIndexData, m_indexBuffer.GetAddressOf());
 
 	// Save the indices
 	m_numIndices = indicesNum;

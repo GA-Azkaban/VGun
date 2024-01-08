@@ -2,6 +2,7 @@
 #include "DX11Define.h"
 #include "Vertex.h"
 #include "IMeshObject.h"
+#include "ModelLoader.h"
 #include "xnacollision.h"
 #include <vector>
 
@@ -15,7 +16,7 @@ class Material;
 class StaticMeshObject : public IMeshObject
 {
 public:
-	StaticMeshObject(std::vector<::Mesh*>& meshes, Material* material);
+	StaticMeshObject(ModelData modelData, Material* material);
 	~StaticMeshObject();
 
 public:
@@ -25,18 +26,20 @@ public:
 
 	virtual void SetWorldTM(const XMMATRIX& tm) override { m_world = tm; };
 	virtual void SetActive(bool isActive) override { m_isActive = isActive; };
+	virtual void SetPickingMode(bool isPickingModeOn) { };
 	//virtual void SetPickingMode(bool isPickingModeOn) { m_isPickingOn = isPickingModeOn; };
 
 	void SetPosition(float x, float y, float z) { m_position.x = x; m_position.y = y; m_position.z = z; }
 	void SetRotation(float x, float y, float z) { m_rotation.x = x; m_rotation.y = y; m_rotation.z = z; }
 	void SetScale(float x, float y, float z) { m_scale.x = x; m_scale.y = y; m_scale.z = z; }
 
-	/*XMFLOAT3 GetCenterPos() { return m_meshBox.Center; }
-	XMFLOAT3 GetColliderBoxLength() { return m_meshBox.Extents; }
-	float GetDepth() { return m_depth; }*/
+	//XMFLOAT3 GetCenterPos() { return m_meshBox.Center; }
+	//XMFLOAT3 GetColliderBoxLength() { return m_meshBox.Extents; }
+	//float GetDepth() { return m_depth; }
+	float GetDepth() { return 1.0f; }
 
 private:
-	std::vector<::Mesh*> m_meshes;
+	ModelData m_modelData;
 	Material* m_material;
 	bool m_isActive;
 

@@ -349,8 +349,8 @@
     <ClInclude Include="ModelLoader.h">
       <Filter>8. Util\ModelLoader</Filter>
     </ClInclude>
-    <ClInclude Include="ModelData.h">
-      <Filter>5. Objects\MeshObject</Filter>
+    <ClInclude Include="WICTextureLoader.h">
+      <Filter>8. Util\TextureLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -475,6 +475,9 @@
     </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
       <Filter>8. Util\ModelLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="WICTextureLoader.cpp">
+      <Filter>8. Util\TextureLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

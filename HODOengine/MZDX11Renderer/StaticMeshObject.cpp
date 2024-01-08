@@ -5,8 +5,8 @@
 #include "Material.h"
 #include "RasterizerState.h"
 
-StaticMeshObject::StaticMeshObject(std::vector<::Mesh*>& meshes, Material* material)
-	: m_meshes(meshes), m_material(material), m_isActive(true),
+StaticMeshObject::StaticMeshObject(ModelData modelData, Material* material)
+	: m_modelData(modelData), m_material(material), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_position{ 0, 0, 0 }, m_rotation{ 0, 0, 0, 1 }, m_scale{ 1, 1, 1 }
 	//m_meshBox(), m_depth(1.0f), m_isPickingOn(true)
 {
@@ -100,9 +100,14 @@ void StaticMeshObject::Render()
 	pixelShader->CopyAllBufferData();
 	pixelShader->SetShader();
 
-	for (UINT i = 0; i < m_meshes.size(); ++i)
+	/*for (UINT i = 0; i < m_meshes.size(); ++i)
 	{
 		m_meshes[i]->BindBuffers();
 		m_meshes[i]->Draw();
+	}*/
+	for (UINT i = 0; i < m_modelData.meshes.size(); ++i)
+	{
+		m_modelData.meshes[i]->BindBuffers();
+		m_modelData.meshes[i]->Draw();
 	}
 }

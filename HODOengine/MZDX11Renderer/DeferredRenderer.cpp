@@ -16,6 +16,7 @@
 #include "MZCamera.h"
 #include "ModelLoader.h"
 #include "StaticMeshObject.h"
+#include "DDSTextureLoader.h"
 
 LazyObjects<DeferredRenderer> DeferredRenderer::Instance;
 
@@ -79,10 +80,31 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	// 축
 	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
 
-	ModelLoader* modelLoader = new ModelLoader(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
-	modelLoader->Load("../3DModels/4QCharacter_tpose.fbx");
 	// FBX Test
-	//StaticMeshObject* staticMeshObj = new StaticMeshObject()
+	ModelLoader* modelLoader = new ModelLoader(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
+	//modelLoader->Load("../3DModels/4QCharacter_tpose.fbx");
+	//modelLoader->Load("../3DModels/spider.fbx");
+	ModelData modelData = modelLoader->Load("../3DModels/Rob02.fbx");
+
+	// 임시
+	D3D11_SAMPLER_DESC sampDesc;
+	ZeroMemory(&sampDesc, sizeof(sampDesc));
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	m_d3dDevice->CreateSamplerState(&sampDesc, &m_textureSampler);
+
+	ID3D11ShaderResourceView* normal;
+	CreateDDSTextureFromFile(m_d3dDevice.Get(), L"../3DModels/Textures/Rob02_Normal_reverse.dds", nullptr, &normal);
+	ID3D11ShaderResourceView* albedo;
+	CreateDDSTextureFromFile(m_d3dDevice.Get(), L"../3DModels/Textures/Rob02Yellow_AlbedoTransparency.dds", nullptr, &albedo);
+	Material* testMat = new Material(ShaderManager::Instance.Get().vertexShader, ShaderManager::Instance.Get().pixelShader, albedo, normal, m_textureSampler.Get());
+	StaticMeshObject* staticMeshObj = new StaticMeshObject(modelData, testMat);
 
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_blender.ASE");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");

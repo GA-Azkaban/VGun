@@ -9,8 +9,7 @@
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "dxguid.lib" )	
 #pragma comment( lib, "d3dcompiler.lib" )	
-#pragma comment( lib, "dxgi.lib" )	// adapter info
-#pragma comment( lib, "assimp-vc143-mt.lib" )	
+#pragma comment( lib, "dxgi.lib" )	// adapter info	
 
 MZDX11Renderer* MZDX11Renderer::instance = nullptr;
 

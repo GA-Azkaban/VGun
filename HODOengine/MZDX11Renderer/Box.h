@@ -1,13 +1,12 @@
 #pragma once
 
 #include "DX11Define.h"
-#include "d3dx11Effect.h"
 #include "Vertex.h"
 #include "IRenderableObject.h"
 
 /// <summary>
-/// PBXLoader Å×½ºÆ®¿ë ¿ÀºêÁ§Æ®
-/// PBXLoader·ÎºÎÅÍ µ¥ÀÌÅÍ°¡ Àß µé¾î¿Ô´ÂÁö Å×½ºÆ®ÇÑ´Ù.
+/// PBXLoader í…ŒìŠ¤íŠ¸ìš© ì˜¤ë¸Œì íŠ¸
+/// PBXLoaderë¡œë¶€í„° ë°ì´í„°ê°€ ì˜ ë“¤ì–´ì™”ëŠ”ì§€ í…ŒìŠ¤íŠ¸í•œë‹¤.
 /// 2023.08.01 MJKIM
 /// </summary>
 
@@ -25,11 +24,11 @@ public:
 	void Render();
 
 private:
-	void BuildGeometryBuffers();		// ±âÇÏ±¸Á¶·ÎºÎÅÍ ¹öÅØ½º/ÀÎµ¦½º¹öÆÛ¸¦ ¸¸µç´Ù.
+	void BuildGeometryBuffers();		// ê¸°í•˜êµ¬ì¡°ë¡œë¶€í„° ë²„í…ìŠ¤/ì¸ë±ìŠ¤ë²„í¼ë¥¼ ë§Œë“ ë‹¤.
 
 private:
-	ComPtr<ID3D11Device> m_d3dDevice;						// D3D11 µğ¹ÙÀÌ½º
-	ComPtr<ID3D11DeviceContext> m_d3dImmediateContext;		// µğ¹ÙÀÌ½º ÄÁÅØ½ºÆ®
+	ComPtr<ID3D11Device> m_d3dDevice;						// D3D11 ë””ë°”ì´ìŠ¤
+	ComPtr<ID3D11DeviceContext> m_d3dImmediateContext;		// ë””ë°”ì´ìŠ¤ ì»¨í…ìŠ¤íŠ¸
 
 	ID3D11Buffer* m_VB;
 	ID3D11Buffer* m_IB;
@@ -41,14 +40,14 @@ private:
 
 	XMFLOAT3 mEyePosW;
 
-	// ·»´õ½ºÅ×ÀÌÆ®µµ ¹Ù±ù¿¡¼­ ¹Ş¾Æ¿Â´Ù.
+	// ë Œë”ìŠ¤í…Œì´íŠ¸ë„ ë°”ê¹¥ì—ì„œ ë°›ì•„ì˜¨ë‹¤.
 	ComPtr<ID3D11RasterizerState> m_pRS;
 
 	UINT IndexCount;
 	Material m_material;
 
 	///----------------------------------------------------------------------------------------------------
-	/// ÅØ½ºÃÄ¿¡¼­ Ãß°¡µÈ ºÎºĞ
+	/// í…ìŠ¤ì³ì—ì„œ ì¶”ê°€ëœ ë¶€ë¶„
 	XMMATRIX mWorldPos;
 	XMMATRIX translateTM;
 	XMMATRIX rotateTM;
