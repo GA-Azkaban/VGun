@@ -11,7 +11,6 @@ public:
 	VertexShader(ID3D11Device* device, ID3D11DeviceContext* context);
 	virtual ~VertexShader();
 	ID3D11VertexShader* GetVertexShader() { return shader; }
-	ID3D11InputLayout* GetInputLayout() { return inputLayout; }
 	virtual void SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv) override;
 	virtual void SetSamplerState(std::string name, ID3D11SamplerState* samplerState) override;
 

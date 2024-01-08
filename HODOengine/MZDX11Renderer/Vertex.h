@@ -37,6 +37,7 @@ namespace VertexStruct
 		float Weights0;
 		float Weights1;
 		float Weights2;
+		float Weights3;
 		unsigned int BoneIndices0;
 		unsigned int BoneIndices1;
 		unsigned int BoneIndices2;

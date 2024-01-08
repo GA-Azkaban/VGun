@@ -32,6 +32,8 @@ public:
 private:
 	void CreateDepthStecilStates();
 
+	void SetLights();
+
 	void BuildQuadBuffers();
 
 	void EnableZBuffering();

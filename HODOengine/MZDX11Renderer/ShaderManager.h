@@ -28,8 +28,8 @@ private:
 	VertexShader* backBufferVertexShader;
 	PixelShader* backBufferPixelShader;
 	VertexShader* lightVertexShader;
-	PixelShader* lightPixelShader;
+	PixelShader* lightPixelShader; */
 	VertexShader* dirVertexShader;
-	PixelShader* dirPixelShader;*/
+	PixelShader* dirPixelShader;
 };
 

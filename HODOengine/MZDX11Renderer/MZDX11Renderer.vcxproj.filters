@@ -178,7 +178,7 @@
     <Filter Include="7. Math\source">
       <UniqueIdentifier>{5aa19f90-984b-4d10-8fe1-a3fc92db5c0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="8. Util\MeshLoader">
+    <Filter Include="8. Util\ModelLoader">
       <UniqueIdentifier>{98d86247-1f3c-44ee-b72e-5219c14db0a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -208,13 +208,13 @@
     <ClInclude Include="LazyObjects.h">
       <Filter>8. Util\Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="SkinnedMesh.h">
+    <ClInclude Include="SkinningMesh.h">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
     </ClInclude>
-    <ClInclude Include="StaticMesh.h">
+    <ClInclude Include="StaticMeshObject.h">
       <Filter>5. Objects\MeshObject\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="MeshData.h">
@@ -346,8 +346,11 @@
     <ClInclude Include="MZMacro.h">
       <Filter>8. Util\Macro</Filter>
     </ClInclude>
-    <ClInclude Include="MeshLoader.h">
-      <Filter>8. Util\MeshLoader</Filter>
+    <ClInclude Include="ModelLoader.h">
+      <Filter>8. Util\ModelLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelData.h">
+      <Filter>5. Objects\MeshObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -372,13 +375,13 @@
     <ClCompile Include="CAnimation.cpp">
       <Filter>6. Components\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="SkinnedMesh.cpp">
+    <ClCompile Include="SkinningMesh.cpp">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
     </ClCompile>
-    <ClCompile Include="StaticMesh.cpp">
+    <ClCompile Include="StaticMeshObject.cpp">
       <Filter>5. Objects\MeshObject\StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="MeshData.cpp">
@@ -470,8 +473,8 @@
     <ClCompile Include="Hodo3DFactoryAdapter.cpp">
       <Filter>8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
     </ClCompile>
-    <ClCompile Include="MeshLoader.cpp">
-      <Filter>8. Util\MeshLoader</Filter>
+    <ClCompile Include="ModelLoader.cpp">
+      <Filter>8. Util\ModelLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -530,6 +533,12 @@
       <Filter>3. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="DebugPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DirVertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DirPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
   </ItemGroup>

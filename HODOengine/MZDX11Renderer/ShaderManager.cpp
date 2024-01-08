@@ -32,4 +32,12 @@ void ShaderManager::LoadShaders(ID3D11Device* device, ID3D11DeviceContext* devic
 	debugPixelShader = new PixelShader(device, deviceContext);
 	if (!debugPixelShader->LoadShaderFile(L"../x64/Debug/Shaders/DebugPixelShader.cso"))
 		debugPixelShader->LoadShaderFile(L"DebugPixelShader.cso");
+
+	dirVertexShader = new VertexShader(device, deviceContext);
+	if (!dirVertexShader->LoadShaderFile(L"../x64/Debug/Shaders/DirVertexShader.cso"))
+		dirVertexShader->LoadShaderFile(L"DirVertexShader.cso");
+
+	dirPixelShader = new PixelShader(device, deviceContext);
+	if (!dirPixelShader->LoadShaderFile(L"../x64/Debug/Shaders/DirPixelShader.cso"))
+		dirPixelShader->LoadShaderFile(L"DirPixelShader.cso");
 }

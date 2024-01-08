@@ -1,5 +1,5 @@
-#include "ResourceManager.h"
 #include "DeferredRenderer.h"
+#include "ResourceManager.h"
 #include "MZDX11Renderer.h"
 #include "DeferredBuffers.h"
 #include "RasterizerState.h"
@@ -9,19 +9,13 @@
 #include "Material.h"
 #include "GeometryGenerator.h"
 #include "ShaderManager.h"
+#include "Lights.h"
 #include "DXTKFont.h"
 #include "Grid.h"
 #include "Axis.h"
-#include "TextureBox.h"
 #include "MZCamera.h"
-#include "Effects.h"
-#include "StaticMesh.h"
-#include "DebugCube.h"
-#include "UIImage.h"
-#include "UIText.h"
-
-#include "ASEParser.h"
-#include "SkinnedMesh.h"
+#include "ModelLoader.h"
+#include "StaticMeshObject.h"
 
 LazyObjects<DeferredRenderer> DeferredRenderer::Instance;
 
@@ -64,16 +58,18 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 
 	CreateDepthStecilStates();
 
+	SetLights();
+
 	// Create Mesh
 	GeometryGenerator::DebugMeshData gridMesh;
 	m_geometryGen->CreateGrid(gridMesh);
 	GeometryGenerator::DebugMeshData axisMesh;
 	m_geometryGen->CreateAxis(axisMesh);
-	m_gridMesh = new ::Mesh(&gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size(), m_d3dDevice.Get());
-	m_axisMesh = new ::Mesh(&axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size(), m_d3dDevice.Get());
+	m_gridMesh = new ::Mesh(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), &gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size());
+	m_axisMesh = new ::Mesh(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), &axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
 
 	// Create material
-	m_debugObjMaterial = new Material(ShaderManager::Instance.Get().debugVertexShader, ShaderManager::Instance.Get().debugPixelShader, 0, 0, 0);
+	m_debugObjMaterial = new Material(ShaderManager::Instance.Get().debugVertexShader, ShaderManager::Instance.Get().debugPixelShader);
 
 	DeferredBuffers::Instance.Get().Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
 
@@ -82,6 +78,11 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 
 	// 축
 	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
+
+	ModelLoader* modelLoader = new ModelLoader(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
+	modelLoader->Load("../3DModels/4QCharacter_tpose.fbx");
+	// FBX Test
+	//StaticMeshObject* staticMeshObj = new StaticMeshObject()
 
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_blender.ASE");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");
@@ -138,6 +139,14 @@ void DeferredRenderer::RenderToBackBuffer()
 
 	//RenderAll();
 
+	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_d3dDeviceContext->RSSetState(RasterizerState::Instance.Get().GetSolidRS());
+
+	for (auto object : IMeshObject::meshObjects)
+	{
+		object->Render();
+	}
+
 	for (auto object : IDebugObject::debugObjects)
 	{
 		object->Render();
@@ -158,12 +167,12 @@ void DeferredRenderer::RenderToBackBuffer()
 
 	DrawStatus();
 
-	ID3D11ShaderResourceView* shaderResView = NULL;
+	/*ID3D11ShaderResourceView* shaderResView = NULL;
 	m_d3dDeviceContext->PSSetShaderResources(0, 1, &shaderResView);
 	m_d3dDeviceContext->PSSetShaderResources(1, 1, &shaderResView);
 	m_d3dDeviceContext->PSSetShaderResources(2, 1, &shaderResView);
 	m_d3dDeviceContext->PSSetShaderResources(3, 1, &shaderResView);
-	m_d3dDeviceContext->PSSetShaderResources(4, 1, &shaderResView);
+	m_d3dDeviceContext->PSSetShaderResources(4, 1, &shaderResView);*/
 }
 
 void DeferredRenderer::ResizeResolution(unsigned int screenWidth, unsigned int screenHeight)
@@ -260,45 +269,45 @@ void DeferredRenderer::DrawStatus()
 
 IRenderableObject* DeferredRenderer::Pick(float normalizedX, float normalizedY)
 {
-	float _screenCoordX = normalizedX * m_screenWidth;
-	float _screenCoordY = normalizedY * m_screenHeight;
-	XMMATRIX P = MZCamera::GetMainCamera()->Proj();
+	//float _screenCoordX = normalizedX * m_screenWidth;
+	//float _screenCoordY = normalizedY * m_screenHeight;
+	//XMMATRIX P = MZCamera::GetMainCamera()->Proj();
 
-	// Compute picking ray in view space.
-	// 2장과 같은 이유로 P(0,0) -> P.r[0].m128_f32[0]
-	// 2장과 같은 이유로 P(1,1) -> P.r[1].m128_f32[1]
-	float vx = (+2.0f * _screenCoordX / m_screenWidth - 1.0f) / P.r[0].m128_f32[0];
-	float vy = (-2.0f * _screenCoordY / m_screenHeight + 1.0f) / P.r[1].m128_f32[1];
+	//// Compute picking ray in view space.
+	//// 2장과 같은 이유로 P(0,0) -> P.r[0].m128_f32[0]
+	//// 2장과 같은 이유로 P(1,1) -> P.r[1].m128_f32[1]
+	//float vx = (+2.0f * _screenCoordX / m_screenWidth - 1.0f) / P.r[0].m128_f32[0];
+	//float vy = (-2.0f * _screenCoordY / m_screenHeight + 1.0f) / P.r[1].m128_f32[1];
 
-	pickedObjects.clear();
+	//pickedObjects.clear();
 
-	for (auto& object : IUIObject::uiObjects)
-	{
-		if (object->Pick(normalizedX, normalizedY))
-		{
-			float depth = object->GetDepth();
-			pickedObjects.insert(std::make_pair(depth, object));
-		}		
-	}
+	//for (auto& object : IUIObject::uiObjects)
+	//{
+	//	if (object->Pick(normalizedX, normalizedY))
+	//	{
+	//		float depth = object->GetDepth();
+	//		pickedObjects.insert(std::make_pair(depth, object));
+	//	}		
+	//}
 
-	if (!pickedObjects.empty())
-	{
-		return pickedObjects.begin()->second;
-	}
+	//if (!pickedObjects.empty())
+	//{
+	//	return pickedObjects.begin()->second;
+	//}
 
-	for (auto& object : IMeshObject::meshObjects)
-	{
-		if (object->Pick(vx, vy))
-		{
-			float depth = object->GetDepth();
-			pickedObjects.insert(std::make_pair(depth, object));
-		}
-	}
+	//for (auto& object : IMeshObject::meshObjects)
+	//{
+	//	if (object->Pick(vx, vy))
+	//	{
+	//		float depth = object->GetDepth();
+	//		pickedObjects.insert(std::make_pair(depth, object));
+	//	}
+	//}
 
-	if (!pickedObjects.empty())
-	{
-		return pickedObjects.begin()->second;
-	}
+	//if (!pickedObjects.empty())
+	//{
+	//	return pickedObjects.begin()->second;
+	//}
 
 	return nullptr;
 }
@@ -489,6 +498,14 @@ void DeferredRenderer::CreateDepthStecilStates()
 
 	// Create the depth stencil state for disabling Z buffering
 	m_d3dDevice->CreateDepthStencilState(&disableDepthStencilDescription, &m_depthStencilStateDisable);
+}
+
+void DeferredRenderer::SetLights()
+{
+	DirectionalLight* dirLight = new DirectionalLight();
+	dirLight->Color = XMFLOAT4{ 0.5f, 0.5f, 0.5f, 1.0f };
+	dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
+	ShaderManager::Instance.Get().pixelShader->SetDirectionalLight("dirLight", *dirLight);
 }
 
 HRESULT DeferredRenderer::GetAdapterInfo()

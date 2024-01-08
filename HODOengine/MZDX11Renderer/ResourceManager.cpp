@@ -1,5 +1,4 @@
 #include "ResourceManager.h"
-#include "CASEParser.h"
 #include "MeshData.h"
 #include <stdexcept>
 #include <queue>
@@ -269,9 +268,9 @@ void ResourceManager::LoadASE(LPCSTR fileName)
 
 void ResourceManager::LoadFBX(LPCSTR fileName)
 {
-    // ½ºÄÌ·¹Åæ µ¥ÀÌÅÍ¸¦ ±¸ÇÑ´Ù.
-    // ¹öÅØ½ºµéÀÌ ÀÇÁ¸ÇÏ´Â º» ³ëµåµéÀÇ ÀÎµ¦½º°¡ ÀÌ¹Ì Á¤ÇØÁ® ÀÖ´Ù¸é,
-    // ÀÌ¹Ì Á¤ÇØÁø ³ëµå ÀÎµ¦½º¿¡ ¸Â°Ô ½ºÄÌ·¹Åæ µ¥ÀÌÅÍ¸¦ Á¤¸®ÇØ¾ßÇÑ´Ù.
+    // ìŠ¤ì¼ˆë ˆí†¤ ë°ì´í„°ë¥¼ êµ¬í•œë‹¤.
+    // ë²„í…ìŠ¤ë“¤ì´ ì˜ì¡´í•˜ëŠ” ë³¸ ë…¸ë“œë“¤ì˜ ì¸ë±ìŠ¤ê°€ ì´ë¯¸ ì •í•´ì ¸ ìˆë‹¤ë©´,
+    // ì´ë¯¸ ì •í•´ì§„ ë…¸ë“œ ì¸ë±ìŠ¤ì— ë§ê²Œ ìŠ¤ì¼ˆë ˆí†¤ ë°ì´í„°ë¥¼ ì •ë¦¬í•´ì•¼í•œë‹¤.
 
     FbxImporter* mFbxImporter = FbxImporter::Create(mFbxManager, "");
     FbxScene* scene = nullptr;
@@ -279,11 +278,11 @@ void ResourceManager::LoadFBX(LPCSTR fileName)
     mFbxImporter->Initialize(fileName, -1, mFbxManager->GetIOSettings());
     mFbxImporter->Import(scene);
     auto rootNode = scene->GetRootNode();
-    // ÇÏ³ªÀÇ FBX ÆÄÀÏ¿¡´Â ÃÖ´ë ´Ü ÇÏ³ªÀÇ ¸Ş½Ã, ÇÏ³ªÀÇ ½ºÄÌ·¹Åæ, ÇÏ³ªÀÇ ¾Ö´Ï¸ŞÀÌ¼Ç¸¸ µé¾îÀÖ´Ù°í °¡Á¤ÇÑ´Ù.
-    // Å°°ªÀÌ ÆÄÀÏÀÌ¸§ÀÌ±â ¶§¹®¿¡ ¾îÂ¿¼ö°¡ ¾øÀ½.
-    // ÇÏ³ªÀÇ ÆÄÀÏ¿¡ µé¾î°£ °¢°¢ÀÇ ¸®¼Ò½º¿¡ guid¸¦ ºÎ¿©ÇÏ°í, ¸ŞÅ¸ ÆÄÀÏÀ» ¸¸µé¾î 
-    // ÇÁ·Î±×·¥ ·Îµå¶§¸¶´Ù ¸®¼Ò½º¸¶´Ù ÀÏ°üµÈ gui¸¦ °®µµ·Ï °³¼±ÇÏ´Â °ÍÀº ¸Õ ¹Ì·¡ÀÇ ÀÌ¾ß±âÀÌ´Ù.
-    // ¸Ş½Ã¿Í ½ºÄÌ·¹ÅæÀº ¸ğµÎ ·çÆ® ³ëµåÀÇ ÀÚ½ÄÀ¸·Î µé¾îÀÖ´Ù°í °¡Á¤ÇÑ´Ù. µª½º°¡ 2 ÀÌ»óÀÎ °æ¿ì´Â ¿ë³³ÇÒ ¼ö ¾ø´Ù.
+    // í•˜ë‚˜ì˜ FBX íŒŒì¼ì—ëŠ” ìµœëŒ€ ë‹¨ í•˜ë‚˜ì˜ ë©”ì‹œ, í•˜ë‚˜ì˜ ìŠ¤ì¼ˆë ˆí†¤, í•˜ë‚˜ì˜ ì• ë‹ˆë©”ì´ì…˜ë§Œ ë“¤ì–´ìˆë‹¤ê³  ê°€ì •í•œë‹¤.
+    // í‚¤ê°’ì´ íŒŒì¼ì´ë¦„ì´ê¸° ë•Œë¬¸ì— ì–´ì©”ìˆ˜ê°€ ì—†ìŒ.
+    // í•˜ë‚˜ì˜ íŒŒì¼ì— ë“¤ì–´ê°„ ê°ê°ì˜ ë¦¬ì†ŒìŠ¤ì— guidë¥¼ ë¶€ì—¬í•˜ê³ , ë©”íƒ€ íŒŒì¼ì„ ë§Œë“¤ì–´ 
+    // í”„ë¡œê·¸ë¨ ë¡œë“œë•Œë§ˆë‹¤ ë¦¬ì†ŒìŠ¤ë§ˆë‹¤ ì¼ê´€ëœ guië¥¼ ê°–ë„ë¡ ê°œì„ í•˜ëŠ” ê²ƒì€ ë¨¼ ë¯¸ë˜ì˜ ì´ì•¼ê¸°ì´ë‹¤.
+    // ë©”ì‹œì™€ ìŠ¤ì¼ˆë ˆí†¤ì€ ëª¨ë‘ ë£¨íŠ¸ ë…¸ë“œì˜ ìì‹ìœ¼ë¡œ ë“¤ì–´ìˆë‹¤ê³  ê°€ì •í•œë‹¤. ëìŠ¤ê°€ 2 ì´ìƒì¸ ê²½ìš°ëŠ” ìš©ë‚©í•  ìˆ˜ ì—†ë‹¤.
     bool meshLoaded{ false };
     bool skeletonLoaded{ false };
     bool animationLoaded{ false };
@@ -325,13 +324,13 @@ Skeleton* ResourceManager::GetSkeletonData(FbxNode* skeletalRoot)
                     .initialTM_inverse = XMMatrixInverse(nullptr, mat),
                     .childIndices{ top->GetChildCount()},
             };
-            // n¹øÂ° º»ÀÌ m°³ÀÇ ÀÚ½Ä º»À» °¡Áö°í ÀÖÀ» °æ¿ì, n+1ºÎÅÍ n+m±îÁöÀÇ ÀÎµ¦½º°¡ n¹øÂ° º»ÀÇ ÀÚ½Ä ÀÎµ¦½º°¡ µÈ´Ù.
+            // në²ˆì§¸ ë³¸ì´ mê°œì˜ ìì‹ ë³¸ì„ ê°€ì§€ê³  ìˆì„ ê²½ìš°, n+1ë¶€í„° n+mê¹Œì§€ì˜ ì¸ë±ìŠ¤ê°€ në²ˆì§¸ ë³¸ì˜ ìì‹ ì¸ë±ìŠ¤ê°€ ëœë‹¤.
             std::iota(bone.childIndices.begin(), bone.childIndices.end(), retData->bones.size() + 1);
             retData->boneIndexMap[bone.name] = retData->bones.size();
             retData->bones.push_back(bone);
             retData->fbxNodes.push_back(top);
         }
-        // Å¥¿¡ ÀÚ½Ä º»À» ³Ö´Â´Ù.
+        // íì— ìì‹ ë³¸ì„ ë„£ëŠ”ë‹¤.
         boneNodeStack.pop();
         for (auto i = top->GetChildCount() - 1; i >= 0; i--)
             boneNodeStack.push(top->GetChild(i));
@@ -361,13 +360,13 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
             continue;
         fbxsdk::FbxVector4* vertices = mesh->GetControlPoints();
 
-        // mesh ³ëµå ÇÏ³ª´ç mzMesh ÇÏ³ª°¡ ´ëÀÀµÈ´Ù.
+        // mesh ë…¸ë“œ í•˜ë‚˜ë‹¹ mzMesh í•˜ë‚˜ê°€ ëŒ€ì‘ëœë‹¤.
         auto mzMesh = new MZMeshData::Mesh();
         meshData->m_MeshList.push_back(mzMesh);
 
-        // meshÀÇ ¹öÅØ½º ¸®½ºÆ® ¼³Á¤
+        // meshì˜ ë²„í…ìŠ¤ ë¦¬ìŠ¤íŠ¸ ì„¤ì •
         mzMesh->m_meshvertex.resize(mesh->GetControlPointsCount(), nullptr);
-        // ¹öÅØ½º ÁÂÇ¥ ¼³Á¤
+        // ë²„í…ìŠ¤ ì¢Œí‘œ ì„¤ì •
         auto controlPoints = mesh->GetControlPoints();
         for (int i = 0; i < mesh->GetControlPointsCount(); i++)
         {
@@ -378,10 +377,10 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
                 static_cast<float>(controlPoints[i].mData[2]));
         }
 
-        // ¹öÅØ½º ÆäÀÌ½ºµé¿¡ ´ëÇÑ Á¤º¸ ¼³Á¤
+        // ë²„í…ìŠ¤ í˜ì´ìŠ¤ë“¤ì— ëŒ€í•œ ì •ë³´ ì„¤ì •
         mzMesh->m_meshface.resize(mesh->GetPolygonCount(), nullptr);
 
-        // ÆäÀÌ½ºÀÇ ¹öÅØ½º ÀÎµ¦½º Á¤º¸
+        // í˜ì´ìŠ¤ì˜ ë²„í…ìŠ¤ ì¸ë±ìŠ¤ ì •ë³´
         auto faceIndices = mesh->GetPolygonVertices();
 
         for (int i = 0; i < mesh->GetPolygonCount(); i++)
@@ -389,17 +388,17 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
         for (int i = 0; i < mesh->GetPolygonCount() * 3; i++)
         {
             mzMesh->m_meshface[i / 3]->m_vertexindex[i % 3] = faceIndices[i];
-            //assert(mesh->GetPolygonSize(i / 3) == 3 && "Æú¸®°ïÀÇ ¹öÅØ½º °¹¼ö°¡ 3°³ÀÏ °æ¿ì¸¸ °¡Á¤ÇØ¼­ ¸¸µç fbx·Î´õ ±â´ÉÀÎµ¥, Æú¸®°ïÀÇ ¹öÅØ½º »çÀÌÁî°¡ 3º¸´Ù Å©´Ù.");
+            //assert(mesh->GetPolygonSize(i / 3) == 3 && "í´ë¦¬ê³¤ì˜ ë²„í…ìŠ¤ ê°¯ìˆ˜ê°€ 3ê°œì¼ ê²½ìš°ë§Œ ê°€ì •í•´ì„œ ë§Œë“  fbxë¡œë” ê¸°ëŠ¥ì¸ë°, í´ë¦¬ê³¤ì˜ ë²„í…ìŠ¤ ì‚¬ì´ì¦ˆê°€ 3ë³´ë‹¤ í¬ë‹¤.");
         }
 
-        // ÆäÀÌ½ºÀÇ ³ë¸Ö Á¤º¸
+        // í˜ì´ìŠ¤ì˜ ë…¸ë©€ ì •ë³´
         FbxArray<fbxsdk::FbxVector4> faceNormals;
         mesh->GetPolygonVertexNormals(faceNormals);
         for (int i = 0; i < mesh->GetPolygonCount() * 3; i++)
             mzMesh->m_meshface[i / 3]->m_normalvertex[i % 3] = DirectX::SimpleMath::Vector3(faceNormals[i].mData[0], faceNormals[i].mData[1], faceNormals[i].mData[2]);
 
-        // ÆäÀÌ½ºÀÇ UV Å¸ÀÔ ÀÌ¸§. normal mapÀÌ³ª diffuse map µûÀ§ÀÇ ÅØ½ºÃ³ Å¸ÀÔ ½Äº°ÀÚ
-        // ÆäÀÌ½ºÀÇ UV Å¸ÀÔ¿¡ µû¸¥ UV ÁÂÇ¥ Á¤º¸.
+        // í˜ì´ìŠ¤ì˜ UV íƒ€ì… ì´ë¦„. normal mapì´ë‚˜ diffuse map ë”°ìœ„ì˜ í…ìŠ¤ì²˜ íƒ€ì… ì‹ë³„ì
+        // í˜ì´ìŠ¤ì˜ UV íƒ€ì…ì— ë”°ë¥¸ UV ì¢Œí‘œ ì •ë³´.
         fbxsdk::FbxStringList UVSetNames;
         mesh->GetUVSetNames(UVSetNames);
         for (int i = 0; i < UVSetNames.GetCount(); i++)
@@ -407,15 +406,15 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
             mzMesh->m_texture_sets.push_back(UVSetNames.GetItemAt(i)->mString.Buffer());
             fbxsdk::FbxArray<fbxsdk::FbxVector2> uvs;
             mesh->GetPolygonVertexUVs(UVSetNames.GetItemAt(i)->mString.Buffer(), uvs);
-            // UVSetNamesÀÇ ¼ø¼­¿¡ µû¶ó °¢ Æú¸®°ïÀÇ UVsÀÇ ÁÂÇ¥ ¼ø¼­°¡ °áÁ¤µÈ´Ù.
+            // UVSetNamesì˜ ìˆœì„œì— ë”°ë¼ ê° í´ë¦¬ê³¤ì˜ UVsì˜ ì¢Œí‘œ ìˆœì„œê°€ ê²°ì •ëœë‹¤.
             for (int j = 0; j < mzMesh->m_meshface.size()*3; j++)
                 mzMesh->m_meshface[j / 3]->UVs[j % 3].push_back({
                 static_cast<float>(uvs[j].mData[0]) ,
                 static_cast<float>(uvs[j].mData[1]) });
         }
 
-        // ½ºÅ°´× ½ÃÀÛ
-        // skinned meshÀÏ½Ã then, static meshÀÏ½Ã else·Î ºüÁø´Ù.
+        // ìŠ¤í‚¤ë‹ ì‹œì‘
+        // skinned meshì¼ì‹œ then, static meshì¼ì‹œ elseë¡œ ë¹ ì§„ë‹¤.
         if (mesh->GetDeformerCount(FbxDeformer::eSkin) > 0)
         {
             FbxSkin* skin = static_cast<FbxSkin*>(mesh->GetDeformer(0, FbxDeformer::eSkin));
@@ -443,9 +442,9 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
                     RegisterYunuAnimationData((string(fileName) +'-' + string(eachAnim->animationName)).c_str(), eachAnim);
             }
 
-            // Cluster´Â skinned mesh¿¡¼­ ÇÏ³ªÀÇ º»¿¡ ´ëÀÀµÇ´Â ¹öÅØ½º ±ºÀÌ´Ù.
-            // Cluster°¡ ÇÏ³ªÀÇ º»ÀÌ±â ¶§¹®¿¡, n°³ÀÇ Å¬·¯½ºÅÍ°¡ vertex 0À» °¡¸®Å°°í ÀÖÀ¸¸é
-            // vertex 0Àº n°³ÀÇ º»¿¡ ÀÇÁ¸ÇÏ¿© ¿òÁ÷ÀÎ´Ù.
+            // ClusterëŠ” skinned meshì—ì„œ í•˜ë‚˜ì˜ ë³¸ì— ëŒ€ì‘ë˜ëŠ” ë²„í…ìŠ¤ êµ°ì´ë‹¤.
+            // Clusterê°€ í•˜ë‚˜ì˜ ë³¸ì´ê¸° ë•Œë¬¸ì—, nê°œì˜ í´ëŸ¬ìŠ¤í„°ê°€ vertex 0ì„ ê°€ë¦¬í‚¤ê³  ìˆìœ¼ë©´
+            // vertex 0ì€ nê°œì˜ ë³¸ì— ì˜ì¡´í•˜ì—¬ ì›€ì§ì¸ë‹¤.
             for (int i = 0; i < clusterCount; ++i)
             {
                 FbxCluster* cluster = skin->GetCluster(i);
@@ -460,10 +459,10 @@ MZMeshData::MeshData* ResourceManager::GetMeshData(LPCSTR fileName, FbxNode* mes
                     int vertexIndex = controlPointIndices[j];
                     double weight = controlPointWeights[j];
 
-                    // ¿©±â¼­ ÇÊ¿äÇÑ ÃÖÁ¾ µ¥ÀÌÅÍ¸¦ ´Ù ¾òÀ» ¼ö ÀÖÀ¸¸ç,
-                    // º»ÀÇ Æ®·£½ºÆûÀ» ÀÌ¿ëÇØ ¹öÅØ½ºÀÇ ÃÖÁ¾ ¿ùµå ÁÂÇ¥¸¦ ±¸ÇÒ ¼ö ÀÖ´Ù.
+                    // ì—¬ê¸°ì„œ í•„ìš”í•œ ìµœì¢… ë°ì´í„°ë¥¼ ë‹¤ ì–»ì„ ìˆ˜ ìˆìœ¼ë©°,
+                    // ë³¸ì˜ íŠ¸ëœìŠ¤í¼ì„ ì´ìš©í•´ ë²„í…ìŠ¤ì˜ ìµœì¢… ì›”ë“œ ì¢Œí‘œë¥¼ êµ¬í•  ìˆ˜ ìˆë‹¤.
                     UINT& boneCount = mzMesh->m_meshvertex[vertexIndex]->m_skinnedBoneCount;
-                    assert("½ºÅ°´× ¹öÅØ½º°¡ ÀÇÁ¸ÀûÀÎ º»ÀÇ °¹¼ö°¡ ÇÁ·Î±×·¥¿¡¼­ Á¤ÀÇµÈ ½ºÅ°´× º» ÀÎµ¦½º ¿ë·®À» ³Ñ¾î¼·´Ï´Ù!"
+                    assert("ìŠ¤í‚¤ë‹ ë²„í…ìŠ¤ê°€ ì˜ì¡´ì ì¸ ë³¸ì˜ ê°¯ìˆ˜ê°€ í”„ë¡œê·¸ë¨ì—ì„œ ì •ì˜ëœ ìŠ¤í‚¤ë‹ ë³¸ ì¸ë±ìŠ¤ ìš©ëŸ‰ì„ ë„˜ì–´ì„­ë‹ˆë‹¤!"
                         && boneCount < mzMesh->m_meshvertex[vertexIndex]->m_bone_blending_indices.size());
 
                     mzMesh->m_meshvertex[vertexIndex]->m_bone_blending_indices[boneCount] =

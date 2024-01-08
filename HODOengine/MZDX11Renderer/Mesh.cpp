@@ -1,27 +1,39 @@
 #include "Mesh.h"
 using namespace DirectX;
 
-Mesh::Mesh(VertexStruct::Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, ID3D11Device* device)
+Mesh::Mesh(ID3D11Device* device, ID3D11DeviceContext* deviceContext, VertexStruct::Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum)
+	:m_device(device), m_deviceContext(deviceContext), m_singleVertexSize(0)
 {
 	CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum, device);
 }
 
-Mesh::Mesh(VertexStruct::PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, ID3D11Device* device)
+Mesh::Mesh(ID3D11Device* device, ID3D11DeviceContext* deviceContext, VertexStruct::PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum)
+	:m_device(device), m_deviceContext(deviceContext), m_singleVertexSize(0)
 {
 	CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum, device);
 }
 
-Mesh::Mesh(const char* objFile, ID3D11Device* device)
+Mesh::Mesh(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const char* objFile)
+	:m_device(device), m_deviceContext(deviceContext), m_singleVertexSize(0)
 {
 
 }
 
 Mesh::~Mesh()
 {
-	m_vertexBuffer->Release();
-	m_vertexBuffer = nullptr;
-	m_indexBuffer->Release();
-	m_indexBuffer = nullptr;
+	m_vertexBuffer.Reset();
+	m_indexBuffer.Reset();
+}
+
+void Mesh::BindBuffers()
+{
+	m_deviceContext->IASetVertexBuffers(0, 1, m_vertexBuffer.GetAddressOf(), &m_singleVertexSize, 0);
+	m_deviceContext->IASetIndexBuffer(m_indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+}
+
+void Mesh::Draw()
+{
+	m_deviceContext->DrawIndexed(m_numIndices, 0, 0);
 }
 
 // Calculates the tangents of the vertices in a mesh
@@ -133,6 +145,8 @@ void Mesh::CreateBuffers(VertexStruct::Vertex* vertexArray, int vertexNum, unsig
 
 	// Save the indices
 	m_numIndices = indicesNum;
+
+	m_singleVertexSize = sizeof(VertexStruct::Vertex);
 }
 
 void Mesh::CreateBuffers(VertexStruct::PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, ID3D11Device* device)
@@ -167,4 +181,6 @@ void Mesh::CreateBuffers(VertexStruct::PosColor* vertexArray, int vertexNum, uns
 
 	// Save the indices
 	m_numIndices = indicesNum;
+
+	m_singleVertexSize = sizeof(VertexStruct::PosColor);
 }

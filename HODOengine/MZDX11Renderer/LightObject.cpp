@@ -48,18 +48,9 @@ void LightObject::Render()
 	if (!m_isActive)
 		return;
 
-	ID3D11Buffer* vb = m_mesh->GetVertexBuffer();
-	ID3D11Buffer* ib = m_mesh->GetIndexBuffer();
-
-	UINT stride = sizeof(VertexStruct::Vertex);
-	UINT offset = 0;
-
 	m_deviceContext->RSSetState(m_RS.Get());
-
 	m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	m_deviceContext->IASetVertexBuffers(0, 1, &vb, &stride, &offset);
-	m_deviceContext->IASetIndexBuffer(ib, DXGI_FORMAT_R32_UINT, 0);
-
+	
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
 	XMMATRIX proj = MZCamera::GetMainCamera()->Proj();
 	XMMATRIX worldViewProj = m_world * view * proj;
@@ -83,7 +74,9 @@ void LightObject::Render()
 	m_pixelShader->CopyAllBufferData();
 	m_pixelShader->SetShader();
 
-	m_deviceContext->DrawIndexed(m_mesh->GetIndexCount(), 0, 0);
+	m_mesh->BindBuffers();
+
+	m_mesh->Draw();
 }
 
 void LightObject::SetWorldTM(const DirectX::XMMATRIX& tm)

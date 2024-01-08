@@ -22,8 +22,8 @@ struct SpotLight
 cbuffer lightData : register(b0)
 {
 	DirectionalLight dirLight;
-	PointLight pointLight[4];
-	SpotLight spotLight[2];
+	PointLight pointLight[5];
+	SpotLight spotLight[5];
 
 	float3 cameraPosition;
 }

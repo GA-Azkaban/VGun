@@ -14,6 +14,10 @@ public:
 	virtual void SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv) override;
 	virtual void SetSamplerState(std::string name, ID3D11SamplerState* samplerState) override;
 
+	void SetDirectionalLight(std::string name, const DirectionalLight& dirLight);
+	void SetPointLight(std::string name, const PointLight pointLight[4]);
+	void SetSpotLight(std::string name, const SpotLight spotLight[4]);
+
 protected:
 	virtual bool CreateShader(ID3DBlob* shaderBlob) override;
 	virtual void SetShaderAndConstantBuffers() override;

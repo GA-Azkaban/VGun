@@ -38,6 +38,21 @@ void PixelShader::SetSamplerState(std::string name, ID3D11SamplerState* samplerS
 	deviceContext->PSSetSamplers(samplerInfo->BindIndex, 1, &samplerState);
 }
 
+void PixelShader::SetDirectionalLight(std::string name, const DirectionalLight& dirLight)
+{
+	SetData(name, (void*)&dirLight, sizeof(DirectionalLight));
+}
+
+void PixelShader::SetPointLight(std::string name, const PointLight pointLight[4])
+{
+	SetData(name, (void*)(&pointLight[0]), 4 * sizeof(PointLight));
+}
+
+void PixelShader::SetSpotLight(std::string name, const SpotLight spotLight[4])
+{
+	SetData(name, (void*)(&spotLight[0]), 4 * sizeof(SpotLight));
+}
+
 // Creates the DirectX pixel shader
 // shaderBlob - The shader's compiled code
 bool PixelShader::CreateShader(ID3DBlob* shaderBlob)

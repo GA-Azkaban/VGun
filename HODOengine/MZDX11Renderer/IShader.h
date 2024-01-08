@@ -7,6 +7,7 @@
 #include <vector>
 #include <unordered_map>
 #include "ShaderStruct.h"
+#include "Lights.h"
 
 /// <summary>
 /// Base abstract class for simplifying shader handling

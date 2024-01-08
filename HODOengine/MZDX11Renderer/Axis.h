@@ -3,7 +3,7 @@
 #include "IDebugObject.h"
 
 /// <summary>
-/// 3D°ø°£ÀÇ ÃàÀ» ³ªÅ¸³»´Â ¿ÀºêÁ§Æ®
+/// 3Dê³µê°„ì˜ ì¶•ì„ ë‚˜íƒ€ë‚´ëŠ” ì˜¤ë¸Œì íŠ¸
 /// 
 /// 2023.07.06 MJKIM
 /// </summary>
@@ -31,13 +31,9 @@ public:
 
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
-	ComPtr<ID3D11RasterizerState> m_RS;
 	::Mesh* m_mesh;
 	Material* m_material;
 	bool m_isActive;
-
-	VertexShader* m_vertexShader;
-	PixelShader* m_pixelShader;
 
 	DirectX::XMMATRIX m_world;
 	DirectX::XMFLOAT3 m_position;
