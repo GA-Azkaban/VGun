@@ -12,3 +12,18 @@ LobbyManager* LobbyManager::Instance()
 
 LobbyManager* LobbyManager::_instance = nullptr;
 
+LobbyManager::LobbyManager()
+{
+
+}
+
+void LobbyManager::Login()
+{
+
+}
+
+void LobbyManager::Join()
+{
+
+}
+
