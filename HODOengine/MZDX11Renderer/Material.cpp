@@ -1,26 +1,25 @@
 #include "Material.h"
 
 Material::Material(VertexShader* vertexShader, PixelShader* pixelShader)
-	: m_vertexShader(vertexShader), m_pixelShader(pixelShader)
+	: m_vertexShader(vertexShader), m_pixelShader(pixelShader),
+	m_materialSRV(0), m_materialNormal(0), m_materialSampler(0)
 {
 
 }
 
-Material::Material(VertexShader* vertexShader, PixelShader* pixelShader, ID3D11ShaderResourceView* materialSRV, ID3D11ShaderResourceView* materialNormal, ID3D11SamplerState* materialSampler)
-	: m_vertexShader(vertexShader), m_pixelShader(pixelShader), m_materialSRV(materialSRV), m_materialNormal(materialNormal), m_materialSampler(materialSampler)
-{
-
-}
-
-//Material::Material(VertexShader* vertexShader, PixelShader* pixelShader, std::vector<Texture> textures, ID3D11SamplerState* materialSampler)
-//	: m_vertexShader(vertexShader), m_pixelShader(pixelShader), m_materialSampler(materialSampler)
+//Material::Material(VertexShader* vertexShader, PixelShader* pixelShader, ID3D11ShaderResourceView* materialSRV, ID3D11ShaderResourceView* materialNormal, ID3D11SamplerState* materialSampler)
+//	: m_vertexShader(vertexShader), m_pixelShader(pixelShader), m_materialSRV(materialSRV), m_materialNormal(materialNormal), m_materialSampler(materialSampler)
 //{
-//	m_textures = textures;
+//
 //}
 
 Material::~Material()
 {
-
+	delete m_vertexShader;
+	delete m_pixelShader;
+	m_materialSRV.Reset();
+	m_materialNormal.Reset();
+	m_materialSampler.Reset();
 }
 
 ID3D11ShaderResourceView* Material::GetTextureSRV()

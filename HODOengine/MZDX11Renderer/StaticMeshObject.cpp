@@ -4,55 +4,22 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "RasterizerState.h"
+#include "SamplerState.h"
+#include "ResourceManager.h"
+#include "ShaderManager.h"
 
-StaticMeshObject::StaticMeshObject(ModelData modelData, Material* material)
-	: m_modelData(modelData), m_material(material), m_isActive(true),
+StaticMeshObject::StaticMeshObject()
+	: m_material(nullptr), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_position{ 0, 0, 0 }, m_rotation{ 0, 0, 0, 1 }, m_scale{ 1, 1, 1 }
 	//m_meshBox(), m_depth(1.0f), m_isPickingOn(true)
 {
-
+	m_material = new Material(ShaderManager::Instance.Get().vertexShader, ShaderManager::Instance.Get().pixelShader);
+	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
 }
 
 StaticMeshObject::~StaticMeshObject()
 {
 	delete m_material;
-}
-
-bool StaticMeshObject::Pick(float x, float y)
-{
-	//   if (!m_isActive)
-	//       return false;
-
-	   //if (!m_isPickingOn)
-	   //	return false;
-	//   // Ray definition in view space.
-	//   XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	//   XMVECTOR rayDir = XMVectorSet(x, y, 1.0f, 0.0f);
-
-	//   // Tranform ray to local space of Mesh.
-	//   XMMATRIX V = MZCamera::GetMainCamera()->View();
-	//   XMVECTOR detView = XMMatrixDeterminant(V);
-	//   XMMATRIX invView = XMMatrixInverse(&detView, V);
-
-	//   //XMMATRIX W = XMLoadFloat4x4(&m_world);
-	//   XMVECTOR detWorld = XMMatrixDeterminant(m_world);
-	//   XMMATRIX invWorld = XMMatrixInverse(&detWorld, m_world);
-
-	//   XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
-
-	//   rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
-	//   rayDir = XMVector3TransformNormal(rayDir, toLocal);
-
-	//   // Make the ray direction unit length for the intersection tests.
-	//   rayDir = XMVector3Normalize(rayDir);
-
-	//   float tmin = 0.0f;
-	//   if (XNA::IntersectRayAxisAlignedBox(rayOrigin, rayDir, &m_meshBox, &tmin))
-	//   {
-	//       m_depth = tmin;
-	//       return true;
-	//   }
-	return false;
 }
 
 void StaticMeshObject::Update(float deltaTime)
@@ -93,6 +60,9 @@ void StaticMeshObject::Render()
 	vertexShader->CopyAllBufferData();
 	vertexShader->SetShader();
 
+	XMFLOAT3 cameraPos = MZCamera::GetMainCamera()->GetPosition();
+	pixelShader->SetFloat3("cameraPosition", cameraPos);
+
 	pixelShader->SetSamplerState("Sampler", m_material->GetSamplerState());
 	pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
 	pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
@@ -100,14 +70,81 @@ void StaticMeshObject::Render()
 	pixelShader->CopyAllBufferData();
 	pixelShader->SetShader();
 
-	/*for (UINT i = 0; i < m_meshes.size(); ++i)
+	for (UINT i = 0; i < m_meshes.size(); ++i)
 	{
 		m_meshes[i]->BindBuffers();
 		m_meshes[i]->Draw();
-	}*/
-	for (UINT i = 0; i < m_modelData.meshes.size(); ++i)
-	{
-		m_modelData.meshes[i]->BindBuffers();
-		m_modelData.meshes[i]->Draw();
 	}
 }
+
+bool StaticMeshObject::Pick(float x, float y)
+{
+	//   if (!m_isActive)
+	//       return false;
+
+	   //if (!m_isPickingOn)
+	   //	return false;
+	//   // Ray definition in view space.
+	//   XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+	//   XMVECTOR rayDir = XMVectorSet(x, y, 1.0f, 0.0f);
+
+	//   // Tranform ray to local space of Mesh.
+	//   XMMATRIX V = MZCamera::GetMainCamera()->View();
+	//   XMVECTOR detView = XMMatrixDeterminant(V);
+	//   XMMATRIX invView = XMMatrixInverse(&detView, V);
+
+	//   //XMMATRIX W = XMLoadFloat4x4(&m_world);
+	//   XMVECTOR detWorld = XMMatrixDeterminant(m_world);
+	//   XMMATRIX invWorld = XMMatrixInverse(&detWorld, m_world);
+
+	//   XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
+
+	//   rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
+	//   rayDir = XMVector3TransformNormal(rayDir, toLocal);
+
+	//   // Make the ray direction unit length for the intersection tests.
+	//   rayDir = XMVector3Normalize(rayDir);
+
+	//   float tmin = 0.0f;
+	//   if (XNA::IntersectRayAxisAlignedBox(rayOrigin, rayDir, &m_meshBox, &tmin))
+	//   {
+	//       m_depth = tmin;
+	//       return true;
+	//   }
+	return false;
+}
+
+void StaticMeshObject::SetMesh(const std::string& fileName)
+{
+	m_meshes = ResourceManager::Instance.Get().GetLoadedMesh(fileName);
+}
+
+void StaticMeshObject::SetVertexShader(const std::string& fileName)
+{
+	VertexShader* vs = ShaderManager::Instance.Get().GetVertexShader(fileName);
+	m_material->SetVertexShader(vs);
+}
+
+void StaticMeshObject::SetPixelShader(const std::string& fileName)
+{
+	PixelShader* ps = ShaderManager::Instance.Get().GetPixelShader(fileName);
+	m_material->SetPixelShader(ps);
+}
+
+void StaticMeshObject::SetDiffuseTexture(const std::string& fileName)
+{
+	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName).texture.Get();
+	m_material->SetTextureSRV(diffuseTex);
+}
+
+void StaticMeshObject::SetNormalTexture(const std::string& fileName)
+{
+	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName).texture.Get();
+	m_material->SetNormalTexture(normalTex);
+}
+
+void StaticMeshObject::SetSamplerState(ID3D11SamplerState* sampler)
+{
+	m_material->SetSamplerState(sampler);
+}
+

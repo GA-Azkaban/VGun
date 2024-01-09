@@ -1,8 +1,10 @@
 #include "MZDX11Renderer.h"
 #include "MZCamera.h"
 #include "DeferredRenderer.h"
+#include "ResourceManager.h"
 #include "ShaderManager.h"
 #include "RasterizerState.h"
+#include "SamplerState.h"
 #include "MathHelper.h"
 #include "MZMacro.h"
 
@@ -24,6 +26,7 @@ MZDX11Renderer::MZDX11Renderer()
 MZDX11Renderer::~MZDX11Renderer()
 {
 	RasterizerState::Instance.Get().DestroyRenderStates();
+	SamplerState::Instance.Get().DestroySamplerStates();
 
 	delete m_camera;
 
@@ -59,8 +62,10 @@ bool MZDX11Renderer::Initialize()
 		return false;
 	}
 
+	ResourceManager::Instance.Get().Initialize(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
 	ShaderManager::Instance.Get().LoadShaders(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
 	RasterizerState::Instance.Get().CreateRenderStates(m_d3dDevice.Get());
+	SamplerState::Instance.Get().CreateSamplerStates(m_d3dDevice.Get());
 
 	return true;
 }
@@ -124,12 +129,6 @@ void MZDX11Renderer::SetOutputWindow(unsigned int hWnd)
 
 void MZDX11Renderer::Update(float deltaTime)
 {
-	/*m_cameraSpeed = 1.0f;
-	if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-	{
-		m_cameraSpeed = 2.0f;
-	}*/
-
 	DeferredRenderer::Instance.Get().Update(deltaTime);
 }
 

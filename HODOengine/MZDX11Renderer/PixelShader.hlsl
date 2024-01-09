@@ -8,13 +8,13 @@ struct DirectionalLight
 struct PointLight
 {
 	float4 Color;
-	float3 Position;
+	float4 Position;
 };
 
 struct SpotLight
 {
 	float4 Color;
-	float3 Position;
+	float4 Position;
 	float3 Direction;
 	float SpotPower;
 };
@@ -22,8 +22,8 @@ struct SpotLight
 cbuffer lightData : register(b0)
 {
 	DirectionalLight dirLight;
-	PointLight pointLight[5];
-	SpotLight spotLight[5];
+	PointLight pointLight[4];
+	SpotLight spotLight[2];
 
 	float3 cameraPosition;
 }
@@ -65,10 +65,10 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	// Directional light calculation
 	float dirLightAmount = saturate(dot(input.normal, -normalize(dirLight.Direction)));
-	float totalDirLight = dirLight.Color * dirLightAmount * textureColor;
+	float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
 
 	// Point light calculation
-	float totalPointLight = 0.0f;
+	float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
 	for (int i = 0; i < 4; ++i)
 	{
 		float dirToPointLight = normalize(pointLight[i].Position - input.worldPos);
@@ -79,7 +79,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	}
 
 	// Spot light calculation
-	float totalSpotLight = 0.0f;
+	float3 totalSpotLight = float3(0.0f, 0.0f, 0.0f);
 	for (int i = 0; i < 2; ++i)
 	{
 		float dirToSpotLight = normalize(spotLight[i].Position - input.worldPos);
@@ -90,6 +90,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
 
-	//return float4(totalLight, 1.0f);
-	return textureColor;
+	return float4(totalLight, 1.0f);
+	//return textureColor;
 }

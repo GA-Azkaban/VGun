@@ -1,74 +1,58 @@
 #pragma once
+#include "DX11Define.h"
 #include "LazyObjects.h"
-#include "Skeleton.h"
-#include "YunuAnimation.h"
-#include <map>
-#include <unordered_map>
+#include "Vertex.h"
+#include "Mesh.h"
+#include <assimp\Importer.hpp>
+#include <assimp\scene.h>
+#include <assimp\postprocess.h>
 #include <string>
-#include <windows.h>
-#include <memory>
-#include <d3d11.h>
-#include <wrl.h> 
+#include <vector>
+#include <unordered_map>
 
-namespace MZMeshData
+struct Texture
 {
-    struct MeshData;
-}
+	std::string type;
+	ComPtr<ID3D11ShaderResourceView> texture;
+
+	Texture()
+		: type(), texture(nullptr)
+	{
+
+	}
+};
 
 class ResourceManager
 {
 public:
-
-public:
 	static LazyObjects<ResourceManager> Instance;
 	friend LazyObjects<ResourceManager>;
 
-    ResourceManager();
     ~ResourceManager();
 
-    void Initialize();
+    void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+
+	void LoadFile(std::string fileName);
+
+	std::vector<::Mesh*> GetLoadedMesh(const std::string& fileName);
+	Texture GetLoadedTexture(const std::string& fileName);
 
 private:
-    //Mesh*
+	ResourceManager();
 
-    /*MZMeshData::MeshData* LoadMeshData(LPCSTR fileName);
-    void LoadFile(LPCSTR filename);
-    MZMeshData::MeshData* GetMeshData(LPCSTR key);
-    Skeleton* GetSkeletonData(LPCSTR key);
-    ID3D11ShaderResourceView* GetTextureSRV(LPCSTR key);
-    YunuAnimation* GetYunuAnimation(LPCSTR key);
+	void ProcessNode(aiNode* node, const aiScene* scene);
+	void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<VertexStruct::Vertex>& vertices, std::vector<UINT>& indices);
+	void ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<VertexStruct::VertexSkinning>& vertices, std::vector<UINT>& indices);
+	void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene);
+	ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 
-    vector<string> GetMeshKeys() { return GetResourceKeys(m_meshObjectList); }
-    vector<string> GetSkeletonKeys() { return GetResourceKeys(m_skeletonMap); }
-    vector<string> GetTextureKeys() { return GetResourceKeys(m_textureSRVMap); }
-    vector<string> GetAnimationKeys() { return GetResourceKeys(m_animationMap); }*/
+private:
+	ComPtr<ID3D11Device> m_device;
+	ComPtr<ID3D11DeviceContext> m_deviceContext;
+	std::unordered_map<std::string, std::vector<::Mesh*>> m_loadedMeshes;
+	std::unordered_map<std::string, Texture> m_loadedTextures;
 
-//private:
-//    template<typename ContainerType>
-//    vector<string> GetResourceKeys(const ContainerType& container)
-//    {
-//        vector<string> ret;
-//        //for (auto each : container)
-//        for (auto itr = container.begin(); itr != container.end(); itr++)
-//            ret.push_back(itr->first);
-//        return ret;
-//    }
-//    void LoadASE(LPCSTR fileName);
-//    void LoadFBX(LPCSTR fileName);
-//    void LoadDDS(LPCSTR fileName);
-//
-//    void RegisterMeshData(LPCSTR key, MZMeshData::MeshData* mesh) { m_meshObjectList[key] = mesh; }
-//    void RegisterSkeletonData(LPCSTR key, Skeleton* skeleton) { m_skeletonMap[key] = unique_ptr<Skeleton>(skeleton); };
-//    void RegisterYunuAnimationData(LPCSTR key, YunuAnimation* animation) { m_animationMap[key] = unique_ptr<YunuAnimation>(animation); }
-//    vector<YunuAnimation*> GetYunuAnimations(FbxScene* rootScene, Skeleton* targetSkeleton);
-//    Skeleton* GetSkeletonData(FbxNode* skeletalRoot);
-//    MZMeshData::MeshData* GetMeshData(LPCSTR fileName, FbxNode* meshRoot);
-//
-//    ResourceManager();
-//    // 사실 unorderedMap이 더 효율이 좋음. 조회 시간복잡도가 map은 O(log n), unordered는 O(1)임
-//    std::map<std::string, MZMeshData::MeshData*> m_meshObjectList;
-//    std::map<std::string, std::unique_ptr<Skeleton>> m_skeletonMap;
-//    std::unordered_map<std::string, ComPtr<ID3D11ShaderResourceView>> m_textureSRVMap;
-//    std::unordered_map<std::string, unique_ptr<YunuAnimation>> m_animationMap;
+	std::string m_directory;
+	std::string m_fileName;
 };
 

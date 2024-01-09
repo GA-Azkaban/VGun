@@ -16,7 +16,7 @@ public:
 
 	void SetDirectionalLight(std::string name, const DirectionalLight& dirLight);
 	void SetPointLight(std::string name, const PointLight pointLight[4]);
-	void SetSpotLight(std::string name, const SpotLight spotLight[4]);
+	void SetSpotLight(std::string name, const SpotLight spotLight[2]);
 
 protected:
 	virtual bool CreateShader(ID3DBlob* shaderBlob) override;

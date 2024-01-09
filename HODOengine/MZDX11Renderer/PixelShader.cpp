@@ -48,9 +48,9 @@ void PixelShader::SetPointLight(std::string name, const PointLight pointLight[4]
 	SetData(name, (void*)(&pointLight[0]), 4 * sizeof(PointLight));
 }
 
-void PixelShader::SetSpotLight(std::string name, const SpotLight spotLight[4])
+void PixelShader::SetSpotLight(std::string name, const SpotLight spotLight[2])
 {
-	SetData(name, (void*)(&spotLight[0]), 4 * sizeof(SpotLight));
+	SetData(name, (void*)(&spotLight[0]), 2 * sizeof(SpotLight));
 }
 
 // Creates the DirectX pixel shader

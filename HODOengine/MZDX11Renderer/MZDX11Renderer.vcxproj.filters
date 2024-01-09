@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Header">
-      <UniqueIdentifier>{26b39938-7d25-4921-88f8-a17e43f065b0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Rendererer">
       <UniqueIdentifier>{ee0fff82-2706-4edc-b5e6-c245a479728a}</UniqueIdentifier>
     </Filter>
@@ -85,9 +82,6 @@
     <Filter Include="5. Objects\UI">
       <UniqueIdentifier>{7352261d-b129-4202-82b8-03e336852a66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="5. Objects\Lights">
-      <UniqueIdentifier>{6eb9c3a6-f678-4706-9461-5e5eb440d5d0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="5. Objects\0. Interface">
       <UniqueIdentifier>{c2a4cd6a-0c60-4391-a138-cfb3757ac5b0}</UniqueIdentifier>
     </Filter>
@@ -105,24 +99,6 @@
     </Filter>
     <Filter Include="5. Objects\0. Interface\ILightObject">
       <UniqueIdentifier>{9d5aface-38c8-41f8-93cf-1fd4a1cfb910}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Adapter">
-      <UniqueIdentifier>{2df98c61-a3e7-47e8-bd50-7527e74441ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Adapter\Hodo3DGIAdapter">
-      <UniqueIdentifier>{44a5762a-ca28-4225-bb35-6f77d4739e70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter">
-      <UniqueIdentifier>{1935bb31-be9d-48e4-b924-486a1736f817}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter">
-      <UniqueIdentifier>{5f78ef35-d9e1-47af-a609-f8b89c0e188a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter">
-      <UniqueIdentifier>{c9d236bb-22f8-46ba-b259-7a2cc8ccf523}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter">
-      <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
     </Filter>
     <Filter Include="6. Components">
       <UniqueIdentifier>{77c539dd-e2fc-460e-9278-9fd8713290d7}</UniqueIdentifier>
@@ -180,6 +156,36 @@
     </Filter>
     <Filter Include="8. Util\ModelLoader">
       <UniqueIdentifier>{98d86247-1f3c-44ee-b72e-5219c14db0a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\SamplerState">
+      <UniqueIdentifier>{9711af34-42d1-4b36-8966-b39d1b39207a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter">
+      <UniqueIdentifier>{2df98c61-a3e7-47e8-bd50-7527e74441ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter\Hodo3DGIAdapter">
+      <UniqueIdentifier>{44a5762a-ca28-4225-bb35-6f77d4739e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter">
+      <UniqueIdentifier>{1935bb31-be9d-48e4-b924-486a1736f817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter">
+      <UniqueIdentifier>{5f78ef35-d9e1-47af-a609-f8b89c0e188a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter">
+      <UniqueIdentifier>{c9d236bb-22f8-46ba-b259-7a2cc8ccf523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter">
+      <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter">
+      <UniqueIdentifier>{eeb881c3-cb8c-4165-8119-3aa5df27e77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0.Rendererer\Header">
+      <UniqueIdentifier>{26b39938-7d25-4921-88f8-a17e43f065b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5. Objects\LightObject">
+      <UniqueIdentifier>{6eb9c3a6-f678-4706-9461-5e5eb440d5d0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,7 +255,7 @@
       <Filter>8. Util\DXTK</Filter>
     </ClInclude>
     <ClInclude Include="DX11Define.h">
-      <Filter>Header</Filter>
+      <Filter>0.Rendererer\Header</Filter>
     </ClInclude>
     <ClInclude Include="Axis.h">
       <Filter>5. Objects\HelperObject</Filter>
@@ -269,16 +275,16 @@
     <ClInclude Include="Lexer.h" />
     <ClInclude Include="ParsingDataClass.h" />
     <ClInclude Include="Hodo3DFactoryAdapter.h">
-      <Filter>8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
     </ClInclude>
     <ClInclude Include="Hodo3DCameraAdapter.h">
-      <Filter>8. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter</Filter>
     </ClInclude>
     <ClInclude Include="Hodo3DRendererAdapter.h">
-      <Filter>8. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
     </ClInclude>
     <ClInclude Include="HodoDebugCubeAdapter.h">
-      <Filter>8. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClInclude>
     <ClInclude Include="ShaderStruct.h">
       <Filter>2. ShaderClass\ShaderStruct</Filter>
@@ -314,10 +320,10 @@
       <Filter>5. Objects\0. Interface\IUIObject</Filter>
     </ClInclude>
     <ClInclude Include="Lights.h">
-      <Filter>5. Objects\Lights</Filter>
+      <Filter>5. Objects\LightObject</Filter>
     </ClInclude>
     <ClInclude Include="LightObject.h">
-      <Filter>5. Objects\Lights</Filter>
+      <Filter>5. Objects\LightObject</Filter>
     </ClInclude>
     <ClInclude Include="ILightObject.h">
       <Filter>5. Objects\0. Interface\ILightObject</Filter>
@@ -346,11 +352,14 @@
     <ClInclude Include="MZMacro.h">
       <Filter>8. Util\Macro</Filter>
     </ClInclude>
-    <ClInclude Include="ModelLoader.h">
-      <Filter>8. Util\ModelLoader</Filter>
-    </ClInclude>
     <ClInclude Include="WICTextureLoader.h">
       <Filter>8. Util\TextureLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>6. Components\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoStaticMeshAdapter.h">
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -417,7 +426,7 @@
     <ClCompile Include="Lexer.cpp" />
     <ClCompile Include="ParsingDataClass.cpp" />
     <ClCompile Include="HodoDebugCubeAdapter.cpp">
-      <Filter>8. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>6. Components\Mesh</Filter>
@@ -444,7 +453,7 @@
       <Filter>5. Objects\0. Interface\IUIObject</Filter>
     </ClCompile>
     <ClCompile Include="LightObject.cpp">
-      <Filter>5. Objects\Lights</Filter>
+      <Filter>5. Objects\LightObject</Filter>
     </ClCompile>
     <ClCompile Include="ILightObject.cpp">
       <Filter>5. Objects\0. Interface\ILightObject</Filter>
@@ -468,16 +477,19 @@
       <Filter>6. Components\RasterizerState</Filter>
     </ClCompile>
     <ClCompile Include="Hodo3DRendererAdapter.cpp">
-      <Filter>8. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
     </ClCompile>
     <ClCompile Include="Hodo3DFactoryAdapter.cpp">
-      <Filter>8. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelLoader.cpp">
-      <Filter>8. Util\ModelLoader</Filter>
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
     </ClCompile>
     <ClCompile Include="WICTextureLoader.cpp">
       <Filter>8. Util\TextureLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerState.cpp">
+      <Filter>6. Components\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoStaticMeshAdapter.cpp">
+      <Filter>9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

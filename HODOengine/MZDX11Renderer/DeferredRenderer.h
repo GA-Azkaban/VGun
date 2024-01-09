@@ -59,10 +59,8 @@ private:
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateDisable;
 	ComPtr<ID3D11RenderTargetView> m_backBufferRTV;	// 백버퍼 렌더 타겟 뷰
 	ComPtr<ID3D11DepthStencilView> m_depthStencilView;	// 뎁스 스텐실 뷰
-	D3D11_VIEWPORT m_viewPort;							// 뷰 포트
+	D3D11_VIEWPORT m_viewPort;
 
-	// 임시
-	ComPtr<ID3D11SamplerState> m_textureSampler;
 
 	// Adapter Info
 	DXGI_ADAPTER_DESC1 m_AdapterDesc1;

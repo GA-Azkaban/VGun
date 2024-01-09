@@ -1,22 +1,22 @@
 #include "DeferredRenderer.h"
-#include "ResourceManager.h"
 #include "MZDX11Renderer.h"
 #include "DeferredBuffers.h"
+#include "ResourceManager.h"
+#include "ShaderManager.h"
 #include "RasterizerState.h"
+#include "SamplerState.h"
 #include "MZMacro.h"
 #include "Vertex.h"
 #include "Mesh.h"
 #include "Material.h"
 #include "GeometryGenerator.h"
-#include "ShaderManager.h"
 #include "Lights.h"
 #include "DXTKFont.h"
 #include "Grid.h"
 #include "Axis.h"
 #include "MZCamera.h"
-#include "ModelLoader.h"
+#include "ResourceManager.h"
 #include "StaticMeshObject.h"
-#include "DDSTextureLoader.h"
 
 LazyObjects<DeferredRenderer> DeferredRenderer::Instance;
 
@@ -81,35 +81,15 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
 
 	// FBX Test
-	ModelLoader* modelLoader = new ModelLoader(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
-	//modelLoader->Load("../3DModels/4QCharacter_tpose.fbx");
-	//modelLoader->Load("../3DModels/spider.fbx");
-	ModelData modelData = modelLoader->Load("../3DModels/Rob02.fbx");
-
-	// 임시
-	D3D11_SAMPLER_DESC sampDesc;
-	ZeroMemory(&sampDesc, sizeof(sampDesc));
-	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	sampDesc.MinLOD = 0;
-	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-
-	m_d3dDevice->CreateSamplerState(&sampDesc, &m_textureSampler);
-
-	ID3D11ShaderResourceView* normal;
-	CreateDDSTextureFromFile(m_d3dDevice.Get(), L"../3DModels/Textures/Rob02_Normal_reverse.dds", nullptr, &normal);
-	ID3D11ShaderResourceView* albedo;
-	CreateDDSTextureFromFile(m_d3dDevice.Get(), L"../3DModels/Textures/Rob02Yellow_AlbedoTransparency.dds", nullptr, &albedo);
-	Material* testMat = new Material(ShaderManager::Instance.Get().vertexShader, ShaderManager::Instance.Get().pixelShader, albedo, normal, m_textureSampler.Get());
-	StaticMeshObject* staticMeshObj = new StaticMeshObject(modelData, testMat);
-
-	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/genji_blender.ASE");
+	ResourceManager::Instance.Get().LoadFile("../3DModels/Rob02.fbx");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"FBXFile/fox.fbx");
 	//ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/fox_reverse.dds");
+
+	StaticMeshObject* test1 = new StaticMeshObject();
+	test1->SetMesh("Rob02.fbx");
+	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
+	test1->SetNormalTexture("Rob02White_Normal.png");
 
 	// Texture Boxes
 	/*for (int i = 0; i < 5; ++i)
@@ -528,6 +508,28 @@ void DeferredRenderer::SetLights()
 	dirLight->Color = XMFLOAT4{ 0.5f, 0.5f, 0.5f, 1.0f };
 	dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
 	ShaderManager::Instance.Get().pixelShader->SetDirectionalLight("dirLight", *dirLight);
+
+	PointLight pointLight[4];
+	pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
+	pointLight[0].Position = XMFLOAT4{ 5.0f, 5.0f, 0.0f, 1.0f };
+	pointLight[1].Color = XMFLOAT4{ 0.0f, 0.3f, 0.0f, 1.0f };
+	pointLight[1].Position = XMFLOAT4{ 0.0f, 3.0f, -5.0f, 1.0f };
+	pointLight[2].Color = XMFLOAT4{ 0.5f, 0.3f, 0.0f, 1.0f };
+	pointLight[2].Position = XMFLOAT4{ -1.0f, 0.0f, 0.0f, 1.0f };
+	pointLight[3].Color = XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f };
+	pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
+	ShaderManager::Instance.Get().pixelShader->SetPointLight("pointLight", pointLight);
+
+	SpotLight spotLight[2];
+	spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
+	spotLight[0].Direction = XMFLOAT3{ 10.0f, -3.0f, 0.0f };
+	spotLight[0].Position = XMFLOAT4{ 20.0f, 10.0f, 0.0f, 1.0f };
+	spotLight[0].SpotPower = 1.0f;
+	spotLight[1].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
+	spotLight[1].Direction = XMFLOAT3{ -10.0f, 0.0f, -5.0f };
+	spotLight[1].Position = XMFLOAT4{ 10.0f, 20.0f, 5.0f, 1.0f };
+	spotLight[1].SpotPower = 1.0f;
+	ShaderManager::Instance.Get().pixelShader->SetSpotLight("spotLight", spotLight);
 }
 
 HRESULT DeferredRenderer::GetAdapterInfo()
