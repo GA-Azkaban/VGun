@@ -33,13 +33,20 @@ private:
 
 	// 게임 설정
 	HDData::GameObject* _gameSettingCanvas;
-	HDData::GameObject* _finishButton;
-	HDData::GameObject* _clearButton;
+
+	HDData::GameObject* _quitSettingButton;
+	HDData::GameObject* _saveSettingButton;
+	HDData::GameObject* _clearSettingButton;
+
 	HDData::GameObject* _monitorSettingButton;
+	HDData::GameObject* _monitorAspectRatio;
+	
+	HDData::GameObject* _inputSettingButton;
+	HDData::GameObject* _walkFrontSetBox;
+
 	HDData::GameObject* _soundSettingButton;
-	HDData::GameObject* _keySettingButton;
-
-
+	HDData::GameObject* _musicVolumeSlider;
+	HDData::GameObject* _fxVolumeSlider;
 
 	HDData::GameObject* _joinCanvas;	// 참가 화면
 

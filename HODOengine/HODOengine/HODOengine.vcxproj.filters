@@ -163,6 +163,12 @@
     <Filter Include="05_Component\UserInterface\ToggleUI">
       <UniqueIdentifier>{fd389271-0295-45eb-aba5-dc07311efbb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\UserInterface\DropdownUI">
+      <UniqueIdentifier>{f44210c7-d98b-4215-869f-3423fb66c16b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\SettingBoxUI">
+      <UniqueIdentifier>{273ab024-e60c-43d2-a4c9-fd5f195f1545}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
