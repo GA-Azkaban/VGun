@@ -156,6 +156,7 @@
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="DynamicSphereCollider.h" />
     <ClInclude Include="InputData.h" />
+    <ClInclude Include="SliderUI.h" />
     <ClInclude Include="SoundGroup.h" />
     <ClInclude Include="EventHandler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -201,6 +202,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextUI.h" />
     <ClInclude Include="TimeSystem.h" />
+    <ClInclude Include="ToggleUI.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIBase.h" />
   </ItemGroup>
@@ -248,6 +250,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SliderUI.cpp" />
     <ClCompile Include="SkinnedMeshRenderer.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="StaticBoxCollider.cpp" />
@@ -255,6 +258,7 @@
     <ClCompile Include="StaticPlaneCollider.cpp" />
     <ClCompile Include="TextUI.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
+    <ClCompile Include="ToggleUI.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIBase.cpp" />
   </ItemGroup>

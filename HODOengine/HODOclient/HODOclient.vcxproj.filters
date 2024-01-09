@@ -22,11 +22,14 @@
     <ClCompile Include="Client.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>03_Manager</Filter>
-    </ClCompile>
     <ClCompile Include="LoginSceneView.cpp">
       <Filter>04_SceneView\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>03_Manager\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyManager.cpp">
+      <Filter>03_Manager\LobbyManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,11 +63,14 @@
     <ClInclude Include="Weapon.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>03_Manager</Filter>
-    </ClInclude>
     <ClInclude Include="LoginSceneView.h">
       <Filter>04_SceneView\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>03_Manager\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyManager.h">
+      <Filter>03_Manager\LobbyManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +117,12 @@
     </Filter>
     <Filter Include="04_SceneView\InGame">
       <UniqueIdentifier>{3151c696-7a9f-4315-8832-050cff904af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\LobbyManager">
+      <UniqueIdentifier>{6cc71ee5-77d6-4520-adb9-643ce13ccc65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\GameManager">
+      <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

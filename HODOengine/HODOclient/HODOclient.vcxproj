@@ -135,6 +135,7 @@
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="LobbyManager.h" />
     <ClInclude Include="LoginSceneView.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMove.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="LobbyManager.cpp" />
     <ClCompile Include="LoginSceneView.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMove.cpp" />

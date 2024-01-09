@@ -10,6 +10,7 @@ namespace HDData
 	public:
 		Button();
 
+	public:
 		void SetOnClickEvent(std::function<void()> event);
 		std::function<void()> GetClickEvent();
 
