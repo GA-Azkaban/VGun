@@ -156,6 +156,7 @@
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="DynamicSphereCollider.h" />
     <ClInclude Include="InputData.h" />
+    <ClInclude Include="SlideBoxUI.h" />
     <ClInclude Include="SliderUI.h" />
     <ClInclude Include="SoundGroup.h" />
     <ClInclude Include="EventHandler.h">
@@ -250,6 +251,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SlideBoxUI.cpp" />
     <ClCompile Include="SliderUI.cpp" />
     <ClCompile Include="SkinnedMeshRenderer.cpp" />
     <ClCompile Include="SoundSystem.cpp" />

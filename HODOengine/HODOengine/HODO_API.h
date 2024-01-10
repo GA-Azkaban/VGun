@@ -34,6 +34,7 @@
 #include "TextUI.h"
 #include "Button.h"
 #include "ImageUI.h"
+#include "SlideBoxUI.h"
 
 #include "ObjectSystem.h"
 
@@ -50,7 +51,8 @@ namespace API
 		HODO_API HDData::GameObject* CreateImageBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateButton(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
-		
+		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+
 		// 키 입력을 위한 함수 (키보드, 마우스)
 		HODO_API bool GetKeyDown(BYTE keyCode);
 		HODO_API bool GetKeyUp(BYTE keyCode);

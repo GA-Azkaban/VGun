@@ -60,10 +60,19 @@ TestScene::TestScene()
 	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
-	auto textTest = API::CreateObject(_scene);
+	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	auto textComp = textTest->AddComponent<HDData::TextUI>();
-	textComp->SetText("Korean plz");
+	textTest->GetComponent<HDData::TextUI>()->SetText("Korean plz");
+
+	auto UItest = API::CreateSlidebox(_scene);
+	UItest->GetTransform()->SetWorldPosition({100.f, 100.f, 0.f});
+	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
+	sliderComp->AddTextList("1");
+	sliderComp->AddTextList("2");
+	sliderComp->AddTextList("3");
+	sliderComp->AddTextList("4");
+
+	sliderComp->SetText("1");
 
 
 	API::LoadScene(_scene);
