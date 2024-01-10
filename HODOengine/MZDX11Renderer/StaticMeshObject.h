@@ -1,11 +1,9 @@
 #pragma once
 #include "DX11Define.h"
-#include "Vertex.h"
 #include "IMeshObject.h"
 #include "xnacollision.h"
 #include <vector>
 
-class MZCamera;
 class Mesh;
 class Material;
 class VertexShader;
@@ -28,9 +26,14 @@ public:
 	virtual void SetWorldTM(const XMMATRIX& tm) override { m_world = tm; };
 	
 	virtual void SetMesh(const std::string& fileName) override;
+	virtual void SetVertexShader(const std::string& fileName) override;
+	virtual void SetPixelShader(const std::string& fileName) override;
+
+	void SetDiffuseTexture(const std::string& fileName);
+	void SetNormalTexture(const std::string& fileName);
+	void SetSamplerState(ID3D11SamplerState* sampler);
 
 	virtual void SetActive(bool isActive) override { m_isActive = isActive; };
-
 	virtual void SetPickingMode(bool isPickingModeOn) { };
 	//virtual void SetPickingMode(bool isPickingModeOn) { m_isPickingOn = isPickingModeOn; };
 
@@ -38,16 +41,9 @@ public:
 	void SetRotation(float x, float y, float z) { m_rotation.x = x; m_rotation.y = y; m_rotation.z = z; }
 	void SetScale(float x, float y, float z) { m_scale.x = x; m_scale.y = y; m_scale.z = z; }
 
-	void SetVertexShader(const std::string& fileName);
-	void SetPixelShader(const std::string& fileName);
-	void SetDiffuseTexture(const std::string& fileName);
-	void SetNormalTexture(const std::string& fileName);
-	void SetSamplerState(ID3D11SamplerState* sampler);
-
 	//XMFLOAT3 GetCenterPos() { return m_meshBox.Center; }
 	//XMFLOAT3 GetColliderBoxLength() { return m_meshBox.Extents; }
 	//float GetDepth() { return m_depth; }
-	float GetDepth() { return 1.0f; }
 
 private:
 	std::vector<::Mesh*> m_meshes;

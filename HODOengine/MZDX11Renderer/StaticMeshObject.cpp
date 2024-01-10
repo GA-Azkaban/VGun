@@ -133,13 +133,13 @@ void StaticMeshObject::SetPixelShader(const std::string& fileName)
 
 void StaticMeshObject::SetDiffuseTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName).texture.Get();
+	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
 	m_material->SetTextureSRV(diffuseTex);
 }
 
 void StaticMeshObject::SetNormalTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName).texture.Get();
+	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
 	m_material->SetNormalTexture(normalTex);
 }
 

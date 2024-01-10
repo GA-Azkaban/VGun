@@ -10,6 +10,7 @@ class GeometryGenerator;
 class TextureBox;
 class Mesh;
 class Material;
+class Sky;
 
 class DeferredRenderer
 {
@@ -38,6 +39,7 @@ private:
 
 	void EnableZBuffering();
 	void DisableZBuffering();
+	void SetCubemapDSS();
 
 	void RenderAll();
 
@@ -57,6 +59,7 @@ private:
 	ComPtr<ID3D11Texture2D> m_depthStencilBuffer;		// 뎁스 스텐실 버퍼
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateEnable;
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateDisable;
+	ComPtr<ID3D11DepthStencilState> m_depthStencilStateCubeMap;
 	ComPtr<ID3D11RenderTargetView> m_backBufferRTV;	// 백버퍼 렌더 타겟 뷰
 	ComPtr<ID3D11DepthStencilView> m_depthStencilView;	// 뎁스 스텐실 뷰
 	D3D11_VIEWPORT m_viewPort;
@@ -78,14 +81,12 @@ private:
 
 	//std::vector<TextureBox*> m_textureBoxes;
 
-	GeometryGenerator* m_geometryGen;
 	DXTKFont* m_font;
 
 	// Input Key
 	int switcher;
 
-	::Mesh* m_axisMesh;
-	::Mesh* m_gridMesh;
-	Material* m_debugObjMaterial;
+	// 임시
+	Sky* sky;
 };
 

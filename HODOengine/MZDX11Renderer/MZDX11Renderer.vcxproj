@@ -22,6 +22,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="ASEFile.h" />
     <ClInclude Include="ASEParser.h" />
+    <ClInclude Include="HelperObject.h" />
     <ClInclude Include="Hodo3DCameraAdapter.h" />
     <ClInclude Include="Hodo3DFactoryAdapter.h" />
     <ClInclude Include="Hodo3DRendererAdapter.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="SamplerState.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderStruct.h" />
+    <ClInclude Include="Sky.h" />
     <ClInclude Include="VertexShader.h" />
     <ClInclude Include="UIImage.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -66,7 +68,6 @@
     <ClInclude Include="MZUtility.h" />
     <ClInclude Include="RasterizerState.h" />
     <ClInclude Include="YunuAnimation.h" />
-    <ClInclude Include="Axis.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DebugCube.h">
@@ -86,7 +87,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="GeometryGenerator.h" />
-    <ClInclude Include="Grid.h" />
     <ClInclude Include="I3DRenderer.h" />
     <ClInclude Include="IRenderableObject.h" />
     <ClInclude Include="LazyObjects.h" />
@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="ASEFile.cpp" />
     <ClCompile Include="ASEParser.cpp" />
+    <ClCompile Include="HelperObject.cpp" />
     <ClCompile Include="Hodo3DFactoryAdapter.cpp" />
     <ClCompile Include="Hodo3DRendererAdapter.cpp" />
     <ClCompile Include="HodoDebugCubeAdapter.cpp" />
@@ -153,10 +154,12 @@
     <ClCompile Include="LightObject.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MZDX11RendererExport.cpp" />
     <ClCompile Include="ParsingDataClass.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="SamplerState.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Sky.cpp" />
     <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="UIImage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -177,7 +180,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Axis.cpp" />
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DebugCube.cpp">
@@ -196,7 +198,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeometryGenerator.cpp" />
-    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="MeshData.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -273,6 +274,26 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="CubeMapPixelShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="CubeMapVertexShader.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)Shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="DebugObject.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>

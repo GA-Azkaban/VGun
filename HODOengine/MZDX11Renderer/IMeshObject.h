@@ -2,6 +2,7 @@
 #include "IRenderableObject.h"
 #include <vector>
 #include <string>
+#include <d3d11.h>
 
 class VertexShader;
 class PixelShader;
@@ -31,9 +32,10 @@ public:
 	virtual bool Pick(float x, float y) = 0;
 
 	virtual void SetMesh(const std::string& fileName) = 0;
+	virtual void SetVertexShader(const std::string& fileName) = 0;
+	virtual void SetPixelShader(const std::string& fileName) = 0;
 
 	virtual void SetPickingMode(bool isPickingModeOn) = 0;
-	virtual float GetDepth() = 0;
 
 private:
 	static std::vector<IMeshObject*> meshObjects;

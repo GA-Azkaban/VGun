@@ -35,6 +35,14 @@ void ShaderManager::LoadShaders(ID3D11Device* device, ID3D11DeviceContext* devic
 	if (debugPixelShader->LoadShaderFile(L"../Shaders/DebugPixelShader.cso"))
 		m_loadedPixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
 
+	cubeMapVertexShader = new VertexShader(device, deviceContext);
+	if (cubeMapVertexShader->LoadShaderFile(L"../Shaders/CubeMapVertexShader.cso"))
+		m_loadedVertexShaders.insert(std::make_pair("CubeMapVertexShader.cso", cubeMapVertexShader));
+
+	cubeMapPixelShader = new PixelShader(device, deviceContext);
+	if (cubeMapPixelShader->LoadShaderFile(L"../Shaders/CubeMapPixelShader.cso"))
+		m_loadedPixelShaders.insert(std::make_pair("CubeMapPixelShader.cso", cubeMapPixelShader));
+
 	dirVertexShader = new VertexShader(device, deviceContext);
 	if (dirVertexShader->LoadShaderFile(L"../Shaders/DirVertexShader.cso"))
 		m_loadedVertexShaders.insert(std::make_pair("DirVertexShader.cso", dirVertexShader));

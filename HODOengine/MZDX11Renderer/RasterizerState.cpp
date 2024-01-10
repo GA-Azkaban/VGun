@@ -3,7 +3,7 @@
 LazyObjects<RasterizerState> RasterizerState::Instance;
 
 RasterizerState::RasterizerState()
-	: m_wireframeRS(0), m_solidRS(0)
+	: m_wireframeRS(0), m_solidRS(0), m_cubeMapRS(0)
 {
 	
 }
@@ -27,10 +27,20 @@ void RasterizerState::CreateRenderStates(ID3D11Device* device)
 	wireframeDesc.DepthClipEnable = true;
 
 	device->CreateRasterizerState(&wireframeDesc, m_wireframeRS.GetAddressOf());
+
+	D3D11_RASTERIZER_DESC cubeMapDesc;
+	ZeroMemory(&cubeMapDesc, sizeof(D3D11_RASTERIZER_DESC));
+	cubeMapDesc.FillMode = D3D11_FILL_SOLID;
+	cubeMapDesc.CullMode = D3D11_CULL_NONE;
+	cubeMapDesc.FrontCounterClockwise = false;
+	cubeMapDesc.DepthClipEnable = true;
+
+	device->CreateRasterizerState(&cubeMapDesc, m_cubeMapRS.GetAddressOf());
 }
 
 void RasterizerState::DestroyRenderStates()
 {
 	m_solidRS.Reset();
 	m_wireframeRS.Reset();
+	m_cubeMapRS.Reset();
 }

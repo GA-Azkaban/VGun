@@ -13,11 +13,13 @@ public:
 
 	ID3D11RasterizerState* GetWireframeRS() { return m_wireframeRS.Get(); }
 	ID3D11RasterizerState* GetSolidRS() { return m_solidRS.Get(); }
+	ID3D11RasterizerState* GetCubeMapRS() { return m_cubeMapRS.Get(); }
 
 private:
 	RasterizerState();
 
 	ComPtr<ID3D11RasterizerState> m_wireframeRS;
 	ComPtr<ID3D11RasterizerState> m_solidRS;
+	ComPtr<ID3D11RasterizerState> m_cubeMapRS;
 };
 

@@ -32,6 +32,8 @@ public:
 	PixelShader* pixelShader;
 	VertexShader* debugVertexShader;
 	PixelShader* debugPixelShader;
+	VertexShader* cubeMapVertexShader;
+	PixelShader* cubeMapPixelShader;
 	/*VertexShader* deferredVertexShader;
 	PixelShader* deferredPixelShader;
 	VertexShader* backBufferVertexShader;

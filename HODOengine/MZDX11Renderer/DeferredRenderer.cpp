@@ -12,23 +12,21 @@
 #include "GeometryGenerator.h"
 #include "Lights.h"
 #include "DXTKFont.h"
-#include "Grid.h"
-#include "Axis.h"
 #include "MZCamera.h"
 #include "ResourceManager.h"
 #include "StaticMeshObject.h"
+#include "HelperObject.h"
+#include "Sky.h"
 
 LazyObjects<DeferredRenderer> DeferredRenderer::Instance;
 
 DeferredRenderer::DeferredRenderer()
 	: m_d3dDevice(0), m_d3dDeviceContext(0), 
 	m_depthStencilStateEnable(0), m_depthStencilStateDisable(0),
-	m_geometryGen(0),
 	switcher(0)
 {
 	ZeroMemory(&m_viewPort, sizeof(D3D11_VIEWPORT));
 	m_font = new DXTKFont();
-	m_geometryGen = new GeometryGenerator();
 }
 
 DeferredRenderer::~DeferredRenderer()
@@ -61,27 +59,17 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 
 	SetLights();
 
-	// Create Mesh
-	GeometryGenerator::DebugMeshData gridMesh;
-	m_geometryGen->CreateGrid(gridMesh);
-	GeometryGenerator::DebugMeshData axisMesh;
-	m_geometryGen->CreateAxis(axisMesh);
-	m_gridMesh = new ::Mesh(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), &gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size());
-	m_axisMesh = new ::Mesh(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), &axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
-
-	// Create material
-	m_debugObjMaterial = new Material(ShaderManager::Instance.Get().debugVertexShader, ShaderManager::Instance.Get().debugPixelShader);
-
 	DeferredBuffers::Instance.Get().Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
 
-	// 그리드
-	Grid* grid = new Grid(m_d3dDeviceContext.Get(), m_gridMesh, m_debugObjMaterial);
+	HelperObject* grid = new HelperObject();
+	grid->SetMesh("grid");
 
-	// 축
-	Axis* axis = new Axis(m_d3dDeviceContext.Get(), m_axisMesh, m_debugObjMaterial);
+	HelperObject* axis = new HelperObject();
+	axis->SetMesh("axis");
 
 	// FBX Test
-	ResourceManager::Instance.Get().LoadFile("../3DModels/Rob02.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/Rob02.fbx");
+	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/sunsetcube1024.dds");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");
 	//ResourceManager::Instance.Get().LoadFile((LPSTR)"FBXFile/fox.fbx");
 	//ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/fox_reverse.dds");
@@ -90,6 +78,12 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	test1->SetMesh("Rob02.fbx");
 	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
 	test1->SetNormalTexture("Rob02White_Normal.png");
+
+	sky = new Sky();
+	sky->SetMesh("skySphere");
+	sky->SetVertexShader("CubeMapVertexShader.cso");
+	sky->SetPixelShader("CubeMapPixelShader.cso");
+	sky->SetCubeMapTexture("sunsetcube1024.dds");
 
 	// Texture Boxes
 	/*for (int i = 0; i < 5; ++i)
@@ -101,7 +95,8 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	BuildQuadBuffers();
 
 	// Set the depth stencil state
-	EnableZBuffering();
+	//EnableZBuffering();
+	SetCubemapDSS();
 }
 
 void DeferredRenderer::Update(float deltaTime)
@@ -123,7 +118,7 @@ void DeferredRenderer::Update(float deltaTime)
 
 void DeferredRenderer::RenderToBackBuffer()
 {
-	//EnableZBuffering();
+	EnableZBuffering();
 
 	//DeferredBuffers::Instance.Get().SetRenderTargets(m_d3dDeviceContext.Get());
 	//DeferredBuffers::Instance.Get().ClearRenderTargets(m_d3dDeviceContext.Get(), DirectX::Colors::Black);
@@ -143,16 +138,22 @@ void DeferredRenderer::RenderToBackBuffer()
 
 	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	m_d3dDeviceContext->RSSetState(RasterizerState::Instance.Get().GetSolidRS());
-
 	for (auto object : IMeshObject::meshObjects)
 	{
 		object->Render();
 	}
 
+	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	m_d3dDeviceContext->RSSetState(RasterizerState::Instance.Get().GetWireframeRS());
 	for (auto object : IDebugObject::debugObjects)
 	{
 		object->Render();
 	}
+
+	SetCubemapDSS();
+	m_d3dDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	m_d3dDeviceContext->RSSetState(RasterizerState::Instance.Get().GetCubeMapRS());
+	sky->Render();
 
 	/*for (auto& object : IUIObject::uiObjects)
 	{
@@ -452,6 +453,11 @@ void DeferredRenderer::DisableZBuffering()
 	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilStateDisable.Get(), 1);
 }
 
+void DeferredRenderer::SetCubemapDSS()
+{
+	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilStateCubeMap.Get(), 1);
+}
+
 void DeferredRenderer::CreateDepthStecilStates()
 {
 	// Initialize the depth stencil states
@@ -478,6 +484,7 @@ void DeferredRenderer::CreateDepthStecilStates()
 	// Create the depth stencil state for enabling Z buffering
 	m_d3dDevice->CreateDepthStencilState(&enableDepthStencilDescription, &m_depthStencilStateEnable);
 
+	// Initialize the depth stencil states
 	D3D11_DEPTH_STENCIL_DESC disableDepthStencilDescription;
 	ZeroMemory(&disableDepthStencilDescription, sizeof(disableDepthStencilDescription));
 
@@ -500,6 +507,30 @@ void DeferredRenderer::CreateDepthStecilStates()
 
 	// Create the depth stencil state for disabling Z buffering
 	m_d3dDevice->CreateDepthStencilState(&disableDepthStencilDescription, &m_depthStencilStateDisable);
+
+	// Initialize the depth stencil states
+	D3D11_DEPTH_STENCIL_DESC cubemapDepthStencilDescription;
+	ZeroMemory(&cubemapDepthStencilDescription, sizeof(cubemapDepthStencilDescription));
+
+	cubemapDepthStencilDescription.DepthEnable = true;
+	cubemapDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	cubemapDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	cubemapDepthStencilDescription.StencilEnable = true;
+	cubemapDepthStencilDescription.StencilReadMask = 0xFF;
+	cubemapDepthStencilDescription.StencilWriteMask = 0xFF;
+	// Stencil operations if pixel is front-facing.
+	cubemapDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	cubemapDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	// Stencil operations if pixel is back-facing.
+	cubemapDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	cubemapDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Create the depth stencil state for cube mapping
+	m_d3dDevice->CreateDepthStencilState(&cubemapDepthStencilDescription, &m_depthStencilStateCubeMap);
 }
 
 void DeferredRenderer::SetLights()

@@ -187,6 +187,9 @@
     <Filter Include="5. Objects\LightObject">
       <UniqueIdentifier>{6eb9c3a6-f678-4706-9461-5e5eb440d5d0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="5. Objects\CubeMap">
+      <UniqueIdentifier>{6ede9cec-51af-4bcb-8d77-0cab8bd02a3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MZDX11Renderer.h">
@@ -194,9 +197,6 @@
     </ClInclude>
     <ClInclude Include="MZCamera.h">
       <Filter>5. Objects\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>5. Objects\HelperObject</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="TextureBox.h">
@@ -256,9 +256,6 @@
     </ClInclude>
     <ClInclude Include="DX11Define.h">
       <Filter>0.Rendererer\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Axis.h">
-      <Filter>5. Objects\HelperObject</Filter>
     </ClInclude>
     <ClInclude Include="DebugCube.h">
       <Filter>5. Objects\MeshObject\DebugObject\DebugCube</Filter>
@@ -361,6 +358,12 @@
     <ClInclude Include="HodoStaticMeshAdapter.h">
       <Filter>9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClInclude>
+    <ClInclude Include="Sky.h">
+      <Filter>5. Objects\CubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperObject.h">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MZDX11Renderer.cpp">
@@ -368,9 +371,6 @@
     </ClCompile>
     <ClCompile Include="MZCamera.cpp">
       <Filter>5. Objects\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>5. Objects\HelperObject</Filter>
     </ClCompile>
     <ClCompile Include="TextureBox.cpp">
       <Filter>5. Objects\HelperObject</Filter>
@@ -411,9 +411,6 @@
     </ClCompile>
     <ClCompile Include="DebugCube.cpp">
       <Filter>5. Objects\MeshObject\DebugObject\DebugCube</Filter>
-    </ClCompile>
-    <ClCompile Include="Axis.cpp">
-      <Filter>5. Objects\HelperObject</Filter>
     </ClCompile>
     <ClCompile Include="UIImage.cpp">
       <Filter>5. Objects\UI</Filter>
@@ -491,6 +488,15 @@
     <ClCompile Include="HodoStaticMeshAdapter.cpp">
       <Filter>9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClCompile>
+    <ClCompile Include="Sky.cpp">
+      <Filter>5. Objects\CubeMap</Filter>
+    </ClCompile>
+    <ClCompile Include="HelperObject.cpp">
+      <Filter>5. Objects\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MZDX11RendererExport.cpp">
+      <Filter>9. Adapter</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="wire.fx">
@@ -554,6 +560,12 @@
       <Filter>3. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="DirPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapVertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
   </ItemGroup>

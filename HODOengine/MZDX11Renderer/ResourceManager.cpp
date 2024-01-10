@@ -3,12 +3,14 @@
 #include "Mesh.h"
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
+#include "GeometryGenerator.h"
 
 LazyObjects<ResourceManager> ResourceManager::Instance;
 
 ResourceManager::ResourceManager()
+	: m_geometryGen(0), m_directory("../3DModels/")
 {
-
+	m_geometryGen = new GeometryGenerator();
 }
 
 ResourceManager::~ResourceManager()
@@ -20,43 +22,68 @@ void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* devi
 {
 	m_device = device;
 	m_deviceContext = deviceContext;
+
+	CreatePrimitiveMeshes();
 }
 
-void ResourceManager::LoadFile(std::string fileName)
+void ResourceManager::CreatePrimitiveMeshes()
+{
+	GeometryGenerator::DebugMeshData gridMesh;
+	m_geometryGen->CreateGrid(gridMesh);
+	GeometryGenerator::DebugMeshData axisMesh;
+	m_geometryGen->CreateAxis(axisMesh);
+
+	::Mesh* _gridMesh = new ::Mesh(m_device.Get(), m_deviceContext.Get(), &gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size());
+	m_loadedMeshes["grid"].push_back(_gridMesh);
+	::Mesh* _axisMesh = new ::Mesh(m_device.Get(), m_deviceContext.Get(), &axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
+	m_loadedMeshes["axis"].push_back(_axisMesh);
+
+	GeometryGenerator::MeshData skySphere;
+	m_geometryGen->CreateSphere(5000, 30, 30, skySphere);
+
+	::Mesh* _sphere = new ::Mesh(m_device.Get(), m_deviceContext.Get(), &skySphere.Vertices[0], skySphere.Vertices.size(), &skySphere.Indices[0], skySphere.Indices.size());
+	m_loadedMeshes["skySphere"].push_back(_sphere);
+}
+
+void ResourceManager::LoadFBXFile(std::string filePath)
 {
 	Assimp::Importer importer;
 
-	const aiScene* _scene = importer.ReadFile(fileName, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+	const aiScene* _scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
 	if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 	{
 		MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 	}
 
-	m_directory = fileName.substr(0, fileName.find_last_of("/\\"));
-	m_fileName = fileName.substr(fileName.find_last_of("/\\") + 1, fileName.length() - fileName.find_last_of("/\\"));
+	//m_directory = fileName.substr(0, fileName.find_last_of("/\\") + 1);
+	m_fileName = filePath.substr(filePath.find_last_of("/\\") + 1, filePath.length() - filePath.find_last_of("/\\"));
 
 	ProcessNode(_scene->mRootNode, _scene);
+}
+
+void ResourceManager::LoadTextureFile(std::string filePath)
+{
+	std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1, filePath.length() - filePath.find_last_of("/\\"));
+	LoadTexture(fileName);
 }
 
 std::vector<::Mesh*> ResourceManager::GetLoadedMesh(const std::string& fileName)
 {
 	if (m_loadedMeshes.find(fileName) == m_loadedMeshes.end())
 	{
-		LoadFile(fileName);
+		LoadFBXFile(fileName);
 	}
 	return m_loadedMeshes[fileName];
 }
 
-Texture ResourceManager::GetLoadedTexture(const std::string& fileName)
+ID3D11ShaderResourceView* ResourceManager::GetLoadedTexture(const std::string& fileName)
 {
-	if (m_loadedTextures.find(fileName) != m_loadedTextures.end())
+	if (m_loadedTextures.find(fileName) == m_loadedTextures.end())
 	{
-		return m_loadedTextures[fileName];
+		LoadTexture(fileName);
 	}
-	Texture ret;
-	ret.texture = nullptr;
-	return ret;
+	return m_loadedTextures[fileName];
 }
 
 void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
@@ -64,18 +91,7 @@ void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
 	for (UINT i = 0; i < node->mNumMeshes; ++i)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		//if (mesh->mNumBones == 0)
-		//{
-		std::vector<VertexStruct::Vertex> vertices;
-		std::vector<UINT> indices;
-		ProcessMesh(mesh, scene, vertices, indices);
-		//}
-		//else
-		//{
-		//	std::vector<VertexStruct::VertexSkinning> vertices;
-		//	std::vector<UINT> indices;
-		//	ProcessMesh(mesh, scene, vertices, indices);
-		//}
+		ProcessMesh(mesh, scene);
 	}
 
 	for (UINT i = 0; i < node->mNumChildren; ++i)
@@ -84,8 +100,23 @@ void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
 	}
 }
 
-void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<VertexStruct::Vertex>& vertices, std::vector<UINT>& indices)
+void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
+	/*if (mesh->mNumBones > 0)
+	{
+		ProcessSkinningMesh(mesh, scene);
+	}
+	else*/
+	//{
+	ProcessStaticMesh(mesh, scene);
+	//}
+}
+
+void ResourceManager::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
+{
+	std::vector<VertexStruct::Vertex> vertices;
+	std::vector<UINT> indices;
+
 	// Load position, normal, uv
 	for (UINT i = 0; i < mesh->mNumVertices; ++i)
 	{
@@ -132,9 +163,12 @@ void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vecto
 	}
 }
 
-void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene, std::vector<VertexStruct::VertexSkinning>& vertices, std::vector<UINT>& indices)
+void ResourceManager::ProcessSkinningMesh(aiMesh* mesh, const aiScene* scene)
 {
+	std::vector<VertexStruct::VertexSkinning> vertices;
+	std::vector<UINT> indices;
 
+	// TODO
 }
 
 void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
@@ -150,36 +184,15 @@ void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType t
 		auto iter = m_loadedTextures.find(fileName);
 		if (iter == m_loadedTextures.end())
 		{
-			Texture texture;
 			const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
 			if (embeddedTexture != nullptr)
 			{
-				texture.texture = LoadEmbeddedTexture(embeddedTexture);
+				ID3D11ShaderResourceView* texture = LoadEmbeddedTexture(embeddedTexture);
+				m_loadedTextures.insert(std::make_pair(fileName, texture));
 			}
 			else
 			{
-				std::string path = m_directory + "/Textures/" + fileName;
-				std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
-				std::wstring pathWS = std::wstring(path.begin(), path.end());
-
-				HRESULT hr = S_FALSE;
-
-				if (extension == "png")
-				{
-					hr = CreateWICTextureFromFile(m_device.Get(), m_deviceContext.Get(), pathWS.c_str(), nullptr, texture.texture.GetAddressOf());
-				}
-				else if (extension == "dds")
-				{
-					hr = CreateDDSTextureFromFile(m_device.Get(), pathWS.c_str(), nullptr, texture.texture.GetAddressOf());
-				}
-
-				if (FAILED(hr))
-				{
-					MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
-				}
-
-				texture.type = type;
-				m_loadedTextures.insert(std::make_pair(fileName, texture));
+				LoadTexture(fileName);
 			}
 		}
 	}
@@ -232,4 +245,33 @@ ID3D11ShaderResourceView* ResourceManager::LoadEmbeddedTexture(const aiTexture* 
 	}
 
 	return texture;
+}
+
+ID3D11ShaderResourceView* ResourceManager::LoadTexture(const std::string& fileName)
+{
+	ID3D11ShaderResourceView* ret = nullptr;
+
+	std::string path = m_directory + "Textures/" + fileName;
+	std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
+	std::wstring pathWS = std::wstring(path.begin(), path.end());
+
+	HRESULT hr = S_FALSE;
+
+	if (extension == "png")
+	{
+		hr = CreateWICTextureFromFile(m_device.Get(), m_deviceContext.Get(), pathWS.c_str(), nullptr, &ret);
+	}
+	else if (extension == "dds")
+	{
+		hr = CreateDDSTextureFromFile(m_device.Get(), pathWS.c_str(), nullptr, &ret);
+	}
+
+	if (FAILED(hr))
+	{
+		MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
+	}
+
+	m_loadedTextures.insert(std::make_pair(fileName, ret));
+
+	return ret;
 }
