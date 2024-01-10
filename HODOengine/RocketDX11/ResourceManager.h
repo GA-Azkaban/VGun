@@ -4,6 +4,7 @@
 #include <wrl.h>
 #include <unordered_map>
 #include <DXTK/SpriteFont.h>
+#include "string"
 
 #include "Singleton.h"
 
@@ -11,6 +12,7 @@ using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
+	class Model;
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
@@ -24,25 +26,21 @@ namespace RocketCore::Graphics
 	public:
 		void Initialize(ID3D11Device* device);
 
-		CubeMesh* GetCubeMesh();
-		VertexShader* GetDefaultVertexShader();
-		PixelShader* GetDefaultPixelShader();
+		Model* GetCubeModel();
+		VertexShader* GetVertexShader(const std::string& name);
+		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont();
 
 	private:
 		ComPtr<ID3D11Device> _device;
 
-		// 큐브 메쉬는 기본적으로 들고있게 했음
-		CubeMesh* _cubeMesh;
+		// 기본 큐브 모델
+		Model* _cubeModel;
 
 		// 기본 폰트 들고있음
-		DirectX::SpriteFont* _spriteFont;
+		DirectX::SpriteFont* _defaultFont;
 
-		// 우선 기본 셰이더들 들고있음
-		VertexShader* _vertexShader;
-		PixelShader* _pixelShader;
-		
-
-		// TODO : map을 이용해서 Path를 key로 각각의 리소스를 value 로 해서 관리해서 넣어줘야하려나?
+		std::unordered_map<std::string, VertexShader*> _vertexShaders;
+		std::unordered_map<std::string, PixelShader*> _pixelShaders;
 	};
 }

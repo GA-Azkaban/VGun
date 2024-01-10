@@ -346,8 +346,8 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::RenderHelperObject()
 	{
-		auto vs = _resourceManager.GetDefaultVertexShader();
-		auto ps = _resourceManager.GetDefaultPixelShader();
+		auto vs = _resourceManager.GetVertexShader("ColorVS");
+		auto ps = _resourceManager.GetPixelShader("ColorPS");
 
 		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
 		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());

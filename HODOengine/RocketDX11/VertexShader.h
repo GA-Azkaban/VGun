@@ -11,7 +11,7 @@ namespace RocketCore::Graphics
 		~VertexShader();
 
 	public:
-		virtual void CreateShader(ID3D11Device* device, const std::string& path) override;
+		virtual void Initialize(ID3D11Device* device, const std::string& path) override;
 
 	public:
 		ID3D11VertexShader* GetVertexShader() const;
@@ -19,7 +19,15 @@ namespace RocketCore::Graphics
 		ID3D11Buffer** GetAddressOfMatrixBuffer();
 		ID3D11InputLayout* GetInputLayout() const;
 
+	public:
+		void SetVertexDesc(D3D11_INPUT_ELEMENT_DESC* desc);
+
 	private:
+		void CreateShaderAndInputLayout(ID3D11Device* device, const std::string& path);
+		void CreateMatrixBuffer(ID3D11Device* device);
+
+	private:
+		D3D11_INPUT_ELEMENT_DESC* _vertexDesc;
 		ComPtr<ID3D11VertexShader> _vertexShader;
 		ComPtr<ID3D11Buffer> _matrixBuffer;
 		ComPtr<ID3D11InputLayout> _inputLayout;

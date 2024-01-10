@@ -34,9 +34,9 @@ namespace RocketCore::Graphics
 
 		StaticMeshObject* obj = objMgr.CreateStaticMeshObject();
 
-		obj->SetMesh(rscMgr.GetCubeMesh());
-		obj->SetVertexShader(rscMgr.GetDefaultVertexShader());
-		obj->SetPixelShader(rscMgr.GetDefaultPixelShader());
+		obj->SetModel(rscMgr.GetCubeModel());
+		obj->SetVertexShader(rscMgr.GetVertexShader("ColorVS"));
+		obj->SetPixelShader(rscMgr.GetPixelShader("ColorPS"));
 
 		return obj;
 	}

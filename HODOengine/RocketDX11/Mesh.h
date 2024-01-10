@@ -10,10 +10,10 @@ using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
-	class StaticMesh : public IResource
+	class Mesh : public IResource
 	{
 	public:
-		virtual void Initialize(ID3D11Device* device) override;
+		virtual void Initialize(ID3D11Device* device);
 
 		int GetVertexCount() const;
 		int GetIndexCount() const;

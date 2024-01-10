@@ -22,7 +22,7 @@ namespace RocketCore::Graphics
 
 	void CubeMesh::BuildGeometryBuffers(ID3D11Device* device)
 	{
-		Vertex vertices[8] =
+		ColorVertex vertices[8] =
 		{
 			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)},
 			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Yellow)},
@@ -36,7 +36,7 @@ namespace RocketCore::Graphics
 
 		D3D11_BUFFER_DESC vbd;
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;    
-		vbd.ByteWidth = sizeof(Vertex) * ARRAYSIZE(vertices);
+		vbd.ByteWidth = sizeof(ColorVertex) * ARRAYSIZE(vertices);
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;
 		vbd.MiscFlags = 0;

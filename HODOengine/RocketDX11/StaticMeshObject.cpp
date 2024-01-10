@@ -2,27 +2,10 @@
 #include "..\\HODOmath\\HODOmath.h"
 #include "RocketMacroDX11.h"
 #include "ResourceManager.h"
-
-struct Vertex
-{
-	DirectX::XMFLOAT3 Pos;
-	DirectX::XMFLOAT4 Color;
-};
-
-struct MatrixBufferType
-{
-	DirectX::XMMATRIX world;
-	DirectX::XMMATRIX view;
-	DirectX::XMMATRIX projection;
-};
+#include "GraphicsStruct.h"
 
 namespace RocketCore::Graphics
 {
-	void StaticMeshObject::SetMesh(StaticMesh* mesh)
-	{
-		_mesh = mesh;
-	}
-
 	void StaticMeshObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
 	{
 		DirectX::XMFLOAT4X4 temp;
@@ -83,12 +66,6 @@ namespace RocketCore::Graphics
 		deviceContext->IASetInputLayout(_vertexShader->GetInputLayout());
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		// 인덱스버퍼와 버텍스버퍼 셋팅
-		UINT stride = sizeof(Vertex);
-		UINT offset = 0;
-		deviceContext->IASetVertexBuffers(0, 1, _mesh->GetAddressOfVertexBuffer(), &stride, &offset);
-		deviceContext->IASetIndexBuffer(_mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
-
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 		MatrixBufferType* dataPtr;
 		unsigned int bufferNumber;
@@ -118,12 +95,17 @@ namespace RocketCore::Graphics
 		// 렌더스테이트
 		deviceContext->RSSetState(renderstate);
 
-		deviceContext->DrawIndexed(_mesh->GetIndexCount(), 0, 0);
+		_model->Render(deviceContext);
 	}
 
 	StaticMeshObject::StaticMeshObject()
 	{
 
+	}
+
+	void StaticMeshObject::SetModel(Model* model)
+	{
+		_model = model;
 	}
 
 }

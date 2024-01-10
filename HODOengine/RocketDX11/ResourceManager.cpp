@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "CubeMesh.h"
+#include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "TextRenderer.h"
@@ -15,37 +16,69 @@ namespace RocketCore::Graphics
 	void ResourceManager::Initialize(ID3D11Device* device)
 	{
 		_device = device;
-		_cubeMesh = new CubeMesh();
-		_cubeMesh->Initialize(_device.Get());
+		_cubeModel = new Model();
+		_cubeModel->AddMesh(new CubeMesh());
+		_cubeModel->Initialize(device);
 
-		_spriteFont = new DirectX::SpriteFont(_device.Get(), L"..\\Font\\NotoSansKR.spritefont");
+		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"..\\Font\\NotoSansKR.spritefont");
 
-		_vertexShader = new VertexShader();
-		GetDefaultVertexShader()->CreateShader(_device.Get(), "../x64/Debug/VertexShader.cso");
+		VertexShader* colorVS = new VertexShader();
+		D3D11_INPUT_ELEMENT_DESC colorDesc[] =
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
+		colorVS->SetVertexDesc(colorDesc);
+		colorVS->Initialize(_device.Get(), "../x64/Debug/ColorVS.cso");
+		_vertexShaders["ColorVS"] = colorVS;
 
-		_pixelShader = new PixelShader();
-		GetDefaultPixelShader()->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
-	
+		PixelShader* colorPS = new PixelShader();
+		colorPS->Initialize(_device.Get(), "../x64/Debug/ColorPS.cso");
+		_pixelShaders["ColorPS"] = colorPS;
+
+		VertexShader* textureVS = new VertexShader();
+		D3D11_INPUT_ELEMENT_DESC textureDesc[] =
+		{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
+		textureVS->SetVertexDesc(textureDesc);
+		textureVS->Initialize(_device.Get(), "../x64/Debug/TextureVS.cso");
+		_vertexShaders["TextureVS"] = textureVS;
+
+		PixelShader* texturePS = new PixelShader();
+		texturePS->Initialize(_device.Get(), "../x64/Debug/TexturePS.cso");
+		_pixelShaders["TexturePS"] = texturePS;
 	}
 
-	VertexShader* ResourceManager::GetDefaultVertexShader()
+	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
 	{
-		return _vertexShader;
+		if (_vertexShaders.find(name) == _vertexShaders.end())
+		{
+			return nullptr;
+		}
+
+		return _vertexShaders[name];
 	}
 
-	PixelShader* ResourceManager::GetDefaultPixelShader()
+	PixelShader* ResourceManager::GetPixelShader(const std::string& name)
 	{
-		return _pixelShader;
-	}
+		if (_pixelShaders.find(name) == _pixelShaders.end())
+		{
+			return nullptr;
+		}
 
-	RocketCore::Graphics::CubeMesh* ResourceManager::GetCubeMesh()
-	{
-		return _cubeMesh;
+		return _pixelShaders[name];
 	}
 
 	DirectX::SpriteFont* ResourceManager::GetDefaultFont()
 	{
-		return _spriteFont;
+		return _defaultFont;
+	}
+
+	Model* ResourceManager::GetCubeModel()
+	{
+		return _cubeModel;
 	}
 
 }
