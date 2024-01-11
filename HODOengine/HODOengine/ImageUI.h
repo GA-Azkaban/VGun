@@ -1,10 +1,11 @@
 #pragma once
 #include "UIBase.h"
+#include "dllExporter.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
 
 namespace HDData
 {
-	class ImageUI : public UIBase
+	class HODO_API ImageUI : public UIBase
 	{
 	public:
 		ImageUI();
@@ -12,7 +13,7 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
-		void SetImage(const char* fileName);
+		void SetImage(const std::string& fileName);
 
 	private:
 		HDEngine::ISketchableImage* _imageUI;

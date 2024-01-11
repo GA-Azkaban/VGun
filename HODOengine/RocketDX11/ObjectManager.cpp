@@ -5,6 +5,8 @@
 #include "Camera.h"
 #include "StaticMeshObject.h"
 #include "TextRenderer.h"
+#include "ImageRenderer.h"
+#include "ResourceManager.h"
 
 namespace RocketCore::Graphics
 {
@@ -27,6 +29,23 @@ namespace RocketCore::Graphics
 		_staticMeshObjectList.emplace_back(temp);
 
 		return temp;
+	}
+
+	RocketCore::Graphics::ImageRenderer* ObjectManager::CreateImage()
+	{
+		auto& resourceMgr = ResourceManager::Instance();
+
+		ImageRenderer* temp = new ImageRenderer();
+		temp->InitalizeImageRenderer(resourceMgr.GetDevice(), resourceMgr.GetDeviceContext());
+		temp->SetImage("..\\Resources\\abcd.jpg");
+		_ImageList.emplace_back(temp);
+
+		return temp;
+	}
+
+	std::vector<ImageRenderer*>& ObjectManager::GetImageList()
+	{
+		return _ImageList;
 	}
 
 	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()

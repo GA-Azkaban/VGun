@@ -72,6 +72,9 @@ TestScene::TestScene()
 	sliderComp->AddTextList("3");
 	sliderComp->AddTextList("4");
 
+	auto imageTest = API::CreateObject(_scene);
+	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	auto imageComp = imageTest->AddComponent<HDData::ImageUI>();
 
 	auto ButtonTest = API::CreateButton(_scene);
 	ButtonTest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });
