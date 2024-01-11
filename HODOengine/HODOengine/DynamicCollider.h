@@ -35,8 +35,6 @@ namespace HDData
 	public:
 		void Collide();
 		bool GetIsCollided();
-		bool CheckIsOnGround();
-		void Landing();
 
 	private:
 		bool _isJumping;

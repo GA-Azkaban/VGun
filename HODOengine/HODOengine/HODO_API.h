@@ -1,4 +1,5 @@
 #pragma once
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 /// <summary>
 /// 오수안
@@ -51,6 +52,9 @@ namespace API
 		HODO_API void DebugModeOn(int flag);
 
 		HODO_API float GetDeltaTime();
+
+		/// physics stuff
+		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length = 100.0f, int* type = nullptr);
 	}
 }
 

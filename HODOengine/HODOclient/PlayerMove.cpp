@@ -17,13 +17,17 @@ void PlayerMove::Update()
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
+	// check on ground state
+	CheckIsOnGround();
+
 	// 마우스에 따른 플레이어 회전 체크
 	CheckLookDirection();
 
 	// 키보드에 따른 플레이어 이동 방향 체크
 	CheckMoveDirection();
 
-	_playerCollider->CheckIsOnGround();
+	// camera move
+	CameraMove();
 
 	// 이동
 	Move(_moveDirection);
@@ -76,6 +80,45 @@ void PlayerMove::CheckMoveDirection()
 void PlayerMove::CheckLookDirection()
 {
 
+}
+
+bool PlayerMove::CheckIsOnGround()
+{
+	HDMath::HDFLOAT3 pos = this->GetTransform()->GetWorldPosition();
+	const float delta = 0.2f;
+	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
+	float z[9] = { 0,delta,delta,delta,0,-delta,-delta,-delta,0 };
+
+	for (int i = 0; i < 9; ++i)
+	{
+		//RocketEngine::RMFLOAT4 worldPos = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(pos.x + x[i], pos.y, pos.z + z[i], 1.0f), gameObject->transform.GetWorldTM());
+		float halfHeight = _playerCollider->GetHeight();
+		HDMath::HDFLOAT4 worldPos = HDMath::HDFLOAT4(pos.x + x[i], pos.y + 0.01f * i - halfHeight / 2.0f, pos.z + z[i], 1.0f);
+		HDMath::HDFLOAT4 eachDir = worldPos;
+		eachDir.y -= 0.05f;
+
+		int type = 0;
+		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f,-1.0f,0.0f }, 0.05f, &type);
+		//RocketEngine::DrawDebugLine({ worldPos.x,worldPos.y,worldPos.z }, { eachDir.x,eachDir.y,eachDir.z });
+
+		if (temp)
+		{
+			// type 1이 rigidStatic.
+			if (type == 1)
+			{
+				// 상태 변경 및 착지 Sound.
+				if (_isOnGround == false)
+				{
+					_isOnGround = true;
+					_isJumping = false;
+					//_playerAudio->Play3DOnce("landing");
+					//_jumpCount = 0;
+				}
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void PlayerMove::Move(int direction)
@@ -157,7 +200,7 @@ void PlayerMove::Move(int direction)
 	}
 	else
 	{
-		_playerCollider->Move(DecideMovement(_moveDirection));
+		_playerCollider->Move(DecideMoveDirection(_moveDirection));
 	}
 
 	_prevDirection = _moveDirection;
@@ -165,7 +208,8 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::Jump()
 {
-	if ((!_isJumping) && (_isOnGround))
+	//if ((!_isJumping) && (_isOnGround))
+	if (!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
@@ -174,7 +218,7 @@ void PlayerMove::Jump()
 }
 
 
-HDMath::HDFLOAT3 PlayerMove::DecideMovement(int direction)
+HDMath::HDFLOAT3 PlayerMove::DecideMoveDirection(int direction)
 {
 	HDMath::HDFLOAT3 moveStep;
 
@@ -252,4 +296,10 @@ void PlayerMove::Pitch(float radian)
 void PlayerMove::Yaw(float radian)
 {
 
+}
+
+void PlayerMove::CameraMove()
+{
+	//Pitch();
+	//Yaw();
 }

@@ -18,27 +18,29 @@ private:
 	bool _isMoveActive;
 	float _deltaTime;
 
+	// check ~~ series
 private:
 	void CheckMoveDirection();
 	void CheckLookDirection();
-	void Move(int direction);
+	bool CheckIsOnGround();
+	HDMath::HDFLOAT3 DecideMoveDirection(int direction);
 
 private:
 	// 마우스에 따른 카메라 회전 체크
 	void Pitch(float radian);
 	void Yaw(float radian);
 
-	float _moveSpeed;
-	int _moveDirection;
-	int _prevDirection;
-
+	// player's move
 private:
 	void Jump();
-	HDMath::HDFLOAT3 DecideMovement(int direction);
+	void Move(int direction);
 
 private:
 	bool _isJumping;
 	bool _isOnGround;
+	float _moveSpeed;
+	int _moveDirection;
+	int _prevDirection;	// useless on immediate stop mechanism
 	
 private:
 	HDData::DynamicBoxCollider* _playerCollider;

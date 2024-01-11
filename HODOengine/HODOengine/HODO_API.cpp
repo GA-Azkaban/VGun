@@ -6,6 +6,7 @@
 #include "TimeSystem.h"
 #include "GameObject.h"
 #include "DebugSystem.h"
+#include "PhysicsSystem.h"
 
 namespace API
 {
@@ -53,7 +54,9 @@ namespace API
 		{
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
+		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
+		{
+			return HDEngine::PhysicsSystem::Instance().RayCast(origin.x, origin.y, origin.z, direction.x, direction.y, direction.z, length, type);
+		}
 	}
-
-
 }
