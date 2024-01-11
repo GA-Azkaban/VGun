@@ -10,7 +10,7 @@ namespace RocketCore::Graphics
 	/// </summary>
 	class IResource
 	{
-	public:
-		virtual void Initialize(ID3D11Device* device) = 0;
+// 	public:
+// 		virtual void Initialize(ID3D11Device* device) = 0;
 	};
 }
