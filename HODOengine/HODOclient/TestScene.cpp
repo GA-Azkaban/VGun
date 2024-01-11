@@ -65,6 +65,9 @@ TestScene::TestScene()
 	auto textComp = textTest->AddComponent<HDData::TextUI>();
 	textComp->SetText("Stupid");
 
+	auto imageTest = API::CreateObject(_scene);
+	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	auto imageComp = imageTest->AddComponent<HDData::ImageUI>();
 
 	API::LoadScene(_scene);
 

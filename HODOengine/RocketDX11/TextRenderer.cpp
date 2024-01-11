@@ -3,6 +3,10 @@
 #include "..\\HODOmath\\HODOmath.h"
 
 RocketCore::Graphics::TextRenderer::TextRenderer()
+	: _renderFloat(),
+	_renderInt(),
+	_xLocation(),
+	_yLocation()
 {
 	_font = ResourceManager::Instance().GetDefaultFont();
 	_str = "Default Text";

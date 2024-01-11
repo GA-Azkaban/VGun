@@ -5,6 +5,7 @@
 #include "Axis.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
+#include "ImageRenderer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -15,6 +16,7 @@
 #include "ObjectManager.h"
 
 #include "StaticMeshObject.h"
+#include "ImageRenderer.h"
 
 
 namespace HDEngine
@@ -195,7 +197,7 @@ namespace RocketCore::Graphics
 		// Render State
 		CreateRenderStates();
 
-		_resourceManager.Initialize(_device.Get());
+		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		_axis = new Axis();
 		_axis->Initialize(_device.Get());
@@ -204,6 +206,9 @@ namespace RocketCore::Graphics
 		_grid->Initialize(_device.Get());
 
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
+
+		_img = _resourceManager.GetImage();
+		_img->SetImage("..\\Resources\\abcd.jpg");
 	}
 
 	void RocketDX11::BeginRender()
@@ -266,7 +271,12 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::RenderTexture()
 	{
-
+		// 이미지(UI)를 그리기 위한 함수
+		for (auto imageIter : ObjectManager::Instance().GetImageList())
+		{
+			imageIter->Render(_spriteBatch);
+		}
+		
 	}
 
 	void RocketDX11::EndRender()
@@ -335,6 +345,7 @@ namespace RocketCore::Graphics
 		RenderHelperObject();
 		RenderStaticMesh();
 		RenderText();
+		RenderTexture();
 		EndRender();
 	}
 
