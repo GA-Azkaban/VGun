@@ -60,9 +60,6 @@
     <ClInclude Include="TestSound.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>02_Client\TestScene\Player</Filter>
-    </ClInclude>
     <ClInclude Include="LoginSceneView.h">
       <Filter>04_SceneView\Login</Filter>
     </ClInclude>
@@ -71,6 +68,9 @@
     </ClInclude>
     <ClInclude Include="LobbyManager.h">
       <Filter>03_Manager\LobbyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>02_Client\TestScene\Weapon</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

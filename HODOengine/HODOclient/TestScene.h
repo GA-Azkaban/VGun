@@ -9,6 +9,8 @@ public:
 
 	void Start();
 
+	void ClickEvent();
+
 private:
 	HDData::Scene* _scene;
 };

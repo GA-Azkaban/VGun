@@ -60,12 +60,21 @@ TestScene::TestScene()
 	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
-	auto textTest = API::CreateObject(_scene);
+	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	auto textComp = textTest->AddComponent<HDData::TextUI>();
-	textComp->SetText("Korean plz");
+	textTest->GetComponent<HDData::TextUI>()->SetText("Korean plz");
+
+	auto UItest = API::CreateSlidebox(_scene);
+	UItest->GetTransform()->SetWorldPosition({100.f, 100.f, 0.f});
+	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
+	sliderComp->AddTextList("1");
+	sliderComp->AddTextList("2");
+	sliderComp->AddTextList("3");
+	sliderComp->AddTextList("4");
 
 
+	auto ButtonTest = API::CreateButton(_scene);
+	ButtonTest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });
 	API::LoadScene(_scene);
 
 	// 디버그 모드를 시작하는 함수
@@ -81,3 +90,9 @@ void TestScene::Start()
 {
 	
 }
+
+void TestScene::ClickEvent()
+{
+
+}
+

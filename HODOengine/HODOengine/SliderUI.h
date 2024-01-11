@@ -35,7 +35,7 @@ namespace HDData
 		HDEngine::ISketchableImage* _sliderPoint;
 
 		// 슬라이더가 가로 방향인지 세로 방향인지
-		bool _isHorizontal; 
+		bool _isHorizontal;
 		
 		// 슬라이더의 최대 최소 위치
 		int _min;

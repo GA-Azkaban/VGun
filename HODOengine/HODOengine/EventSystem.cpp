@@ -2,6 +2,7 @@
 #include "RenderSystem.h"
 #include "EventHandler.h"
 #include "InputSystem.h"
+#include "InputData.h"
 #include "HODOmath.h"
 #include "..\\HODO3DGraphicsInterface\\IRenderable.h"
 
@@ -14,7 +15,7 @@ namespace HDEngine
 
 	void EventSystem::InvokeEvent()
 	{
-		if (InputSystem::Instance().GetKeyDown(VK_LBUTTON))
+		if (InputSystem::Instance().GetKeyDown(MOUSE_LEFT))
 		{
 			HDMath::HDFLOAT2 mousePosition = InputSystem::Instance().GetMousePosition();
 			InvokeClickEvent(mousePosition.x, mousePosition.y);
@@ -40,6 +41,7 @@ namespace HDEngine
 		// {
 		//		EventHandler::CallEvents(selectedObject, [](EventHandler* eventHandler) { eventHandler->OnClick(); });
 		// }
+
 	}
 
 	void EventSystem::InvokeHoverEvent(float x, float y)
