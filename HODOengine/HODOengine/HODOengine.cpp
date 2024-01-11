@@ -72,17 +72,19 @@ HODOengine& HODOengine::Instance()
 
 void HODOengine::Initialize()
 {
+	_debugSystem.Initialize();
+	
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
 	CreateWindows(ins);
 	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
+	// 렌더 먼저 그다음에 인풋
+	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
+	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 	_timeSystem.Initialize();
 	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
-	_debugSystem.Initialize();
-	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	//_physicsSystem.Initialize();
-	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 }
 
 void HODOengine::Loop()

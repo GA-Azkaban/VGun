@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Utility">
@@ -79,6 +79,12 @@
     <Filter Include="Object\ImageRenderer">
       <UniqueIdentifier>{a82f26e1-fb7f-4ba2-ad78-9a1b2af5921d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FBXLoader">
+      <UniqueIdentifier>{79a203d5-88d8-4bb0-8db6-7a203dccee94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Model">
+      <UniqueIdentifier>{3229854e-c518-44f9-910b-98c5d4afb3db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -125,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="ImageRenderer.cpp">
       <Filter>Object\ImageRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Resource\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +202,12 @@
     </ClInclude>
     <ClInclude Include="ImageRenderer.h">
       <Filter>Object\ImageRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Resource\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

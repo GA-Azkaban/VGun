@@ -2,18 +2,17 @@
 
 void Player::Start()
 {
-
+	// 플레이어에 대한 데이터를 세팅
 	_kill = 0;
 	_death = 0;
 	_weapon = eWeaponType::HANDGUN;
-	_weaponList.clear();
 	_coin = 0;
 	_isDie = false;
 }
 
 void Player::Update()
 {
-
+	
 }
 
 void Player::LateUpdate()
@@ -28,7 +27,7 @@ int Player::GetPlayerIndex()
 
 int Player::GetTeamIndex()
 {
-	return _teamIndex;
+	return _teamID;
 }
 
 int Player::GetHealth()
@@ -56,11 +55,6 @@ eWeaponType Player::GetWeaponNow()
 	return _weapon;
 }
 
-std::vector<eWeaponType> Player::GetWeaponList()
-{
-	return _weaponList;
-}
-
 int Player::GetBulletCount()
 {
 	return _bulletCount;
@@ -69,4 +63,9 @@ int Player::GetBulletCount()
 int Player::GetCoinCount()
 {
 	return _coin;
+}
+
+void Player::ChangeWeapon(eWeaponType type)
+{
+	_weapon = type;
 }
