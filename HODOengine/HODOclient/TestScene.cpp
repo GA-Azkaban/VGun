@@ -73,6 +73,8 @@ TestScene::TestScene()
 	sliderComp->AddTextList("4");
 
 
+	auto ButtonTest = API::CreateButton(_scene);
+	ButtonTest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });
 	API::LoadScene(_scene);
 
 	// 디버그 모드를 시작하는 함수
@@ -88,3 +90,9 @@ void TestScene::Start()
 {
 	
 }
+
+void TestScene::ClickEvent()
+{
+
+}
+

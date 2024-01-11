@@ -7,6 +7,7 @@ RocketCore::Graphics::TextRenderer::TextRenderer()
 	_font = ResourceManager::Instance().GetDefaultFont();
 	_str = "Default Text";
 	_color = DirectX::Colors::White;
+	_isPositionedDiffrent = false;
 
 }
 
