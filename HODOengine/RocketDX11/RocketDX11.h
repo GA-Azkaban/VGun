@@ -22,6 +22,7 @@ namespace RocketCore::Graphics
 	class VertexShader;
 	class PixelShader;
 	class ResourceManager;
+	class ImageRenderer;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
 	{
@@ -87,6 +88,8 @@ namespace RocketCore::Graphics
 		Grid* _grid;
 		Axis* _axis;
 		DirectX::SpriteBatch* _spriteBatch;
+
+		ImageRenderer* _img;
 
 	private:
 		ResourceManager& _resourceManager;

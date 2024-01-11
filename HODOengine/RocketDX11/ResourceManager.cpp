@@ -4,6 +4,7 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "TextRenderer.h"
+#include "ImageRenderer.h"
 
 namespace RocketCore::Graphics
 {
@@ -12,9 +13,11 @@ namespace RocketCore::Graphics
 
 	}
 
-	void ResourceManager::Initialize(ID3D11Device* device)
+	void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 	{
 		_device = device;
+		_deviceContext = deviceContext;
+
 		_cubeMesh = new CubeMesh();
 		_cubeMesh->Initialize(_device.Get());
 
@@ -26,6 +29,8 @@ namespace RocketCore::Graphics
 		_pixelShader = new PixelShader();
 		GetDefaultPixelShader()->CreateShader(_device.Get(), "../x64/Debug/PixelShader.cso");
 	
+		_image = new ImageRenderer();
+		_image->InitalizeImageRenderer(_device.Get(), _deviceContext.Get());
 	}
 
 	VertexShader* ResourceManager::GetDefaultVertexShader()
@@ -46,6 +51,21 @@ namespace RocketCore::Graphics
 	DirectX::SpriteFont* ResourceManager::GetDefaultFont()
 	{
 		return _spriteFont;
+	}
+
+	RocketCore::Graphics::ImageRenderer* ResourceManager::GetImage()
+	{
+		return _image;
+	}
+
+	ID3D11Device* ResourceManager::GetDevice()
+	{
+		return _device.Get();
+	}
+
+	ID3D11DeviceContext* ResourceManager::GetDeviceContext()
+	{
+		return _deviceContext.Get();
 	}
 
 }

@@ -32,6 +32,7 @@
 #include "MeshRenderer.h"
 #include "InputData.h"
 #include "TextUI.h"
+#include "ImageUI.h"
 
 #include "ObjectSystem.h"
 
