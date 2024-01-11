@@ -72,8 +72,6 @@ TestScene::TestScene()
 	sliderComp->AddTextList("3");
 	sliderComp->AddTextList("4");
 
-	sliderComp->SetText("1");
-
 
 	API::LoadScene(_scene);
 

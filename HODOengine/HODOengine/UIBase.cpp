@@ -4,13 +4,17 @@
 namespace HDData
 {
 	UIBase::UIBase()
-		:_sketchable(nullptr)
+		:_sketchable(NULL)
 	{
 
 	}
 
 	void UIBase::UpdateRenderData()
 	{
-		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
+		for (const auto& one : _sketchable)
+		{
+			one->SetWorldTM(GetTransform()->GetWorldTM());
+		}
+
 	}
 }

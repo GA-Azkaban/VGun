@@ -20,8 +20,6 @@ namespace HDData
 
 		// 전체 오브젝트 활성화 여부
 		void SetActive(bool active);
-
-		// 전체 오브젝트 위치
 		void SetScreenSpace();
 		void SetWorldSpace();
 
@@ -30,6 +28,10 @@ namespace HDData
 		std::string GetText();
 		void AddTextList(const std::string str);
 		void ChangeText(bool isRight);
+
+		void SetLeftArrow(const std::string& str);
+		void SetRightArrow(const std::string& str);
+		void SetLeftArrowOffset();
 
 		// 화살표 이미지
 		void SetLeftArrowImage(const char* fileName);
@@ -41,8 +43,11 @@ namespace HDData
 		std::vector<std::string> _texts;
 
 		HDEngine::ISketchableText* _valueText;
-		HDEngine::ISketchableImage* _arrowLeft;
-		HDEngine::ISketchableImage* _arrowRight;
+		HDEngine::ISketchableText* _arrowLeft;
+		HDEngine::ISketchableText* _arrowRight;
+
+		/*HDEngine::ISketchableImage* _arrowLeft;
+		HDEngine::ISketchableImage* _arrowRight;*/
 
 		bool _isRight;
 	};
