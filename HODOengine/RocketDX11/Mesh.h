@@ -5,6 +5,7 @@
 #include <wrl.h>
 
 #include "IResource.h"
+#include "GraphicsStruct.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -23,10 +24,14 @@ namespace RocketCore::Graphics
 		ID3D11Buffer** GetAddressOfVertexBuffer();
 		ID3D11Buffer** GetAddressOfIndexBuffer();
 
+		void SetVertexType(VertexType type);
+		VertexType GetVertexType() const;
+
 	protected:
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
 		int vertexCount;
 		int indexCount;
+		VertexType _vertexType;
 	};
 }

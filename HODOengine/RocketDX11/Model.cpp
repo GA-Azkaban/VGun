@@ -34,10 +34,25 @@ namespace RocketCore::Graphics
 		for (auto& mesh : _meshes)
 		{
 			// 인덱스버퍼와 버텍스버퍼 셋팅
-			UINT stride = sizeof(ColorVertex);
+			UINT stride = 0;
 			UINT offset = 0;
+
+			switch (mesh->GetVertexType())
+			{
+				case VertexType::COLOR_VERTEX:
+					stride = sizeof(ColorVertex);
+					break;
+				case VertexType::TEXTURE_VERTEX:
+					stride = sizeof(TextureVertex);
+					break;
+				default:
+					break;
+			}
+
 			deviceContext->IASetVertexBuffers(0, 1, mesh->GetAddressOfVertexBuffer(), &stride, &offset);
 			deviceContext->IASetIndexBuffer(mesh->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
+
+			deviceContext->PSSetShaderResources(0, 1, _textures[0]->GetAddressOfTextureView());
 
 			deviceContext->DrawIndexed(mesh->GetIndexCount(),0,0);
 		}

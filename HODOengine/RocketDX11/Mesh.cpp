@@ -38,4 +38,13 @@ namespace RocketCore::Graphics
 		return indexCount;
 	}
 
+	void Mesh::SetVertexType(VertexType type)
+	{
+		_vertexType = type;
+	}
+
+	VertexType Mesh::GetVertexType() const
+	{
+		return _vertexType;
+	}
 }

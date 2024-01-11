@@ -23,6 +23,7 @@ namespace RocketCore::Graphics
 		bool Initialize(ID3D11Device* device, const std::wstring& path);
 		void Shutdown();
 		ID3D11ShaderResourceView* GetTexture();
+		ID3D11ShaderResourceView** GetAddressOfTextureView();
 
 	private:
 		ID3D11Resource* _texture;

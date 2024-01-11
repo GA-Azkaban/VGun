@@ -248,7 +248,7 @@ namespace RocketCore::Graphics
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
-			staticMeshObj->Render(_deviceContext.Get(), _wireframeRenderState.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+			staticMeshObj->Render(_deviceContext.Get(), _solidRenderState.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
 
 	}

@@ -62,6 +62,8 @@ namespace RocketCore::Graphics
 		deviceContext->VSSetShader(_vertexShader->GetVertexShader(), nullptr, 0);
 		deviceContext->PSSetShader(_pixelShader->GetPixelShader(), nullptr, 0);
 
+		deviceContext->PSSetSamplers(0, 1, _vertexShader->GetAddressOfSampleState());
+
 		// 입력 배치 객체 셋팅
 		deviceContext->IASetInputLayout(_vertexShader->GetInputLayout());
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);

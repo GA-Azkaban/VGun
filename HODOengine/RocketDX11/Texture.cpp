@@ -48,4 +48,9 @@ namespace RocketCore::Graphics
 		return _textureView;
 	}
 
+	ID3D11ShaderResourceView** Texture::GetAddressOfTextureView()
+	{
+		return &_textureView;
+	}
+
 }

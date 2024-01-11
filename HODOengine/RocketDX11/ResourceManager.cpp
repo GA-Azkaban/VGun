@@ -19,6 +19,7 @@ namespace RocketCore::Graphics
 		_cubeModel = new Model();
 		_cubeModel->AddMesh(new CubeMesh());
 		_cubeModel->Initialize(device);
+		_cubeModel->LoadTexture(device, L"../Resource/darkbrickdxt1.dds");
 
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"..\\Font\\NotoSansKR.spritefont");
 
@@ -30,6 +31,7 @@ namespace RocketCore::Graphics
 		};
 		colorVS->SetVertexDesc(colorDesc);
 		colorVS->Initialize(_device.Get(), "../x64/Debug/ColorVS.cso");
+		colorVS->SetVertexType(VertexType::COLOR_VERTEX);
 		_vertexShaders["ColorVS"] = colorVS;
 
 		PixelShader* colorPS = new PixelShader();
@@ -44,6 +46,7 @@ namespace RocketCore::Graphics
 		};
 		textureVS->SetVertexDesc(textureDesc);
 		textureVS->Initialize(_device.Get(), "../x64/Debug/TextureVS.cso");
+		textureVS->SetVertexType(VertexType::TEXTURE_VERTEX);
 		_vertexShaders["TextureVS"] = textureVS;
 
 		PixelShader* texturePS = new PixelShader();
