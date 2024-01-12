@@ -14,6 +14,7 @@ namespace HDData
 		void SetScreenSpace();
 		void SetWorldSpace();
 		void SetImage(const std::string& fileName);
+		void ChangeScale(float x, float y);
 
 	private:
 		HDEngine::ISketchableImage* _imageUI;
