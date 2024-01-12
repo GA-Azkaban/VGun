@@ -63,28 +63,29 @@ TestScene::TestScene()
 	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
 	HDData::GameObject * imageTest = API::CreateObject(_scene);
-	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	imageTest->GetTransform()->SetWorldPosition({ 500.0f,500.0f,500.0f });
 	HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
-	imageComp->ChangeScale(0.5f, 0.5f);
+	imageComp->ChangeScale(0.1f, 0.1f);
+	imageComp->SetImage("..\\Resources\\test.jpg");
 	imageComp->GetGameObject();
 
-	auto UItest = API::CreateSlidebox(_scene);
-	UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
-	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
-	sliderComp->AddTextList("1");
-	sliderComp->AddTextList("2");
-	sliderComp->AddTextList("3");
-	sliderComp->AddTextList("4");
+	//auto UItest = API::CreateSlidebox(_scene);
+	//UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
+	//auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
+	//sliderComp->AddTextList("1");
+	//sliderComp->AddTextList("2");
+	//sliderComp->AddTextList("3");
+	//sliderComp->AddTextList("4");
 
-	/*auto imageTest = API::CreateImageBox(_scene);
-	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });*/
+	//auto imageTest = API::CreateImageBox(_scene);
+	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 
-	/*auto _button = API::CreateButton(_scene);
-	_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });*/
+	//auto _button = API::CreateButton(_scene);
+	//_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	//_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	auto _slider = API::CreateSlider(_scene);
-	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	//auto _slider = API::CreateSlider(_scene);
+	//_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 
 	API::LoadScene(_scene);
 
