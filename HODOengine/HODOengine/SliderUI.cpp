@@ -14,7 +14,7 @@ namespace HDData
 		_sliderPoint(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
 		_valueText(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
 		_inputSystem(HDEngine::InputSystem::Instance()),
-		_value(10)
+		_value(50)
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable.push_back(_sliderBar);
@@ -25,12 +25,10 @@ namespace HDData
 	void SliderUI::Start()
 	{
 		_valueText->SetText(std::to_string(_value));
-		_valueText->SetScreenSpacePosition(200, 200);
-
-		_min = GetTransform()->GetWorldPosition().x;
-		_max = (_min + 500);
-		_sliderPoint->SetImage("../Resources/abcd.jpg");
-		_sliderBar->ChangeScale(0.0005f, 0.0005f);
+		_sliderPoint->SetImage("circle.png");
+		_sliderPoint->ChangeScale(0.05f, 0.05f);
+		_sliderBar->SetImage("bar.png");
+		_sliderBar->ChangeScale(1.f, 0.2f);
 	}
 
 	void SliderUI::Update()
@@ -39,10 +37,10 @@ namespace HDData
 
 		if (_inputSystem.GetMouse(MOUSE_LEFT))
 		{
-			if (_sliderBar->GetScreenSpacePositionX() )
-			{
-				_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x, GetTransform()->GetWorldPosition().y);
-			}
+			_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - 50, GetTransform()->GetWorldPosition().y);
+			_valueText->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - 50, GetTransform()->GetWorldPosition().y - 30);
+
+			// TODO) 길이를 가져와서 값을 제한하고 퍼센티지로 계산해야 함
 		}
 	}
 
@@ -75,6 +73,16 @@ namespace HDData
 	std::string SliderUI::GetText()
 	{
 		return _valueText->GetText();
+	}
+
+	void SliderUI::SetDefaultValue(int val)
+	{
+		_value = val;
+	}
+
+	int SliderUI::GetDefaultValue()
+	{
+		return _value;
 	}
 
 	void SliderUI::SetSliderbarImage(const char* fileName)

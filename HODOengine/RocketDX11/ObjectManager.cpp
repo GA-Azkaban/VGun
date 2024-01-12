@@ -38,7 +38,7 @@ namespace RocketCore::Graphics
 
 		ImageRenderer* temp = new ImageRenderer();
 		temp->InitalizeImageRenderer(resourceMgr.GetDevice(), resourceMgr.GetDeviceContext());
-		temp->SetImage("..\\Resources\\abcd.jpg");
+		temp->SetImage("abcd.jpg");
 		_ImageList.emplace_back(temp);
 
 		return temp;

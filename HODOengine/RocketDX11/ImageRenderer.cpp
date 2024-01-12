@@ -5,6 +5,7 @@
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 
+#define FILEPATH "..\\Resources\\"
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
@@ -22,16 +23,17 @@ RocketCore::Graphics::ImageRenderer::~ImageRenderer()
 
 void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 {
-	_str = filePath;
-	//std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;	// <locale>
-	//std::wstring wideFilePath = converter.from_bytes(filePath);	// <codecvt>
+	std::string basePath = FILEPATH;
+
+	std::string fullPath = basePath + filePath;
+
 	std::wstring wideFilePath;
 
 	// std::wstring_convert 대신 MultiByteToWideChar() 사용
 	int requiredSize = MultiByteToWideChar(
 		CP_UTF8,             // 문자열의 인코딩 방식 (UTF-8)
 		0,                   // 플래그 (여기서는 0 사용)
-		filePath.c_str(),    // 변환할 문자열
+		fullPath.c_str(),    // 변환할 문자열
 		-1,                  // 변환할 문자열의 길이 (-1이면 널 종료 문자까지 변환)
 		nullptr,             // 출력 버퍼 (크기 계산을 위해 nullptr 전달)
 		0                    // 출력 버퍼의 크기 (0이면 크기 계산만 수행)
@@ -43,12 +45,13 @@ void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 		MultiByteToWideChar(
 			CP_UTF8,
 			0,
-			filePath.c_str(),
+			fullPath.c_str(),
 			-1,
 			&wideFilePath[0],
 			requiredSize
 		);
 	}
+
 	DirectX::CreateWICTextureFromFile(
 		_device,
 		_deviceContext,
@@ -80,10 +83,8 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 		nullptr,
 		_color,
 		0.0f,										//회전 각도
-		DirectX::XMFLOAT2(0.0f, 0.0f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
+		DirectX::XMFLOAT2(0.5f, 0.5f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
 		DirectX::XMFLOAT2(_scaleX,_scaleY));		// 이미지 스케일
-
-	spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation, _ylocation), nullptr, _color);
 
 	spriteBatch->End();
 }
