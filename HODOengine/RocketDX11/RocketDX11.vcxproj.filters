@@ -85,6 +85,18 @@
     <Filter Include="Resource\Model">
       <UniqueIdentifier>{3229854e-c518-44f9-910b-98c5d4afb3db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{807ae992-75a5-4338-8105-9a159ab4690b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Color">
+      <UniqueIdentifier>{07bf18b9-120f-4a8b-83f1-e3e15dd488ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Texture">
+      <UniqueIdentifier>{0377a53c-9ea6-4c01-92b4-8750d6e2a8c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture">
+      <UniqueIdentifier>{40c8ea6f-2f05-4f1c-abac-65262fb82a9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
@@ -123,7 +135,7 @@
     <ClCompile Include="CubeMesh.cpp">
       <Filter>Resource\Resource3D\Primitive</Filter>
     </ClCompile>
-    <ClCompile Include="StaticMesh.cpp">
+    <ClCompile Include="Mesh.cpp">
       <Filter>Resource\Resource3D\BaseClass</Filter>
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
@@ -138,7 +150,13 @@
     <ClCompile Include="Model.cpp">
       <Filter>Resource\Model</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Font.cpp" />
+=======
+    <ClCompile Include="Texture.cpp">
+      <Filter>Resource\Texture</Filter>
+    </ClCompile>
+>>>>>>> 45a99671b2f34001e1ea8b3ebbadccea099c9a5d
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RocketMacroDX11.h">
@@ -192,7 +210,7 @@
     <ClInclude Include="CubeMesh.h">
       <Filter>Resource\Resource3D\Primitive</Filter>
     </ClInclude>
-    <ClInclude Include="StaticMesh.h">
+    <ClInclude Include="Mesh.h">
       <Filter>Resource\Resource3D\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="TextRenderer.h">
@@ -207,17 +225,31 @@
     <ClInclude Include="Model.h">
       <Filter>Resource\Model</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Font.h" />
     <ClInclude Include="RocketDX11.h">
       <Filter>GraphicsEngine</Filter>
+=======
+    <ClInclude Include="GraphicsStruct.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Resource\Texture</Filter>
+>>>>>>> 45a99671b2f34001e1ea8b3ebbadccea099c9a5d
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Resource\Shader\HLSL</Filter>
+    <FxCompile Include="ColorVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Color</Filter>
     </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Resource\Shader\HLSL</Filter>
+    <FxCompile Include="ColorPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Color</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturePS.hlsl">
+      <Filter>Resource\Shader\HLSL\Texture</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Texture</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
