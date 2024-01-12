@@ -17,6 +17,7 @@
 
 #include "StaticMeshObject.h"
 #include "ImageRenderer.h"
+#include "LineRenderer.h"
 
 
 namespace HDEngine
@@ -44,7 +45,7 @@ namespace RocketCore::Graphics
 		_featureLevel(),_m4xMsaaQuality(),
 		_swapChain(), _backBuffer(),
 		_renderTargetView(), _depthStencilBuffer(), _depthStencilView(),
-		_viewport(), _wireframeRenderState(), _solidRenderState(), _NormalDepthStencilState(),
+		_viewport(),
 		_resourceManager(ResourceManager::Instance())
 	{
 
@@ -194,9 +195,6 @@ namespace RocketCore::Graphics
 			&_viewport
 		);
 
-		// Render State
-		CreateRenderStates();
-
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		_axis = new Axis();
@@ -206,6 +204,19 @@ namespace RocketCore::Graphics
 		_grid->Initialize(_device.Get());
 
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
+		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
+		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
+		_basicEffect->SetVertexColorEnabled(true);
+
+		void const* shaderByteCode;
+		size_t byteCodeLength;
+
+		_basicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+
+		HR(_device->CreateInputLayout(DirectX::VertexPositionColor::InputElements,
+			DirectX::VertexPositionColor::InputElementCount,
+			shaderByteCode, byteCodeLength,
+			&_lineInputLayout));
 	}
 
 	void RocketDX11::BeginRender()
@@ -250,18 +261,16 @@ namespace RocketCore::Graphics
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
-			staticMeshObj->Render(_deviceContext.Get(), _solidRenderState.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
+			staticMeshObj->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 		}
-
 	}
 
 	void RocketDX11::RenderText()
 	{
-		//_TextRenderer->RenderString("Stupid : ",0.0f,0.0f,DirectX::Colors::Red);
 		_spriteBatch->Begin();
-		for (auto textIter : ObjectManager::Instance().GetTextList())
+		for (auto textRenderer : ObjectManager::Instance().GetTextList())
 		{
-			textIter->Render(_spriteBatch);
+			textRenderer->Render(_spriteBatch);
 		}
 		_spriteBatch->End();
 	}
@@ -269,9 +278,9 @@ namespace RocketCore::Graphics
 	void RocketDX11::RenderTexture()
 	{
 		// 이미지(UI)를 그리기 위한 함수
-		for (auto imageIter : ObjectManager::Instance().GetImageList())
+		for (auto imageRenderer : ObjectManager::Instance().GetImageList())
 		{
-			imageIter->Render(_spriteBatch);
+			imageRenderer->Render(_spriteBatch);
 		}
 		
 	}
@@ -293,40 +302,6 @@ namespace RocketCore::Graphics
 		return;
 	}
 
-	void RocketDX11::CreateRenderStates()
-	{
-		// Render State 중 Rasterizer State
-		D3D11_RASTERIZER_DESC solidDesc;
-		ZeroMemory(&solidDesc, sizeof(D3D11_RASTERIZER_DESC));
-		solidDesc.FillMode = D3D11_FILL_SOLID;
-		solidDesc.CullMode = D3D11_CULL_BACK;
-		solidDesc.FrontCounterClockwise = false;
-		solidDesc.DepthClipEnable = true;
-
-		HR(_device->CreateRasterizerState(&solidDesc, &_solidRenderState));
-
-		D3D11_RASTERIZER_DESC wireframeDesc;
-		ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
-		wireframeDesc.FillMode = D3D11_FILL_WIREFRAME;
-		wireframeDesc.CullMode = D3D11_CULL_BACK;
-		wireframeDesc.FrontCounterClockwise = false;
-		wireframeDesc.DepthClipEnable = true;
-
-		HR(_device->CreateRasterizerState(&wireframeDesc, &_wireframeRenderState));
-
-		//
-		// 폰트용 DSS
-		//
-		D3D11_DEPTH_STENCIL_DESC equalsDesc;
-		ZeroMemory(&equalsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
-		equalsDesc.DepthEnable = true;
-		equalsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;		// 깊이버퍼에 쓰기는 한다
-		equalsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-
-		HR(_device->CreateDepthStencilState(&equalsDesc, &_NormalDepthStencilState));
-
-	}
-
 	void RocketDX11::Update()
 	{
 		Camera::GetMainCamera()->UpdateViewMatrix();
@@ -343,6 +318,7 @@ namespace RocketCore::Graphics
 		RenderStaticMesh();
 		RenderText();
 		RenderTexture();
+		RenderLine();
 		EndRender();
 	}
 
@@ -358,10 +334,28 @@ namespace RocketCore::Graphics
 		auto ps = _resourceManager.GetPixelShader("ColorPS");
 
 		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
+		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout());
 		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout(), _wireframeRenderState.Get());
+		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout());
 	}
 
+	void RocketDX11::RenderLine()
+	{
+		_basicEffect->SetWorld(DirectX::XMMatrixIdentity());
+		_basicEffect->SetView(Camera::GetMainCamera()->GetViewMatrix());
+		_basicEffect->SetProjection(Camera::GetMainCamera()->GetProjectionMatrix());
 
+		_basicEffect->Apply(_deviceContext.Get());
+
+		_deviceContext->IASetInputLayout(_lineInputLayout.Get());
+
+		_lineBatch->Begin();
+
+		for (const auto& line : ObjectManager::Instance().GetLineRenderer()->GetLines())
+		{
+			_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
+		}
+		_lineBatch->End();
+		ObjectManager::Instance().GetLineRenderer()->Flush();
+	}
 }

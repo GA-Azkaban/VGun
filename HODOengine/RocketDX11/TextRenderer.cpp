@@ -30,7 +30,7 @@ const std::string RocketCore::Graphics::TextRenderer::GetText()
 	return _str;
 }
 
-void RocketCore::Graphics::TextRenderer::SetScereenSpace()
+void RocketCore::Graphics::TextRenderer::SetScreenSpace()
 {
 
 }

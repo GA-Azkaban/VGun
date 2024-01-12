@@ -37,9 +37,6 @@
     <Filter Include="ObjectFactory">
       <UniqueIdentifier>{8e06a945-0e27-4271-88a7-c0df8b93c968}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GraphicsEngine">
-      <UniqueIdentifier>{11c77221-a681-4070-85a2-6e01f7b6d202}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Camera">
       <UniqueIdentifier>{3225d4ac-ebcc-46d9-bca8-abe63a7fd42c}</UniqueIdentifier>
     </Filter>
@@ -97,10 +94,16 @@
     <Filter Include="Resource\Texture">
       <UniqueIdentifier>{40c8ea6f-2f05-4f1c-abac-65262fb82a9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\LineRenderer">
+      <UniqueIdentifier>{e99929e6-9b78-4740-9843-71274bfdbe4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{11c77221-a681-4070-85a2-6e01f7b6d202}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RocketDX11.cpp">
-      <Filter>GraphicsEngine</Filter>
+      <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="DeviceBuilderDX11.cpp">
       <Filter>Builder</Filter>
@@ -154,8 +157,15 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="LineRenderer.cpp">
+      <Filter>Object\LineRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="RocketDX11.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="RocketMacroDX11.h">
       <Filter>Utility</Filter>
     </ClInclude>
@@ -230,6 +240,10 @@
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="LineRenderer.h">
+      <Filter>Object\LineRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

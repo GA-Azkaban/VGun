@@ -80,8 +80,8 @@ void HODOengine::Initialize()
 	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
 	// 렌더 먼저 그다음에 인풋
-	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
+	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_timeSystem.Initialize();
 	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
 	//_physicsSystem.Initialize();

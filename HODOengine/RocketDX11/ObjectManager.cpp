@@ -7,6 +7,7 @@
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
+#include "LineRenderer.h"
 
 namespace RocketCore::Graphics
 {
@@ -63,6 +64,17 @@ namespace RocketCore::Graphics
 	std::vector<TextRenderer*>& ObjectManager::GetTextList()
 	{
 		return _textList;
+	}
+
+	LineRenderer* ObjectManager::CreateLineRenderer()
+	{
+		_lineRenderer = new LineRenderer();
+		return _lineRenderer;
+	}
+
+	LineRenderer* ObjectManager::GetLineRenderer()
+	{
+		return _lineRenderer;
 	}
 
 }

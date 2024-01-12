@@ -97,7 +97,7 @@ void RocketCore::Graphics::ImageRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& w
 	}
 }
 
-void RocketCore::Graphics::ImageRenderer::SetScereenSpace()
+void RocketCore::Graphics::ImageRenderer::SetScreenSpace()
 {
 
 }

@@ -5,6 +5,9 @@
 #include <wrl.h>
 #include <DirectXMath.h>
 #include <DXTK/SpriteBatch.h>
+#include <DXTK/PrimitiveBatch.h>
+#include <DXTK/VertexTypes.h>
+#include <DXTK/Effects.h>
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Camera.h"
@@ -41,16 +44,13 @@ namespace RocketCore::Graphics
 	private:
 		void Update();
 
-		/// 렌더스테이트 제작 함수
-	private:
-		void CreateRenderStates();
-
 	private:
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
 		void RenderHelperObject();
 		void RenderStaticMesh();
 		void RenderText();
+		void RenderLine();
 		void RenderTexture();
 		void EndRender();
 
@@ -76,11 +76,7 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		D3D11_VIEWPORT _viewport;
 
-		/// Render State
-		// 미리 여러 세트를 만들어두고 스위칭한다.
 	private:
-		ComPtr<ID3D11RasterizerState> _wireframeRenderState;
-		ComPtr<ID3D11RasterizerState> _solidRenderState;
 		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다. 
 		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
 
@@ -88,8 +84,9 @@ namespace RocketCore::Graphics
 		Grid* _grid;
 		Axis* _axis;
 		DirectX::SpriteBatch* _spriteBatch;
-
-		ImageRenderer* _img;
+		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
+		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
+		ComPtr<ID3D11InputLayout> _lineInputLayout;
 
 	private:
 		ResourceManager& _resourceManager;

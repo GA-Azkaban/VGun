@@ -19,7 +19,7 @@ namespace HDData
 
 	void TextUI::SetScreenSpace()
 	{
-		_textUI->SetScereenSpace();
+		_textUI->SetScreenSpace();
 	}
 
 	void TextUI::SetWorldSpace()

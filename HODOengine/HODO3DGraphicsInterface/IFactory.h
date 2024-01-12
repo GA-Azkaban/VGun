@@ -11,6 +11,7 @@ namespace HDEngine
 	class IStaticMesh;
 	class ISketchableText;
 	class ISketchableImage;
+	class ILineRenderer;
 
 	class IFactory
 	{
@@ -19,6 +20,7 @@ namespace HDEngine
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 		virtual ISketchableText* CreateText() = 0;
 		virtual ISketchableImage* CreateImage() = 0;
+		virtual ILineRenderer* CreateLineRenderer() = 0;
 	};
 
 	/// dllexport 하는 오브젝트팩토리를 반환하는 팩토리 함수.

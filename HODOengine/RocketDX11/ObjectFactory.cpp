@@ -7,6 +7,7 @@
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
+#include "LineRenderer.h"
 
 namespace HDEngine
 {
@@ -38,6 +39,7 @@ namespace RocketCore::Graphics
 		obj->SetModel(rscMgr.GetCubeModel());
 		obj->SetVertexShader(rscMgr.GetVertexShader("TextureVS"));
 		obj->SetPixelShader(rscMgr.GetPixelShader("TexturePS"));
+		obj->SetRenderState(rscMgr.GetRenderState(ResourceManager::eRenderState::SOLID));
 
 		return obj;
 	}
@@ -50,6 +52,11 @@ namespace RocketCore::Graphics
 	HDEngine::ISketchableImage* ObjectFactory::CreateImage()
 	{
 		return ObjectManager::Instance().CreateImage();
+	}
+
+	HDEngine::ILineRenderer* ObjectFactory::CreateLineRenderer()
+	{
+		return ObjectManager::Instance().CreateLineRenderer();
 	}
 
 }

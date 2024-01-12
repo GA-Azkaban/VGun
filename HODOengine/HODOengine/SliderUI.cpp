@@ -55,9 +55,15 @@ namespace HDData
 
 	void SliderUI::SetScreenSpace()
 	{
+<<<<<<< HEAD
 		_valueText->SetScereenSpace();
 		_sliderBar->SetScereenSpace();
 		_sliderPoint->SetScereenSpace();
+=======
+		_valueText->SetScreenSpace();
+		_sliderBar->SetScreenSpace();
+		_sliderPoint->SetScreenSpace();
+>>>>>>> DebugRay
 	}
 
 	void SliderUI::SetWorldSpace()
