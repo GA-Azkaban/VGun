@@ -24,6 +24,8 @@ void PlayerMove::Update()
 
 	// 이동
 	Move(_moveDirection);
+
+	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetWorldPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 }
 
 // 조이스틱 개념

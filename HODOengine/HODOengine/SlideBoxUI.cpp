@@ -56,9 +56,9 @@ namespace HDData
 
 	void SlideBoxUI::SetScreenSpace()
 	{
-		_valueText->SetScereenSpace();
-		_arrowLeft->SetScereenSpace();
-		_arrowRight->SetScereenSpace();
+		_valueText->SetScreenSpace();
+		_arrowLeft->SetScreenSpace();
+		_arrowRight->SetScreenSpace();
 	}
 
 	void SlideBoxUI::SetWorldSpace()

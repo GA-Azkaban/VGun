@@ -10,6 +10,7 @@ namespace RocketCore::Graphics
 		virtual HDEngine::IStaticMesh* CreateStaticMeshObject() override;
 		virtual HDEngine::ISketchableText* CreateText() override;
 		virtual HDEngine::ISketchableImage* CreateImage() override;
+		virtual HDEngine::ILineRenderer* CreateLineRenderer() override;
 	};
 }
 
