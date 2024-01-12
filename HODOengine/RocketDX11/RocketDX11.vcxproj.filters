@@ -1,256 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{b7a8bff7-b411-4744-9774-6815838fa65d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Builder">
-      <UniqueIdentifier>{5e6c16b9-90f1-4fa8-a3ae-fa8253d69820}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Builder\Interface">
-      <UniqueIdentifier>{678a5b82-b9c3-4e3f-8f8d-4aa902c766d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{22c35920-33c7-49ee-93e4-a0ba4a627ed2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ResourceManager">
-      <UniqueIdentifier>{56355718-585f-4ceb-bd43-58a540dac1d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object">
-      <UniqueIdentifier>{025d9de3-b455-450d-bd73-8c1821805381}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\HelperObject">
-      <UniqueIdentifier>{ad16b830-a53c-4ee0-b153-f753003fb0dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Interface">
-      <UniqueIdentifier>{af9e05cf-3026-4dc9-9324-2cfb964f3da7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectManager">
-      <UniqueIdentifier>{29fd3f0b-e069-4c6e-946d-62a3f083f0b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\StaticMesh">
-      <UniqueIdentifier>{6631cd88-eb46-4f41-869f-f611a8b4e9ec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\SkinnedMesh">
-      <UniqueIdentifier>{9b1a4f56-f64b-4952-9bfb-f0758a6c41f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectFactory">
-      <UniqueIdentifier>{8e06a945-0e27-4271-88a7-c0df8b93c968}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Camera">
-      <UniqueIdentifier>{3225d4ac-ebcc-46d9-bca8-abe63a7fd42c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="dllExporter">
-      <UniqueIdentifier>{46b21e4f-6b9f-4bb2-aa28-84e873e8b930}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\2DResource">
-      <UniqueIdentifier>{c9f1bc06-b3f3-41ae-9618-39f8d9cc079d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader">
-      <UniqueIdentifier>{dad1e232-9fc1-403c-bd33-72520cf50809}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Resource3D">
-      <UniqueIdentifier>{e6960d65-d481-4543-941d-fbbedb5396ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Resource3D\Primitive">
-      <UniqueIdentifier>{d317e1d1-45f8-4cbd-b666-459d0c586ba5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Resource3D\BaseClass">
-      <UniqueIdentifier>{95fd2463-fd92-4e31-8716-98047843eb58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\PixelShader">
-      <UniqueIdentifier>{548bd845-3fee-40f9-8d77-b845918e054b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\VertexShader">
-      <UniqueIdentifier>{432a0a45-8dfd-4a92-a33c-ee223f44104a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\Interface">
-      <UniqueIdentifier>{29efc75b-6165-429a-91b3-ac525dfbe18f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL">
-      <UniqueIdentifier>{bb4107b1-7dd3-44b6-be03-6574cf1a5916}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\TextObject">
-      <UniqueIdentifier>{094e9487-c82a-4cf3-b01d-ab610ca789e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\ImageRenderer">
-      <UniqueIdentifier>{a82f26e1-fb7f-4ba2-ad78-9a1b2af5921d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FBXLoader">
-      <UniqueIdentifier>{79a203d5-88d8-4bb0-8db6-7a203dccee94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Model">
-      <UniqueIdentifier>{3229854e-c518-44f9-910b-98c5d4afb3db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Struct">
-      <UniqueIdentifier>{807ae992-75a5-4338-8105-9a159ab4690b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Color">
-      <UniqueIdentifier>{07bf18b9-120f-4a8b-83f1-e3e15dd488ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Texture">
-      <UniqueIdentifier>{0377a53c-9ea6-4c01-92b4-8750d6e2a8c1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Texture">
-      <UniqueIdentifier>{40c8ea6f-2f05-4f1c-abac-65262fb82a9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\LineRenderer">
-      <UniqueIdentifier>{e99929e6-9b78-4740-9843-71274bfdbe4a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderer">
-      <UniqueIdentifier>{11c77221-a681-4070-85a2-6e01f7b6d202}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="RocketDX11.cpp">
-      <Filter>Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="DeviceBuilderDX11.cpp">
-      <Filter>Builder</Filter>
-    </ClCompile>
-    <ClCompile Include="Axis.cpp">
-      <Filter>Object\HelperObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Object\HelperObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>ResourceManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectManager.cpp">
-      <Filter>ObjectManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Object\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexShader.cpp">
-      <Filter>Resource\Shader\VertexShader</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelShader.cpp">
-      <Filter>Resource\Shader\PixelShader</Filter>
-    </ClCompile>
-    <ClCompile Include="StaticMeshObject.cpp">
-      <Filter>Object\StaticMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectFactory.cpp">
-      <Filter>ObjectFactory</Filter>
-    </ClCompile>
-    <ClCompile Include="CubeMesh.cpp">
-      <Filter>Resource\Resource3D\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClCompile>
-    <ClCompile Include="TextRenderer.cpp">
-      <Filter>Object\TextObject</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageRenderer.cpp">
-      <Filter>Object\ImageRenderer</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
-      <Filter>FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Resource\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="Texture.cpp">
-      <Filter>Resource\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="Font.cpp" />
-    <ClCompile Include="LineRenderer.cpp">
-      <Filter>Object\LineRenderer</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="RocketDX11.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="RocketMacroDX11.h">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="DeviceBuilderDX11.h">
-      <Filter>Builder</Filter>
-    </ClInclude>
-    <ClInclude Include="IBuilder.h">
-      <Filter>Builder\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="Axis.h">
-      <Filter>Object\HelperObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Object\HelperObject</Filter>
-    </ClInclude>
-    <ClInclude Include="IResource.h">
-      <Filter>Resource\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceManager.h">
-      <Filter>ResourceManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectManager.h">
-      <Filter>ObjectManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Object\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="IShader.h">
-      <Filter>Resource\Shader\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="VertexShader.h">
-      <Filter>Resource\Shader\VertexShader</Filter>
-    </ClInclude>
-    <ClInclude Include="PixelShader.h">
-      <Filter>Resource\Shader\PixelShader</Filter>
-    </ClInclude>
-    <ClInclude Include="StaticMeshObject.h">
-      <Filter>Object\StaticMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectFactory.h">
-      <Filter>ObjectFactory</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>ResourceManager</Filter>
-    </ClInclude>
-    <ClInclude Include="dllExporter.h">
-      <Filter>dllExporter</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMesh.h">
-      <Filter>Resource\Resource3D\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClInclude>
-    <ClInclude Include="TextRenderer.h">
-      <Filter>Object\TextObject</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageRenderer.h">
-      <Filter>Object\ImageRenderer</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXLoader.h">
-      <Filter>FBXLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Resource\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="RocketDX11.h">
-      <Filter>GraphicsEngine</Filter>
-    <ClInclude Include="GraphicsStruct.h">
-      <Filter>Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Resource\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="Font.h" />
-    <ClInclude Include="LineRenderer.h">
-      <Filter>Object\LineRenderer</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="ColorVS.hlsl">
+    <FxCompile Include="ColorPS.hlsl">
       <Filter>Resource\Shader\HLSL\Color</Filter>
     </FxCompile>
-    <FxCompile Include="ColorPS.hlsl">
+    <FxCompile Include="ColorVS.hlsl">
       <Filter>Resource\Shader\HLSL\Color</Filter>
     </FxCompile>
     <FxCompile Include="TexturePS.hlsl">
@@ -259,5 +13,246 @@
     <FxCompile Include="TextureVS.hlsl">
       <Filter>Resource\Shader\HLSL\Texture</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Axis.cpp">
+      <Filter>Object\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Object\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMesh.cpp">
+      <Filter>Resource\Resource3D\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="DeviceBuilderDX11.cpp">
+      <Filter>Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXLoader.cpp">
+      <Filter>FBXLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Object\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageRenderer.cpp">
+      <Filter>Object\ImageRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="LineRenderer.cpp">
+      <Filter>Object\LineRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Resource\Resource3D\BaseClass</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Resource\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectFactory.cpp">
+      <Filter>Object\ObjectFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Object\ObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>Resource\Shader\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="RocketDX11.cpp">
+      <Filter>GraphicsProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticMeshObject.cpp">
+      <Filter>Object\StaticMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRenderer.cpp">
+      <Filter>Object\TextObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexShader.cpp">
+      <Filter>Resource\Shader\VertexShader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="Axis.h">
+      <Filter>Object\HelperObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Object\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMesh.h">
+      <Filter>Resource\Resource3D\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="DeviceBuilderDX11.h">
+      <Filter>Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="dllExporter.h">
+      <Filter>dllExporter</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXLoader.h">
+      <Filter>FBXLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsStruct.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Object\HelperObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IBuilder.h">
+      <Filter>Builder\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageRenderer.h">
+      <Filter>Object\ImageRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IResource.h">
+      <Filter>Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="LineRenderer.h">
+      <Filter>Object\LineRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="IShader.h">
+      <Filter>Resource\Shader\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Resource\Resource3D\BaseClass</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Resource\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectFactory.h">
+      <Filter>Object\ObjectFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Object\ObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>Resource\Shader\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RocketDX11.h">
+      <Filter>GraphicsProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="RocketMacroDX11.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticMeshObject.h">
+      <Filter>Object\StaticMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderer.h">
+      <Filter>Object\TextObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Resource\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexShader.h">
+      <Filter>Resource\Shader\VertexShader</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Builder">
+      <UniqueIdentifier>{019b1634-5a7c-4c1d-a75b-6f62aa5f71e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Builder\Interface">
+      <UniqueIdentifier>{2b9a4a94-79e5-44a6-a04c-3533336ecc10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dllExporter">
+      <UniqueIdentifier>{469f1d43-ecb9-4ad1-b5c5-b895bec72d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBXLoader">
+      <UniqueIdentifier>{9e7db707-89b2-42b9-94c7-8b4977f88a36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{7dcc5874-dd39-4cbf-8c16-a378066fa391}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Camera">
+      <UniqueIdentifier>{569834aa-0dc1-4d58-86a8-a5376e7b1fd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\HelperObject">
+      <UniqueIdentifier>{58879384-5c1a-44e3-9913-4dd22345d70c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\ImageRenderer">
+      <UniqueIdentifier>{41ded109-339b-444e-a6e6-a1bf560a3330}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\LineRenderer">
+      <UniqueIdentifier>{29601c1e-6dd6-412d-8f40-c8d66e78a994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\SkinnedMesh">
+      <UniqueIdentifier>{51bf0425-9c14-4153-a750-4f08ac11fce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\StaticMesh">
+      <UniqueIdentifier>{b06c9dce-0c2e-4e80-9d78-36595b5a6d4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\TextObject">
+      <UniqueIdentifier>{4e5df295-451d-4a52-87a7-90d2884ebebf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\ObjectFactory">
+      <UniqueIdentifier>{e3285456-1476-4c23-b8b0-9eaaf7356bab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\ObjectManager">
+      <UniqueIdentifier>{11071d87-dcf1-499b-b90c-53d5ec16db05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{5a459304-e098-43fa-9b09-91426347a350}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\2DResource">
+      <UniqueIdentifier>{53e4fd8b-8d60-4ee1-af38-c0b85702c652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Interface">
+      <UniqueIdentifier>{09e22f74-861b-465b-87d5-06f2a3723283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Model">
+      <UniqueIdentifier>{586dfed4-01c4-4914-8839-59d9102b8d16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D">
+      <UniqueIdentifier>{0f5090f8-5e58-4fec-a487-5152d2dfacca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\BaseClass">
+      <UniqueIdentifier>{9cf0dba3-0cef-4a20-8674-a9ef2c746f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\Primitive">
+      <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture">
+      <UniqueIdentifier>{b426d68d-4899-470b-8822-54d1393565eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader">
+      <UniqueIdentifier>{dcfc1891-19ba-4656-930a-c318b65099f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL">
+      <UniqueIdentifier>{215b4f0b-7d91-4a0d-9303-f3dc430726f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Color">
+      <UniqueIdentifier>{68fef6da-5093-4b42-b063-173aaf7c8f7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Texture">
+      <UniqueIdentifier>{80cc8937-d3c0-4387-9237-e9b25aa161e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\Interface">
+      <UniqueIdentifier>{7f875c8d-bce6-4837-919f-35ac117e4e09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\PixelShader">
+      <UniqueIdentifier>{f596a4d4-b168-45e7-9bab-e2c153cc0a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\VertexShader">
+      <UniqueIdentifier>{4b9ac501-5fae-4275-9946-b06a334905b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{bb22cbeb-4eca-4b21-a20d-5a4389748a60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{c63da8da-d699-44a5-8fa0-c155abef3996}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{77a9e738-394c-412e-a732-423451335d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsProcess">
+      <UniqueIdentifier>{783d888a-f61d-4e9b-906b-301a0c7c4c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
