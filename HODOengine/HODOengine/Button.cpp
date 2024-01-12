@@ -11,21 +11,22 @@
 namespace HDData
 {
 	Button::Button()
-		: _buttonUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText())
+		: _buttonUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
+		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable.push_back(_buttonUI);
 	}
 
 	void Button::Start()
 	{
-		_buttonUI->SetText("button");
+
 	}
 
 	void Button::Update()
 	{
 		if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
 		{
-			_onClickEvent;
+			CallClickEvent();
 		}
 	}
 
@@ -46,12 +47,7 @@ namespace HDData
 
 	void Button::SetImage(const char* fileName)
 	{
-		
-	}
-
-	void Button::SetText(const std::string& str)
-	{
-		_buttonUI->SetText(str);
+		_buttonUI->SetImage(fileName);
 	}
 
 	void Button::SetOnClickEvent(std::function<void()> event)
@@ -62,6 +58,11 @@ namespace HDData
 	std::function<void()> Button::GetClickEvent() 
 	{
 		return _onClickEvent;
+	}
+
+	void Button::CallClickEvent()
+	{
+		_onClickEvent();
 	}
 
 }

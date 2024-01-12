@@ -138,11 +138,9 @@
     <ClCompile Include="Model.cpp">
       <Filter>Resource\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RocketDX11.h">
-      <Filter>GraphicsEngine</Filter>
-    </ClInclude>
     <ClInclude Include="RocketMacroDX11.h">
       <Filter>Utility</Filter>
     </ClInclude>
@@ -208,6 +206,10 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Resource\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="RocketDX11.h">
+      <Filter>GraphicsEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

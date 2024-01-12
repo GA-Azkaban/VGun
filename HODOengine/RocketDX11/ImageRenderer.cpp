@@ -3,7 +3,6 @@
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
-#include "..\\HODOmath\\HODOmath.h"
 
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
@@ -59,6 +58,7 @@ void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float 
 {
 	_xlocation = x;
 	_ylocation = y;
+	_isTranslated = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
@@ -69,14 +69,17 @@ void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
 	spriteBatch->Begin();
-	spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation,_ylocation), nullptr, _color);
+	spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation, _ylocation), nullptr, _color);
 	spriteBatch->End();
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
 {
-	_xlocation = worldTM._41;
-	_ylocation = worldTM._42;
+	if (_isTranslated != true)
+	{
+		_xlocation = worldTM._41;
+		_ylocation = worldTM._42;
+	}
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScereenSpace()
@@ -94,4 +97,19 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 	_device = device;
 	_deviceContext = deviceContext;
 }
+
+float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionX()
+{
+	return _xlocation;
+}
+
+float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionY()
+{
+	return _ylocation;
+}
+
+//float RocketCore::Graphics::ImageRenderer::GetScreenSpacePosition()
+//{
+//	return _xlocation;
+//}
 

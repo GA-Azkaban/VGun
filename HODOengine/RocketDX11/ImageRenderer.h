@@ -8,6 +8,8 @@
 #include <wrl\client.h>
 
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
+#include "..\\HODOmath\\HODOmath.h"
+
 
 
 namespace RocketCore::Graphics
@@ -21,6 +23,9 @@ namespace RocketCore::Graphics
 		virtual void SetImage(const std::string& filePath) override;
 		
 		virtual void SetScreenSpacePosition(float x, float y) override;
+
+		virtual float GetScreenSpacePositionX() override;
+		virtual float GetScreenSpacePositionY() override;
 
 		virtual void SetScereenSpace() override;
 
@@ -48,5 +53,6 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
 
+		bool _isTranslated;
 	};
 }

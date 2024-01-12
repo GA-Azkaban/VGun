@@ -9,7 +9,7 @@ namespace HDData
 		: _imageUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-		_sketchable = _imageUI;
+		_sketchable.push_back(_imageUI);
 	}
 
 	void ImageUI::SetActive(bool active)

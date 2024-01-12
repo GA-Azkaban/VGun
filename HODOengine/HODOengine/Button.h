@@ -3,11 +3,10 @@
 
 #include "UIBase.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
 
 namespace HDData
 {
-	class Button : public UIBase
+	class HODO_API Button : public UIBase
 	{
 	public:
 		Button();
@@ -20,13 +19,13 @@ namespace HDData
 		void SetScreenSpace();
 		void SetWorldSpace();
 		void SetImage(const char* fileName);
-		void SetText(const std::string& str);
 
 		void SetOnClickEvent(std::function<void()> event);
 		std::function<void()> GetClickEvent();
+		void CallClickEvent();
 
 	private:
-		HDEngine::ISketchableText* _buttonUI;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+		HDEngine::ISketchableImage* _buttonUI;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 		std::function<void()> _onClickEvent;
 
 	};

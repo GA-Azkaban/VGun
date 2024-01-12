@@ -62,22 +62,26 @@ TestScene::TestScene()
 
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	textTest->GetComponent<HDData::TextUI>()->SetText("Korean plz");
+	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
 	auto UItest = API::CreateSlidebox(_scene);
-	UItest->GetTransform()->SetWorldPosition({100.f, 100.f, 0.f});
+	UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
 	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
 	sliderComp->AddTextList("1");
 	sliderComp->AddTextList("2");
 	sliderComp->AddTextList("3");
 	sliderComp->AddTextList("4");
 
-	auto imageTest = API::CreateObject(_scene);
-	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	auto imageComp = imageTest->AddComponent<HDData::ImageUI>();
+	/*auto imageTest = API::CreateImageBox(_scene);
+	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });*/
 
-	auto ButtonTest = API::CreateButton(_scene);
-	ButtonTest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });
+	/*auto _button = API::CreateButton(_scene);
+	_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });*/
+
+	auto _slider = API::CreateSlider(_scene);
+	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+
 	API::LoadScene(_scene);
 
 	// 디버그 모드를 시작하는 함수
@@ -96,6 +100,5 @@ void TestScene::Start()
 
 void TestScene::ClickEvent()
 {
-
 }
 

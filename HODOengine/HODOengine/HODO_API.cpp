@@ -55,6 +55,13 @@ namespace API
 			return obj;
 		}
 
+		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			obj->AddComponent<HDData::SliderUI>();
+			return obj;
+		}
+
 		HODO_API bool GetKeyDown(BYTE keyCode)
 		{
 			return HDEngine::InputSystem::Instance().GetKeyDown(keyCode);
@@ -105,6 +112,7 @@ namespace API
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
 	}
+
 
 
 }
