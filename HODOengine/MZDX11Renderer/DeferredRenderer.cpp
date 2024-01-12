@@ -81,8 +81,8 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 
 	//StaticMeshObject* test1 = new StaticMeshObject();
 	SkinningMeshObject* test1 = new SkinningMeshObject();
-	test1->SetMesh("Rob02.fbx");
-	//test1->SetMesh("model.dae");
+	//test1->SetMesh("Rob02.fbx");
+	test1->SetMesh("model.dae");
 	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
 	test1->SetNormalTexture("Rob02White_Normal.png");
 	test1->PlayAnimation(0);

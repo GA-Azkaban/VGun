@@ -141,7 +141,7 @@ void ResourceManager::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
 
 		// process position
 		vertex.Position.x = mesh->mVertices[i].x;
-		vertex.Position.y = mesh->mVertices[i].y;
+		vertex.Position.y = -mesh->mVertices[i].y;
 		vertex.Position.z = mesh->mVertices[i].z;
 
 		// process normal
@@ -285,7 +285,7 @@ void ResourceManager::ProcessSkinningMesh(aiMesh* mesh, const aiScene* scene)
 	Node rootNode;
 	DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
 	rootNode.rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-	rootNode.rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNode.rootNodeInvTransform);
+	//rootNode.rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNode.rootNodeInvTransform);
 	ReadNodeHierarchy(rootNode, scene->mRootNode, boneInfo);
 
 	Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size(), rootNode);
@@ -413,10 +413,12 @@ void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::uno
 	{
 		nodeOutput.name = node->mName.C_Str();
 		nodeOutput.nodeTransform = AIMatrix4x4ToXMMatrix(node->mTransformation);
+		//nodeOutput.nodeTransform = XMMatrixTranspose(nodeOutput.nodeTransform);
 
 		Bone bone;
 		bone.id = boneInfo[nodeOutput.name].first;
 		bone.offset = boneInfo[nodeOutput.name].second;
+		//bone.offset = XMMatrixTranspose(bone.offset);
 
 		nodeOutput.bone = bone;
 

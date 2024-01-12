@@ -20,6 +20,7 @@ SkinningMeshObject::SkinningMeshObject()
 	m_material = new Material(ShaderManager::Instance.Get().GetVertexShader("SkeletonVertexShader.cso"), ShaderManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso"));
 	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
 	m_boneTransform.resize(96, XMMatrixIdentity());
+	//m_world.r[3].m128_f32[1] = -5.0f;
 }
 
 SkinningMeshObject::~SkinningMeshObject()
@@ -29,11 +30,12 @@ SkinningMeshObject::~SkinningMeshObject()
 
 void SkinningMeshObject::Update(float deltaTime)
 {
+	float ticks = (float)GetTickCount();
 	if (m_currentAnimation != nullptr)
 	{
-		deltaTime = deltaTime * m_currentAnimation->ticksPerSecond / 1000;
-		float animationTime = fmod(deltaTime, m_currentAnimation->duration);
-		UpdateAnimation(animationTime, m_meshes[0]->GetNode(), DirectX::XMMatrixIdentity(), m_meshes[0]->GetNode().rootNodeInvTransform);
+		float dt = ticks * m_currentAnimation->ticksPerSecond / 1000;
+		float animationTime = fmod(dt, m_currentAnimation->duration);
+		UpdateAnimation(animationTime, m_meshes[0]->GetNode(), m_world, m_meshes[0]->GetNode().rootNodeInvTransform);
 	}
 }
 
@@ -92,54 +94,33 @@ void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, 
 			break;
 		}
 	}
-	std::pair<UINT, float> fp;
 
 	if (nodeAnim != nullptr)
 	{
 		// calculate interpolated position
-		DirectX::XMFLOAT3 position{ 0.0f, 0.0f, 0.0f };
-		if (nodeAnim->positionTimestamps.size() > 0)
-		{
-			fp = GetTimeFraction(nodeAnim->positionTimestamps, animationTime);
-			DirectX::XMFLOAT3 position1 = nodeAnim->positions[fp.first - 1];
-			DirectX::XMFLOAT3 position2 = nodeAnim->positions[fp.first];
-			// linear interpolation
-			position = MathHelper::Mix(position1, position2, fp.second);
-		}
+		DirectX::XMFLOAT3 position = CalcInterpolatedPosition(animationTime, nodeAnim);		
 
 		// calculate interpolated rotation
-		DirectX::XMFLOAT4 rotation{ 0.0f, 0.0f, 0.0f, 0.0f };
-		if (nodeAnim->rotationTimestamps.size() > 0)
-		{
-			fp = GetTimeFraction(nodeAnim->rotationTimestamps, animationTime);
-			DirectX::XMFLOAT4 rotation1 = nodeAnim->rotations[fp.first - 1];
-			DirectX::XMFLOAT4 rotation2 = nodeAnim->rotations[fp.first];
-			// linear interpolation
-			rotation = MathHelper::Mix(rotation1, rotation2, fp.second);
-		}
+		DirectX::XMFLOAT4 rotation = CalcInterpolatedRotation(animationTime, nodeAnim);	
+		DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+		DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
 
-		DirectX::XMFLOAT3 scale{ 1.0f, 1.0f, 1.0f };
-		if (nodeAnim->scaleTimestamps.size() > 0)
-		{
-			// calculate interpolated scale
-			fp = GetTimeFraction(nodeAnim->scaleTimestamps, animationTime);
-			DirectX::XMFLOAT3 scale1 = nodeAnim->scales[fp.first - 1];
-			DirectX::XMFLOAT3 scale2 = nodeAnim->scales[fp.first];
-			// linear interpolation
-			DirectX::XMFLOAT3 scale = MathHelper::Mix(scale1, scale2, fp.second);
-		}
+		DirectX::XMFLOAT3 scale = CalcInterpolatedScaling(animationTime, nodeAnim);		
 
 		XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
-		XMMATRIX rotX = XMMatrixRotationX(rotation.x);
+		/*XMMATRIX rotX = XMMatrixRotationX(rotation.x);
 		XMMATRIX rotY = XMMatrixRotationY(rotation.y);
-		XMMATRIX rotZ = XMMatrixRotationZ(rotation.z);
+		XMMATRIX rotZ = XMMatrixRotationZ(rotation.z);*/
 		XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
-		_nodeTransform = XMMatrixTranspose(sc * rotZ * rotY * rotX * trans);
+		_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+		//_nodeTransform = XMMatrixTranspose(trans * rot * sc);
 	}
 	DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+	//DirectX::XMMATRIX globalTransform = _nodeTransform * parentTransform;
 
 	m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
+	//m_boneTransform[node.bone.id] = (node.bone.offset * globalTransform * globalInvTransform);
 
 	// update values for children bones
 	for (Node child : node.children)
@@ -148,15 +129,94 @@ void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, 
 	}
 }
 
-std::pair<UINT, float> SkinningMeshObject::GetTimeFraction(std::vector<float>& timeStamps, float deltaTime)
+DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim)
 {
-	UINT segment = 0;
-	while (deltaTime > timeStamps[segment])
-		segment++;
-	float start = timeStamps[segment - 1];
-	float end = timeStamps[segment];
-	float frac = (deltaTime - start) / (end - start);
-	return { segment, frac };
+	if (nodeAnim->positions.size() == 1)
+	{
+		return nodeAnim->positions[0];
+	}
+
+	UINT positionIndex = 0;
+	for (UINT i = 0; i < nodeAnim->positionTimestamps.size() - 1; ++i)
+	{
+		if (animationTime < nodeAnim->positionTimestamps[i + 1])
+		{
+			positionIndex = i;
+			break;
+		}
+	}
+	UINT nextPositionIndex = positionIndex + 1;
+	float deltaTime = nodeAnim->positionTimestamps[nextPositionIndex] - nodeAnim->positionTimestamps[positionIndex];
+	float factor = (animationTime - nodeAnim->positionTimestamps[positionIndex]) / deltaTime;
+
+	DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->positions[positionIndex]));
+	DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->positions[nextPositionIndex]));
+	DirectX::XMVECTOR delta = end - start;
+
+	DirectX::XMFLOAT3 ret;
+	XMStoreFloat3(&ret, start + factor * delta);
+
+	return ret;
+}
+
+DirectX::XMFLOAT4 SkinningMeshObject::CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim)
+{
+	if (nodeAnim->rotations.size() == 1)
+	{
+		return nodeAnim->rotations[0];
+	}
+
+	UINT rotationIndex = 0;
+	for (UINT i = 0; i < nodeAnim->rotationTimestamps.size() - 1; ++i)
+	{
+		if (animationTime < nodeAnim->rotationTimestamps[i + 1])
+		{
+			rotationIndex = i;
+			break;
+		}
+	}
+	UINT nextRotationIndex = rotationIndex + 1;
+	float deltaTime = nodeAnim->rotationTimestamps[nextRotationIndex] - nodeAnim->rotationTimestamps[rotationIndex];
+	float factor = (animationTime - nodeAnim->rotationTimestamps[rotationIndex]) / deltaTime;
+
+	DirectX::XMVECTOR start = XMLoadFloat4(&(nodeAnim->rotations[rotationIndex]));
+	DirectX::XMVECTOR end = XMLoadFloat4(&(nodeAnim->rotations[nextRotationIndex]));
+
+	DirectX::XMVECTOR q = XMQuaternionSlerp(start, end, factor);
+	DirectX::XMFLOAT4 ret;
+	XMStoreFloat4(&ret, q);
+
+	return ret;
+}
+
+DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim)
+{
+	if (nodeAnim->scales.size() == 1)
+	{
+		return nodeAnim->scales[0];
+	}
+
+	UINT scaleIndex = 0;
+	for (UINT i = 0; i < nodeAnim->scaleTimestamps.size() - 1; ++i)
+	{
+		if (animationTime < nodeAnim->scaleTimestamps[i + 1])
+		{
+			scaleIndex = i;
+			break;
+		}
+	}
+	UINT nextScaleIndex = scaleIndex + 1;
+	float deltaTime = nodeAnim->scaleTimestamps[nextScaleIndex] - nodeAnim->scaleTimestamps[scaleIndex];
+	float factor = (animationTime - nodeAnim->scaleTimestamps[scaleIndex]) / deltaTime;
+
+	DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->scales[scaleIndex]));
+	DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->scales[nextScaleIndex]));
+	DirectX::XMVECTOR delta = end - start;
+
+	DirectX::XMFLOAT3 ret;
+	XMStoreFloat3(&ret, start + factor * delta);
+
+	return ret;
 }
 
 bool SkinningMeshObject::Pick(float x, float y)

@@ -32,6 +32,8 @@ namespace RocketCore::Graphics
 		//그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
+		virtual void Update(float deltaTime) override {};
+
 		virtual void Render() override;
 
 		virtual void Finalize() override;

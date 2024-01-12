@@ -49,7 +49,9 @@ public:
 	//float GetDepth() { return m_depth; }
 private:
 	void UpdateAnimation(float deltaTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-	std::pair<UINT, float> GetTimeFraction(std::vector<float>& timeStamps, float deltaTime);
+	DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
+	DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
+	DirectX::XMFLOAT3 CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim);
 
 private:
 	std::vector<Mesh*> m_meshes;
@@ -68,4 +70,5 @@ private:
 	/*XNA::AxisAlignedBox m_meshBox;
 	float m_depth;
 	bool m_isPickingOn;*/
+
 };
