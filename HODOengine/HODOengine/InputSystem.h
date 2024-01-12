@@ -38,6 +38,7 @@ namespace HDEngine
 	public:
 		HDMath::HDFLOAT2 GetMousePosition();
 		HDMath::HDFLOAT2 GetMousePositionNormalized();
+		HDMath::HDFLOAT2 GetMouseDelta();
 	
 	private:
 		HWND _hWnd;
@@ -50,6 +51,8 @@ namespace HDEngine
 
 		HDMath::HDFLOAT2 _currentMousePosition;
 		HDMath::HDFLOAT2 _previousMousePosition;
+		HDMath::HDFLOAT2 _currentMouseDelta;
+		HDMath::HDFLOAT2 _previousMouseDelta;
 	};
 }
 

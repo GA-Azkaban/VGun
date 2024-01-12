@@ -10,6 +10,8 @@ void PlayerMove::Start()
 {
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_moveSpeed = 10.0f;
+
+	
 }
 
 void PlayerMove::Update()
@@ -29,7 +31,7 @@ void PlayerMove::Update()
 	// camera move
 	CameraMove();
 
-	// 이동
+	// 이동, 회전
 	Move(_moveDirection);
 }
 
@@ -290,7 +292,19 @@ HDMath::HDFLOAT3 PlayerMove::DecideMoveDirection(int direction)
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float radian)
 {
+	/*
+	_playerCamera->Pitch(mouseDelta.y * RocketEngine::GetDeltaTime() * 0.5f);
 
+	RocketEngine::RMFLOAT3 euler = _playerCamera->gameObject->transform.GetLocalEuler();
+	if (89.0f < euler.x)
+	{
+		_playerCamera->gameObject->transform.SetLocalRotationEuler(89.0f, 0.0f, 0.0f);
+	}
+	else if (euler.x < -89.0f)
+	{
+		_playerCamera->gameObject->transform.SetLocalRotationEuler(-89.0f, 0.0f, 0.0f);
+	}
+	*/
 }
 
 void PlayerMove::Yaw(float radian)
@@ -300,6 +314,14 @@ void PlayerMove::Yaw(float radian)
 
 void PlayerMove::CameraMove()
 {
+	HDMath::HDFLOAT2 mouseDelta = API::GetMouseDelta();
+
+	// RotateY
+	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), 
+		{0.0f, 1.0f, 0.0f},	mouseDelta.x * 0.1f);
+	//_playerCollider->Rotate(newRot);
+	_playerCollider->Rotate(mouseDelta.x * 0.01f);	// adjust sensitivity later (0.01f -> variable)
+
 	//Pitch();
 	//Yaw();
 }

@@ -23,6 +23,7 @@ namespace HDData
 	public:
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
 		void Move(HDMath::HDFLOAT3 moveStep);
+		void Rotate(float rotationAmount);
 		void Jump();
 		void Sleep();
 		void Stop();

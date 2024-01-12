@@ -46,6 +46,10 @@ namespace API
 		{
 			return HDEngine::InputSystem::Instance().GetMousePositionNormalized();
 		}
+		HODO_API HDMath::HDFLOAT2 GetMouseDelta()
+		{
+			return HDEngine::InputSystem::Instance().GetMouseDelta();
+		}
 		HODO_API float GetDeltaTime()
 		{
 			return HDEngine::TimeSystem::Instance().GetDeltaTime();

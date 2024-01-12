@@ -27,6 +27,7 @@ private:
 
 private:
 	// 마우스에 따른 카메라 회전 체크
+	void CameraMove();
 	void Pitch(float radian);
 	void Yaw(float radian);
 
@@ -44,5 +45,5 @@ private:
 	
 private:
 	HDData::DynamicBoxCollider* _playerCollider;
-
+	HDData::Camera* _playerCamera;
 };

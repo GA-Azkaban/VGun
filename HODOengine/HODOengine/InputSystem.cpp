@@ -25,7 +25,7 @@ void HDEngine::InputSystem::Update()
 		_currentKeyState[keyCode] = GetAsyncKeyState(keyCode);
 	}
 
-	// ¸¶¿ì½º Ã¼Å©
+	// ë§ˆìš°ìŠ¤ ì²´í¬
 	POINT mousePos;
 	GetCursorPos(&mousePos);
 	_mousePoint = mousePos;
@@ -56,7 +56,7 @@ void HDEngine::InputSystem::Flush()
 	LONG x = 0;
 	LONG y = 0;
 
-	/*/// ¸¶¿ì½º À§Ä¡ ÀÌµ¿ ¹æ½Ä
+	/*/// ë§ˆìš°ìŠ¤ ìœ„ì¹˜ ì´ë™ ë°©ì‹
 	if (windowRect.right - 1 <= _mousePoint.x)
 	{
 		x = windowRect.left + 2;
@@ -123,4 +123,16 @@ HDMath::HDFLOAT2 HDEngine::InputSystem::GetMousePositionNormalized()
 	ret.x /= static_cast<float>(rect.right) - rect.left;
 	ret.y /= static_cast<float>(rect.bottom) - rect.top;
 	return ret;
+}
+
+HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
+{
+	_currentMouseDelta = _currentMousePosition - _previousMousePosition;
+
+	HDMath::HDFLOAT2 result = (_currentMouseDelta + _previousMouseDelta);
+	result.x /= 2.0f;
+	result.y /= 2.0f;
+
+	_previousMouseDelta = _currentMouseDelta;
+	return (_currentMousePosition - _previousMousePosition);
 }

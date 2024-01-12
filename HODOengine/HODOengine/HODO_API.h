@@ -48,6 +48,7 @@ namespace API
 		HODO_API bool GetKeyPressing(int keyCode);
 		HODO_API HDMath::HDFLOAT2 GetMousePosition();
 		HODO_API HDMath::HDFLOAT2 GetMousePositionNormalized();
+		HODO_API HDMath::HDFLOAT2 GetMouseDelta();
 
 		HODO_API void DebugModeOn(int flag);
 

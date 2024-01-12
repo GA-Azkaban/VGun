@@ -47,6 +47,14 @@ TestScene::TestScene()
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	playerColli->Setflag(eColliderType::PLAYER);
 	
+	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	
+	auto playerTestHead = API::CreateObject(_scene);
+	playerTestHead->AddComponent<HDData::MeshRenderer>();
+	playerTestHead->SetParentObject(playerTest);
+	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(HDMath::HDFLOAT3{0.f, 1.1f, 0.f});
+
+
 	/*
 	// collider 여러 개를 만들어 보자.
 	auto boxTest = API::CreateObject(_scene);

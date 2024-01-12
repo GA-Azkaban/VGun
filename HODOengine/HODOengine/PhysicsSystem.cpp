@@ -205,7 +205,7 @@ namespace HDEngine
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
 				boxRigid->setLinearDamping(0.5f);
-				boxRigid->setAngularDamping(0.5f);
+				boxRigid->setAngularDamping(0.2f);
 				boxRigid->attachShape(*shape);
 
 				_pxScene->addActor(*boxRigid);
