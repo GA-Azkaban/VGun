@@ -25,9 +25,9 @@ namespace HDData
 	void SliderUI::Start()
 	{
 		_valueText->SetText(std::to_string(_value));
-		_sliderPoint->SetImage("../Resources/circle.png");
+		_sliderPoint->SetImage("circle.png");
 		_sliderPoint->ChangeScale(0.05f, 0.05f);
-		_sliderBar->SetImage("../Resources/bar.png");
+		_sliderBar->SetImage("bar.png");
 		_sliderBar->ChangeScale(1.f, 0.2f);
 	}
 
