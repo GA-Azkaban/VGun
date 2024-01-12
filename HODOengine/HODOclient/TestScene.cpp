@@ -62,19 +62,19 @@ TestScene::TestScene()
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
-	HDData::GameObject * imageTest = API::CreateObject(_scene);
-	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
-	imageComp->ChangeScale(0.5f, 0.5f);
-	imageComp->GetGameObject();
+	//HDData::GameObject * imageTest = API::CreateObject(_scene);
+	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	//HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
+	//imageComp->ChangeScale(0.5f, 0.5f);
+	//imageComp->GetGameObject();
 
-	auto UItest = API::CreateSlidebox(_scene);
-	UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
-	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
-	sliderComp->AddTextList("1");
-	sliderComp->AddTextList("2");
-	sliderComp->AddTextList("3");
-	sliderComp->AddTextList("4");
+	//auto UItest = API::CreateSlidebox(_scene);
+	//UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
+	//auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
+	//sliderComp->AddTextList("1");
+	//sliderComp->AddTextList("2");
+	//sliderComp->AddTextList("3");
+	//sliderComp->AddTextList("4");
 
 	/*auto imageTest = API::CreateImageBox(_scene);
 	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });*/
@@ -85,6 +85,12 @@ TestScene::TestScene()
 
 	auto _slider = API::CreateSlider(_scene);
 	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+
+	auto testSound = API::CreateObject(_scene);
+	testSound->AddComponent<HDData::AudioSource>();
+	auto SoundComp = testSound->GetComponent<HDData::AudioSource>();
+	SoundComp->AddAudio("ingame_bgm", "../Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
+
 
 	API::LoadScene(_scene);
 
