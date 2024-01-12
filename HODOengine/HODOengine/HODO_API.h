@@ -65,6 +65,8 @@ namespace API
 
 		// 디버그 시스템을 위한 함수
 		HODO_API void DebugModeOn(int flag);
+		HODO_API void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color);
+		HODO_API void DrawLineDir(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color);
 
 		// 델타 타임
 		HODO_API float GetDeltaTime();

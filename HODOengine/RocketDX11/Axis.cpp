@@ -1,12 +1,13 @@
 #include "Axis.h"
-#include <DirectXColors.h>	// ÀÌ¹Ì ¸¹Àº ºÎºĞ DX11°ú °ãÄ£´Ù.
+#include <DirectXColors.h>	// ì´ë¯¸ ë§ì€ ë¶€ë¶„ DX11ê³¼ ê²¹ì¹œë‹¤.
 #include "RocketMacroDX11.h"
+#include "ResourceManager.h"
 
 namespace RocketCore::Graphics
 {
 	Axis::Axis()
 		: _vertexBuffer(nullptr), _indexBuffer(nullptr),
-		_world(), _view(), _proj()
+		_world(), _view(), _proj(), _renderState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::WIREFRAME))
 	{
 
 	}
@@ -30,17 +31,17 @@ namespace RocketCore::Graphics
 		_proj = proj;
 	}
 
-	void Axis::Render(ID3D11DeviceContext* deviceContext, ID3D11VertexShader* vertexShader, ID3D11PixelShader* pixelShader, ID3D11Buffer* matrixBuffer, ID3D11InputLayout* inputLayout, ID3D11RasterizerState* renderstate)
+	void Axis::Render(ID3D11DeviceContext* deviceContext, ID3D11VertexShader* vertexShader, ID3D11PixelShader* pixelShader, ID3D11Buffer* matrixBuffer, ID3D11InputLayout* inputLayout)
 	{
-		// Grid°¡ ¾²´Â Shader deviceContext ÀÌ¿ëÇØ ¿¬°á.
+		// Gridê°€ ì“°ëŠ” Shader deviceContext ì´ìš©í•´ ì—°ê²°.
 		deviceContext->VSSetShader(vertexShader, nullptr, 0);
 		deviceContext->PSSetShader(pixelShader, nullptr, 0);
 
-		// ÀÔ·Â ¹èÄ¡ °´Ã¼ ¼ÂÆÃ
+		// ì…ë ¥ ë°°ì¹˜ ê°ì²´ ì…‹íŒ…
 		deviceContext->IASetInputLayout(inputLayout);
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		// ÀÎµ¦½º¹öÆÛ¿Í ¹öÅØ½º¹öÆÛ ¼ÂÆÃ
+		// ì¸ë±ìŠ¤ë²„í¼ì™€ ë²„í…ìŠ¤ë²„í¼ ì…‹íŒ…
 		UINT stride = sizeof(Vertex);
 		UINT offset = 0;
 		deviceContext->IASetVertexBuffers(0, 1, _vertexBuffer.GetAddressOf(), &stride, &offset);
@@ -68,25 +69,25 @@ namespace RocketCore::Graphics
 
 		deviceContext->VSSetConstantBuffers(bufferNumber, 1, &matrixBuffer);
 
-		// ·»´õ½ºÅ×ÀÌÆ®
-		deviceContext->RSSetState(renderstate);
+		// ë Œë”ìŠ¤í…Œì´íŠ¸
+		deviceContext->RSSetState(_renderState.Get());
 
 		deviceContext->DrawIndexed(40, 0, 0);
 	}
 
 	void Axis::BuildGeometryBuffers(ID3D11Device* device)
 	{
-		// Á¤Á¡ ¹öÆÛ¸¦ »ı¼ºÇÑ´Ù. 
-		// °¢ Ãà¿¡ ¸Âµµ·Ï 6°³ÀÇ Á¤Á¡À» ¸¸µé¾ú´Ù.
+		// ì •ì  ë²„í¼ë¥¼ ìƒì„±í•œë‹¤. 
+		// ê° ì¶•ì— ë§ë„ë¡ 6ê°œì˜ ì •ì ì„ ë§Œë“¤ì—ˆë‹¤.
 		Vertex vertices[] =
 		{
-			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)  },	// xÃà (»¡°­)
+			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)  },	// xì¶• (ë¹¨ê°•)
 			{ DirectX::XMFLOAT3(10.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Red)  },
 
-			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},	// yÃà (ÃÊ·Ï)
+			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},	// yì¶• (ì´ˆë¡)
 			{ DirectX::XMFLOAT3(0.0f, 10.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Green)},
 
-			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue)	},	// zÃà (ÆÄ¶û)
+			{ DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue)	},	// zì¶• (íŒŒë‘)
 			{ DirectX::XMFLOAT3(0.0f, 0.0f, 10.0f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::Blue) }
 		};
 
@@ -102,17 +103,17 @@ namespace RocketCore::Graphics
 		HR(device->CreateBuffer(&vbd, &vinitData, &_vertexBuffer));
 
 
-		// ÀÎµ¦½º ¹öÆÛ¸¦ »ı¼ºÇÑ´Ù.
-		// ¿ª½Ã 3°³ÀÇ ÃàÀ» ³ªÅ¸³»µµ·Ï Çß´Ù.
+		// ì¸ë±ìŠ¤ ë²„í¼ë¥¼ ìƒì„±í•œë‹¤.
+		// ì—­ì‹œ 3ê°œì˜ ì¶•ì„ ë‚˜íƒ€ë‚´ë„ë¡ í–ˆë‹¤.
 
 		UINT indices[] = {
-			// xÃà
+			// xì¶•
 			0, 1,
 
-			// yÃà
+			// yì¶•
 			2, 3,
 
-			// zÃà
+			// zì¶•
 			4, 5,
 		};
 

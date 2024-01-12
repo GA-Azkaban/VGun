@@ -9,7 +9,7 @@ namespace HDData
 		: _imageUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-		_sketchable = _imageUI;
+		_sketchable.push_back(_imageUI);
 	}
 
 	void ImageUI::SetActive(bool active)
@@ -19,7 +19,7 @@ namespace HDData
 
 	void ImageUI::SetScreenSpace()
 	{
-		_imageUI->SetScereenSpace();
+		_imageUI->SetScreenSpace();
 	}
 
 	void ImageUI::SetWorldSpace()

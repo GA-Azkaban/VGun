@@ -79,7 +79,7 @@ void RocketCore::Graphics::ImageRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& w
 	_ylocation = worldTM._42;
 }
 
-void RocketCore::Graphics::ImageRenderer::SetScereenSpace()
+void RocketCore::Graphics::ImageRenderer::SetScreenSpace()
 {
 
 }

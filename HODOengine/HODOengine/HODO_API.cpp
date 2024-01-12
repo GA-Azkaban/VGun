@@ -6,6 +6,7 @@
 #include "TimeSystem.h"
 #include "GameObject.h"
 #include "DebugSystem.h"
+#include "RenderSystem.h"
 
 namespace API
 {
@@ -104,7 +105,15 @@ namespace API
 		{
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
+
+		HODO_API void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)
+		{
+			HDEngine::RenderSystem::Instance().DrawLine(start, end, color);
+		}
+
+		HODO_API void DrawLineDir(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+		{
+			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
+		}
 	}
-
-
 }

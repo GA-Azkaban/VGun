@@ -22,7 +22,7 @@ namespace RocketCore::Graphics
 		
 		virtual void SetScreenSpacePosition(float x, float y) override;
 
-		virtual void SetScereenSpace() override;
+		virtual void SetScreenSpace() override;
 
 		virtual void SetWorldSpace() override;
 

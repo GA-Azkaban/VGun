@@ -9,6 +9,5 @@ namespace HDEngine
 	public:
 		virtual void SetImage(const std::string& filePath) = 0;
 		virtual void SetScreenSpacePosition(float x, float y) = 0;
-		virtual void SetWorldSpace() = 0;
 	};
 }
