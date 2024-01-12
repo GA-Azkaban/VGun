@@ -276,6 +276,11 @@ void IShader::SetMatrix4x4(std::string name, const DirectX::XMMATRIX data)
 	SetData(name, &data, sizeof(float) * 16);
 }
 
+void IShader::SetMatrix4x4Array(std::string name, const DirectX::XMMATRIX* data, UINT size)
+{
+	SetData(name, data, sizeof(float) * 16 * size);
+}
+
 const SRVInfo* IShader::GetShaderResourceViewInfo(std::string name)
 {
 	std::unordered_map<std::string, SRVInfo*>::iterator textureTableIter = 

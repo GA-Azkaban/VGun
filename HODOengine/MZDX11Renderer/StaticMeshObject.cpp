@@ -10,10 +10,10 @@
 
 StaticMeshObject::StaticMeshObject()
 	: m_material(nullptr), m_isActive(true),
-	m_world{ XMMatrixIdentity() }, m_position{ 0, 0, 0 }, m_rotation{ 0, 0, 0, 1 }, m_scale{ 1, 1, 1 }
+	m_world{ XMMatrixIdentity() }
 	//m_meshBox(), m_depth(1.0f), m_isPickingOn(true)
 {
-	m_material = new Material(ShaderManager::Instance.Get().vertexShader, ShaderManager::Instance.Get().pixelShader);
+	m_material = new Material(ShaderManager::Instance.Get().GetVertexShader("VertexShader.cso"), ShaderManager::Instance.Get().GetPixelShader("PixelShader.cso"));
 	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
 }
 
@@ -24,16 +24,7 @@ StaticMeshObject::~StaticMeshObject()
 
 void StaticMeshObject::Update(float deltaTime)
 {
-	if (!m_isActive)
-		return;
-
-	XMMATRIX trans = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
-	XMMATRIX rotX = XMMatrixRotationX(m_rotation.x);
-	XMMATRIX rotY = XMMatrixRotationY(m_rotation.y);
-	XMMATRIX rotZ = XMMatrixRotationZ(m_rotation.z);
-	XMMATRIX sc = XMMatrixScaling(m_scale.x, m_scale.y, m_scale.z);
-
-	m_world = sc * rotZ * rotY * rotX * trans;
+	
 }
 
 void StaticMeshObject::Render()
@@ -116,19 +107,22 @@ bool StaticMeshObject::Pick(float x, float y)
 
 void StaticMeshObject::SetMesh(const std::string& fileName)
 {
+	m_fileName = fileName;
 	m_meshes = ResourceManager::Instance.Get().GetLoadedMesh(fileName);
 }
 
 void StaticMeshObject::SetVertexShader(const std::string& fileName)
 {
 	VertexShader* vs = ShaderManager::Instance.Get().GetVertexShader(fileName);
-	m_material->SetVertexShader(vs);
+	if(vs != nullptr)
+		m_material->SetVertexShader(vs);
 }
 
 void StaticMeshObject::SetPixelShader(const std::string& fileName)
 {
 	PixelShader* ps = ShaderManager::Instance.Get().GetPixelShader(fileName);
-	m_material->SetPixelShader(ps);
+	if(ps != nullptr)
+		m_material->SetPixelShader(ps);
 }
 
 void StaticMeshObject::SetDiffuseTexture(const std::string& fileName)

@@ -11,7 +11,7 @@ HelperObject::HelperObject()
 	: m_material(nullptr), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_position{ 0, 0, 0 }, m_rotation{ 0, 0, 0, 1 }, m_scale{ 1, 1, 1 }
 {
-	m_material = new Material(ShaderManager::Instance.Get().debugVertexShader, ShaderManager::Instance.Get().debugPixelShader);
+	m_material = new Material(ShaderManager::Instance.Get().GetVertexShader("DebugVertexShader.cso"), ShaderManager::Instance.Get().GetPixelShader("DebugPixelShader.cso"));
 }
 
 HelperObject::~HelperObject()

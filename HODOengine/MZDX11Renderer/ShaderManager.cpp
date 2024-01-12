@@ -6,7 +6,9 @@ LazyObjects<ShaderManager> ShaderManager::Instance;
 
 ShaderManager::ShaderManager()
 	: vertexShader(0), pixelShader(0), 
+	skeletonVertexShader(0), skeletonPixelShader(0),
 	debugVertexShader(0), debugPixelShader(0),
+	cubeMapVertexShader(0), cubeMapPixelShader(0),
 	dirVertexShader(0), dirPixelShader(0)
 {
 
@@ -26,6 +28,14 @@ void ShaderManager::LoadShaders(ID3D11Device* device, ID3D11DeviceContext* devic
 	pixelShader = new PixelShader(device, deviceContext);
 	if (pixelShader->LoadShaderFile(L"../Shaders/PixelShader.cso"))
 		m_loadedPixelShaders.insert(std::make_pair("PixelShader.cso", pixelShader));
+
+	skeletonVertexShader = new VertexShader(device, deviceContext);
+	if (skeletonVertexShader->LoadShaderFile(L"../Shaders/SkeletonVertexShader.cso"))
+		m_loadedVertexShaders.insert(std::make_pair("SkeletonVertexShader.cso", skeletonVertexShader));
+
+	skeletonPixelShader = new PixelShader(device, deviceContext);
+	if (skeletonPixelShader->LoadShaderFile(L"../Shaders/SkeletonPixelShader.cso"))
+		m_loadedPixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
 
 	debugVertexShader = new VertexShader(device, deviceContext);
 	if (debugVertexShader->LoadShaderFile(L"../Shaders/DebugVertexShader.cso"))

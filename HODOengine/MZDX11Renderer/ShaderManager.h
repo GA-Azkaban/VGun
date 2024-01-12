@@ -27,9 +27,10 @@ private:
 	std::unordered_map<std::string, VertexShader*> m_loadedVertexShaders;
 	std::unordered_map<std::string, PixelShader*> m_loadedPixelShaders;
 
-public:
 	VertexShader* vertexShader;
 	PixelShader* pixelShader;
+	VertexShader* skeletonVertexShader;
+	PixelShader* skeletonPixelShader;
 	VertexShader* debugVertexShader;
 	PixelShader* debugPixelShader;
 	VertexShader* cubeMapVertexShader;

@@ -12,7 +12,7 @@
 Sky::Sky()
 	: m_material(nullptr), m_isActive(true)
 {
-	m_material = new Material(ShaderManager::Instance.Get().cubeMapVertexShader, ShaderManager::Instance.Get().cubeMapPixelShader);
+	m_material = new Material(ShaderManager::Instance.Get().GetVertexShader("CubeMapVertexShader.cso"), ShaderManager::Instance.Get().GetPixelShader("CubeMapPixelShader.cso"));
 	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
 }
 

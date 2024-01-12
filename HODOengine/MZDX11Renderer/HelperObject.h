@@ -34,7 +34,7 @@ public:
 
 private:
 	//ComPtr<ID3D11DeviceContext> m_deviceContext;
-	std::vector<::Mesh*> m_meshes;
+	std::vector<Mesh*> m_meshes;
 	Material* m_material;
 	bool m_isActive;
 

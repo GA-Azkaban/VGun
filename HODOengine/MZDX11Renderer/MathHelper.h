@@ -3,7 +3,7 @@
 using namespace DirectX;
 
 /// <summary>
-/// »ó¼ö³ª ¼ö½Ä µîÀ» Á¤ÀÇÇÑ helper math Å¬·¡½º.
+/// ìƒìˆ˜ë‚˜ ìˆ˜ì‹ ë“±ì„ ì •ì˜í•œ helper math í´ë˜ìŠ¤.
 /// 2023.07.03 MJKIM
 /// </summary>
 
@@ -32,6 +32,27 @@ public:
 	static T Clamp(const T& x, const T& low, const T& high)
 	{
 		return x < low ? low : (x > high ? high : x);
+	}
+
+	// linear interpolation
+	static DirectX::XMFLOAT3 Mix(DirectX::XMFLOAT3 v1, DirectX::XMFLOAT3 v2, float a)
+	{
+		DirectX::XMFLOAT3 ret;
+		DirectX::XMVECTOR xmVec1 = DirectX::XMLoadFloat3(&v1);
+		DirectX::XMVECTOR xmVec2 = DirectX::XMLoadFloat3(&v2);
+		DirectX::XMVECTOR mix = (xmVec1 * (1.0f - a)) + (xmVec2 * a);
+		XMStoreFloat3(&ret, mix);		
+		return ret;
+	}
+
+	static DirectX::XMFLOAT4 Mix(const DirectX::XMFLOAT4& v1, const DirectX::XMFLOAT4& v2, float a)
+	{
+		DirectX::XMFLOAT4 ret;
+		DirectX::XMVECTOR xmVec1 = DirectX::XMLoadFloat4(&v1);
+		DirectX::XMVECTOR xmVec2 = DirectX::XMLoadFloat4(&v2);
+		DirectX::XMVECTOR mix = (xmVec1 * (1.0f - a)) + (xmVec2 * a);
+		XMStoreFloat4(&ret, mix);
+		return ret;
 	}
 
 	// Returns the polar angle of the point (x,y) in [0, 2*PI).

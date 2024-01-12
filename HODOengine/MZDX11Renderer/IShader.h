@@ -42,6 +42,7 @@ public:
 	void SetMatrix4x4(std::string name, const float data[16]);
 	void SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4 data);
 	void SetMatrix4x4(std::string name, const DirectX::XMMATRIX data);
+	void SetMatrix4x4Array(std::string name, const DirectX::XMMATRIX* data, UINT size);
 
 	virtual void SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv) = 0;
 	virtual void SetSamplerState(std::string name, ID3D11SamplerState* samplerState) = 0;

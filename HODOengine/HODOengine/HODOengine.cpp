@@ -138,7 +138,9 @@ void HODOengine::Run()
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
 	// draw
-	_renderSystem.DrawProcess();
+	//_renderSystem.DrawProcess();
+	_renderSystem.Update(_timeSystem.GetDeltaTime());
+	_renderSystem.Render();
 
 	// physicsUpdate, temporary location
 	//HDEngine::PhysicsSystem::Instance().Update();

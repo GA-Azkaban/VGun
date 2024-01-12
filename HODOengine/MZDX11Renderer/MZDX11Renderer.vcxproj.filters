@@ -34,18 +34,6 @@
     <Filter Include="4. Manager">
       <UniqueIdentifier>{8d890dcc-586c-4a70-b4fd-18652ddc1aa0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="4. Manager\DataStruct">
-      <UniqueIdentifier>{f6185093-44a3-4a97-9934-3946409dc5b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4. Manager\DataStruct\Animation">
-      <UniqueIdentifier>{5cd750a7-550b-4c4d-a4c9-e2ae58473323}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4. Manager\DataStruct\MeshData">
-      <UniqueIdentifier>{b4c1bf8f-6f3c-4198-8d56-c97d33117913}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="4. Manager\DataStruct\Skeleton">
-      <UniqueIdentifier>{803bef12-f294-4e06-aa3e-4bb08c4a8714}</UniqueIdentifier>
-    </Filter>
     <Filter Include="4. Manager\ResourceManager">
       <UniqueIdentifier>{0e6370a4-642c-4455-9737-2f98f5541845}</UniqueIdentifier>
     </Filter>
@@ -106,14 +94,8 @@
     <Filter Include="6. Components\Mesh">
       <UniqueIdentifier>{c6a04ca9-8b3c-489b-9b40-755da0f35c47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="6. Components\Vertex">
-      <UniqueIdentifier>{6d554c71-05a3-4cd3-8996-ac9bbb1ad79e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="6. Components\Material">
       <UniqueIdentifier>{2945b068-eacb-4134-b1ba-cfc157e868ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6. Components\Animation">
-      <UniqueIdentifier>{df148319-e817-4fd5-b952-011861238e2b}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Rendererer\Interface">
       <UniqueIdentifier>{8d4338b6-1def-4fd2-9e85-673883041484}</UniqueIdentifier>
@@ -154,9 +136,6 @@
     <Filter Include="7. Math\source">
       <UniqueIdentifier>{5aa19f90-984b-4d10-8fe1-a3fc92db5c0a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="8. Util\ModelLoader">
-      <UniqueIdentifier>{98d86247-1f3c-44ee-b72e-5219c14db0a3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="6. Components\SamplerState">
       <UniqueIdentifier>{9711af34-42d1-4b36-8966-b39d1b39207a}</UniqueIdentifier>
     </Filter>
@@ -190,6 +169,15 @@
     <Filter Include="5. Objects\CubeMap">
       <UniqueIdentifier>{6ede9cec-51af-4bcb-8d77-0cab8bd02a3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="6. Components\DataStruct">
+      <UniqueIdentifier>{f6185093-44a3-4a97-9934-3946409dc5b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\DataStruct\Vertex">
+      <UniqueIdentifier>{6d554c71-05a3-4cd3-8996-ac9bbb1ad79e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. Components\DataStruct\Node">
+      <UniqueIdentifier>{c6dbcaa3-daa9-4a5f-bd2c-48a67e0aa5ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MZDX11Renderer.h">
@@ -198,39 +186,17 @@
     <ClInclude Include="MZCamera.h">
       <Filter>5. Objects\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="TextureBox.h">
       <Filter>5. Objects\HelperObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Genji.h">
-      <Filter>5. Objects\MeshObject\StaticMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Pig.h">
-      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="CAnimation.h">
-      <Filter>6. Components\Animation</Filter>
     </ClInclude>
     <ClInclude Include="LazyObjects.h">
       <Filter>8. Util\Singleton</Filter>
     </ClInclude>
-    <ClInclude Include="SkinningMesh.h">
-      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="SkinningMeshObject.h">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
     </ClInclude>
     <ClInclude Include="StaticMeshObject.h">
       <Filter>5. Objects\MeshObject\StaticMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshData.h">
-      <Filter>4. Manager\DataStruct\MeshData</Filter>
-    </ClInclude>
-    <ClInclude Include="YunuAnimation.h">
-      <Filter>4. Manager\DataStruct\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>4. Manager\DataStruct\Skeleton</Filter>
     </ClInclude>
     <ClInclude Include="mathConversion.h">
       <Filter>7. Math\header</Filter>
@@ -266,11 +232,6 @@
     <ClInclude Include="UIText.h">
       <Filter>5. Objects\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="ASEFile.h" />
-    <ClInclude Include="ASEParser.h" />
-    <ClInclude Include="Lexer.h" />
-    <ClInclude Include="ParsingDataClass.h" />
     <ClInclude Include="Hodo3DFactoryAdapter.h">
       <Filter>9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
     </ClInclude>
@@ -302,7 +263,7 @@
       <Filter>2. ShaderClass\PixelShader</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
-      <Filter>6. Components\Vertex</Filter>
+      <Filter>6. Components\DataStruct\Vertex</Filter>
     </ClInclude>
     <ClInclude Include="IRenderableObject.h">
       <Filter>5. Objects\0. Interface\IRenderable</Filter>
@@ -364,6 +325,12 @@
     <ClInclude Include="HelperObject.h">
       <Filter>5. Objects\HelperObject</Filter>
     </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>6. Components\DataStruct\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpMathConverter.h">
+      <Filter>7. Math\header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MZDX11Renderer.cpp">
@@ -375,26 +342,11 @@
     <ClCompile Include="TextureBox.cpp">
       <Filter>5. Objects\HelperObject</Filter>
     </ClCompile>
-    <ClCompile Include="Genji.cpp">
-      <Filter>5. Objects\MeshObject\StaticMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Pig.cpp">
-      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="CAnimation.cpp">
-      <Filter>6. Components\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="SkinningMesh.cpp">
-      <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
+    <ClCompile Include="SkinningMeshObejct.cpp">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
     </ClCompile>
     <ClCompile Include="StaticMeshObject.cpp">
       <Filter>5. Objects\MeshObject\StaticMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshData.cpp">
-      <Filter>4. Manager\DataStruct\MeshData</Filter>
     </ClCompile>
     <ClCompile Include="MathHelper.cpp">
       <Filter>7. Math\source</Filter>
@@ -418,10 +370,6 @@
     <ClCompile Include="UIText.cpp">
       <Filter>5. Objects\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ASEFile.cpp" />
-    <ClCompile Include="ASEParser.cpp" />
-    <ClCompile Include="Lexer.cpp" />
-    <ClCompile Include="ParsingDataClass.cpp" />
     <ClCompile Include="HodoDebugCubeAdapter.cpp">
       <Filter>9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClCompile>
@@ -568,15 +516,21 @@
     <FxCompile Include="CubeMapPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="xnamathvector.inl">
-      <Filter>8. Util\etc</Filter>
-    </None>
+    <FxCompile Include="SkeletonVertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="SkeletonPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MZDX11Renderer.rc">
       <Filter>0.Rendererer</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="xnamathvector.inl">
+      <Filter>7. Math\header</Filter>
+    </None>
   </ItemGroup>
 </Project>

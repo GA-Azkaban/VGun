@@ -32,7 +32,9 @@ namespace HDEngine
 
 		/// 렌더링 관련
 	public:
-		void DrawProcess();
+		//void DrawProcess();
+		void Update(float deltaTime);
+		void Render();
 
 	private:
 		void UpdateRenderData();

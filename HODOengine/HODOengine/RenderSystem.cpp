@@ -48,9 +48,23 @@ namespace HDEngine
 		reinterpret_cast<GRAPHICS_RELEASE_SIGNATURE>(GetProcAddress(_dllHandle, GRAPHICS_RELEASE_NAME))(_dx11Renderer.release());
 	}
 
-	void RenderSystem::DrawProcess()
+	//void RenderSystem::DrawProcess()
+	//{
+	//	//UpdateRenderData(); //SetRenderData + 전체 렌더 시작,
+	//	_dx11Renderer->Update();
+	//	_dx11Renderer->Render();
+	//}
+
+	void RenderSystem::Update(float deltaTime)
 	{
-		UpdateRenderData(); //SetRenderData + 전체 렌더 시작,
+		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		HDData::Camera* mainCam = currentScene->GetMainCamera();
+		mainCam->UpdateRenderData();
+		_dx11Renderer->Update(deltaTime);
+	}
+
+	void RenderSystem::Render()
+	{
 		_dx11Renderer->Render();
 	}
 

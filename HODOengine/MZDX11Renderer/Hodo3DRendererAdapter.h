@@ -20,9 +20,9 @@ namespace hodoGIAdapter
 		}
 		
 		// 업데이트
-		/*virtual void Update(float deltaTime) override { 
+		virtual void Update(float deltaTime) override { 
 			MZDX11Renderer::Instance().Update(deltaTime); 
-		};*/
+		};
 		
 		virtual void Render() override { 
 			MZDX11Renderer::Instance().Render(); 

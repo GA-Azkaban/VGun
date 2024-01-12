@@ -10,7 +10,7 @@ class PixelShader;
 class LightObject : public ILightObject
 {
 public:
-	LightObject(ID3D11DeviceContext* deviceContext, ::Mesh* mesh, Material* material, DirectX::XMFLOAT3 lightColor);
+	LightObject(ID3D11DeviceContext* deviceContext, Mesh* mesh, Material* material, DirectX::XMFLOAT3 lightColor);
 	~LightObject();
 
 	virtual void Update(float deltaTime) override;
@@ -26,7 +26,7 @@ public:
 private:
 	ComPtr<ID3D11DeviceContext> m_deviceContext;
 	ComPtr<ID3D11RasterizerState> m_RS;
-	::Mesh* m_mesh;
+	Mesh* m_mesh;
 	Material* m_material;
 	DirectX::XMFLOAT3 m_lightColor;
 	bool m_isActive;
