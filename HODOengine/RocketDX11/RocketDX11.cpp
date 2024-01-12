@@ -206,9 +206,6 @@ namespace RocketCore::Graphics
 		_grid->Initialize(_device.Get());
 
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
-
-	
-		
 	}
 
 	void RocketDX11::BeginRender()

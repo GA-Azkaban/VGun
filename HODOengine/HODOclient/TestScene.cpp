@@ -46,8 +46,6 @@ TestScene::TestScene()
 	playerTest->AddComponent<TestSound>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 
-	
-
 	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerColli->Setflag(eColliderType::PLAYER);
 
@@ -64,14 +62,12 @@ TestScene::TestScene()
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
-<<<<<<< HEAD
 	HDData::GameObject * imageTest = API::CreateObject(_scene);
 	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
 	imageComp->ChangeScale(0.5f, 0.5f);
 	imageComp->GetGameObject();
 
-=======
 	auto UItest = API::CreateSlidebox(_scene);
 	UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
 	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
@@ -89,7 +85,6 @@ TestScene::TestScene()
 
 	auto _slider = API::CreateSlider(_scene);
 	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
->>>>>>> ab573bef3ee680cc888d7abe33ca669fae428aea
 
 	API::LoadScene(_scene);
 

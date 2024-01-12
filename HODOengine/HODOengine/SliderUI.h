@@ -26,10 +26,6 @@ namespace HDData
 		void SetScreenSpace();
 		void SetWorldSpace();
 
-		// 슬라이더 방향
-		void SetIsHorizontal(bool isHorizontal);
-		bool GetIsHorizontal();
-
 		// 텍스트 내용
 		void SetText(const std::string& str);
 		std::string GetText();
@@ -43,13 +39,13 @@ namespace HDData
 		HDEngine::ISketchableText* _valueText;
 		HDEngine::ISketchableImage* _sliderBar;
 		HDEngine::ISketchableImage* _sliderPoint;
-
-		// 슬라이더가 가로 방향인지 세로 방향인지
-		bool _isHorizontal;
 		
 		// 슬라이더의 최대 최소 위치
 		int _min;
 		int _max;
+
+		// 슬라이더 값
+		int _value;
 	};
 }
 

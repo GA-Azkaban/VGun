@@ -5,22 +5,30 @@
 #include "RenderSystem.h"
 #include "InputSystem.h"
 
+#include <string>
+
 namespace HDData
 {
 	SliderUI::SliderUI()
 		: _sliderBar(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
 		_sliderPoint(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
 		_valueText(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
-		_inputSystem(HDEngine::InputSystem::Instance())
+		_inputSystem(HDEngine::InputSystem::Instance()),
+		_value(10)
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable.push_back(_sliderBar);
 		_sketchable.push_back(_sliderPoint);
 		_sketchable.push_back(_valueText);
+		_sliderBar->ChangeScale(1.0f, 0.3f);
+		_sliderPoint->SetImage("../Resources/yellowArrow.png");
 	}
 
 	void SliderUI::Start()
 	{
+		_valueText->SetText(std::to_string(_value));
+		_valueText->SetScreenSpacePosition(200, 200);
+
 		_min = GetTransform()->GetWorldPosition().x;
 		_max = (_min + 500);
 	}
@@ -35,7 +43,6 @@ namespace HDData
 			{
 				_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x, GetTransform()->GetWorldPosition().y);
 			}
-			//GetTransform()->SetWorldPosition(_inputSystem.GetMousePosition().x, GetTransform()->GetWorldPosition().y, 0);
 		}
 	}
 
@@ -58,16 +65,6 @@ namespace HDData
 		_valueText->SetWorldSpace();
 		_sliderBar->SetWorldSpace();
 		_sliderPoint->SetWorldSpace();
-	}
-
-	void SliderUI::SetIsHorizontal(bool isHorizontal)
-	{
-		_isHorizontal = isHorizontal;
-	}
-
-	bool SliderUI::GetIsHorizontal()
-	{
-		return _isHorizontal;
 	}
 
 	void SliderUI::SetText(const std::string& str)
