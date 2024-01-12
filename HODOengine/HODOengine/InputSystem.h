@@ -67,6 +67,8 @@ namespace HDEngine
 		int						_mouseWheel;
 		int						_wheelMax;
 		int						_wheelMin;
+		HDMath::HDFLOAT2 _currentMousePosition;
+		HDMath::HDFLOAT2 _previousMousePosition;
 		HDMath::HDFLOAT2 _currentMouseDelta;
 		HDMath::HDFLOAT2 _previousMouseDelta;
 	};
