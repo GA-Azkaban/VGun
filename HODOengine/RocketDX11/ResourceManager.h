@@ -4,8 +4,9 @@
 #include <wrl.h>
 #include <unordered_map>
 #include <DXTK/SpriteFont.h>
-#include "string"
+#include <vector>
 
+#include "string"
 #include "Singleton.h"
 
 using Microsoft::WRL::ComPtr;
@@ -25,6 +26,13 @@ namespace RocketCore::Graphics
 		ResourceManager();
 
 	public:
+		enum class eRenderState
+		{
+			SOLID,
+			WIREFRAME
+		};
+
+	public:
 		void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 		Model* GetCubeModel();
@@ -35,6 +43,10 @@ namespace RocketCore::Graphics
 	public:
 		ID3D11Device* GetDevice();
 		ID3D11DeviceContext* GetDeviceContext();
+		ID3D11RasterizerState* GetRenderState(eRenderState eState);
+
+	private:
+		void CreateRenderStates();
 
 	private:
 		ComPtr<ID3D11Device> _device;
@@ -48,5 +60,6 @@ namespace RocketCore::Graphics
 
 		std::unordered_map<std::string, VertexShader*> _vertexShaders;
 		std::unordered_map<std::string, PixelShader*> _pixelShaders;
+		std::vector<ID3D11RasterizerState*> _renderStates;
 	};
 }

@@ -6,12 +6,13 @@
 #include "PixelShader.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
+#include "RocketMacroDX11.h"
 
 namespace RocketCore::Graphics
 {
 	ResourceManager::ResourceManager()
 	{
-
+		
 	}
 
 	void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -54,6 +55,8 @@ namespace RocketCore::Graphics
 		PixelShader* texturePS = new PixelShader();
 		texturePS->Initialize(_device.Get(), "../x64/Debug/TexturePS.cso");
 		_pixelShaders["TexturePS"] = texturePS;
+
+		CreateRenderStates();
 	}
 
 	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
@@ -94,6 +97,35 @@ namespace RocketCore::Graphics
 	ID3D11DeviceContext* ResourceManager::GetDeviceContext()
 	{
 		return _deviceContext.Get();
+	}
+
+	void ResourceManager::CreateRenderStates()
+	{
+		// Render State 중 Rasterizer State
+		D3D11_RASTERIZER_DESC solidDesc;
+		ZeroMemory(&solidDesc, sizeof(D3D11_RASTERIZER_DESC));
+		solidDesc.FillMode = D3D11_FILL_SOLID;
+		solidDesc.CullMode = D3D11_CULL_BACK;
+		solidDesc.FrontCounterClockwise = false;
+		solidDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* solid;
+		HR(_device->CreateRasterizerState(&solidDesc, &solid));
+		_renderStates.emplace_back(solid);
+
+		D3D11_RASTERIZER_DESC wireframeDesc;
+		ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
+		wireframeDesc.FillMode = D3D11_FILL_WIREFRAME;
+		wireframeDesc.CullMode = D3D11_CULL_BACK;
+		wireframeDesc.FrontCounterClockwise = false;
+		wireframeDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* wireframe;
+		HR(_device->CreateRasterizerState(&wireframeDesc, &wireframe));
+		_renderStates.emplace_back(wireframe);
+	}
+
+	ID3D11RasterizerState* ResourceManager::GetRenderState(eRenderState eState)
+	{
+		return _renderStates[static_cast<int>(eState)];
 	}
 
 }

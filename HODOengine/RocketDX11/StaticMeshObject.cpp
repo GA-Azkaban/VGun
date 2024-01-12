@@ -56,7 +56,7 @@ namespace RocketCore::Graphics
 	{
 	}
 
-	void StaticMeshObject::Render(ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* renderstate, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
+	void StaticMeshObject::Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj)
 	{
 		// Grid가 쓰는 Shader deviceContext 이용해 연결.
 		deviceContext->VSSetShader(_vertexShader->GetVertexShader(), nullptr, 0);
@@ -95,7 +95,7 @@ namespace RocketCore::Graphics
 		deviceContext->VSSetConstantBuffers(bufferNumber, 1, _vertexShader->GetAddressOfMatrixBuffer());
 
 		// 렌더스테이트
-		deviceContext->RSSetState(renderstate);
+		deviceContext->RSSetState(_renderState);
 
 		_model->Render(deviceContext);
 	}

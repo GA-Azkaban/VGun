@@ -11,6 +11,7 @@
 #include "TimeSystem.h"
 #include "RendererBase.h"
 #include "UIBase.h"
+#include "GraphicsObjFactory.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
@@ -42,6 +43,7 @@ namespace HDEngine
 		_screenHeight = screenHeight;
 
 		_dx11Renderer->Initialize(static_cast<void*>(hWnd), screenWidth, screenHeight);
+		_lineRenderer = GraphicsObjFactory::Instance().GetFactory()->CreateLineRenderer();
 	}
 
 	void RenderSystem::Finalize()
@@ -90,6 +92,16 @@ namespace HDEngine
 	void RenderSystem::PushSketchComponent(HDData::UIBase* comp)
 	{
 		_uiList.emplace_back(comp);
+	}
+
+	void RenderSystem::DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)
+	{
+		_lineRenderer->DrawLine(start, end, color);
+	}
+
+	void RenderSystem::DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+	{
+		_lineRenderer->DrawLine(start, direction, length, color);
 	}
 
 }

@@ -34,8 +34,7 @@ namespace RocketCore::Graphics
 			ID3D11VertexShader* vertexShader,
 			ID3D11PixelShader* pixelShader,
 			ID3D11Buffer* matrixBuffer,
-			ID3D11InputLayout* inputLayout,
-			ID3D11RasterizerState* renderstate
+			ID3D11InputLayout* inputLayout
 		);
 
 	private:
@@ -44,6 +43,7 @@ namespace RocketCore::Graphics
 	private:
 		ComPtr<ID3D11Buffer> _vertexBuffer;
 		ComPtr<ID3D11Buffer> _indexBuffer;
+		ComPtr<ID3D11RasterizerState> _renderState;
 
 		DirectX::XMMATRIX _world;	// Transform Matrix
 		DirectX::XMMATRIX _view;
