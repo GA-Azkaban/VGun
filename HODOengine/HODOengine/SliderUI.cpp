@@ -20,8 +20,6 @@ namespace HDData
 		_sketchable.push_back(_sliderBar);
 		_sketchable.push_back(_sliderPoint);
 		_sketchable.push_back(_valueText);
-		_sliderBar->ChangeScale(1.0f, 0.3f);
-		_sliderPoint->SetImage("../Resources/yellowArrow.png");
 	}
 
 	void SliderUI::Start()
@@ -31,6 +29,8 @@ namespace HDData
 
 		_min = GetTransform()->GetWorldPosition().x;
 		_max = (_min + 500);
+		_sliderPoint->SetImage("../Resources/abcd.jpg");
+		_sliderBar->ChangeScale(0.0005f, 0.0005f);
 	}
 
 	void SliderUI::Update()

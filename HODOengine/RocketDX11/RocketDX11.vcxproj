@@ -159,11 +159,8 @@
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="FBXLoader.h" />
-<<<<<<< HEAD
-=======
     <ClInclude Include="Font.h" />
     <ClInclude Include="GraphicsStruct.h" />
->>>>>>> ab573bef3ee680cc888d7abe33ca669fae428aea
     <ClInclude Include="Model.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Grid.h" />

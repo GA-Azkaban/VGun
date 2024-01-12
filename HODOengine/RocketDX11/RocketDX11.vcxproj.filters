@@ -150,13 +150,10 @@
     <ClCompile Include="Model.cpp">
       <Filter>Resource\Model</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Font.cpp" />
-=======
     <ClCompile Include="Texture.cpp">
       <Filter>Resource\Texture</Filter>
     </ClCompile>
->>>>>>> 45a99671b2f34001e1ea8b3ebbadccea099c9a5d
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RocketMacroDX11.h">
@@ -225,17 +222,14 @@
     <ClInclude Include="Model.h">
       <Filter>Resource\Model</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Font.h" />
     <ClInclude Include="RocketDX11.h">
       <Filter>GraphicsEngine</Filter>
-=======
     <ClInclude Include="GraphicsStruct.h">
       <Filter>Struct</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Resource\Texture</Filter>
->>>>>>> 45a99671b2f34001e1ea8b3ebbadccea099c9a5d
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

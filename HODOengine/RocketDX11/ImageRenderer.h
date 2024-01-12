@@ -56,11 +56,8 @@ namespace RocketCore::Graphics
 		ID3D11DeviceContext* _deviceContext;
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
-<<<<<<< HEAD
-=======
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
 
 		bool _isTranslated;
->>>>>>> ab573bef3ee680cc888d7abe33ca669fae428aea
 	};
 }
