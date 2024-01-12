@@ -138,7 +138,6 @@
     <ClCompile Include="DeviceBuilderDX11.cpp" />
     <ClCompile Include="ImageRenderer.cpp" />
     <ClCompile Include="FBXLoader.cpp" />
-    <ClCompile Include="Font.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Grid.cpp" />
@@ -159,7 +158,6 @@
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="ImageRenderer.h" />
     <ClInclude Include="FBXLoader.h" />
-    <ClInclude Include="Font.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Grid.h" />

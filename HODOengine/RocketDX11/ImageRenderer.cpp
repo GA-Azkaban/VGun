@@ -1,5 +1,6 @@
 #include <locale>
 #include <codecvt>
+//#include <SimpleMath.h>
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -8,7 +9,9 @@
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
-	_ylocation()
+	_ylocation(),
+	_scaleX(1.0f),
+	_scaleY(1.0f)
 {
 	_color = DirectX::Colors::White;
 }
@@ -69,7 +72,15 @@ void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
 	spriteBatch->Begin();
-	spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation,_ylocation), nullptr, _color);
+	//spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation,_ylocation), nullptr, _color);
+	spriteBatch->Draw(
+		_imagerSRV.Get(),
+		DirectX::XMFLOAT2(_xlocation, _ylocation),
+		nullptr,
+		_color,
+		0.0f,										//회전 각도
+		DirectX::XMFLOAT2(0.0f, 0.0f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
+		DirectX::XMFLOAT2(_scaleX,_scaleY));		// 이미지 스케일
 	spriteBatch->End();
 }
 
@@ -95,3 +106,8 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 	_deviceContext = deviceContext;
 }
 
+void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
+{
+	_scaleX = x;
+	_scaleY = y;
+}

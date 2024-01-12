@@ -65,9 +65,12 @@ TestScene::TestScene()
 	auto textComp = textTest->AddComponent<HDData::TextUI>();
 	textComp->SetText("Korean plz");
 
-	auto imageTest = API::CreateObject(_scene);
+	HDData::GameObject * imageTest = API::CreateObject(_scene);
 	imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	auto imageComp = imageTest->AddComponent<HDData::ImageUI>();
+	HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
+	imageComp->ChangeScale(0.5f, 0.5f);
+	imageComp->GetGameObject();
+
 
 	API::LoadScene(_scene);
 

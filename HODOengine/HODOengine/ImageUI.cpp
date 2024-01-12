@@ -31,4 +31,10 @@ namespace HDData
 	{
 		_imageUI->SetImage(fileName);
 	}
+
+	void ImageUI::ChangeScale(float x, float y)
+	{
+		_imageUI->ChangeScale(x, y);
+	}
+
 }
