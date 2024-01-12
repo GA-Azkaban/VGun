@@ -65,8 +65,8 @@ TestScene::TestScene()
 	HDData::GameObject * imageTest = API::CreateObject(_scene);
 	imageTest->GetTransform()->SetWorldPosition({ 500.0f,500.0f,500.0f });
 	HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
-	imageComp->ChangeScale(0.1f, 0.1f);
-	imageComp->SetImage("..\\Resources\\test.jpg");
+	imageComp->ChangeScale(0.5f, 0.5f);
+	imageComp->SetImage("test.jpg");
 	imageComp->GetGameObject();
 
 	//auto UItest = API::CreateSlidebox(_scene);
