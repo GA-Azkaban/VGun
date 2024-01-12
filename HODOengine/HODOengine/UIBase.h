@@ -1,4 +1,6 @@
 #pragma once
+#include <vector>
+
 #include "Component.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchable.h"
 
@@ -10,6 +12,8 @@ namespace HDData
 		UIBase();
 		void UpdateRenderData();
 
-		HDEngine::ISketchable* _sketchable;
+		std::vector<HDEngine::ISketchable*> _sketchable;
+
+		// HDEngine::ISketchable* _sketchable;
 	};
 }

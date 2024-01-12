@@ -11,6 +11,8 @@ RocketCore::Graphics::TextRenderer::TextRenderer()
 	_font = ResourceManager::Instance().GetDefaultFont();
 	_str = "Default Text";
 	_color = DirectX::Colors::White;
+	_isTranslated = false;
+
 }
 
 RocketCore::Graphics::TextRenderer::~TextRenderer()
@@ -40,8 +42,11 @@ void RocketCore::Graphics::TextRenderer::SetWorldSpace()
 
 void RocketCore::Graphics::TextRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
 {
-	_xLocation = worldTM._41;
-	_yLocation = worldTM._42;
+	if (_isTranslated != true)
+	{
+		_xLocation = worldTM._41;
+		_yLocation = worldTM._42;
+	}
 }
 
 void RocketCore::Graphics::TextRenderer::SetActive(bool isActive)
@@ -58,6 +63,8 @@ void RocketCore::Graphics::TextRenderer::SetScreenSpacePosition(float x, float y
 {
 	_xLocation = x;
 	_yLocation = y;
+
+	_isTranslated = true;
 }
 
 void RocketCore::Graphics::TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)

@@ -4,7 +4,8 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 
-#include "StaticMesh.h"
+#include "Mesh.h"
+#include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 
@@ -32,12 +33,12 @@ namespace RocketCore::Graphics
 		void Render(ID3D11DeviceContext* deviceContext, ID3D11RasterizerState* renderstate, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
 
 	public:
-		void SetMesh(StaticMesh* mesh);
+		void SetModel(Model* model);
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 
 	private:
-		StaticMesh* _mesh;
+		Model* _model;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 		DirectX::XMMATRIX _worldTM;

@@ -53,5 +53,7 @@ namespace RocketCore::Graphics
 		float _xLocation;
 		float _yLocation;
 
+		bool _isTranslated;
+
 	};
 }

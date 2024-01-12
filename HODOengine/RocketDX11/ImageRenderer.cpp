@@ -4,7 +4,6 @@
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
-#include "..\\HODOmath\\HODOmath.h"
 
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
@@ -62,6 +61,7 @@ void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float 
 {
 	_xlocation = x;
 	_ylocation = y;
+	_isTranslated = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
@@ -72,6 +72,7 @@ void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
 	spriteBatch->Begin();
+<<<<<<< HEAD
 	//spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation,_ylocation), nullptr, _color);
 	spriteBatch->Draw(
 		_imagerSRV.Get(),
@@ -81,13 +82,19 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 		0.0f,										//회전 각도
 		DirectX::XMFLOAT2(0.0f, 0.0f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
 		DirectX::XMFLOAT2(_scaleX,_scaleY));		// 이미지 스케일
+=======
+	spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation, _ylocation), nullptr, _color);
+>>>>>>> ab573bef3ee680cc888d7abe33ca669fae428aea
 	spriteBatch->End();
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
 {
-	_xlocation = worldTM._41;
-	_ylocation = worldTM._42;
+	if (_isTranslated != true)
+	{
+		_xlocation = worldTM._41;
+		_ylocation = worldTM._42;
+	}
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScereenSpace()
@@ -106,8 +113,26 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 	_deviceContext = deviceContext;
 }
 
+<<<<<<< HEAD
 void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 {
 	_scaleX = x;
 	_scaleY = y;
 }
+=======
+float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionX()
+{
+	return _xlocation;
+}
+
+float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionY()
+{
+	return _ylocation;
+}
+
+//float RocketCore::Graphics::ImageRenderer::GetScreenSpacePosition()
+//{
+//	return _xlocation;
+//}
+
+>>>>>>> ab573bef3ee680cc888d7abe33ca669fae428aea

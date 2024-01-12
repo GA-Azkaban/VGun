@@ -4,20 +4,15 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 
-#include "StaticMesh.h"
+#include "Mesh.h"
+#include "GraphicsStruct.h"
 
 using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
-	class CubeMesh : public StaticMesh
+	class CubeMesh : public Mesh
 	{
-		struct Vertex
-		{
-			DirectX::XMFLOAT3 Pos;
-			DirectX::XMFLOAT4 Color;
-		};
-
 	public:
 		CubeMesh();
 		~CubeMesh();

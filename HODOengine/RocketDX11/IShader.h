@@ -10,7 +10,7 @@ namespace RocketCore::Graphics
 	class IShader
 	{
 	public:
-		virtual void CreateShader(ID3D11Device* device, const std::string& path) = 0;
+		virtual void Initialize(ID3D11Device* device, const std::string& path) = 0;
 	};
 }
  
