@@ -207,8 +207,8 @@ namespace RocketCore::Graphics
 
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 
-		_img = _resourceManager.GetImage();
-		_img->SetImage("..\\Resources\\abcd.jpg");
+	
+		
 	}
 
 	void RocketDX11::BeginRender()

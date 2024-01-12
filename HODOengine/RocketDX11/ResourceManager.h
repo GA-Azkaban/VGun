@@ -31,7 +31,6 @@ namespace RocketCore::Graphics
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont();
-		ImageRenderer* GetImage();
 
 	public:
 		ID3D11Device* GetDevice();

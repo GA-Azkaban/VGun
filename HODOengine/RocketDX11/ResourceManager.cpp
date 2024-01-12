@@ -54,8 +54,6 @@ namespace RocketCore::Graphics
 		PixelShader* texturePS = new PixelShader();
 		texturePS->Initialize(_device.Get(), "../x64/Debug/TexturePS.cso");
 		_pixelShaders["TexturePS"] = texturePS;
-		_image = new ImageRenderer();
-		_image->InitalizeImageRenderer(_device.Get(), _deviceContext.Get());
 	}
 
 	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
@@ -86,11 +84,6 @@ namespace RocketCore::Graphics
 	Model* ResourceManager::GetCubeModel()
 	{
 		return _cubeModel;
-	}
-
-	RocketCore::Graphics::ImageRenderer* ResourceManager::GetImage()
-	{
-		return _image;
 	}
 
 	ID3D11Device* ResourceManager::GetDevice()
