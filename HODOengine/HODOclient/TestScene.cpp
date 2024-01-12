@@ -41,21 +41,60 @@ TestScene::TestScene()
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
+	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 1.f, 1.f});
 
+	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	playerColli->Setflag(eColliderType::PLAYER);
 	playerTest->AddComponent<HDData::AudioSource>();
 	playerTest->AddComponent<TestSound>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
+	
+	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	
+	auto playerTestHead = API::CreateObject(_scene);
+	playerTestHead->AddComponent<HDData::MeshRenderer>();
+	playerTestHead->SetParentObject(playerTest);
+	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(HDMath::HDFLOAT3{0.f, 1.1f, 0.f});
 
-	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
-	//playerColli->Setflag(eColliderType::PLAYER);
 
+	/*
 	// collider 여러 개를 만들어 보자.
 	auto boxTest = API::CreateObject(_scene);
-	boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 10.f, 1.f});
+	boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 5.f, 1.f});
+	boxTest->AddComponent<HDData::MeshRenderer>();
 	//auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
 
-	auto sphereTest = API::CreateObject(_scene);
-	sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
+	auto boxTest2 = API::CreateObject(_scene);
+	boxTest2->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-3.f, 6.f, 0.f});
+	boxTest2->AddComponent<HDData::MeshRenderer>();
+	auto boxCollider2 = boxTest2->AddComponent<HDData::DynamicBoxCollider>();
+
+	auto boxTest3 = API::CreateObject(_scene);
+	boxTest3->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{5.f, 7.f, 0.5f});
+	boxTest3->AddComponent<HDData::MeshRenderer>();
+	auto boxCollider3 = boxTest3->AddComponent<HDData::DynamicBoxCollider>();
+
+	auto boxTest4 = API::CreateObject(_scene);
+	boxTest4->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{3.f, 8.f, -1.f});
+	boxTest4->AddComponent<HDData::MeshRenderer>();
+	auto boxCollider4 = boxTest4->AddComponent<HDData::DynamicBoxCollider>();
+
+	auto boxTest5 = API::CreateObject(_scene);
+	boxTest5->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-2.f, 9.f, -2.f});
+	boxTest5->AddComponent<HDData::MeshRenderer>();
+	auto boxCollider5 = boxTest5->AddComponent<HDData::DynamicBoxCollider>();
+
+	for (int i = 0; i < 10; ++i)
+	{
+		auto boxbox = API::CreateObject(_scene);
+		boxbox->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-7.f + 1.5f * i, 20.f + 5 * i, -7.f + 1.5f * i});
+		boxbox->AddComponent<HDData::MeshRenderer>();
+		auto boxboxCol = boxbox->AddComponent<HDData::DynamicBoxCollider>();
+	}
+	*/
+
+	//auto sphereTest = API::CreateObject(_scene);
+	//sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
 	auto textTest = API::CreateTextbox(_scene);

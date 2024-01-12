@@ -31,7 +31,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.25f, 0.2f, 0.4f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.5f);
 
 		// 임시로 평면과 박스 하나를 만들어 둠
 		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
@@ -204,10 +204,13 @@ namespace HDEngine
 				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
+				boxRigid->setLinearDamping(0.5f);
+				boxRigid->setAngularDamping(0.2f);
 				boxRigid->attachShape(*shape);
 
 				_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
+				box->SetPhysXRigid(boxRigid);
 				boxRigid->userData = box;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
@@ -269,57 +272,56 @@ namespace HDEngine
 		}
 	}
 
-	void PhysicsSystem::GetKeyInput()
+	HDData::Collider* PhysicsSystem::RayCast(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, float length, int* type)
 	{
-		// 키 입력 합산
-		if (API::GetKeyPressing('W'))
-		{
-			if (API::GetKeyPressing('S'))
-			{
-				_directionZ = 0;
-			}
-			else
-			{
-				_directionZ = 1;
-			}
-		}
-		else if (API::GetKeyPressing('S'))
-		{
-			_directionZ = -1;
-		}
-		else
-		{
-			_directionZ = 0;
-		}
-		if (API::GetKeyPressing('D'))
-		{
-			if (API::GetKeyPressing('A'))
-			{
-				_directionX = 0;
-			}
-			else
-			{
-				_directionX = 1;
-			}
-		}
-		else if (API::GetKeyPressing('A'))
-		{
-			_directionX = -1;
-		}
-		else
-		{
-			_directionX = 0;
-		}
-	}
+		physx::PxVec3 rayOrigin;
+		rayOrigin.x = originX;
+		rayOrigin.y = originY;
+		rayOrigin.z = originZ;
 
-	void PhysicsSystem::MovePlayer(HDData::GameObject* object)
-	{
-		int directionNum = _directionX * 3 + _directionZ;
+		physx::PxVec3 rayDirection;
+		rayDirection.x = directionX;
+		rayDirection.y = directionY;
+		rayDirection.z = directionZ;
 
-		//if (directionNum == -4)
-		//{
-		//	object->GetComponent<HDData::DynamicBoxCollider>()->
-		//}
+		HDData::Collider* hitCol = nullptr;
+
+		// determine if hit or not
+		physx::PxRaycastBuffer hitBuffer;
+		bool isHit = _pxScene->raycast(rayOrigin, rayDirection, length, hitBuffer);
+
+		// process when hit. target's pointer, hit location, etc.
+		if (isHit)
+		{
+			// collided actor's pointer
+			physx::PxRigidActor* hitActor = hitBuffer.block.actor;
+
+			// find actor's type out
+			if (hitActor->getType() == physx::PxActorType::eRIGID_STATIC)
+			{
+				hitActor = static_cast<physx::PxRigidStatic*>(hitActor);
+				if (type != nullptr)
+				{
+					*type = 1;
+				}
+			}
+			else if (hitActor->getType() == physx::PxActorType::eRIGID_DYNAMIC)
+			{
+				hitActor = static_cast<physx::PxRigidDynamic*>(hitActor);
+				if (type != nullptr)
+				{
+					*type = 2;
+				}
+			}
+
+			// save collision info in userdata
+			hitCol = static_cast<HDData::Collider*>(hitActor->userData);
+
+			// save hitpoint(for particle effect or sth)
+			physx::PxVec3 hitPoint = hitBuffer.block.position;
+		}
+		
+		return hitCol;
 	}
 
 	physx::PxScene* PhysicsSystem::GetScene() const

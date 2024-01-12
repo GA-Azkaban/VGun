@@ -12,6 +12,7 @@
 namespace HDData
 {
 	class GameObject;
+	class Collider;
 }
 
 namespace HDEngine
@@ -45,8 +46,8 @@ namespace HDEngine
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
 
 	public:
-		void GetKeyInput();
-		void MovePlayer(HDData::GameObject* object);
+		//HDData::Collider* RayCast(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length, int* type);
+		HDData::Collider* RayCast(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, float length, int* type);
 
 	private:
 		physx::PxDefaultAllocator		_allocator;
