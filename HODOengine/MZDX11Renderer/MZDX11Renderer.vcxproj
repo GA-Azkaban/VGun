@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssimpMathConverter.h" />
-    <ClInclude Include="Node.h" />
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="HelperObject.h" />
     <ClInclude Include="Hodo3DCameraAdapter.h" />
     <ClInclude Include="Hodo3DFactoryAdapter.h" />

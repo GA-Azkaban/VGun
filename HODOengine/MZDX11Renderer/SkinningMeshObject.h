@@ -2,7 +2,7 @@
 #include "DX11Define.h"
 #include "IMeshObject.h"
 #include "xnacollision.h"
-#include "Node.h"
+#include "Animation.h"
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -37,8 +37,8 @@ public:
 	void SetNormalTexture(const std::string& fileName);
 	void SetSamplerState(ID3D11SamplerState* sampler);
 
-	void PlayAnimation(const std::string& animName);
-	void PlayAnimation(UINT index);
+	void PlayAnimation(const std::string& animName, bool isLoop = true);
+	void PlayAnimation(UINT index, bool isLoop = true);
 
 	virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 	virtual void SetPickingMode(bool isPickingModeOn) { };
@@ -58,10 +58,11 @@ private:
 	Material* m_material;
 	bool m_isActive;
 
-	std::string m_fileName;
+	// Animation
 	std::unordered_map<std::string, Animation*> m_animations;
 	Animation* m_currentAnimation;
 	std::vector<DirectX::XMMATRIX> m_boneTransform;
+	Node* m_node;	
 
 	// Transform Matrix
 	DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
@@ -70,5 +71,4 @@ private:
 	/*XNA::AxisAlignedBox m_meshBox;
 	float m_depth;
 	bool m_isPickingOn;*/
-
 };

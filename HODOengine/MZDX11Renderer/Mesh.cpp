@@ -20,8 +20,8 @@ Mesh::Mesh(VertexStruct::Vertex* vertexArray, int vertexNum, unsigned int* index
 	CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum);
 }
 
-Mesh::Mesh(VertexStruct::VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, const Node& node)
-	: m_device(0), m_deviceContext(0), m_singleVertexSize(0), m_node(node)
+Mesh::Mesh(VertexStruct::VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum)
+	: m_device(0), m_deviceContext(0), m_singleVertexSize(0)
 {
 	m_device = MZDX11Renderer::Instance().GetDevice();
 	m_deviceContext = MZDX11Renderer::Instance().GetDeviceContext();

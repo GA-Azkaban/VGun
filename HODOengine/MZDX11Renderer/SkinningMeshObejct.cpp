@@ -2,7 +2,6 @@
 #include "MZDX11Renderer.h"
 #include "MZCamera.h"
 #include "Mesh.h"
-#include "Node.h"
 #include "Material.h"
 #include "RasterizerState.h"
 #include "SamplerState.h"
@@ -30,12 +29,30 @@ SkinningMeshObject::~SkinningMeshObject()
 
 void SkinningMeshObject::Update(float deltaTime)
 {
-	float ticks = (float)GetTickCount();
+	//float ticks = (float)GetTickCount();
 	if (m_currentAnimation != nullptr)
 	{
-		float dt = ticks * m_currentAnimation->ticksPerSecond / 1000;
-		float animationTime = fmod(dt, m_currentAnimation->duration);
-		UpdateAnimation(animationTime, m_meshes[0]->GetNode(), m_world, m_meshes[0]->GetNode().rootNodeInvTransform);
+		//float dt = ticks * m_currentAnimation->ticksPerSecond / 1000;
+		//float animationTime = fmod(dt, m_currentAnimation->duration);
+		m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+		/*if (m_animationTime >= m_currentAnimation->duration)
+		{
+			int a = 0;
+		}*/
+		m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);		
+
+		if (!m_currentAnimation->isEnd)
+		{
+			UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform);
+		}
+
+		if (m_currentAnimation->isLoop == false)
+		{
+			if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.5f)
+			{
+				m_currentAnimation->isEnd = true;
+			}
+		}
 	}
 }
 
@@ -98,29 +115,22 @@ void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, 
 	if (nodeAnim != nullptr)
 	{
 		// calculate interpolated position
-		DirectX::XMFLOAT3 position = CalcInterpolatedPosition(animationTime, nodeAnim);		
+		DirectX::XMFLOAT3 position = CalcInterpolatedPosition(animationTime, nodeAnim);
+		XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
 
 		// calculate interpolated rotation
-		DirectX::XMFLOAT4 rotation = CalcInterpolatedRotation(animationTime, nodeAnim);	
+		DirectX::XMFLOAT4 rotation = CalcInterpolatedRotation(animationTime, nodeAnim);
 		DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
 		DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
 
-		DirectX::XMFLOAT3 scale = CalcInterpolatedScaling(animationTime, nodeAnim);		
-
-		XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
-		/*XMMATRIX rotX = XMMatrixRotationX(rotation.x);
-		XMMATRIX rotY = XMMatrixRotationY(rotation.y);
-		XMMATRIX rotZ = XMMatrixRotationZ(rotation.z);*/
+		DirectX::XMFLOAT3 scale = CalcInterpolatedScaling(animationTime, nodeAnim);
 		XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 		_nodeTransform = XMMatrixTranspose(sc * rot * trans);
-		//_nodeTransform = XMMatrixTranspose(trans * rot * sc);
 	}
 	DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
-	//DirectX::XMMATRIX globalTransform = _nodeTransform * parentTransform;
 
 	m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
-	//m_boneTransform[node.bone.id] = (node.bone.offset * globalTransform * globalInvTransform);
 
 	// update values for children bones
 	for (Node child : node.children)
@@ -148,6 +158,20 @@ DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedPosition(float animationTi
 	UINT nextPositionIndex = positionIndex + 1;
 	float deltaTime = nodeAnim->positionTimestamps[nextPositionIndex] - nodeAnim->positionTimestamps[positionIndex];
 	float factor = (animationTime - nodeAnim->positionTimestamps[positionIndex]) / deltaTime;
+
+	/*if (nextPositionIndex == nodeAnim->positionTimestamps.size() - 1)
+	{
+		if (factor >= 0.98f)
+		{
+			loopCount--;
+			if (loopCount == 0)
+			{
+				m_isAnimEnd = true;
+				return nodeAnim->positions[nextPositionIndex];
+			}
+		}
+	}*/
+
 
 	DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->positions[positionIndex]));
 	DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->positions[nextPositionIndex]));
@@ -179,6 +203,19 @@ DirectX::XMFLOAT4 SkinningMeshObject::CalcInterpolatedRotation(float animationTi
 	float deltaTime = nodeAnim->rotationTimestamps[nextRotationIndex] - nodeAnim->rotationTimestamps[rotationIndex];
 	float factor = (animationTime - nodeAnim->rotationTimestamps[rotationIndex]) / deltaTime;
 
+	/*if (nextRotationIndex == nodeAnim->rotationTimestamps.size() - 1)
+	{
+		if (factor >= 0.98f)
+		{
+			loopCount--;
+			if (loopCount == 0)
+			{
+				m_isAnimEnd = true;
+				return nodeAnim->rotations[nextRotationIndex];
+			}
+		}
+	}*/
+
 	DirectX::XMVECTOR start = XMLoadFloat4(&(nodeAnim->rotations[rotationIndex]));
 	DirectX::XMVECTOR end = XMLoadFloat4(&(nodeAnim->rotations[nextRotationIndex]));
 
@@ -208,6 +245,19 @@ DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedScaling(float animationTim
 	UINT nextScaleIndex = scaleIndex + 1;
 	float deltaTime = nodeAnim->scaleTimestamps[nextScaleIndex] - nodeAnim->scaleTimestamps[scaleIndex];
 	float factor = (animationTime - nodeAnim->scaleTimestamps[scaleIndex]) / deltaTime;
+
+	/*if (nextScaleIndex == nodeAnim->scaleTimestamps.size() - 1)
+	{
+		if (factor >= 0.98f)
+		{
+			loopCount--;
+			if (loopCount == 0)
+			{
+				m_isAnimEnd = true;
+				return nodeAnim->scales[nextScaleIndex];
+			}
+		}
+	}*/
 
 	DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->scales[scaleIndex]));
 	DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->scales[nextScaleIndex]));
@@ -256,22 +306,28 @@ bool SkinningMeshObject::Pick(float x, float y)
 	return false;
 }
 
-void SkinningMeshObject::PlayAnimation(const std::string& animName)
+void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
 {
 	auto animIter = m_animations.find(animName);
 	if (animIter != m_animations.end())
 	{
 		m_currentAnimation = animIter->second;
+		m_currentAnimation->isLoop = isLoop;
+		if (m_currentAnimation->isLoop == false)
+		{
+			m_currentAnimation->accumulatedTime = 0.0f;
+			m_currentAnimation->isEnd = false;
+		}
 	}
 	m_currentAnimation = nullptr;
 }
 
-void SkinningMeshObject::PlayAnimation(UINT index)
+void SkinningMeshObject::PlayAnimation(UINT index, bool isLoop /*= true*/)
 {
 	auto animIter = m_animations.begin();
 	for (UINT i = 0; i < index; ++i)
 	{
-		animIter++;
+		++animIter;
 		if (animIter == m_animations.end())
 		{
 			m_currentAnimation = nullptr;
@@ -279,13 +335,19 @@ void SkinningMeshObject::PlayAnimation(UINT index)
 		}
 	}
 	m_currentAnimation = animIter->second;
+	m_currentAnimation->isLoop = isLoop;
+	if (m_currentAnimation->isLoop == false)
+	{
+		m_currentAnimation->accumulatedTime = 0.0f;
+		m_currentAnimation->isEnd = false;
+	}
 }
 
 void SkinningMeshObject::SetMesh(const std::string& fileName)
 {
-	m_fileName = fileName;
-	m_meshes = ResourceManager::Instance.Get().GetLoadedMesh(fileName);
-	// 일단은 메쉬를 세팅해주면 애니메이션 정보도 불러와서 세팅해주기로 한다.
+	m_meshes = ResourceManager::Instance.Get().GetMeshes(fileName);
+	// 일단은 메쉬를 세팅해주면 노드 정보와 애니메이션 정보도 불러와서 세팅해주기로 한다.
+	m_node = ResourceManager::Instance.Get().GetNode(fileName);
 	m_animations = ResourceManager::Instance.Get().GetAnimations(fileName);
 }
 
@@ -305,13 +367,13 @@ void SkinningMeshObject::SetPixelShader(const std::string& fileName)
 
 void SkinningMeshObject::SetDiffuseTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
+	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetTexture(fileName);
 	m_material->SetTextureSRV(diffuseTex);
 }
 
 void SkinningMeshObject::SetNormalTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
+	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetTexture(fileName);
 	m_material->SetNormalTexture(normalTex);
 }
 

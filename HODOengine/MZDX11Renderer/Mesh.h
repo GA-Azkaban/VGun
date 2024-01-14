@@ -2,7 +2,7 @@
 #include "DX11Define.h"
 #include "Vertex.h"
 #include "GeometryGenerator.h"
-#include "Node.h"
+#include "Animation.h"
 #include <unordered_map>
 #include <string>
 
@@ -11,12 +11,11 @@ class Mesh
 public:
 	Mesh(VertexStruct::PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
 	Mesh(VertexStruct::Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
-	Mesh(VertexStruct::VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, const Node& node);
+	Mesh(VertexStruct::VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
 	Mesh(const char* objFile);
 	~Mesh();
 
 	UINT GetSingleVertexSize() { return m_singleVertexSize; }
-	Node GetNode() { return m_node; }
 
 	void BindBuffers();
 	void Draw();
@@ -36,7 +35,5 @@ private:
 	ComPtr<ID3D11Buffer> m_indexBuffer;
 	UINT m_singleVertexSize;
 	int m_numIndices;
-
-	Node m_node;
 };
 

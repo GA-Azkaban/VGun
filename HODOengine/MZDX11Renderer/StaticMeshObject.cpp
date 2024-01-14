@@ -108,7 +108,7 @@ bool StaticMeshObject::Pick(float x, float y)
 void StaticMeshObject::SetMesh(const std::string& fileName)
 {
 	m_fileName = fileName;
-	m_meshes = ResourceManager::Instance.Get().GetLoadedMesh(fileName);
+	m_meshes = ResourceManager::Instance.Get().GetMeshes(fileName);
 }
 
 void StaticMeshObject::SetVertexShader(const std::string& fileName)
@@ -127,13 +127,13 @@ void StaticMeshObject::SetPixelShader(const std::string& fileName)
 
 void StaticMeshObject::SetDiffuseTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
+	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetTexture(fileName);
 	m_material->SetTextureSRV(diffuseTex);
 }
 
 void StaticMeshObject::SetNormalTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
+	ID3D11ShaderResourceView* normalTex = ResourceManager::Instance.Get().GetTexture(fileName);
 	m_material->SetNormalTexture(normalTex);
 }
 

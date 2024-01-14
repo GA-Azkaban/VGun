@@ -11,6 +11,7 @@ class TextureBox;
 class Mesh;
 class Material;
 class Sky;
+class SkinningMeshObject;
 
 class DeferredRenderer
 {
@@ -88,5 +89,6 @@ private:
 
 	// 임시
 	Sky* sky;
+	SkinningMeshObject* test1;
 };
 

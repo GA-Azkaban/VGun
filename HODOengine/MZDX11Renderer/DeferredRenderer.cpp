@@ -80,12 +80,14 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	//ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/fox_reverse.dds");
 
 	//StaticMeshObject* test1 = new StaticMeshObject();
-	SkinningMeshObject* test1 = new SkinningMeshObject();
-	//test1->SetMesh("Rob02.fbx");
-	test1->SetMesh("model.dae");
+	//SkinningMeshObject* test1 = new SkinningMeshObject();
+	test1 = new SkinningMeshObject();
+	test1->SetMesh("Rob02.fbx");
+	//test1->SetMesh("model.dae");
 	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
 	test1->SetNormalTexture("Rob02White_Normal.png");
-	test1->PlayAnimation(0);
+	//test1->PlayAnimation(1, false);
+	test1->PlayAnimation(0, true);
 
 	sky = new Sky();
 	sky->SetMesh("skySphere");
@@ -108,6 +110,16 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 void DeferredRenderer::Update(float deltaTime)
 {
 	m_deltaTime = deltaTime;
+
+	if (GetAsyncKeyState('1') & 0x8000)
+	{
+		test1->PlayAnimation(0, true);
+	}
+	if (GetAsyncKeyState('2') & 0x8000)
+	{
+		test1->PlayAnimation(1, false);
+	}
+
 	for (auto& object : IMeshObject::meshObjects)
 	{
 		object->Update(deltaTime);

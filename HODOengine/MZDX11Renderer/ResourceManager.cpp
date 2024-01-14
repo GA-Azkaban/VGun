@@ -1,22 +1,23 @@
 #include "ResourceManager.h"
-#include "Node.h"
 #include "Mesh.h"
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 
+#define RESOURCES_DIRECTORY_NAME "../3DModels/"
+
 LazyObjects<ResourceManager> ResourceManager::Instance;
 
 ResourceManager::ResourceManager()
-	: m_geometryGen(0), m_directory("../3DModels/")
+	: m_geometryGen(0)
 {
 	m_geometryGen = new GeometryGenerator();
 }
 
 ResourceManager::~ResourceManager()
 {
-
+	delete m_geometryGen;
 }
 
 void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -35,78 +36,115 @@ void ResourceManager::CreatePrimitiveMeshes()
 	m_geometryGen->CreateAxis(axisMesh);
 
 	Mesh* _gridMesh = new ::Mesh(&gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size());
-	m_loadedMeshes["grid"].push_back(_gridMesh);
+	m_loadedFileInfo["grid"].loadedMeshes.push_back(_gridMesh);
 	Mesh* _axisMesh = new ::Mesh(&axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
-	m_loadedMeshes["axis"].push_back(_axisMesh);
+	m_loadedFileInfo["axis"].loadedMeshes.push_back(_axisMesh);
 
 	GeometryGenerator::MeshData skySphere;
 	m_geometryGen->CreateSphere(5000, 30, 30, skySphere);
 
 	Mesh* _sphere = new ::Mesh(&skySphere.Vertices[0], skySphere.Vertices.size(), &skySphere.Indices[0], skySphere.Indices.size());
-	m_loadedMeshes["skySphere"].push_back(_sphere);
+	m_loadedFileInfo["skySphere"].loadedMeshes.push_back(_sphere);
 }
 
-void ResourceManager::LoadFBXFile(std::string filePath)
+void ResourceManager::LoadFBXFile(std::string fileName)
 {
+	UINT slashIndex = fileName.find_last_of("/\\");
+	if (slashIndex != std::string::npos)
+	{
+		m_fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+	}
+	else
+	{
+		m_fileName = fileName;
+	}
+
+	std::string path = std::string(RESOURCES_DIRECTORY_NAME) + m_fileName;
+
 	Assimp::Importer importer;
 
-
-	const aiScene* _scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+	const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
 
 	if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 	{
 		MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 	}
 
-	//m_directory = fileName.substr(0, fileName.find_last_of("/\\") + 1);
-	m_fileName = filePath.substr(filePath.find_last_of("/\\") + 1, filePath.length() - filePath.find_last_of("/\\"));
-
 	ProcessNode(_scene->mRootNode, _scene);
 	LoadAnimation(_scene);
 }
 
-void ResourceManager::LoadTextureFile(std::string filePath)
+void ResourceManager::LoadTextureFile(std::string fileName)
 {
-	std::string fileName = filePath.substr(filePath.find_last_of("/\\") + 1, filePath.length() - filePath.find_last_of("/\\"));
-	LoadTexture(fileName);
-}
-
-std::vector<Mesh*>& ResourceManager::GetLoadedMesh(const std::string& fileName)
-{
-	if (m_loadedMeshes.find(fileName) == m_loadedMeshes.end())
+	ID3D11ShaderResourceView* srv;
+	UINT slashIndex = fileName.find_last_of("/\\");
+	if (slashIndex != std::string::npos)
 	{
-		LoadFBXFile(m_directory + fileName);
+		fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
 	}
-	return m_loadedMeshes[fileName];
+	std::string path = std::string(RESOURCES_DIRECTORY_NAME) + "Textures/" + fileName;
+	std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
+	std::wstring pathWS = std::wstring(path.begin(), path.end());
+
+	HRESULT hr = S_FALSE;
+
+	if (extension == "dds")
+	{
+		hr = CreateDDSTextureFromFile(m_device.Get(), pathWS.c_str(), nullptr, &srv);
+	}
+	else
+	{
+		hr = CreateWICTextureFromFile(m_device.Get(), m_deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+	}
+
+	if (FAILED(hr))
+	{
+		MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
+	}
+
+	m_loadedTextures.insert(std::make_pair(fileName, srv));
 }
 
-ID3D11ShaderResourceView* ResourceManager::GetLoadedTexture(const std::string& fileName)
+std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
+{
+	if (m_loadedFileInfo.find(fileName) == m_loadedFileInfo.end())
+	{
+		LoadFBXFile(fileName);
+	}
+	return m_loadedFileInfo[fileName].loadedMeshes;
+}
+
+ID3D11ShaderResourceView* ResourceManager::GetTexture(const std::string& fileName)
 {
 	if (m_loadedTextures.find(fileName) == m_loadedTextures.end())
 	{
-		LoadTexture(fileName);
+		LoadTextureFile(fileName);
 	}
 	return m_loadedTextures[fileName];
 }
 
+Node* ResourceManager::GetNode(const std::string& fileName)
+{
+	if (m_loadedFileInfo.find(fileName) == m_loadedFileInfo.end())
+	{
+		LoadFBXFile(fileName);
+	}
+	return m_loadedFileInfo[fileName].node;
+}
+
 std::unordered_map<std::string, Animation*>& ResourceManager::GetAnimations(const std::string& fileName)
 {
-	if (m_loadedAnimation.find(fileName) != m_loadedAnimation.end())
+	if (m_loadedFileInfo.find(fileName) == m_loadedFileInfo.end())
 	{
-		return m_loadedAnimation[fileName];
+		LoadFBXFile(fileName);
 	}
-	// 애니메이션이 없다면?
-	// 일단은 애니메이션 정보 없이 리턴한다.
-	//LoadFBXFile(m_directory + fileName);
-	std::unordered_map<std::string, Animation*> ret = {};
-	return ret;
+	return m_loadedFileInfo[fileName].loadedAnimation;
 }
 
 void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
 {
 	for (UINT i = 0; i < node->mNumMeshes; ++i)
 	{
-		//aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		aiMesh* mesh = scene->mMeshes[i];
 		ProcessMesh(mesh, scene);
 	}
@@ -141,7 +179,7 @@ void ResourceManager::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
 
 		// process position
 		vertex.Position.x = mesh->mVertices[i].x;
-		vertex.Position.y = -mesh->mVertices[i].y;
+		vertex.Position.y = mesh->mVertices[i].y;
 		vertex.Position.z = mesh->mVertices[i].z;
 
 		// process normal
@@ -167,7 +205,7 @@ void ResourceManager::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
 	}
 
 	Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-	m_loadedMeshes[m_fileName].push_back(newMesh);
+	m_loadedFileInfo[m_fileName].loadedMeshes.push_back(newMesh);
 
 	if (mesh->mMaterialIndex >= 0)
 	{
@@ -282,14 +320,15 @@ void ResourceManager::ProcessSkinningMesh(aiMesh* mesh, const aiScene* scene)
 	}
 
 	// create node hierarchy
-	Node rootNode;
+	Node* rootNode = new Node();
 	DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
-	rootNode.rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-	//rootNode.rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNode.rootNodeInvTransform);
-	ReadNodeHierarchy(rootNode, scene->mRootNode, boneInfo);
+	rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+	ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
-	Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size(), rootNode);
-	m_loadedMeshes[m_fileName].push_back(newMesh);
+	m_loadedFileInfo[m_fileName].node = rootNode;
+
+	Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
+	m_loadedFileInfo[m_fileName].loadedMeshes.push_back(newMesh);
 
 	if (mesh->mMaterialIndex >= 0)
 	{
@@ -322,7 +361,7 @@ void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType t
 			}
 			else
 			{
-				LoadTexture(fileName);
+				LoadTextureFile(fileName);
 			}
 		}
 	}
@@ -375,35 +414,6 @@ ID3D11ShaderResourceView* ResourceManager::LoadEmbeddedTexture(const aiTexture* 
 	}
 
 	return texture;
-}
-
-ID3D11ShaderResourceView* ResourceManager::LoadTexture(const std::string& fileName)
-{
-	ID3D11ShaderResourceView* ret = nullptr;
-
-	std::string path = m_directory + "Textures/" + fileName;
-	std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
-	std::wstring pathWS = std::wstring(path.begin(), path.end());
-
-	HRESULT hr = S_FALSE;
-
-	if (extension == "dds")
-	{
-		hr = CreateDDSTextureFromFile(m_device.Get(), pathWS.c_str(), nullptr, &ret);
-	}
-	else
-	{
-		hr = CreateWICTextureFromFile(m_device.Get(), m_deviceContext.Get(), pathWS.c_str(), nullptr, &ret);
-	}
-
-	if (FAILED(hr))
-	{
-		MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
-	}
-
-	m_loadedTextures.insert(std::make_pair(fileName, ret));
-
-	return ret;
 }
 
 // A recursive function to read all bones and form skeleton
@@ -483,6 +493,6 @@ void ResourceManager::LoadAnimation(const aiScene* scene)
 
 			newAnimation->nodeAnimations.push_back(newNodeAnim);
 		}
-		m_loadedAnimation[m_fileName].insert(std::make_pair(animation->mName.C_Str(), newAnimation));
+		m_loadedFileInfo[m_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
 	}
 }

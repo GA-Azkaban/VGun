@@ -175,7 +175,7 @@
     <Filter Include="6. Components\DataStruct\Vertex">
       <UniqueIdentifier>{6d554c71-05a3-4cd3-8996-ac9bbb1ad79e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="6. Components\DataStruct\Node">
+    <Filter Include="6. Components\DataStruct\Animation">
       <UniqueIdentifier>{c6dbcaa3-daa9-4a5f-bd2c-48a67e0aa5ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -325,8 +325,8 @@
     <ClInclude Include="HelperObject.h">
       <Filter>5. Objects\HelperObject</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>6. Components\DataStruct\Node</Filter>
+    <ClInclude Include="Animation.h">
+      <Filter>6. Components\DataStruct\Animation</Filter>
     </ClInclude>
     <ClInclude Include="AssimpMathConverter.h">
       <Filter>7. Math\header</Filter>

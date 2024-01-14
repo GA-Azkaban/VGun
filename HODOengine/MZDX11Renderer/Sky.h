@@ -17,7 +17,7 @@ public:
 	void Update(float deltaTime);
 	void Render();
 
-	void SetMesh(const std::string& fileName);
+	void SetMesh(const std::string& meshName);
 	void SetVertexShader(const std::string& fileName);
 	void SetPixelShader(const std::string& fileName);
 

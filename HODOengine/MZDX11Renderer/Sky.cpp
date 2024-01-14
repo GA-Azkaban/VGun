@@ -63,9 +63,9 @@ void Sky::Render()
 	}
 }
 
-void Sky::SetMesh(const std::string& fileName)
+void Sky::SetMesh(const std::string& meshName)
 {
-	m_meshes = ResourceManager::Instance.Get().GetLoadedMesh(fileName);
+	m_meshes = ResourceManager::Instance.Get().GetMeshes(meshName);
 }
 
 void Sky::SetVertexShader(const std::string& fileName)
@@ -82,7 +82,7 @@ void Sky::SetPixelShader(const std::string& fileName)
 
 void Sky::SetCubeMapTexture(const std::string& fileName)
 {
-	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetLoadedTexture(fileName);
+	ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance.Get().GetTexture(fileName);
 	m_material->SetTextureSRV(diffuseTex);
 }
 

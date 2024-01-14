@@ -82,5 +82,5 @@ void HelperObject::SetWorldTM(const XMMATRIX& tm)
 
 void HelperObject::SetMesh(const std::string& meshName)
 {
-	m_meshes = ResourceManager::Instance.Get().GetLoadedMesh(meshName);
+	m_meshes = ResourceManager::Instance.Get().GetMeshes(meshName);
 }
