@@ -84,7 +84,7 @@ void HODOengine::Initialize()
 	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_timeSystem.Initialize();
 	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
-	//_physicsSystem.Initialize();
+	_physicsSystem.Initialize();
 }
 
 void HODOengine::Loop()

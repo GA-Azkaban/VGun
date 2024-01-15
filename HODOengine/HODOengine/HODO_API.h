@@ -1,4 +1,5 @@
 #pragma once
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 /// <summary>
 /// 오수안
@@ -66,6 +67,7 @@ namespace API
 		HODO_API bool GetMouseHold(int keyCode);
 		HODO_API HDMath::HDFLOAT2 GetMousePosition();
 		HODO_API float GetMouseWheel();
+		HODO_API HDMath::HDFLOAT2 GetMouseDelta();
 
 		// 디버그 시스템을 위한 함수
 		HODO_API void DebugModeOn(int flag);
@@ -74,6 +76,9 @@ namespace API
 
 		// 델타 타임
 		HODO_API float GetDeltaTime();
+
+		/// physics stuff
+		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length = 100.0f, int* type = nullptr);
 	}
 }
 

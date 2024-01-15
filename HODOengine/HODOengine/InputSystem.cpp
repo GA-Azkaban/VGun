@@ -212,3 +212,15 @@ namespace HDEngine
 		}
 	}
 }
+
+HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
+{
+	_currentMouseDelta = _currentMousePosition - _previousMousePosition;
+
+	HDMath::HDFLOAT2 result = (_currentMouseDelta + _previousMouseDelta);
+	result.x /= 2.0f;
+	result.y /= 2.0f;
+
+	_previousMouseDelta = _currentMouseDelta;
+	return (_currentMousePosition - _previousMousePosition);
+}
