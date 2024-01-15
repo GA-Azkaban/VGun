@@ -36,6 +36,8 @@ float4 main(PixelInputType input) : SV_TARGET
     
     // 텍스처 픽셀과 최종 확산 색을 곱하여 최종 픽셀 색상 결과를 얻음
     color = color * textureColor;
-
+    color.a = 1.0f;
+    
+    
     return color;
 }
