@@ -12,8 +12,8 @@ namespace HDData
 
 	SlideBoxUI::SlideBoxUI()
 		: _valueText(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
-		_arrowLeft(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
-		_arrowRight(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
+		_arrowLeft(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
+		_arrowRight(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
 		_texts(NULL)
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
@@ -25,15 +25,18 @@ namespace HDData
 
 	void SlideBoxUI::Start()
 	{
-		SetLeftArrow("<");
-		SetRightArrow(">");
+		SetLeftArrowImage("arrowLeft.png");
+		SetRightArrowImage("arrowRight.png");
 		SetText(*_texts.begin());
 
 		HDMath::HDFLOAT3 pos = GetTransform()->GetWorldPosition();
 
-		_valueText->SetScreenSpacePosition(pos.x, pos.y);
-		_arrowLeft->SetScreenSpacePosition(pos.x - 30, pos.y);
-		_arrowRight->SetScreenSpacePosition(pos.x + 30, pos.y);
+		_valueText->SetScreenSpacePosition(pos.x + 30, pos.y);
+		_arrowLeft->SetScreenSpacePosition(pos.x - 100, pos.y);
+		_arrowLeft->ChangeScale(0.5f, 0.5f);
+		_arrowRight->SetScreenSpacePosition(pos.x + 100, pos.y);
+		_arrowRight->ChangeScale(0.5f, 0.5f);
+
 	}
 
 	void SlideBoxUI::Update()
@@ -114,17 +117,7 @@ namespace HDData
 		}
 	}
 
-	void SlideBoxUI::SetLeftArrow(const std::string& str)
-	{
-		_arrowLeft->SetText(str);
-	}
-
-	void SlideBoxUI::SetRightArrow(const std::string& str)
-	{
-		_arrowRight->SetText(str);
-	}
-
-	/*void SlideBoxUI::SetLeftArrowImage(const char* fileName)
+	void SlideBoxUI::SetLeftArrowImage(const char* fileName)
 	{
 		_arrowLeft->SetImage(fileName);
 	}
@@ -132,7 +125,7 @@ namespace HDData
 	void SlideBoxUI::SetRightArrowImage(const char* fileName)
 	{
 		_arrowRight->SetImage(fileName);
-	}*/
+	}
 
 	bool SlideBoxUI::InvokeClick(const float& x, const float& y)
 	{

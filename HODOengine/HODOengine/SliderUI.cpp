@@ -31,15 +31,16 @@ namespace HDData
 		_sliderBar->ChangeScale(0.7f, 0.7f);
 
 		// 위치 받아오기
-		HDMath::HDFLOAT3 transform = GetTransform()->GetWorldPosition();
+		_transform = GetTransform()->GetWorldPosition();
 
 		// 포인터 초기 텍스트 설정
-		_valueText->SetScreenSpacePosition(transform.x, transform.y - 30);
+		_valueText->SetScreenSpacePosition(_transform.x, _transform.y - 30);
 		_valueText->SetText(std::to_string((int)(_value * 100)));
 
 		// 포인터 초기 위치 설정
 		auto pos = _sliderBar->GetScreenSpacePositionX() + _sliderBar->GetWidth() * _value;
 		_sliderPoint->SetScreenSpacePosition(pos, 50.f);
+		_sliderBar->SetScreenSpacePosition(_transform.x, _transform.y + 10);
 
 		// 포인터가 이동할 수 있는 x의 최대 최소값
 		_min = _sliderBar->GetScreenSpacePositionX();

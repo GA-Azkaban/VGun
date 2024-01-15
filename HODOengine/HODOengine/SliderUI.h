@@ -48,6 +48,7 @@ namespace HDData
 		// 슬라이더의 최대 최소 위치
 		int _min = 0;
 		int _max = 100;
+		HDMath::HDFLOAT3 _transform;
 
 		// 슬라이더 값
 		float _value;

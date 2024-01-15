@@ -29,10 +29,6 @@ namespace HDData
 		void AddTextList(const std::string str);
 		void ChangeText(bool isRight);
 
-		void SetLeftArrow(const std::string& str);
-		void SetRightArrow(const std::string& str);
-		void SetLeftArrowOffset();
-
 		// 화살표 이미지
 		void SetLeftArrowImage(const char* fileName);
 		void SetRightArrowImage(const char* fileName);
@@ -43,8 +39,8 @@ namespace HDData
 		std::vector<std::string> _texts;
 
 		HDEngine::ISketchableText* _valueText;
-		HDEngine::ISketchableText* _arrowLeft;
-		HDEngine::ISketchableText* _arrowRight;
+		HDEngine::ISketchableImage* _arrowLeft;
+		HDEngine::ISketchableImage* _arrowRight;
 
 		/*HDEngine::ISketchableImage* _arrowLeft;
 		HDEngine::ISketchableImage* _arrowRight;*/

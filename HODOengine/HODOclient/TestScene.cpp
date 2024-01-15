@@ -98,9 +98,9 @@ TestScene::TestScene()
 	//sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{-5.f, 10.f, 1.f});
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
-	auto textTest = API::CreateTextbox(_scene);
-	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
+	//auto textTest = API::CreateTextbox(_scene);
+	//textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	//textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
 	//HDData::GameObject * imageTest = API::CreateObject(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
@@ -108,13 +108,13 @@ TestScene::TestScene()
 	//imageComp->ChangeScale(0.5f, 0.5f);
 	//imageComp->GetGameObject();
 
-	//auto UItest = API::CreateSlidebox(_scene);
-	//UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
-	//auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
-	//sliderComp->AddTextList("1");
-	//sliderComp->AddTextList("2");
-	//sliderComp->AddTextList("3");
-	//sliderComp->AddTextList("4");
+	auto UItest = API::CreateSlidebox(_scene);
+	UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
+	auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
+	sliderComp->AddTextList("1");
+	sliderComp->AddTextList("2");
+	sliderComp->AddTextList("3");
+	sliderComp->AddTextList("4");
 
 	//auto imageTest = API::CreateImageBox(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
@@ -127,6 +127,9 @@ TestScene::TestScene()
 	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,0.0f });
 	_slider->AddComponent<HDData::AudioSource>();
 	_slider->AddComponent<SliderSoundScript>();
+
+	auto toggle = API::CreateToggle(_scene);
+	toggle->GetTransform()->SetWorldPosition({1500.f, 50.f, 0.0f});
 
 	API::LoadScene(_scene);
 

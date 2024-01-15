@@ -64,6 +64,13 @@ namespace API
 			return obj;
 		}
 
+		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			obj->AddComponent<HDData::ToggleUI>();
+			return obj;
+		}
+
 		HODO_API bool GetKeyDown(BYTE keyCode)
 		{
 			return HDEngine::InputSystem::Instance().GetKeyDown(keyCode);
@@ -133,4 +140,7 @@ namespace API
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}
 	}
+
+
+
 }
