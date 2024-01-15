@@ -23,6 +23,8 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
+		
+		bool CheckMouseClicked();
 
 		// 텍스트 내용
 		void SetText(const std::string& str);
@@ -49,6 +51,7 @@ namespace HDData
 
 		// 슬라이더 값
 		float _value;
+		bool _isClicked;
 	};
 }
 

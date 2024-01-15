@@ -25,15 +25,17 @@ namespace HDData
 	void SliderUI::Start()
 	{
 		// 이미지와 위치 세팅
-		_sliderPoint->SetImage("circle.png");
-		_sliderPoint->ChangeScale(0.05f, 0.05f);
-		_valueText->SetText(std::to_string((int)_value));
+		_sliderPoint->SetImage("point.png");
+		_sliderPoint->ChangeScale(0.7f, 0.7f);
 		_sliderBar->SetImage("bar.png");
 		_sliderBar->ChangeScale(0.7f, 0.7f);
 
+		// 위치 받아오기
 		HDMath::HDFLOAT3 transform = GetTransform()->GetWorldPosition();
 
+		// 포인터 초기 텍스트 설정
 		_valueText->SetScreenSpacePosition(transform.x, transform.y - 30);
+		_valueText->SetText(std::to_string((int)(_value * 100)));
 
 		// 포인터 초기 위치 설정
 		auto pos = _sliderBar->GetScreenSpacePositionX() + _sliderBar->GetWidth() * _value;
@@ -46,14 +48,36 @@ namespace HDData
 
 	void SliderUI::Update()
 	{
-		if (_inputSystem.GetMouse(MOUSE_LEFT))
+		if (_inputSystem.GetMouseDown(MOUSE_LEFT) && CheckMouseClicked() == true)
+		{
+			_isClicked = true;
+		}
+		if (_inputSystem.GetMouseUp(MOUSE_LEFT))
+		{
+			_isClicked = false;
+		}
+
+		if (_isClicked == true)
 		{
 			_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - _sliderPoint->GetWidth(), GetTransform()->GetWorldPosition().y);
 			_valueText->SetScreenSpacePosition(_sliderPoint->GetScreenSpacePositionX(), _sliderPoint->GetScreenSpacePositionY() - 30);
-
 			auto point = _sliderPoint->GetScreenSpacePositionX() - _sliderBar->GetScreenSpacePositionX();
 			_value = point / _sliderBar->GetWidth() * 100;
-			_valueText->SetText(std::to_string(_value));
+			_valueText->SetText(std::to_string((int)_value));
+
+			if (_sliderPoint->GetScreenSpacePositionX() > _max)
+			{
+				_sliderPoint->SetScreenSpacePosition(_max, _sliderBar->GetScreenSpacePositionY());
+				_valueText->SetScreenSpacePosition(_max, _sliderBar->GetScreenSpacePositionY() - 30);
+				_valueText->SetText("100");
+			}
+			if (_sliderPoint->GetScreenSpacePositionX() < _min)
+			{
+				_sliderPoint->SetScreenSpacePosition(_min, _sliderBar->GetScreenSpacePositionY());
+				_valueText->SetScreenSpacePosition(_min, _sliderBar->GetScreenSpacePositionY() - 30);
+				_valueText->SetText("0");
+			}
+
 		}
 	}
 
@@ -76,6 +100,17 @@ namespace HDData
 		_valueText->SetWorldSpace();
 		_sliderBar->SetWorldSpace();
 		_sliderPoint->SetWorldSpace();
+	}
+
+	bool SliderUI::CheckMouseClicked()
+	{
+		if (_inputSystem.GetMousePosition().x > _sliderBar->GetScreenSpacePositionX() &&
+			_inputSystem.GetMousePosition().y > _sliderBar->GetScreenSpacePositionY() && 
+			_inputSystem.GetMousePosition().x < _sliderBar->GetScreenSpacePositionX() + _sliderBar->GetWidth() &&
+			_inputSystem.GetMousePosition().y < _sliderBar->GetScreenSpacePositionY() + _sliderBar->GetHeight())
+		{
+			return true;
+		}
 	}
 
 	void SliderUI::SetText(const std::string& str)

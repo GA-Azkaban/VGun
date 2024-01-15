@@ -17,6 +17,7 @@ void SliderSoundScript::Start()
 	_audio = GetGameObject()->GetComponent<HDData::AudioSource>();
 	_audio->AddAudio("ingame_bgm", "../Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
 	_audio->PlayRepeat("ingame_bgm");
+	_audio->SetSoundVolumeAll(_soundVolume);
 	_slider = GetGameObject()->GetComponent<HDData::SliderUI>();
 	_slider->SetDefaultValue(_soundVolume);
 }
