@@ -126,9 +126,7 @@ TestScene::TestScene()
 	auto _slider = API::CreateSlider(_scene);
 	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	_slider->AddComponent<HDData::AudioSource>();
-	auto SoundComp = _slider->GetComponent<HDData::AudioSource>();
-	SoundComp->AddAudio("ingame_bgm", "../Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
-	SoundComp->PlayRepeat("ingame_bgm");
+
 	_slider->AddComponent<SliderSoundScript>();
 
 	API::LoadScene(_scene);
