@@ -96,7 +96,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 		0.0f,										//회전 각도
 		DirectX::XMFLOAT2(0.5f, 0.5f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
 		DirectX::XMFLOAT2(_scaleX,_scaleY));		// 이미지 스케일
-	
+
 	spriteBatch->End();
 }
 

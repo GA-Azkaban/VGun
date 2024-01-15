@@ -6,6 +6,7 @@
 #include "TimeSystem.h"
 #include "GameObject.h"
 #include "DebugSystem.h"
+#include "PhysicsSystem.h"
 #include "RenderSystem.h"
 
 namespace API
@@ -102,6 +103,10 @@ namespace API
 		{
 			return HDEngine::InputSystem::Instance().GetMouseWheel();
 		}
+		HODO_API HDMath::HDFLOAT2 GetMouseDelta()
+		{
+			return HDEngine::InputSystem::Instance().GetMouseDelta();
+		}
 
 		HODO_API float GetDeltaTime()
 		{
@@ -111,6 +116,11 @@ namespace API
 		HODO_API void DebugModeOn(int flag)
 		{
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
+		}
+
+		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
+		{
+			return HDEngine::PhysicsSystem::Instance().RayCast(origin.x, origin.y, origin.z, direction.x, direction.y, direction.z, length, type);
 		}
 
 		HODO_API void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)

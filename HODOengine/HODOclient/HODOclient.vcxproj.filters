@@ -31,6 +31,9 @@
     <ClCompile Include="LobbyManager.cpp">
       <Filter>03_Manager\LobbyManager</Filter>
     </ClCompile>
+    <ClCompile Include="SliderSoundScript.cpp">
+      <Filter>02_Client\TestScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="Weapon.h">
       <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SliderSoundScript.h">
+      <Filter>02_Client\TestScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

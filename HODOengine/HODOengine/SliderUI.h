@@ -21,14 +21,17 @@ namespace HDData
 
 		// 전체 슬라이더 활성화 여부
 		void SetActive(bool active);
-
-		// 전체 슬라이더 위치
 		void SetScreenSpace();
 		void SetWorldSpace();
 
 		// 텍스트 내용
 		void SetText(const std::string& str);
 		std::string GetText();
+		
+		void SetDefaultValue(int val);
+		void SetValue(int val);
+		int GetValue();
+
 		void SetSliderbarImage(const char* fileName);
 		void SetSliderpointImage(const char* fileName);
 
@@ -41,8 +44,8 @@ namespace HDData
 		HDEngine::ISketchableImage* _sliderPoint;
 		
 		// 슬라이더의 최대 최소 위치
-		int _min;
-		int _max;
+		int _min = 0;
+		int _max = 100;
 
 		// 슬라이더 값
 		int _value;

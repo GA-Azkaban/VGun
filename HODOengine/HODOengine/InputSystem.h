@@ -35,6 +35,9 @@ namespace HDEngine
 		bool GetMouseUp(BYTE key);
 
 		HDMath::HDFLOAT2 GetMousePosition();
+		HDMath::HDFLOAT2 GetMousePositionNormalized();
+		HDMath::HDFLOAT2 GetMouseDelta();
+	
 		float GetMouseWheel();
 
 		void Flush();
@@ -64,6 +67,10 @@ namespace HDEngine
 		int						_mouseWheel;
 		int						_wheelMax;
 		int						_wheelMin;
+		HDMath::HDFLOAT2 _currentMousePosition;
+		HDMath::HDFLOAT2 _previousMousePosition;
+		HDMath::HDFLOAT2 _currentMouseDelta;
+		HDMath::HDFLOAT2 _previousMouseDelta;
 	};
 }
 
