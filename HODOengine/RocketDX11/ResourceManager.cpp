@@ -34,7 +34,7 @@ namespace RocketCore::Graphics
 				{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 				{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 			};
-			colorVS->SetVertexDesc(colorDesc);
+			colorVS->SetVertexDesc(colorDesc, ARRAYSIZE(colorDesc));
 			colorVS->Initialize(_device.Get(), "../x64/Debug/ColorVS.cso");
 			colorVS->SetVertexType(VertexType::COLOR_VERTEX);
 			_vertexShaders["ColorVS"] = colorVS;
@@ -52,7 +52,7 @@ namespace RocketCore::Graphics
 				{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 				{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 			};
-			textureVS->SetVertexDesc(textureDesc);
+			textureVS->SetVertexDesc(textureDesc, ARRAYSIZE(textureDesc));
 			textureVS->Initialize(_device.Get(), "../x64/Debug/TextureVS.cso");
 			textureVS->SetVertexType(VertexType::TEXTURE_VERTEX);
 			_vertexShaders["TextureVS"] = textureVS;
@@ -64,21 +64,21 @@ namespace RocketCore::Graphics
 
 		// Light Shader
 		{
-			VertexShader* textureVS = new VertexShader();
-			D3D11_INPUT_ELEMENT_DESC textureDesc[] =
+			VertexShader* lightVS = new VertexShader();
+			D3D11_INPUT_ELEMENT_DESC lightDesc[] =
 			{
 				{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 				{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 				{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 			};
-			textureVS->SetVertexDesc(textureDesc);
-			textureVS->Initialize(_device.Get(), "../x64/Debug/LightVS.cso");
-			textureVS->SetVertexType(VertexType::LIGHT_VERTEX);
-			_vertexShaders["LightVS"] = textureVS;
+			lightVS->SetVertexDesc(lightDesc, ARRAYSIZE(lightDesc));
+			lightVS->Initialize(_device.Get(), "../x64/Debug/LightVS.cso");
+			lightVS->SetVertexType(VertexType::LIGHT_VERTEX);
+			_vertexShaders["LightVS"] = lightVS;
 
-			PixelShader* texturePS = new PixelShader();
-			texturePS->Initialize(_device.Get(), "../x64/Debug/LightPS.cso");
-			_pixelShaders["LightPS"] = texturePS;
+			PixelShader* lightPS = new PixelShader();
+			lightPS->Initialize(_device.Get(), "../x64/Debug/LightPS.cso");
+			_pixelShaders["LightPS"] = lightPS;
 		}
 
 		CreateRenderStates();

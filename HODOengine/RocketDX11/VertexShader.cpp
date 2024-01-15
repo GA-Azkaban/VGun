@@ -64,7 +64,7 @@ namespace RocketCore::Graphics
 
 		assert(_vertexDesc != nullptr);
 
-		HR(device->CreateInputLayout(_vertexDesc, 2, vsData.data(), vsData.size(), &_inputLayout));
+		HR(device->CreateInputLayout(_vertexDesc, _numElements, vsData.data(), vsData.size(), &_inputLayout));
 	}
 
 	void VertexShader::CreateMatrixBuffer(ID3D11Device* device)
@@ -80,9 +80,10 @@ namespace RocketCore::Graphics
 		HR(device->CreateBuffer(&matrixBufferDesc, NULL, &_matrixBuffer));
 	}
 
-	void VertexShader::SetVertexDesc(D3D11_INPUT_ELEMENT_DESC* desc)
+	void VertexShader::SetVertexDesc(D3D11_INPUT_ELEMENT_DESC desc[], unsigned int numElements)
 	{
 		_vertexDesc = desc;
+		_numElements = numElements;
 	}
 
 	void VertexShader::SetVertexType(VertexType type)

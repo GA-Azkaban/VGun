@@ -22,7 +22,7 @@ namespace RocketCore::Graphics
 		ID3D11SamplerState** GetAddressOfSampleState();
 
 	public:
-		void SetVertexDesc(D3D11_INPUT_ELEMENT_DESC* desc);
+		void SetVertexDesc(D3D11_INPUT_ELEMENT_DESC desc[], unsigned int numElements);
 		void SetVertexType(VertexType type);
 		VertexType GetVertexType() const;
 
@@ -38,6 +38,7 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11InputLayout> _inputLayout;
 		ComPtr<ID3D11SamplerState> _sampleState;
 		VertexType _vertexType;
+		unsigned int _numElements;
 	};
 }
 
