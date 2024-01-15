@@ -1,5 +1,6 @@
 #pragma once
 #include <DirectXMath.h>
+#include <d3d11.h>
 #include "dllExporter.h"
 
 #include "..\\HODO3DGraphicsInterface\\ICamera.h"
@@ -64,5 +65,13 @@ namespace RocketCore::Graphics
 
 	private:
 		static Camera* _mainCamera;
+
+	public:
+		void CreateCameraBuffer(ID3D11Device* device);
+		ID3D11Buffer* GetCameraBuffer() const;
+		ID3D11Buffer** GetAddressOfCameraBuffer();
+
+	private:
+		ComPtr<ID3D11Buffer> _cameraBuffer;
 	};
 }

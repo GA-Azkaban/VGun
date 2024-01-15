@@ -95,9 +95,11 @@ namespace RocketCore::Graphics
 		
 			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
 
-			lightBufferDataPtr->diffuseColor = { 1.0f,0.0f,0.0f,1.0f };
-			lightBufferDataPtr->lightDirection = { -1.0f,-1.0f,-1.0f };
-			lightBufferDataPtr->padding = 0.0f;
+			lightBufferDataPtr->ambientColor = { 0.15f,0.15f,0.15f,1.0f };
+			lightBufferDataPtr->diffuseColor = { 1.0f,1.0f,1.0f,1.0f };
+			lightBufferDataPtr->lightDirection = { 1.0f,-1.0f,1.0f };
+			lightBufferDataPtr->specularPower = 0.5f;
+			lightBufferDataPtr->specularColor = { 1.0f,1.0f,1.0f,1.0f };
 
 			deviceContext->Unmap(_pixelShader->GetLightBuffer(), 0);
 

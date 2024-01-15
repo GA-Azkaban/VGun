@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "..\\HODOmath\\HODOmath.h"
 #include "ResourceManager.h"
+#include "GraphicsStruct.h"
+#include "RocketMacroDX11.h"
 
 using namespace DirectX;
 
@@ -226,6 +228,29 @@ namespace RocketCore::Graphics
 	{
 		SetPosition(pos.x, pos.y, pos.z);
 		SetRotation(rot.w, rot.x, rot.y, rot.z);
+	}
+
+	void Camera::CreateCameraBuffer(ID3D11Device* device)
+	{
+		D3D11_BUFFER_DESC cameraBufferDesc;
+		cameraBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		cameraBufferDesc.ByteWidth = sizeof(CameraBufferType);
+		cameraBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		cameraBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		cameraBufferDesc.MiscFlags = 0;
+		cameraBufferDesc.StructureByteStride = 0;
+
+		HR(device->CreateBuffer(&cameraBufferDesc, NULL, &_cameraBuffer));
+	}
+
+	ID3D11Buffer* Camera::GetCameraBuffer() const
+	{
+		return _cameraBuffer.Get();
+	}
+
+	ID3D11Buffer** Camera::GetAddressOfCameraBuffer()
+	{
+		return _cameraBuffer.GetAddressOf();
 	}
 
 }

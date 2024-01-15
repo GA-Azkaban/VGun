@@ -38,8 +38,16 @@ namespace RocketCore::Graphics
 
 	struct LightBufferType
 	{
+		DirectX::XMFLOAT4 ambientColor;
 		DirectX::XMFLOAT4 diffuseColor;
 		DirectX::XMFLOAT3 lightDirection;
-		float padding;	// 구조체가 CreateBuffer 함수 요구 사항에 대해 16의 배수가 되도록 여분의 패딩을 추가
+		float specularPower;
+		DirectX::XMFLOAT4 specularColor;
+	};
+
+	struct CameraBufferType
+	{
+		DirectX::XMFLOAT3 cameraPosition;
+		float padding;
 	};
 }

@@ -18,6 +18,7 @@
 #include "StaticMeshObject.h"
 #include "ImageRenderer.h"
 #include "LineRenderer.h"
+#include "RocketMacroDX11.h"
 
 
 namespace HDEngine
@@ -258,6 +259,24 @@ namespace RocketCore::Graphics
 	void RocketDX11::RenderStaticMesh()
 	{
 		Camera* mainCam = Camera::GetMainCamera();
+
+		// 카메라 버퍼 세팅
+		{
+			// 버텍스 쉐이더
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			HR(_deviceContext->Map(mainCam->GetCameraBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+			CameraBufferType* cameraBufferDataPtr = (CameraBufferType*)mappedResource.pData;
+
+			cameraBufferDataPtr->cameraPosition = mainCam->GetPosition();
+			cameraBufferDataPtr->padding = 0.0f;
+
+			_deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
+
+			unsigned int bufferNumber = 0;
+
+			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
+		}
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
