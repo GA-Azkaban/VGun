@@ -5,6 +5,7 @@
 //#include <vector>
 #include <DXTK\\SpriteBatch.h>
 #include <DXTK\\WICTextureLoader.h>
+#include <DirectXTex\\DirectXTex.h>
 #include <wrl\client.h>
 
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
@@ -37,6 +38,10 @@ namespace RocketCore::Graphics
 
 		virtual void ChangeScale(float x, float y) override;
 
+		virtual float GetWidth() override;
+
+		virtual float GetHeight() override;
+
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 
@@ -51,6 +56,11 @@ namespace RocketCore::Graphics
 		float _ylocation;
 		float _scaleX;
 		float _scaleY;
+
+		// 이미지 정보
+		DirectX::TexMetadata _meataData;
+		float _imageWidth;
+		float _imageHeight;
 
 		ID3D11Device* _device;
 		ID3D11DeviceContext* _deviceContext;

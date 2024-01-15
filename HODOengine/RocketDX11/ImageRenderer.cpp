@@ -11,7 +11,9 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
 	_ylocation(),
 	_scaleX(1.0f),
-	_scaleY(1.0f)
+	_scaleY(1.0f),
+	_imageWidth(),
+	_imageHeight()
 {
 	_color = DirectX::Colors::White;
 }
@@ -58,6 +60,16 @@ void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 		wideFilePath.c_str(),
 		nullptr,
 		_imagerSRV.GetAddressOf());
+
+	D3D11_TEXTURE2D_DESC textureDesc;
+	ID3D11Resource* resource;
+	_imagerSRV->GetResource(&resource);
+	ID3D11Texture2D* texture2D = static_cast<ID3D11Texture2D*>(resource);
+	texture2D->GetDesc(&textureDesc);
+
+	_imageWidth = textureDesc.Width;
+	_imageHeight = textureDesc.Height;
+
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float y)
@@ -76,7 +88,6 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 {
 	spriteBatch->Begin();
 
-	//spriteBatch->Draw(_imagerSRV.Get(), DirectX::XMFLOAT2(_xlocation,_ylocation), nullptr, _color);
 	spriteBatch->Draw(
 		_imagerSRV.Get(),
 		DirectX::XMFLOAT2(_xlocation, _ylocation),
@@ -119,6 +130,8 @@ void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 {
 	_scaleX = x;
 	_scaleY = y;
+	_imageWidth *= _scaleX;
+	_imageHeight *= _scaleY;
 }
 
 float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionX()
@@ -131,9 +144,12 @@ float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionY()
 	return _ylocation;
 }
 
-//float RocketCore::Graphics::ImageRenderer::GetScreenSpacePosition()
-//{
-//	return _xlocation;
-//}
+float RocketCore::Graphics::ImageRenderer::GetWidth()
+{
+	return _imageWidth;
+}
 
-
+float RocketCore::Graphics::ImageRenderer::GetHeight()
+{
+	return _imageHeight;
+}
