@@ -13,6 +13,12 @@
     <FxCompile Include="TextureVS.hlsl">
       <Filter>Resource\Shader\HLSL\Texture</Filter>
     </FxCompile>
+    <FxCompile Include="LightVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Light</Filter>
+    </FxCompile>
+    <FxCompile Include="LightPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Light</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp">
@@ -46,10 +52,10 @@
       <Filter>Resource\Model</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
-      <Filter>Object\ObjectFactory</Filter>
+      <Filter>ObjectFactory</Filter>
     </ClCompile>
     <ClCompile Include="ObjectManager.cpp">
-      <Filter>Object\ObjectManager</Filter>
+      <Filter>ObjectManager</Filter>
     </ClCompile>
     <ClCompile Include="PixelShader.cpp">
       <Filter>Resource\Shader\PixelShader</Filter>
@@ -71,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Resource\Shader\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,10 +130,10 @@
       <Filter>Resource\Model</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
-      <Filter>Object\ObjectFactory</Filter>
+      <Filter>ObjectFactory</Filter>
     </ClInclude>
     <ClInclude Include="ObjectManager.h">
-      <Filter>Object\ObjectManager</Filter>
+      <Filter>ObjectManager</Filter>
     </ClInclude>
     <ClInclude Include="PixelShader.h">
       <Filter>Resource\Shader\PixelShader</Filter>
@@ -152,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>Resource\Shader\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,12 +202,6 @@
     </Filter>
     <Filter Include="Object\TextObject">
       <UniqueIdentifier>{4e5df295-451d-4a52-87a7-90d2884ebebf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\ObjectFactory">
-      <UniqueIdentifier>{e3285456-1476-4c23-b8b0-9eaaf7356bab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\ObjectManager">
-      <UniqueIdentifier>{11071d87-dcf1-499b-b90c-53d5ec16db05}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource">
       <UniqueIdentifier>{5a459304-e098-43fa-9b09-91426347a350}</UniqueIdentifier>
@@ -253,6 +259,18 @@
     </Filter>
     <Filter Include="GraphicsProcess">
       <UniqueIdentifier>{783d888a-f61d-4e9b-906b-301a0c7c4c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{1cb4a846-a9b5-414c-b3fa-5cfa50d7cdde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Light">
+      <UniqueIdentifier>{cedef95d-8557-4c43-9eea-f305d33cb80a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectManager">
+      <UniqueIdentifier>{11071d87-dcf1-499b-b90c-53d5ec16db05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectFactory">
+      <UniqueIdentifier>{e3285456-1476-4c23-b8b0-9eaaf7356bab}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

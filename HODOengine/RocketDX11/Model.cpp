@@ -45,6 +45,9 @@ namespace RocketCore::Graphics
 				case VertexType::TEXTURE_VERTEX:
 					stride = sizeof(TextureVertex);
 					break;
+				case VertexType::LIGHT_VERTEX:
+					stride = sizeof(LightVertex);
+					break;
 				default:
 					break;
 			}

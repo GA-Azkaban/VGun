@@ -15,12 +15,16 @@ namespace RocketCore::Graphics
 
 	public:
 		ID3D11PixelShader* GetPixelShader() const;
+		ID3D11Buffer* GetLightBuffer() const;
+		ID3D11Buffer** GetAddressOfLightBuffer();
 
 	private:
 		void CreatePixelShader(ID3D11Device* device, const std::string& path);
+		void CreateLightBuffer(ID3D11Device* device);
 
 
 	private:
 		ComPtr<ID3D11PixelShader> _pixelShader;
+		ComPtr<ID3D11Buffer> _lightBuffer;
 	};
 }

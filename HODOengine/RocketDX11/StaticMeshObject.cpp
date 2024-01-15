@@ -68,31 +68,43 @@ namespace RocketCore::Graphics
 		deviceContext->IASetInputLayout(_vertexShader->GetInputLayout());
 		deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		MatrixBufferType* dataPtr;
-		unsigned int bufferNumber;
+		// 상수 버퍼 세팅
+		{
+			// 버텍스 쉐이더
+			D3D11_MAPPED_SUBRESOURCE mappedResource;
+			HR(deviceContext->Map(_vertexShader->GetMatrixBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
-		DirectX::XMMATRIX w;
-		DirectX::XMMATRIX v;
-		DirectX::XMMATRIX p;
+			MatrixBufferType* matrixBufferDataPtr = (MatrixBufferType*)mappedResource.pData;
 
-		w = DirectX::XMMatrixTranspose(_worldTM);
-		v = DirectX::XMMatrixTranspose(view);
-		p = DirectX::XMMatrixTranspose(proj);
+			DirectX::XMMATRIX w = DirectX::XMMatrixTranspose(_worldTM);
+			DirectX::XMMATRIX v = DirectX::XMMatrixTranspose(view);
+			DirectX::XMMATRIX p = DirectX::XMMatrixTranspose(proj);
 
-		HR(deviceContext->Map(_vertexShader->GetMatrixBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+			matrixBufferDataPtr->world = w;
+			matrixBufferDataPtr->view = v;
+			matrixBufferDataPtr->projection = p;
 
-		dataPtr = (MatrixBufferType*)mappedResource.pData;
+			deviceContext->Unmap(_vertexShader->GetMatrixBuffer(), 0);
 
-		dataPtr->world = w;
-		dataPtr->view = v;
-		dataPtr->projection = p;
+			unsigned int bufferNumber = 0;
 
-		deviceContext->Unmap(_vertexShader->GetMatrixBuffer(), 0);
+			deviceContext->VSSetConstantBuffers(bufferNumber, 1, _vertexShader->GetAddressOfMatrixBuffer());
 
-		bufferNumber = 0;
+			// 픽셀 쉐이더
+			HR(deviceContext->Map(_pixelShader->GetLightBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+		
+			LightBufferType* lightBufferDataPtr = (LightBufferType*)mappedResource.pData;
 
-		deviceContext->VSSetConstantBuffers(bufferNumber, 1, _vertexShader->GetAddressOfMatrixBuffer());
+			lightBufferDataPtr->diffuseColor = { 1.0f,0.0f,0.0f,1.0f };
+			lightBufferDataPtr->lightDirection = { -1.0f,-1.0f,-1.0f };
+			lightBufferDataPtr->padding = 0.0f;
+
+			deviceContext->Unmap(_pixelShader->GetLightBuffer(), 0);
+
+			bufferNumber = 0;
+
+			deviceContext->PSSetConstantBuffers(bufferNumber, 1, _pixelShader->GetAddressOfLightBuffer());
+		}
 
 		// 렌더스테이트
 		deviceContext->RSSetState(_renderState);

@@ -11,6 +11,7 @@
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Camera.h"
+#include "Light.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -87,6 +88,7 @@ namespace RocketCore::Graphics
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
+		Light* _testLight;
 
 	private:
 		ResourceManager& _resourceManager;

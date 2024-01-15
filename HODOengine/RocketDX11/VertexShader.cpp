@@ -121,5 +121,4 @@ namespace RocketCore::Graphics
 	{
 		return &_sampleState;
 	}
-
 }

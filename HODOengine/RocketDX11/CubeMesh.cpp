@@ -22,7 +22,7 @@ namespace RocketCore::Graphics
 
 	void CubeMesh::BuildGeometryBuffers(ID3D11Device* device)
 	{
-		_vertexType = VertexType::TEXTURE_VERTEX;
+		_vertexType = VertexType::LIGHT_VERTEX;
 
 // 		ColorVertex vertices[8] =
 // 		{
@@ -36,21 +36,33 @@ namespace RocketCore::Graphics
 // 			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT4((const float*)&DirectX::Colors::White)}
 // 		};
 
-		TextureVertex vertices[8] =
+// 		TextureVertex vertices[8] =
+// 		{
+// 			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f)},
+// 			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},
+// 			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},
+// 			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f)},
+// 			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},
+// 			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f)},
+// 			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},
+// 			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f)}
+// 		};
+		
+		LightVertex vertices[8] =
 		{
-			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f)},
-			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},
-			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},
-			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f)},
-			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f)},
-			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f)},
-			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f)},
-			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f)}
+			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(0.5f,0.5f,-0.5f)},
+			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(-0.5f,0.5f,0.5f)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.5f,0.5f,0.5f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(0.5f,-0.5f,0.5f)}
 		};
 
 		D3D11_BUFFER_DESC vbd;
 		vbd.Usage = D3D11_USAGE_IMMUTABLE;    
-		vbd.ByteWidth = sizeof(TextureVertex) * ARRAYSIZE(vertices);
+		vbd.ByteWidth = sizeof(LightVertex) * ARRAYSIZE(vertices);
 		vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 		vbd.CPUAccessFlags = 0;
 		vbd.MiscFlags = 0;

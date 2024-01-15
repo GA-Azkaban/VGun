@@ -203,6 +203,10 @@ namespace RocketCore::Graphics
 		_grid = new Grid();
 		_grid->Initialize(_device.Get());
 
+		_testLight = new Light();
+		_testLight->SetDiffuseColor(1.0f, 0.0f, 0.0f, 1.0f);
+		_testLight->SetDirection(-1.0f, -1.0f, -1.0f);
+
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
