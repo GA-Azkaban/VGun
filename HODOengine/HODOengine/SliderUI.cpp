@@ -14,7 +14,7 @@ namespace HDData
 		_sliderPoint(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
 		_valueText(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
 		_inputSystem(HDEngine::InputSystem::Instance()),
-		_value(50)
+		_value(0.5f)
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable.push_back(_sliderBar);
@@ -24,24 +24,36 @@ namespace HDData
 
 	void SliderUI::Start()
 	{
-		_valueText->SetText(std::to_string(_value));
+		// 이미지와 위치 세팅
 		_sliderPoint->SetImage("circle.png");
 		_sliderPoint->ChangeScale(0.05f, 0.05f);
+		_valueText->SetText(std::to_string((int)_value));
 		_sliderBar->SetImage("bar.png");
-		_sliderBar->ChangeScale(1.f, 0.2f);
+		_sliderBar->ChangeScale(0.7f, 0.7f);
+
+		HDMath::HDFLOAT3 transform = GetTransform()->GetWorldPosition();
+
+		_valueText->SetScreenSpacePosition(transform.x, transform.y - 30);
+
+		// 포인터 초기 위치 설정
+		auto pos = _sliderBar->GetScreenSpacePositionX() + _sliderBar->GetWidth() * _value;
+		_sliderPoint->SetScreenSpacePosition(pos, 50.f);
+
+		// 포인터가 이동할 수 있는 x의 최대 최소값
+		_min = _sliderBar->GetScreenSpacePositionX();
+		_max = _min + _sliderBar->GetWidth();
 	}
 
 	void SliderUI::Update()
 	{
-		auto now = _sliderPoint->GetScreenSpacePositionX();
-
 		if (_inputSystem.GetMouse(MOUSE_LEFT))
 		{
-			_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - 50, GetTransform()->GetWorldPosition().y);
-			_valueText->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - 50, GetTransform()->GetWorldPosition().y - 30);
-			_value = _inputSystem.GetMousePosition().x;
+			_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - _sliderPoint->GetWidth(), GetTransform()->GetWorldPosition().y);
+			_valueText->SetScreenSpacePosition(_sliderPoint->GetScreenSpacePositionX(), _sliderPoint->GetScreenSpacePositionY() - 30);
 
-			// TODO) 길이를 가져와서 값을 제한하고 퍼센티지로 계산해야 함
+			auto point = _sliderPoint->GetScreenSpacePositionX() - _sliderBar->GetScreenSpacePositionX();
+			_value = point / _sliderBar->GetWidth() * 100;
+			_valueText->SetText(std::to_string(_value));
 		}
 	}
 
@@ -100,5 +112,4 @@ namespace HDData
 	{
 		_sliderPoint->SetImage(fileName);
 	}
-
 }

@@ -124,7 +124,7 @@ TestScene::TestScene()
 	//_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
 	auto _slider = API::CreateSlider(_scene);
-	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,0.0f });
 	_slider->AddComponent<HDData::AudioSource>();
 	_slider->AddComponent<SliderSoundScript>();
 

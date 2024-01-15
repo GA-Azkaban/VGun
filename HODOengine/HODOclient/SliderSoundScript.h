@@ -12,7 +12,7 @@ public:
 
 private:
 	bool _isSettingOn;
-	int _soundVolume;
+	float _soundVolume;
 
 	HDData::AudioSource* _audio;
 	HDData::SliderUI* _slider;

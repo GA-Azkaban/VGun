@@ -48,7 +48,7 @@ namespace HDData
 		int _max = 100;
 
 		// 슬라이더 값
-		int _value;
+		float _value;
 	};
 }
 
