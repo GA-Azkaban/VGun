@@ -13,6 +13,8 @@ namespace HDEngine
 		virtual float GetScreenSpacePositionX() = 0;
 		virtual float GetScreenSpacePositionY() = 0;
 		virtual void SetWorldSpace() = 0;
+		virtual float GetWidth() = 0;
+		virtual float GetHeight() = 0;
 		virtual void ChangeScale(float x, float y) = 0;
 	};
 }
