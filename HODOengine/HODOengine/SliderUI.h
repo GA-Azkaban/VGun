@@ -29,7 +29,8 @@ namespace HDData
 		std::string GetText();
 		
 		void SetDefaultValue(int val);
-		int GetDefaultValue();
+		void SetValue(int val);
+		int GetValue();
 
 		void SetSliderbarImage(const char* fileName);
 		void SetSliderpointImage(const char* fileName);

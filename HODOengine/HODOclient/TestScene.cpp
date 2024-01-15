@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
+#include "SliderSoundScript.h"
 
 enum eColliderType
 {
@@ -85,12 +86,11 @@ TestScene::TestScene()
 
 	auto _slider = API::CreateSlider(_scene);
 	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-
-	auto testSound = API::CreateObject(_scene);
-	testSound->AddComponent<HDData::AudioSource>();
-	auto SoundComp = testSound->GetComponent<HDData::AudioSource>();
+	_slider->AddComponent<HDData::AudioSource>();
+	auto SoundComp = _slider->GetComponent<HDData::AudioSource>();
 	SoundComp->AddAudio("ingame_bgm", "../Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
-
+	SoundComp->PlayRepeat("ingame_bgm");
+	_slider->AddComponent<SliderSoundScript>();
 
 	API::LoadScene(_scene);
 

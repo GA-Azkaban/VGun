@@ -39,6 +39,7 @@ namespace HDData
 		{
 			_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - 50, GetTransform()->GetWorldPosition().y);
 			_valueText->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - 50, GetTransform()->GetWorldPosition().y - 30);
+			_value = _inputSystem.GetMousePosition().x;
 
 			// TODO) 길이를 가져와서 값을 제한하고 퍼센티지로 계산해야 함
 		}
@@ -80,7 +81,12 @@ namespace HDData
 		_value = val;
 	}
 
-	int SliderUI::GetDefaultValue()
+	void SliderUI::SetValue(int val)
+	{
+		_value = val;
+	}
+
+	int SliderUI::GetValue()
 	{
 		return _value;
 	}

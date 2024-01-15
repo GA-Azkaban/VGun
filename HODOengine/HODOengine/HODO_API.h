@@ -36,6 +36,8 @@
 #include "ImageUI.h"
 #include "SlideBoxUI.h"
 #include "SliderUI.h"
+#include "AudioSource.h"
+#include "AudioClip.h"
 
 #include "ObjectSystem.h"
 
