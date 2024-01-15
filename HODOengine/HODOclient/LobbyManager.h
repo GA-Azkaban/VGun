@@ -16,6 +16,11 @@ public:
 	void Login();
 	void Join();
 
+public:
+	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);
+	void SetIDTextBox();
+
+
 private:
 	// 메인 화면
 	HDData::GameObject* _mainCanvas;	

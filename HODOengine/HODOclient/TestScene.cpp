@@ -126,7 +126,6 @@ TestScene::TestScene()
 	auto _slider = API::CreateSlider(_scene);
 	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	_slider->AddComponent<HDData::AudioSource>();
-
 	_slider->AddComponent<SliderSoundScript>();
 
 	API::LoadScene(_scene);
