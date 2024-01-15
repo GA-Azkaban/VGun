@@ -75,9 +75,6 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/model.dae");
 	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/sunsetcube1024.dds");
 	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/diffuse.png");
-	//ResourceManager::Instance.Get().LoadFile((LPSTR)"ASEFile/babypig_walk_6x.ASE");
-	//ResourceManager::Instance.Get().LoadFile((LPSTR)"FBXFile/fox.fbx");
-	//ResourceManager::Instance.Get().LoadFile((LPCSTR)"Textures/fox_reverse.dds");
 
 	//StaticMeshObject* test1 = new StaticMeshObject();
 	//SkinningMeshObject* test1 = new SkinningMeshObject();
