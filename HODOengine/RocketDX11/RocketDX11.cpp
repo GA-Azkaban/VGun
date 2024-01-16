@@ -378,7 +378,7 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Update(float deltaTime)
 	{
-		//Camera::GetMainCamera()->UpdateViewMatrix();
+		Camera::GetMainCamera()->UpdateViewMatrix();
 		//Camera::GetMainCamera()->UpdateProjectionMatrix();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())

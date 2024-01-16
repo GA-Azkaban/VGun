@@ -53,6 +53,9 @@ namespace HDEngine
 
 	void RenderSystem::Update(float deltaTime)
 	{
+		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		HDData::Camera* mainCam = currentScene->GetMainCamera();
+		mainCam->UpdateRenderData();
 		_dx11Renderer->Update(deltaTime);
 	}
 

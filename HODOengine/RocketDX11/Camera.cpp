@@ -177,16 +177,16 @@ namespace RocketCore::Graphics
 		}
 
 		XMMATRIX worldTM = XMLoadFloat4x4(&_worldMatrix);
-		XMVECTOR scale;
-		XMVECTOR rotation;
-		XMVECTOR translate;
-		XMMatrixDecompose(&scale, &rotation, &translate, worldTM);
-		XMStoreFloat3(&_position, translate);
-		XMStoreFloat4(&_rotation, rotation);
+		//XMVECTOR scale;
+		//XMVECTOR rotation;
+		//XMVECTOR translate;
+		//XMMatrixDecompose(&scale, &rotation, &translate, worldTM);
+		//XMStoreFloat3(&_position, translate);
+		//XMStoreFloat4(&_rotation, rotation);
 
-		UpdateViewMatrix();
-		/*XMMATRIX inverse = XMMatrixInverse(nullptr, worldTM);
-		SetViewMatrix(inverse);*/
+		//UpdateViewMatrix();
+		XMMATRIX inverse = XMMatrixInverse(nullptr, worldTM);
+		SetViewMatrix(inverse);
 	}
 
 	void Camera::SetNearZ(float nearZ)

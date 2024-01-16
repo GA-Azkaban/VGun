@@ -111,15 +111,13 @@ void CameraMove::WorldUpDown(float delta)
 
 void CameraMove::Pitch(float angle)
 {
-	/*HDMath::HDFLOAT3 r = GetTransform()->GetLocalRotation()* HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, radian);
-	GetGameObject()->GetTransform()->SetLocalRotation(newRot);*/
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 1.0f,0.0f,0.0f }, angle);
-	GetGameObject()->GetTransform()->SetLocalRotation(newRot);
+	HDMath::HDFLOAT3 r = GetTransform()->GetLocalRotation()* HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
+	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, angle);
+	GetGameObject()->GetTransform()->SetLocalRotation(newRot);	
 }
 
 void CameraMove::RotateY(float angle)
 {
 	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
-	GetGameObject()->GetTransform()->SetLocalRotation(newRot);
+	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
 }
