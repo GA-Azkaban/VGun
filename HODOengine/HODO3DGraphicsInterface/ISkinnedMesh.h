@@ -1,15 +1,18 @@
 #pragma once
 #include "IRenderable.h"
+#include <string>
 
 namespace HDEngine
 {
 	class ISkinnedMesh : public IRenderable
 	{
 	public:
-		virtual void LoadMesh(const char* fileName) = 0;
-		virtual void LoadNormalMap(const char* fileName) = 0;
-		virtual void LoadDiffuseMap(const char* fileName) = 0;
-		virtual void SetAnimation(const char* animationName) = 0;
-		virtual void PlayAnimation() = 0;
+		virtual void LoadMesh(const std::string& fileName) = 0;
+		virtual void LoadNormalMap(const std::string& fileName) = 0;
+		virtual void LoadDiffuseMap(const std::string& fileName) = 0;
+		virtual void LoadVertexShader(const std::string& fileName) = 0;
+		virtual void LoadPixelShader(const std::string& fileName) = 0;
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) = 0;
+		virtual void PlayAnimation(UINT index, bool isLoop = true) = 0;
 	};
 }

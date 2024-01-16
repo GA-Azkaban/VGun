@@ -3,7 +3,9 @@
 #include "..\\HODO3DGraphicsInterface\\IRenderable.h"
 
 #include "Camera.h"
+#include "HelperObject.h"
 #include "StaticMeshObject.h"
+#include "SkinningMeshObject.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -24,10 +26,26 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
+	HelperObject* ObjectManager::CreateHelperObject()
+	{
+		HelperObject* temp = new HelperObject();
+		_helperObjectList.emplace_back(temp);
+
+		return temp;
+	}
+
 	StaticMeshObject* ObjectManager::CreateStaticMeshObject()
 	{
 		StaticMeshObject* temp = new StaticMeshObject();
 		_staticMeshObjectList.emplace_back(temp);
+
+		return temp;
+	}
+
+	RocketCore::Graphics::SkinningMeshObject* ObjectManager::CreateSkinningMeshObject()
+	{
+		SkinningMeshObject* temp = new SkinningMeshObject();
+		_skinningMeshObjectList.emplace_back(temp);
 
 		return temp;
 	}
@@ -49,9 +67,19 @@ namespace RocketCore::Graphics
 		return _ImageList;
 	}
 
+	std::vector<HelperObject*>& ObjectManager::GetHelperObjList()
+	{
+		return _helperObjectList;
+	}
+
 	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()
 	{
 		return _staticMeshObjectList;
+	}
+
+	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
+	{
+		return _skinningMeshObjectList;
 	}
 
 	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()

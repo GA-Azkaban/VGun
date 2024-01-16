@@ -140,6 +140,7 @@ void HODOengine::Run()
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
 	// draw
+	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location

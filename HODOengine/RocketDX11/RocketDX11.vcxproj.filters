@@ -13,6 +13,30 @@
     <FxCompile Include="TextureVS.hlsl">
       <Filter>Resource\Shader\HLSL\Texture</Filter>
     </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="SkeletonPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\SkeletonMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="SkeletonVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\SkeletonMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\CubeMap</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\CubeMap</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\DebugMesh</Filter>
+    </FxCompile>
+    <FxCompile Include="DebugPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\DebugMesh</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp">
@@ -72,9 +96,29 @@
     <ClCompile Include="VertexShader.cpp">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClCompile>
+    <ClCompile Include="IShader.cpp">
+      <Filter>Resource\Shader\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryGenerator.cpp">
+      <Filter>GeometryGenerator</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Resource\Resource3D\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="MathHelper.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinningMeshObject.cpp">
+      <Filter>Object\SkinningMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="HelperObject.cpp">
+      <Filter>Object\HelperObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Cubemap.cpp">
+      <Filter>Object\Cubemap</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Font.h" />
     <ClInclude Include="Axis.h">
       <Filter>Object\HelperObject</Filter>
     </ClInclude>
@@ -153,6 +197,36 @@
     <ClInclude Include="VertexShader.h">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderStruct.h">
+      <Filter>Resource\Shader\ShaderStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="LightStruct.h">
+      <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryGenerator.h">
+      <Filter>GeometryGenerator</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelper.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Resource\Resource3D\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpMathConverter.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinningMeshObject.h">
+      <Filter>Object\SkinningMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperObject.h">
+      <Filter>Object\HelperObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Cubemap.h">
+      <Filter>Object\Cubemap</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">
@@ -181,9 +255,6 @@
     </Filter>
     <Filter Include="Object\LineRenderer">
       <UniqueIdentifier>{29601c1e-6dd6-412d-8f40-c8d66e78a994}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\SkinnedMesh">
-      <UniqueIdentifier>{51bf0425-9c14-4153-a750-4f08ac11fce2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object\StaticMesh">
       <UniqueIdentifier>{b06c9dce-0c2e-4e80-9d78-36595b5a6d4d}</UniqueIdentifier>
@@ -253,6 +324,36 @@
     </Filter>
     <Filter Include="GraphicsProcess">
       <UniqueIdentifier>{783d888a-f61d-4e9b-906b-301a0c7c4c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\ShaderStruct">
+      <UniqueIdentifier>{3ed8a78b-3239-4747-b967-c796a69e0968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Light">
+      <UniqueIdentifier>{ec2bc23f-2925-4ae1-9529-c18faf4d4916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\StaticMesh">
+      <UniqueIdentifier>{da1d8c1f-7d9b-4be9-a707-125ea5c9c46a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SkeletonMesh">
+      <UniqueIdentifier>{dfc43e52-1bb3-4c6f-b062-88ff058a0c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\CubeMap">
+      <UniqueIdentifier>{638160f3-9c7a-49fd-9ec7-0a8a83f7b843}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GeometryGenerator">
+      <UniqueIdentifier>{60750075-3eba-44f4-9dcb-1669104d61a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\Material">
+      <UniqueIdentifier>{d29731b7-9a5f-4495-b992-1505314c0233}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\SkinningMesh">
+      <UniqueIdentifier>{51bf0425-9c14-4153-a750-4f08ac11fce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\DebugMesh">
+      <UniqueIdentifier>{bed60426-c7bd-4b36-a092-139e9c5c93f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Cubemap">
+      <UniqueIdentifier>{3e08331c-c291-4e77-87b4-6e4b8b73be12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

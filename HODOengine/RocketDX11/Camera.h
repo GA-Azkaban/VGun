@@ -32,6 +32,7 @@ namespace RocketCore::Graphics
 		DirectX::XMFLOAT3 GetPosition() const;
 		void SetPosition(float x, float y, float z);
 		void SetRotation(float w, float x, float y, float z);
+		void SetViewMatrix(const DirectX::XMMATRIX& tm);
 
 		void UpdateProjectionMatrix();
 		void UpdateViewMatrix();

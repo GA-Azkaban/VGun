@@ -51,9 +51,14 @@ namespace HDEngine
 		reinterpret_cast<GRAPHICS_RELEASE_SIGNATURE>(GetProcAddress(_dllHandle, GRAPHICS_RELEASE_NAME))(_dx11Renderer.release());
 	}
 
+	void RenderSystem::Update(float deltaTime)
+	{
+		_dx11Renderer->Update(deltaTime);
+	}
+
 	void RenderSystem::DrawProcess()
 	{
-		UpdateRenderData(); //SetRenderData + 전체 렌더 시작,
+		//UpdateRenderData(); //SetRenderData + 전체 렌더 시작,
 		_dx11Renderer->Render();
 	}
 

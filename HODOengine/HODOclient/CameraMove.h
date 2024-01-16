@@ -24,7 +24,7 @@ public:
 	void WorldUpDown(float delta);
 
 	void Yaw(float angle);
-	void Pitch(float radian);
+	void Pitch(float angle);
 	void Roll(float angle);
 	void RotateY(float angle);
 

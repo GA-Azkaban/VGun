@@ -120,6 +120,11 @@ namespace HDData
 		// _graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
+	void Camera::Update()
+	{
+		_graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
+	}
+
 	void Camera::SetAsMainCamera()
 	{
 		_graphicsCamera->SetAsMainCamera();
