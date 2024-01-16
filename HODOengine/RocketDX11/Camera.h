@@ -1,9 +1,12 @@
 #pragma once
 #include <DirectXMath.h>
 #include <d3d11.h>
-#include "dllExporter.h"
+#include <wrl.h>
 
+#include "dllExporter.h"
 #include "..\\HODO3DGraphicsInterface\\ICamera.h"
+
+using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {

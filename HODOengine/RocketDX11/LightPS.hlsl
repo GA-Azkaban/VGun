@@ -57,7 +57,7 @@ float4 main(PixelInputType input) : SV_TARGET
     
     color = saturate(color + specular);
     
-    color.a = 1.0f;
+    //color.a = 1.0f;
     
     return color;
 }

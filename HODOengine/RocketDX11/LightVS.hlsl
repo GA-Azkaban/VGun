@@ -28,7 +28,7 @@ struct PixelInputType
 
 PixelInputType main(VertexInputType input)
 {
-    PixelInputType output;
+    PixelInputType output = (PixelInputType)0;
     
     // Change the position vector to be 4 units for proper matrix calculations.
     input.position.w = 1.0f;

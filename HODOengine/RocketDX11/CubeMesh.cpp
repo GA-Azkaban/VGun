@@ -48,16 +48,43 @@ namespace RocketCore::Graphics
 // 			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f)}
 // 		};
 		
-		LightVertex vertices[8] =
+		LightVertex vertices[] =
 		{
-			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f)},
-			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(0.5f,0.5f,-0.5f)},
-			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(-0.5f,0.5f,0.5f)},
-			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.5f,0.5f,0.5f)},
-			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f)},
-			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f)},
-			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f)},
-			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(0.5f,-0.5f,0.5f)}
+			// 윗면
+			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(0.0f,1.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(0.0f,1.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.0f,1.0f,0.0f)},
+			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(0.0f,1.0f,0.0f)},
+
+			// 앞면
+			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(0.0f,0.0f,-1.0f)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(0.0f,0.0f,-1.0f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.0f,0.0f,-1.0f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(0.0f,0.0f,-1.0f)},
+
+			// 오른면
+			{DirectX::XMFLOAT3(0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(1.0f,0.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(1.0f,0.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(1.0f,0.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(1.0f,0.0f,0.0f)},
+
+			// 왼면
+			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(-1.0f,0.0f,0.0f)},
+			{DirectX::XMFLOAT3(-0.5f,0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(-1.0f,0.0f,0.0f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(-1.0f,0.0f,0.0f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(-1.0f, 0.0f,0.0f)},
+
+			// 뒷면
+			{DirectX::XMFLOAT3(0.5f,0.5f,0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(0.0f,0.0f,1.0f)},
+			{DirectX::XMFLOAT3(-0.5f,0.5f,0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(0.0f,0.0f,1.0f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.0f,0.0f,1.0f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(0.0f,0.0f,1.0f)},
+
+			// 아랫면
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(0.0f,0.0f), DirectX::XMFLOAT3(0.0f,-1.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,-0.5f), DirectX::XMFLOAT2(1.0f,0.0f), DirectX::XMFLOAT3(0.0f,-1.0f,0.0f)},
+			{DirectX::XMFLOAT3(0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(1.0f,1.0f), DirectX::XMFLOAT3(0.0f,-1.0f,0.0f)},
+			{DirectX::XMFLOAT3(-0.5f,-0.5f,0.5f), DirectX::XMFLOAT2(0.0f,1.0f), DirectX::XMFLOAT3(0.0f,-1.0f,0.0f)}
 		};
 
 		D3D11_BUFFER_DESC vbd;
@@ -73,20 +100,25 @@ namespace RocketCore::Graphics
 		HR(device->CreateBuffer(&vbd, &vinitData, &_vertexBuffer));
 
 
-		UINT indices[36] =
+		UINT indices[] =
 		{
-			0,2,3,
-			0,3,1,
-			2,6,7,
-			2,7,3,
-			6,4,5,
-			6,5,7,
-			0,5,4,
-			0,1,5,
-			1,3,7,
-			1,7,5,
-			0,4,6,
-			0,6,2
+			0,1,2,
+			2,3,0,
+
+			4,5,6,
+			6,7,4,
+
+			8,9,10,
+			10,11,8,
+
+			12,13,14,
+			14,15,12,
+
+			16,17,18,
+			18,19,16,
+
+			20,21,22,
+			22,23,20
 		};
 
 		

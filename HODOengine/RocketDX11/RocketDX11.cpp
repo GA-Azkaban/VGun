@@ -273,7 +273,7 @@ namespace RocketCore::Graphics
 
 			_deviceContext->Unmap(mainCam->GetCameraBuffer(), 0);
 
-			unsigned int bufferNumber = 0;
+			unsigned int bufferNumber = 1;
 
 			_deviceContext->VSSetConstantBuffers(bufferNumber, 1, mainCam->GetAddressOfCameraBuffer());
 		}

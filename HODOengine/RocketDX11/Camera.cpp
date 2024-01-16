@@ -14,12 +14,13 @@ namespace RocketCore::Graphics
 	Camera::Camera()
 		: _position(0.0f, 2.0f, -10.0f),
 		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
-		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f ), _fovY(70.0f),
+		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(70.0f),
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
 	{
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		CreateCameraBuffer(ResourceManager::Instance().GetDevice());
 	}
 
 	Camera::~Camera()
