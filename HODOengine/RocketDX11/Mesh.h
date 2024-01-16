@@ -14,6 +14,7 @@ namespace RocketCore::Graphics
 	class Mesh : public IResource
 	{
 	public:
+		Mesh() {};
 		virtual void Initialize(ID3D11Device* device);
 
 		int GetVertexCount() const;
@@ -33,5 +34,35 @@ namespace RocketCore::Graphics
 		int vertexCount;
 		int indexCount;
 		VertexType _vertexType;
+
+
+		/// 2024.01.15 김민정
+	public:
+		Mesh(PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+		Mesh(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+		Mesh(VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+		Mesh(const char* objFile);
+		~Mesh();
+
+		UINT GetSingleVertexSize() { return m_singleVertexSize; }
+
+		void BindBuffers();
+		void Draw();
+
+	private:
+		void CalculateTangents(Vertex* vertex, int vertexNum, unsigned int* indices, int indicesNum);
+		void CalculateTangents(VertexSkinning* vertex, int vertexNum, unsigned int* indices, int indicesNum);
+
+		void CreateBuffers(PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+		void CreateBuffers(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+		void CreateBuffers(VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+
+	private:
+		ComPtr<ID3D11Device> m_device;
+		ComPtr<ID3D11DeviceContext> m_deviceContext;
+		ComPtr<ID3D11Buffer> m_vertexBuffer;
+		ComPtr<ID3D11Buffer> m_indexBuffer;
+		UINT m_singleVertexSize;
+		int m_numIndices;
 	};
 }

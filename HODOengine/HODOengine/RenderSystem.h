@@ -35,6 +35,7 @@ namespace HDEngine
 
 		/// 렌더링 관련
 	public:
+		void Update(float deltaTime);
 		void DrawProcess();
 		void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color);
 		void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color);

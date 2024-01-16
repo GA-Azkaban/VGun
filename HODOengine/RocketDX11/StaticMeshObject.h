@@ -3,6 +3,7 @@
 #include <dxgi.h>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <vector>
 
 #include "Mesh.h"
 #include "Model.h"
@@ -15,10 +16,13 @@ using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
+	class Material;
+
 	class StaticMeshObject : public HDEngine::IStaticMesh
 	{
 	public:
 		StaticMeshObject();
+		~StaticMeshObject();
 
 	public:
 		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
@@ -31,19 +35,25 @@ namespace RocketCore::Graphics
 
 	public:
 		void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
+		void Render();
 
 	public:
 		void SetModel(Model* model);
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
-		void SetRenderState(ID3D11RasterizerState* renderState) { _renderState = renderState; }
+		void SetRenderState(ID3D11RasterizerState* renderState) { m_renderState = renderState; }
 
 	private:
 		Model* _model;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
-		ID3D11RasterizerState* _renderState;
-		DirectX::XMMATRIX _worldTM;
+
+		ComPtr<ID3D11RasterizerState> m_renderState;
+		DirectX::XMMATRIX m_world;
+
+		std::vector<Mesh*> m_meshes;
+		Material* m_material;
+		bool m_isActive;
 	};
 }
 	

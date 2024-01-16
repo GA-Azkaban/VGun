@@ -18,6 +18,7 @@ namespace RocketCore::Graphics
 	{
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		UpdateProjectionMatrix();
 	}
 
 	Camera::~Camera()
@@ -174,36 +175,52 @@ namespace RocketCore::Graphics
 				_worldMatrix.m[i][j] = matrix.element[i][j];
 			}
 		}
+
+		XMMATRIX worldTM = XMLoadFloat4x4(&_worldMatrix);
+
+		_position = XMFLOAT3{ worldTM.r[3].m128_f32[0], worldTM.r[3].m128_f32[1], worldTM.r[3].m128_f32[2] };
+
+		XMMATRIX inverse = XMMatrixInverse(nullptr, worldTM);
+		SetViewMatrix(inverse);
 	}
 
 	void Camera::SetNearZ(float nearZ)
 	{
 		_nearZ = nearZ;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetFarZ(float farZ)
 	{
 		_farZ = farZ;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetAspect(float aspect)
 	{
 		_aspect = aspect;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetFOVY(float fov)
 	{
 		_fovY = fov;
+		UpdateProjectionMatrix();
 	}
 
 	void Camera::SetNearHeight(float height)
 	{
 		_nearWindowHeight = height;
+		float nearZ = _nearWindowHeight * 0.5f / tan(0.5 * _fovY);
+		SetNearZ(nearZ);
 	}
 
 	void Camera::SetFarHeight(float height)
 	{
 		_farWindowHeight = height;
+		float farZ = _farWindowHeight * 0.5f / tan(0.5 * _fovY);
+		SetFarZ(farZ);
+
 	}
 
 	void Camera::UpdateProjectionMatrix()
@@ -226,6 +243,11 @@ namespace RocketCore::Graphics
 	{
 		SetPosition(pos.x, pos.y, pos.z);
 		SetRotation(rot.w, rot.x, rot.y, rot.z);
+	}
+
+	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)
+	{
+		XMStoreFloat4x4(&_viewMatrix, tm);
 	}
 
 }
