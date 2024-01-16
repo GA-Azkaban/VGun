@@ -14,6 +14,13 @@ namespace HDData
 		void SetScreenSpace();
 		void SetWorldSpace();
 		void SetImage(const std::string& fileName);
+		
+		float GetScreenSpacePositionX();
+		float GetScreenSpacePositionY();
+
+		float GetImageWidth();
+		float GetImageHeight();
+
 		void ChangeScale(float x, float y);
 
 	private:

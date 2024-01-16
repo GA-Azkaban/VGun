@@ -20,7 +20,7 @@ void HDData::ToggleUI::Start()
 
 void HDData::ToggleUI::Update()
 {
-	if (CheckIsClicked())
+	if (CheckIsClicked() && _inputSystem.GetMouseDown(MOUSE_LEFT))
 	{
 		if (_isToggleOn)
 		{

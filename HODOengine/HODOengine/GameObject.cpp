@@ -136,10 +136,16 @@ namespace HDData
 			comp->SetActive(active);
 		}
 
-		// ÀÚ½Ä ¿ÀºêÁ§Æ®µµ ¸ðµÎ È°¼ºÈ­/ºñÈ°¼ºÈ­
+		// ìžì‹ ì˜¤ë¸Œì íŠ¸ë„ ëª¨ë‘ í™œì„±í™”/ë¹„í™œì„±í™”
 		for (auto child : _childGameObjects)
 		{
 			child->SetSelfActive(active);
 		}
 	}
+
+	std::string GameObject::GetObjectName()
+	{
+		return _objectName;
+	}
+	
 }

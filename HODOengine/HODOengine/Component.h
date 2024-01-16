@@ -1,5 +1,7 @@
 #pragma once
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #include "dllExporter.h"
+#include <string>
 
 /// <summary>
 /// Component�� ���� ������Ʈ�� ��ġ�� �� �ִ� ��ü�Դϴ�.

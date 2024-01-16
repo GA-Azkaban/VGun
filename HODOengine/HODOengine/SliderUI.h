@@ -1,7 +1,5 @@
 #pragma once
 #include "UIBase.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
 
 namespace HDEngine
 {
@@ -10,6 +8,9 @@ namespace HDEngine
 
 namespace HDData
 {
+	class TextUI;
+	class ImageUI;
+
 	class HODO_API SliderUI : public UIBase
 	{
 	public:
@@ -24,35 +25,29 @@ namespace HDData
 		void SetScreenSpace();
 		void SetWorldSpace();
 		
+		// 슬라이더 영역 범위 내를 클릭하였는지 체크
 		bool CheckMouseClicked();
 
-		// 텍스트 내용
-		void SetText(const std::string& str);
-		std::string GetText();
-		
-		void SetDefaultValue(int val);
-		void SetValue(int val);
-		int GetValue();
-
+		// 슬라이더 내용
 		void SetSliderbarImage(const char* fileName);
-		void SetSliderpointImage(const char* fileName);
+		void SetSliderFillImage(const char* fileName);
+		void SetSliderHandleImage(const char* fileName);
 
+		void SetValueText(std::string val);
+		float GetValueText();
+	
 	private:
 		HDEngine::InputSystem& _inputSystem;
 
-		// 비주얼라이즈를 위한 그래픽스 객체들
-		HDEngine::ISketchableText* _valueText;
-		HDEngine::ISketchableImage* _sliderBar;
-		HDEngine::ISketchableImage* _sliderPoint;
+		HDData::ImageUI* _background;
+		HDData::ImageUI* _fill;
+		HDData::ImageUI* _handle;
+		HDData::TextUI* _value;
 		
 		// 슬라이더의 최대 최소 위치
 		int _min = 0;
 		int _max = 100;
-		HDMath::HDFLOAT3 _transform;
-
-		// 슬라이더 값
-		float _value;
-		bool _isClicked;
+		bool _isClicked = false;
 	};
 }
 

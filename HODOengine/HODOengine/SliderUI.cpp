@@ -1,6 +1,7 @@
 #include "SliderUI.h"
 #include "GameObject.h"
 #include "ImageUI.h"
+#include "TextUI.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
 #include "InputSystem.h"
@@ -10,73 +11,64 @@
 namespace HDData
 {
 	SliderUI::SliderUI()
-		: _sliderBar(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
-		_sliderPoint(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
-		_valueText(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText()),
-		_inputSystem(HDEngine::InputSystem::Instance()),
-		_value(0.5f)
+		:_inputSystem(HDEngine::InputSystem::Instance())
 	{
-		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-		_sketchable.push_back(_sliderBar);
-		_sketchable.push_back(_sliderPoint);
-		_sketchable.push_back(_valueText);
 	}
 
 	void SliderUI::Start()
 	{
-		// 이미지와 위치 세팅
-		_sliderPoint->SetImage("point.png");
-		_sliderPoint->ChangeScale(0.7f, 0.7f);
-		_sliderBar->SetImage("bar.png");
-		_sliderBar->ChangeScale(0.7f, 0.7f);
+		auto childs = this->GetGameObject()->GetChildGameObjects();
 
-		// 위치 받아오기
-		_transform = GetTransform()->GetWorldPosition();
-
-		// 포인터 초기 텍스트 설정
-		_valueText->SetScreenSpacePosition(_transform.x, _transform.y - 30);
-		_valueText->SetText(std::to_string((int)(_value * 100)));
-
-		// 포인터 초기 위치 설정
-		auto pos = _sliderBar->GetScreenSpacePositionX() + _sliderBar->GetWidth() * _value;
-		_sliderPoint->SetScreenSpacePosition(pos, 50.f);
-		_sliderBar->SetScreenSpacePosition(_transform.x, _transform.y + 10);
-
-		// 포인터가 이동할 수 있는 x의 최대 최소값
-		_min = _sliderBar->GetScreenSpacePositionX();
-		_max = _min + _sliderBar->GetWidth();
+		for (const auto& child : childs)
+		{
+			if (child->GetObjectName() == "bar")
+			{
+				_background = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "fill")
+			{
+				_fill = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "handle")
+			{
+				_handle = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "value")
+			{
+				_value = child->GetComponent<HDData::TextUI>();
+			}
+		}
+		auto test = _background->GetImageWidth();
+		_min = GetTransform()->GetWorldPosition().x - (_background->GetImageWidth() / 2);
+		_max = GetTransform()->GetWorldPosition().x + _background->GetImageWidth() / 2;
 	}
 
 	void SliderUI::Update()
 	{
-		if (_inputSystem.GetMouseDown(MOUSE_LEFT) && CheckMouseClicked() == true)
-		{
-			_isClicked = true;
-		}
-		if (_inputSystem.GetMouseUp(MOUSE_LEFT))
-		{
-			_isClicked = false;
-		}
+		if (_inputSystem.GetMouseDown(MOUSE_LEFT) && CheckMouseClicked() == true) _isClicked = true;
+		if (_inputSystem.GetMouseUp(MOUSE_LEFT)) _isClicked = false;
+
+		float mouseX = _inputSystem.GetMousePosition().x;
+		float mouseY = _inputSystem.GetMousePosition().y;
+		auto newValue = ((_handle->GetScreenSpacePositionX() - _background->GetScreenSpacePositionX()) / _background->GetImageWidth()) * 100;
 
 		if (_isClicked == true)
 		{
-			_sliderPoint->SetScreenSpacePosition(_inputSystem.GetMousePosition().x - _sliderPoint->GetWidth(), GetTransform()->GetWorldPosition().y);
-			_valueText->SetScreenSpacePosition(_sliderPoint->GetScreenSpacePositionX(), _sliderPoint->GetScreenSpacePositionY() - 30);
-			auto point = _sliderPoint->GetScreenSpacePositionX() - _sliderBar->GetScreenSpacePositionX();
-			_value = point / _sliderBar->GetWidth() * 100;
-			_valueText->SetText(std::to_string((int)_value));
+			_handle->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
+			_value->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+			_value->SetText(std::to_string((int)newValue));
 
-			if (_sliderPoint->GetScreenSpacePositionX() > _max)
+			if (mouseX > _max)
 			{
-				_sliderPoint->SetScreenSpacePosition(_max, _sliderBar->GetScreenSpacePositionY());
-				_valueText->SetScreenSpacePosition(_max, _sliderBar->GetScreenSpacePositionY() - 30);
-				_valueText->SetText("100");
+				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
+				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_value->SetText("100");
 			}
-			if (_sliderPoint->GetScreenSpacePositionX() < _min)
+			if (mouseX < _min)
 			{
-				_sliderPoint->SetScreenSpacePosition(_min, _sliderBar->GetScreenSpacePositionY());
-				_valueText->SetScreenSpacePosition(_min, _sliderBar->GetScreenSpacePositionY() - 30);
-				_valueText->SetText("0");
+				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
+				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_value->SetText("0");
 			}
 
 		}
@@ -84,68 +76,62 @@ namespace HDData
 
 	void SliderUI::SetActive(bool active)
 	{
-		_valueText->SetActive(active);
-		_sliderBar->SetActive(active);
-		_sliderPoint->SetActive(active);
+		_background->SetActive(active);
+		_fill->SetActive(active);
+		_handle->SetActive(active);
+		_value->SetActive(active);
 	}
 
 	void SliderUI::SetScreenSpace()
 	{
-		_valueText->SetScreenSpace();
-		_sliderBar->SetScreenSpace();
-		_sliderPoint->SetScreenSpace();
+		_background->SetScreenSpace();
+		_fill->SetScreenSpace();
+		_handle->SetScreenSpace();
+		_value->SetScreenSpace();
 	}
 
 	void SliderUI::SetWorldSpace()
 	{
-		_valueText->SetWorldSpace();
-		_sliderBar->SetWorldSpace();
-		_sliderPoint->SetWorldSpace();
+		_background->SetWorldSpace();
+		_fill->SetWorldSpace();
+		_handle->SetWorldSpace();
+		_value->SetWorldSpace();
 	}
 
 	bool SliderUI::CheckMouseClicked()
 	{
-		if (_inputSystem.GetMousePosition().x > _sliderBar->GetScreenSpacePositionX() &&
-			_inputSystem.GetMousePosition().y > _sliderBar->GetScreenSpacePositionY() && 
-			_inputSystem.GetMousePosition().x < _sliderBar->GetScreenSpacePositionX() + _sliderBar->GetWidth() &&
-			_inputSystem.GetMousePosition().y < _sliderBar->GetScreenSpacePositionY() + _sliderBar->GetHeight())
+		if (_inputSystem.GetMousePosition().x > _background->GetScreenSpacePositionX() &&
+			_inputSystem.GetMousePosition().y > _background->GetScreenSpacePositionY() - 10 &&
+			_inputSystem.GetMousePosition().x < _background->GetScreenSpacePositionX() + _background->GetImageWidth() &&
+			_inputSystem.GetMousePosition().y < _background->GetScreenSpacePositionY() + _background->GetImageHeight() + 10)
 		{
 			return true;
 		}
 	}
 
-	void SliderUI::SetText(const std::string& str)
-	{
-		_valueText->SetText(str);
-	}
-
-	std::string SliderUI::GetText()
-	{
-		return _valueText->GetText();
-	}
-
-	void SliderUI::SetDefaultValue(int val)
-	{
-		_value = val;
-	}
-
-	void SliderUI::SetValue(int val)
-	{
-		_value = val;
-	}
-
-	int SliderUI::GetValue()
-	{
-		return _value;
-	}
-
 	void SliderUI::SetSliderbarImage(const char* fileName)
 	{
-		_sliderBar->SetImage(fileName);
+		_background->SetImage(fileName);
 	}
 
-	void SliderUI::SetSliderpointImage(const char* fileName)
+	void SliderUI::SetSliderFillImage(const char* fileName)
 	{
-		_sliderPoint->SetImage(fileName);
+		_fill->SetImage(fileName);
 	}
+
+	void SliderUI::SetSliderHandleImage(const char* fileName)
+	{
+		_handle->SetImage(fileName);
+	}
+
+	void SliderUI::SetValueText(std::string val)
+	{
+		_value->SetText(val);
+	}
+
+	float SliderUI::GetValueText()
+	{
+		return std::stof(_value->GetText());
+	}
+
 }
