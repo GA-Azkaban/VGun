@@ -150,37 +150,64 @@ namespace RocketCore::Graphics
 
 		_backBuffer->GetDesc(&backBufferDesc);
 
-		CD3D11_TEXTURE2D_DESC depthStencilDesc(
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
-			static_cast<UINT> (backBufferDesc.Width),
-			static_cast<UINT> (backBufferDesc.Height),
-			1, // This depth stencil view has only one texture.
-			1, // Use a single mipmap level.
-			D3D11_BIND_DEPTH_STENCIL
-		);
+		D3D11_TEXTURE2D_DESC depthBufferDesc;
+		ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-		depthStencilDesc.SampleDesc.Count = 4;
-		depthStencilDesc.SampleDesc.Quality = _m4xMsaaQuality - 1;
+		// 깊이 버퍼의 description을 작성합니다.
+		depthBufferDesc.Width = static_cast<UINT>(backBufferDesc.Width);
+		depthBufferDesc.Height = static_cast<UINT>(backBufferDesc.Height);
+		depthBufferDesc.MipLevels = 1;
+		depthBufferDesc.ArraySize = 1;
+		depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthBufferDesc.SampleDesc.Count = 4;
+		depthBufferDesc.SampleDesc.Quality = _m4xMsaaQuality - 1;
+		depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depthBufferDesc.CPUAccessFlags = 0;
+		depthBufferDesc.MiscFlags = 0;
 
-		hr = _device->CreateTexture2D(
-			&depthStencilDesc,
-			nullptr,
-			&_depthStencilBuffer
-		);
+		HR(_device->CreateTexture2D(&depthBufferDesc, nullptr, &_depthStencilBuffer));
 
-		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
+		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
 
-		// 	hr = d3dDevice_->CreateDepthStencilView(
-		// 		depthStencilBuffer_.Get(),
-		// 		&depthStencilViewDesc,
-		// 		&depthStencilView_
-		// 	);
+		// 스텐실 상태의 description을 초기화합니다.
+		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
 
-		hr = _device->CreateDepthStencilView(
-			_depthStencilBuffer.Get(),
-			nullptr,
-			&_depthStencilView
-		);
+		// 스텐실 상태의 description을 작성합니다.
+		depthStencilDesc.DepthEnable = true;
+		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+		depthStencilDesc.StencilEnable = true;
+		depthStencilDesc.StencilReadMask = 0xFF;
+		depthStencilDesc.StencilWriteMask = 0xFF;
+
+		// Stencil operations if pixel is front-facing.
+		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		// Stencil operations if pixel is back-facing.
+		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		HR(_device->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState));
+
+		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 1);
+
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
+
+		// 깊이-스텐실 뷰의 description을 작성합니다.
+		depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
+		depthStencilViewDesc.Texture2D.MipSlice = 0;
+
+		HR(_device->CreateDepthStencilView(_depthStencilBuffer.Get(), &depthStencilViewDesc, &_depthStencilView));
+		//HR(_device->CreateDepthStencilView(_depthStencilBuffer.Get(), NULL, &_depthStencilView));
 
 		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
 		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
@@ -232,7 +259,7 @@ namespace RocketCore::Graphics
 		// Clear the back buffer.
 		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
 		// Clear the depth buffer.
-		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
 
 		return;
@@ -250,7 +277,7 @@ namespace RocketCore::Graphics
 		// Clear the back buffer.
 		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
 		// Clear the depth buffer.
-		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
+		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
 
 		return;

@@ -74,12 +74,9 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11Texture2D> _backBuffer;
 		ComPtr<ID3D11RenderTargetView> _renderTargetView;
 		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
+		ComPtr<ID3D11DepthStencilState> _depthStencilState;
 		ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		D3D11_VIEWPORT _viewport;
-
-	private:
-		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다. 
-		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
 
 	private:
 		Grid* _grid;
