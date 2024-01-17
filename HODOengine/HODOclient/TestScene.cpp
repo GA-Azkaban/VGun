@@ -37,22 +37,18 @@ TestScene::TestScene()
 	//colli->Setflag(eColliderType::PLAYER);
 
 	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene);
+	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->AddComponent<HDData::MeshRenderer>();
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 1.f, 1.f});
-
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
-	playerColli->Setflag(eColliderType::PLAYER);
-	playerTest->AddComponent<HDData::AudioSource>();
-	playerTest->AddComponent<TestSound>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 	
 	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	
-	auto playerTestHead = API::CreateObject(_scene);
+	auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	playerTestHead->AddComponent<HDData::MeshRenderer>();
 	playerTestHead->SetParentObject(playerTest);
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(HDMath::HDFLOAT3{0.f, 1.1f, 0.f});
@@ -123,7 +119,7 @@ TestScene::TestScene()
 	//_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	//_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	auto _slider = API::CreateSlider(_scene);
+	auto _slider = API::CreateSlider(_scene, "slider");
 	_slider->GetTransform()->SetWorldPosition({ 500.0f,500.0f,0.0f });
 	_slider->AddComponent<HDData::AudioSource>();
 	//_slider->AddComponent<SliderSoundScript>();

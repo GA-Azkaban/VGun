@@ -127,6 +127,7 @@ namespace API
 		{
 			return HDEngine::InputSystem::Instance().GetMouseWheel();
 		}
+
 		HODO_API HDMath::HDFLOAT2 GetMouseDelta()
 		{
 			return HDEngine::InputSystem::Instance().GetMouseDelta();

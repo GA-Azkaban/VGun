@@ -1,8 +1,8 @@
 #pragma once
+#include <vector>
 #include <set>
 
 #include "Singleton.h"
-#include "SceneSystem.h"
 
 namespace HDData
 {
@@ -16,20 +16,20 @@ namespace HDEngine
 	{
 		friend UISystem;
 
-	private:
+	public:
 		UISystem() = default;
 
-	public:
 		void Initialize();
 		void Update();
 		void Finalize();
 
-		bool CheckIsFocused();
-		bool CheckIsClicked();
+		void SetChangedScene(HDData::Scene* currentScene);
+		static bool CompareSortOrder(const HDData::UIBase* left, const HDData::UIBase* right);
+
+		void CheckIsFocused();
 
 	private:
-		HDData::Scene* _currentScene;
-		std::set<HDData::UIBase*> _uiList;
+		std::vector<HDData::UIBase*> _uiList;
 	};
 }
 

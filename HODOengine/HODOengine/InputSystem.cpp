@@ -52,6 +52,9 @@ namespace HDEngine
 		_mousePos.y += _DImouseState.lY;
 		_mouseWheel += _DImouseState.lZ;
 
+		_currentMousePosition.x = _mousePos.x;
+		_currentMousePosition.y = _mousePos.y;
+
 		// 윈도우 벗어나는 경우 좌표값 보정
 		if (_mousePos.x < 0 || _mousePos.x > _screenWidth || _mousePos.y < 0 || _mousePos.y > _screenHeight)
 		{
@@ -184,6 +187,15 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
+	bool InputSystem::CheckMouseMove()
+	{
+		if (std::abs(_prevMousePos.x - _mousePos.x) > 2 ||
+			std::abs(_prevMousePos.y != _mousePos.y) > 2)
+		{
+			return true;
+		}
+	}
+
 	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
 	{
 		if (_mousePos.x > x &&
@@ -221,6 +233,10 @@ namespace HDEngine
 			_prevMouseState[i] = _mouseState[i];
 			_mouseState[i] = false;
 		}
+
+		_prevMousePos = _mousePos;
+
+		_previousMousePosition = _currentMousePosition;
 	}
 }
 
@@ -233,5 +249,6 @@ HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
 	result.y /= 2.0f;
 
 	_previousMouseDelta = _currentMouseDelta;
-	return (_currentMousePosition - _previousMousePosition);
+
+	return _currentMouseDelta;
 }
