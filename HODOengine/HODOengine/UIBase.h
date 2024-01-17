@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "Component.h"
+#include "Transform.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchable.h"
 
 namespace HDData
@@ -11,6 +12,13 @@ namespace HDData
 	public:
 		UIBase();
 		void UpdateRenderData();
+		virtual void OnUpdateTransform()
+		{
+			for (auto& sketch : _sketchable)
+			{
+				sketch->SetWorldTM(GetTransform()->GetWorldTM());
+			}
+		}
 
 		std::vector<HDEngine::ISketchable*> _sketchable;
 

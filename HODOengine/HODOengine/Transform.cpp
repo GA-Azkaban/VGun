@@ -108,11 +108,13 @@ namespace HDData
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
 			_position = GetLocalPositionFromLocalTM(invParent * worldTM);
 		}
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetWorldPosition(float x, float y, float z)
 	{
 		SetWorldPosition(HDMath::HDFLOAT3(x, y, z));
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetWorldRotation(const HDMath::HDQuaternion& rotation)
@@ -128,11 +130,13 @@ namespace HDData
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
 			_rotation = GetLocalRotationFromLocalTM(invParent * worldTM);
 		}
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetWorldRotation(float w, float x, float y, float z)
 	{
 		SetWorldRotation(HDMath::HDQuaternion(w, x, y, z));
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetWorldScale(const HDMath::HDFLOAT3& scale)
@@ -148,21 +152,25 @@ namespace HDData
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
 			_scale = GetLocalScaleFromLocalTM(invParent * worldTM);
 		}
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetLocalPosition(const HDMath::HDFLOAT3& position)
 	{
 		_position = position;
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetLocalRotation(const HDMath::HDQuaternion& rotation)
 	{
 		_rotation = rotation;
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::SetLocalScale(const HDMath::HDFLOAT3& scale)
 	{
 		_scale = scale;
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::Translate(const HDMath::HDFLOAT3& position)
@@ -170,6 +178,7 @@ namespace HDData
 		_position.x += position.x;
 		_position.y += position.y;
 		_position.z += position.z;
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::Translate(float x, float y, float z)
@@ -177,6 +186,7 @@ namespace HDData
 		_position.x += x;
 		_position.y += y;
 		_position.z += z;
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::Rotate(float angleX, float angleY, float angleZ)
@@ -214,11 +224,13 @@ namespace HDData
 
 		// 결과를 저장합니다.
 		_rotation = result;
+		GetGameObject()->OnUpdateTransform();
 	}
 
 	void Transform::Rotate(const HDMath::HDQuaternion& quaternion)
 	{
 		_rotation = HDMath::HDQuaternionMultiply(_rotation, quaternion);
+		GetGameObject()->OnUpdateTransform();
 	}
 
 }
