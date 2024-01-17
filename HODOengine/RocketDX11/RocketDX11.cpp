@@ -242,11 +242,11 @@ namespace RocketCore::Graphics
 			shaderByteCode, byteCodeLength,
 			&_lineInputLayout));
 
-		SkinningMeshObject* test1 = ObjectManager::Instance().CreateSkinningMeshObject();
+		/*SkinningMeshObject* test1 = ObjectManager::Instance().CreateSkinningMeshObject();
 		test1->LoadMesh("Rob02.fbx");
 		test1->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
 		test1->LoadNormalMap("Rob02White_Normal.png");
-		test1->PlayAnimation(0, true);
+		test1->PlayAnimation(0, true);*/
 	}
 
 	void RocketDX11::BeginRender()
@@ -286,15 +286,7 @@ namespace RocketCore::Graphics
 	}
 
 	void RocketDX11::RenderHelperObject()
-	{
-		/*auto vs = _resourceManager.GetVertexShader("ColorVS");
-		auto ps = _resourceManager.GetPixelShader("ColorPS");
-
-		_grid->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_grid->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout());
-		_axis->Update(DirectX::XMMatrixIdentity(), Camera::GetMainCamera()->GetViewMatrix(), Camera::GetMainCamera()->GetProjectionMatrix());
-		_axis->Render(_deviceContext.Get(), vs->GetVertexShader(), ps->GetPixelShader(), vs->GetMatrixBuffer(), vs->GetInputLayout());*/
-
+	{	
 		for (auto& helperObject : ObjectManager::Instance().GetHelperObjList())
 		{
 			helperObject->Render();
@@ -307,7 +299,6 @@ namespace RocketCore::Graphics
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
-			//staticMeshObj->Render(_deviceContext.Get(), mainCam->GetViewMatrix(), mainCam->GetProjectionMatrix());
 			staticMeshObj->Render();
 		}
 	}
@@ -379,7 +370,6 @@ namespace RocketCore::Graphics
 	void RocketDX11::Update(float deltaTime)
 	{
 		Camera::GetMainCamera()->UpdateViewMatrix();
-		//Camera::GetMainCamera()->UpdateProjectionMatrix();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{
@@ -477,7 +467,7 @@ namespace RocketCore::Graphics
 	void RocketDX11::SetLights()
 	{
 		DirectionalLight* dirLight = new DirectionalLight();
-		dirLight->Color = XMFLOAT4{ 0.5f, 0.5f, 0.5f, 1.0f };
+		dirLight->Color = XMFLOAT4{ 0.3f, 0.3f, 0.3f, 1.0f };
 		dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);

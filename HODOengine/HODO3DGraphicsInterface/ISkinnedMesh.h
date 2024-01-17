@@ -1,6 +1,7 @@
 #pragma once
 #include "IRenderable.h"
 #include <string>
+#include <windows.h>
 
 namespace HDEngine
 {

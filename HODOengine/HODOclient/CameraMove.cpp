@@ -113,7 +113,7 @@ void CameraMove::Pitch(float angle)
 {
 	HDMath::HDFLOAT3 r = GetTransform()->GetLocalRotation()* HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
 	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, angle);
-	GetGameObject()->GetTransform()->SetLocalRotation(newRot);	
+	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
 }
 
 void CameraMove::RotateY(float angle)
