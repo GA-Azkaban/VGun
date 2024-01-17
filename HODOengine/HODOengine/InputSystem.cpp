@@ -52,9 +52,6 @@ namespace HDEngine
 		_mousePos.y += _DImouseState.lY;
 		_mouseWheel += _DImouseState.lZ;
 
-		_currentMousePosition.x = _mousePos.x;
-		_currentMousePosition.y = _mousePos.y;
-
 		// 윈도우 벗어나는 경우 좌표값 보정
 		if (_mousePos.x < 0 || _mousePos.x > _screenWidth || _mousePos.y < 0 || _mousePos.y > _screenHeight)
 		{
@@ -235,20 +232,19 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
-
-		_previousMousePosition = _currentMousePosition;
 	}
 }
 
 HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
 {
-	_currentMouseDelta = _currentMousePosition - _previousMousePosition;
+	_mouseDelta.x = _mousePos.x - _prevMousePos.x;
+	_mouseDelta.y = _mousePos.y - _prevMousePos.y;
 
-	HDMath::HDFLOAT2 result = (_currentMouseDelta + _previousMouseDelta);
-	result.x /= 2.0f;
-	result.y /= 2.0f;
+	HDMath::HDFLOAT2 result{};
+	result.x = static_cast<float>((_mouseDelta.x + _prevMouseDelta.x) / 2.0f);
+	result.y = static_cast<float>((_mouseDelta.y + _prevMouseDelta.y) / 2.0f);
 
-	_previousMouseDelta = _currentMouseDelta;
+	_prevMouseDelta = _mouseDelta;
 
-	return _currentMouseDelta;
+	return result;
 }
