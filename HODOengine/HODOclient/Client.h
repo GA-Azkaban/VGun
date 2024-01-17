@@ -3,13 +3,13 @@
 #pragma comment(lib, "..\\x64\\Debug\\HODOengine.lib")
 //#define ENGINE_PATH L"..\\x64\\Debug\\RocketEngine.dll"
 #else
-//#pragma comment(lib,"..\\x64\\Release\\HODOengine.lib")
+#pragma comment(lib,"..\\x64\\Release\\HODOengine.lib")
 //#define ENGINE_PATH L"Engine\\RocketEngine.dll" 
 #endif // _DEBUG
 
 
 
-// ¿£ÁøÀÇ Æ÷ÀÎÅÍ¸¦ ¹Ş¾Æ¿À´Â...
+// ì—”ì§„ì˜ í¬ì¸í„°ë¥¼ ë°›ì•„ì˜¤ëŠ”...
 
 class TestScene;
 

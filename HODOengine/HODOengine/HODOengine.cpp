@@ -23,7 +23,7 @@
 #ifdef _DEBUG
 #define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
 #else
-#define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
+#define GRAPHICSDLL_PATH (L"../x64/Release/RocketDX11.dll")
 #endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
