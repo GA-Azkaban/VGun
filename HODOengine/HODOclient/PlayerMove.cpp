@@ -97,14 +97,13 @@ bool PlayerMove::CheckIsOnGround()
 	for (int i = 0; i < 9; ++i)
 	{
 		//RocketEngine::RMFLOAT4 worldPos = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(pos.x + x[i], pos.y, pos.z + z[i], 1.0f), gameObject->transform.GetWorldTM());
-		float halfHeight = _playerCollider->GetHeight();
-		HDMath::HDFLOAT4 worldPos = HDMath::HDFLOAT4(pos.x + x[i], pos.y + 0.01f * i - halfHeight / 2.0f, pos.z + z[i], 1.0f);
-		HDMath::HDFLOAT4 eachDir = worldPos;
-		eachDir.y -= 0.05f;
+		float halfHeight = _playerCollider->GetHeight() / 2.0f;
+		HDMath::HDFLOAT3 worldPos = HDMath::HDFLOAT3(pos.x + x[i], pos.y + 0.01f * i - halfHeight, pos.z + z[i]);
 
 		int type = 0;
-		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f,-1.0f,0.0f }, 0.05f, &type);
+		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f, -1.0f,0.0f }, 0.05f, &type);
 		//RocketEngine::DrawDebugLine({ worldPos.x,worldPos.y,worldPos.z }, { eachDir.x,eachDir.y,eachDir.z });
+		API::DrawLineDir(worldPos, HDMath::HDFLOAT3(0.f, -1.f, 0.f), 0.05f, HDMath::HDFLOAT4(1.f, 0.f, 0.f, 0.f));
 
 		if (temp)
 		{
@@ -213,12 +212,13 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::Jump()
 {
-	//if ((!_isJumping) && (_isOnGround))
-	if (!_isJumping)
+	if ((!_isJumping) && (_isOnGround))
+	//if (!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
 		_isJumping = true;
+		_isOnGround = false;
 	}
 }
 

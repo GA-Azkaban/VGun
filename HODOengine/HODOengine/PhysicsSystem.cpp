@@ -33,10 +33,6 @@ namespace HDEngine
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.5f);
 
-		// 임시로 평면과 박스 하나를 만들어 둠
-		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
-		_pxScene->addActor(*groundPlane);
-
 		//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
 		//physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
 		//physx::PxRigidDynamic* _dynamic = _physics->createRigidDynamic(localTm);
@@ -116,6 +112,10 @@ namespace HDEngine
 
 	void PhysicsSystem::CreateRigidBodies()
 	{
+		// fundamental ground
+		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
+		_pxScene->addActor(*groundPlane);
+
 		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
 
 		for (auto& object : sceneIter->GetGameObjectList())
@@ -143,6 +143,8 @@ namespace HDEngine
 
 				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
 				_pxScene->addActor(*planeRigid);
+				//planeCollider->SetPhysXRigid(planeRigid);
+				planeRigid->userData = planeCollider;
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
