@@ -147,18 +147,5 @@ namespace HDData
 	{
 		return _objectName;
 	}
-	
-	void GameObject::OnUpdateTransform()
-	{
-		for (auto& component : _components)
-		{
-			component->OnUpdateTransform();
-		}
-
-		for (auto& child : _childGameObjects)
-		{
-			child->OnUpdateTransform();
-		}
-	}
 
 }

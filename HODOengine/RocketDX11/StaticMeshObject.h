@@ -34,7 +34,6 @@ namespace RocketCore::Graphics
 		virtual void LoadPixelShader(const std::string& fileName) override;
 
 	public:
-		void Render(ID3D11DeviceContext* deviceContext, const DirectX::XMMATRIX& view, const DirectX::XMMATRIX& proj);
 		void Render();
 
 	public:

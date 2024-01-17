@@ -27,8 +27,6 @@ namespace HDData
 
 	class HODO_API GameObject
 	{
-		friend Transform;
-
 	public:
 		friend Component::Component();
 		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
@@ -105,9 +103,6 @@ namespace HDData
 		void SetParentObject(GameObject* parentObject);
 		void SetSelfActive(bool active);
 		std::string GetObjectName();
-
-	private:
-		void OnUpdateTransform();
 
 	private:
 		std::unordered_set<Component*> _components;

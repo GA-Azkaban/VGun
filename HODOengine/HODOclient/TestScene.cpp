@@ -41,7 +41,11 @@ TestScene::TestScene()
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
-	playerTest->AddComponent<HDData::MeshRenderer>();
+	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadMesh("Rob02.fbx");
+	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
+	meshComp->LoadNormalMap("Rob02White_Normal.png");
+	meshComp->PlayAnimation(0, true);
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 1.f, 1.f});
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();

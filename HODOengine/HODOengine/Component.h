@@ -64,8 +64,6 @@ namespace HDData
 
 	protected:
 		Component();
-	private:
-		virtual void OnUpdateTransform() {};
 
 	private:
 		GameObject* _gameObject;

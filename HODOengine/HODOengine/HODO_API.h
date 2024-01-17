@@ -31,6 +31,7 @@
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
 #include "MeshRenderer.h"
+#include "SkinnedMeshRenderer.h"
 #include "InputData.h"
 #include "TextUI.h"
 #include "Button.h"
