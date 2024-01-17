@@ -12,11 +12,7 @@ namespace HDData
 
 	void UIBase::UpdateRenderData()
 	{
-		for (const auto& one : _sketchable)
-		{
-			one->SetWorldTM(GetTransform()->GetWorldTM());
-		}
-
+		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
 	bool UIBase::CheckFocus()

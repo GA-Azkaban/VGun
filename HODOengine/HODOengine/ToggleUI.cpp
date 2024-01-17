@@ -9,7 +9,7 @@ HDData::ToggleUI::ToggleUI()
 	_isToggleOn(true)
 {
 	HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-	_sketchable.push_back(_toggleImage);
+	_sketchable = _toggleImage;
 }
 
 void HDData::ToggleUI::Start()

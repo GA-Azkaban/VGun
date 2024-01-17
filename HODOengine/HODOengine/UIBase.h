@@ -15,13 +15,8 @@ namespace HDData
 		bool CheckFocus();
 		virtual void OnUpdateTransform()
 		{
-			for (auto& sketch : _sketchable)
-			{
-				sketch->SetWorldTM(GetTransform()->GetWorldTM());
-			}
+			_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
 		}
-
-		std::vector<HDEngine::ISketchable*> _sketchable;
 
 		int GetSortOrder() const;
 		bool GetIsFocused();
@@ -33,6 +28,7 @@ namespace HDData
 		float GetTop();
 		float GetBottom();
 
+		HDEngine::ISketchable* _sketchable;
 	private:
 		
 
