@@ -184,6 +184,26 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
+	bool InputSystem::CheckMouseMove()
+	{
+		if (std::abs(_prevMousePos.x - _mousePos.x) > 2 ||
+			std::abs(_prevMousePos.y != _mousePos.y) > 2)
+		{
+			return true;
+		}
+	}
+
+	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
+	{
+		if (_mousePos.x > x &&
+			_mousePos.y > y &&
+			_mousePos.x < x + width &&
+			_mousePos.y < y + height)
+		{
+			return true;
+		}
+	}
+
 	HDMath::HDFLOAT2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
@@ -210,17 +230,21 @@ namespace HDEngine
 			_prevMouseState[i] = _mouseState[i];
 			_mouseState[i] = false;
 		}
+
+		_prevMousePos = _mousePos;
 	}
 }
 
 HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
 {
-	_currentMouseDelta = _currentMousePosition - _previousMousePosition;
+	_mouseDelta.x = _mousePos.x - _prevMousePos.x;
+	_mouseDelta.y = _mousePos.y - _prevMousePos.y;
 
-	HDMath::HDFLOAT2 result = (_currentMouseDelta + _previousMouseDelta);
-	result.x /= 2.0f;
-	result.y /= 2.0f;
+	HDMath::HDFLOAT2 result{};
+	result.x = static_cast<float>((_mouseDelta.x + _prevMouseDelta.x) / 2.0f);
+	result.y = static_cast<float>((_mouseDelta.y + _prevMouseDelta.y) / 2.0f);
 
-	_previousMouseDelta = _currentMouseDelta;
-	return (_currentMousePosition - _previousMousePosition);
+	_prevMouseDelta = _mouseDelta;
+
+	return result;
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "UIBase.h"
+#include "Component.h"
 
 namespace HDEngine
 {
@@ -11,7 +11,7 @@ namespace HDData
 	class TextUI;
 	class ImageUI;
 
-	class HODO_API SliderUI : public UIBase
+	class HODO_API SliderUI : public Component
 	{
 	public:
 		SliderUI();

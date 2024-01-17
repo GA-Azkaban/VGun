@@ -146,9 +146,6 @@
     <ClInclude Include="IBuilder.h">
       <Filter>Builder\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="ImageRenderer.h">
-      <Filter>Object\ImageRenderer</Filter>
-    </ClInclude>
     <ClInclude Include="IResource.h">
       <Filter>Resource\Interface</Filter>
     </ClInclude>
@@ -226,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Cubemap.h">
       <Filter>Object\Cubemap</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageRenderer.h">
+      <Filter>Object\ImageRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

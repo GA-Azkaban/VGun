@@ -45,32 +45,36 @@ namespace HDData
 
 	void SliderUI::Update()
 	{
-		if (_inputSystem.GetMouseDown(MOUSE_LEFT) && CheckMouseClicked() == true) _isClicked = true;
-		if (_inputSystem.GetMouseUp(MOUSE_LEFT)) _isClicked = false;
-
-		float mouseX = _inputSystem.GetMousePosition().x;
-		float mouseY = _inputSystem.GetMousePosition().y;
-		auto newValue = ((_handle->GetScreenSpacePositionX() - _background->GetScreenSpacePositionX()) / _background->GetImageWidth()) * 100;
-
+		if (_inputSystem.GetMouseDown(MOUSE_LEFT))
+		{
+			_isClicked = _inputSystem.Check2DClicked(_background->GetScreenSpacePositionX(), _background->GetScreenSpacePositionY(),
+										_background->GetScreenSpacePositionX() + _background->GetImageWidth(),
+										_background->GetScreenSpacePositionY() + _background->GetImageHeight());
+		}
+	
 		if (_isClicked == true)
 		{
-			_handle->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
-			_value->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+			float mouseX = _inputSystem.GetMousePosition().x;
+			auto newValue = ((_handle->GetScreenSpacePositionX() - _background->GetScreenSpacePositionX()) / _background->GetImageWidth()) * 100;
+
+			_handle->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
+			_value->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
 			_value->SetText(std::to_string((int)newValue));
 
 			if (mouseX > _max)
 			{
-				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
+				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
 				_value->SetText("100");
 			}
 			if (mouseX < _min)
 			{
-				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
+				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
 				_value->SetText("0");
 			}
 
+			if (_inputSystem.GetMouseUp(MOUSE_LEFT)) _isClicked = false;
 		}
 	}
 
@@ -96,17 +100,6 @@ namespace HDData
 		_fill->SetWorldSpace();
 		_handle->SetWorldSpace();
 		_value->SetWorldSpace();
-	}
-
-	bool SliderUI::CheckMouseClicked()
-	{
-		if (_inputSystem.GetMousePosition().x > _background->GetScreenSpacePositionX() &&
-			_inputSystem.GetMousePosition().y > _background->GetScreenSpacePositionY() - 10 &&
-			_inputSystem.GetMousePosition().x < _background->GetScreenSpacePositionX() + _background->GetImageWidth() &&
-			_inputSystem.GetMousePosition().y < _background->GetScreenSpacePositionY() + _background->GetImageHeight() + 10)
-		{
-			return true;
-		}
 	}
 
 	void SliderUI::SetSliderbarImage(const char* fileName)
