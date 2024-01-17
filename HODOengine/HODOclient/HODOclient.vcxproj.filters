@@ -1,58 +1,139 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="00_Default">
-      <UniqueIdentifier>{7041e5c9-9e25-4096-8397-072bf5b1c330}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01_Entry">
-      <UniqueIdentifier>{21a354cc-f058-4d07-9664-27bbb88e59fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client">
-      <UniqueIdentifier>{23e3daf6-fc42-4d9c-afd0-e6ca5f3d2b8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\0. App">
-      <UniqueIdentifier>{d8e2c6dc-cc08-4763-afa9-f3963ec746da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\1. Client">
-      <UniqueIdentifier>{2d0b935b-c7d7-4c9b-bbb3-0667f3805ddf}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>00_Default</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>00_Default</Filter>
-    </ClInclude>
-    <ClInclude Include="Application.h">
-      <Filter>02_Client\0. App</Filter>
-    </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>02_Client\1. Client</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="small.ico">
-      <Filter>00_Default</Filter>
-    </Image>
-    <Image Include="HODOclient.ico">
-      <Filter>00_Default</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="HODOclient.rc">
-      <Filter>00_Default</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Entry.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp">
-      <Filter>02_Client\0. App</Filter>
+      <Filter>01_Entry</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>02_Client\TestScene</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMove.cpp">
+      <Filter>02_Client\TestScene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMove.cpp">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
     <ClCompile Include="Client.cpp">
-      <Filter>02_Client\1. Client</Filter>
+      <Filter>01_Entry</Filter>
     </ClCompile>
+    <ClCompile Include="LoginSceneView.cpp">
+      <Filter>04_SceneView\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>03_Manager\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyManager.cpp">
+      <Filter>03_Manager\LobbyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SliderSoundScript.cpp">
+      <Filter>02_Client\TestScene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h">
+      <Filter>01_Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="TestScene.h">
+      <Filter>02_Client\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMove.h">
+      <Filter>02_Client\TestScene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>00_default</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>00_default</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMove.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>01_Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSound.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSceneView.h">
+      <Filter>04_SceneView\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>03_Manager\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyManager.h">
+      <Filter>03_Manager\LobbyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="SliderSoundScript.h">
+      <Filter>02_Client\TestScene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="HODOclient.ico">
+      <Filter>00_default</Filter>
+    </Image>
+    <Image Include="small.ico">
+      <Filter>00_default</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="01_Entry">
+      <UniqueIdentifier>{ec036ad7-dbea-4944-8e77-563788987386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client">
+      <UniqueIdentifier>{342fcac3-0837-43be-b602-048e7ce5726e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene">
+      <UniqueIdentifier>{8664440e-bf82-4337-b7ec-0f46723b1ee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00_default">
+      <UniqueIdentifier>{c6d687a0-25a1-46f1-8015-03125a0d679d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Camera">
+      <UniqueIdentifier>{86ee13c8-2323-4661-8522-0a2947d039a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Player">
+      <UniqueIdentifier>{e9acabb0-cb8a-4c2a-92fc-47be2c4bbcc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Weapon">
+      <UniqueIdentifier>{ac6e43e2-0c45-4b33-886f-5f2e52942ec8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager">
+      <UniqueIdentifier>{d039347b-5cfa-432c-9368-05a320664418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView">
+      <UniqueIdentifier>{78938400-a81c-486c-be6e-3a5260fff65a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\Login">
+      <UniqueIdentifier>{2c023769-6516-4112-b946-88a4ff055bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\Lobby">
+      <UniqueIdentifier>{d4fe9301-7e7c-4f97-b4f1-ade435270749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\InGame">
+      <UniqueIdentifier>{3151c696-7a9f-4315-8832-050cff904af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\LobbyManager">
+      <UniqueIdentifier>{6cc71ee5-77d6-4520-adb9-643ce13ccc65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\GameManager">
+      <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HODOclient.rc">
+      <Filter>00_default</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
