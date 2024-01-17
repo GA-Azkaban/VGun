@@ -61,8 +61,11 @@ namespace HDData
 			_isActive = active;
 		};
 
+
 	protected:
 		Component();
+	private:
+		virtual void OnUpdateTransform() {};
 
 	private:
 		GameObject* _gameObject;
