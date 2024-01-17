@@ -15,5 +15,11 @@ namespace HDData
 		std::vector<HDEngine::ISketchable*> _sketchable;
 
 		// HDEngine::ISketchable* _sketchable;
+
+	private:
+		int		_sortOrder;
+		bool	_isFocused;
+		bool	_isClicked;
+		bool	_ignoreFocus;
 	};
 }

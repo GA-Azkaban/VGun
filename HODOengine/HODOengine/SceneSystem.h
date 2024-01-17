@@ -18,6 +18,7 @@ namespace HDEngine
 		SceneSystem();
 
 	public:
+
 		HDData::Scene* CreateScene(std::string sceneName = "");
 		void LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);

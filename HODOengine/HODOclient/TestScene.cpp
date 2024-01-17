@@ -117,14 +117,14 @@ TestScene::TestScene()
 	//sliderComp->AddTextList("4");
 
 	//auto imageTest = API::CreateImageBox(_scene);
-	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	//imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });
 
 	//auto _button = API::CreateButton(_scene);
 	//_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	//_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
 	auto _slider = API::CreateSlider(_scene);
-	_slider->GetTransform()->SetWorldPosition({ 50.0f,50.0f,0.0f });
+	_slider->GetTransform()->SetWorldPosition({ 500.0f,500.0f,0.0f });
 	_slider->AddComponent<HDData::AudioSource>();
 	//_slider->AddComponent<SliderSoundScript>();
 

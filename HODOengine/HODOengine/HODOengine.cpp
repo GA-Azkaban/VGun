@@ -17,6 +17,7 @@
 #include "GraphicsObjFactory.h"
 #include "EventSystem.h"
 #include "SoundSystem.h"
+#include "UISystem.h"
 
 #include "DLL_Loader.h"
 
@@ -51,7 +52,8 @@ HODOengine::HODOengine()
 	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
 	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
 	_eventSystem(HDEngine::EventSystem::Instance()),
-	_soundSystem(HDEngine::SoundSystem::Instance())
+	_soundSystem(HDEngine::SoundSystem::Instance()),
+	_uiSystem(HDEngine::UISystem::Instance())
 {
 	
 }
@@ -85,6 +87,7 @@ void HODOengine::Initialize()
 	_timeSystem.Initialize();
 	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
 	_physicsSystem.Initialize();
+	_uiSystem.Initialize();
 }
 
 void HODOengine::Loop()
@@ -111,6 +114,7 @@ void HODOengine::Loop()
 
 void HODOengine::Finalize()
 {
+	_uiSystem.Finalize();
 	_physicsSystem.Finalize();
 	_renderSystem.Finalize();
 	// _debugSystem.Finalize();
@@ -133,6 +137,7 @@ void HODOengine::Run()
 
 	_inputSystem.Update();
 	_debugSystem.Update();
+	_uiSystem.Update();
 
 	_objectSystem.UpdateCurrentSceneObjects();
 	_soundSystem.Update();

@@ -34,6 +34,8 @@ namespace HDEngine
 		bool GetMouseDown(BYTE key);
 		bool GetMouseUp(BYTE key);
 
+		bool Check2DClicked(float x, float y, float width, float height);
+
 		HDMath::HDFLOAT2 GetMousePosition();
 		HDMath::HDFLOAT2 GetMousePositionNormalized();
 		HDMath::HDFLOAT2 GetMouseDelta();

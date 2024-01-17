@@ -206,6 +206,7 @@
     <ClInclude Include="ToggleUI.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIBase.h" />
+    <ClInclude Include="UISystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioSource.cpp" />
@@ -263,6 +264,7 @@
     <ClCompile Include="ToggleUI.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIBase.cpp" />
+    <ClCompile Include="UISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOengine.rc" />

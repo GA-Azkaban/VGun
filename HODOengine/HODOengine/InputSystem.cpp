@@ -184,6 +184,17 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
+	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
+	{
+		if (_mousePos.x > x &&
+			_mousePos.y > y &&
+			_mousePos.x < x + width &&
+			_mousePos.y < y + height)
+		{
+			return true;
+		}
+	}
+
 	HDMath::HDFLOAT2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
