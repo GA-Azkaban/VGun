@@ -1,8 +1,8 @@
 #include "DynamicCollider.h"
 #include "Transform.h"
 
-#include "../Include/physx/PxPhysics.h"
-#include "../Include/physx/PxPhysicsAPI.h"
+#include "../include/physX/PxPhysics.h"
+#include "../include/physX/PxPhysicsAPI.h"
 
 HDData::DynamicCollider::DynamicCollider()
 {

@@ -471,3 +471,12 @@ HODOengine/SoundLib/lib/.svn/pristine/0a/0a2d9e4c011ce25df935468e24996c4cbe94eab
 HODOengine/SoundLib/lib/.svn/pristine/1e/1eebb51416c35f06966aaf74ee3ce95faf5d181c.svn-base
 HODOengine/SoundLib/lib/.svn/pristine/20/2033a101388cd9b2d1575af9cceffec78da51e7e.svn-base
 HODOengine/SoundLib/lib/.svn/pristine/9d/9d33f091a6ab1d4a53b59f8714875267ed6a585a.svn-base
+
+### 프로젝트 리소스들 ###
+
+*.wav
+*.mp3
+*.dds
+*.png
+*.fbx
+
