@@ -4,15 +4,6 @@
     <Filter Include="00_Default">
       <UniqueIdentifier>{8b23ff3e-01a0-444d-9023-d2c6a98e1663}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01_EngineProcess">
-      <UniqueIdentifier>{6fb42b1f-27a0-428a-8085-82fb8e0048bb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01_EngineProcess\0. Interface">
-      <UniqueIdentifier>{77d68b67-6a4a-492c-be10-5c62cb73efe9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01_EngineProcess\1. dllExporter">
-      <UniqueIdentifier>{4f966e9a-0535-47d1-8732-abe82fc0c647}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03_Scene">
       <UniqueIdentifier>{f4afbb12-0b2e-45f6-b0a1-539260af9727}</UniqueIdentifier>
     </Filter>
@@ -36,9 +27,6 @@
     </Filter>
     <Filter Include="06_System\Singleton">
       <UniqueIdentifier>{fc6c0d83-dc3f-4106-b748-70afabc5ec3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01_EngineProcess\2. API">
-      <UniqueIdentifier>{12a6450c-cedd-43ae-aa71-17378d599a71}</UniqueIdentifier>
     </Filter>
     <Filter Include="06_System\InputSystem">
       <UniqueIdentifier>{05740da4-93e0-4789-a9d4-c679447bab1c}</UniqueIdentifier>
@@ -169,6 +157,18 @@
     <Filter Include="06_System\UISystem">
       <UniqueIdentifier>{284fb1c4-5a48-459c-8ff6-d8e66cb9a5ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03_Scene\01_EngineProcess">
+      <UniqueIdentifier>{6fb42b1f-27a0-428a-8085-82fb8e0048bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Scene\01_EngineProcess\0. Interface">
+      <UniqueIdentifier>{77d68b67-6a4a-492c-be10-5c62cb73efe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Scene\01_EngineProcess\1. dllExporter">
+      <UniqueIdentifier>{4f966e9a-0535-47d1-8732-abe82fc0c647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Scene\01_EngineProcess\2. API">
+      <UniqueIdentifier>{12a6450c-cedd-43ae-aa71-17378d599a71}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -181,13 +181,13 @@
       <Filter>00_Default</Filter>
     </ClInclude>
     <ClInclude Include="HODOengine.h">
-      <Filter>01_EngineProcess</Filter>
+      <Filter>03_Scene\01_EngineProcess</Filter>
     </ClInclude>
     <ClInclude Include="IHODOengine.h">
-      <Filter>01_EngineProcess\0. Interface</Filter>
+      <Filter>03_Scene\01_EngineProcess\0. Interface</Filter>
     </ClInclude>
     <ClInclude Include="dllExporter.h">
-      <Filter>01_EngineProcess\1. dllExporter</Filter>
+      <Filter>03_Scene\01_EngineProcess\1. dllExporter</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>04_GameObject</Filter>
@@ -208,7 +208,7 @@
       <Filter>05_Component\ComponentBase</Filter>
     </ClInclude>
     <ClInclude Include="HODO_API.h">
-      <Filter>01_EngineProcess\2. API</Filter>
+      <Filter>03_Scene\01_EngineProcess\2. API</Filter>
     </ClInclude>
     <ClInclude Include="IDSystem.h">
       <Filter>06_System\IDSystem</Filter>
@@ -346,7 +346,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HODOengine.cpp">
-      <Filter>01_EngineProcess</Filter>
+      <Filter>03_Scene\01_EngineProcess</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>04_GameObject</Filter>
@@ -364,7 +364,7 @@
       <Filter>05_Component\ComponentBase</Filter>
     </ClCompile>
     <ClCompile Include="HODO_API.cpp">
-      <Filter>01_EngineProcess\2. API</Filter>
+      <Filter>03_Scene\01_EngineProcess\2. API</Filter>
     </ClCompile>
     <ClCompile Include="IDSystem.cpp">
       <Filter>06_System\IDSystem</Filter>
