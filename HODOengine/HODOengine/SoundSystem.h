@@ -5,8 +5,6 @@
 #include <vector>
 #include <unordered_map>
 
-#pragma comment(lib, "..//SoundLib//lib//x64//fmod_vc.lib")
-
 namespace HDData
 {
 	class AudioListner;

@@ -12,7 +12,7 @@
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 
-#define MODELS_DIRECTORY_NAME "../3DModels/"
+#define MODELS_DIRECTORY_NAME "../Resources/Models/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;
@@ -31,9 +31,9 @@ namespace RocketCore::Graphics
 		_cubeModel = new Model();
 		_cubeModel->AddMesh(new CubeMesh());
 		_cubeModel->Initialize(device);
-		_cubeModel->LoadTexture(device, L"../Resource/darkbrickdxt1.dds");
+		_cubeModel->LoadTexture(device, L"../Resources/Textures/darkbrickdxt1.dds");
 
-		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"..\\Font\\NotoSansKR.spritefont");
+		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"../Resources/Font/NotoSansKR.spritefont");
 
 		LoadShaders();
 		CreateRenderStates();
@@ -244,12 +244,12 @@ namespace RocketCore::Graphics
 			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 		colorVS->SetVertexDesc(colorDesc);
-		colorVS->Initialize(_device.Get(), "../x64/Debug/ColorVS.cso");
+		colorVS->Initialize(_device.Get(), "../Resources/Shaders/ColorVS.cso");
 		colorVS->SetVertexType(VertexType::COLOR_VERTEX);
 		_vertexShaders["ColorVS"] = colorVS;
 
 		PixelShader* colorPS = new PixelShader();
-		colorPS->Initialize(_device.Get(), "../x64/Debug/ColorPS.cso");
+		colorPS->Initialize(_device.Get(), "../Resources/Shaders/ColorPS.cso");
 		_pixelShaders["ColorPS"] = colorPS;
 
 		VertexShader* textureVS = new VertexShader();
@@ -259,44 +259,44 @@ namespace RocketCore::Graphics
 			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 		textureVS->SetVertexDesc(textureDesc);
-		textureVS->Initialize(_device.Get(), "../x64/Debug/TextureVS.cso");
+		textureVS->Initialize(_device.Get(), "../Resources/Shaders/TextureVS.cso");
 		textureVS->SetVertexType(VertexType::TEXTURE_VERTEX);
 		_vertexShaders["TextureVS"] = textureVS;
 
 		PixelShader* texturePS = new PixelShader();
-		texturePS->Initialize(_device.Get(), "../x64/Debug/TexturePS.cso");
+		texturePS->Initialize(_device.Get(), "../Resources/Shaders/TexturePS.cso");
 		_pixelShaders["TexturePS"] = texturePS;
 
 		VertexShader* vertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (vertexShader->LoadShaderFile(L"../Shaders/VertexShader.cso"))
+		if (vertexShader->LoadShaderFile(L"../Resources/Shaders/VertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("VertexShader.cso", vertexShader));
 
 		PixelShader* pixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (pixelShader->LoadShaderFile(L"../Shaders/PixelShader.cso"))
+		if (pixelShader->LoadShaderFile(L"../Resources/Shaders/PixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("PixelShader.cso", pixelShader));
 
 		VertexShader* skeletonVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (skeletonVertexShader->LoadShaderFile(L"../Shaders/SkeletonVertexShader.cso"))
+		if (skeletonVertexShader->LoadShaderFile(L"../Resources/Shaders/SkeletonVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("SkeletonVertexShader.cso", skeletonVertexShader));
 
 		PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (skeletonPixelShader->LoadShaderFile(L"../Shaders/SkeletonPixelShader.cso"))
+		if (skeletonPixelShader->LoadShaderFile(L"../Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
 
 		VertexShader* debugVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (debugVertexShader->LoadShaderFile(L"../Shaders/DebugVertexShader.cso"))
+		if (debugVertexShader->LoadShaderFile(L"../Resources/Shaders/DebugVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("DebugVertexShader.cso", debugVertexShader));
 
 		PixelShader* debugPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (debugPixelShader->LoadShaderFile(L"../Shaders/DebugPixelShader.cso"))
+		if (debugPixelShader->LoadShaderFile(L"../Resources/Shaders/DebugPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
 
 		VertexShader* cubeMapVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (cubeMapVertexShader->LoadShaderFile(L"../Shaders/CubeMapVertexShader.cso"))
+		if (cubeMapVertexShader->LoadShaderFile(L"../Resources/Shaders/CubeMapVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("CubeMapVertexShader.cso", cubeMapVertexShader));
 
 		PixelShader* cubeMapPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (cubeMapPixelShader->LoadShaderFile(L"../Shaders/CubeMapPixelShader.cso"))
+		if (cubeMapPixelShader->LoadShaderFile(L"../Resources/Shaders/CubeMapPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("CubeMapPixelShader.cso", cubeMapPixelShader));
 	}
 

@@ -15,11 +15,11 @@ public:
 	{
 		_audioSource = GetGameObject()->GetComponent<HDData::AudioSource>();
 		// 배경음
-		_audioSource->AddAudio("ingame_bgm", "../Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
+		_audioSource->AddAudio("ingame_bgm", "../Resources/Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
 		// 효과음1
-		_audioSource->AddAudio3D("Gun_sound", "../Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound, 10, 1000);
+		_audioSource->AddAudio3D("Gun_sound", "../Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound, 10, 1000);
 		// 효과음2
-		_audioSource->AddAudio3D("parts_buy", "../Sound/PartsBuy/parts_buy.wav", HDData::SoundGroup::EffectSound, 10, 1000);
+		_audioSource->AddAudio3D("parts_buy", "../Resources/Sound/PartsBuy/parts_buy.wav", HDData::SoundGroup::EffectSound, 10, 1000);
 	}
 	virtual void Update() override
 	{
