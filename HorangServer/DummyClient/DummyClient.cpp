@@ -74,9 +74,9 @@ int main()
 	{
 		Protocol::C_SIGNUP signUpPkt;
 
-		signUpPkt.set_id("test1");
-		signUpPkt.set_password("test1");
-		signUpPkt.set_nickname("test1");
+		signUpPkt.set_id(u8"test1");
+		signUpPkt.set_password(u8"test1");
+		signUpPkt.set_nickname(u8"test1");
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signUpPkt);
 		service->BroadCast(sendBuffer);
@@ -85,8 +85,8 @@ int main()
 	{
 		Protocol::C_SIGNIN signInPkt;
 
-		signInPkt.set_id("test1");
-		signInPkt.set_password("test1");
+		signInPkt.set_id(u8"test1");
+		signInPkt.set_password(u8"test1");
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signInPkt);
 		service->BroadCast(sendBuffer);

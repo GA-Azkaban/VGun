@@ -36,9 +36,18 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
 	{
 		case 1001:
 			std::cout << "로그인 실패" << std::endl;
-		case 1002:
+			break;
+		case 1004:
 			std::cout << "회원가입 실패" << std::endl;
+			break;
+		case 1002:
+			std::cout << "ID 중복" << std::endl;
+			break;
+		case 1003:
+			std::cout << "닉네임 중복" << std::endl;
+			break;
 		default:
+			std::cout << "정의되지 않은 에러코드 : " << pkt.errorcode() << std::endl;
 			break;
 	}
 
