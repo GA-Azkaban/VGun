@@ -169,6 +169,7 @@ namespace RocketCore::Graphics
 		HR(_device->CreateTexture2D(&depthBufferDesc, nullptr, &_depthStencilBuffer));
 
 		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+		//CD3D11_DEPTH_STENCIL_DESC depthStencilDesc();
 
 		// 스텐실 상태의 description을 초기화합니다.
 		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
@@ -197,6 +198,7 @@ namespace RocketCore::Graphics
 		HR(_device->CreateDepthStencilState(&depthStencilDesc, &_depthStencilState));
 
 		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 1);
+		//_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
 
 		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
 		ZeroMemory(&depthStencilViewDesc, sizeof(depthStencilViewDesc));
@@ -209,8 +211,9 @@ namespace RocketCore::Graphics
 		HR(_device->CreateDepthStencilView(_depthStencilBuffer.Get(), &depthStencilViewDesc, &_depthStencilView));
 		//HR(_device->CreateDepthStencilView(_depthStencilBuffer.Get(), NULL, &_depthStencilView));
 
-		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
-		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
+		//BlendState Creation
+		CD3D11_BLEND_DESC tBlendDesc(D3D11_DEFAULT);
+		HR(_device->CreateBlendState(&tBlendDesc, _defaultBlendState.GetAddressOf()));
 
 		ZeroMemory(&_viewport, sizeof(D3D11_VIEWPORT));
 		_viewport.Height = (float)backBufferDesc.Height;
@@ -261,7 +264,13 @@ namespace RocketCore::Graphics
 		// Clear the depth buffer.
 		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
+		
+		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
+		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
 
+		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
+		////Blend State Set.
+		_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
 		return;
 	}
 
@@ -279,6 +288,14 @@ namespace RocketCore::Graphics
 		// Clear the depth buffer.
 		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
+
+		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
+		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
+
+		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
+		////Blend State Set.
+		//_deviceContext->OMSetBlendState(_defaultBlendState.Get(), nullptr, 0xFF);
+		_deviceContext->OMSetBlendState(nullptr, nullptr, 0xFF);
 
 		return;
 	}
@@ -359,12 +376,16 @@ namespace RocketCore::Graphics
 		Update();
 
 		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
-
 		RenderHelperObject();
 		RenderStaticMesh();
 		RenderText();
+		
 		RenderTexture();
 		RenderLine();
+
+		//_deviceContext->OMSetBlendState(nullptr, );
+		//_deviceContext->OMSetDepthStencilState();
+
 		EndRender();
 	}
 
@@ -402,6 +423,7 @@ namespace RocketCore::Graphics
 			_lineBatch->DrawLine(DirectX::VertexPositionColor(line.startPos, line.color), DirectX::VertexPositionColor(line.endPos, line.color));
 		}
 		_lineBatch->End();
+		
 		ObjectManager::Instance().GetLineRenderer()->Flush();
 	}
 }

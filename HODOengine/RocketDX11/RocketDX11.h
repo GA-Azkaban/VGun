@@ -76,6 +76,8 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
 		ComPtr<ID3D11DepthStencilState> _depthStencilState;
 		ComPtr<ID3D11DepthStencilView> _depthStencilView;
+		ComPtr<ID3D11BlendState > _defaultBlendState;
+		
 		D3D11_VIEWPORT _viewport;
 
 	private:
