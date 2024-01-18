@@ -119,12 +119,7 @@
       <AdditionalDependencies>HODOengine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Resources\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\"
-copy "$(SolutionDir)Resources\Font\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Font\"
-copy "$(SolutionDir)Resources\Models\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Models\"
-copy "$(SolutionDir)Resources\Shaders\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Shaders\"
-copy "$(SolutionDir)Resources\Sound\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Sound\"
-copy "$(SolutionDir)Resources\Textures\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Textures\"</Command>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -146,12 +141,7 @@ copy "$(SolutionDir)Resources\Textures\*.*" "$(SolutionDir)Build\$(Configuration
       <AdditionalDependencies>HODOengine.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Resources\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\"
-copy "$(SolutionDir)Resources\Font\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Font\"
-copy "$(SolutionDir)Resources\Models\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Models\"
-copy "$(SolutionDir)Resources\Shaders\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Shaders\"
-copy "$(SolutionDir)Resources\Sound\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Sound\"
-copy "$(SolutionDir)Resources\Textures\*.*" "$(SolutionDir)Build\$(Configuration)\Resources\Textures\"</Command>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

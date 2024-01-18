@@ -126,10 +126,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)Lib\Debug\physX;$(SolutionDir)Lib\Debug\FMOD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Lib\$(Configuration)\FMOD\fmod.dll" "$(SolutionDir)Build\$(Configuration)";
-copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysX_64.dll" "$(SolutionDir)Build\$(Configuration)";
-copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXCommon_64.dll" "$(SolutionDir)Build\$(Configuration)";
-copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
+      <Command>copy /Y "$(SolutionDir)Lib\$(Configuration)\FMOD\fmod.dll" "$(SolutionDir)Build\$(Configuration)";
+copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysX_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXCommon_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -153,10 +153,10 @@ copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Soluti
       <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)Lib\Release\physX;$(SolutionDir)Lib\Release\FMOD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)Lib\$(Configuration)\FMOD\fmod.dll" "$(SolutionDir)Build\$(Configuration)";
-copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysX_64.dll" "$(SolutionDir)Build\$(Configuration)";
-copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXCommon_64.dll" "$(SolutionDir)Build\$(Configuration)";
-copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
+      <Command>copy /Y "$(SolutionDir)Lib\$(Configuration)\FMOD\fmod.dll" "$(SolutionDir)Build\$(Configuration)";
+copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysX_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXCommon_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
