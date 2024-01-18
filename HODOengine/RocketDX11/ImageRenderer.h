@@ -56,6 +56,11 @@ namespace RocketCore::Graphics
 		float _scaleX;
 		float _scaleY;
 
+		// 원점 구하기
+		float _centerX;
+		float _centerY;
+		DirectX::XMMATRIX translationMatrix;
+
 		// 이미지 정보
 		float _imageWidth;
 		float _imageHeight;
