@@ -40,9 +40,8 @@ namespace HDData
 		HDData::TextUI* _value;
 		
 		// 슬라이더의 최대 최소 위치
-		int _min = 0;
-		int _max = 100;
-		bool _isGrabHandle;
+		int _min;
+		int _max;
 	};
 }
 

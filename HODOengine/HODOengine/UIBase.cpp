@@ -1,6 +1,7 @@
 #include "UIBase.h"
 #include "Transform.h"
 #include "InputSystem.h"
+#include "GameObject.h"
 
 namespace HDData
 {
@@ -23,13 +24,6 @@ namespace HDData
 		}
 
 		HDMath::HDFLOAT2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
-		
-		auto mouseX = mouse.x;
-		auto mouseY = mouse.y;
-		auto left = GetLeft();
-		auto right = GetRight();
-		auto top = GetTop();
-		auto bottom = GetBottom();
 
 		if (mouse.x > GetLeft() &&
 			mouse.y > GetTop() &&
@@ -89,31 +83,26 @@ namespace HDData
 
 	float UIBase::GetLeft()
 	{
-		auto b = GetTransform()->GetWorldPosition().x;
-		auto c = _sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2;
-
-		auto a = GetTransform()->GetWorldPosition().x -
-			(_sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2);
-
-		return {};
+		return GetTransform()->GetWorldPosition().x -
+			(_sketchable->GetWidth() / 2);
 	}
 
 	float UIBase::GetRight()
 	{
 		return GetTransform()->GetWorldPosition().x +
-			(_sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2);
+			(_sketchable->GetWidth()  / 2);
 	}
 
 	float UIBase::GetTop()
 	{
 		return GetTransform()->GetWorldPosition().y -
-			(_sketchable->GetHeight() * GetTransform()->GetWorldScale().y / 2);
+			(_sketchable->GetHeight() / 2);
 	}
 
 	float UIBase::GetBottom()
 	{
 		return GetTransform()->GetWorldPosition().y +
-			(_sketchable->GetHeight() * GetTransform()->GetWorldScale().y / 2);
+			(_sketchable->GetHeight()  / 2);
 	}
 
 }

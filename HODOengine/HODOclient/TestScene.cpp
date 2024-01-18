@@ -123,10 +123,9 @@ TestScene::TestScene()
 	_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	//auto _slider = API::CreateSlider(_scene, "slider");
-	//_slider->GetTransform()->SetWorldPosition({ 500.0f,500.0f,0.0f });
-	//_slider->AddComponent<HDData::AudioSource>();
-	//_slider->AddComponent<SliderSoundScript>();
+	auto _slider = API::CreateSlider(_scene, "slider");
+	_slider->GetTransform()->SetWorldPosition({ 500.0f,500.0f,0.0f });
+	_slider->AddComponent<HDData::AudioSource>();
 
 	//auto toggle = API::CreateToggle(_scene);
 	//toggle->GetTransform()->SetWorldPosition({1500.f, 50.f, 0.0f});

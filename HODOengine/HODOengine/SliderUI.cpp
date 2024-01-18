@@ -11,6 +11,11 @@
 namespace HDData
 {
 	SliderUI::SliderUI()
+		: _min(0), _max(0),
+		_background(nullptr),
+		_fill(nullptr),
+		_handle(nullptr),
+		_value(nullptr)
 	{
 	}
 
@@ -37,38 +42,35 @@ namespace HDData
 				_value = child->GetComponent<HDData::TextUI>();
 			}
 		}
-		auto test = _background->GetImageWidth();
+
 		_min = GetTransform()->GetWorldPosition().x - (_background->GetImageWidth() / 2);
 		_max = GetTransform()->GetWorldPosition().x + _background->GetImageWidth() / 2;
 	}
 
 	void SliderUI::Update()
 	{
-		/*if (_handle->GetIsClicked() == true) _isGrabHandle = true;
-
-		if (_isGrabHandle == true)
+		if (_background->GetIsClicked() == true)
 		{
-			auto newValue = ((_handle->GetScreenSpacePositionX() - _background->GetScreenSpacePositionX()) / _background->GetImageWidth()) * 100;
+			auto mouseX = HDEngine::InputSystem::Instance().GetMousePosition().x;
+			auto newValue = ((_handle->GetTransform()->GetWorldPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;
 
-			_handle->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
-			_value->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
+			_handle->GetTransform()->SetWorldPosition(mouseX, _background->GetTransform()->GetLocalPosition().y, 0);
+			_value->GetTransform()->SetWorldPosition(mouseX, _handle->GetTransform()->GetLocalPosition().y - 50, 0);
 			_value->SetText(std::to_string((int)newValue));
 
-			if (mouseX > _max)
+			/*if (mouseX > _max)
 			{
-				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
+				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
 				_value->SetText("100");
 			}
 			if (mouseX < _min)
 			{
-				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
+				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
 				_value->SetText("0");
-			}
-
-			if (!_handle->GetIsClicked()) _isGrabHandle = false;
-		}*/
+			}*/
+		}
 	}
 
 	void SliderUI::SetActive(bool active)

@@ -76,14 +76,17 @@ namespace API
 			auto fill = HDEngine::ObjectSystem::Instance().CreateObject(scene, "fill", obj);
 			fill->AddComponent<HDData::ImageUI>();
 			fill->GetComponent<HDData::ImageUI>()->SetImage("fill.png");
+			fill->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 			auto handle = HDEngine::ObjectSystem::Instance().CreateObject(scene, "handle", obj);
 			handle->AddComponent<HDData::ImageUI>();
 			handle->GetComponent<HDData::ImageUI>()->SetImage("point.png");
+			handle->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "value", obj);
 			valueText->AddComponent<HDData::TextUI>();
 			valueText->GetComponent<HDData::TextUI>()->SetText("50");
+			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 
 			return obj;
 		}

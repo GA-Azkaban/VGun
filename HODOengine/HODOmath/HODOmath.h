@@ -91,7 +91,6 @@ namespace HDMath
 		HDFLOAT3 operator-() const; // 음수 변환
 		HDFLOAT3 operator=(const HDFLOAT3& other); // 대입 연산자
 		HDFLOAT3 operator+(const HDFLOAT3& other) const; // 더하기
-		HDFLOAT3 operator*(const HDFLOAT3& other) const; // 곱하기
 		HDFLOAT3& operator+=(const HDFLOAT3& other); // 더해서 대입
 		HDFLOAT3 operator-(const HDFLOAT3& other) const; // 빼기
 		HDFLOAT3& operator-=(const HDFLOAT3& other); // 빼서 대입

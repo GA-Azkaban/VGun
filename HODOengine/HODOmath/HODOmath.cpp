@@ -178,11 +178,6 @@ namespace HDMath
 		return Add(*this, other);
 	}
 
-	HDFLOAT3 HDFLOAT3::operator*(const HDFLOAT3& other) const
-	{
-		return HDFLOAT3{ x * other.x , y * other.y, z * other.z };
-	}
-
 	HDFLOAT3& HDFLOAT3::operator+=(const HDFLOAT3& other)
 	{
 		*this = Add(*this, other);

@@ -18,7 +18,7 @@ namespace HDData
 			return _position;
 		}
 
-		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition() * _position;
+		return HDMath::HDFloat3MultiplyMatrix( _position, GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM());
 
 // 		HDMath::HDFLOAT3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
 // 		HDMath::HDQuaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
@@ -33,8 +33,9 @@ namespace HDData
 		{
 			return _rotation;
 		}
-
-		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation() * _rotation;
+		
+		auto result = HDMath::HDFloat4MultiplyMatrix(HDMath::QuaternionToFloat4(_rotation), GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM());
+		return HDMath::Float4ToQuaternion(result);
 	}
 
 	HDMath::HDFLOAT3 Transform::GetWorldScale() const
@@ -44,7 +45,7 @@ namespace HDData
 			return _scale;
 		}
 
-		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale() * _scale;
+		return HDMath::HDFloat3MultiplyMatrix(_scale, GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM());
 	}
 
 	HDMath::HDFLOAT3 Transform::GetLocalPosition() const
