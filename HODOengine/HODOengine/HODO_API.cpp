@@ -50,10 +50,17 @@ namespace API
 			return obj;
 		}
 
-		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		//HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		//{
+		//	auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+		//	obj->AddComponent<HDData::SlideBoxUI>();
+		//	return obj;
+		//}
+
+		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-			obj->AddComponent<HDData::SlideBoxUI>();
+			obj->AddComponent<HDData::ToggleUI>();
 			return obj;
 		}
 
@@ -61,6 +68,23 @@ namespace API
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			obj->AddComponent<HDData::SliderUI>();
+
+			auto background = HDEngine::ObjectSystem::Instance().CreateObject(scene, "bar", obj);
+			background->AddComponent<HDData::ImageUI>();
+			background->GetComponent<HDData::ImageUI>()->SetImage("bar.png");
+
+			auto fill = HDEngine::ObjectSystem::Instance().CreateObject(scene, "fill", obj);
+			fill->AddComponent<HDData::ImageUI>();
+			fill->GetComponent<HDData::ImageUI>()->SetImage("fill.png");
+
+			auto handle = HDEngine::ObjectSystem::Instance().CreateObject(scene, "handle", obj);
+			handle->AddComponent<HDData::ImageUI>();
+			handle->GetComponent<HDData::ImageUI>()->SetImage("point.png");
+
+			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "value", obj);
+			valueText->AddComponent<HDData::TextUI>();
+			valueText->GetComponent<HDData::TextUI>()->SetText("50");
+
 			return obj;
 		}
 
@@ -103,6 +127,7 @@ namespace API
 		{
 			return HDEngine::InputSystem::Instance().GetMouseWheel();
 		}
+
 		HODO_API HDMath::HDFLOAT2 GetMouseDelta()
 		{
 			return HDEngine::InputSystem::Instance().GetMouseDelta();
@@ -133,4 +158,7 @@ namespace API
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}
 	}
+
+
+
 }

@@ -163,11 +163,11 @@
     <Filter Include="05_Component\UserInterface\ToggleUI">
       <UniqueIdentifier>{fd389271-0295-45eb-aba5-dc07311efbb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\UserInterface\SettingBoxUI">
-      <UniqueIdentifier>{273ab024-e60c-43d2-a4c9-fd5f195f1545}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\UserInterface\SlideBoxUI">
       <UniqueIdentifier>{f44210c7-d98b-4215-869f-3423fb66c16b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\UISystem">
+      <UniqueIdentifier>{284fb1c4-5a48-459c-8ff6-d8e66cb9a5ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -327,6 +327,9 @@
     <ClInclude Include="SlideBoxUI.h">
       <Filter>05_Component\UserInterface\SlideBoxUI</Filter>
     </ClInclude>
+    <ClInclude Include="UISystem.h">
+      <Filter>06_System\UISystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -469,6 +472,9 @@
     </ClCompile>
     <ClCompile Include="SlideBoxUI.cpp">
       <Filter>05_Component\UserInterface\SlideBoxUI</Filter>
+    </ClCompile>
+    <ClCompile Include="UISystem.cpp">
+      <Filter>06_System\UISystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

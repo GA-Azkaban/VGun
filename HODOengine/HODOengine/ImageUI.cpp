@@ -9,7 +9,7 @@ namespace HDData
 		: _imageUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-		_sketchable.push_back(_imageUI);
+		_sketchable = _imageUI;
 	}
 
 	void ImageUI::SetActive(bool active)
@@ -30,6 +30,26 @@ namespace HDData
 	void ImageUI::SetImage(const std::string& fileName)
 	{
 		_imageUI->SetImage(fileName);
+	}
+
+	float ImageUI::GetScreenSpacePositionX()
+	{
+		return _imageUI->GetScreenSpacePositionX();
+	}
+
+	float ImageUI::GetScreenSpacePositionY()
+	{
+		return _imageUI->GetScreenSpacePositionY();
+	}
+
+	float ImageUI::GetImageWidth()
+	{
+		return _imageUI->GetWidth();
+	}
+
+	float ImageUI::GetImageHeight()
+	{
+		return _imageUI->GetHeight();
 	}
 
 	void ImageUI::ChangeScale(float x, float y)

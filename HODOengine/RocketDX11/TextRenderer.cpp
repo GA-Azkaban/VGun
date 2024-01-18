@@ -83,3 +83,13 @@ void RocketCore::Graphics::TextRenderer::SetintValue(const int value)
 {
 	_renderInt = value;
 }
+
+float RocketCore::Graphics::TextRenderer::GetWidth()
+{
+	return {};
+}
+
+float RocketCore::Graphics::TextRenderer::GetHeight()
+{
+	return {};
+}

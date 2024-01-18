@@ -39,6 +39,9 @@ namespace RocketCore::Graphics
 
 		virtual void SetActive(bool isActive) override;
 
+		virtual float GetWidth() override;
+		virtual float GetHeight() override;
+
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
 

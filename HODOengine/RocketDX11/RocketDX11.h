@@ -14,6 +14,8 @@
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "d3dcompiler.lib")
 
 using Microsoft::WRL::ComPtr;
 
@@ -26,6 +28,7 @@ namespace RocketCore::Graphics
 	class PixelShader;
 	class ResourceManager;
 	class ImageRenderer;
+	class Cubemap;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
 	{
@@ -37,22 +40,29 @@ namespace RocketCore::Graphics
 		//그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
+		virtual void Update(float deltaTime) override;
+
 		virtual void Render() override;
 
 		virtual void Finalize() override;
-
-	private:
-		void Update();
 
 	private:
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
 		void RenderHelperObject();
 		void RenderStaticMesh();
+		void RenderSkinningMesh();
 		void RenderText();
 		void RenderLine();
 		void RenderTexture();
 		void EndRender();
+
+		void CreateDepthStencilStates();
+		void EnableZBuffering();
+		void SetCubemapDSS();
+
+		// 임시
+		void SetLights();
 
 		/// Initialize Member
 	private:
@@ -78,15 +88,19 @@ namespace RocketCore::Graphics
 
 	private:
 		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다. 
-		ComPtr<ID3D11DepthStencilState> _NormalDepthStencilState;
+		ComPtr<ID3D11DepthStencilState> _normalDepthStencilState;
+		// 큐브맵 뎁스스텐실 스테이트
+		ComPtr<ID3D11DepthStencilState> _cubemapDepthStencilState;
 
 	private:
-		Grid* _grid;
-		Axis* _axis;
+		//Grid* _grid;
+		//Axis* _axis;
 		DirectX::SpriteBatch* _spriteBatch;
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
+
+		Cubemap* _cubemap;
 
 	private:
 		ResourceManager& _resourceManager;

@@ -14,7 +14,7 @@ namespace HDData
 		: _buttonUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-		_sketchable.push_back(_buttonUI);
+		_sketchable = _buttonUI;
 	}
 
 	void Button::Start()
@@ -24,9 +24,9 @@ namespace HDData
 
 	void Button::Update()
 	{
-		if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
+		if (GetIsClicked() == true)
 		{
-			CallClickEvent();
+			_onClickEvent;
 		}
 	}
 

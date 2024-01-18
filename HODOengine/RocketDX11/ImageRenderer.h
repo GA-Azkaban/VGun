@@ -5,7 +5,6 @@
 //#include <vector>
 #include <DXTK\\SpriteBatch.h>
 #include <DXTK\\WICTextureLoader.h>
-#include <DirectXTex\\DirectXTex.h>
 #include <wrl\client.h>
 
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
@@ -57,8 +56,12 @@ namespace RocketCore::Graphics
 		float _scaleX;
 		float _scaleY;
 
+		// 원점 구하기
+		float _centerX;
+		float _centerY;
+		DirectX::XMMATRIX translationMatrix;
+
 		// 이미지 정보
-		DirectX::TexMetadata _meataData;
 		float _imageWidth;
 		float _imageHeight;
 

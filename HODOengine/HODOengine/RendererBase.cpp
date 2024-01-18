@@ -3,16 +3,10 @@
 
 namespace HDData
 {
-	RendererBase::RendererBase()
-		:_renderable(nullptr)
-	{
-
-	}
-
-	void RendererBase::UpdateRenderData()
+	/*void RendererBase::UpdateRenderData()
 	{
 		_renderable->SetWorldTM(GetTransform()->GetWorldTM());
-	}
+	}*/
 
 // 	void RendererBase::OnEnable()
 // 	{

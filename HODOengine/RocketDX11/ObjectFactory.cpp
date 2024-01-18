@@ -4,6 +4,7 @@
 
 #include "Camera.h"
 #include "StaticMeshObject.h"
+#include "SkinningMeshObject.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -31,17 +32,12 @@ namespace RocketCore::Graphics
 
 	HDEngine::IStaticMesh* ObjectFactory::CreateStaticMeshObject()
 	{
-		ObjectManager& objMgr = ObjectManager::Instance();
-		ResourceManager& rscMgr = ResourceManager::Instance();
+		return ObjectManager::Instance().CreateStaticMeshObject();
+	}
 
-		StaticMeshObject* obj = objMgr.CreateStaticMeshObject();
-
-		obj->SetModel(rscMgr.GetCubeModel());
-		obj->SetVertexShader(rscMgr.GetVertexShader("TextureVS"));
-		obj->SetPixelShader(rscMgr.GetPixelShader("TexturePS"));
-		obj->SetRenderState(rscMgr.GetRenderState(ResourceManager::eRenderState::SOLID));
-
-		return obj;
+	HDEngine::ISkinnedMesh* ObjectFactory::CreateSkinnedMeshObject()
+	{
+		return ObjectManager::Instance().CreateSkinningMeshObject();
 	}
 
 	HDEngine::ISketchableText* ObjectFactory::CreateText()

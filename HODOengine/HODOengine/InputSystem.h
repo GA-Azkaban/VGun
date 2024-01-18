@@ -34,8 +34,10 @@ namespace HDEngine
 		bool GetMouseDown(BYTE key);
 		bool GetMouseUp(BYTE key);
 
+		bool CheckMouseMove();
+		bool Check2DClicked(float x, float y, float width, float height);
+
 		HDMath::HDFLOAT2 GetMousePosition();
-		HDMath::HDFLOAT2 GetMousePositionNormalized();
 		HDMath::HDFLOAT2 GetMouseDelta();
 	
 		float GetMouseWheel();
@@ -64,13 +66,12 @@ namespace HDEngine
 		bool					_prevKeyState[256];
 
 		POINT					_mousePos;
+		POINT					_prevMousePos;
+		POINT					_mouseDelta;
+		POINT					_prevMouseDelta;
 		int						_mouseWheel;
 		int						_wheelMax;
 		int						_wheelMin;
-		HDMath::HDFLOAT2 _currentMousePosition;
-		HDMath::HDFLOAT2 _previousMousePosition;
-		HDMath::HDFLOAT2 _currentMouseDelta;
-		HDMath::HDFLOAT2 _previousMouseDelta;
 	};
 }
 
