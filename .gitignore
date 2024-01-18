@@ -479,4 +479,5 @@ HODOengine/SoundLib/lib/.svn/pristine/9d/9d33f091a6ab1d4a53b59f8714875267ed6a585
 *.dds
 *.png
 *.fbx
-
+*.cso
+*.dae
