@@ -121,6 +121,11 @@
     <PostBuildEvent>
       <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -143,6 +148,11 @@
     <PostBuildEvent>
       <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
