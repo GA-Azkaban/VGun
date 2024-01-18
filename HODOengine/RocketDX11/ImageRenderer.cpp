@@ -70,12 +70,16 @@ void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 	_imageWidth = textureDesc.Width;
 	_imageHeight = textureDesc.Height;
 
+	_centerX = _imageWidth / 2.0f;
+	_centerY = _imageHeight / 2.0f;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float y)
 {
-	_xlocation = x;
-	_ylocation = y;
+	_xlocation;
+	_ylocation;
+	//_xlocation = x - _centerX;
+	//_ylocation = y - _centerY;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
@@ -89,7 +93,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 
 	spriteBatch->Draw(
 		_imagerSRV.Get(),
-		DirectX::XMFLOAT2(_xlocation, _ylocation),
+		DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
 		nullptr,
 		_color,
 		0.0f,										//회전 각도
