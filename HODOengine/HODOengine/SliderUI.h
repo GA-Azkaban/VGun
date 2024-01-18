@@ -24,9 +24,6 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
-		
-		// 슬라이더 영역 범위 내를 클릭하였는지 체크
-		bool CheckMouseClicked();
 
 		// 슬라이더 내용
 		void SetSliderbarImage(const char* fileName);
@@ -37,8 +34,6 @@ namespace HDData
 		float GetValueText();
 	
 	private:
-		HDEngine::InputSystem& _inputSystem;
-
 		HDData::ImageUI* _background;
 		HDData::ImageUI* _fill;
 		HDData::ImageUI* _handle;
@@ -47,7 +42,7 @@ namespace HDData
 		// 슬라이더의 최대 최소 위치
 		int _min = 0;
 		int _max = 100;
-		bool _isClicked = false;
+		bool _isGrabHandle;
 	};
 }
 

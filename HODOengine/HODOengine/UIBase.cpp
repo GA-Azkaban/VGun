@@ -23,8 +23,23 @@ namespace HDData
 		}
 
 		HDMath::HDFLOAT2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
+		
+		auto mouseX = mouse.x;
+		auto mouseY = mouse.y;
+		auto left = GetLeft();
+		auto right = GetRight();
+		auto top = GetTop();
+		auto bottom = GetBottom();
 
-		return true;
+		if (mouse.x > GetLeft() &&
+			mouse.y > GetTop() &&
+			mouse.x < GetRight() &&
+			mouse.y < GetBottom())
+		{
+			return true;
+		}
+
+		return false;
 	}
 
 	int UIBase::GetSortOrder() const
@@ -32,9 +47,9 @@ namespace HDData
 		return _sortOrder;
 	}
 
-	bool UIBase::GetIsFocused()
+	bool UIBase::GetIsHovering()
 	{
-		return _isFocused;
+		return _isHovering;
 	}
 
 	bool UIBase::GetIsClicked()
@@ -42,29 +57,63 @@ namespace HDData
 		return _isClicked;
 	}
 
+	bool UIBase::GetIsGrabbing()
+	{
+		return _isGrabbing;
+	}
+
 	bool UIBase::IsIgnoreFocused()
 	{
 		return _ignoreFocus;
 	}
 
+	void UIBase::SetIsHovering(bool isHovering)
+	{
+		_isHovering = isHovering;
+	}
+
+	void UIBase::SetIsClicked(bool isClicked)
+	{
+		_isClicked = isClicked;
+	}
+
+	void UIBase::SetIsGrabbing(bool isGrabbing)
+	{
+		_isGrabbing = isGrabbing;
+	}
+
+	void UIBase::SetIsIgnoreFocus(bool isIgnore)
+	{
+		_ignoreFocus = isIgnore;
+	}
+
 	float UIBase::GetLeft()
 	{
+		auto b = GetTransform()->GetWorldPosition().x;
+		auto c = _sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2;
+
+		auto a = GetTransform()->GetWorldPosition().x -
+			(_sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2);
+
 		return {};
 	}
 
 	float UIBase::GetRight()
 	{
-		return {};
+		return GetTransform()->GetWorldPosition().x +
+			(_sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2);
 	}
 
 	float UIBase::GetTop()
 	{
-		return {};
+		return GetTransform()->GetWorldPosition().y -
+			(_sketchable->GetHeight() * GetTransform()->GetWorldScale().y / 2);
 	}
 
 	float UIBase::GetBottom()
 	{
-		return {};
+		return GetTransform()->GetWorldPosition().y +
+			(_sketchable->GetHeight() * GetTransform()->GetWorldScale().y / 2);
 	}
 
 }

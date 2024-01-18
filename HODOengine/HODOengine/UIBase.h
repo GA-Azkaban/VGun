@@ -11,6 +11,8 @@ namespace HDData
 	{
 	public:
 		UIBase();
+
+	public:
 		void UpdateRenderData();
 		bool CheckFocus();
 		virtual void OnUpdateTransform()
@@ -19,9 +21,15 @@ namespace HDData
 		}
 
 		int GetSortOrder() const;
-		bool GetIsFocused();
+		bool GetIsHovering();
 		bool GetIsClicked();
+		bool GetIsGrabbing();
 		bool IsIgnoreFocused();
+
+		void SetIsHovering(bool isHovering);
+		void SetIsClicked(bool isClicked);
+		void SetIsGrabbing(bool isGrabbing);
+		void SetIsIgnoreFocus(bool isIgnore);
 
 		float GetLeft();
 		float GetRight();
@@ -29,12 +37,12 @@ namespace HDData
 		float GetBottom();
 
 		HDEngine::ISketchable* _sketchable;
-	private:
-		
 
+	private:
 		int		_sortOrder;
-		bool	_isFocused;
+		bool	_isHovering;
 		bool	_isClicked;
+		bool	_isGrabbing;
 		bool	_ignoreFocus;
 	};
 }

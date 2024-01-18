@@ -11,7 +11,6 @@
 namespace HDData
 {
 	SliderUI::SliderUI()
-		:_inputSystem(HDEngine::InputSystem::Instance())
 	{
 	}
 
@@ -45,16 +44,10 @@ namespace HDData
 
 	void SliderUI::Update()
 	{
-		if (_inputSystem.GetMouseDown(MOUSE_LEFT))
+		/*if (_handle->GetIsClicked() == true) _isGrabHandle = true;
+
+		if (_isGrabHandle == true)
 		{
-			_isClicked = _inputSystem.Check2DClicked(_background->GetScreenSpacePositionX(), _background->GetScreenSpacePositionY(),
-										_background->GetScreenSpacePositionX() + _background->GetImageWidth(),
-										_background->GetScreenSpacePositionY() + _background->GetImageHeight());
-		}
-	
-		if (_isClicked == true)
-		{
-			float mouseX = _inputSystem.GetMousePosition().x;
 			auto newValue = ((_handle->GetScreenSpacePositionX() - _background->GetScreenSpacePositionX()) / _background->GetImageWidth()) * 100;
 
 			_handle->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
@@ -74,8 +67,8 @@ namespace HDData
 				_value->SetText("0");
 			}
 
-			if (_inputSystem.GetMouseUp(MOUSE_LEFT)) _isClicked = false;
-		}
+			if (!_handle->GetIsClicked()) _isGrabHandle = false;
+		}*/
 	}
 
 	void SliderUI::SetActive(bool active)

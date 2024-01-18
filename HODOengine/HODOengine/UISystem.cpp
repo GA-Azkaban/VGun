@@ -57,9 +57,19 @@ namespace HDEngine
 
 			if (ui->CheckFocus())
 			{
-
+				_focusedUI = ui;
+				break;
 			}
 		}
+
+		//if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
+		//{
+		//	_focusedUI->SetIsClicked(true);
+		//}
+		//else
+		//{
+		//	_focusedUI->SetIsHovering(true);
+		//}
 	}
 
 

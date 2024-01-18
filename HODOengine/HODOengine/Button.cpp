@@ -24,9 +24,9 @@ namespace HDData
 
 	void Button::Update()
 	{
-		if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
+		if (GetIsClicked() == true)
 		{
-			CallClickEvent();
+			_onClickEvent;
 		}
 	}
 

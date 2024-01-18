@@ -30,6 +30,7 @@ namespace HDEngine
 
 	private:
 		std::vector<HDData::UIBase*> _uiList;
+		HDData::UIBase* _focusedUI;
 	};
 }
 
