@@ -24,11 +24,9 @@ namespace HDData
 
 	void Button::Update()
 	{
-		auto x = HDEngine::InputSystem::Instance().GetMousePosition().x;
-
-		if (GetIsClicked() == true)
+		if (GetIsClicked())
 		{
-			GetTransform()->SetWorldPosition(x, GetTransform()->GetWorldPosition().y, 0.f);
+			_onClickEvent;
 		}
 	}
 

@@ -34,10 +34,10 @@ namespace HDData
 		float GetValueText();
 	
 	private:
-		HDData::ImageUI* _background;
-		HDData::ImageUI* _fill;
-		HDData::ImageUI* _handle;
-		HDData::TextUI* _value;
+		ImageUI* _background;
+		ImageUI* _fill;
+		ImageUI* _handle;
+		TextUI* _value;
 		
 		// 슬라이더의 최대 최소 위치
 		int _min;

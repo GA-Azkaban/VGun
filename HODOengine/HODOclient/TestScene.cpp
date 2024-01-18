@@ -127,8 +127,8 @@ TestScene::TestScene()
 	_slider->GetTransform()->SetWorldPosition({ 500.0f,500.0f,0.0f });
 	_slider->AddComponent<HDData::AudioSource>();
 
-	//auto toggle = API::CreateToggle(_scene);
-	//toggle->GetTransform()->SetWorldPosition({1500.f, 50.f, 0.0f});
+	auto toggle = API::CreateToggle(_scene);
+	toggle->GetTransform()->SetWorldPosition({1500.f, 50.f, 0.0f});
 
 	API::LoadScene(_scene);
 

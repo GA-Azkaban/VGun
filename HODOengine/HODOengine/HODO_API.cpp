@@ -54,6 +54,13 @@ namespace API
 		//{
 		//	auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 		//	obj->AddComponent<HDData::SlideBoxUI>();
+
+		//	auto leftButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+		//	leftButton->AddComponent<HDData::ImageUI>();
+
+		//	auto rightButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+		//	rightButton->AddComponent<HDData::ImageUI>();
+
 		//	return obj;
 		//}
 
@@ -61,6 +68,15 @@ namespace API
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			obj->AddComponent<HDData::ToggleUI>();
+
+			auto toggleOn = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOn" , obj);
+			toggleOn->AddComponent<HDData::ImageUI>();
+			toggleOn->GetComponent<HDData::ImageUI>()->SetImage("Sound.png");
+
+			auto toggleOff = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOff" , obj);
+			toggleOff->AddComponent<HDData::ImageUI>();
+			toggleOff->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
+
 			return obj;
 		}
 

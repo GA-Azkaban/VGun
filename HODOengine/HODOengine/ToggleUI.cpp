@@ -1,70 +1,67 @@
 #include "ToggleUI.h"
-#include "RenderSystem.h"
+#include "GameObject.h"
+#include "ImageUI.h"
+#include "TextUI.h"
 #include "GraphicsObjFactory.h"
+#include "RenderSystem.h"
 #include "InputSystem.h"
 
 HDData::ToggleUI::ToggleUI()
-	: _toggleImage(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
-	_inputSystem(HDEngine::InputSystem::Instance()),
-	_isToggleOn(true)
+	: _isToggleOn(true),
+	_toggleOn(nullptr), _toggleOff(nullptr)
 {
-	HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-	_sketchable = _toggleImage;
+
 }
 
 void HDData::ToggleUI::Start()
 {
-	_toggleOffImage = "Mute.png";
-	_toggleOnImage = "Sound.png";
+	auto& childs = this->GetGameObject()->GetChildGameObjects();
+
+	for (const auto& one : childs)
+	{
+		if (one->GetObjectName() == "toggleOn")
+		{
+			_toggleOn = one->GetComponent<HDData::ImageUI>();
+		}
+		if (one->GetObjectName() == "toggleOff")
+		{
+			_toggleOff = one->GetComponent<HDData::ImageUI>();
+		}
+	}
+
+	_toggleOn->SetActive(true);
+	_toggleOff->SetActive(false);
 }
 
 void HDData::ToggleUI::Update()
 {
-	if (CheckIsClicked() && _inputSystem.GetMouseDown(MOUSE_LEFT))
+	if (_toggleOn->GetIsClicked())
 	{
-		if (_isToggleOn)
-		{
-			_toggleImage->SetImage(_toggleOnImage);
-		}
-		else
-		{
-			_toggleImage->SetImage(_toggleOffImage);
-		}
+		_toggleOn->SetActive(false);
+		_toggleOff->SetActive(true);
 	}
-
+	if (_toggleOff->GetIsClicked())
+	{
+		_toggleOn->SetActive(true);
+		_toggleOff->SetActive(false);
+	}
 }
 
 void HDData::ToggleUI::SetActive(bool active)
 {
-	_toggleImage->SetActive(active);
+	_toggleOn->SetActive(active);
+	_toggleOff->SetActive(active);
 }
 
 void HDData::ToggleUI::SetScreenSpace()
 {
-	_toggleImage->SetScreenSpace();
+	_toggleOn->SetScreenSpace();
+	_toggleOff->SetScreenSpace();
 }
 
 void HDData::ToggleUI::SetWorldSpace()
 {
-	_toggleImage->SetWorldSpace();
-}
-
-void HDData::ToggleUI::SetToggleOnImage(const char* fileName)
-{
-	_toggleOnImage = fileName;
-}
-
-void HDData::ToggleUI::SetToggleOffImage(const char* fileName)
-{
-	_toggleOffImage = fileName;
-}
-
-bool HDData::ToggleUI::CheckIsClicked()
-{
-	if (_inputSystem.GetMousePosition().x > _toggleImage->GetScreenSpacePositionX() &&
-		_inputSystem.GetMousePosition().y > _toggleImage->GetScreenSpacePositionY())
-	{
-		return true;
-	}
+	_toggleOn->SetWorldSpace();
+	_toggleOff->SetWorldSpace();
 }
 

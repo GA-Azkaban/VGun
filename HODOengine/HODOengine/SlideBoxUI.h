@@ -36,14 +36,11 @@
 //		bool InvokeClick(const float& x, const float& y);
 //
 //	private:
-//		std::vector<std::string> _texts;
+//		std::vector<std::string> _values;
 //
-//		HDEngine::ISketchableText* _valueText;
-//		HDEngine::ISketchableImage* _arrowLeft;
-//		HDEngine::ISketchableImage* _arrowRight;
-//
-//		/*HDEngine::ISketchableImage* _arrowLeft;
-//		HDEngine::ISketchableImage* _arrowRight;*/
+//		UIBase* _leftArrow;
+//		UIBase* _rightArrow;
+//		UIBase* _valueImage;
 //
 //		bool _isRight;
 //	};

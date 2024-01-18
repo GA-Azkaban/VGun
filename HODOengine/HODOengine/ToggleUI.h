@@ -1,7 +1,5 @@
 #pragma once
-#include "UIBase.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
+#include "Component.h"
 
 namespace HDEngine
 {
@@ -10,7 +8,9 @@ namespace HDEngine
 
 namespace HDData
 {
-	class HODO_API ToggleUI : public UIBase
+	class ImageUI;
+
+	class HODO_API ToggleUI : public Component
 	{
 	public:
 		ToggleUI();
@@ -24,18 +24,9 @@ namespace HDData
 		void SetScreenSpace();
 		void SetWorldSpace();
 
-		void SetToggleOnImage(const char* fileName);
-		void SetToggleOffImage(const char* fileName);
-
-		bool CheckIsClicked();
-
 	private:
-		HDEngine::ISketchableImage* _toggleImage;
-		HDEngine::InputSystem& _inputSystem;
-
-		const char* _toggleOnImage;
-		const char* _toggleOffImage;
-
+		ImageUI* _toggleOn;
+		ImageUI* _toggleOff;
 
 		bool _isToggleOn;
 	};
