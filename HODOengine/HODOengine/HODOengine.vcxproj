@@ -70,6 +70,12 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -111,14 +117,20 @@
       <PreprocessorDefinitions>_WINDOWS;_EXPORT_API;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)Include\physX;$(SolutionDir)SoundLib;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)Include\physX</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>HODOmath.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Lib\Debug\physX;$(SolutionDir)Lib\Debug\FMOD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)Lib\Debug\physX;$(SolutionDir)Lib\Debug\FMOD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Lib\$(Configuration)\FMOD\fmod.dll" "$(SolutionDir)Build\$(Configuration)";
+copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysX_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXCommon_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -128,7 +140,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_EXPORT_API;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)Include\physX;$(SolutionDir)SoundLib;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODOmath;$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)Include\physX</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -138,8 +150,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>HODOmath.lib;PhysX_64.lib;PhysXCommon_64.lib;PhysXExtensions_static_64.lib;PhysXFoundation_64.lib;PhysXPvdSDK_static_64.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(SolutionDir)Lib\Release\physX;$(SolutionDir)Lib\Release\FMOD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration);$(SolutionDir)Lib\Release\physX;$(SolutionDir)Lib\Release\FMOD;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>copy "$(SolutionDir)Lib\$(Configuration)\FMOD\fmod.dll" "$(SolutionDir)Build\$(Configuration)";
+copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysX_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXCommon_64.dll" "$(SolutionDir)Build\$(Configuration)";
+copy "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioClip.h" />

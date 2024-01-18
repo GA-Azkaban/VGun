@@ -5,7 +5,7 @@
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 
-#define FILEPATH "../Resources/"
+#define FILEPATH "Resources/"
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
