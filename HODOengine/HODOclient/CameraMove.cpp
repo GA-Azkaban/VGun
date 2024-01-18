@@ -85,7 +85,7 @@ void CameraMove::OnMouseMove()
 
 void CameraMove::Strafe(float delta)
 {
-	HDMath::HDFLOAT3 rightVec = GetGameObject()->GetTransform()->GetRight();
+	Vector3 rightVec = GetGameObject()->GetTransform()->GetRight();
 	rightVec.x *= delta;
 	rightVec.y *= delta;
 	rightVec.z *= delta;
@@ -95,7 +95,7 @@ void CameraMove::Strafe(float delta)
 
 void CameraMove::Walk(float delta)
 {
-	HDMath::HDFLOAT3 forwardVec = GetGameObject()->GetTransform()->GetForward();
+	Vector3 forwardVec = GetGameObject()->GetTransform()->GetForward();
 	forwardVec.x *= delta;
 	forwardVec.y *= delta;
 	forwardVec.z *= delta;
@@ -105,19 +105,19 @@ void CameraMove::Walk(float delta)
 
 void CameraMove::WorldUpDown(float delta)
 {
-	HDMath::HDFLOAT3 worldUpDelta = { 0.0f,delta,0.0f };
+	Vector3 worldUpDelta = { 0.0f,delta,0.0f };
 	GetGameObject()->GetTransform()->Translate(worldUpDelta);
 }
 
 void CameraMove::Pitch(float angle)
 {
-	HDMath::HDFLOAT3 r = GetTransform()->GetLocalRotation()* HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, angle);
+	Vector3 r = GetTransform()->GetLocalRotation()* Vector3(1.0f, 0.0f, 0.0f);
+	Quaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, angle);
 	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
 }
 
 void CameraMove::RotateY(float angle)
 {
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
+	Quaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
 	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
 }

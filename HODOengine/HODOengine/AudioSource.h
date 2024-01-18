@@ -1,9 +1,9 @@
 #pragma once
+#include <string>
+#include "MathHeader.h"
 #include "dllExporter.h"
 #include "Component.h"
 #include "SoundGroup.h"
-#include "../HODOmath//HODOmath.h"
-#include <string>
 
 namespace HDEngine
 {
@@ -28,8 +28,8 @@ namespace HDData
 		void PlayOnce(std::string soundName);
 		void PlayRepeat(std::string soundName);
 
-		void Play3DOnce(std::string soundName, HDMath::HDFLOAT3 startPos);
-		void Play3DRepeat(std::string soundName, HDMath::HDFLOAT3 startPos);
+		void Play3DOnce(std::string soundName, Vector3 startPos);
+		void Play3DRepeat(std::string soundName, Vector3 startPos);
 
 		void Stop(std::string soundName);
 		void StopSoundGroup(HDData::SoundGroup group);

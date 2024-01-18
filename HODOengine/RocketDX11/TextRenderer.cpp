@@ -1,6 +1,6 @@
 #include "TextRenderer.h"
 #include "ResourceManager.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "MathHeader.h"
 
 RocketCore::Graphics::TextRenderer::TextRenderer()
 	: _renderFloat(),
@@ -40,7 +40,7 @@ void RocketCore::Graphics::TextRenderer::SetWorldSpace()
 
 }
 
-void RocketCore::Graphics::TextRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+void RocketCore::Graphics::TextRenderer::SetWorldTM(const Matrix& worldTM)
 {
 	if (_isTranslated != true)
 	{

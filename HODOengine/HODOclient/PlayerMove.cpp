@@ -89,7 +89,7 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
-	HDMath::HDFLOAT3 pos = this->GetTransform()->GetWorldPosition();
+	Vector3 pos = this->GetTransform()->GetWorldPosition();
 	const float delta = 0.2f;
 	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
 	float z[9] = { 0,delta,delta,delta,0,-delta,-delta,-delta,0 };
@@ -98,8 +98,8 @@ bool PlayerMove::CheckIsOnGround()
 	{
 		//RocketEngine::RMFLOAT4 worldPos = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(pos.x + x[i], pos.y, pos.z + z[i], 1.0f), gameObject->transform.GetWorldTM());
 		float halfHeight = _playerCollider->GetHeight();
-		HDMath::HDFLOAT4 worldPos = HDMath::HDFLOAT4(pos.x + x[i], pos.y + 0.01f * i - halfHeight / 2.0f, pos.z + z[i], 1.0f);
-		HDMath::HDFLOAT4 eachDir = worldPos;
+		Vector4 worldPos = Vector4(pos.x + x[i], pos.y + 0.01f * i - halfHeight / 2.0f, pos.z + z[i], 1.0f);
+		Vector4 eachDir = worldPos;
 		eachDir.y -= 0.05f;
 
 		int type = 0;
@@ -223,9 +223,9 @@ void PlayerMove::Jump()
 }
 
 
-HDMath::HDFLOAT3 PlayerMove::DecideMoveDirection(int direction)
+Vector3 PlayerMove::DecideMoveDirection(int direction)
 {
-	HDMath::HDFLOAT3 moveStep;
+	Vector3 moveStep;
 
 	switch (direction)
 	{
@@ -317,10 +317,10 @@ void PlayerMove::Yaw(float radian)
 
 void PlayerMove::CameraMove()
 {
-	HDMath::HDFLOAT2 mouseDelta = API::GetMouseDelta();
+	Vector2 mouseDelta = API::GetMouseDelta();
 
 	// RotateY
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), 
+	Quaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), 
 		{0.0f, 1.0f, 0.0f},	mouseDelta.x * 0.1f);
 	//_playerCollider->Rotate(newRot);
 	_playerCollider->Rotate(mouseDelta.x * 0.01f);	// adjust sensitivity later (0.01f -> variable)

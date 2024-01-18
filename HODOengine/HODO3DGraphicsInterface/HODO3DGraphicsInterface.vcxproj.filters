@@ -47,6 +47,9 @@
     <Filter Include="Objects\LineRenderer">
       <UniqueIdentifier>{99552099-8929-4291-9915-0fdedb775323}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{3c71d896-f8be-4dc3-8a80-8080f218a8fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -90,6 +93,9 @@
     </ClInclude>
     <ClInclude Include="ILineRenderer.h">
       <Filter>Objects\LineRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

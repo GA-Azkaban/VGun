@@ -41,7 +41,8 @@ namespace HDData
 
 	float Camera::GetFovX() const
 	{
-		return HDMath::ToDegree(GetRadianFovX());
+		return DirectX::XMConvertToDegrees(GetRadianFovX());
+		//return HDMath::ToDegree(GetRadianFovX());
 	}
 
 	float Camera::GetRadianFovX() const
@@ -57,7 +58,8 @@ namespace HDData
 
 	float Camera::GetRadianFovY() const
 	{
-		return HDMath::ToRadian(_fovY);
+		return DirectX::XMConvertToRadians(_fovY);
+		// return HDMath::ToRadian(_fovY);
 	}
 
 	float Camera::GetNearWindowWidth() const
@@ -80,12 +82,12 @@ namespace HDData
 		return _farWindowHeight;
 	}
 
-	HDMath::HDFLOAT4X4 Camera::GetViewMatrix() const
+	Matrix Camera::GetViewMatrix() const
 	{
 		return _viewMatrix;
 	}
 
-	HDMath::HDFLOAT4X4 Camera::GetProjMatrix() const
+	Matrix Camera::GetProjMatrix() const
 	{
 		return _projMatrix;
 	}

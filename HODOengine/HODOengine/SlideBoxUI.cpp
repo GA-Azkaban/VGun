@@ -29,7 +29,7 @@
 //		SetRightArrowImage("arrowRight.png");
 //		SetText(*_texts.begin());
 //
-//		HDMath::HDFLOAT3 pos = GetTransform()->GetWorldPosition();
+//		Vector3 pos = GetTransform()->GetWorldPosition();
 //
 //		_valueText->SetScreenSpacePosition(pos.x + 30, pos.y);
 //		_arrowLeft->SetScreenSpacePosition(pos.x - 100, pos.y);

@@ -194,6 +194,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mt.dll" "$(Solut
     <ClInclude Include="GraphicsStruct.h" />
     <ClInclude Include="LightStruct.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MathHeader.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ObjectFactory.h" />

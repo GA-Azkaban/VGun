@@ -22,7 +22,7 @@ namespace HDData
 			return false;
 		}
 
-		HDMath::HDFLOAT2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
+		Vector2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
 		
 		auto mouseX = mouse.x;
 		auto mouseY = mouse.y;

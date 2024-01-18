@@ -33,6 +33,7 @@
     <ClInclude Include="ISketchableText.h" />
     <ClInclude Include="ISkinnedMesh.h" />
     <ClInclude Include="IStaticMesh.h" />
+    <ClInclude Include="MathHeader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

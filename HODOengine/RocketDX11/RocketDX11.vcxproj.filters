@@ -227,6 +227,9 @@
     <ClInclude Include="ImageRenderer.h">
       <Filter>Object\ImageRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">
@@ -354,6 +357,9 @@
     </Filter>
     <Filter Include="Object\Cubemap">
       <UniqueIdentifier>{3e08331c-c291-4e77-87b4-6e4b8b73be12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{a0e0843e-87db-4207-b6b2-6ef6cbeb9a92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

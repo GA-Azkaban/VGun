@@ -118,7 +118,7 @@ namespace API
 			return HDEngine::InputSystem::Instance().GetMouse(keyCode);
 		}
 
-		HODO_API HDMath::HDFLOAT2 GetMousePosition()
+		HODO_API Vector2 GetMousePosition()
 		{
 			return HDEngine::InputSystem::Instance().GetMousePosition();
 		}
@@ -128,7 +128,7 @@ namespace API
 			return HDEngine::InputSystem::Instance().GetMouseWheel();
 		}
 
-		HODO_API HDMath::HDFLOAT2 GetMouseDelta()
+		HODO_API Vector2 GetMouseDelta()
 		{
 			return HDEngine::InputSystem::Instance().GetMouseDelta();
 		}
@@ -143,17 +143,17 @@ namespace API
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
 
-		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
+		HODO_API HDData::Collider* ShootRay(Vector3 origin, Vector3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
 		{
 			return HDEngine::PhysicsSystem::Instance().RayCast(origin.x, origin.y, origin.z, direction.x, direction.y, direction.z, length, type);
 		}
 
-		HODO_API void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)
+		HODO_API void DrawLine(Vector3 start, Vector3 end, Vector4 color)
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, end, color);
 		}
 
-		HODO_API void DrawLineDir(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+		HODO_API void DrawLineDir(Vector3 start, Vector3 direction, float length, Vector4 color)
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}

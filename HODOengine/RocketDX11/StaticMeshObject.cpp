@@ -1,5 +1,5 @@
 #include "StaticMeshObject.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "MathHeader.h"
 #include "RocketMacroDX11.h"
 #include "ResourceManager.h"
 #include "GraphicsStruct.h"
@@ -23,15 +23,16 @@ namespace RocketCore::Graphics
 		delete m_material;
 	}
 
-	void StaticMeshObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	void StaticMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-			}
-		}
+		m_world = worldTM;
+// 		for (int i = 0; i < 4; i++)
+// 		{
+// 			for (int j = 0; j < 4; j++)
+// 			{
+// 				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
+// 			}
+// 		}
 	}
 
 	void StaticMeshObject::SetActive(bool isActive)

@@ -169,6 +169,9 @@
     <Filter Include="06_System\UISystem">
       <UniqueIdentifier>{284fb1c4-5a48-459c-8ff6-d8e66cb9a5ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{d76b5d11-1c1c-4265-834e-b05ea844b556}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -329,6 +332,9 @@
     </ClInclude>
     <ClInclude Include="UISystem.h">
       <Filter>06_System\UISystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
