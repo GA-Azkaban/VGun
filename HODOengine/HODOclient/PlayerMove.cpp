@@ -21,7 +21,7 @@ void PlayerMove::Update()
 	_deltaTime = API::GetDeltaTime();
 
 	// check on ground state
-	CheckIsOnGround();
+	//CheckIsOnGround();
 
 	// 마우스에 따른 플레이어 회전 체크
 	CheckLookDirection();
@@ -122,6 +122,8 @@ bool PlayerMove::CheckIsOnGround()
 			}
 		}
 	}
+	//_isOnGround = false;
+
 	return false;
 }
 
@@ -212,6 +214,8 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::Jump()
 {
+	CheckIsOnGround();
+
 	if ((!_isJumping) && (_isOnGround))
 	//if (!_isJumping)
 	{

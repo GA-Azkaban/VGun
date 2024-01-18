@@ -31,7 +31,8 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.5f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.2f, 0.2f, 0.0f);
 
 		//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
 		//physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
@@ -201,7 +202,8 @@ namespace HDEngine
 			{
 				HDData::DynamicBoxCollider* box = dynamic_cast<HDData::DynamicBoxCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
+				// switch material if player
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_playerMaterial);
 
 				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -209,6 +211,14 @@ namespace HDEngine
 				boxRigid->setLinearDamping(0.5f);
 				boxRigid->setAngularDamping(0.2f);
 				boxRigid->attachShape(*shape);
+
+				// add only if player
+				if (object != nullptr)
+				{
+					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+					//boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+				}
 
 				_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
