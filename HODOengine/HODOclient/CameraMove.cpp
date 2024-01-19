@@ -111,10 +111,10 @@ void CameraMove::WorldUpDown(float delta)
 
 void CameraMove::Pitch(float angle)
 {
-	Vector3 r = GetTransform()->GetLocalRotation()* Vector3(1.0f, 0.0f, 0.0f);
+	Vector3 r = GetTransform()->GetRight();
 	
 	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ r.x,r.y,r.z }, angle);
-	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetLocalRotation(), rotQuat);
+	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetRotation(), rotQuat);
 	GetGameObject()->GetTransform()->SetRotation(result);
 }
 
