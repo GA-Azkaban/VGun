@@ -1,4 +1,4 @@
-#include "DynamicCollider.h"
+﻿#include "DynamicCollider.h"
 #include "Transform.h"
 
 #include "../include/physX/PxPhysics.h"
@@ -53,8 +53,8 @@ void HDData::DynamicCollider::UpdateToPhysics()
 
 void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 {
-	this->GetTransform()->SetWorldPosition(pos.x, pos.y, pos.z);
-	this->GetTransform()->SetWorldRotation(quat);
+	this->GetTransform()->SetPosition(pos.x, pos.y, pos.z);
+	this->GetTransform()->SetRotation(quat);
 
 }
 

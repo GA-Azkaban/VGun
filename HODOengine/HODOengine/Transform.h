@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "dllExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
 
 /// <summary>
-/// TransformÀº ¸ğµç GameObject°¡ °øÅëÀûÀ¸·Î °¡Áö°í ÀÖ´Â ÄÄÆ÷³ÍÆ®ÀÔ´Ï´Ù.
-/// TransformÀº ¿ÀºêÁ§Æ®ÀÇ position, rotation, scale Á¤º¸¸¦ °¡Áö°í ÀÖ½À´Ï´Ù.
+/// Transformì€ ëª¨ë“  GameObjectê°€ ê³µí†µì ìœ¼ë¡œ ê°€ì§€ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ì…ë‹ˆë‹¤.
+/// Transformì€ ì˜¤ë¸Œì íŠ¸ì˜ position, rotation, scale ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤.
 /// </summary>
 
 namespace HDData
@@ -15,22 +15,23 @@ namespace HDData
 	{
 	public:		
 		Transform();
-		Vector3 GetWorldPosition() const;
-		Quaternion GetWorldRotation() const;
-		Vector3 GetWorldScale() const;
+		Vector3 GetPosition() const;			// world ê¸°ì¤€
+		Quaternion GetRotation() const;			// world ê¸°ì¤€
+		Vector3 GetScale() const;				// world ê¸°ì¤€
 		Vector3 GetLocalPosition() const;
 		Quaternion GetLocalRotation() const;
 		Vector3 GetLocalScale() const;
 		Matrix GetWorldTM() const;
 		Matrix GetLocalTM() const;
-		Vector3 GetForward() const;
-		Vector3 GetUp() const;
-		Vector3 GetRight() const;
-		void SetWorldPosition(const Vector3& position);
-		void SetWorldPosition(float x, float y, float z);
-		void SetWorldRotation(const Quaternion& rotation);
-		void SetWorldRotation(float w, float x, float y, float z);
-		void SetWorldScale(const Vector3& scale);
+		Vector3 GetForward() const;				// world ê¸°ì¤€
+		Vector3 GetUp() const;					// world ê¸°ì¤€
+		Vector3 GetRight() const;				// world ê¸°ì¤€
+		void SetPosition(const Vector3& position);
+		void SetPosition(float x, float y, float z);
+		void SetRotation(const Quaternion& rotation);
+		void SetRotation(float w, float x, float y, float z);
+		void SetScale(const Vector3& scale);
+		void SetScale(float x, float y, float z);
 		void SetLocalPosition(const Vector3& position);
 		void SetLocalRotation(const Quaternion& rotation);
 		void SetLocalScale(const Vector3& scale);

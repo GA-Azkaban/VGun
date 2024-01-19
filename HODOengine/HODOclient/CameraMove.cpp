@@ -1,4 +1,4 @@
-#include "CameraMove.h"
+﻿#include "CameraMove.h"
 
 CameraMove::CameraMove()
 	: moveSpeed(2.0f)
@@ -112,12 +112,15 @@ void CameraMove::WorldUpDown(float delta)
 void CameraMove::Pitch(float angle)
 {
 	Vector3 r = GetTransform()->GetLocalRotation()* Vector3(1.0f, 0.0f, 0.0f);
-	Quaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, angle);
-	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
+	
+	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ r.x,r.y,r.z }, angle);
+	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetLocalRotation(), rotQuat);
+	GetGameObject()->GetTransform()->SetRotation(result);
 }
 
 void CameraMove::RotateY(float angle)
 {
-	Quaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
-	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
+	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angle);
+	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetLocalRotation(), rotQuat);
+	GetGameObject()->GetTransform()->SetRotation(result);
 }

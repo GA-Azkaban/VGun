@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -38,7 +38,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(0.f, 0.f, 0.f);
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
@@ -46,7 +46,7 @@ TestScene::TestScene()
 	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
 	meshComp->LoadNormalMap("Rob02White_Normal.png");
 	meshComp->PlayAnimation(0, true);
-	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{1.f, 1.f, 1.f});
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{1.f, 1.f, 1.f});
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 	
@@ -120,7 +120,7 @@ TestScene::TestScene()
 	//imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });
 
 	auto _button = API::CreateButton(_scene);
-	_button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	_button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
 	//auto _slider = API::CreateSlider(_scene, "slider");

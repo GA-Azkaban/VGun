@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
@@ -35,7 +35,7 @@ void PlayerMove::Update()
 	// 이동, 회전
 	Move(_moveDirection);
 
-	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetWorldPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 }
 
 // 조이스틱 개념
@@ -89,7 +89,7 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
-	Vector3 pos = this->GetTransform()->GetWorldPosition();
+	Vector3 pos = this->GetTransform()->GetPosition();
 	const float delta = 0.2f;
 	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
 	float z[9] = { 0,delta,delta,delta,0,-delta,-delta,-delta,0 };
@@ -255,7 +255,7 @@ Vector3 PlayerMove::DecideMoveDirection(int direction)
 		break;
 		case 5:
 		{
-			moveStep = 0;
+			moveStep = Vector3::Zero;
 		}
 		break;
 		case 6:
@@ -320,9 +320,10 @@ void PlayerMove::CameraMove()
 	Vector2 mouseDelta = API::GetMouseDelta();
 
 	// RotateY
-	Quaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), 
-		{0.0f, 1.0f, 0.0f},	mouseDelta.x * 0.1f);
-	//_playerCollider->Rotate(newRot);
+	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, mouseDelta.x * 0.1f);
+	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetLocalRotation(), rotQuat);
+
+	//_playerCollider->Rotate(result);
 	_playerCollider->Rotate(mouseDelta.x * 0.01f);	// adjust sensitivity later (0.01f -> variable)
 
 	//Pitch();

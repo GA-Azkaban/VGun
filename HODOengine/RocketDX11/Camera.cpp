@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include "Camera.h"
 #include "MathHeader.h"
 #include "ResourceManager.h"
@@ -36,7 +36,7 @@ namespace RocketCore::Graphics
 		_position = { x,y,z };
 	}
 
-	void Camera::SetRotation(float w, float x, float y, float z)
+	void Camera::SetRotation(float x, float y, float z, float w)
 	{
 		_rotation = { x,y,z,w };
 	}
@@ -217,14 +217,14 @@ namespace RocketCore::Graphics
 	void Camera::SetNearHeight(float height)
 	{
 		_nearWindowHeight = height;
-		float nearZ = _nearWindowHeight * 0.5f / tan(0.5 * _fovY);
+		float nearZ = _nearWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetNearZ(nearZ);
 	}
 
 	void Camera::SetFarHeight(float height)
 	{
 		_farWindowHeight = height;
-		float farZ = _farWindowHeight * 0.5f / tan(0.5 * _fovY);
+		float farZ = _farWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetFarZ(farZ);
 
 	}
@@ -248,7 +248,7 @@ namespace RocketCore::Graphics
 	void Camera::SetPositionAndRotation(const Vector3& pos, const Quaternion& rot)
 	{
 		SetPosition(pos.x, pos.y, pos.z);
-		SetRotation(rot.w, rot.x, rot.y, rot.z);
+		SetRotation(rot.x, rot.y, rot.z, rot.w);
 	}
 
 	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)

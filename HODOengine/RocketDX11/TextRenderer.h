@@ -25,7 +25,7 @@ namespace RocketCore::Graphics
 
 		virtual void SetintValue(const int value) override;
 
-		virtual void SetColor(DirectX::FXMVECTOR color);
+		virtual void SetColor(Color color);
 
 		virtual const std::string GetText() override;
 

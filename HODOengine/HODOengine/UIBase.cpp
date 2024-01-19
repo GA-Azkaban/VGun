@@ -1,4 +1,4 @@
-#include "UIBase.h"
+﻿#include "UIBase.h"
 #include "Transform.h"
 #include "InputSystem.h"
 
@@ -89,31 +89,31 @@ namespace HDData
 
 	float UIBase::GetLeft()
 	{
-		auto b = GetTransform()->GetWorldPosition().x;
-		auto c = _sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2;
+		auto b = GetTransform()->GetPosition().x;
+		auto c = _sketchable->GetWidth() * GetTransform()->GetScale().x / 2;
 
-		auto a = GetTransform()->GetWorldPosition().x -
-			(_sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2);
+		auto a = GetTransform()->GetPosition().x -
+			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
 
 		return {};
 	}
 
 	float UIBase::GetRight()
 	{
-		return GetTransform()->GetWorldPosition().x +
-			(_sketchable->GetWidth() * GetTransform()->GetWorldScale().x / 2);
+		return GetTransform()->GetPosition().x +
+			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
 	}
 
 	float UIBase::GetTop()
 	{
-		return GetTransform()->GetWorldPosition().y -
-			(_sketchable->GetHeight() * GetTransform()->GetWorldScale().y / 2);
+		return GetTransform()->GetPosition().y -
+			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
 	}
 
 	float UIBase::GetBottom()
 	{
-		return GetTransform()->GetWorldPosition().y +
-			(_sketchable->GetHeight() * GetTransform()->GetWorldScale().y / 2);
+		return GetTransform()->GetPosition().y +
+			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
 	}
 
 }

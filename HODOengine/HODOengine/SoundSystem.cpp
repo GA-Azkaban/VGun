@@ -1,4 +1,4 @@
-#include "SoundSystem.h"
+﻿#include "SoundSystem.h"
 #include "AudioListener.h"
 #include "Transform.h"
 #include "TimeSystem.h"
@@ -49,7 +49,7 @@ void HDEngine::SoundSystem::Update()
 {
 	static FMOD_VECTOR lastListnerPos = { 0.0f, 0.0f, 0.0f };
 
-	const Vector3& listenerPos = _audioListner->GetTransform()->GetWorldPosition();
+	const Vector3& listenerPos = _audioListner->GetTransform()->GetPosition();
 	const Vector3& listenerForward = _audioListner->GetTransform()->GetForward();
 	const Vector3& listenerUp = _audioListner->GetTransform()->GetUp();
 

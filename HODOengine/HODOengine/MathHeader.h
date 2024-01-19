@@ -1,5 +1,5 @@
-#pragma once
-#include "SimpleMath.h"
+﻿#pragma once
+#include <SimpleMath.h>
 
 using DirectX::SimpleMath::Vector2;
 using DirectX::SimpleMath::Vector3;

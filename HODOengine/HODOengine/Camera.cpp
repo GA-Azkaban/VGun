@@ -1,4 +1,4 @@
-#include "Camera.h"
+﻿#include "Camera.h"
 #include "Transform.h"
 #include "GameObject.h"
 #include "..\\HODO3DGraphicsInterface\\ICamera.h"
@@ -118,7 +118,7 @@ namespace HDData
 
 	void Camera::UpdateRenderData()
 	{
-		_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
+		_graphicsCamera->SetPositionAndRotation(GetTransform()->GetPosition(), GetTransform()->GetRotation());
 	}
 
 	/*void Camera::Update()
