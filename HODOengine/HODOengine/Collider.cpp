@@ -8,7 +8,7 @@ namespace HDData
 	{
 	}
 
-	void HDData::Collider::SetPositionOffset(HDMath::HDFLOAT3 pos)
+	void Collider::SetPositionOffset(Vector3 pos)
 	{
 		_positionOffset = pos;
 	}
@@ -18,29 +18,29 @@ namespace HDData
 
 	}
 
-	void Collider::SetScaleOffset(HDMath::HDFLOAT3 sca)
+	void Collider::SetScaleOffset(Vector3 sca)
 	{
 		_scaleOffset = sca;
 	}
 
-	HDMath::HDFLOAT3 Collider::GetPositionOffset()
+	Vector3 Collider::GetPositionOffset()
 	{
 		return _positionOffset;
 	}
 
-	HDMath::HDQuaternion Collider::GetRotationOffset()
+	Quaternion Collider::GetRotationOffset()
 	{
 		return _rotationOffset;
 	}
 
-	HDMath::HDFLOAT3 Collider::GetScaleOffset()
+	Vector3 Collider::GetScaleOffset()
 	{
 		return _scaleOffset;
 	}
 
-	HDMath::HDFLOAT4X4 Collider::GetTranslateMatrix()
+	Matrix Collider::GetTranslateMatrix()
 	{
-		HDMath::HDFLOAT4X4 translateMatrix =
+		Matrix translateMatrix =
 		{
 			1,					0,					0,					0,
 			0,					1,					0,					0,
@@ -51,9 +51,9 @@ namespace HDData
 		return translateMatrix;
 	}
 
-	HDMath::HDFLOAT4X4 Collider::GetRotationMatrix()
+	Matrix Collider::GetRotationMatrix()
 	{
-		HDMath::HDFLOAT4X4 scaleMatrix =
+		Matrix scaleMatrix =
 		{
 			_scaleOffset.x,		0,					0,					0,
 			0,					_scaleOffset.y,		0,					0,
@@ -64,9 +64,9 @@ namespace HDData
 		return scaleMatrix;
 	}
 
-	HDMath::HDFLOAT4X4 Collider::GetScaleMatrix()
+	Matrix Collider::GetScaleMatrix()
 	{
-		HDMath::HDFLOAT4X4 rotationMatrix =
+		Matrix rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
 			2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
@@ -92,7 +92,7 @@ namespace HDData
 		return rotationMatrix;
 	}
 
-	HDMath::HDFLOAT4X4 Collider::GetTransformMatrix()
+	Matrix Collider::GetTransformMatrix()
 	{
 		return GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
 	}

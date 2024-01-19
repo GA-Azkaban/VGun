@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -57,8 +57,8 @@ namespace HDEngine
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
 
-		HDMath::HDFLOAT3 pos;
-		HDMath::HDQuaternion rot;
+		Vector3 pos;
+		Quaternion rot;
 		physx::PxTransform temp;
 
 		for (auto& rigid : _rigidDynamics)
@@ -138,7 +138,7 @@ namespace HDEngine
 			for (auto& collider : colliderVector)
 			{
 				HDData::StaticPlaneCollider* planeCollider = dynamic_cast<HDData::StaticPlaneCollider*>(collider);
-				HDMath::HDFLOAT3 normal = planeCollider->GetNormalVector();
+				Vector3 normal = planeCollider->GetNormalVector();
 				physx::PxPlane pxPlane(normal.x, normal.y, normal.z, planeCollider->GetDistance());
 
 				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
@@ -161,8 +161,9 @@ namespace HDEngine
 				HDData::StaticBoxCollider* box = dynamic_cast<HDData::StaticBoxCollider*>(collider);
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
-
-				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				 
+				// TODO : 여기 작업하고 있었음.
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
 				boxRigid->attachShape(*shape);
@@ -201,7 +202,7 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
 
-				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
 				boxRigid->setLinearDamping(0.5f);
@@ -231,7 +232,7 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_material);
 
-				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(localTransform);
 				capsuleRigid->attachShape(*shape);
@@ -258,7 +259,7 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
 
-				HDMath::HDFLOAT3 position = HDFloat3MultiplyMatrix(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
 				sphereRigid->attachShape(*shape);

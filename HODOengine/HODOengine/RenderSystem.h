@@ -6,7 +6,7 @@
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Singleton.h"
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 #include "../HODO3DGraphicsInterface/ILineRenderer.h"
 
 namespace HDData
@@ -37,8 +37,8 @@ namespace HDEngine
 	public:
 		void Update(float deltaTime);
 		void DrawProcess();
-		void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color);
-		void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color);
+		void DrawLine(Vector3 start, Vector3 end, Vector4 color);
+		void DrawLine(Vector3 start, Vector3 direction, float length, Vector4 color);
 
 	private:
 		void UpdateRenderData();

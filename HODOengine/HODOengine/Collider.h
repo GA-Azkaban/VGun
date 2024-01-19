@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "dllExporter.h"
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 
 ///
 /// ���� ������Ʈ���� ���� ū ���̽� Ŭ����.
@@ -19,24 +19,24 @@ namespace HDData
 		virtual void UpdateToPhysics() abstract;
 
 	public:
-		void SetPositionOffset(HDMath::HDFLOAT3 pos);
+		void SetPositionOffset(Vector3 pos);
 		void SetRotationOffset(float x, float y, float z);
-		void SetScaleOffset(HDMath::HDFLOAT3 sca);
+		void SetScaleOffset(Vector3 sca);
 
-		HDMath::HDFLOAT3 GetPositionOffset();
-		HDMath::HDQuaternion GetRotationOffset();
-		HDMath::HDFLOAT3 GetScaleOffset();
+		Vector3 GetPositionOffset();
+		Quaternion GetRotationOffset();
+		Vector3 GetScaleOffset();
 
-		HDMath::HDFLOAT4X4 GetTranslateMatrix();
-		HDMath::HDFLOAT4X4 GetRotationMatrix();
-		HDMath::HDFLOAT4X4 GetScaleMatrix();
+		Matrix GetTranslateMatrix();
+		Matrix GetRotationMatrix();
+		Matrix GetScaleMatrix();
 
-		HDMath::HDFLOAT4X4 GetTransformMatrix();
+		Matrix GetTransformMatrix();
 
 	protected:
-		HDMath::HDFLOAT3 _positionOffset;
-		HDMath::HDQuaternion _rotationOffset;
-		HDMath::HDFLOAT3 _scaleOffset;
+		Vector3 _positionOffset;
+		Quaternion _rotationOffset;
+		Vector3 _scaleOffset;
 
 	public:
 		void Setflag(int flag);

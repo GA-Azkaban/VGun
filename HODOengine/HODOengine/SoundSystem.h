@@ -1,9 +1,9 @@
 #pragma once
+#include <unordered_map>
 #include "Singleton.h"
 #include "AudioClip.h"
-#include "HODOmath.h"
+#include "MathHeader.h"
 #include <vector>
-#include <unordered_map>
 
 namespace HDData
 {
@@ -49,8 +49,8 @@ namespace HDEngine
 		void PlayOnce(std::string soundPath);
 		void PlayRepeat(std::string soundPath);
 
-		void Play3DOnce(std::string soundPath, HDMath::HDFLOAT3 startPos);
-		void Play3DRepeat(std::string soundPath, HDMath::HDFLOAT3 startPos);
+		void Play3DOnce(std::string soundPath, Vector3 startPos);
+		void Play3DRepeat(std::string soundPath, Vector3 startPos);
 
 		void Stop(std::string soundPath);
 		void StopSoundGroup(HDData::SoundGroup group);

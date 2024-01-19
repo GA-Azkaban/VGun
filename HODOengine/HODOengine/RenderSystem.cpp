@@ -99,12 +99,12 @@ namespace HDEngine
 		_uiList.emplace_back(comp);
 	}
 
-	void RenderSystem::DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)
+	void RenderSystem::DrawLine(Vector3 start, Vector3 end, Vector4 color)
 	{
 		_lineRenderer->DrawLine(start, end, color);
 	}
 
-	void RenderSystem::DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+	void RenderSystem::DrawLine(Vector3 start, Vector3 direction, float length, Vector4 color)
 	{
 		_lineRenderer->DrawLine(start, direction, length, color);
 	}

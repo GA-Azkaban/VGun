@@ -103,7 +103,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	spriteBatch->End();
 }
 
-void RocketCore::Graphics::ImageRenderer::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 {
 	_xlocation = worldTM._41;
 	_ylocation = worldTM._42;

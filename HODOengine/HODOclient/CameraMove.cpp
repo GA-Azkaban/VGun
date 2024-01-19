@@ -1,4 +1,4 @@
-#include "CameraMove.h"
+﻿#include "CameraMove.h"
 
 CameraMove::CameraMove()
 	: moveSpeed(2.0f)
@@ -85,7 +85,7 @@ void CameraMove::OnMouseMove()
 
 void CameraMove::Strafe(float delta)
 {
-	HDMath::HDFLOAT3 rightVec = GetGameObject()->GetTransform()->GetRight();
+	Vector3 rightVec = GetGameObject()->GetTransform()->GetRight();
 	rightVec.x *= delta;
 	rightVec.y *= delta;
 	rightVec.z *= delta;
@@ -95,7 +95,7 @@ void CameraMove::Strafe(float delta)
 
 void CameraMove::Walk(float delta)
 {
-	HDMath::HDFLOAT3 forwardVec = GetGameObject()->GetTransform()->GetForward();
+	Vector3 forwardVec = GetGameObject()->GetTransform()->GetForward();
 	forwardVec.x *= delta;
 	forwardVec.y *= delta;
 	forwardVec.z *= delta;
@@ -105,19 +105,22 @@ void CameraMove::Walk(float delta)
 
 void CameraMove::WorldUpDown(float delta)
 {
-	HDMath::HDFLOAT3 worldUpDelta = { 0.0f,delta,0.0f };
+	Vector3 worldUpDelta = { 0.0f,delta,0.0f };
 	GetGameObject()->GetTransform()->Translate(worldUpDelta);
 }
 
 void CameraMove::Pitch(float angle)
 {
-	HDMath::HDFLOAT3 r = GetTransform()->GetLocalRotation()* HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { r.x,r.y,r.z }, angle);
-	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
+	Vector3 r = GetTransform()->GetRight();
+	
+	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ r.x,r.y,r.z }, angle);
+	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetRotation(), rotQuat);
+	GetGameObject()->GetTransform()->SetRotation(result);
 }
 
 void CameraMove::RotateY(float angle)
 {
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), { 0.0f,1.0f,0.0f }, angle);
-	GetGameObject()->GetTransform()->SetWorldRotation(newRot);
+	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angle);
+	Quaternion result = Quaternion::Concatenate(GetGameObject()->GetTransform()->GetLocalRotation(), rotQuat);
+	GetGameObject()->GetTransform()->SetRotation(result);
 }

@@ -1,4 +1,4 @@
-#include "DynamicCollider.h"
+﻿#include "DynamicCollider.h"
 #include "Transform.h"
 
 #include "../include/physX/PxPhysics.h"
@@ -14,7 +14,7 @@ void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
 	_physXRigid = rigid;
 }
 
-void HDData::DynamicCollider::Move(HDMath::HDFLOAT3 moveStep)
+void HDData::DynamicCollider::Move(Vector3 moveStep)
 {
 	//_physXRigid->wakeUp();
 	_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z), physx::PxForceMode::eVELOCITY_CHANGE);
@@ -51,10 +51,10 @@ void HDData::DynamicCollider::UpdateToPhysics()
 
 }
 
-void HDData::DynamicCollider::UpdateFromPhysics(HDMath::HDFLOAT3 pos, HDMath::HDQuaternion quat)
+void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 {
-	this->GetTransform()->SetWorldPosition(pos.x, pos.y, pos.z);
-	this->GetTransform()->SetWorldRotation(quat);
+	this->GetTransform()->SetPosition(pos.x, pos.y, pos.z);
+	this->GetTransform()->SetRotation(quat);
 
 }
 

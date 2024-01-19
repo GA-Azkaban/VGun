@@ -1,4 +1,4 @@
-#include "SliderUI.h"
+﻿#include "SliderUI.h"
 #include "GameObject.h"
 #include "ImageUI.h"
 #include "TextUI.h"
@@ -43,8 +43,8 @@ namespace HDData
 			}
 		}
 
-		_min = GetTransform()->GetWorldPosition().x - (_background->GetImageWidth() / 2);
-		_max = GetTransform()->GetWorldPosition().x + _background->GetImageWidth() / 2;
+		_min = GetTransform()->GetPosition().x - (_background->GetImageWidth() / 2);
+		_max = GetTransform()->GetPosition().x + _background->GetImageWidth() / 2;
 	}
 
 	void SliderUI::Update()

@@ -1,11 +1,11 @@
-#pragma once
+Ôªø#pragma once
 #include "dllExporter.h"
 #include "Component.h"
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 
 /// <summary>
-/// Transform¿∫ ∏µÁ GameObject∞° ∞¯≈Î¿˚¿∏∑Œ ∞°¡ˆ∞Ì ¿÷¥¬ ƒƒ∆˜≥Õ∆Æ¿‘¥œ¥Ÿ.
-/// Transform¿∫ ø¿∫Í¡ß∆Æ¿« position, rotation, scale ¡§∫∏∏¶ ∞°¡ˆ∞Ì ¿÷Ω¿¥œ¥Ÿ.
+/// TransformÏùÄ Î™®Îì† GameObjectÍ∞Ä Í≥µÌÜµÏ†ÅÏúºÎ°ú Í∞ÄÏßÄÍ≥† ÏûàÎäî Ïª¥Ìè¨ÎÑåÌä∏ÏûÖÎãàÎã§.
+/// TransformÏùÄ Ïò§Î∏åÏ†ùÌä∏Ïùò position, rotation, scale Ï†ïÎ≥¥Î•º Í∞ÄÏßÄÍ≥† ÏûàÏäµÎãàÎã§.
 /// </summary>
 
 namespace HDData
@@ -15,36 +15,37 @@ namespace HDData
 	{
 	public:		
 		Transform();
-		HDMath::HDFLOAT3 GetWorldPosition() const;
-		HDMath::HDQuaternion GetWorldRotation() const;
-		HDMath::HDFLOAT3 GetWorldScale() const;
-		HDMath::HDFLOAT3 GetLocalPosition() const;
-		HDMath::HDQuaternion GetLocalRotation() const;
-		HDMath::HDFLOAT3 GetLocalScale() const;
-		HDMath::HDFLOAT4X4 GetWorldTM() const;
-		HDMath::HDFLOAT4X4 GetLocalTM() const;
-		HDMath::HDFLOAT3 GetForward() const;
-		HDMath::HDFLOAT3 GetUp() const;
-		HDMath::HDFLOAT3 GetRight() const;
-		void SetWorldPosition(const HDMath::HDFLOAT3& position);
-		void SetWorldPosition(float x, float y, float z);
-		void SetWorldRotation(const HDMath::HDQuaternion& rotation);
-		void SetWorldRotation(float w, float x, float y, float z);
-		void SetWorldScale(const HDMath::HDFLOAT3& scale);
-		void SetLocalPosition(const HDMath::HDFLOAT3& position);
-		void SetLocalRotation(const HDMath::HDQuaternion& rotation);
-		void SetLocalScale(const HDMath::HDFLOAT3& scale);
+		Vector3 GetPosition() const;			// world Í∏∞Ï§Ä
+		Quaternion GetRotation() const;			// world Í∏∞Ï§Ä
+		Vector3 GetScale() const;				// world Í∏∞Ï§Ä
+		Vector3 GetLocalPosition() const;
+		Quaternion GetLocalRotation() const;
+		Vector3 GetLocalScale() const;
+		Matrix GetWorldTM() const;
+		Matrix GetLocalTM() const;
+		Vector3 GetForward() const;				// world Í∏∞Ï§Ä
+		Vector3 GetUp() const;					// world Í∏∞Ï§Ä
+		Vector3 GetRight() const;				// world Í∏∞Ï§Ä
+		void SetPosition(const Vector3& position);
+		void SetPosition(float x, float y, float z);
+		void SetRotation(const Quaternion& rotation);
+		void SetRotation(float w, float x, float y, float z);
+		void SetScale(const Vector3& scale);
+		void SetScale(float x, float y, float z);
+		void SetLocalPosition(const Vector3& position);
+		void SetLocalRotation(const Quaternion& rotation);
+		void SetLocalScale(const Vector3& scale);
 
 	public:
-		void Translate(const HDMath::HDFLOAT3& position);
+		void Translate(const Vector3& position);
 		void Translate(float x, float y, float z);
 		void Rotate(float angleX, float angleY, float angleZ);
-		void Rotate(const HDMath::HDQuaternion& quaternion);
+		void Rotate(const Quaternion& quaternion);
 
 	private:
-		HDMath::HDFLOAT3 _position;	// Local position of gameobject
-		HDMath::HDQuaternion _rotation;	// Local rotation of gameobject
-		HDMath::HDFLOAT3 _scale;	// Local scale of gameobject
+		Vector3 _position;	// Local position of gameobject
+		Quaternion _rotation;	// Local rotation of gameobject
+		Vector3 _scale;	// Local scale of gameobject
 	};
 }
 

@@ -1,4 +1,4 @@
-#include "SoundSystem.h"
+﻿#include "SoundSystem.h"
 #include "AudioListener.h"
 #include "Transform.h"
 #include "TimeSystem.h"
@@ -49,9 +49,9 @@ void HDEngine::SoundSystem::Update()
 {
 	static FMOD_VECTOR lastListnerPos = { 0.0f, 0.0f, 0.0f };
 
-	const HDMath::HDFLOAT3& listenerPos = _audioListner->GetTransform()->GetWorldPosition();
-	const HDMath::HDFLOAT3& listenerForward = _audioListner->GetTransform()->GetForward();
-	const HDMath::HDFLOAT3& listenerUp = _audioListner->GetTransform()->GetUp();
+	const Vector3& listenerPos = _audioListner->GetTransform()->GetPosition();
+	const Vector3& listenerForward = _audioListner->GetTransform()->GetForward();
+	const Vector3& listenerUp = _audioListner->GetTransform()->GetUp();
 
 	FMOD_VECTOR listenerPosVec{ listenerPos.x, listenerPos.y, listenerPos.z };
 	FMOD_VECTOR listenerForwardVec{ listenerForward.x, listenerForward.y, listenerForward.z };
@@ -122,7 +122,7 @@ void HDEngine::SoundSystem::PlayRepeat(std::string soundPath)
 	}
 }
 
-void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, HDMath::HDFLOAT3 startPos)
+void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, Vector3 startPos)
 {
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())
@@ -141,7 +141,7 @@ void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, HDMath::HDFLOAT3 s
 	}
 }
 
-void HDEngine::SoundSystem::Play3DRepeat(std::string soundPath, HDMath::HDFLOAT3 startPos)
+void HDEngine::SoundSystem::Play3DRepeat(std::string soundPath, Vector3 startPos)
 {
 	auto soundIter = _soundList.find(soundPath);
 	if (soundIter != _soundList.end())

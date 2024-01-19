@@ -7,7 +7,7 @@
 #include "Animation.h"
 
 #include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
-#include "..\\HODOmath\HODOmath.h"
+#include "MathHeader.h"
 
 /// <summary>
 /// 2023.07.07 MJKIM
@@ -30,7 +30,7 @@ namespace RocketCore::Graphics
 		void Update(float deltaTime);
 		void Render();
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void LoadMesh(const std::string& fileName) override;

@@ -29,11 +29,11 @@ public:
 		}
 		if (API::GetKeyDown('2'))
 		{
-			_audioSource->Play3DOnce("Gun_sound", HDMath::HDFLOAT3{ 0,0,0 });
+			_audioSource->Play3DOnce("Gun_sound", Vector3{ 0,0,0 });
 		}
 		if (API::GetKeyDown('3'))
 		{
-			_audioSource->Play3DOnce("parts_buy", HDMath::HDFLOAT3{ 20,0,0 });
+			_audioSource->Play3DOnce("parts_buy", Vector3{ 20,0,0 });
 		}
 		if (API::GetKeyDown('4'))
 		{

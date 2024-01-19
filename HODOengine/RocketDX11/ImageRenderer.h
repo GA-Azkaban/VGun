@@ -8,7 +8,7 @@
 #include <wrl\client.h>
 
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "MathHeader.h"
 
 
 
@@ -31,7 +31,7 @@ namespace RocketCore::Graphics
 
 		virtual void SetWorldSpace() override;
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 
 		virtual void SetActive(bool isActive) override;
 
