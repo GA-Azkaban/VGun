@@ -4,8 +4,8 @@
 #include "../HODOmath/HODOmath.h"
 
 /// <summary>
-/// TransformÀº ¸ğµç GameObject°¡ °øÅëÀûÀ¸·Î °¡Áö°í ÀÖ´Â ÄÄÆ÷³ÍÆ®ÀÔ´Ï´Ù.
-/// TransformÀº ¿ÀºêÁ§Æ®ÀÇ position, rotation, scale Á¤º¸¸¦ °¡Áö°í ÀÖ½À´Ï´Ù.
+/// Transformì€ ëª¨ë“  GameObjectê°€ ê³µí†µì ìœ¼ë¡œ ê°€ì§€ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ì…ë‹ˆë‹¤.
+/// Transformì€ ì˜¤ë¸Œì íŠ¸ì˜ position, rotation, scale ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤.
 /// </summary>
 
 namespace HDData
@@ -32,8 +32,11 @@ namespace HDData
 		void SetWorldRotation(float w, float x, float y, float z);
 		void SetWorldScale(const HDMath::HDFLOAT3& scale);
 		void SetLocalPosition(const HDMath::HDFLOAT3& position);
+		void SetLocalPosition(float x, float y, float z);
 		void SetLocalRotation(const HDMath::HDQuaternion& rotation);
+		void SetLocalRotation(float w, float x, float y, float z);
 		void SetLocalScale(const HDMath::HDFLOAT3& scale);
+		void SetLocalScale(float x, float y, float z);
 
 	public:
 		void Translate(const HDMath::HDFLOAT3& position);

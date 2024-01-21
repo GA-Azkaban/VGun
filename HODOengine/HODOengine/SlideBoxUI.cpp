@@ -7,6 +7,7 @@
 #include "InputData.h"
 #include "ImageUI.h"
 #include "TextUI.h"
+#include "GameObject.h"
 
 
 namespace HDData
@@ -19,8 +20,26 @@ namespace HDData
 
 	void SlideBoxUI::Start()
 	{
-		
+		auto childs = this->GetGameObject()->GetChildGameObjects();
 
+		for (const auto& child : childs)
+		{
+			if (child->GetObjectName() == "arrowLeft")
+			{
+				_leftArrow = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "arrowRight")
+			{
+				_rightArrow = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "Text")
+			{
+				_valueText = child->GetComponent<HDData::TextUI>();
+			}
+		}
+
+		_leftArrow->GetTransform()->SetLocalPosition(-0.5f, 0.f, 0.f);
+		_rightArrow->GetTransform()->SetLocalPosition(0.5f, 0.f, 0.f);
 	}
 
 	void SlideBoxUI::Update()
