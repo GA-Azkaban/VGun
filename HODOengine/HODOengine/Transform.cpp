@@ -156,13 +156,31 @@ namespace HDData
 		_position = position;
 	}
 
+	void Transform::SetLocalPosition(float x, float y, float z)
+	{
+		const HDMath::HDFLOAT3& position = { x, y, z };
+		_position = position;
+	}
+
 	void Transform::SetLocalRotation(const HDMath::HDQuaternion& rotation)
 	{
 		_rotation = rotation;
 	}
 
+	void Transform::SetLocalRotation(float w, float x, float y, float z)
+	{
+		const HDMath::HDQuaternion& rotation = { w, x, y, z };
+		_rotation = rotation;
+	}
+
 	void Transform::SetLocalScale(const HDMath::HDFLOAT3& scale)
 	{
+		_scale = scale;
+	}
+
+	void Transform::SetLocalScale(float x, float y, float z)
+	{
+		const HDMath::HDFLOAT3& scale = { x, y, z };
 		_scale = scale;
 	}
 

@@ -55,15 +55,15 @@ namespace API
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			obj->AddComponent<HDData::SlideBoxUI>();
 
-			auto leftButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, obj);
+			auto leftButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, "arrowLeft", obj);
 			leftButton->AddComponent<HDData::ImageUI>();
 			leftButton->GetComponent<HDData::ImageUI>()->SetImage("arrowLeft.png");
 
-			auto rightButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, obj);
+			auto rightButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, "arrowRight", obj);
 			rightButton->AddComponent<HDData::ImageUI>();
 			rightButton->GetComponent<HDData::ImageUI>()->SetImage("arrowRight.png");
 
-			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, obj);
+			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "Text", obj);
 			valueText->AddComponent<HDData::TextUI>();
 			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 			valueText->GetComponent<HDData::TextUI>()->SetText("default");
