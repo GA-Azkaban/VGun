@@ -52,10 +52,10 @@ namespace HDData
 		if (_background->GetIsClicked() == true)
 		{
 			auto mouseX = HDEngine::InputSystem::Instance().GetMousePosition().x;
-			auto newValue = ((_handle->GetTransform()->GetWorldPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;
+			auto newValue = ((_handle->GetTransform()->GetPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;
 
-			_handle->GetTransform()->SetWorldPosition(mouseX, _background->GetTransform()->GetLocalPosition().y, 0);
-			_value->GetTransform()->SetWorldPosition(mouseX, _handle->GetTransform()->GetLocalPosition().y - 50, 0);
+			_handle->GetTransform()->SetPosition(mouseX, _background->GetTransform()->GetLocalPosition().y, 0);
+			_value->GetTransform()->SetPosition(mouseX, _handle->GetTransform()->GetLocalPosition().y - 50, 0);
 			_value->SetText(std::to_string((int)newValue));
 
 			/*if (mouseX > _max)
