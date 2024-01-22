@@ -1,4 +1,4 @@
-#include "Button.h"
+﻿#include "Button.h"
 #include "ImageUI.h"
 #include "TextUI.h"
 #include "GameObject.h"
@@ -26,7 +26,7 @@ namespace HDData
 	{
 		if (GetIsClicked())
 		{
-			_onClickEvent;
+			CallClickEvent();
 		}
 	}
 
