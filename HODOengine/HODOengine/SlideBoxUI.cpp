@@ -38,8 +38,8 @@ namespace HDData
 			}
 		}
 
-		_leftArrow->GetTransform()->SetLocalPosition(-0.5f, 0.f, 0.f);
-		_rightArrow->GetTransform()->SetLocalPosition(0.5f, 0.f, 0.f);
+		//_leftArrow->GetTransform()->SetLocalPosition(-0.5f, 0.f, 0.f);
+		//_rightArrow->GetTransform()->SetLocalPosition(0.5f, 0.f, 0.f);
 	}
 
 	void SlideBoxUI::Update()

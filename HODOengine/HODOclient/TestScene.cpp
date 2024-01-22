@@ -115,7 +115,7 @@ TestScene::TestScene()
 	//imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });
 
 	auto button = API::CreateButton(_scene);
-	button->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
 	//auto _slider = API::CreateSlider(_scene, "slider");
