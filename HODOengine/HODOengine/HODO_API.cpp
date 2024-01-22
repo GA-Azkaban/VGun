@@ -50,19 +50,26 @@ namespace API
 			return obj;
 		}
 
-		//HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
-		//{
-		//	auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-		//	obj->AddComponent<HDData::SlideBoxUI>();
+		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			obj->AddComponent<HDData::SlideBoxUI>();
 
-		//	auto leftButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-		//	leftButton->AddComponent<HDData::ImageUI>();
+			auto leftButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, "arrowLeft", obj);
+			leftButton->AddComponent<HDData::ImageUI>();
+			leftButton->GetComponent<HDData::ImageUI>()->SetImage("arrowLeft.png");
 
-		//	auto rightButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-		//	rightButton->AddComponent<HDData::ImageUI>();
+			auto rightButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, "arrowRight", obj);
+			rightButton->AddComponent<HDData::ImageUI>();
+			rightButton->GetComponent<HDData::ImageUI>()->SetImage("arrowRight.png");
 
-		//	return obj;
-		//}
+			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "Text", obj);
+			valueText->AddComponent<HDData::TextUI>();
+			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
+			valueText->GetComponent<HDData::TextUI>()->SetText("default");
+			
+			return obj;
+		}
 
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{

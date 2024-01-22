@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -109,26 +109,21 @@ TestScene::TestScene()
 	//imageComp->GetGameObject();
 
 	//auto UItest = API::CreateSlidebox(_scene);
-	//UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
-	//auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
-	//sliderComp->AddTextList("1");
-	//sliderComp->AddTextList("2");
-	//sliderComp->AddTextList("3");
-	//sliderComp->AddTextList("4");
+	//UItest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });
 
 	//auto imageTest = API::CreateImageBox(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });
 
-	auto _button = API::CreateButton(_scene);
-	_button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	_button->GetComponent<HDData::Button>()->SetOnClickEvent([_button]() {_button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
+	auto button = API::CreateButton(_scene);
+	button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
+	button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	auto _slider = API::CreateSlider(_scene, "slider");
-	_slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
-	_slider->AddComponent<HDData::AudioSource>();
+	//auto _slider = API::CreateSlider(_scene, "slider");
+	//_slider->GetTransform()->SetWorldPosition({ 500.0f,500.0f,0.0f });
+	//_slider->AddComponent<HDData::AudioSource>();
 
-	auto toggle = API::CreateToggle(_scene);
-	toggle->GetTransform()->SetPosition({1500.f, 50.f, 0.0f});
+	//auto toggle = API::CreateToggle(_scene);
+	//toggle->GetTransform()->SetWorldPosition({1500.f, 50.f, 0.0f});
 
 	API::LoadScene(_scene);
 
