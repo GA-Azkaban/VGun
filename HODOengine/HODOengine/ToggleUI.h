@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Component.h"
 
 namespace HDEngine
@@ -31,5 +31,6 @@ namespace HDData
 		bool _isToggleOn;
 	};
 }
+
 
 

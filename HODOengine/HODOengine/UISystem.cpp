@@ -1,4 +1,4 @@
-#include "UISystem.h"
+﻿#include "UISystem.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "UIBase.h"
@@ -55,7 +55,7 @@ namespace HDEngine
 				continue;
 			}
 			
-			if (ui->CheckFocus())
+			if (ui->CheckFocus() == true)
 			{
 				ui->SetIsHovering(true);
 
@@ -74,7 +74,4 @@ namespace HDEngine
 			}
 		}
 	}
-
-
-
 }

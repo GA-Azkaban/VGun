@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <set>
 
@@ -33,5 +33,3 @@ namespace HDEngine
 		HDData::UIBase* _focusedUI;
 	};
 }
-
-

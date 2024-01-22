@@ -1,4 +1,4 @@
-#include "ToggleUI.h"
+﻿#include "ToggleUI.h"
 #include "GameObject.h"
 #include "ImageUI.h"
 #include "TextUI.h"
@@ -64,4 +64,5 @@ void HDData::ToggleUI::SetWorldSpace()
 	_toggleOn->SetWorldSpace();
 	_toggleOff->SetWorldSpace();
 }
+
 
