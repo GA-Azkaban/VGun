@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 /// <summary>
@@ -52,7 +52,7 @@ namespace API
 		HODO_API HDData::GameObject* CreateButton(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
-		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 
 

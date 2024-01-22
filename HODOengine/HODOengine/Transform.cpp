@@ -1,4 +1,4 @@
-#include "Transform.h"
+﻿#include "Transform.h"
 #include "GameObject.h"
 
 namespace HDData
@@ -49,7 +49,7 @@ namespace HDData
 		}
 
 		Vector3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetScale();
-		Vector3 result;
+		Vector3 result = { 1.f, 1.f, 1.f };
 		result *= _scale;
 		result *= parentScale;
 

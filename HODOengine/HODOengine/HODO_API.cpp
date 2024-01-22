@@ -1,4 +1,4 @@
-#include "HODO_API.h"
+﻿#include "HODO_API.h"
 
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
@@ -87,7 +87,7 @@ namespace API
 			return obj;
 		}
 
-		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			obj->AddComponent<HDData::SliderUI>();
@@ -108,7 +108,7 @@ namespace API
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "value", obj);
 			valueText->AddComponent<HDData::TextUI>();
-			valueText->GetComponent<HDData::TextUI>()->SetText("50");
+			valueText->GetComponent<HDData::TextUI>()->SetText(std::to_string(defaultValue));
 			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 
 			return obj;

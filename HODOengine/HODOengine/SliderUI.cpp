@@ -15,7 +15,8 @@ namespace HDData
 		_background(nullptr),
 		_fill(nullptr),
 		_handle(nullptr),
-		_value(nullptr)
+		_value(nullptr),
+		_defaultValue(0)
 	{
 	}
 
@@ -45,6 +46,8 @@ namespace HDData
 
 		_min = GetTransform()->GetPosition().x - (_background->GetImageWidth() / 2);
 		_max = GetTransform()->GetPosition().x + _background->GetImageWidth() / 2;
+
+		_value->GetTransform()->SetPosition(_handle->GetTransform()->GetPosition().x - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 	}
 
 	void SliderUI::Update()
@@ -54,22 +57,22 @@ namespace HDData
 			auto mouseX = HDEngine::InputSystem::Instance().GetMousePosition().x;
 			auto newValue = ((_handle->GetTransform()->GetPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;
 
-			_handle->GetTransform()->SetPosition(mouseX, _background->GetTransform()->GetLocalPosition().y, 0);
-			_value->GetTransform()->SetPosition(mouseX, _handle->GetTransform()->GetLocalPosition().y - 50, 0);
+			_handle->GetTransform()->SetPosition(mouseX, _background->GetTransform()->GetPosition().y, 0);
+			_value->GetTransform()->SetPosition(mouseX - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 			_value->SetText(std::to_string((int)newValue));
 
-			/*if (mouseX > _max)
+			if (mouseX > _max)
 			{
-				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetPosition(_max, _handle->GetTransform()->GetPosition().y, 0);
+				_value->GetTransform()->SetPosition(_max - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 				_value->SetText("100");
 			}
 			if (mouseX < _min)
 			{
-				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetLocalPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetPosition(_min, _handle->GetTransform()->GetPosition().y, 0);
+				_value->GetTransform()->SetPosition(_min - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 				_value->SetText("0");
-			}*/
+			}
 		}
 	}
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Component.h"
 
 namespace HDEngine
@@ -32,7 +32,7 @@ namespace HDData
 
 		void SetValueText(std::string val);
 		float GetValueText();
-	
+
 	private:
 		ImageUI* _background;
 		ImageUI* _fill;
@@ -42,6 +42,7 @@ namespace HDData
 		// 슬라이더의 최대 최소 위치
 		int _min;
 		int _max;
+		int _defaultValue;
 	};
 }
 

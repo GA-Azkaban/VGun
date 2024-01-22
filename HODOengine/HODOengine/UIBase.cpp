@@ -83,13 +83,8 @@ namespace HDData
 
 	float UIBase::GetLeft()
 	{
-		auto b = GetTransform()->GetPosition().x;
-		auto c = _sketchable->GetWidth() * GetTransform()->GetScale().x / 2;
-
-		auto a = GetTransform()->GetPosition().x -
+		return GetTransform()->GetPosition().x -
 			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
-
-		return {};
 	}
 
 	float UIBase::GetRight()
