@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 #include <algorithm>
 
 #include "RenderSystem.h"
@@ -12,6 +12,7 @@
 #include "RendererBase.h"
 #include "UIBase.h"
 #include "GraphicsObjFactory.h"
+#include "Collider.h"
 
 #ifdef _DEBUG
 #pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
@@ -54,7 +55,7 @@ namespace HDEngine
 	void RenderSystem::Update(float deltaTime)
 	{
 		UpdateRenderData();
-		_dx11Renderer->Update(deltaTime);
+		_dx11Renderer->Update(deltaTime, true);
 	}
 
 	void RenderSystem::DrawProcess()
@@ -77,6 +78,11 @@ namespace HDEngine
 		{
 			uiBase->UpdateRenderData();
 		}
+
+		for (auto collider : _colliderList)
+		{
+			collider->DrawDebug();
+		}
 	}
 
 	int RenderSystem::GetScreenWidth() const
@@ -97,6 +103,11 @@ namespace HDEngine
 	void RenderSystem::PushSketchComponent(HDData::UIBase* comp)
 	{
 		_uiList.emplace_back(comp);
+	}
+
+	void RenderSystem::PushCollider(HDData::Collider* col)
+	{
+		_colliderList.emplace_back(col);
 	}
 
 	void RenderSystem::DrawLine(Vector3 start, Vector3 end, Vector4 color)

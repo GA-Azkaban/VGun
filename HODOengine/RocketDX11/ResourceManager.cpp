@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+﻿#include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "Mesh.h"
 #include "Model.h"
@@ -39,6 +39,10 @@ namespace RocketCore::Graphics
 		CreateRenderStates();
 		CreateSamplerStates();
 		CreatePrimitiveMeshes();
+
+		_cubePrimitive = GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
+		_spherePrimitive = GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
+		_cylinderPrimitive = GeometricPrimitive::CreateCylinder(deviceContext, 2.0f, 1.0f, 8, false);
 	}
 
 	void ResourceManager::LoadFBXFile(std::string fileName)
@@ -672,5 +676,20 @@ namespace RocketCore::Graphics
 			}
 			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
 		}
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCubePrimitive()
+	{
+		return _cubePrimitive.get();
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetSpherePrimitive()
+	{
+		return _spherePrimitive.get();
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCylinderPrimitive()
+	{
+		return _cylinderPrimitive.get();
 	}
 }

@@ -1,11 +1,13 @@
-#include "Collider.h"
+﻿#include "Collider.h"
 #include "DebugSystem.h"
+#include "RenderSystem.h"
 
 namespace HDData
 {
 
 	Collider::Collider()
 	{
+		HDEngine::RenderSystem::Instance().PushCollider(this);
 	}
 
 	void Collider::SetPositionOffset(Vector3 pos)

@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="PrimitiveHeader.h" />
     <ClInclude Include="IDebugCube.h" />
     <ClInclude Include="IDebugObject.h" />
     <ClInclude Include="ICamera.h" />

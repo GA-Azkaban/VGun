@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "StaticCollider.h"
 
@@ -18,6 +18,8 @@ namespace HDData
 		void SetHeight(float val);
 		void SetWidth(float val);
 		void SetDepth(float val);
+
+		virtual void DrawDebug() override;
 
 	private:
 		float _width;

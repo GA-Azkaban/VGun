@@ -1,4 +1,4 @@
-#include "StaticCollider.h"
+ï»¿#include "StaticCollider.h"
 
 HDData::StaticCollider::StaticCollider()
 	: _isCollided(false)
@@ -8,7 +8,7 @@ HDData::StaticCollider::StaticCollider()
 
 void HDData::StaticCollider::UpdateToPhysics()
 {
-	// physics ¾ÀÀ» °¡Á®¿Í¼­ Äİ¶óÀÌ´õÀÇ transform °ªÀ» º¸³½´Ù
+	// physics ì”¬ì„ ê°€ì ¸ì™€ì„œ ì½œë¼ì´ë”ì˜ transform ê°’ì„ ë³´ë‚¸ë‹¤
 }
 
 void HDData::StaticCollider::Collided()
@@ -19,4 +19,8 @@ void HDData::StaticCollider::Collided()
 bool HDData::StaticCollider::GetIsCollided()
 {
 	return _isCollided;
+}
+
+void HDData::StaticCollider::DrawDebug()
+{
 }
