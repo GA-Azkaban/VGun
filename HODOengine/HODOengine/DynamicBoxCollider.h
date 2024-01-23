@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "DynamicCollider.h"
 
@@ -13,6 +13,8 @@ namespace HDData
 		virtual float GetWidth() const override;
 		virtual float GetHeight() const override;
 		virtual float GetDepth() const override;
+
+		virtual void DrawDebug() override;
 
 	private:
 		float _width;

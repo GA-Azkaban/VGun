@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "DynamicCollider.h"
 
@@ -22,6 +22,8 @@ namespace HDData
 
 		void SetRadius(float rad);
 		void SetHalfHeight(float val);
+
+		virtual void DrawDebug() override;
 
 	private:
 		float _radius;

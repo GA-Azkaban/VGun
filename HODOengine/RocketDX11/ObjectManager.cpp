@@ -1,6 +1,7 @@
-#include "ObjectManager.h"
+﻿#include "ObjectManager.h"
 
 #include "..\\HODO3DGraphicsInterface\\IRenderable.h"
+#include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
 
 #include "Camera.h"
 #include "HelperObject.h"
@@ -103,6 +104,30 @@ namespace RocketCore::Graphics
 	LineRenderer* ObjectManager::GetLineRenderer()
 	{
 		return _lineRenderer;
+	}
+
+	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()
+	{
+		HDEngine::CubePrimitive* cube = new HDEngine::CubePrimitive();
+		cube->isWire = true;
+		_cubePrimitiveList.emplace_back(cube);
+		return cube;
+	}
+
+	HDEngine::SpherePrimitive* ObjectManager::CreateSpherePrimitive()
+	{
+		HDEngine::SpherePrimitive* sphere = new HDEngine::SpherePrimitive();
+		sphere->isWire = true;
+		_spherePrimitiveList.emplace_back(sphere);
+		return sphere;
+	}
+
+	HDEngine::CylinderPrimitive* ObjectManager::CreateCylinderPrimitive()
+	{
+		HDEngine::CylinderPrimitive* cylinder = new HDEngine::CylinderPrimitive();
+		cylinder->isWire = true;
+		_cylinderPrimitiveList.emplace_back(cylinder);
+		return cylinder;
 	}
 
 }

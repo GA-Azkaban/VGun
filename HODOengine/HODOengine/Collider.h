@@ -1,7 +1,8 @@
-#pragma once
+﻿#pragma once
 #include "Component.h"
 #include "dllExporter.h"
 #include "MathHeader.h"
+#include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
 
 ///
 /// ���� ������Ʈ���� ���� ū ���̽� Ŭ����.
@@ -17,6 +18,7 @@ namespace HDData
 
 	public:
 		virtual void UpdateToPhysics() abstract;
+		virtual void DrawDebug() abstract;
 
 	public:
 		void SetPositionOffset(Vector3 pos);
@@ -37,6 +39,7 @@ namespace HDData
 		Vector3 _positionOffset;
 		Quaternion _rotationOffset;
 		Vector3 _scaleOffset;
+		HDEngine::PrimitiveBase* _debugStruct;
 
 	public:
 		void Setflag(int flag);

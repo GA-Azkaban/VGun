@@ -50,6 +50,9 @@
     <Filter Include="MathHeader">
       <UniqueIdentifier>{3c71d896-f8be-4dc3-8a80-8080f218a8fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Primitive">
+      <UniqueIdentifier>{2a3c4158-ee49-439e-9648-a55b482c0086}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -96,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="MathHeader.h">
       <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveHeader.h">
+      <Filter>Objects\Primitive</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

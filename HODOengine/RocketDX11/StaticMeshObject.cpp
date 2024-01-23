@@ -1,4 +1,4 @@
-#include "StaticMeshObject.h"
+﻿#include "StaticMeshObject.h"
 #include "MathHeader.h"
 #include "RocketMacroDX11.h"
 #include "ResourceManager.h"
@@ -26,13 +26,6 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
 		m_world = worldTM;
-// 		for (int i = 0; i < 4; i++)
-// 		{
-// 			for (int j = 0; j < 4; j++)
-// 			{
-// 				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-// 			}
-// 		}
 	}
 
 	void StaticMeshObject::SetActive(bool isActive)

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 /// <summary>
 /// 렌더러는 출력화면을 제어하고, 그려낼 대상을 그려내는 역할을 한다.
@@ -13,7 +13,7 @@ namespace HDEngine
 		// 그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) abstract;
 
-		virtual void Update(float deltaTime) abstract;
+		virtual void Update(float deltaTime, bool isDebug = false) abstract;
 
 		virtual void Render() abstract;
 
