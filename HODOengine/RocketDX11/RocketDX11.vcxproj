@@ -161,9 +161,7 @@
       <AdditionalDependencies>DirectXTK.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(OutDir)RocketDX11.dll" "$(SolutionDir)HODOengine";
-
-copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
+      <Command>copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">
@@ -207,9 +205,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
       <AdditionalDependencies>DirectXTK.lib;assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(OutDir)RocketDX11.dll" "$(SolutionDir)HODOengine";
-
-copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mt.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
+      <Command>copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mt.dll" "$(SolutionDir)Build\$(Configuration)";</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
