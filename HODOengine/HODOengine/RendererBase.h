@@ -8,13 +8,6 @@ namespace HDData
 	{
 	public:
 		RendererBase();
-		void UpdateRenderData();
-
-// 	public:
-// 		virtual void OnEnable() override;
-// 		virtual void OnDisable() override;
-
-		HDEngine::IRenderable* _renderable;
 	};
 }
 

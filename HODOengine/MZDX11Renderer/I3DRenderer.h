@@ -1,6 +1,6 @@
 #pragma once
 ///
-/// ·»´õ·¯ÀÇ ÀÎÅÍÆäÀÌ½º
+/// ë Œë”ëŸ¬ì˜ ì¸í„°í˜ì´ìŠ¤
 /// 2023.06.19 MJKIM
 
 namespace MZRenderer
@@ -11,27 +11,20 @@ namespace MZRenderer
 		I3DRenderer() {};
 		virtual ~I3DRenderer() {};
 
-		// ¿£Áø ÃÊ±âÈ­
+		// ì—”ì§„ ì´ˆê¸°í™”
 		virtual bool Initialize() abstract;
 		virtual void SetOutputWindow(unsigned int hWnd) abstract;
-		// ¾÷µ¥ÀÌÆ®
+		// ì—…ë°ì´íŠ¸
 		virtual void Update(float deltaTime) abstract;
 
-		// ·»´õ
+		// ë Œë”
 		virtual void Render() abstract;
 
-		// ¿£Áø Á¾·á
+		// ì—”ì§„ ì¢…ë£Œ
 		virtual void Finalize() abstract;
 
-	public:
-		// Ã¢ º¯È¯ °ü·Ã
+		// ì°½ ë³€í™˜ ê´€ë ¨
 		virtual void ResizeResolution(unsigned int width, unsigned int height) abstract;
-
-	public:
-		// ¸¶¿ì½º ÀÔ·Â °ü·Ã
-		virtual void OnMouseDown(int btnState, int x, int y) abstract;
-		virtual void OnMouseUp(int x, int y) abstract;
-		virtual void OnMouseMove(int btnState, int x, int y) abstract;
 	};
 
 }

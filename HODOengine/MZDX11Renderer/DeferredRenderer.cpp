@@ -2,7 +2,6 @@
 #include "MZDX11Renderer.h"
 #include "DeferredBuffers.h"
 #include "ResourceManager.h"
-#include "ShaderManager.h"
 #include "RasterizerState.h"
 #include "SamplerState.h"
 #include "MZMacro.h"
@@ -72,6 +71,7 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/Rob02.fbx");
 	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/4QCharacter_tpose.fbx");
 	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/4QCharacter_idle_ani.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/A_TP_CH_Sprint_F.fbx");
 	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/model.dae");
 	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/sunsetcube1024.dds");
 	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/diffuse.png");
@@ -79,8 +79,8 @@ void DeferredRenderer::Initialize(ID3D11Device* device, ID3D11DeviceContext* dev
 	//StaticMeshObject* test1 = new StaticMeshObject();
 	//SkinningMeshObject* test1 = new SkinningMeshObject();
 	test1 = new SkinningMeshObject();
-	test1->SetMesh("Rob02.fbx");
-	//test1->SetMesh("model.dae");
+	//test1->SetMesh("Rob02.fbx");
+	test1->SetMesh("A_TP_CH_Sprint_F.fbx");	
 	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
 	test1->SetNormalTexture("Rob02White_Normal.png");
 	//test1->PlayAnimation(1, false);
@@ -553,8 +553,8 @@ void DeferredRenderer::SetLights()
 	DirectionalLight* dirLight = new DirectionalLight();
 	dirLight->Color = XMFLOAT4{ 0.5f, 0.5f, 0.5f, 1.0f };
 	dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
-	ShaderManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
-	ShaderManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+	ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+	ResourceManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
 
 	PointLight pointLight[4];
 	pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
@@ -565,8 +565,8 @@ void DeferredRenderer::SetLights()
 	pointLight[2].Position = XMFLOAT4{ -1.0f, 0.0f, 0.0f, 1.0f };
 	pointLight[3].Color = XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f };
 	pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
-	ShaderManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
-	ShaderManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso")->SetPointLight("pointLight", pointLight);
+	ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
+	ResourceManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso")->SetPointLight("pointLight", pointLight);
 
 	SpotLight spotLight[2];
 	spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
@@ -577,8 +577,8 @@ void DeferredRenderer::SetLights()
 	spotLight[1].Direction = XMFLOAT3{ -10.0f, 0.0f, -5.0f };
 	spotLight[1].Position = XMFLOAT4{ 10.0f, 20.0f, 5.0f, 1.0f };
 	spotLight[1].SpotPower = 1.0f;
-	ShaderManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
-	ShaderManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
+	ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
+	ResourceManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
 }
 
 HRESULT DeferredRenderer::GetAdapterInfo()

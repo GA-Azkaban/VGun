@@ -16,7 +16,23 @@ namespace hodoGIAdapter
 		};
 		virtual ~CameraAdapter() {};
 
-		virtual void SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot) {}
+		virtual void SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot)
+		{
+			XMFLOAT3 position;
+			position.x = pos.x;
+			position.y = pos.y;
+			position.z = pos.z;
+			mzCamera.SetPosition(position);
+
+			XMFLOAT4 quaternion;
+			quaternion.x = rot.x;
+			quaternion.y = rot.y;
+			quaternion.z = rot.z;
+			quaternion.w = rot.w;
+			mzCamera.SetRotation(quaternion);
+
+			mzCamera.UpdateViewMatrix();
+		}
 
 		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& tm) {
 			XMMATRIX xmTM;
@@ -42,8 +58,8 @@ namespace hodoGIAdapter
 			xmTM.r[3].m128_f32[3] = tm._44;
 
 			mzCamera.SetWorldTM(xmTM);
-			auto inverse = XMMatrixInverse(nullptr, reinterpret_cast<const XMMATRIX&>(tm));
-			mzCamera.SetViewMatrix(XMMatrixInverse(nullptr, reinterpret_cast<const XMMATRIX&>(tm)));
+			//auto inverse = XMMatrixInverse(nullptr, reinterpret_cast<const XMMATRIX&>(tm));
+			//mzCamera.SetViewMatrix(XMMatrixInverse(nullptr, reinterpret_cast<const XMMATRIX&>(tm)));
 		};
 		virtual void SetNearZ(float nearZ) {}
 		virtual void SetFarZ(float farZ) {}

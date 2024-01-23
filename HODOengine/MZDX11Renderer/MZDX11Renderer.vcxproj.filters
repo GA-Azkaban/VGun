@@ -37,9 +37,6 @@
     <Filter Include="4. Manager\ResourceManager">
       <UniqueIdentifier>{0e6370a4-642c-4455-9737-2f98f5541845}</UniqueIdentifier>
     </Filter>
-    <Filter Include="4. Manager\ShaderManager">
-      <UniqueIdentifier>{42f91449-6862-435d-ba4a-0bb1d2cd46a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="5. Objects">
       <UniqueIdentifier>{1759284a-1f66-49c0-b826-998a3002318b}</UniqueIdentifier>
     </Filter>
@@ -88,77 +85,8 @@
     <Filter Include="5. Objects\0. Interface\ILightObject">
       <UniqueIdentifier>{9d5aface-38c8-41f8-93cf-1fd4a1cfb910}</UniqueIdentifier>
     </Filter>
-    <Filter Include="6. Components">
-      <UniqueIdentifier>{77c539dd-e2fc-460e-9278-9fd8713290d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6. Components\Mesh">
-      <UniqueIdentifier>{c6a04ca9-8b3c-489b-9b40-755da0f35c47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6. Components\Material">
-      <UniqueIdentifier>{2945b068-eacb-4134-b1ba-cfc157e868ef}</UniqueIdentifier>
-    </Filter>
     <Filter Include="0.Rendererer\Interface">
       <UniqueIdentifier>{8d4338b6-1def-4fd2-9e85-673883041484}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6. Components\RasterizerState">
-      <UniqueIdentifier>{ba38b57f-7ba1-445c-9fa6-5a6b31fbf1a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util">
-      <UniqueIdentifier>{0f69de03-2b8d-4516-90f2-80f82a006dd2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\etc">
-      <UniqueIdentifier>{8df37b81-952b-4903-97c3-f24bb2338974}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\MZUtility">
-      <UniqueIdentifier>{ce5d558b-cb81-4ae9-9e72-baa44adaa6c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\Singleton">
-      <UniqueIdentifier>{6ac12bce-0cc9-4634-ba06-c01f2eda60dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\DXTK">
-      <UniqueIdentifier>{35695bbe-71a5-4ceb-8809-165818c61125}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\TextureLoader">
-      <UniqueIdentifier>{e5927962-15ed-4684-a628-c6675821c39a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\GeometryGenerator">
-      <UniqueIdentifier>{c5bd62c0-8b3e-4113-acb2-c2732d81b0eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="8. Util\Macro">
-      <UniqueIdentifier>{7374c818-48d0-4935-baa5-36a637b7c07a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="7. Math">
-      <UniqueIdentifier>{3290912d-c1bc-4763-9f2e-8ddaee62f5f6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="7. Math\header">
-      <UniqueIdentifier>{5ab0f13e-43e8-4233-bede-9012861dbf01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="7. Math\source">
-      <UniqueIdentifier>{5aa19f90-984b-4d10-8fe1-a3fc92db5c0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="6. Components\SamplerState">
-      <UniqueIdentifier>{9711af34-42d1-4b36-8966-b39d1b39207a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter">
-      <UniqueIdentifier>{2df98c61-a3e7-47e8-bd50-7527e74441ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter\Hodo3DGIAdapter">
-      <UniqueIdentifier>{44a5762a-ca28-4225-bb35-6f77d4739e70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter">
-      <UniqueIdentifier>{1935bb31-be9d-48e4-b924-486a1736f817}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter">
-      <UniqueIdentifier>{5f78ef35-d9e1-47af-a609-f8b89c0e188a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter">
-      <UniqueIdentifier>{c9d236bb-22f8-46ba-b259-7a2cc8ccf523}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter">
-      <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter">
-      <UniqueIdentifier>{eeb881c3-cb8c-4165-8119-3aa5df27e77d}</UniqueIdentifier>
     </Filter>
     <Filter Include="0.Rendererer\Header">
       <UniqueIdentifier>{26b39938-7d25-4921-88f8-a17e43f065b0}</UniqueIdentifier>
@@ -169,14 +97,101 @@
     <Filter Include="5. Objects\CubeMap">
       <UniqueIdentifier>{6ede9cec-51af-4bcb-8d77-0cab8bd02a3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="6. Components\DataStruct">
+    <Filter Include="10. Adapter">
+      <UniqueIdentifier>{2df98c61-a3e7-47e8-bd50-7527e74441ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter">
+      <UniqueIdentifier>{44a5762a-ca28-4225-bb35-6f77d4739e70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter">
+      <UniqueIdentifier>{1935bb31-be9d-48e4-b924-486a1736f817}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter">
+      <UniqueIdentifier>{5f78ef35-d9e1-47af-a609-f8b89c0e188a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter">
+      <UniqueIdentifier>{c9d236bb-22f8-46ba-b259-7a2cc8ccf523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter">
+      <UniqueIdentifier>{281b4337-2cf5-4f0f-9a79-8df00ad84d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter">
+      <UniqueIdentifier>{eeb881c3-cb8c-4165-8119-3aa5df27e77d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\Hodo3DGIAdapter\HodoSkinnedMeshAdapter">
+      <UniqueIdentifier>{60b5d052-71ec-440c-8a55-0af28ef20f85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util">
+      <UniqueIdentifier>{0f69de03-2b8d-4516-90f2-80f82a006dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\etc">
+      <UniqueIdentifier>{8df37b81-952b-4903-97c3-f24bb2338974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\MZUtility">
+      <UniqueIdentifier>{ce5d558b-cb81-4ae9-9e72-baa44adaa6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\Singleton">
+      <UniqueIdentifier>{6ac12bce-0cc9-4634-ba06-c01f2eda60dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\DXTK">
+      <UniqueIdentifier>{35695bbe-71a5-4ceb-8809-165818c61125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\TextureLoader">
+      <UniqueIdentifier>{e5927962-15ed-4684-a628-c6675821c39a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\GeometryGenerator">
+      <UniqueIdentifier>{c5bd62c0-8b3e-4113-acb2-c2732d81b0eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="9. Util\Macro">
+      <UniqueIdentifier>{7374c818-48d0-4935-baa5-36a637b7c07a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Math">
+      <UniqueIdentifier>{3290912d-c1bc-4763-9f2e-8ddaee62f5f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Math\header">
+      <UniqueIdentifier>{5ab0f13e-43e8-4233-bede-9012861dbf01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="8. Math\source">
+      <UniqueIdentifier>{5aa19f90-984b-4d10-8fe1-a3fc92db5c0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Components">
+      <UniqueIdentifier>{77c539dd-e2fc-460e-9278-9fd8713290d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Components\Mesh">
+      <UniqueIdentifier>{c6a04ca9-8b3c-489b-9b40-755da0f35c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Components\Material">
+      <UniqueIdentifier>{2945b068-eacb-4134-b1ba-cfc157e868ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Components\RasterizerState">
+      <UniqueIdentifier>{ba38b57f-7ba1-445c-9fa6-5a6b31fbf1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Components\SamplerState">
+      <UniqueIdentifier>{9711af34-42d1-4b36-8966-b39d1b39207a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="7. Components\DataStruct">
       <UniqueIdentifier>{f6185093-44a3-4a97-9934-3946409dc5b9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="6. Components\DataStruct\Vertex">
+    <Filter Include="7. Components\DataStruct\Vertex">
       <UniqueIdentifier>{6d554c71-05a3-4cd3-8996-ac9bbb1ad79e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="6. Components\DataStruct\Animation">
+    <Filter Include="7. Components\DataStruct\Animation">
       <UniqueIdentifier>{c6dbcaa3-daa9-4a5f-bd2c-48a67e0aa5ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. RenderPasses">
+      <UniqueIdentifier>{8a875de1-dd01-4b60-810d-51aee5ab0563}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. RenderPasses\DeferredPass">
+      <UniqueIdentifier>{d46ab95c-ca02-4f96-a0b3-7ff7183720b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. RenderPasses\CubeMapPass">
+      <UniqueIdentifier>{3a93b68d-4e74-4e1e-ac17-2ea2b05d419a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. RenderPasses\BlitPass">
+      <UniqueIdentifier>{3b3cb48b-8388-4a87-9711-8ede58a981fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. RenderPasses\SSAOPass">
+      <UniqueIdentifier>{2737e05c-c977-408a-952b-8866261f2b34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +205,7 @@
       <Filter>5. Objects\HelperObject</Filter>
     </ClInclude>
     <ClInclude Include="LazyObjects.h">
-      <Filter>8. Util\Singleton</Filter>
+      <Filter>9. Util\Singleton</Filter>
     </ClInclude>
     <ClInclude Include="SkinningMeshObject.h">
       <Filter>5. Objects\MeshObject\SkinnedMesh</Filter>
@@ -199,26 +214,25 @@
       <Filter>5. Objects\MeshObject\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="mathConversion.h">
-      <Filter>7. Math\header</Filter>
+      <Filter>8. Math\header</Filter>
     </ClInclude>
     <ClInclude Include="MathHelper.h">
-      <Filter>7. Math\header</Filter>
+      <Filter>8. Math\header</Filter>
     </ClInclude>
     <ClInclude Include="xnacollision.h">
-      <Filter>7. Math\header</Filter>
+      <Filter>8. Math\header</Filter>
     </ClInclude>
     <ClInclude Include="xnamath.h">
-      <Filter>7. Math\header</Filter>
+      <Filter>8. Math\header</Filter>
     </ClInclude>
     <ClInclude Include="MZUtility.h">
-      <Filter>8. Util\MZUtility</Filter>
+      <Filter>9. Util\MZUtility</Filter>
     </ClInclude>
-    <ClInclude Include="YunuAnimInstance.h" />
     <ClInclude Include="DeferredRenderer.h">
       <Filter>1. DeferredRendering\DeferredRenderer</Filter>
     </ClInclude>
     <ClInclude Include="DXTKFont.h">
-      <Filter>8. Util\DXTK</Filter>
+      <Filter>9. Util\DXTK</Filter>
     </ClInclude>
     <ClInclude Include="DX11Define.h">
       <Filter>0.Rendererer\Header</Filter>
@@ -233,25 +247,25 @@
       <Filter>5. Objects\UI</Filter>
     </ClInclude>
     <ClInclude Include="Hodo3DFactoryAdapter.h">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
     </ClInclude>
     <ClInclude Include="Hodo3DCameraAdapter.h">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoGICameraAdapter</Filter>
     </ClInclude>
     <ClInclude Include="Hodo3DRendererAdapter.h">
-      <Filter>9. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
     </ClInclude>
     <ClInclude Include="HodoDebugCubeAdapter.h">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClInclude>
     <ClInclude Include="ShaderStruct.h">
       <Filter>2. ShaderClass\ShaderStruct</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>6. Components\Mesh</Filter>
+      <Filter>7. Components\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>6. Components\Material</Filter>
+      <Filter>7. Components\Material</Filter>
     </ClInclude>
     <ClInclude Include="IShader.h">
       <Filter>2. ShaderClass\IShader</Filter>
@@ -263,7 +277,7 @@
       <Filter>2. ShaderClass\PixelShader</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
-      <Filter>6. Components\DataStruct\Vertex</Filter>
+      <Filter>7. Components\DataStruct\Vertex</Filter>
     </ClInclude>
     <ClInclude Include="IRenderableObject.h">
       <Filter>5. Objects\0. Interface\IRenderable</Filter>
@@ -292,32 +306,23 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>4. Manager\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>4. Manager\ShaderManager</Filter>
-    </ClInclude>
     <ClInclude Include="I3DRenderer.h">
       <Filter>0.Rendererer\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="DDSTextureLoader.h">
-      <Filter>8. Util\TextureLoader</Filter>
-    </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
-      <Filter>8. Util\GeometryGenerator</Filter>
+      <Filter>9. Util\GeometryGenerator</Filter>
     </ClInclude>
     <ClInclude Include="RasterizerState.h">
-      <Filter>6. Components\RasterizerState</Filter>
+      <Filter>7. Components\RasterizerState</Filter>
     </ClInclude>
     <ClInclude Include="MZMacro.h">
-      <Filter>8. Util\Macro</Filter>
-    </ClInclude>
-    <ClInclude Include="WICTextureLoader.h">
-      <Filter>8. Util\TextureLoader</Filter>
+      <Filter>9. Util\Macro</Filter>
     </ClInclude>
     <ClInclude Include="SamplerState.h">
-      <Filter>6. Components\SamplerState</Filter>
+      <Filter>7. Components\SamplerState</Filter>
     </ClInclude>
     <ClInclude Include="HodoStaticMeshAdapter.h">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClInclude>
     <ClInclude Include="Sky.h">
       <Filter>5. Objects\CubeMap</Filter>
@@ -326,10 +331,22 @@
       <Filter>5. Objects\HelperObject</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>6. Components\DataStruct\Animation</Filter>
+      <Filter>7. Components\DataStruct\Animation</Filter>
     </ClInclude>
     <ClInclude Include="AssimpMathConverter.h">
-      <Filter>7. Math\header</Filter>
+      <Filter>8. Math\header</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoSkinnedMeshAdapter.h">
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoSkinnedMeshAdapter</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredPass.h">
+      <Filter>6. RenderPasses\DeferredPass</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapPass.h">
+      <Filter>6. RenderPasses\CubeMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="BlitPass.h">
+      <Filter>6. RenderPasses\BlitPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,17 +366,16 @@
       <Filter>5. Objects\MeshObject\StaticMesh</Filter>
     </ClCompile>
     <ClCompile Include="MathHelper.cpp">
-      <Filter>7. Math\source</Filter>
+      <Filter>8. Math\source</Filter>
     </ClCompile>
     <ClCompile Include="xnacollision.cpp">
-      <Filter>7. Math\source</Filter>
+      <Filter>8. Math\source</Filter>
     </ClCompile>
-    <ClCompile Include="YunuAnimInstance.cpp" />
     <ClCompile Include="DeferredRenderer.cpp">
       <Filter>1. DeferredRendering\DeferredRenderer</Filter>
     </ClCompile>
     <ClCompile Include="DXTKFont.cpp">
-      <Filter>8. Util\DXTK</Filter>
+      <Filter>9. Util\DXTK</Filter>
     </ClCompile>
     <ClCompile Include="DebugCube.cpp">
       <Filter>5. Objects\MeshObject\DebugObject\DebugCube</Filter>
@@ -371,13 +387,13 @@
       <Filter>5. Objects\UI</Filter>
     </ClCompile>
     <ClCompile Include="HodoDebugCubeAdapter.cpp">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoDebugCubeAdapter</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>6. Components\Mesh</Filter>
+      <Filter>7. Components\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>6. Components\Material</Filter>
+      <Filter>7. Components\Material</Filter>
     </ClCompile>
     <ClCompile Include="IShader.cpp">
       <Filter>2. ShaderClass\IShader</Filter>
@@ -409,32 +425,23 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>4. Manager\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
-      <Filter>4. Manager\ShaderManager</Filter>
-    </ClCompile>
-    <ClCompile Include="DDSTextureLoader.cpp">
-      <Filter>8. Util\TextureLoader</Filter>
-    </ClCompile>
     <ClCompile Include="GeometryGenerator.cpp">
-      <Filter>8. Util\GeometryGenerator</Filter>
+      <Filter>9. Util\GeometryGenerator</Filter>
     </ClCompile>
     <ClCompile Include="RasterizerState.cpp">
-      <Filter>6. Components\RasterizerState</Filter>
+      <Filter>7. Components\RasterizerState</Filter>
     </ClCompile>
     <ClCompile Include="Hodo3DRendererAdapter.cpp">
-      <Filter>9. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\Hodo3DRendererAdapter</Filter>
     </ClCompile>
     <ClCompile Include="Hodo3DFactoryAdapter.cpp">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
-    </ClCompile>
-    <ClCompile Include="WICTextureLoader.cpp">
-      <Filter>8. Util\TextureLoader</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoGIFactoryAdapter</Filter>
     </ClCompile>
     <ClCompile Include="SamplerState.cpp">
-      <Filter>6. Components\SamplerState</Filter>
+      <Filter>7. Components\SamplerState</Filter>
     </ClCompile>
     <ClCompile Include="HodoStaticMeshAdapter.cpp">
-      <Filter>9. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClCompile>
     <ClCompile Include="Sky.cpp">
       <Filter>5. Objects\CubeMap</Filter>
@@ -442,8 +449,17 @@
     <ClCompile Include="HelperObject.cpp">
       <Filter>5. Objects\HelperObject</Filter>
     </ClCompile>
-    <ClCompile Include="MZDX11RendererExport.cpp">
-      <Filter>9. Adapter</Filter>
+    <ClCompile Include="HodoSkinnedMeshAdapter.cpp">
+      <Filter>10. Adapter\Hodo3DGIAdapter\HodoSkinnedMeshAdapter</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredPass.cpp">
+      <Filter>6. RenderPasses\DeferredPass</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeMapPass.cpp">
+      <Filter>6. RenderPasses\CubeMapPass</Filter>
+    </ClCompile>
+    <ClCompile Include="BlitPass.cpp">
+      <Filter>6. RenderPasses\BlitPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,9 +476,6 @@
       <Filter>3. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="StaticMeshDeferred.fx">
-      <Filter>3. HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="YunuSkinnedMeshDeferred.fx">
       <Filter>3. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="PBR.fx">
@@ -504,12 +517,6 @@
     <FxCompile Include="DebugPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="DirVertexShader.hlsl">
-      <Filter>3. HLSL</Filter>
-    </FxCompile>
-    <FxCompile Include="DirPixelShader.hlsl">
-      <Filter>3. HLSL</Filter>
-    </FxCompile>
     <FxCompile Include="CubeMapVertexShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
@@ -522,6 +529,18 @@
     <FxCompile Include="SkeletonPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="DeferredSkeletonMeshPS.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredSkeletonMeshVS.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredStaticMeshPS.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="DeferredStaticMeshVS.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MZDX11Renderer.rc">
@@ -530,7 +549,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="xnamathvector.inl">
-      <Filter>7. Math\header</Filter>
+      <Filter>8. Math\header</Filter>
     </None>
   </ItemGroup>
 </Project>

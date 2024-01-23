@@ -1,9 +1,11 @@
 #pragma once
 #include "SpriteFont.h"
 #include "SpriteBatch.h"
+#include <d3d11.h>
+#include <DirectXMath.h>
 
 /// <summary>
-/// DXTK¸¦ ÀÌ¿ëÇÑ ÅØ½ºÆ® Ãâ·Â
+/// DXTKë¥¼ ì´ìš©í•œ í…ìŠ¤íŠ¸ ì¶œë ¥
 /// 
 /// 2023.06.28 MJKIM
 /// </summary>

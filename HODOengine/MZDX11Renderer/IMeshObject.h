@@ -29,13 +29,10 @@ public:
 public:
 	virtual void Update(float deltaTime) = 0;
 	virtual void Render() = 0;
-	virtual bool Pick(float x, float y) = 0;
 
 	virtual void SetMesh(const std::string& fileName) = 0;
 	virtual void SetVertexShader(const std::string& fileName) = 0;
 	virtual void SetPixelShader(const std::string& fileName) = 0;
-
-	virtual void SetPickingMode(bool isPickingModeOn) = 0;
 
 private:
 	static std::vector<IMeshObject*> meshObjects;

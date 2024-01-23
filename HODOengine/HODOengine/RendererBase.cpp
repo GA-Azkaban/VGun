@@ -1,26 +1,10 @@
 #include "RendererBase.h"
-#include "Transform.h"
+#include "RenderSystem.h"
 
 namespace HDData
 {
 	RendererBase::RendererBase()
-		:_renderable(nullptr)
 	{
-
+		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
 	}
-
-	void RendererBase::UpdateRenderData()
-	{
-		_renderable->SetWorldTM(GetTransform()->GetWorldTM());
-	}
-
-// 	void RendererBase::OnEnable()
-// 	{
-// 		_renderable->SetActive(true);
-// 	}
-// 
-// 	void RendererBase::OnDisable()
-// 	{
-// 		_renderable->SetActive(false);
-// 	}
 }

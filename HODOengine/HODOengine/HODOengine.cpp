@@ -138,7 +138,6 @@ void HODOengine::Run()
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
 	// draw
-	//_renderSystem.DrawProcess();
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.Render();
 

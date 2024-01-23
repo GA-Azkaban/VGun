@@ -8,7 +8,7 @@
 
 class MZCamera;
 class IRenderableObject;
-//class DeferredRenderer;
+class DeferredBuffers;
 
 class MZDX11Renderer : public MZRenderer::I3DRenderer
 {
@@ -24,13 +24,6 @@ public:
         }
         return *instance; 
     };
-
-	ID3D11Device* GetDevice() { return m_d3dDevice.Get(); };
-	ID3D11DeviceContext* GetDeviceContext() { return m_d3dDeviceContext.Get(); };
-
-    unsigned int GetScreenWidth() const { return m_screenWidth; }
-    unsigned int GetScreenHeight() const { return m_screenHeight; }
-    float GetAspectRatio() const;
 
     // 엔진 초기화
     virtual bool Initialize() override;
@@ -50,13 +43,16 @@ public:
     // 창 변환 관련
     virtual void ResizeResolution(unsigned int width, unsigned int height) override;
 
-	// 마우스 입력 관련
-	virtual void OnMouseDown(int btnState, int x, int y) override;
-	virtual void OnMouseUp(int x, int y) override;
-	virtual void OnMouseMove(int btnState, int x, int y) override;
-    
-    // 이벤트(클릭, 컬링 등) 관련
-    IRenderableObject* Pick(float normalizedX, float normalizedY);
+public:
+	ID3D11Device* GetDevice() { return m_d3dDevice.Get(); };
+	ID3D11DeviceContext* GetDeviceContext() { return m_d3dDeviceContext.Get(); };
+
+	unsigned int GetScreenWidth() const { return m_screenWidth; }
+	unsigned int GetScreenHeight() const { return m_screenHeight; }
+	float GetAspectRatio() const;
+
+private:
+    void ResizeBuffers();
 
 private:
     static MZDX11Renderer* instance;
@@ -66,13 +62,16 @@ private:
     ComPtr<ID3D11Device> m_d3dDevice;
     ComPtr<ID3D11DeviceContext> m_d3dDeviceContext;
     ComPtr<IDXGISwapChain> m_swapChain;
+    D3D11_VIEWPORT m_viewPort;
+
+    ComPtr<ID3D11Texture2D> m_quadTexture;
+    ComPtr<ID3D11RenderTargetView> m_quadRTV;
+    ComPtr<ID3D11ShaderResourceView> m_quadSRV;
+
+    ComPtr<ID3D11RenderTargetView> m_backBufferRTV;
 
 	unsigned int m_screenWidth;
 	unsigned int m_screenHeight;
 
-    MZCamera* m_camera;
-    float m_cameraSpeed;
-
-    POINT m_lastMousePos;
-    float m_deltaTime;
+    DeferredBuffers* m_deferredBuffers;
 };

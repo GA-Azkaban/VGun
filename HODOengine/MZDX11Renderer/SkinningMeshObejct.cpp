@@ -6,7 +6,6 @@
 #include "RasterizerState.h"
 #include "SamplerState.h"
 #include "ResourceManager.h"
-#include "ShaderManager.h"
 #include "MathHelper.h"
 #include "AssimpMathConverter.h"
 #include <cmath>
@@ -14,12 +13,10 @@
 SkinningMeshObject::SkinningMeshObject()
 	: m_material(nullptr), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr)
-	//m_meshBox(), m_depth(1.0f), m_isPickingOn(true)
 {
-	m_material = new Material(ShaderManager::Instance.Get().GetVertexShader("SkeletonVertexShader.cso"), ShaderManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso"));
+	m_material = new Material(ResourceManager::Instance.Get().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso"));
 	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
 	m_boneTransform.resize(96, XMMatrixIdentity());
-	//m_world.r[3].m128_f32[1] = -5.0f;
 }
 
 SkinningMeshObject::~SkinningMeshObject()
@@ -29,16 +26,9 @@ SkinningMeshObject::~SkinningMeshObject()
 
 void SkinningMeshObject::Update(float deltaTime)
 {
-	//float ticks = (float)GetTickCount();
 	if (m_currentAnimation != nullptr)
 	{
-		//float dt = ticks * m_currentAnimation->ticksPerSecond / 1000;
-		//float animationTime = fmod(dt, m_currentAnimation->duration);
 		m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-		/*if (m_animationTime >= m_currentAnimation->duration)
-		{
-			int a = 0;
-		}*/
 		m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);		
 
 		if (!m_currentAnimation->isEnd)
@@ -61,9 +51,9 @@ void SkinningMeshObject::Render()
 	if (!m_isActive)
 		return;
 
-	// 이거는 바깥쪽에서 한다.
-	//MZDX11Renderer::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//MZDX11Renderer::Instance().GetDeviceContext()->RSSetState(RasterizerState::Instance.Get().GetSolidRS());
+	MZDX11Renderer::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	MZDX11Renderer::Instance().GetDeviceContext()->RSSetState(RasterizerState::Instance.Get().GetSolidRS());
+	
 	XMMATRIX invWorld = XMMatrixTranspose(m_world);
 
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
@@ -159,20 +149,6 @@ DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedPosition(float animationTi
 	float deltaTime = nodeAnim->positionTimestamps[nextPositionIndex] - nodeAnim->positionTimestamps[positionIndex];
 	float factor = (animationTime - nodeAnim->positionTimestamps[positionIndex]) / deltaTime;
 
-	/*if (nextPositionIndex == nodeAnim->positionTimestamps.size() - 1)
-	{
-		if (factor >= 0.98f)
-		{
-			loopCount--;
-			if (loopCount == 0)
-			{
-				m_isAnimEnd = true;
-				return nodeAnim->positions[nextPositionIndex];
-			}
-		}
-	}*/
-
-
 	DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->positions[positionIndex]));
 	DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->positions[nextPositionIndex]));
 	DirectX::XMVECTOR delta = end - start;
@@ -202,19 +178,6 @@ DirectX::XMFLOAT4 SkinningMeshObject::CalcInterpolatedRotation(float animationTi
 	UINT nextRotationIndex = rotationIndex + 1;
 	float deltaTime = nodeAnim->rotationTimestamps[nextRotationIndex] - nodeAnim->rotationTimestamps[rotationIndex];
 	float factor = (animationTime - nodeAnim->rotationTimestamps[rotationIndex]) / deltaTime;
-
-	/*if (nextRotationIndex == nodeAnim->rotationTimestamps.size() - 1)
-	{
-		if (factor >= 0.98f)
-		{
-			loopCount--;
-			if (loopCount == 0)
-			{
-				m_isAnimEnd = true;
-				return nodeAnim->rotations[nextRotationIndex];
-			}
-		}
-	}*/
 
 	DirectX::XMVECTOR start = XMLoadFloat4(&(nodeAnim->rotations[rotationIndex]));
 	DirectX::XMVECTOR end = XMLoadFloat4(&(nodeAnim->rotations[nextRotationIndex]));
@@ -246,19 +209,6 @@ DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedScaling(float animationTim
 	float deltaTime = nodeAnim->scaleTimestamps[nextScaleIndex] - nodeAnim->scaleTimestamps[scaleIndex];
 	float factor = (animationTime - nodeAnim->scaleTimestamps[scaleIndex]) / deltaTime;
 
-	/*if (nextScaleIndex == nodeAnim->scaleTimestamps.size() - 1)
-	{
-		if (factor >= 0.98f)
-		{
-			loopCount--;
-			if (loopCount == 0)
-			{
-				m_isAnimEnd = true;
-				return nodeAnim->scales[nextScaleIndex];
-			}
-		}
-	}*/
-
 	DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->scales[scaleIndex]));
 	DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->scales[nextScaleIndex]));
 	DirectX::XMVECTOR delta = end - start;
@@ -269,43 +219,6 @@ DirectX::XMFLOAT3 SkinningMeshObject::CalcInterpolatedScaling(float animationTim
 	return ret;
 }
 
-bool SkinningMeshObject::Pick(float x, float y)
-{
-	//   if (!m_isActive)
-	//       return false;
-
-	   //if (!m_isPickingOn)
-	   //	return false;
-	//   // Ray definition in view space.
-	//   XMVECTOR rayOrigin = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
-	//   XMVECTOR rayDir = XMVectorSet(x, y, 1.0f, 0.0f);
-
-	//   // Tranform ray to local space of Mesh.
-	//   XMMATRIX V = MZCamera::GetMainCamera()->View();
-	//   XMVECTOR detView = XMMatrixDeterminant(V);
-	//   XMMATRIX invView = XMMatrixInverse(&detView, V);
-
-	//   //XMMATRIX W = XMLoadFloat4x4(&m_world);
-	//   XMVECTOR detWorld = XMMatrixDeterminant(m_world);
-	//   XMMATRIX invWorld = XMMatrixInverse(&detWorld, m_world);
-
-	//   XMMATRIX toLocal = XMMatrixMultiply(invView, invWorld);
-
-	//   rayOrigin = XMVector3TransformCoord(rayOrigin, toLocal);
-	//   rayDir = XMVector3TransformNormal(rayDir, toLocal);
-
-	//   // Make the ray direction unit length for the intersection tests.
-	//   rayDir = XMVector3Normalize(rayDir);
-
-	//   float tmin = 0.0f;
-	//   if (XNA::IntersectRayAxisAlignedBox(rayOrigin, rayDir, &m_meshBox, &tmin))
-	//   {
-	//       m_depth = tmin;
-	//       return true;
-	//   }
-	return false;
-}
-
 void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
 {
 	auto animIter = m_animations.find(animName);
@@ -313,9 +226,9 @@ void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop 
 	{
 		m_currentAnimation = animIter->second;
 		m_currentAnimation->isLoop = isLoop;
+		m_currentAnimation->accumulatedTime = 0.0f;
 		if (m_currentAnimation->isLoop == false)
 		{
-			m_currentAnimation->accumulatedTime = 0.0f;
 			m_currentAnimation->isEnd = false;
 		}
 	}
@@ -353,14 +266,14 @@ void SkinningMeshObject::SetMesh(const std::string& fileName)
 
 void SkinningMeshObject::SetVertexShader(const std::string& fileName)
 {
-	VertexShader* vs = ShaderManager::Instance.Get().GetVertexShader(fileName);
+	VertexShader* vs = ResourceManager::Instance.Get().GetVertexShader(fileName);
 	if (vs != nullptr)
 		m_material->SetVertexShader(vs);
 }
 
 void SkinningMeshObject::SetPixelShader(const std::string& fileName)
 {
-	PixelShader* ps = ShaderManager::Instance.Get().GetPixelShader(fileName);
+	PixelShader* ps = ResourceManager::Instance.Get().GetPixelShader(fileName);
 	if (ps != nullptr)
 		m_material->SetPixelShader(ps);
 }

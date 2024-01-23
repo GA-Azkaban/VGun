@@ -32,12 +32,8 @@ namespace HDEngine
 
 		/// 렌더링 관련
 	public:
-		//void DrawProcess();
 		void Update(float deltaTime);
 		void Render();
-
-	private:
-		void UpdateRenderData();
 
 	public:
 		int GetScreenWidth() const;
@@ -56,6 +52,7 @@ namespace HDEngine
 
 	public:
 		void PushRenderComponent(HDData::RendererBase* comp);
+
 	private:
 		std::vector<HDData::RendererBase*> _rendererList;
 	};

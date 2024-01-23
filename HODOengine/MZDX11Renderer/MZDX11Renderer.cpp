@@ -1,8 +1,7 @@
 #include "MZDX11Renderer.h"
 #include "MZCamera.h"
-#include "DeferredRenderer.h"
+#include "DeferredBuffers.h"
 #include "ResourceManager.h"
-#include "ShaderManager.h"
 #include "RasterizerState.h"
 #include "SamplerState.h"
 #include "MathHelper.h"
@@ -18,17 +17,13 @@ MZDX11Renderer* MZDX11Renderer::instance = nullptr;
 MZDX11Renderer::MZDX11Renderer()
 	: m_hWnd(0), m_screenWidth(1920), m_screenHeight(1080)
 {
-	m_camera = new MZCamera();
-	m_camera->SetMain();
-	m_camera->LookAt(XMFLOAT3(8.0f, 8.0f, -8.0f), XMFLOAT3(0, 0, 0), XMFLOAT3(0, 1.0f, 0));
+	m_deferredBuffers = new DeferredBuffers();
 }
 
 MZDX11Renderer::~MZDX11Renderer()
 {
 	RasterizerState::Instance.Get().DestroyRenderStates();
 	SamplerState::Instance.Get().DestroySamplerStates();
-
-	delete m_camera;
 
 	if (m_d3dDeviceContext)
 	{
@@ -63,7 +58,6 @@ bool MZDX11Renderer::Initialize()
 	}
 
 	ResourceManager::Instance.Get().Initialize(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
-	ShaderManager::Instance.Get().LoadShaders(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
 	RasterizerState::Instance.Get().CreateRenderStates(m_d3dDevice.Get());
 	SamplerState::Instance.Get().CreateSamplerStates(m_d3dDevice.Get());
 
@@ -124,28 +118,28 @@ void MZDX11Renderer::SetOutputWindow(unsigned int hWnd)
 	dxgiAdapter->Release();
 	dxgiFactory->Release();
 
-	DeferredRenderer::Instance.Get().Initialize(m_d3dDevice.Get(), m_d3dDeviceContext.Get(), m_swapChain.Get(), m_screenWidth, m_screenHeight);
+	ResizeBuffers();
 }
 
 void MZDX11Renderer::Update(float deltaTime)
 {
-	DeferredRenderer::Instance.Get().Update(deltaTime);
+	// TODO
 }
 
 
-//void MZDX11Renderer::BeginRender()
-//{
-//	assert(m_d3dDeviceContext);
-//
-//	m_d3dDeviceContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
-//	m_d3dDeviceContext->ClearRenderTargetView(m_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Black));
-//	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-//}
+void MZDX11Renderer::BeginRender()
+{
+	assert(m_d3dDeviceContext);
+
+	m_d3dDeviceContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
+	m_d3dDeviceContext->ClearRenderTargetView(m_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Black));
+	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
 
 
 void MZDX11Renderer::Render()
 {
-	DeferredRenderer::Instance.Get().RenderToBackBuffer();
+	BeginRender();
 
 	assert(m_swapChain);
 	m_swapChain->Present(0, 0);
@@ -162,49 +156,68 @@ void MZDX11Renderer::ResizeResolution(unsigned int width, unsigned int height)
 	m_screenHeight = height;
 
 	// 투영 행렬 재계산
-	m_camera->SetFrustum(0.25f * MathHelper::Pi, GetAspectRatio(), 1.0f, 1000.0f);
+	MZCamera::GetMainCamera()->SetFrustum(0.25f * MathHelper::Pi, GetAspectRatio(), 
+		MZCamera::GetMainCamera()->GetNearZ(), MZCamera::GetMainCamera()->GetFarZ());
 	
-	DeferredRenderer::Instance.Get().ResizeResolution(width, height);
+	ResizeBuffers();
 }
 
-void MZDX11Renderer::OnMouseDown(int btnState, int x, int y)
+void MZDX11Renderer::ResizeBuffers()
 {
-	if ((btnState & MK_RBUTTON) != 0)
-	{
-		m_lastMousePos.x = x;
-		m_lastMousePos.y = y;
+	m_backBufferRTV.Reset();
+	m_quadRTV.Reset();
+	m_quadSRV.Reset();
+	m_quadTexture.Reset();
 
-		SetCapture(m_hWnd);
-	}
-	else if ((btnState & MK_LBUTTON) != 0)
-	{
-		Pick(x, y);
-	}
-}
+	m_swapChain->ResizeBuffers(0, m_screenWidth, m_screenHeight, DXGI_FORMAT_UNKNOWN, 0);
 
-void MZDX11Renderer::OnMouseUp(int x, int y)
-{
-	ReleaseCapture();
-}
+	ID3D11Texture2D* backBuffer;
+	HR(m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+	HR(m_d3dDevice->CreateRenderTargetView(backBuffer, 0, &m_backBufferRTV));
+	backBuffer->Release();
 
-void MZDX11Renderer::OnMouseMove(int btnState, int x, int y)
-{
-	if ((btnState & MK_RBUTTON) != 0)
-	{
-		float dx = XMConvertToRadians(0.25f * static_cast<float>(x - m_lastMousePos.x));
-		float dy = XMConvertToRadians(0.25f * static_cast<float>(y - m_lastMousePos.y));
+	// Quad
+	D3D11_TEXTURE2D_DESC textureDesc;
+	ZeroMemory(&textureDesc, sizeof(textureDesc));
+	textureDesc.Width = m_screenWidth;
+	textureDesc.Height = m_screenHeight;
+	textureDesc.MipLevels = 1;
+	textureDesc.ArraySize = 1;
+	textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = 0;
 
-		m_camera->Pitch(dy);
-		m_camera->RotateY(dx);
-	}
+	m_d3dDevice->CreateTexture2D(&textureDesc, nullptr, m_quadTexture.GetAddressOf());
 
-	m_lastMousePos.x = x;
-	m_lastMousePos.y = y;
-}
+	D3D11_RENDER_TARGET_VIEW_DESC quadRTVDesc;
+	quadRTVDesc.Format = textureDesc.Format;
+	quadRTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+	quadRTVDesc.Texture2D.MipSlice = 0;
 
-IRenderableObject* MZDX11Renderer::Pick(float normalizedX, float normalizedY)
-{
-	return DeferredRenderer::Instance.Get().Pick(normalizedX, normalizedY);
+	m_d3dDevice->CreateRenderTargetView(m_quadTexture.Get(), &quadRTVDesc, m_quadRTV.GetAddressOf());
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC quadSRVDesc;
+	quadSRVDesc.Format = textureDesc.Format;
+	quadSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	quadSRVDesc.Texture2D.MostDetailedMip = 0;
+	quadSRVDesc.Texture2D.MipLevels = 1;
+
+	m_d3dDevice->CreateShaderResourceView(m_quadTexture.Get(), &quadSRVDesc, m_quadSRV.GetAddressOf());
+
+	// set the viewport transform
+	m_viewPort.TopLeftX = 0;
+	m_viewPort.TopLeftY = 0;
+	m_viewPort.Width = static_cast<float>(m_screenWidth);
+	m_viewPort.Height = static_cast<float>(m_screenHeight);
+	m_viewPort.MinDepth = 0.0f;
+	m_viewPort.MaxDepth = 1.0f;
+
+	m_d3dDeviceContext->RSSetViewports(1, &m_viewPort);
+
+	m_deferredBuffers->Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
 }
 
 float MZDX11Renderer::GetAspectRatio() const

@@ -13,7 +13,7 @@ MZCamera::MZCamera()
 	m_up(0.0f, 1.0f, 0.0f),
 	m_look(0.0f, 0.0f, 1.0f)
 {
-	SetFrustum(0.25f * MathHelper::Pi, 1.0f, 0.0001f, 1000.0f);
+	SetFrustum(0.25f * MathHelper::Pi, 1.0f, 0.1f, 1000.0f);
 }
 
 MZCamera::~MZCamera()
@@ -28,8 +28,21 @@ void MZCamera::SetMain()
 
 void MZCamera::SetWorldTM(const DirectX::XMMATRIX& tm)
 {
-	XMFLOAT3 pos = XMFLOAT3(tm.r[3].m128_f32[0], tm.r[3].m128_f32[1], tm.r[3].m128_f32[2]);
+	XMVECTOR t;
+	XMVECTOR r;
+	XMVECTOR s;
+	XMMatrixDecompose(&s, &r, &t, tm);
+	
+	XMFLOAT3 pos;
+	XMFLOAT4 rot;
+
+	XMStoreFloat3(&pos, t);
+	XMStoreFloat4(&rot, r);
+
 	SetPosition(pos);
+	SetRotation(rot);
+
+	UpdateViewMatrix();
 }
 
 DirectX::XMVECTOR MZCamera::GetPositionXM() const
@@ -55,6 +68,24 @@ void MZCamera::SetPosition(float x, float y, float z)
 void MZCamera::SetPosition(const XMFLOAT3& p)
 {
 	m_position = p;
+}
+
+void MZCamera::SetRotation(const XMFLOAT4& quaternion)
+{
+	XMFLOAT3 forward = { 0.0f, 0.0f, 1.0f };
+	XMFLOAT3 up = { 0.0f, 1.0f, 0.0f };
+	XMFLOAT3 right = { 1.0f, 0.0f, 0.0f };
+
+	XMMATRIX rotTM = XMMatrixRotationQuaternion(XMLoadFloat4(&quaternion));
+
+	XMVECTOR f = XMVector3Transform(XMLoadFloat3(&forward), rotTM);
+	XMStoreFloat3(&m_look, f);
+
+	XMVECTOR u = XMVector3Transform(XMLoadFloat3(&up), rotTM);
+	XMStoreFloat3(&m_up, u);
+
+	XMVECTOR r = XMVector3Transform(XMLoadFloat3(&right), rotTM);
+	XMStoreFloat3(&m_right, r);
 }
 
 DirectX::XMVECTOR MZCamera::GetRightXM() const
@@ -107,6 +138,16 @@ float MZCamera::GetFarWindowHeight() const
 	return m_farWindowHeight;
 }
 
+float MZCamera::GetNearZ() const
+{
+	return m_nearZ;
+}
+
+float MZCamera::GetFarZ() const
+{
+	return m_farZ;
+}
+
 DirectX::XMMATRIX MZCamera::View() const
 {
 	return XMLoadFloat4x4(&m_view);
@@ -138,11 +179,11 @@ void MZCamera::SetFrustum(float fovY, float aspect, float zn, float zf)
 
 void MZCamera::LookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp)
 {
-	// ½Ã¼±º¤ÅÍ Á¤±ÔÈ­
+	// ì‹œì„ ë²¡í„° ì •ê·œí™”
 	XMVECTOR L = XMVector3Normalize(XMVectorSubtract(target, pos));
-	// ½Ã¼±º¤ÅÍ¿Í ¿ùµå¾÷ ¿ÜÀûÇÏ¸é right º¤ÅÍ°¡ ³ª¿È
+	// ì‹œì„ ë²¡í„°ì™€ ì›”ë“œì—… ì™¸ì í•˜ë©´ right ë²¡í„°ê°€ ë‚˜ì˜´
 	XMVECTOR R = XMVector3Normalize(XMVector3Cross(worldUp, L));
-	// right º¤ÅÍ¿Í ½Ã¼±º¤ÅÍ¸¦ ¿ÜÀûÇÏ¸é ³» up º¤ÅÍ°¡ ³ª¿È
+	// right ë²¡í„°ì™€ ì‹œì„ ë²¡í„°ë¥¼ ì™¸ì í•˜ë©´ ë‚´ up ë²¡í„°ê°€ ë‚˜ì˜´
 	XMVECTOR U = XMVector3Cross(L, R);
 
 	XMStoreFloat3(&m_position, pos);
@@ -189,7 +230,7 @@ void MZCamera::WorldUpDown(float dt)
 
 void MZCamera::Pitch(float angle)
 {
-	// ¾÷ º¤ÅÍ¿Í ½Ã¼± º¤ÅÍ¸¦ ¿À¸¥ÂÊ º¤ÅÍ¿¡ ´ëÇØ È¸ÀüÇÑ´Ù.
+	// ì—… ë²¡í„°ì™€ ì‹œì„  ë²¡í„°ë¥¼ ì˜¤ë¥¸ìª½ ë²¡í„°ì— ëŒ€í•´ íšŒì „í•œë‹¤.
 	XMMATRIX R = XMMatrixRotationAxis(XMLoadFloat3(&m_right), angle);
 
 	XMStoreFloat3(&m_up, XMVector3TransformNormal(XMLoadFloat3(&m_up), R));
@@ -198,7 +239,7 @@ void MZCamera::Pitch(float angle)
 
 void MZCamera::RotateY(float angle)
 {
-	// ±âÀúº¤ÅÍµéÀ» ¿ùµå yÃà¿¡ ´ëÇØ È¸ÀüÇÑ´Ù.
+	// ê¸°ì €ë²¡í„°ë“¤ì„ ì›”ë“œ yì¶•ì— ëŒ€í•´ íšŒì „í•œë‹¤.
 	XMMATRIX R = XMMatrixRotationY(angle);
 
 	XMStoreFloat3(&m_right, XMVector3TransformNormal(XMLoadFloat3(&m_right), R));

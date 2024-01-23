@@ -1,7 +1,7 @@
 #pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IStaticMesh.h"
 
 namespace HDData
 {

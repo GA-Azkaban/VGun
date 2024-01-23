@@ -5,6 +5,10 @@
 #include "Hodo3DCameraAdapter.h"
 #include "DebugCube.h"
 #include "HodoDebugCubeAdapter.h"
+#include "StaticMeshObject.h"
+#include "HodoStaticMeshAdapter.h"
+#include "SkinningMeshObject.h"
+#include "HodoSkinnedMeshAdapter.h"
 
 namespace hodoGIAdapter
 {
@@ -18,7 +22,14 @@ namespace hodoGIAdapter
 
 		virtual HDEngine::IStaticMesh* CreateStaticMeshObject() override
 		{
-			return nullptr;
+			StaticMeshObject* staticMesh = new StaticMeshObject();
+			return new hodoGIAdapter::StaticMeshAdapter(staticMesh);
+		}
+		
+		virtual HDEngine::ISkinnedMesh* CreateSkinnedMeshObject() override
+		{
+			SkinningMeshObject* skinningMesh = new SkinningMeshObject();
+			return new hodoGIAdapter::SkinnedMeshAdapter(skinningMesh);
 		}
 	};
 }

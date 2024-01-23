@@ -12,6 +12,8 @@
 
 class GeometryGenerator;
 class Mesh;
+class VertexShader;
+class PixelShader;
 
 struct FileInfo
 {
@@ -65,9 +67,13 @@ public:
 	/// <returns>animation name and animation infos of all animations in model file</returns>
 	std::unordered_map<std::string, Animation*>& GetAnimations(const std::string& fileName);
 
+	VertexShader* GetVertexShader(const std::string& name);
+	PixelShader* GetPixelShader(const std::string& name);
+
 private:
 	ResourceManager();
 
+	void LoadShaders();
 	void CreatePrimitiveMeshes();
 
 	void ProcessNode(aiNode* node, const aiScene* scene);
@@ -80,13 +86,16 @@ private:
 	void LoadAnimation(const aiScene* scene);
 
 private:
-	ComPtr<ID3D11Device> m_device;
-	ComPtr<ID3D11DeviceContext> m_deviceContext;
-	std::unordered_map<std::string, FileInfo> m_loadedFileInfo; //<fileName, infos>
-	std::unordered_map<std::string, ID3D11ShaderResourceView*> m_loadedTextures;	//<fileName, texture>
+	ComPtr<ID3D11Device> _device;
+	ComPtr<ID3D11DeviceContext> _deviceContext;
+	std::unordered_map<std::string, FileInfo> _loadedFileInfo; //<fileName, infos>
+	std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures;	//<fileName, texture>
 	
-	std::string m_fileName;
+	std::unordered_map<std::string, VertexShader*> _vertexShaders;
+	std::unordered_map<std::string, PixelShader*> _pixelShaders;
 
-	GeometryGenerator* m_geometryGen;
+	GeometryGenerator* _geometryGen;
+
+	std::string _fileName;
 };
 

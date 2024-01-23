@@ -3,8 +3,8 @@
 #include "..\\HODOmath\\HODOmath.h"
 
 /// <summary>
-/// Ä«¸Ş¶ó´Â È­¸é¿¡ ±×·ÁÁú ±×·¡ÇÈ ¿ä¼ÒµéÀ» Ãâ·ÂÇÏ´Â µ¥ ¾²ÀÌ´Â °´Ã¼ÀÔ´Ï´Ù.
-/// 2023.11.09 ±è¹ÎÁ¤
+/// ì¹´ë©”ë¼ëŠ” í™”ë©´ì— ê·¸ë ¤ì§ˆ ê·¸ë˜í”½ ìš”ì†Œë“¤ì„ ì¶œë ¥í•˜ëŠ” ë° ì“°ì´ëŠ” ê°ì²´ì…ë‹ˆë‹¤.
+/// 2023.11.09 ê¹€ë¯¼ì •
 /// </summary>
 
 namespace HDEngine
@@ -25,19 +25,19 @@ namespace HDData
 	public:
 		float GetNearZ() const;
 		float GetFarZ() const;
-		float GetAspect() const;			// Ä«¸Ş¶ó ºñÀ² screen.width/screen.height
-		float GetFovX() const;				// FovX°ªÀ» 60ºĞ¹ıÀ¸·Î ¹İÈ¯
-		float GetRadianFovX() const;		// FovX°ªÀ» È£µµ¹ıÀ¸·Î ¹İÈ¯
-		float GetFovY() const;				// FovY°ªÀ» 60ºĞ¹ıÀ¸·Î ¹İÈ¯
-		float GetRadianFovY() const;		// FovY°ªÀ» È£µµ¹ıÀ¸·Î ¹İÈ¯
+		float GetAspect() const;			// ì¹´ë©”ë¼ ë¹„ìœ¨ screen.width/screen.height
+		float GetFovX() const;				// FovXê°’ì„ 60ë¶„ë²•ìœ¼ë¡œ ë°˜í™˜
+		float GetRadianFovX() const;		// FovXê°’ì„ í˜¸ë„ë²•ìœ¼ë¡œ ë°˜í™˜
+		float GetFovY() const;				// FovYê°’ì„ 60ë¶„ë²•ìœ¼ë¡œ ë°˜í™˜
+		float GetRadianFovY() const;		// FovYê°’ì„ í˜¸ë„ë²•ìœ¼ë¡œ ë°˜í™˜
 
 		float GetNearWindowWidth() const;
 		float GetNearWindowHeight() const;
 		float GetFarWindowWidth() const;
 		float GetFarWindowHeight() const;
 
-		HDMath::HDFLOAT4X4 GetViewMatrix() const;	// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è'¸¦ ¹İÈ¯
-		HDMath::HDFLOAT4X4 GetProjMatrix() const;	// Ä«¸Ş¶óÀÇ Åõ¿µÇà·ÄÀ» ¹İÈ¯
+		HDMath::HDFLOAT4X4 GetViewMatrix() const;	// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„'ë¥¼ ë°˜í™˜
+		HDMath::HDFLOAT4X4 GetProjMatrix() const;	// ì¹´ë©”ë¼ì˜ íˆ¬ì˜í–‰ë ¬ì„ ë°˜í™˜
 
 		void SetNearZ(float nearZ);
 		void SetFarZ(float farZ);
@@ -45,21 +45,22 @@ namespace HDData
 		void SetFovY(float fovY);
 
 	public:
-		void UpdateRenderData();
+		//void UpdateRenderData();
+		virtual void Update() override;
 
 	private:
-		void SetAsMainCamera();	// main Ä«¸Ş¶ó·Î ¹Ù²Ù´Â ÇÔ¼ö. Scene¿¡¼­¸¸ È£ÃâÇßÀ¸¸é ÁÁ°ÚÀ½.
+		void SetAsMainCamera();	// main ì¹´ë©”ë¼ë¡œ ë°”ê¾¸ëŠ” í•¨ìˆ˜. Sceneì—ì„œë§Œ í˜¸ì¶œí–ˆìœ¼ë©´ ì¢‹ê² ìŒ.
 
 	private:
-		float _nearZ;				// frustumÀÇ °¡±î¿î Æò¸é±îÁöÀÇ °Å¸®
-		float _farZ;				// frustumÀÇ ¸Õ Æò¸é±îÁöÀÇ °Å¸®
-		float _aspect;				// °¡·Î / ¼¼·Î ºñÀ²
-		float _fovY;				// fov°¢µµ¸¦ 60ºĞ¹ıÀ¸·Î °®°íÀÖÀ½
-		float _nearWindowHeight;	// frustumÀÇ °¡±î¿î Æò¸éÀÇ ³ôÀÌ
-		float _farWindowHeight;		// frustumÀÇ ¸Õ Æò¸éÀÇ ³ôÀÌ
+		float _nearZ;				// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _farZ;				// frustumì˜ ë¨¼ í‰ë©´ê¹Œì§€ì˜ ê±°ë¦¬
+		float _aspect;				// ê°€ë¡œ / ì„¸ë¡œ ë¹„ìœ¨
+		float _fovY;				// fovê°ë„ë¥¼ 60ë¶„ë²•ìœ¼ë¡œ ê°–ê³ ìˆìŒ
+		float _nearWindowHeight;	// frustumì˜ ê°€ê¹Œìš´ í‰ë©´ì˜ ë†’ì´
+		float _farWindowHeight;		// frustumì˜ ë¨¼ í‰ë©´ì˜ ë†’ì´
 
-		HDMath::HDFLOAT4X4 _viewMatrix;		// Ä«¸Ş¶óÀÇ ·ÎÄÃÁÂÇ¥'°è'
-		HDMath::HDFLOAT4X4 _projMatrix;		// Ä«¸Ş¶óÀÇ Åõ¿µ Çà·Ä
+		HDMath::HDFLOAT4X4 _viewMatrix;		// ì¹´ë©”ë¼ì˜ ë¡œì»¬ì¢Œí‘œ'ê³„'
+		HDMath::HDFLOAT4X4 _projMatrix;		// ì¹´ë©”ë¼ì˜ íˆ¬ì˜ í–‰ë ¬
 
 	private:
 		HDEngine::ICamera* _graphicsCamera;

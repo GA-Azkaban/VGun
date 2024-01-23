@@ -2,8 +2,8 @@
 #include "DX11Define.h"
 
 /// <summary>
-/// DX11À» ÀÌ¿ëÇÑ 3D °ÔÀÓ ÇÁ·Î±×·¡¹Ö ÀÔ¹® Ã¥À» 
-/// Âü°íÇÏ¿© ¸¸µç Ä«¸Ş¶ó Å¬·¡½º.
+/// DX11ì„ ì´ìš©í•œ 3D ê²Œì„ í”„ë¡œê·¸ë˜ë° ì…ë¬¸ ì±…ì„ 
+/// ì°¸ê³ í•˜ì—¬ ë§Œë“  ì¹´ë©”ë¼ í´ë˜ìŠ¤.
 /// 2023.07.02 MJKIM
 /// </summary>
 
@@ -14,7 +14,7 @@ public:
     MZCamera();
     ~MZCamera();
 
-    // Ä«¸Ş¶ó ¿ùµå Æ÷Áö¼Ç getter/setter
+    // ì¹´ë©”ë¼ ì›”ë“œ í¬ì§€ì…˜ getter/setter
     XMVECTOR GetPositionXM() const;
     XMFLOAT3 GetPosition() const;
     XMMATRIX GetWorld() const;
@@ -24,8 +24,9 @@ public:
     void SetViewMatrix(const XMMATRIX& matrix) { SetViewMatrix(reinterpret_cast<const XMFLOAT4X4&>(matrix)); }
     void SetPosition(float x, float y, float z);
     void SetPosition(const XMFLOAT3& p);
+    void SetRotation(const XMFLOAT4& quaternion);
 
-    // Ä«¸Ş¶ó ±âÀú º¤ÅÍ getter
+    // ì¹´ë©”ë¼ ê¸°ì € ë²¡í„° getter
     XMVECTOR GetRightXM() const;
     XMFLOAT3 GetRight() const;
     XMVECTOR GetUpXM() const;
@@ -33,13 +34,16 @@ public:
     XMVECTOR GetLookXM() const;
     XMFLOAT3 GetLook() const;
 
-    // ÇÁ·¯½ºÅÒ °ü·Ã getter
+    // í”„ëŸ¬ìŠ¤í…€ ê´€ë ¨ getter
 
-    // near plane°ú far planeÀÇ ³Êºñ, ³ôÀÌ getter
+    // near planeê³¼ far planeì˜ ë„ˆë¹„, ë†’ì´ getter
     float GetNearWindowWidth() const;
     float GetNearWindowHeight() const;
     float GetFarWindowWidth() const;
     float GetFarWindowHeight() const;
+
+    float GetNearZ() const;
+    float GetFarZ() const;
 
     // Get view/proj matrices
     XMMATRIX View() const;
@@ -47,33 +51,33 @@ public:
     XMMATRIX ViewProj() const;
 
 public:
-    // ÇÁ·¯½ºÅÒ ¼¼ÆÃ
+    // í”„ëŸ¬ìŠ¤í…€ ì„¸íŒ…
     void SetFrustum(float fovY, float aspect, float zn, float zf);
-    // Ä«¸Ş¶ó ·ÎÄÃ ¼¼ÆÃ
+    // ì¹´ë©”ë¼ ë¡œì»¬ ì„¸íŒ…
     void LookAt(FXMVECTOR pos, FXMVECTOR target, FXMVECTOR worldUp);
     void LookAt(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up);
 
-    // Ä«¸Ş¶ó ÀÌµ¿
+    // ì¹´ë©”ë¼ ì´ë™
     void Strafe(float dt);
     void Walk(float dt);
     void WorldUpDown(float dt);
 
-    // Ä«¸Ş¶ó È¸Àü
+    // ì¹´ë©”ë¼ íšŒì „
     void Pitch(float angle);
     void RotateY(float angle);
 
-    // ½Ã¾ßÇà·Ä ¾÷µ¥ÀÌÆ®
+    // ì‹œì•¼í–‰ë ¬ ì—…ë°ì´íŠ¸
     void UpdateViewMatrix();
 
 private:
     static MZCamera* mainCamera;
-    // Ä«¸Ş¶ó ÁÂÇ¥°è
-    XMFLOAT3 m_position;	// Ä«¸Ş¶ó À§Ä¡
-    XMFLOAT3 m_right;		// Ä«¸Ş¶óÀÇ ¿À¸¥ÂÊ ¹æÇâ
-    XMFLOAT3 m_up;			// Ä«¸Ş¶óÀÇ À§ÂÊ ¹æÇâ
-    XMFLOAT3 m_look;		// Ä«¸Ş¶ó°¡ ¹Ù¶óº¸´Â ¹æÇâ
+    // ì¹´ë©”ë¼ ì¢Œí‘œê³„
+    XMFLOAT3 m_position;	// ì¹´ë©”ë¼ ìœ„ì¹˜
+    XMFLOAT3 m_right;		// ì¹´ë©”ë¼ì˜ ì˜¤ë¥¸ìª½ ë°©í–¥
+    XMFLOAT3 m_up;			// ì¹´ë©”ë¼ì˜ ìœ„ìª½ ë°©í–¥
+    XMFLOAT3 m_look;		// ì¹´ë©”ë¼ê°€ ë°”ë¼ë³´ëŠ” ë°©í–¥
 
-    // ºä ÇÁ·¯½ºÅÒ °ü·Ã
+    // ë·° í”„ëŸ¬ìŠ¤í…€ ê´€ë ¨
     float m_nearZ;
     float m_farZ;
     float m_aspect;
@@ -81,7 +85,7 @@ private:
     float m_nearWindowHeight;
     float m_farWindowHeight;
 
-    // ½Ã¾ß Çà·Ä, Åõ¿µ Çà·Ä
+    // ì‹œì•¼ í–‰ë ¬, íˆ¬ì˜ í–‰ë ¬
     XMFLOAT4X4 m_view;
     XMFLOAT4X4 m_proj;
 };

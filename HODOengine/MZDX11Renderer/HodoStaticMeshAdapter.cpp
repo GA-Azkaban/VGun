@@ -1,6 +1,5 @@
 #include "HodoStaticMeshAdapter.h"
 #include "ResourceManager.h"
-#include "ShaderManager.h"
 #include <DirectXMath.h>
 
 namespace hodoGIAdapter
@@ -52,7 +51,7 @@ namespace hodoGIAdapter
 		_staticMeshObject->SetDiffuseTexture(fileName);
 	}
 
-	void StaticMeshAdapter::LoadVertexShader(const std::string& fileName)
+	/*void StaticMeshAdapter::LoadVertexShader(const std::string& fileName)
 	{
 		_staticMeshObject->SetVertexShader(fileName);
 	}
@@ -60,5 +59,5 @@ namespace hodoGIAdapter
 	void StaticMeshAdapter::LoadPixelShader(const std::string& fileName)
 	{
 		_staticMeshObject->SetPixelShader(fileName);
-	}
+	}*/
 }

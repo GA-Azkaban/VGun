@@ -9,12 +9,14 @@ namespace HDEngine
 {
 	class ICamera;
 	class IStaticMesh;
+	class ISkinnedMesh;
 
 	class IFactory
 	{
 	public:
 		virtual ICamera* CreateCamera() = 0;
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
+		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
 	};
 
 	/// dllexport 하는 오브젝트팩토리를 반환하는 팩토리 함수.

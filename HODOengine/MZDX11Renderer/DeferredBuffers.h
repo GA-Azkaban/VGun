@@ -17,37 +17,22 @@ enum class BUFFERTYPE
 class DeferredBuffers
 {
 public:
+	DeferredBuffers();
 	~DeferredBuffers();
-	static LazyObjects<DeferredBuffers> Instance;
-	friend LazyObjects<DeferredBuffers>;
 
-	void Initialize(ID3D11Device* device, int textureWidth, int textureHeight);
-	void Finalize();
+	void Initialize(ID3D11Device* device, UINT textureWidth, UINT textureHeight);
 
 	void SetRenderTargets(ID3D11DeviceContext* deviceContext);
 	void ClearRenderTargets(ID3D11DeviceContext* deviceContext, XMVECTOR color);
 
-	inline ID3D11ShaderResourceView* GetShaderResourceView(int iRenderTargetIndex)
-	{
-		if (iRenderTargetIndex < static_cast<int>(BUFFERTYPE::GBUFFER_COUNT))
-		{
-			return m_pShaderResourceViews[iRenderTargetIndex].Get();
-		}
-		else
-		{
-			return nullptr;
-		}
-	}
-
 private:
-	DeferredBuffers();
+	UINT m_textureWidth;
+	UINT m_textureHeight;
 
-	int m_textureWidth;
-	int m_textureHeight;
-
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> m_pRenderTargetTextures[(int)BUFFERTYPE::GBUFFER_COUNT];
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_pRenderTagetViews[(int)BUFFERTYPE::GBUFFER_COUNT];
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pShaderResourceViews[(int)BUFFERTYPE::GBUFFER_COUNT];
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
+	// G-Buffer
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> _renderTargetTextures[(int)BUFFERTYPE::GBUFFER_COUNT];
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _renderTargetViews[(int)BUFFERTYPE::GBUFFER_COUNT];
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shaderResourceViews[(int)BUFFERTYPE::GBUFFER_COUNT];
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthStencilView;
 };
 

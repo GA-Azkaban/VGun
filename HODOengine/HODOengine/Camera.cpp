@@ -114,11 +114,16 @@ namespace HDData
 		_graphicsCamera->SetFOVY(fovY);
 	}
 
-	void Camera::UpdateRenderData()
+	void Camera::Update()
 	{
-		//_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
-		_graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
+		_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
 	}
+
+	//void Camera::UpdateRenderData()
+	//{
+	//	_graphicsCamera->SetPositionAndRotation(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldRotation());
+	//	//_graphicsCamera->SetWorldTM(GetTransform()->GetWorldTM());
+	//}
 
 	void Camera::SetAsMainCamera()
 	{

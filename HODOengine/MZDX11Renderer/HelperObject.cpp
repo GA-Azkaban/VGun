@@ -1,17 +1,18 @@
 #include "HelperObject.h"
-#include "ShaderManager.h"
+#include "MZDX11Renderer.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "MZCamera.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "ResourceManager.h"
+#include "RasterizerState.h"
 
 HelperObject::HelperObject()
 	: m_material(nullptr), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_position{ 0, 0, 0 }, m_rotation{ 0, 0, 0, 1 }, m_scale{ 1, 1, 1 }
 {
-	m_material = new Material(ShaderManager::Instance.Get().GetVertexShader("DebugVertexShader.cso"), ShaderManager::Instance.Get().GetPixelShader("DebugPixelShader.cso"));
+	m_material = new Material(ResourceManager::Instance.Get().GetVertexShader("DebugVertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("DebugPixelShader.cso"));
 }
 
 HelperObject::~HelperObject()
@@ -38,8 +39,8 @@ void HelperObject::Render()
 	if (!m_isActive)
 		return;
 
-	//m_deviceContext->RSSetState(RasterizerState::Instance.Get().GetWireframeRS());
-	//m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	MZDX11Renderer::Instance().GetDeviceContext()->RSSetState(RasterizerState::Instance.Get().GetWireframeRS());
+	MZDX11Renderer::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
 	XMMATRIX proj = MZCamera::GetMainCamera()->Proj();

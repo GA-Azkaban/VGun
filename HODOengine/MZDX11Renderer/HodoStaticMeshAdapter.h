@@ -21,8 +21,8 @@ namespace hodoGIAdapter
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
-		virtual void LoadVertexShader(const std::string& fileName) override;
-		virtual void LoadPixelShader(const std::string& fileName) override;
+		//virtual void LoadVertexShader(const std::string& fileName) override;
+		//virtual void LoadPixelShader(const std::string& fileName) override;
 
 	private:
 		std::unique_ptr<StaticMeshObject> _staticMeshObject;
