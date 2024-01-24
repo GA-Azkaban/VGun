@@ -36,23 +36,28 @@ namespace HDData
 			}
 		}
 
-		_background->GetGameObject()->SetSelfActive(true);
+		_background->SetActive(true);
+		_cursor->SetActive(false);
 	}
 
 	void TextInputBoxUI::Update()
 	{
 		if (_background->GetIsClicked())
 		{
-			_cursor->GetGameObject()->SetSelfActive(true);
+			_cursor->SetActive(true);
+			_inputReady = true;
 		}
 
-		_blankTime += HDEngine::TimeSystem::Instance().GetDeltaTime();
-
-		if (_blankTime > 0.5)
+		if (_inputReady == true)
 		{
-			_blankTime = 0;
-			_isCursorOn = !_isCursorOn;
-			_cursor->SetActive(_isCursorOn);
+			_blankTime += HDEngine::TimeSystem::Instance().GetDeltaTime();
+
+			if (_blankTime > 0.5)
+			{
+				_blankTime = 0;
+				_isCursorOn = !_isCursorOn;
+				_cursor->SetActive(_isCursorOn);
+			}
 		}
 	}
 

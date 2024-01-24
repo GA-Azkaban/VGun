@@ -20,8 +20,11 @@ namespace HDData
 		ImageUI* _cursor;
 		TextUI* _text;
 
+		bool _inputReady;
 		bool _isCursorOn;
 		float _blankTime;
+
+		bool _isSecret;
 		const char* _value[];
 	};
 
