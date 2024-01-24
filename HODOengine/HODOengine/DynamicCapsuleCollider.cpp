@@ -1,10 +1,11 @@
 ﻿#include "DynamicCapsuleCollider.h"
 #include "GameObject.h"
+#include "GraphicsObjFactory.h"
 
 HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
 	: _radius(1.0f), _halfHeight(1.0f)
 {
-
+	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCylinderPrimitive();
 }
 
 float HDData::DynamicCapsuleCollider::GetWidth() const
@@ -46,4 +47,10 @@ void HDData::DynamicCapsuleCollider::SetRadius(float rad)
 void HDData::DynamicCapsuleCollider::SetHalfHeight(float val)
 {
 	_halfHeight = val;
+}
+
+void HDData::DynamicCapsuleCollider::DrawDebug()
+{
+	_debugStruct->worldTM = GetTransform()->GetWorldTM();
+	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
 }

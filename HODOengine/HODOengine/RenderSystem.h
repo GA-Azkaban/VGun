@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include <vector>
 #include <memory>
@@ -13,6 +13,7 @@ namespace HDData
 {
 	class RendererBase;
 	class UIBase;
+	class Collider;
 }
 
 namespace HDEngine
@@ -61,10 +62,12 @@ namespace HDEngine
 	public:
 		void PushRenderComponent(HDData::RendererBase* comp);
 		void PushSketchComponent(HDData::UIBase* comp);
+		void PushCollider(HDData::Collider* col);
 
 	private:
 		std::vector<HDData::RendererBase*> _rendererList;
 		std::vector<HDData::UIBase*> _uiList;
+		std::vector<HDData::Collider*> _colliderList;
 		ILineRenderer* _lineRenderer;
 	};
 };
