@@ -26,7 +26,7 @@ private:
 	void CheckMoveDirection();
 	void CheckLookDirection();
 	bool CheckIsOnGround();
-	HDMath::HDFLOAT3 DecideMoveDirection(int direction);
+	Vector3 DecideMoveDirection(int direction);
 
 private:
 	// 마우스 회전에 따른 시야 변경 체크
@@ -37,8 +37,8 @@ private:
 	void ToggleCameraView();
 
 	// player's move
-	HDMath::HDFLOAT3 _nextPosition;
-	HDMath::HDQuaternion _nextRotation;
+	Vector3 _nextPosition;
+	Quaternion _nextRotation;
 
 private:
 	// 점프 관련

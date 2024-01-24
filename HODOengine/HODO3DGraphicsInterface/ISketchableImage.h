@@ -1,7 +1,6 @@
 #pragma once
-#include "ISketchable.h"
-#include "..\\HODOmath\HODOmath.h"
 #include <string>
+#include "ISketchable.h"
 
 namespace HDEngine
 {

@@ -23,7 +23,18 @@ namespace HDData
 			return false;
 		}
 
+<<<<<<< HEAD
+		HDMath::HDFLOAT2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
+=======
 		Vector2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
+		
+		auto mouseX = mouse.x;
+		auto mouseY = mouse.y;
+		auto left = GetLeft();
+		auto right = GetRight();
+		auto top = GetTop();
+		auto bottom = GetBottom();
+>>>>>>> MathLibrary_Refactoring
 
 		if (mouse.x > GetLeft() &&
 			mouse.y > GetTop() &&
@@ -83,26 +94,51 @@ namespace HDData
 
 	float UIBase::GetLeft()
 	{
-		return GetTransform()->GetPosition().x -
+<<<<<<< HEAD
+		return GetTransform()->GetWorldPosition().x -
+			(_sketchable->GetWidth() / 2);
+=======
+		auto b = GetTransform()->GetPosition().x;
+		auto c = _sketchable->GetWidth() * GetTransform()->GetScale().x / 2;
+
+		auto a = GetTransform()->GetPosition().x -
 			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
+
+		return {};
+>>>>>>> MathLibrary_Refactoring
 	}
 
 	float UIBase::GetRight()
 	{
+<<<<<<< HEAD
+		return GetTransform()->GetWorldPosition().x +
+			(_sketchable->GetWidth()  / 2);
+=======
 		return GetTransform()->GetPosition().x +
 			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
+>>>>>>> MathLibrary_Refactoring
 	}
 
 	float UIBase::GetTop()
 	{
+<<<<<<< HEAD
+		return GetTransform()->GetWorldPosition().y -
+			(_sketchable->GetHeight() / 2);
+=======
 		return GetTransform()->GetPosition().y -
 			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
+>>>>>>> MathLibrary_Refactoring
 	}
 
 	float UIBase::GetBottom()
 	{
+<<<<<<< HEAD
+		return GetTransform()->GetWorldPosition().y +
+			(_sketchable->GetHeight()  / 2);
+=======
 		return GetTransform()->GetPosition().y +
 			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
+>>>>>>> MathLibrary_Refactoring
 	}
 
 }

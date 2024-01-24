@@ -92,15 +92,16 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void SkinningMeshObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	void SkinningMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-			}
-		}
+		m_world = worldTM;
+// 		for (int i = 0; i < 4; i++)
+// 		{
+// 			for (int j = 0; j < 4; j++)
+// 			{
+// 				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
+// 			}
+// 		}
 	}
 
 	void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)

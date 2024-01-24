@@ -1,4 +1,4 @@
-#include "ObjectFactory.h"
+﻿#include "ObjectFactory.h"
 #include "ObjectManager.h"
 #include "ResourceManager.h"
 
@@ -53,6 +53,21 @@ namespace RocketCore::Graphics
 	HDEngine::ILineRenderer* ObjectFactory::CreateLineRenderer()
 	{
 		return ObjectManager::Instance().CreateLineRenderer();
+	}
+
+	HDEngine::CubePrimitive* ObjectFactory::CreateCubePrimitive()
+	{
+		return ObjectManager::Instance().CreateCubePrimitive();
+	}
+
+	HDEngine::SpherePrimitive* ObjectFactory::CreateSpherePrimitive()
+	{
+		return ObjectManager::Instance().CreateSpherePrimitive();
+	}
+
+	HDEngine::CylinderPrimitive* ObjectFactory::CreateCylinderPrimitive()
+	{
+		return ObjectManager::Instance().CreateCylinderPrimitive();
 	}
 
 }

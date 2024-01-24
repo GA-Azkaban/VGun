@@ -13,7 +13,7 @@ namespace HDData
 
 	public:
 		// plane angle
-		HDMath::HDFLOAT3 GetNormalVector() const;
+		Vector3 GetNormalVector() const;
 		// how far from bottom
 		float GetDistance() const;
 

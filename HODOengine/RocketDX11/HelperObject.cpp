@@ -61,15 +61,16 @@ namespace RocketCore::Graphics
 #endif
 	}
 
-	void HelperObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	void HelperObject::SetWorldTM(const Matrix& worldTM)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-			}
-		}
+		m_world = worldTM;
+// 		for (int i = 0; i < 4; i++)
+// 		{
+// 			for (int j = 0; j < 4; j++)
+// 			{
+// 				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
+// 			}
+// 		}
 	}
 
 	void HelperObject::SetFillModeSolid()
@@ -82,7 +83,7 @@ namespace RocketCore::Graphics
 		m_RS = ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::WIREFRAME);
 	}
 
-	void HelperObject::SetColor(const HDMath::HDFLOAT4& color)
+	void HelperObject::SetColor(const Vector4& color)
 	{
 		// 보통 헬퍼 오브젝트는 지정된 색깔이 있어서 일단 지금은 색깔 바꾸는 것은 구현 안 한다.
 	}

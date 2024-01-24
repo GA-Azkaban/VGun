@@ -25,7 +25,7 @@ namespace HDEngine
 		}
 	}
 
-	void DebugSystem::AddDebugData(int flag = 0, HDData::GameObject* obj = nullptr, HDMath::HDFLOAT4 color = HDMath::HDFLOAT4{ 1.f, 0.f, 0.f, 0.f })
+	void DebugSystem::AddDebugData(int flag = 0, HDData::GameObject* obj = nullptr, Vector4 color = Vector4{ 1.f, 0.f, 0.f, 0.f })
 	{
 		debugData* one = new debugData();
 		one->flag = flag;
@@ -34,7 +34,7 @@ namespace HDEngine
 		_colliderDebugData.push_back(one);
 	}
 
-	void DebugSystem::DrawColliderDebug(HDData::GameObject* obj, HDMath::HDFLOAT4 color)
+	void DebugSystem::DrawColliderDebug(HDData::GameObject* obj, Vector4 color)
 	{
 		/*auto component = obj->AddComponent<HDEngine::DebugCube>();
 		component->Get()->SetFillModeWireframe();

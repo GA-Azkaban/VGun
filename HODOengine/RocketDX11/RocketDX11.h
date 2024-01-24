@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
@@ -40,7 +40,7 @@ namespace RocketCore::Graphics
 		//그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
-		virtual void Update(float deltaTime) override;
+		virtual void Update(float deltaTime, bool isDebug = false) override;
 
 		virtual void Render() override;
 
@@ -55,6 +55,7 @@ namespace RocketCore::Graphics
 		void RenderText();
 		void RenderLine();
 		void RenderTexture();
+		void RenderDebug();
 		void EndRender();
 
 		void CreateDepthStencilStates();
@@ -101,6 +102,9 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
 
 		Cubemap* _cubemap;
+
+	private:
+		bool _isDebug = false;
 
 	private:
 		ResourceManager& _resourceManager;

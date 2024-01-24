@@ -15,11 +15,11 @@ public:
 	{
 		_audioSource = GetGameObject()->GetComponent<HDData::AudioSource>();
 		// 배경음
-		_audioSource->AddAudio("ingame_bgm", "../Resources/Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
+		_audioSource->AddAudio("ingame_bgm", "Resources/Sound/BGM/ingame_bgm.wav", HDData::SoundGroup::BackgroundMusic);
 		// 효과음1
-		_audioSource->AddAudio3D("Gun_sound", "../Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound, 10, 1000);
+		_audioSource->AddAudio3D("Gun_sound", "Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound, 10, 1000);
 		// 효과음2
-		_audioSource->AddAudio3D("parts_buy", "../Resources/Sound/PartsBuy/parts_buy.wav", HDData::SoundGroup::EffectSound, 10, 1000);
+		_audioSource->AddAudio3D("parts_buy", "Resources/Sound/PartsBuy/parts_buy.wav", HDData::SoundGroup::EffectSound, 10, 1000);
 	}
 	virtual void Update() override
 	{
@@ -29,11 +29,11 @@ public:
 		}
 		if (API::GetKeyDown('2'))
 		{
-			_audioSource->Play3DOnce("Gun_sound", HDMath::HDFLOAT3{ 0,0,0 });
+			_audioSource->Play3DOnce("Gun_sound", Vector3{ 0,0,0 });
 		}
 		if (API::GetKeyDown('3'))
 		{
-			_audioSource->Play3DOnce("parts_buy", HDMath::HDFLOAT3{ 20,0,0 });
+			_audioSource->Play3DOnce("parts_buy", Vector3{ 20,0,0 });
 		}
 		if (API::GetKeyDown('4'))
 		{

@@ -28,12 +28,12 @@ namespace RocketCore::Graphics
 		void Update(float deltaTime);
 		void Render();
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void SetFillModeSolid() override;
 		virtual void SetFillModeWireframe() override;
-		virtual void SetColor(const HDMath::HDFLOAT4& color) override;
+		virtual void SetColor(const Vector4& color) override;
 		virtual void SetMesh(const std::string& meshName) override;
 
 	private:

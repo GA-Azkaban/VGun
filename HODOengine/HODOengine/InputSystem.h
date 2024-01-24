@@ -1,7 +1,7 @@
 #pragma once
 #include <windows.h>
 #include "InputData.h"
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 #include "Singleton.h"
 #include <unordered_map>
 #include <unordered_set>
@@ -37,8 +37,8 @@ namespace HDEngine
 		bool CheckMouseMove();
 		bool Check2DClicked(float x, float y, float width, float height);
 
-		HDMath::HDFLOAT2 GetMousePosition();
-		HDMath::HDFLOAT2 GetMouseDelta();
+		Vector2 GetMousePosition();
+		Vector2 GetMouseDelta();
 	
 		float GetMouseWheel();
 

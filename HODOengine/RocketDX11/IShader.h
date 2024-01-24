@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -85,4 +85,3 @@ namespace RocketCore::Graphics
 		std::unordered_map<std::string, SamplerInfo*> samplerTable;
 	};
 }
- 

@@ -45,9 +45,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CubeMesh.cpp">
-      <Filter>Resource\Resource3D\Primitive</Filter>
-    </ClCompile>
     <ClCompile Include="DeviceBuilderDX11.cpp">
       <Filter>Builder</Filter>
     </ClCompile>
@@ -117,6 +114,9 @@
     <ClCompile Include="Cubemap.cpp">
       <Filter>Object\Cubemap</Filter>
     </ClCompile>
+    <ClCompile Include="CubeMesh.cpp">
+      <Filter>Resource\Resource3D\Primitive\Deprecated</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axis.h">
@@ -124,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Object\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMesh.h">
-      <Filter>Resource\Resource3D\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="DeviceBuilderDX11.h">
       <Filter>Builder</Filter>
@@ -226,6 +223,12 @@
     </ClInclude>
     <ClInclude Include="ImageRenderer.h">
       <Filter>Object\ImageRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMesh.h">
+      <Filter>Resource\Resource3D\Primitive\Deprecated</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +357,12 @@
     </Filter>
     <Filter Include="Object\Cubemap">
       <UniqueIdentifier>{3e08331c-c291-4e77-87b4-6e4b8b73be12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{a0e0843e-87db-4207-b6b2-6ef6cbeb9a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\Primitive\Deprecated">
+      <UniqueIdentifier>{f4ba69ef-2cf5-47da-9cdc-4ffccc14b430}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

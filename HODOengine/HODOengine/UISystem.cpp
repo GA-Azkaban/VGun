@@ -1,4 +1,4 @@
-#include "UISystem.h"
+﻿#include "UISystem.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "UIBase.h"
@@ -54,24 +54,24 @@ namespace HDEngine
 			{
 				continue;
 			}
-
-			if (ui->CheckFocus())
+			
+			if (ui->CheckFocus() == true)
 			{
-				_focusedUI = ui;
-				break;
+				ui->SetIsHovering(true);
+
+				if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
+				{
+					ui->SetIsClicked(true);
+				}
+			}
+
+			if (ui->GetIsClicked() == true)
+			{
+				if (InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
+				{
+					ui->SetIsClicked(false);
+				}
 			}
 		}
-
-		//if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
-		//{
-		//	_focusedUI->SetIsClicked(true);
-		//}
-		//else
-		//{
-		//	_focusedUI->SetIsHovering(true);
-		//}
 	}
-
-
-
 }

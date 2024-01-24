@@ -2,32 +2,24 @@
 
 namespace RocketCore::Graphics
 {
-	void LineRenderer::DrawLine(HDMath::HDFLOAT3 startPos, HDMath::HDFLOAT3 endPos, HDMath::HDFLOAT4 color)
+	void LineRenderer::DrawLine(Vector3 startPos, Vector3 endPos, Color color)
 	{
-		DirectX::XMFLOAT3 _startPos{ startPos.x, startPos.y,startPos.z };
-		DirectX::XMFLOAT3 _endPos{ endPos.x, endPos.y, endPos.z };
-		DirectX::XMFLOAT4 _color{ color.x, color.y, color.z, color.w };
-
-		auto startVec = DirectX::XMLoadFloat3(&_startPos);
-		auto endVec = DirectX::XMLoadFloat3(&_endPos);
-		auto colorVec = DirectX::XMLoadFloat4(&_color);
+		auto startVec = DirectX::XMLoadFloat3(&startPos);
+		auto endVec = DirectX::XMLoadFloat3(&endPos);
+		auto colorVec = DirectX::XMLoadFloat4(&color);
 
 		_lines.emplace_back(startVec, endVec, colorVec);
 	}
 
-	void LineRenderer::DrawLine(HDMath::HDFLOAT3 startPos, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+	void LineRenderer::DrawLine(Vector3 startPos, Vector3 direction, float length, Color color)
 	{
-		DirectX::XMFLOAT3 _startPos{ startPos.x, startPos.y, startPos.z };
-		DirectX::XMFLOAT3 _direction{ direction.x, direction.y, direction.z };
-		DirectX::XMFLOAT4 _color{ color.x, color.y, color.z, color.w };
-
-		auto dirVec = DirectX::XMLoadFloat3(&_direction);
+		auto dirVec = DirectX::XMLoadFloat3(&direction);
 		dirVec = DirectX::XMVector3Normalize(dirVec);
 		dirVec = DirectX::XMVectorScale(dirVec, length);
 
-		auto startVec = DirectX::XMLoadFloat3(&_startPos);
+		auto startVec = DirectX::XMLoadFloat3(&startPos);
 		auto endVec = DirectX::XMVectorAdd(startVec, dirVec);
-		auto colorVec = DirectX::XMLoadFloat4(&_color);
+		auto colorVec = DirectX::XMLoadFloat4(&color);
 
 		_lines.emplace_back(startVec, endVec, colorVec);
 	}

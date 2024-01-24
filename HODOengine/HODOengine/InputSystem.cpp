@@ -207,12 +207,12 @@ namespace HDEngine
 		}
 	}
 
-	HDMath::HDFLOAT2 InputSystem::GetMousePosition()
+	Vector2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
 		float y = static_cast<float>(_mousePos.y);
 
-		return HDMath::HDFLOAT2{ x, y };
+		return Vector2{ x, y };
 	}
 
 	float InputSystem::GetMouseWheel()
@@ -290,12 +290,12 @@ namespace HDEngine
 	}
 }
 
-HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
+Vector2 HDEngine::InputSystem::GetMouseDelta()
 {
 	_mouseDelta.x = _mousePos.x - _prevMousePos.x;
 	_mouseDelta.y = _mousePos.y - _prevMousePos.y;
 
-	HDMath::HDFLOAT2 result{};
+	Vector2 result{};
 	result.x = static_cast<float>((_mouseDelta.x + _prevMouseDelta.x) / 2.0f);
 	result.y = static_cast<float>((_mouseDelta.y + _prevMouseDelta.y) / 2.0f);
 

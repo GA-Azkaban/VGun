@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 
 #include "Component.h"
 #include "Transform.h"
+#include "MathHeader.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchable.h"
 
 namespace HDData

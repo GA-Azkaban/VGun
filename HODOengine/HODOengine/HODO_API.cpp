@@ -1,4 +1,4 @@
-#include "HODO_API.h"
+﻿#include "HODO_API.h"
 
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
@@ -50,21 +50,44 @@ namespace API
 			return obj;
 		}
 
-		//HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
-		//{
-		//	auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-		//	obj->AddComponent<HDData::SlideBoxUI>();
-		//	return obj;
-		//}
+		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			obj->AddComponent<HDData::SlideBoxUI>();
+
+			auto leftButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, "arrowLeft", obj);
+			leftButton->AddComponent<HDData::ImageUI>();
+			leftButton->GetComponent<HDData::ImageUI>()->SetImage("arrowLeft.png");
+
+			auto rightButton = HDEngine::ObjectSystem::Instance().CreateObject(scene, "arrowRight", obj);
+			rightButton->AddComponent<HDData::ImageUI>();
+			rightButton->GetComponent<HDData::ImageUI>()->SetImage("arrowRight.png");
+
+			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "Text", obj);
+			valueText->AddComponent<HDData::TextUI>();
+			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
+			valueText->GetComponent<HDData::TextUI>()->SetText("default");
+			
+			return obj;
+		}
 
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			obj->AddComponent<HDData::ToggleUI>();
+
+			auto toggleOn = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOn" , obj);
+			toggleOn->AddComponent<HDData::ImageUI>();
+			toggleOn->GetComponent<HDData::ImageUI>()->SetImage("Sound.png");
+
+			auto toggleOff = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOff" , obj);
+			toggleOff->AddComponent<HDData::ImageUI>();
+			toggleOff->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
+
 			return obj;
 		}
 
-		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			obj->AddComponent<HDData::SliderUI>();
@@ -76,14 +99,17 @@ namespace API
 			auto fill = HDEngine::ObjectSystem::Instance().CreateObject(scene, "fill", obj);
 			fill->AddComponent<HDData::ImageUI>();
 			fill->GetComponent<HDData::ImageUI>()->SetImage("fill.png");
+			fill->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 			auto handle = HDEngine::ObjectSystem::Instance().CreateObject(scene, "handle", obj);
 			handle->AddComponent<HDData::ImageUI>();
 			handle->GetComponent<HDData::ImageUI>()->SetImage("point.png");
+			handle->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "value", obj);
 			valueText->AddComponent<HDData::TextUI>();
-			valueText->GetComponent<HDData::TextUI>()->SetText("50");
+			valueText->GetComponent<HDData::TextUI>()->SetText(std::to_string(defaultValue));
+			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 
 			return obj;
 		}
@@ -118,7 +144,7 @@ namespace API
 			return HDEngine::InputSystem::Instance().GetMouse(keyCode);
 		}
 
-		HODO_API HDMath::HDFLOAT2 GetMousePosition()
+		HODO_API Vector2 GetMousePosition()
 		{
 			return HDEngine::InputSystem::Instance().GetMousePosition();
 		}
@@ -128,7 +154,7 @@ namespace API
 			return HDEngine::InputSystem::Instance().GetMouseWheel();
 		}
 
-		HODO_API HDMath::HDFLOAT2 GetMouseDelta()
+		HODO_API Vector2 GetMouseDelta()
 		{
 			return HDEngine::InputSystem::Instance().GetMouseDelta();
 		}
@@ -143,17 +169,17 @@ namespace API
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
 		}
 
-		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
+		HODO_API HDData::Collider* ShootRay(Vector3 origin, Vector3 direction, float length /*= 100.0f*/, int* type /*= nullptr*/)
 		{
 			return HDEngine::PhysicsSystem::Instance().RayCast(origin.x, origin.y, origin.z, direction.x, direction.y, direction.z, length, type);
 		}
 
-		HODO_API void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)
+		HODO_API void DrawLine(Vector3 start, Vector3 end, Vector4 color)
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, end, color);
 		}
 
-		HODO_API void DrawLineDir(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+		HODO_API void DrawLineDir(Vector3 start, Vector3 direction, float length, Vector4 color)
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}

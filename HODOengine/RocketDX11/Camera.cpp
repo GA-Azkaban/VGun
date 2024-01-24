@@ -1,6 +1,6 @@
-#include <cmath>
+﻿#include <cmath>
 #include "Camera.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "MathHeader.h"
 #include "ResourceManager.h"
 
 using namespace DirectX;
@@ -36,7 +36,7 @@ namespace RocketCore::Graphics
 		_position = { x,y,z };
 	}
 
-	void Camera::SetRotation(float w, float x, float y, float z)
+	void Camera::SetRotation(float x, float y, float z, float w)
 	{
 		_rotation = { x,y,z,w };
 	}
@@ -166,15 +166,16 @@ namespace RocketCore::Graphics
 		return result;
 	}
 
-	void Camera::SetWorldTM(const HDMath::HDFLOAT4X4& matrix)
+	void Camera::SetWorldTM(const Matrix& matrix)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				_worldMatrix.m[i][j] = matrix.element[i][j];
-			}
-		}
+		_worldMatrix = matrix;
+// 		for (int i = 0; i < 4; i++)
+// 		{
+// 			for (int j = 0; j < 4; j++)
+// 			{
+// 				_worldMatrix.m[i][j] = matrix.element[i][j];
+// 			}
+// 		}
 
 		XMMATRIX worldTM = XMLoadFloat4x4(&_worldMatrix);
 		/*XMVECTOR scale;
@@ -216,14 +217,14 @@ namespace RocketCore::Graphics
 	void Camera::SetNearHeight(float height)
 	{
 		_nearWindowHeight = height;
-		float nearZ = _nearWindowHeight * 0.5f / tan(0.5 * _fovY);
+		float nearZ = _nearWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetNearZ(nearZ);
 	}
 
 	void Camera::SetFarHeight(float height)
 	{
 		_farWindowHeight = height;
-		float farZ = _farWindowHeight * 0.5f / tan(0.5 * _fovY);
+		float farZ = _farWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetFarZ(farZ);
 
 	}
@@ -244,10 +245,10 @@ namespace RocketCore::Graphics
 		return _mainCamera;
 	}
 
-	void Camera::SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot)
+	void Camera::SetPositionAndRotation(const Vector3& pos, const Quaternion& rot)
 	{
 		SetPosition(pos.x, pos.y, pos.z);
-		SetRotation(rot.w, rot.x, rot.y, rot.z);
+		SetRotation(rot.x, rot.y, rot.z, rot.w);
 	}
 
 	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)
