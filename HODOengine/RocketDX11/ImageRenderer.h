@@ -27,6 +27,8 @@ namespace RocketCore::Graphics
 		virtual float GetScreenSpacePositionX() override;
 		virtual float GetScreenSpacePositionY() override;
 
+		virtual DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color) override;
+
 		virtual void SetScreenSpace() override;
 
 		virtual void SetWorldSpace() override;

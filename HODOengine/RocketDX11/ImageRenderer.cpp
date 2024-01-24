@@ -158,3 +158,8 @@ float RocketCore::Graphics::ImageRenderer::GetHeight()
 {
 	return _imageHeight;
 }
+
+DirectX::FXMVECTOR RocketCore::Graphics::ImageRenderer::SetColor(DirectX::FXMVECTOR color)
+{
+	return _color = color;
+}

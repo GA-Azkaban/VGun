@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <string>
 #include "MathHeader.h"
+#include <DirectXColors.h>
 
 #include "Scene.h"
 #include "GameObject.h"
