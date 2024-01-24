@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include "InputData.h"
 #include "MathHeader.h"
@@ -34,11 +34,10 @@ namespace HDEngine
 		bool GetMouseDown(BYTE key);
 		bool GetMouseUp(BYTE key);
 
-		bool CheckMouseMove();
-		bool Check2DClicked(float x, float y, float width, float height);
-
 		Vector2 GetMousePosition();
 		Vector2 GetMouseDelta();
+
+		char ConvertKeyToChar(BYTE key, bool isShiftPressed);
 	
 		float GetMouseWheel();
 
@@ -64,6 +63,8 @@ namespace HDEngine
 		bool					_prevMouseState[3];
 		bool					_keyState[256];
 		bool					_prevKeyState[256];
+
+		bool					_isShiftPressed;
 
 		POINT					_mousePos;
 		POINT					_prevMousePos;

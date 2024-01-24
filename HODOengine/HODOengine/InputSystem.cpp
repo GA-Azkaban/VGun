@@ -1,4 +1,4 @@
-#include "InputSystem.h"
+﻿#include "InputSystem.h"
 #include <cassert>
 
 
@@ -59,15 +59,9 @@ namespace HDEngine
 			_mousePos.y = 0;
 		}
 
-		// 휠값 벗어나는 경우 보정
-		if (_mouseWheel > _wheelMax)
-		{
-			_mouseWheel = _wheelMax;
-		}
-		if (_mouseWheel < _wheelMin)
-		{
-			_mouseWheel = _wheelMin;
-		}
+		// shift 키 여부
+		_isShiftPressed = (_keyState[DIK_LSHIFT] & 0x80) || (_keyState[DIK_RSHIFT] & 0x80);
+
 	}
 
 	void InputSystem::Finalize()
@@ -184,26 +178,6 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
-	bool InputSystem::CheckMouseMove()
-	{
-		if (std::abs(_prevMousePos.x - _mousePos.x) > 2 ||
-			std::abs(_prevMousePos.y != _mousePos.y) > 2)
-		{
-			return true;
-		}
-	}
-
-	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
-	{
-		if (_mousePos.x > x &&
-			_mousePos.y > y &&
-			_mousePos.x < x + width &&
-			_mousePos.y < y + height)
-		{
-			return true;
-		}
-	}
-
 	Vector2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
@@ -247,4 +221,118 @@ Vector2 HDEngine::InputSystem::GetMouseDelta()
 	_prevMouseDelta = _mouseDelta;
 
 	return result;
+}
+
+char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
+{
+	if (_isShiftPressed)
+	{
+		switch (key)
+		{
+			case DIK_1:
+			{
+				return'!';
+			}
+			break;
+			case DIK_2:
+			{
+				return '@';
+			}
+			break;
+			case DIK_3:
+			{
+				return '#';
+			}
+			break;
+			case DIK_4:
+			{
+				return '$';
+			}
+			break;
+			case DIK_5:
+			{
+				return '%';
+			}
+			break;
+			case DIK_6:
+			{
+				return '^';
+			}
+			break;
+			case DIK_7:
+			{
+				return '&';
+			}
+			break;
+			case DIK_8:
+			{
+				return '*';
+			}
+			break;
+			case DIK_9:
+			{
+				return '(';
+			}
+			break;
+			case DIK_0:
+			{
+				return ')';
+			}
+			break;
+			case DIK_MINUS:
+			{
+				return '_';
+			}
+			break;
+			case DIK_EQUALS:
+			{
+				return '+';
+			}
+			break;
+			case DIK_SEMICOLON:
+			{
+				return ':';
+			}
+			break;
+			case DIK_APOSTROPHE:
+			{
+				return '\"';
+			}
+			break;
+			case DIK_GRAVE:
+			{
+				return '~';
+			}
+			break;
+			case DIK_BACKSLASH:
+			{
+				return '|';
+			}
+			break;
+			case DIK_COMMA:
+			{
+				return '<';
+			}
+			break;
+			case DIK_PERIOD:
+			{
+				return '>';
+			}
+			break;
+			case DIK_SLASH:
+			{
+				return '?';
+			}
+			break;
+			default:
+			{
+				return static_cast<char>(key);
+			}
+			break;
+		}
+	}
+	else
+	{
+		return static_cast<char>(key);
+	}
 }
