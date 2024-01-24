@@ -13,25 +13,25 @@ namespace HDData
 	class GameObject;
 	class HODO_API Transform : public Component
 	{
-	public:		
+	public:
 		Transform();
-		Vector3 GetWorldPosition() const;
-		Quaternion GetWorldRotation() const;
-		Vector3 GetWorldScale() const;
+		Vector3 GetPosition() const;			// world 기준
+		Quaternion GetRotation() const;			// world 기준
+		Vector3 GetScale() const;				// world 기준
 		Vector3 GetLocalPosition() const;
 		Quaternion GetLocalRotation() const;
 		Vector3 GetLocalScale() const;
 		Matrix GetWorldTM() const;
 		Matrix GetLocalTM() const;
-		Vector3 GetForward() const;
-		Vector3 GetUp() const;
-		Vector3 GetRight() const;
-		Matrix GetLocalRotationMatrix() const;
-		void SetWorldPosition(const Vector3& position);
-		void SetWorldPosition(float x, float y, float z);
-		void SetWorldRotation(const Quaternion& rotation);
-		void SetWorldRotation(float w, float x, float y, float z);
-		void SetWorldScale(const Vector3& scale);
+		Vector3 GetForward() const;				// world 기준
+		Vector3 GetUp() const;					// world 기준
+		Vector3 GetRight() const;				// world 기준
+		void SetPosition(const Vector3& position);
+		void SetPosition(float x, float y, float z);
+		void SetRotation(const Quaternion& rotation);
+		void SetRotation(float w, float x, float y, float z);
+		void SetScale(const Vector3& scale);
+		void SetScale(float x, float y, float z);
 		void SetLocalPosition(const Vector3& position);
 		void SetLocalRotation(const Quaternion& rotation);
 		void SetLocalScale(const Vector3& scale);

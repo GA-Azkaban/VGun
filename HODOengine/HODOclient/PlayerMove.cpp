@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
@@ -34,7 +34,7 @@ void PlayerMove::Update()
 	// 이동, 회전
 	Move(_moveDirection);
 
-	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetWorldPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -93,7 +93,7 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
-	Vector3 pos = this->GetTransform()->GetWorldPosition();
+	Vector3 pos = this->GetTransform()->GetPosition();
 	const float delta = 0.2f;
 	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
 	float z[9] = { 0,delta,delta,delta,0,-delta,-delta,-delta,0 };
@@ -325,14 +325,16 @@ void PlayerMove::Pitch(float rotationValue)
 
 	if (89.0f < eulerAngleX)
 	{
-		constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
+		//constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
+		constexpr float radX = 89.0f * 0.01745329251994328f * 0.5f;
 		Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
 
 		cameraTransform->SetLocalRotation(closedAngle);
 	}
 	else if (eulerAngleX < -89.0f)
 	{
-		constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
+		//constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
+		constexpr float radX = 89.0f * 0.01745329251994328f * 0.5f;
 		Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
 
 		cameraTransform->SetLocalRotation(closedAngle);
@@ -340,9 +342,12 @@ void PlayerMove::Pitch(float rotationValue)
 	else
 	{
 		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 1.0f };
-		rotationAxis = Vector4MultiplyMatrix(rotationAxis, cameraTransform->GetLocalRotationMatrix());
-		Quaternion newRot = HDMath::HDRotateQuaternion(cameraTransform->GetLocalRotation(),
-			{ rotationAxis.x, rotationAxis.y, rotationAxis.z }, rotationValue);
+		//rotationAxis = Vector4MultiplyMatrix(rotationAxis, cameraTransform->GetLocalRotationMatrix());
+		//Quaternion newRot = HDMath::HDRotateQuaternion(cameraTransform->GetLocalRotation(),
+		//	{ rotationAxis.x, rotationAxis.y, rotationAxis.z }, rotationValue);
+		rotationAxis.Cross(rotationAxis, cameraTransform->GetLocalRotation(), rotationAxis);
+		Quaternion newRot{};
+		newRot.RotateTowards(rotationAxis, rotationValue);
 		cameraTransform->SetLocalRotation(newRot);
 	}
 }
@@ -362,19 +367,19 @@ void PlayerMove::ToggleCameraView()
 		HDData::Transform* playerTransform = this->GetGameObject()->GetTransform();
 		HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
 
-		_prevCameraPos = cameraTransform->GetWorldPosition();
-		_prevCameraRot = cameraTransform->GetWorldRotation();
+		_prevCameraPos = cameraTransform->GetPosition();
+		_prevCameraRot = cameraTransform->GetRotation();
 
-		cameraTransform->SetWorldPosition(playerTransform->GetWorldPosition() + Vector3(0.f, 4.f, 0.f));
-		cameraTransform->SetWorldRotation(playerTransform->GetWorldRotation());
+		cameraTransform->SetPosition(playerTransform->GetPosition() + Vector3(0.f, 4.f, 0.f));
+		cameraTransform->SetRotation(playerTransform->GetRotation());
 		_playerCamera->GetGameObject()->SetParentObject(this->GetGameObject());
 		_isCameraConnected = true;
 	}
 	else
 	{
 		_playerCamera->GetGameObject()->SetParentObject(nullptr);
-		cameraTransform->SetWorldPosition(_prevCameraPos);
-		cameraTransform->SetWorldRotation(_prevCameraRot);
+		cameraTransform->SetPosition(_prevCameraPos);
+		cameraTransform->SetRotation(_prevCameraRot);
 		_isCameraConnected = false;
 	}
 }
