@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -25,7 +25,7 @@ namespace RocketCore::Graphics
 
 		virtual void SetintValue(const int value) override;
 
-		virtual void SetColor(Color color);
+		virtual void SetColor(DirectX::FXMVECTOR color) override;
 
 		virtual const std::string GetText() override;
 

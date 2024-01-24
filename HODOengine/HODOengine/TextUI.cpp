@@ -1,4 +1,4 @@
-#include "TextUI.h"
+﻿#include "TextUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
@@ -25,6 +25,11 @@ namespace HDData
 	void TextUI::SetWorldSpace()
 	{
 		_textUI->SetWorldSpace();
+	}
+
+	void TextUI::SetColor(DirectX::FXMVECTOR color)
+	{
+		_textUI->SetColor(color);
 	}
 
 	void TextUI::SetText(const std::string& str)

@@ -1,4 +1,4 @@
-#include "TextRenderer.h"
+﻿#include "TextRenderer.h"
 #include "ResourceManager.h"
 #include "MathHeader.h"
 
@@ -56,7 +56,7 @@ namespace RocketCore::Graphics
 		isActive = 1;
 	}
 
-	void TextRenderer::SetColor(Color color)
+	void TextRenderer::SetColor(DirectX::FXMVECTOR color)
 	{
 		_color = color;
 	}
@@ -74,7 +74,6 @@ namespace RocketCore::Graphics
 		std::wstring wstr(_str.begin(), _str.end());
 		_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_xLocation, _yLocation), _color);
 	}
-
 
 	void TextRenderer::SetFloatValue(const float value)
 	{
