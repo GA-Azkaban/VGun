@@ -4,8 +4,8 @@
 #include "../HODOmath/HODOmath.h"
 
 /// <summary>
-/// TransformÀº ¸ğµç GameObject°¡ °øÅëÀûÀ¸·Î °¡Áö°í ÀÖ´Â ÄÄÆ÷³ÍÆ®ÀÔ´Ï´Ù.
-/// TransformÀº ¿ÀºêÁ§Æ®ÀÇ position, rotation, scale Á¤º¸¸¦ °¡Áö°í ÀÖ½À´Ï´Ù.
+/// Transformì€ ëª¨ë“  GameObjectê°€ ê³µí†µì ìœ¼ë¡œ ê°€ì§€ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ì…ë‹ˆë‹¤.
+/// Transformì€ ì˜¤ë¸Œì íŠ¸ì˜ position, rotation, scale ì •ë³´ë¥¼ ê°€ì§€ê³  ìˆìŠµë‹ˆë‹¤.
 /// </summary>
 
 namespace HDData
@@ -26,6 +26,7 @@ namespace HDData
 		HDMath::HDFLOAT3 GetForward() const;
 		HDMath::HDFLOAT3 GetUp() const;
 		HDMath::HDFLOAT3 GetRight() const;
+		HDMath::HDFLOAT4X4 GetLocalRotationMatrix() const;
 		void SetWorldPosition(const HDMath::HDFLOAT3& position);
 		void SetWorldPosition(float x, float y, float z);
 		void SetWorldRotation(const HDMath::HDQuaternion& rotation);

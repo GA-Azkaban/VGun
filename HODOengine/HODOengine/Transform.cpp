@@ -92,6 +92,34 @@ namespace HDData
 		return GetWorldRotation() * HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
 	}
 
+	HDMath::HDFLOAT4X4 Transform::GetLocalRotationMatrix() const
+	{
+		HDMath::HDFLOAT4X4 rotationMatrix =
+		{
+			1.0f - 2.0f * (_rotation.y * _rotation.y + _rotation.z * _rotation.z),
+			2.0f * (_rotation.x * _rotation.y + _rotation.z * _rotation.w),
+			2.0f * (_rotation.x * _rotation.z - _rotation.y * _rotation.w),
+			0,
+
+			2.0f * (_rotation.x * _rotation.y - _rotation.z * _rotation.w),
+			1.0f - 2.0f * (_rotation.x * _rotation.x + _rotation.z * _rotation.z),
+			2.0f * (_rotation.y * _rotation.z + _rotation.x * _rotation.w),
+			0,
+
+			2.0f * (_rotation.x * _rotation.z + _rotation.y * _rotation.w),
+			2.0f * (_rotation.y * _rotation.z - _rotation.x * _rotation.w),
+			1.0f - 2.0f * (_rotation.x * _rotation.x + _rotation.y * _rotation.y),
+			0,
+
+			0,
+			0,
+			0,
+			1
+		};
+
+		return rotationMatrix;
+	}
+
 	void Transform::SetWorldPosition(const HDMath::HDFLOAT3& position)
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)

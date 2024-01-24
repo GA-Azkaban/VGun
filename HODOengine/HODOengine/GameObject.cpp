@@ -123,8 +123,20 @@ namespace HDData
 
 	void GameObject::SetParentObject(GameObject* parentObject)
 	{
-		_parentGameObject = parentObject;
-		_parentGameObject->_childGameObjects.insert(this);
+		// clear parent
+		if (parentObject == nullptr)
+		{
+			if (_parentGameObject != nullptr)
+			{
+				std::erase_if(_parentGameObject->_childGameObjects, [this](GameObject* obj) {return obj == this; });
+				_parentGameObject = nullptr;
+			}
+		}
+		else
+		{
+			_parentGameObject = parentObject;
+			_parentGameObject->_childGameObjects.insert(this);
+		}
 	}
 
 	void GameObject::SetSelfActive(bool active)

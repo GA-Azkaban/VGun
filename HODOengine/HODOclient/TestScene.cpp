@@ -48,6 +48,7 @@ TestScene::TestScene()
 	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
+	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMesh("Rob02.fbx");
 	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");

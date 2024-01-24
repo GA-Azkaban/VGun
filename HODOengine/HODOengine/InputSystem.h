@@ -43,6 +43,7 @@ namespace HDEngine
 		float GetMouseWheel();
 
 		void Flush();
+		void RecursiveMouse();
 
 	private:
 		bool StartDXInput();
@@ -54,6 +55,8 @@ namespace HDEngine
 
 		int						_screenWidth;
 		int						_screenHeight;
+		int						_widthOffset;
+		int						_heightOffset;
 
 		LPDIRECTINPUT8			_DI;
 		LPDIRECTINPUTDEVICE8	_keyboardDevice;

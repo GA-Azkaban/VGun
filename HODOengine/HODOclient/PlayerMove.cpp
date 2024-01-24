@@ -12,7 +12,7 @@ void PlayerMove::Start()
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_moveSpeed = 10.0f;
 
-	
+
 }
 
 void PlayerMove::Update()
@@ -29,13 +29,17 @@ void PlayerMove::Update()
 	// 키보드에 따른 플레이어 이동 방향 체크
 	CheckMoveDirection();
 
-	// camera move
-	CameraMove();
+	CameraControl();
 
 	// 이동, 회전
 	Move(_moveDirection);
 
 	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetWorldPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+}
+
+void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
+{
+	_playerCamera = camera;
 }
 
 // 조이스틱 개념
@@ -84,7 +88,7 @@ void PlayerMove::CheckMoveDirection()
 
 void PlayerMove::CheckLookDirection()
 {
-	
+
 }
 
 bool PlayerMove::CheckIsOnGround()
@@ -195,6 +199,7 @@ void PlayerMove::Move(int direction)
 	//	}
 	//	break;
 	//}
+
 	// PhysX로 오브젝트 옮겨주기
 	if (_moveDirection == 5)
 	{
@@ -217,7 +222,7 @@ void PlayerMove::Jump()
 	CheckIsOnGround();
 
 	if ((!_isJumping) && (_isOnGround))
-	//if (!_isJumping)
+		//if (!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
@@ -296,27 +301,82 @@ HDMath::HDFLOAT3 PlayerMove::DecideMoveDirection(int direction)
 	return moveStep;
 }
 
-// 마우스 이동에 따른 시야 변경을 위한 함수
-void PlayerMove::Pitch(float radian)
+void PlayerMove::CameraControl()
 {
-	/*
-	_playerCamera->Pitch(mouseDelta.y * RocketEngine::GetDeltaTime() * 0.5f);
 
-	RocketEngine::RMFLOAT3 euler = _playerCamera->gameObject->transform.GetLocalEuler();
-	if (89.0f < euler.x)
+	if (API::GetKeyDown(DIK_P))
 	{
-		_playerCamera->gameObject->transform.SetLocalRotationEuler(89.0f, 0.0f, 0.0f);
+		ToggleCameraView();
 	}
-	else if (euler.x < -89.0f)
+
+	// camera move
+	if (_isCameraConnected)
 	{
-		_playerCamera->gameObject->transform.SetLocalRotationEuler(-89.0f, 0.0f, 0.0f);
+		CameraMove();
 	}
-	*/
+}
+
+// 마우스 이동에 따른 시야 변경을 위한 함수
+void PlayerMove::Pitch(float rotationValue)
+{
+	HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
+	HDMath::HDQuaternion rot = cameraTransform->GetLocalRotation();
+	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
+
+	if (89.0f < eulerAngleX)
+	{
+		constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
+		HDMath::HDQuaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
+
+		cameraTransform->SetLocalRotation(closedAngle);
+	}
+	else if (eulerAngleX < -89.0f)
+	{
+		constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
+		HDMath::HDQuaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
+
+		cameraTransform->SetLocalRotation(closedAngle);
+	}
+	else
+	{
+		HDMath::HDFLOAT4 rotationAxis{ 1.f, 0.f, 0.f, 1.0f };
+		rotationAxis = HDMath::HDFloat4MultiplyMatrix(rotationAxis, cameraTransform->GetLocalRotationMatrix());
+		HDMath::HDQuaternion newRot = HDMath::HDRotateQuaternion(cameraTransform->GetLocalRotation(),
+			{ rotationAxis.x, rotationAxis.y, rotationAxis.z }, rotationValue);
+		cameraTransform->SetLocalRotation(newRot);
+	}
 }
 
 void PlayerMove::Yaw(float radian)
 {
+	// rotation along Z-direction. necessary?
+}
 
+void PlayerMove::ToggleCameraView()
+{
+	HDData::Transform* playerTransform = this->GetGameObject()->GetTransform();
+	HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
+
+	if (!_isCameraConnected)
+	{
+		HDData::Transform* playerTransform = this->GetGameObject()->GetTransform();
+		HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
+
+		_prevCameraPos = cameraTransform->GetWorldPosition();
+		_prevCameraRot = cameraTransform->GetWorldRotation();
+
+		cameraTransform->SetWorldPosition(playerTransform->GetWorldPosition() + HDMath::HDFLOAT3(0.f, 4.f, 0.f));
+		cameraTransform->SetWorldRotation(playerTransform->GetWorldRotation());
+		_playerCamera->GetGameObject()->SetParentObject(this->GetGameObject());
+		_isCameraConnected = true;
+	}
+	else
+	{
+		_playerCamera->GetGameObject()->SetParentObject(nullptr);
+		cameraTransform->SetWorldPosition(_prevCameraPos);
+		cameraTransform->SetWorldRotation(_prevCameraRot);
+		_isCameraConnected = false;
+	}
 }
 
 void PlayerMove::CameraMove()
@@ -324,11 +384,8 @@ void PlayerMove::CameraMove()
 	HDMath::HDFLOAT2 mouseDelta = API::GetMouseDelta();
 
 	// RotateY
-	HDMath::HDQuaternion newRot = HDRotateQuaternion(GetGameObject()->GetTransform()->GetLocalRotation(), 
-		{0.0f, 1.0f, 0.0f},	mouseDelta.x * 0.1f);
-	//_playerCollider->Rotate(newRot);
-	_playerCollider->Rotate(mouseDelta.x * 0.01f);	// adjust sensitivity later (0.01f -> variable)
+	_playerCollider->Rotate(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
 
-	//Pitch();
-	//Yaw();
+	// Pitch in closed angle
+	Pitch(mouseDelta.y * 0.002f);
 }
