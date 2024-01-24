@@ -4,12 +4,12 @@
 namespace HDData
 {
 	Transform::Transform()
-		:_position(0.0f,0.0f,0.0f), _rotation(1.0f,0.0f,0.0f,0.0f), _scale(HDMath::HDFLOAT3::one)
+		:_position(0.0f,0.0f,0.0f), _rotation(1.0f,0.0f,0.0f,0.0f), _scale(Vector3::one)
 	{
 
 	}
 
-	HDMath::HDFLOAT3 Transform::GetWorldPosition() const
+	Vector3 Transform::GetWorldPosition() const
 	{
 		/// 이득우의 게임수학 p.619 참조
 		// 내 로컬 포지션에 부모의 월드 트랜스폼을 반영해 내 월드 포지션을 구한다.
@@ -20,14 +20,14 @@ namespace HDData
 
 		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition() * _position;
 
-// 		HDMath::HDFLOAT3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
-// 		HDMath::HDQuaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
-// 		HDMath::HDFLOAT3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale();
+// 		Vector3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
+// 		Quaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
+// 		Vector3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale();
 // 
 // 		return parentPosition + parentRotation * (parentScale * _position);
 	}
 
-	HDMath::HDQuaternion Transform::GetWorldRotation() const
+	Quaternion Transform::GetWorldRotation() const
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
@@ -37,7 +37,7 @@ namespace HDData
 		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation() * _rotation;
 	}
 
-	HDMath::HDFLOAT3 Transform::GetWorldScale() const
+	Vector3 Transform::GetWorldScale() const
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
@@ -47,22 +47,22 @@ namespace HDData
 		return GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldScale() * _scale;
 	}
 
-	HDMath::HDFLOAT3 Transform::GetLocalPosition() const
+	Vector3 Transform::GetLocalPosition() const
 	{
 		return _position;
 	}
 
-	HDMath::HDQuaternion Transform::GetLocalRotation() const
+	Quaternion Transform::GetLocalRotation() const
 	{
 		return _rotation;
 	}
 
-	HDMath::HDFLOAT3 Transform::GetLocalScale() const
+	Vector3 Transform::GetLocalScale() const
 	{
 		return _scale;
 	}
 
-	HDMath::HDFLOAT4X4 Transform::GetWorldTM() const
+	Matrix Transform::GetWorldTM() const
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
@@ -72,29 +72,29 @@ namespace HDData
 		return GetLocalTM() * GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM();
 	}
 
-	HDMath::HDFLOAT4X4 Transform::GetLocalTM() const
+	Matrix Transform::GetLocalTM() const
 	{
 		return GetTransformMatrix(_position, _rotation, _scale);
 	}
 
-	HDMath::HDFLOAT3 Transform::GetForward() const
+	Vector3 Transform::GetForward() const
 	{
-		return GetWorldRotation() * HDMath::HDFLOAT3(0.0f, 0.0f, 1.0f);
+		return GetWorldRotation() * Vector3(0.0f, 0.0f, 1.0f);
 	}
 
-	HDMath::HDFLOAT3 Transform::GetUp() const
+	Vector3 Transform::GetUp() const
 	{
-		return GetWorldRotation() * HDMath::HDFLOAT3(0.0f, 1.0f, 0.0f);
+		return GetWorldRotation() * Vector3(0.0f, 1.0f, 0.0f);
 	}
 
-	HDMath::HDFLOAT3 Transform::GetRight() const
+	Vector3 Transform::GetRight() const
 	{
-		return GetWorldRotation() * HDMath::HDFLOAT3(1.0f, 0.0f, 0.0f);
+		return GetWorldRotation() * Vector3(1.0f, 0.0f, 0.0f);
 	}
 
-	HDMath::HDFLOAT4X4 Transform::GetLocalRotationMatrix() const
+	Matrix Transform::GetLocalRotationMatrix() const
 	{
-		HDMath::HDFLOAT4X4 rotationMatrix =
+		Matrix rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotation.y * _rotation.y + _rotation.z * _rotation.z),
 			2.0f * (_rotation.x * _rotation.y + _rotation.z * _rotation.w),
@@ -120,7 +120,7 @@ namespace HDData
 		return rotationMatrix;
 	}
 
-	void Transform::SetWorldPosition(const HDMath::HDFLOAT3& position)
+	void Transform::SetWorldPosition(const Vector3& position)
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
@@ -131,8 +131,8 @@ namespace HDData
 			// world position = position;
 			// 월드 포지션을 통해 로컬 포지션 갱신
 			// 부모 월드 역행렬에 내 월드를 곱하면 로컬
-			HDMath::HDFLOAT4X4 worldTM = GetTransformMatrix(position, _rotation, _scale);
-			HDMath::HDFLOAT4X4 invParent = HDMath::HDFLOAT4X4::Identity;
+			Matrix worldTM = GetTransformMatrix(position, _rotation, _scale);
+			Matrix invParent = Matrix::Identity;
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
 			_position = GetLocalPositionFromLocalTM(invParent * worldTM);
 		}
@@ -140,10 +140,10 @@ namespace HDData
 
 	void Transform::SetWorldPosition(float x, float y, float z)
 	{
-		SetWorldPosition(HDMath::HDFLOAT3(x, y, z));
+		SetWorldPosition(Vector3(x, y, z));
 	}
 
-	void Transform::SetWorldRotation(const HDMath::HDQuaternion& rotation)
+	void Transform::SetWorldRotation(const Quaternion& rotation)
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
@@ -151,8 +151,8 @@ namespace HDData
 		}
 		else
 		{
-			HDMath::HDFLOAT4X4 worldTM = GetTransformMatrix(_position, rotation, _scale);
-			HDMath::HDFLOAT4X4 invParent = HDMath::HDFLOAT4X4::Identity;
+			Matrix worldTM = GetTransformMatrix(_position, rotation, _scale);
+			Matrix invParent = Matrix::Identity;
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
 			_rotation = GetLocalRotationFromLocalTM(invParent * worldTM);
 		}
@@ -160,10 +160,10 @@ namespace HDData
 
 	void Transform::SetWorldRotation(float w, float x, float y, float z)
 	{
-		SetWorldRotation(HDMath::HDQuaternion(w, x, y, z));
+		SetWorldRotation(Quaternion(w, x, y, z));
 	}
 
-	void Transform::SetWorldScale(const HDMath::HDFLOAT3& scale)
+	void Transform::SetWorldScale(const Vector3& scale)
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
@@ -171,29 +171,29 @@ namespace HDData
 		}
 		else
 		{
-			HDMath::HDFLOAT4X4 worldTM = GetTransformMatrix(_position, _rotation, scale);
-			HDMath::HDFLOAT4X4 invParent = HDMath::HDFLOAT4X4::Identity;
+			Matrix worldTM = GetTransformMatrix(_position, _rotation, scale);
+			Matrix invParent = Matrix::Identity;
 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Inverse();
 			_scale = GetLocalScaleFromLocalTM(invParent * worldTM);
 		}
 	}
 
-	void Transform::SetLocalPosition(const HDMath::HDFLOAT3& position)
+	void Transform::SetLocalPosition(const Vector3& position)
 	{
 		_position = position;
 	}
 
-	void Transform::SetLocalRotation(const HDMath::HDQuaternion& rotation)
+	void Transform::SetLocalRotation(const Quaternion& rotation)
 	{
 		_rotation = rotation;
 	}
 
-	void Transform::SetLocalScale(const HDMath::HDFLOAT3& scale)
+	void Transform::SetLocalScale(const Vector3& scale)
 	{
 		_scale = scale;
 	}
 
-	void Transform::Translate(const HDMath::HDFLOAT3& position)
+	void Transform::Translate(const Vector3& position)
 	{
 		_position.x += position.x;
 		_position.y += position.y;
@@ -227,14 +227,14 @@ namespace HDData
 		float cos_half_radianZ = cos(half_radianZ);
 
 		// 쿼터니언 요소를 계산합니다.
-		HDMath::HDFLOAT4 rotQuat;
+		Vector4 rotQuat;
 		rotQuat.x = sin_half_radianX * cos_half_radianY * cos_half_radianZ + cos_half_radianX * sin_half_radianY * sin_half_radianZ;
 		rotQuat.y = cos_half_radianX * sin_half_radianY * cos_half_radianZ - sin_half_radianX * cos_half_radianY * sin_half_radianZ;
 		rotQuat.z = cos_half_radianX * cos_half_radianY * sin_half_radianZ + sin_half_radianX * sin_half_radianY * cos_half_radianZ;
 		rotQuat.w = cos_half_radianX * cos_half_radianY * cos_half_radianZ - sin_half_radianX * sin_half_radianY * sin_half_radianZ;
 
 		// 원본 쿼터니언과 회전 쿼터니언의 곱으로 결과 쿼터니언을 계산합니다.
-		HDMath::HDQuaternion result;
+		Quaternion result;
 		result.x = _rotation.w * rotQuat.x + _rotation.x * rotQuat.w + _rotation.y * rotQuat.z - _rotation.z * rotQuat.y;
 		result.y = _rotation.w * rotQuat.y - _rotation.x * rotQuat.z + _rotation.y * rotQuat.w + _rotation.z * rotQuat.x;
 		result.z = _rotation.w * rotQuat.z + _rotation.x * rotQuat.y - _rotation.y * rotQuat.x + _rotation.z * rotQuat.w;
@@ -244,9 +244,9 @@ namespace HDData
 		_rotation = result;
 	}
 
-	void Transform::Rotate(const HDMath::HDQuaternion& quaternion)
+	void Transform::Rotate(const Quaternion& quaternion)
 	{
-		_rotation = HDMath::HDQuaternionMultiply(_rotation, quaternion);
+		_rotation = QuaternionMultiply(_rotation, quaternion);
 	}
 
 }

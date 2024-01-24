@@ -55,7 +55,7 @@ private:
 private:
 	HDData::DynamicBoxCollider* _playerCollider;
 	HDData::Camera* _playerCamera;
-	HDMath::HDFLOAT3 _prevCameraPos;
-	HDMath::HDQuaternion _prevCameraRot;
+	Vector3 _prevCameraPos;
+	Quaternion _prevCameraRot;
 	bool _isCameraConnected;
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "StaticCollider.h"
 
 
@@ -18,7 +18,7 @@ namespace HDData
 		float GetDistance() const;
 
 	private:
-		HDMath::HDFLOAT3 _normalVector;
+		Vector3 _normalVector;
 		float _distance;
 	};
 }

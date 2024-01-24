@@ -93,7 +93,7 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
-	HDMath::HDFLOAT3 pos = this->GetTransform()->GetWorldPosition();
+	Vector3 pos = this->GetTransform()->GetWorldPosition();
 	const float delta = 0.2f;
 	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
 	float z[9] = { 0,delta,delta,delta,0,-delta,-delta,-delta,0 };
@@ -102,12 +102,12 @@ bool PlayerMove::CheckIsOnGround()
 	{
 		//RocketEngine::RMFLOAT4 worldPos = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(pos.x + x[i], pos.y, pos.z + z[i], 1.0f), gameObject->transform.GetWorldTM());
 		float halfHeight = _playerCollider->GetHeight() / 2.0f;
-		HDMath::HDFLOAT3 worldPos = HDMath::HDFLOAT3(pos.x + x[i], pos.y + 0.01f * i - halfHeight, pos.z + z[i]);
+		Vector3 worldPos = Vector3(pos.x + x[i], pos.y + 0.01f * i - halfHeight, pos.z + z[i]);
 
 		int type = 0;
 		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f, -1.0f,0.0f }, 0.05f, &type);
 		//RocketEngine::DrawDebugLine({ worldPos.x,worldPos.y,worldPos.z }, { eachDir.x,eachDir.y,eachDir.z });
-		API::DrawLineDir(worldPos, HDMath::HDFLOAT3(0.f, -1.f, 0.f), 0.05f, HDMath::HDFLOAT4(1.f, 0.f, 0.f, 0.f));
+		API::DrawLineDir(worldPos, Vector3(0.f, -1.f, 0.f), 0.05f, Vector4(1.f, 0.f, 0.f, 0.f));
 
 		if (temp)
 		{
@@ -232,9 +232,9 @@ void PlayerMove::Jump()
 }
 
 
-HDMath::HDFLOAT3 PlayerMove::DecideMoveDirection(int direction)
+Vector3 PlayerMove::DecideMoveDirection(int direction)
 {
-	HDMath::HDFLOAT3 moveStep;
+	Vector3 moveStep;
 
 	switch (direction)
 	{
@@ -320,28 +320,28 @@ void PlayerMove::CameraControl()
 void PlayerMove::Pitch(float rotationValue)
 {
 	HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
-	HDMath::HDQuaternion rot = cameraTransform->GetLocalRotation();
+	Quaternion rot = cameraTransform->GetLocalRotation();
 	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
 
 	if (89.0f < eulerAngleX)
 	{
 		constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
-		HDMath::HDQuaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
+		Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
 
 		cameraTransform->SetLocalRotation(closedAngle);
 	}
 	else if (eulerAngleX < -89.0f)
 	{
 		constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
-		HDMath::HDQuaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
+		Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
 
 		cameraTransform->SetLocalRotation(closedAngle);
 	}
 	else
 	{
-		HDMath::HDFLOAT4 rotationAxis{ 1.f, 0.f, 0.f, 1.0f };
-		rotationAxis = HDMath::HDFloat4MultiplyMatrix(rotationAxis, cameraTransform->GetLocalRotationMatrix());
-		HDMath::HDQuaternion newRot = HDMath::HDRotateQuaternion(cameraTransform->GetLocalRotation(),
+		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 1.0f };
+		rotationAxis = Vector4MultiplyMatrix(rotationAxis, cameraTransform->GetLocalRotationMatrix());
+		Quaternion newRot = HDMath::HDRotateQuaternion(cameraTransform->GetLocalRotation(),
 			{ rotationAxis.x, rotationAxis.y, rotationAxis.z }, rotationValue);
 		cameraTransform->SetLocalRotation(newRot);
 	}
@@ -365,7 +365,7 @@ void PlayerMove::ToggleCameraView()
 		_prevCameraPos = cameraTransform->GetWorldPosition();
 		_prevCameraRot = cameraTransform->GetWorldRotation();
 
-		cameraTransform->SetWorldPosition(playerTransform->GetWorldPosition() + HDMath::HDFLOAT3(0.f, 4.f, 0.f));
+		cameraTransform->SetWorldPosition(playerTransform->GetWorldPosition() + Vector3(0.f, 4.f, 0.f));
 		cameraTransform->SetWorldRotation(playerTransform->GetWorldRotation());
 		_playerCamera->GetGameObject()->SetParentObject(this->GetGameObject());
 		_isCameraConnected = true;
@@ -381,7 +381,7 @@ void PlayerMove::ToggleCameraView()
 
 void PlayerMove::CameraMove()
 {
-	HDMath::HDFLOAT2 mouseDelta = API::GetMouseDelta();
+	Vector2 mouseDelta = API::GetMouseDelta();
 
 	// RotateY
 	_playerCollider->Rotate(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)

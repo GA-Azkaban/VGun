@@ -23,7 +23,7 @@ TestScene::TestScene()
 
 	//auto camera = API::CreateObject(_scene);
 	//camera->AddComponent<MovableCamera>()->SetMainCamera();
-	//camera->GetTransform()->SetWorldPosition(HDMath::HDFLOAT3{ 0.0f, 0.0f, -10.0f });
+	//camera->GetTransform()->SetWorldPosition(Vector3{ 0.0f, 0.0f, -10.0f });
 
 	//auto gameObject = hodoEngine::CreateObject(_scene);
 	//auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
@@ -32,7 +32,7 @@ TestScene::TestScene()
 	//comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
 
 	//auto debugtest = API::CreateObject(_scene);
-	//debugtest->GetComponent<HDData::Transform>()->SetWorldScale(HDMath::HDFLOAT3{5.f, 5.f, 5.f});
+	//debugtest->GetComponent<HDData::Transform>()->SetWorldScale(Vector3{5.f, 5.f, 5.f});
 	//auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
 	//colli->Setflag(eColliderType::PLAYER);
 
@@ -54,7 +54,7 @@ TestScene::TestScene()
 	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
 	meshComp->LoadNormalMap("Rob02White_Normal.png");
 	meshComp->PlayAnimation(0, true);
-	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(HDMath::HDFLOAT3{1.f, 1.f, 1.f});
+	playerTest->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{1.f, 1.f, 1.f});
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 	
@@ -63,7 +63,7 @@ TestScene::TestScene()
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	playerTestHead->AddComponent<HDData::MeshRenderer>();
 	playerTestHead->SetParentObject(playerTest);
-	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(HDMath::HDFLOAT3{0.f, 1.1f, 0.f});
+	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
 
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
