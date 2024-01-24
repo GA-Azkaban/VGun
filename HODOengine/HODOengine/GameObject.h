@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <unordered_set>
 #include <vector>
 #include <string>
@@ -102,6 +102,7 @@ namespace HDData
 
 		void SetParentObject(GameObject* parentObject);
 		void SetSelfActive(bool active);
+		bool GetSelfActive();
 		std::string GetObjectName();
 
 	private:

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "MathHeader.h"
 
 namespace HDEngine

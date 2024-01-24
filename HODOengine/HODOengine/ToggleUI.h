@@ -18,7 +18,7 @@ namespace HDData
 	public:
 		void Start() override;
 		void Update() override;
-
+		void OnClickEvent();
 	public:
 		void SetActive(bool active);
 		void SetScreenSpace();
@@ -31,6 +31,8 @@ namespace HDData
 		bool _isToggleOn;
 	};
 }
+
+
 
 
 

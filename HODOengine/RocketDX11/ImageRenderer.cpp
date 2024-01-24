@@ -1,4 +1,4 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
@@ -90,7 +90,7 @@ void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
-	if (_active == true)
+	if (_active)
 	{
 		spriteBatch->Begin();
 
@@ -105,7 +105,6 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 
 		spriteBatch->End();
 	}
-
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)

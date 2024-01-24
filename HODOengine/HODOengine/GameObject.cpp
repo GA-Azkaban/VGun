@@ -143,6 +143,11 @@ namespace HDData
 		}
 	}
 
+	bool GameObject::GetSelfActive()
+	{
+		return _selfActive;
+	}
+
 	std::string GameObject::GetObjectName()
 	{
 		return _objectName;

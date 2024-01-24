@@ -52,7 +52,7 @@ namespace HDData
 
 	void SliderUI::Update()
 	{
-		if (_background->GetIsClicked() == true)
+		if (_background->GetIsGrabbing())
 		{
 			auto mouseX = HDEngine::InputSystem::Instance().GetMousePosition().x;
 			auto newValue = ((_handle->GetTransform()->GetPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;

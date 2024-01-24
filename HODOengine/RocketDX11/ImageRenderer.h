@@ -73,7 +73,5 @@ namespace RocketCore::Graphics
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
-
-		bool _isTranslated;
 	};
 }

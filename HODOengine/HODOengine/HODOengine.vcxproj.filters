@@ -124,6 +124,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>05_Component\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="TextInputBoxUI.cpp">
+      <Filter>05_Component\UserInterface\TextInputBoxUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -282,6 +285,9 @@
     <ClInclude Include="MathHeader.h">
       <Filter>01_EngineProcess\2. API</Filter>
     </ClInclude>
+    <ClInclude Include="TextInputBoxUI.h">
+      <Filter>05_Component\UserInterface\TextInputBoxUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -370,9 +376,6 @@
     <Filter Include="05_Component\UserInterface\ImageUI">
       <UniqueIdentifier>{0bc0a8ed-8183-44ed-b1d2-82574b4d3fc8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\UserInterface\SettingBoxUI">
-      <UniqueIdentifier>{c0b94f78-ea03-4a6e-9992-665e6e63c60f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\UserInterface\SlideBoxUI">
       <UniqueIdentifier>{e5afbc04-39dd-47df-9405-ad6cdfcdc9a7}</UniqueIdentifier>
     </Filter>
@@ -429,6 +432,9 @@
     </Filter>
     <Filter Include="06_System\UISystem">
       <UniqueIdentifier>{9a36e062-351c-4e18-8ce3-b112b20b1cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\UserInterface\TextInputBoxUI">
+      <UniqueIdentifier>{66895885-218e-4ff5-9ec5-70f6065b64e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

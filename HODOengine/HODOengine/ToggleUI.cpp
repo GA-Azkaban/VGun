@@ -35,15 +35,11 @@ void HDData::ToggleUI::Start()
 
 void HDData::ToggleUI::Update()
 {
-	if (_toggleOn->GetIsClicked())
-	{
-		_toggleOn->SetActive(false);
-		_toggleOff->SetActive(true);
-	}
 	if (_toggleOff->GetIsClicked())
 	{
-		_toggleOn->SetActive(true);
-		_toggleOff->SetActive(false);
+		_isToggleOn = !_isToggleOn;
+		_toggleOff->SetActive(_isToggleOn);
+		_toggleOn->SetActive(!_isToggleOn);
 	}
 }
 
@@ -64,5 +60,11 @@ void HDData::ToggleUI::SetWorldSpace()
 	_toggleOn->SetWorldSpace();
 	_toggleOff->SetWorldSpace();
 }
+
+void HDData::ToggleUI::OnClickEvent()
+{
+
+}
+
 
 

@@ -37,6 +37,8 @@ namespace HDData
 		float GetTop();
 		float GetBottom();
 
+		virtual void OnClickEvent() {};
+
 		HDEngine::ISketchable* _sketchable;
 
 	private:

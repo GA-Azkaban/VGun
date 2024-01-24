@@ -36,6 +36,7 @@
 #include "AudioSource.h"
 #include "AudioClip.h"
 #include "ToggleUI.h"
+#include "TextInputBoxUI.h"
 
 #include "ObjectSystem.h"
 
@@ -55,6 +56,7 @@ namespace API
 		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 
 
 		// 키 입력을 위한 함수 (키보드, 마우스)
