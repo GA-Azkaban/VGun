@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include <string>
 #include "MathHeader.h"
@@ -13,7 +13,7 @@ namespace HDEngine
 		virtual void SetFloatValue(const float value) = 0;
 		virtual void SetintValue(const int value) = 0;
 		virtual void SetScreenSpacePosition(float x, float y) = 0;
-		virtual void SetColor(Color color) = 0;
+		virtual void SetColor(DirectX::FXMVECTOR color) = 0;
 		virtual void SetActive(bool active) = 0;
 
 		virtual void SetWorldSpace() = 0;
