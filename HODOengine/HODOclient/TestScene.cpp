@@ -9,6 +9,7 @@
 #include "TestSound.h"
 #include "SliderSoundScript.h"
 
+
 enum eColliderType
 {
 	PLAYER = 1,
@@ -102,11 +103,12 @@ TestScene::TestScene()
 	//textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
 	//textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
-	//HDData::GameObject * imageTest = API::CreateObject(_scene);
+	HDData::GameObject* imageTest = API::CreateObject(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	//HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
-	//imageComp->ChangeScale(0.5f, 0.5f);
-	//imageComp->GetGameObject();
+	HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
+	imageComp->ChangeScale(0.5f, 0.5f);
+	imageComp->GetGameObject();
+	imageComp->SetColor(DirectX::Colors::AliceBlue);
 
 	//auto UItest = API::CreateSlidebox(_scene);
 	//UItest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });

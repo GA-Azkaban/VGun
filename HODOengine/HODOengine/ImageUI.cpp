@@ -1,4 +1,4 @@
-#include "ImageUI.h"
+﻿#include "ImageUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
@@ -40,6 +40,11 @@ namespace HDData
 	float ImageUI::GetScreenSpacePositionY()
 	{
 		return _imageUI->GetScreenSpacePositionY();
+	}
+
+	DirectX::FXMVECTOR ImageUI::SetColor(DirectX::FXMVECTOR color)
+	{
+		return _imageUI->SetColor(color);
 	}
 
 	float ImageUI::GetImageWidth()

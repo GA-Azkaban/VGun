@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -26,6 +26,8 @@ namespace RocketCore::Graphics
 
 		virtual float GetScreenSpacePositionX() override;
 		virtual float GetScreenSpacePositionY() override;
+
+		virtual DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color) override;
 
 		virtual void SetScreenSpace() override;
 
@@ -55,6 +57,7 @@ namespace RocketCore::Graphics
 		float _ylocation;
 		float _scaleX;
 		float _scaleY;
+		bool _active;
 
 		// 원점 구하기
 		float _centerX;
