@@ -114,16 +114,19 @@ TestScene::TestScene()
 	//auto imageTest = API::CreateImageBox(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });
 
-	auto button = API::CreateButton(_scene);
-	button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
+	//auto button = API::CreateButton(_scene);
+	//button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
+	//button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	auto slider = API::CreateSlider(_scene, 50,"slider");
+	auto slider = API::CreateSlider(_scene, 50, "slider");
 	slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
 	slider->AddComponent<HDData::AudioSource>();
 
 	auto toggle = API::CreateToggle(_scene);
-	toggle->GetTransform()->SetPosition({ 1500.f, 50.f, 0.0f });
+	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
+
+	//auto textInputBox = API::CreateTextInputBox(_scene);
+	//textInputBox->GetTransform()->SetPosition({1500.f, 500.f, 0});
 
 	API::LoadScene(_scene);
 

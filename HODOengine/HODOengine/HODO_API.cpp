@@ -114,6 +114,26 @@ namespace API
 			return obj;
 		}
 
+		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
+			obj->AddComponent<HDData::TextInputBoxUI>();
+
+			auto background = HDEngine::ObjectSystem::Instance().CreateObject(scene, "back", obj);
+			background->AddComponent<HDData::ImageUI>();
+			background->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+
+			auto cursor = HDEngine::ObjectSystem::Instance().CreateObject(scene, "cursor", obj);
+			cursor->AddComponent<HDData::ImageUI>();
+			cursor->GetComponent<HDData::ImageUI>()->SetImage("cursor.png");
+			cursor->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+
+			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "text", obj);
+			valueText->AddComponent<HDData::TextUI>();
+
+			return obj;
+		}
+
 		HODO_API bool GetKeyDown(BYTE keyCode)
 		{
 			return HDEngine::InputSystem::Instance().GetKeyDown(keyCode);
@@ -184,7 +204,4 @@ namespace API
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}
 	}
-
-
-
 }

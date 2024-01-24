@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #include "dllExporter.h"
 #include <string>
@@ -53,7 +53,7 @@ namespace HDData
 		bool GetIsStarted() { return _isStarted; };
 
 		void SetActive(bool active) {
-			if (!_isActive && active)
+ 			if (!_isActive && active)
 				OnEnable();
 			if (_isActive && !active)
 				OnDisable();

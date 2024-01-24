@@ -50,28 +50,36 @@ namespace HDEngine
 	{
 		for (const auto& ui : _uiList)
 		{
-			if (!ui->GetGameObject()->IsActive())
+			if (!ui->GetGameObject()->GetSelfActive())
 			{
 				continue;
 			}
-			
-			if (ui->CheckFocus() == true)
+
+			if (ui->CheckFocus())
 			{
-				ui->SetIsHovering(true);
+				_focusedUI = ui;
+				_focusedUI->SetIsHovering(true);
 
 				if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
 				{
-					ui->SetIsClicked(true);
+					_focusedUI->SetIsClicked(true);
+					_focusedUI->SetIsGrabbing(true);
+					_focusedUI->OnClickEvent();
+					continue;
 				}
+
+				ui->SetIsClicked(false);
+				continue;
 			}
 
-			if (ui->GetIsClicked() == true)
+			ui->SetIsClicked(false);
+			ui->SetIsHovering(false);
+
+			if (InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
 			{
-				if (InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
-				{
-					ui->SetIsClicked(false);
-				}
+				_focusedUI->SetIsGrabbing(false);
 			}
+
 		}
 	}
 }

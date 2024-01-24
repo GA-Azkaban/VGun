@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -55,6 +55,7 @@ namespace RocketCore::Graphics
 		float _ylocation;
 		float _scaleX;
 		float _scaleY;
+		bool _active;
 
 		// 원점 구하기
 		float _centerX;
@@ -70,7 +71,5 @@ namespace RocketCore::Graphics
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
-
-		bool _isTranslated;
 	};
 }

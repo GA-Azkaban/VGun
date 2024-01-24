@@ -293,6 +293,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="StaticCollider.h" />
     <ClInclude Include="StaticPlaneCollider.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextInputBoxUI.h" />
     <ClInclude Include="TextUI.h" />
     <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="ToggleUI.h" />
@@ -357,6 +358,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="StaticBoxCollider.cpp" />
     <ClCompile Include="StaticCollider.cpp" />
     <ClCompile Include="StaticPlaneCollider.cpp" />
+    <ClCompile Include="TextInputBoxUI.cpp" />
     <ClCompile Include="TextUI.cpp" />
     <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="ToggleUI.cpp" />
