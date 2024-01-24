@@ -1,4 +1,4 @@
-// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
@@ -21,11 +21,7 @@
 
 #include "DLL_Loader.h"
 
-#ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
-#else
 #define GRAPHICSDLL_PATH (L"RocketDX11.dll")
-#endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
 

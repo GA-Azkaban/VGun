@@ -14,12 +14,6 @@
 #include "GraphicsObjFactory.h"
 #include "Collider.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\HODOmath.lib")
-#endif // _DEBUG
-
 using GRAPHICS_CREATE_SIGNATURE = HDEngine::I3DRenderer* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
 
