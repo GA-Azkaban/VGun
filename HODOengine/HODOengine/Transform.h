@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
@@ -13,7 +13,7 @@ namespace HDData
 	class GameObject;
 	class HODO_API Transform : public Component
 	{
-	public:		
+	public:
 		Transform();
 		Vector3 GetPosition() const;			// world 기준
 		Quaternion GetRotation() const;			// world 기준

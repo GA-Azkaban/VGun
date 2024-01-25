@@ -57,6 +57,7 @@ namespace HDEngine
 		physx::PxDefaultCpuDispatcher* _dispatcher;
 		physx::PxScene* _pxScene;
 		physx::PxMaterial* _material;
+		physx::PxMaterial* _playerMaterial;
 		physx::PxPvd* _pvd;
 
 	private:
