@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 
 /// <summary>
@@ -58,4 +58,6 @@ private:
 	Vector3 _prevCameraPos;
 	Quaternion _prevCameraRot;
 	bool _isCameraConnected;
+
+	float pitchAngle;
 };

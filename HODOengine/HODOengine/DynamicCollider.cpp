@@ -58,6 +58,11 @@ void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 
 }
 
+void HDData::DynamicCollider::DrawDebug()
+{
+
+}
+
 void HDData::DynamicCollider::Collide()
 {
 	_isCollided = true;
