@@ -130,7 +130,7 @@ namespace API
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "text", obj);
 			valueText->AddComponent<HDData::TextUI>();
-			valueText->GetComponent<HDData::TextUI>()->SetText("");
+			valueText->GetComponent<HDData::TextUI>()->SetText("test");
 			valueText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
 
 			return obj;

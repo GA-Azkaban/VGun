@@ -24,8 +24,10 @@ namespace HDData
 		bool _isCursorOn;
 		float _blankTime;
 
+
+		std::string newVal;
+		
 		bool _isSecret;
-		const char* _value[];
 	};
 
 }

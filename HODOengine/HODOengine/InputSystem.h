@@ -1,10 +1,12 @@
 ﻿#pragma once
 #include <windows.h>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
 #include "InputData.h"
 #include "MathHeader.h"
 #include "Singleton.h"
-#include <unordered_map>
-#include <unordered_set>
 /// <summary>
 /// 오수안
 /// DirectInput을 이용한 개선된 인풋 시스템
@@ -38,7 +40,8 @@ namespace HDEngine
 		Vector2 GetMouseDelta();
 
 		char ConvertKeyToChar(BYTE key, bool isShiftPressed);
-	
+		char GetInputText(BYTE i);
+
 		float GetMouseWheel();
 
 		void Flush();
