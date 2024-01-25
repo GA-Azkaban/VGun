@@ -151,6 +151,9 @@
     <Filter Include="06_System\GraphicsObjectFactory">
       <UniqueIdentifier>{15d6e3bd-3a10-4eed-b430-9de5b55d9c36}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05_Component\Renderer\SkyboxRenderer">
+      <UniqueIdentifier>{f7f793a8-0d53-44c2-8b51-2cb0d9f49d5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -294,6 +297,9 @@
     <ClInclude Include="InputData.h">
       <Filter>06_System\InputSystem</Filter>
     </ClInclude>
+    <ClInclude Include="SkyboxRenderer.h">
+      <Filter>05_Component\Renderer\SkyboxRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="small.ico">
@@ -421,6 +427,9 @@
     </ClCompile>
     <ClCompile Include="AudioSource.cpp">
       <Filter>05_Component\AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxRenderer.cpp">
+      <Filter>05_Component\Renderer\SkyboxRenderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

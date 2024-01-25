@@ -136,9 +136,6 @@
     <Filter Include="9. Util\DXTK">
       <UniqueIdentifier>{35695bbe-71a5-4ceb-8809-165818c61125}</UniqueIdentifier>
     </Filter>
-    <Filter Include="9. Util\TextureLoader">
-      <UniqueIdentifier>{e5927962-15ed-4684-a628-c6675821c39a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="9. Util\GeometryGenerator">
       <UniqueIdentifier>{c5bd62c0-8b3e-4113-acb2-c2732d81b0eb}</UniqueIdentifier>
     </Filter>
@@ -192,6 +189,15 @@
     </Filter>
     <Filter Include="6. RenderPasses\SSAOPass">
       <UniqueIdentifier>{2737e05c-c977-408a-952b-8866261f2b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="6. RenderPasses\GBufferPass">
+      <UniqueIdentifier>{4a5e14bf-36c5-4021-b96d-276aa643a4e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. DeferredRendering\QuadBuffer">
+      <UniqueIdentifier>{900136d8-72b5-44c1-9a2c-396850e874f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="10. Adapter\HodoSkyboxAdapter">
+      <UniqueIdentifier>{02fac7ef-45ac-4208-a81d-6dec62ccfe67}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -324,7 +330,7 @@
     <ClInclude Include="HodoStaticMeshAdapter.h">
       <Filter>10. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClInclude>
-    <ClInclude Include="Sky.h">
+    <ClInclude Include="Skybox.h">
       <Filter>5. Objects\CubeMap</Filter>
     </ClInclude>
     <ClInclude Include="HelperObject.h">
@@ -342,11 +348,20 @@
     <ClInclude Include="DeferredPass.h">
       <Filter>6. RenderPasses\DeferredPass</Filter>
     </ClInclude>
-    <ClInclude Include="CubeMapPass.h">
+    <ClInclude Include="SkyboxPass.h">
       <Filter>6. RenderPasses\CubeMapPass</Filter>
     </ClInclude>
     <ClInclude Include="BlitPass.h">
       <Filter>6. RenderPasses\BlitPass</Filter>
+    </ClInclude>
+    <ClInclude Include="GBufferPass.h">
+      <Filter>6. RenderPasses\GBufferPass</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadBuffer.h">
+      <Filter>1. DeferredRendering\QuadBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HodoSkyboxAdapter.h">
+      <Filter>10. Adapter\HodoSkyboxAdapter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -443,7 +458,7 @@
     <ClCompile Include="HodoStaticMeshAdapter.cpp">
       <Filter>10. Adapter\Hodo3DGIAdapter\HodoStaticMeshAdapter</Filter>
     </ClCompile>
-    <ClCompile Include="Sky.cpp">
+    <ClCompile Include="Skybox.cpp">
       <Filter>5. Objects\CubeMap</Filter>
     </ClCompile>
     <ClCompile Include="HelperObject.cpp">
@@ -455,11 +470,20 @@
     <ClCompile Include="DeferredPass.cpp">
       <Filter>6. RenderPasses\DeferredPass</Filter>
     </ClCompile>
-    <ClCompile Include="CubeMapPass.cpp">
+    <ClCompile Include="SkyboxPass.cpp">
       <Filter>6. RenderPasses\CubeMapPass</Filter>
     </ClCompile>
     <ClCompile Include="BlitPass.cpp">
       <Filter>6. RenderPasses\BlitPass</Filter>
+    </ClCompile>
+    <ClCompile Include="GBufferPass.cpp">
+      <Filter>6. RenderPasses\GBufferPass</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadBuffer.cpp">
+      <Filter>1. DeferredRendering\QuadBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="HodoSkyboxAdapter.cpp">
+      <Filter>10. Adapter\HodoSkyboxAdapter</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -517,10 +541,10 @@
     <FxCompile Include="DebugPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="CubeMapVertexShader.hlsl">
+    <FxCompile Include="SkyboxVertexShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
-    <FxCompile Include="CubeMapPixelShader.hlsl">
+    <FxCompile Include="SkyboxPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
     <FxCompile Include="SkeletonVertexShader.hlsl">
@@ -541,6 +565,15 @@
     <FxCompile Include="DeferredStaticMeshVS.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="FullScreenQuadVertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="FullScreenQuadPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="BlitPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MZDX11Renderer.rc">
@@ -550,6 +583,12 @@
   <ItemGroup>
     <None Include="xnamathvector.inl">
       <Filter>8. Math\header</Filter>
+    </None>
+    <None Include="Sampler.hlsli">
+      <Filter>3. HLSL</Filter>
+    </None>
+    <None Include="Lighting.hlsli">
+      <Filter>3. HLSL</Filter>
     </None>
   </ItemGroup>
 </Project>

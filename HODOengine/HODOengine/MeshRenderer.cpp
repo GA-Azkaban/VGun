@@ -1,5 +1,6 @@
 #include "MeshRenderer.h"
 #include "GraphicsObjFactory.h"
+#include "Transform.h"
 
 namespace HDData
 {
@@ -13,4 +14,20 @@ namespace HDData
 	{
 		return *_staticMesh;
 	}
+
+	void MeshRenderer::OnEnable()
+	{
+		_staticMesh->SetActive(true);
+	}
+
+	void MeshRenderer::OnDisable()
+	{
+		_staticMesh->SetActive(false);
+	}
+
+	void MeshRenderer::Update()
+	{
+		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());
+	}
+
 }

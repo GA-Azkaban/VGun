@@ -9,6 +9,8 @@
 #include "HodoStaticMeshAdapter.h"
 #include "SkinningMeshObject.h"
 #include "HodoSkinnedMeshAdapter.h"
+#include "Skybox.h"
+#include "HodoSkyboxAdapter.h"
 
 namespace hodoGIAdapter
 {
@@ -30,6 +32,12 @@ namespace hodoGIAdapter
 		{
 			SkinningMeshObject* skinningMesh = new SkinningMeshObject();
 			return new hodoGIAdapter::SkinnedMeshAdapter(skinningMesh);
+		}
+
+		virtual HDEngine::ISkybox* CreateSkybox() override
+		{
+			Skybox* skybox = new Skybox();
+			return new hodoGIAdapter::SkyboxAdapter(skybox);
 		}
 	};
 }

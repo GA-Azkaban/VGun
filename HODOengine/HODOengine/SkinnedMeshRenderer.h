@@ -11,6 +11,10 @@ namespace HDData
 		SkinnedMeshRenderer();
 		HDEngine::ISkinnedMesh& Get();
 
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
+		virtual void Update() override;
+
 	private:
 		HDEngine::ISkinnedMesh* _skinnedMesh;
 	};

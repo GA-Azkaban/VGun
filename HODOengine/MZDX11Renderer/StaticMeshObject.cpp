@@ -11,8 +11,9 @@ StaticMeshObject::StaticMeshObject()
 	: m_material(nullptr), m_isActive(true),
 	m_world{ XMMatrixIdentity() }
 {
-	m_material = new Material(ResourceManager::Instance.Get().GetVertexShader("VertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso"));
-	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
+	m_material = new Material(
+		ResourceManager::Instance.Get().GetVertexShader("DeferredStaticMeshVS.cso"), 
+		ResourceManager::Instance.Get().GetPixelShader("DeferredStaticMeshPS.cso"));
 }
 
 StaticMeshObject::~StaticMeshObject()
@@ -49,11 +50,7 @@ void StaticMeshObject::Render()
 	vertexShader->CopyAllBufferData();
 	vertexShader->SetShader();
 
-	XMFLOAT3 cameraPos = MZCamera::GetMainCamera()->GetPosition();
-	pixelShader->SetFloat3("cameraPosition", cameraPos);
-
-	pixelShader->SetSamplerState("Sampler", m_material->GetSamplerState());
-	pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
+	pixelShader->SetShaderResourceView("Albedo", m_material->GetTextureSRV());
 	pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
 
 	pixelShader->CopyAllBufferData();
@@ -98,8 +95,4 @@ void StaticMeshObject::SetNormalTexture(const std::string& fileName)
 	m_material->SetNormalTexture(normalTex);
 }
 
-void StaticMeshObject::SetSamplerState(ID3D11SamplerState* sampler)
-{
-	m_material->SetSamplerState(sampler);
-}
 

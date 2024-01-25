@@ -26,6 +26,8 @@ namespace VertexStruct
 			Normal(nx, ny, nz), Tangent(tx, ty, tz) {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv)
 			: Position(p), UV(uv), Normal{ 0, 0, 0 }, Tangent{ 0, 0, 0 } {}
+		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT2& uv)
+			: Position(p), Normal(n), UV(uv), Tangent{0, 0, 0} {}
 	};
 
 	struct VertexSkinning
@@ -36,10 +38,6 @@ namespace VertexStruct
 		DirectX::XMFLOAT2 UV;
 		DirectX::XMFLOAT4 Weights;
 		DirectX::XMUINT4 BoneIndices;
-		//unsigned int BoneIndices0;
-		//unsigned int BoneIndices1;
-		//unsigned int BoneIndices2;
-		//unsigned int BoneIndices3;
 	};
 
 	struct PosColor		// For debug object

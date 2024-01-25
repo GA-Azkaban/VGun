@@ -29,7 +29,6 @@ public:
 
 	void SetDiffuseTexture(const std::string& fileName);
 	void SetNormalTexture(const std::string& fileName);
-	void SetSamplerState(ID3D11SamplerState* sampler);
 
 	virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 	virtual void SetPickingMode(bool isPickingModeOn) { };

@@ -9,6 +9,12 @@
 class MZCamera;
 class IRenderableObject;
 class DeferredBuffers;
+class QuadBuffer;
+class SamplerState;
+class GBufferPass;
+class DeferredPass;
+class SkyboxPass;
+class BlitPass;
 
 class MZDX11Renderer : public MZRenderer::I3DRenderer
 {
@@ -51,8 +57,21 @@ public:
 	unsigned int GetScreenHeight() const { return m_screenHeight; }
 	float GetAspectRatio() const;
 
+	void SetRenderTarget();
+	void ClearRenderTarget();
+
 private:
     void ResizeBuffers();
+
+    void CreateDepthStecilStates();
+
+    // 임시
+    void SetLights();
+    void SetObjects();
+
+	void EnableZBuffering();
+	void DisableZBuffering();
+
 
 private:
     static MZDX11Renderer* instance;
@@ -64,14 +83,19 @@ private:
     ComPtr<IDXGISwapChain> m_swapChain;
     D3D11_VIEWPORT m_viewPort;
 
-    ComPtr<ID3D11Texture2D> m_quadTexture;
-    ComPtr<ID3D11RenderTargetView> m_quadRTV;
-    ComPtr<ID3D11ShaderResourceView> m_quadSRV;
+	ComPtr<ID3D11DepthStencilState> m_depthStencilStateEnable;
+	ComPtr<ID3D11DepthStencilState> m_depthStencilStateDisable;
 
     ComPtr<ID3D11RenderTargetView> m_backBufferRTV;
 
 	unsigned int m_screenWidth;
 	unsigned int m_screenHeight;
 
+    SamplerState* m_samplerState;
     DeferredBuffers* m_deferredBuffers;
+    QuadBuffer* m_quadBuffer;
+    GBufferPass* _GBufferPass;
+    DeferredPass* _deferredPass;
+    SkyboxPass* _skyboxPass;
+    BlitPass* _blitPass;
 };

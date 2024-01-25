@@ -73,13 +73,25 @@ void ResourceManager::LoadShaders()
 	if (debugPixelShader->LoadShaderFile(L"../Shaders/DebugPixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
 
-	VertexShader* cubeMapVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (cubeMapVertexShader->LoadShaderFile(L"../Shaders/CubeMapVertexShader.cso"))
-		_vertexShaders.insert(std::make_pair("CubeMapVertexShader.cso", cubeMapVertexShader));
+	VertexShader* skyboxVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
+	if (skyboxVertexShader->LoadShaderFile(L"../Shaders/SkyboxVertexShader.cso"))
+		_vertexShaders.insert(std::make_pair("SkyboxVertexShader.cso", skyboxVertexShader));
 
-	PixelShader* cubeMapPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (cubeMapPixelShader->LoadShaderFile(L"../Shaders/CubeMapPixelShader.cso"))
-		_pixelShaders.insert(std::make_pair("CubeMapPixelShader.cso", cubeMapPixelShader));
+	PixelShader* skyboxPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+	if (skyboxPixelShader->LoadShaderFile(L"../Shaders/SkyboxPixelShader.cso"))
+		_pixelShaders.insert(std::make_pair("SkyboxPixelShader.cso", skyboxPixelShader));
+
+	VertexShader* quadVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
+	if (quadVertexShader->LoadShaderFile(L"../Shaders/FullScreenQuadVertexShader.cso"))
+		_vertexShaders.insert(std::make_pair("FullScreenQuadVertexShader.cso", quadVertexShader));
+
+	PixelShader* quadPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+	if (quadPixelShader->LoadShaderFile(L"../Shaders/FullScreenQuadPixelShader.cso"))
+		_pixelShaders.insert(std::make_pair("FullScreenQuadPixelShader.cso", quadPixelShader));
+
+	PixelShader* blitPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+	if (blitPixelShader->LoadShaderFile(L"../Shaders/BlitPixelShader.cso"))
+		_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
 
 }
 
@@ -95,11 +107,11 @@ void ResourceManager::CreatePrimitiveMeshes()
 	Mesh* _axisMesh = new ::Mesh(&axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
 	_loadedFileInfo["axis"].loadedMeshes.push_back(_axisMesh);
 
-	GeometryGenerator::MeshData skySphere;
-	_geometryGen->CreateSphere(5000, 30, 30, skySphere);
+	GeometryGenerator::MeshData skybox;
+	_geometryGen->CreateSkybox(skybox);
 
-	Mesh* _sphere = new ::Mesh(&skySphere.Vertices[0], skySphere.Vertices.size(), &skySphere.Indices[0], skySphere.Indices.size());
-	_loadedFileInfo["skySphere"].loadedMeshes.push_back(_sphere);
+	Mesh* _skybox = new ::Mesh(&skybox.Vertices[0], skybox.Vertices.size(), &skybox.Indices[0], skybox.Indices.size());
+	_loadedFileInfo["skybox"].loadedMeshes.push_back(_skybox);
 }
 
 void ResourceManager::LoadFBXFile(std::string fileName)

@@ -8,7 +8,7 @@ using namespace VertexStruct;
 
 void GeometryGenerator::CreateGrid(DebugMeshData& meshData)
 {
-	// Á¤Á¡ ¹öÆÛ¸¦ ¸¸µç´Ù.
+	// ì •ì  ë²„í¼ë¥¼ ë§Œë“ ë‹¤.
 	VertexStruct::PosColor vertices[100];
 	for (int i = 0; i < 100; ++i)
 	{
@@ -18,7 +18,7 @@ void GeometryGenerator::CreateGrid(DebugMeshData& meshData)
 
 	meshData.Vertices.assign(&vertices[0], &vertices[100]);
 
-	// ÀÎµ¦½º ¹öÆÛ¸¦ ¸¸µç´Ù.
+	// ì¸ë±ìŠ¤ ë²„í¼ë¥¼ ë§Œë“ ë‹¤.
 	UINT indices[40];
 	for (int i = 0; i < 10; i++)
 	{
@@ -37,34 +37,84 @@ void GeometryGenerator::CreateGrid(DebugMeshData& meshData)
 
 void GeometryGenerator::CreateAxis(DebugMeshData& meshData)
 {
-	// Á¤Á¡ ¹öÆÛ¸¦ ¸¸µç´Ù.
+	// ì •ì  ë²„í¼ë¥¼ ë§Œë“ ë‹¤.
 	VertexStruct::PosColor vertices[] =
 	{
-		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Red)  },	// xÃà (»¡°­)
+		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Red)  },	// xì¶• (ë¹¨ê°•)
 		{ XMFLOAT3(10.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Red)  },
 
-		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Green)},	// yÃà (ÃÊ·Ï)
+		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Green)},	// yì¶• (ì´ˆë¡)
 		{ XMFLOAT3(0.0f, 10.0f, 0.0f), XMFLOAT4((const float*)&Colors::Green)},
 
-		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Blue)	},	// zÃà (ÆÄ¶û)
+		{ XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT4((const float*)&Colors::Blue)	},	// zì¶• (íŒŒë‘)
 		{ XMFLOAT3(0.0f, 0.0f, 10.0f), XMFLOAT4((const float*)&Colors::Blue) }
 	};
 
 	meshData.Vertices.assign(&vertices[0], &vertices[6]);
 
-	// ÀÎµ¦½º ¹öÆÛ¸¦ ¸¸µç´Ù.
+	// ì¸ë±ìŠ¤ ë²„í¼ë¥¼ ë§Œë“ ë‹¤.
 	UINT indices[] = {
-		// xÃà
+		// xì¶•
 		0, 1,
 
-		// yÃà
+		// yì¶•
 		2, 3,
 
-		// zÃà
+		// zì¶•
 		4, 5,
 	};
 
 	meshData.Indices.assign(&indices[0], &indices[6]);
+}
+
+void GeometryGenerator::CreateSkybox(MeshData& meshData)
+{
+	Vertex vertices[] =
+	{
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(0.0f, 1.0f) },
+
+		{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(0.0f, 1.0f) },
+
+		{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) },
+
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) },
+
+		{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) },
+
+		{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+		{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+		{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+		{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) }
+	};
+
+	meshData.Vertices.assign(&vertices[0], &vertices[24]);
+
+	UINT indices[] =
+	{
+		0,  1,  2,  0,  2,  3,
+		4,  5,  6,  4,  6,  7,
+		8,  9, 10,  8, 10, 11,
+	   12, 13, 14, 12, 14, 15,
+	   16, 17, 18, 16, 18, 19,
+	   20, 21, 22, 20, 22, 23
+	};
+
+	meshData.Indices.assign(&indices[0], &indices[36]);
 }
 
 void GeometryGenerator::CreateBox(float width, float height, float depth, MeshData& meshData)

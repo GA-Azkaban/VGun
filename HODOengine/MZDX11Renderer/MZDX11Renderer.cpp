@@ -1,11 +1,22 @@
 #include "MZDX11Renderer.h"
 #include "MZCamera.h"
 #include "DeferredBuffers.h"
+#include "QuadBuffer.h"
 #include "ResourceManager.h"
 #include "RasterizerState.h"
 #include "SamplerState.h"
+#include "PixelShader.h"
+#include "GBufferPass.h"
+#include "DeferredPass.h"
+#include "SkyboxPass.h"
+#include "BlitPass.h"
+#include "Lights.h"
 #include "MathHelper.h"
 #include "MZMacro.h"
+#include "StaticMeshObject.h"
+#include "SkinningMeshObject.h"
+#include "HelperObject.h"
+#include "Skybox.h"
 
 #pragma comment( lib, "d3d11.lib" )
 #pragma comment( lib, "dxguid.lib" )	
@@ -17,13 +28,15 @@ MZDX11Renderer* MZDX11Renderer::instance = nullptr;
 MZDX11Renderer::MZDX11Renderer()
 	: m_hWnd(0), m_screenWidth(1920), m_screenHeight(1080)
 {
-	m_deferredBuffers = new DeferredBuffers();
+	
 }
 
 MZDX11Renderer::~MZDX11Renderer()
 {
 	RasterizerState::Instance.Get().DestroyRenderStates();
-	SamplerState::Instance.Get().DestroySamplerStates();
+	m_samplerState->DestroySamplerStates();
+	delete m_samplerState;
+	delete m_deferredBuffers;
 
 	if (m_d3dDeviceContext)
 	{
@@ -59,7 +72,21 @@ bool MZDX11Renderer::Initialize()
 
 	ResourceManager::Instance.Get().Initialize(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
 	RasterizerState::Instance.Get().CreateRenderStates(m_d3dDevice.Get());
-	SamplerState::Instance.Get().CreateSamplerStates(m_d3dDevice.Get());
+
+	m_samplerState = new SamplerState();
+	m_samplerState->CreateSamplerStates(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
+
+	m_deferredBuffers = new DeferredBuffers(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
+	m_quadBuffer = new QuadBuffer(m_d3dDevice.Get(), m_d3dDeviceContext.Get());
+
+	_GBufferPass = new GBufferPass(m_deferredBuffers);
+	_deferredPass = new DeferredPass(m_deferredBuffers, m_quadBuffer);
+	_skyboxPass = new SkyboxPass(m_deferredBuffers, m_quadBuffer);
+	_blitPass = new BlitPass(m_quadBuffer);
+	
+	CreateDepthStecilStates();
+	SetLights();
+	SetObjects();
 
 	return true;
 }
@@ -119,27 +146,27 @@ void MZDX11Renderer::SetOutputWindow(unsigned int hWnd)
 	dxgiFactory->Release();
 
 	ResizeBuffers();
+	EnableZBuffering();
 }
 
 void MZDX11Renderer::Update(float deltaTime)
 {
-	// TODO
+	for (auto& meshObject : IMeshObject::meshObjects)
+	{
+		meshObject->Update(deltaTime);
+	}
 }
-
-
-void MZDX11Renderer::BeginRender()
-{
-	assert(m_d3dDeviceContext);
-
-	m_d3dDeviceContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), m_depthStencilView.Get());
-	m_d3dDeviceContext->ClearRenderTargetView(m_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Black));
-	m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-}
-
 
 void MZDX11Renderer::Render()
 {
-	BeginRender();
+	//EnableZBuffering();
+
+	_GBufferPass->Render();
+	_deferredPass->Render();
+	_skyboxPass->Render();
+	
+	//DisableZBuffering();
+	_blitPass->Render();
 
 	assert(m_swapChain);
 	m_swapChain->Present(0, 0);
@@ -165,9 +192,6 @@ void MZDX11Renderer::ResizeResolution(unsigned int width, unsigned int height)
 void MZDX11Renderer::ResizeBuffers()
 {
 	m_backBufferRTV.Reset();
-	m_quadRTV.Reset();
-	m_quadSRV.Reset();
-	m_quadTexture.Reset();
 
 	m_swapChain->ResizeBuffers(0, m_screenWidth, m_screenHeight, DXGI_FORMAT_UNKNOWN, 0);
 
@@ -176,36 +200,8 @@ void MZDX11Renderer::ResizeBuffers()
 	HR(m_d3dDevice->CreateRenderTargetView(backBuffer, 0, &m_backBufferRTV));
 	backBuffer->Release();
 
-	// Quad
-	D3D11_TEXTURE2D_DESC textureDesc;
-	ZeroMemory(&textureDesc, sizeof(textureDesc));
-	textureDesc.Width = m_screenWidth;
-	textureDesc.Height = m_screenHeight;
-	textureDesc.MipLevels = 1;
-	textureDesc.ArraySize = 1;
-	textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
-	textureDesc.SampleDesc.Count = 1;
-	textureDesc.Usage = D3D11_USAGE_DEFAULT;
-	textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-	textureDesc.CPUAccessFlags = 0;
-	textureDesc.MiscFlags = 0;
-
-	m_d3dDevice->CreateTexture2D(&textureDesc, nullptr, m_quadTexture.GetAddressOf());
-
-	D3D11_RENDER_TARGET_VIEW_DESC quadRTVDesc;
-	quadRTVDesc.Format = textureDesc.Format;
-	quadRTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	quadRTVDesc.Texture2D.MipSlice = 0;
-
-	m_d3dDevice->CreateRenderTargetView(m_quadTexture.Get(), &quadRTVDesc, m_quadRTV.GetAddressOf());
-
-	D3D11_SHADER_RESOURCE_VIEW_DESC quadSRVDesc;
-	quadSRVDesc.Format = textureDesc.Format;
-	quadSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	quadSRVDesc.Texture2D.MostDetailedMip = 0;
-	quadSRVDesc.Texture2D.MipLevels = 1;
-
-	m_d3dDevice->CreateShaderResourceView(m_quadTexture.Get(), &quadSRVDesc, m_quadSRV.GetAddressOf());
+	m_deferredBuffers->Initialize(m_screenWidth, m_screenHeight);
+	m_quadBuffer->Initialize(m_screenWidth, m_screenHeight);
 
 	// set the viewport transform
 	m_viewPort.TopLeftX = 0;
@@ -216,8 +212,141 @@ void MZDX11Renderer::ResizeBuffers()
 	m_viewPort.MaxDepth = 1.0f;
 
 	m_d3dDeviceContext->RSSetViewports(1, &m_viewPort);
+}
 
-	m_deferredBuffers->Initialize(m_d3dDevice.Get(), m_screenWidth, m_screenHeight);
+void MZDX11Renderer::CreateDepthStecilStates()
+{
+	// Initialize the depth stencil states
+	D3D11_DEPTH_STENCIL_DESC enableDepthStencilDescription;
+	ZeroMemory(&enableDepthStencilDescription, sizeof(enableDepthStencilDescription));
+
+	enableDepthStencilDescription.DepthEnable = true;
+	enableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	enableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
+	enableDepthStencilDescription.StencilEnable = false;
+	//enableDepthStencilDescription.StencilReadMask = 0xFF;
+	//enableDepthStencilDescription.StencilWriteMask = 0xFF;
+	//// Stencil operations if pixel is front-facing.
+	//enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	//enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	//enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	//enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	//// Stencil operations if pixel is back-facing.
+	//enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	//enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	//enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	//enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Create the depth stencil state for enabling Z buffering
+	m_d3dDevice->CreateDepthStencilState(&enableDepthStencilDescription, &m_depthStencilStateEnable);
+
+	// Initialize the depth stencil states
+	D3D11_DEPTH_STENCIL_DESC disableDepthStencilDescription;
+	ZeroMemory(&disableDepthStencilDescription, sizeof(disableDepthStencilDescription));
+
+	disableDepthStencilDescription.DepthEnable = false;
+	disableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	disableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
+	disableDepthStencilDescription.StencilEnable = true;
+	disableDepthStencilDescription.StencilReadMask = 0xFF;
+	disableDepthStencilDescription.StencilWriteMask = 0xFF;
+	// Stencil operations if pixel is front-facing.
+	disableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	disableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	disableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	disableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	// Stencil operations if pixel is back-facing.
+	disableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	disableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	disableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	disableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Create the depth stencil state for disabling Z buffering
+	m_d3dDevice->CreateDepthStencilState(&disableDepthStencilDescription, &m_depthStencilStateDisable);
+}
+
+void MZDX11Renderer::SetLights()
+{
+	DirectionalLight* dirLight = new DirectionalLight();
+	dirLight->Color = XMFLOAT4{ 0.5f, 0.5f, 0.5f, 1.0f };
+	dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
+	ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+	ResourceManager::Instance.Get().GetPixelShader("FullScreenQuadPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+
+	PointLight pointLight[4];
+	pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
+	pointLight[0].Position = XMFLOAT4{ 5.0f, 5.0f, 0.0f, 1.0f };
+	pointLight[1].Color = XMFLOAT4{ 0.0f, 0.3f, 0.0f, 1.0f };
+	pointLight[1].Position = XMFLOAT4{ 0.0f, 3.0f, -5.0f, 1.0f };
+	pointLight[2].Color = XMFLOAT4{ 0.5f, 0.3f, 0.0f, 1.0f };
+	pointLight[2].Position = XMFLOAT4{ -1.0f, 0.0f, 0.0f, 1.0f };
+	pointLight[3].Color = XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f };
+	pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
+	ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
+	ResourceManager::Instance.Get().GetPixelShader("FullScreenQuadPixelShader.cso")->SetPointLight("pointLight", pointLight);
+
+	SpotLight spotLight[2];
+	spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
+	spotLight[0].Direction = XMFLOAT3{ 10.0f, -3.0f, 0.0f };
+	spotLight[0].Position = XMFLOAT4{ 20.0f, 10.0f, 0.0f, 1.0f };
+	spotLight[0].SpotPower = 1.0f;
+	spotLight[1].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
+	spotLight[1].Direction = XMFLOAT3{ -10.0f, 0.0f, -5.0f };
+	spotLight[1].Position = XMFLOAT4{ 10.0f, 20.0f, 5.0f, 1.0f };
+	spotLight[1].SpotPower = 1.0f;
+	ResourceManager::Instance.Get().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
+	ResourceManager::Instance.Get().GetPixelShader("FullScreenQuadPixelShader.cso")->SetSpotLight("spotLight", spotLight);
+}
+
+void MZDX11Renderer::SetObjects()
+{
+	/*HelperObject* grid = new HelperObject();
+	grid->SetMesh("grid");
+
+	HelperObject* axis = new HelperObject();
+	axis->SetMesh("axis");*/
+
+	// FBX Test
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/Rob02.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/4QCharacter_tpose.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/4QCharacter_idle_ani.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/A_TP_CH_Sprint_F.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/model.dae");
+	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/sunsetcube1024.dds");
+	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/diffuse.png");
+
+	//StaticMeshObject* test1 = new StaticMeshObject();
+	SkinningMeshObject* test1 = new SkinningMeshObject();
+	test1->SetMesh("Rob02.fbx");
+	//test1->SetMesh("A_TP_CH_Sprint_F.fbx");
+	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
+	test1->SetNormalTexture("Rob02White_Normal.png");
+	//test1->PlayAnimation(1, false);
+	test1->PlayAnimation(0, true);
+
+	Skybox* sky = new Skybox();
+	sky->SetCubeMapTexture("sunsetcube1024.dds");
+}
+
+void MZDX11Renderer::EnableZBuffering()
+{
+	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilStateEnable.Get(), 1);
+}
+
+void MZDX11Renderer::DisableZBuffering()
+{
+	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilStateDisable.Get(), 1);
+}
+
+void MZDX11Renderer::SetRenderTarget()
+{
+	m_d3dDeviceContext->OMSetRenderTargets(1, m_backBufferRTV.GetAddressOf(), nullptr);
+}
+
+void MZDX11Renderer::ClearRenderTarget()
+{
+	m_d3dDeviceContext->ClearRenderTargetView(m_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Transparent));
+	//m_d3dDeviceContext->ClearDepthStencilView(m_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 float MZDX11Renderer::GetAspectRatio() const

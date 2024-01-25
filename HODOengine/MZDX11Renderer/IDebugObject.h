@@ -27,5 +27,4 @@ public:
 
 private:
 	static std::vector<IDebugObject*> debugObjects;
-	friend class DeferredRenderer;
 };

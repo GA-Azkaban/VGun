@@ -36,5 +36,6 @@ public:
 
 private:
 	static std::vector<IMeshObject*> meshObjects;
-	friend class DeferredRenderer;
+	friend class MZDX11Renderer;
+	friend class GBufferPass;
 };

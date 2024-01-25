@@ -32,5 +32,4 @@ public:
 
 private:
 	static std::vector<IUIObject*> uiObjects;
-	friend class DeferredRenderer;
 };

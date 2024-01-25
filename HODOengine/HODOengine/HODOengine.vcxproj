@@ -159,6 +159,7 @@
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="DynamicSphereCollider.h" />
     <ClInclude Include="InputData.h" />
+    <ClInclude Include="SkyboxRenderer.h" />
     <ClInclude Include="SoundGroup.h" />
     <ClInclude Include="EventHandler.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -250,6 +251,7 @@
     <ClCompile Include="SceneSystem.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="SkinnedMeshRenderer.cpp" />
+    <ClCompile Include="SkyboxRenderer.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="StaticBoxCollider.cpp" />
     <ClCompile Include="StaticCollider.cpp" />

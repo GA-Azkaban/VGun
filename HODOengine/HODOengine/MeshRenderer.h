@@ -11,6 +11,10 @@ namespace HDData
 		MeshRenderer();
 		HDEngine::IStaticMesh& Get();
 
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
+		virtual void Update() override;
+
 	private:
 		HDEngine::IStaticMesh* _staticMesh;
 	};

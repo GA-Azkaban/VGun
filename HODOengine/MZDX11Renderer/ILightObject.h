@@ -29,6 +29,5 @@ public:
 
 private:
 	static std::vector<ILightObject*> lightObjects;
-	friend class DeferredRenderer;
 };
 

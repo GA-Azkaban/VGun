@@ -1,7 +1,9 @@
-// External texture-related data
-Texture2D Texture		: register(t0);
-Texture2D NormalMap		: register(t1);
-SamplerState Sampler	: register(s0);
+#include "Sampler.hlsli"
+
+Texture2D Albedo : register(t0);
+Texture2D NormalMap : register(t1);
+//Texture2D OcclusionRoughnessMetal : register(t2);
+//Texture2D Emissive : register(t3);
 
 struct VertexToPixel
 {
@@ -14,9 +16,10 @@ struct VertexToPixel
 
 struct PSOutput
 {
-	float4 position		: SV_Target0;
-	float4 diffuse		: SV_Target1;
-	float4 normal		: SV_Target2;
+	float4 diffuse				: SV_TARGET0;
+	float4 normal				: SV_TARGET1;
+	//float4 metalRoughOcclusion	: SV_TARGET3;
+	//float4 emissive : SV_TARGET4;
 };
 
 PSOutput main(VertexToPixel input)
@@ -27,7 +30,7 @@ PSOutput main(VertexToPixel input)
 	input.tangent = normalize(input.tangent);
 
 	// Read and unpack normal from map
-	float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
+	float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
 
 	// Transform from tangent to world space
 	float3 N = input.normal;
@@ -38,11 +41,21 @@ PSOutput main(VertexToPixel input)
 	input.normal = normalize(mul(normalFromMap, TBN));
 
 	// Sample the texture
-	float4 textureColor = Texture.Sample(Sampler, input.uv);
+	float4 textureColor = Albedo.Sample(LinearSampler, input.uv);
 
-	output.position = float4(input.worldPos, 1.0f);
+	//float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearSampler, input.uv).rgb;
+	//occlusion = occRoughMetal.r;
+	//roughness = occRoughMetal.g;
+	//metallic = occRoughMetal.b;
+
+	//float4 emissive = Emissive.Sample(LinearSampler, input.uv);
+
 	output.diffuse = textureColor;
+	//output.metalRoughOcclusion.r = metallic;
+	//output.metalRoughOcclusion.g = roughness;
+	//output.metalRoughOcclusion.b = occlusion;
 	output.normal = float4(input.normal, 1.0f);
+	//output.emissive = emissive;
 
 	return output;
 }

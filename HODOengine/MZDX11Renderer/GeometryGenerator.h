@@ -38,6 +38,8 @@ public:
 
 	void CreateAxis(DebugMeshData& meshData);
 
+	void CreateSkybox(MeshData& meshData);
+
 	///<summary>
 	/// Creates a box centered at the origin with the given dimensions.
 	///</summary>

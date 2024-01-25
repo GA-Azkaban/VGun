@@ -31,6 +31,7 @@
     <ClInclude Include="ISketchableImage.h" />
     <ClInclude Include="ISketchableText.h" />
     <ClInclude Include="ISkinnedMesh.h" />
+    <ClInclude Include="ISkybox.h" />
     <ClInclude Include="IStaticMesh.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

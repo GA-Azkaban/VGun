@@ -41,6 +41,9 @@
     <Filter Include="Material">
       <UniqueIdentifier>{08a72f2f-1fe6-459d-840b-63790ae16ca8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Renderable\Skybox">
+      <UniqueIdentifier>{c96f7985-d44c-426e-8929-63e6f2a8e3a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -81,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="IMaterial.h">
       <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="ISkybox.h">
+      <Filter>Renderable\Skybox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

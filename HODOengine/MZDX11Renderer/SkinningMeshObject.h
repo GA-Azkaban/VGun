@@ -33,7 +33,6 @@ public:
 
 	void SetDiffuseTexture(const std::string& fileName);
 	void SetNormalTexture(const std::string& fileName);
-	void SetSamplerState(ID3D11SamplerState* sampler);
 
 	void PlayAnimation(const std::string& animName, bool isLoop = true);
 	void PlayAnimation(UINT index, bool isLoop = true);

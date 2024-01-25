@@ -60,11 +60,9 @@ void LightObject::Render()
 	m_vertexShader->CopyAllBufferData();
 	m_vertexShader->SetShader();
 
-	m_pixelShader->SetShaderResourceView("NormalMap", DeferredBuffers::Instance.Get().GetShaderResourceView(0));
-	m_pixelShader->SetShaderResourceView("Texture", DeferredBuffers::Instance.Get().GetShaderResourceView(1));
-	m_pixelShader->SetShaderResourceView("PositionTexture", DeferredBuffers::Instance.Get().GetShaderResourceView(2));
-
-	m_pixelShader->SetSamplerState("basicSampler", m_material->GetSamplerState());
+	//m_pixelShader->SetShaderResourceView("NormalMap", DeferredBuffers::Instance.Get().GetShaderResourceView(0));
+	//m_pixelShader->SetShaderResourceView("Texture", DeferredBuffers::Instance.Get().GetShaderResourceView(1));
+	//m_pixelShader->SetShaderResourceView("PositionTexture", DeferredBuffers::Instance.Get().GetShaderResourceView(2));
 
 	m_pixelShader->SetFloat3("cameraPosition", MZCamera::GetMainCamera()->GetPosition());
 

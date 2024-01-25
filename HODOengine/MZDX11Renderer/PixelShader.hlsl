@@ -1,23 +1,5 @@
-
-struct DirectionalLight
-{
-	float4 Color;
-	float3 Direction;
-};
-
-struct PointLight
-{
-	float4 Color;
-	float4 Position;
-};
-
-struct SpotLight
-{
-	float4 Color;
-	float4 Position;
-	float3 Direction;
-	float SpotPower;
-};
+#include "Sampler.hlsli"
+#include "Lighting.hlsli"
 
 cbuffer lightData : register(b0)
 {
@@ -31,7 +13,6 @@ cbuffer lightData : register(b0)
 // External texture-related data
 Texture2D Texture		: register(t0);
 Texture2D NormalMap		: register(t1);
-SamplerState Sampler	: register(s0);
 
 struct VertexToPixel
 {
@@ -48,7 +29,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	input.tangent = normalize(input.tangent);
 
 	// Read and unpack normal from map
-	float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
+	float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
 
 	// Transform from tangent to world space
 	float3 N = input.normal;
@@ -59,7 +40,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	input.normal = normalize(mul(normalFromMap, TBN));
 
 	// Sample the texture
-	float4 textureColor = Texture.Sample(Sampler, input.uv);
+	float4 textureColor = Texture.Sample(LinearSampler, input.uv);
 
 	float3 toCamera = normalize(cameraPosition - input.worldPos);
 

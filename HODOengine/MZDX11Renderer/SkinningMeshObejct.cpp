@@ -14,8 +14,9 @@ SkinningMeshObject::SkinningMeshObject()
 	: m_material(nullptr), m_isActive(true),
 	m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr)
 {
-	m_material = new Material(ResourceManager::Instance.Get().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("SkeletonPixelShader.cso"));
-	m_material->SetSamplerState(SamplerState::Instance.Get().GetSamplerState());
+	m_material = new Material(
+		ResourceManager::Instance.Get().GetVertexShader("DeferredSkeletonMeshVS.cso"), 
+		ResourceManager::Instance.Get().GetPixelShader("DeferredSkeletonMeshPS.cso"));
 	m_boneTransform.resize(96, XMMatrixIdentity());
 }
 
@@ -71,11 +72,7 @@ void SkinningMeshObject::Render()
 	vertexShader->CopyAllBufferData();
 	vertexShader->SetShader();
 
-	XMFLOAT3 cameraPos = MZCamera::GetMainCamera()->GetPosition();
-	pixelShader->SetFloat3("cameraPosition", cameraPos);
-
-	pixelShader->SetSamplerState("Sampler", m_material->GetSamplerState());
-	pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
+	pixelShader->SetShaderResourceView("Albedo", m_material->GetTextureSRV());
 	pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
 
 	pixelShader->CopyAllBufferData();
@@ -290,7 +287,3 @@ void SkinningMeshObject::SetNormalTexture(const std::string& fileName)
 	m_material->SetNormalTexture(normalTex);
 }
 
-void SkinningMeshObject::SetSamplerState(ID3D11SamplerState* sampler)
-{
-	m_material->SetSamplerState(sampler);
-}
