@@ -66,7 +66,6 @@ TestScene::TestScene()
 	playerTestHead->SetParentObject(playerTest);
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
 
-
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");

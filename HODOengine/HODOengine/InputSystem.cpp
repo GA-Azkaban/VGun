@@ -1,4 +1,4 @@
-#include "InputSystem.h"
+﻿#include "InputSystem.h"
 #include <cassert>
 
 
@@ -236,7 +236,7 @@ namespace HDEngine
 
 		_prevMousePos = _mousePos;
 
-		RecursiveMouse();
+		//RecursiveMouse();
 	}
 
 	void InputSystem::RecursiveMouse()
@@ -287,6 +287,8 @@ namespace HDEngine
 			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
 			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
 		}
+
+		//SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2.0f, GetSystemMetrics(SM_CYSCREEN) / 2.0f);
 	}
 }
 
