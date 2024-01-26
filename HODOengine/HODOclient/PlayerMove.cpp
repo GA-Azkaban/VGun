@@ -13,6 +13,9 @@ void PlayerMove::Start()
 	_moveSpeed = 10.0f;
 
 	pitchAngle = 0.0f;
+
+	_isOnGround = false;
+	_isJumping = true;
 }
 
 void PlayerMove::Update()
@@ -34,7 +37,9 @@ void PlayerMove::Update()
 	// 이동, 회전
 	Move(_moveDirection);
 
-	API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+	
+	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -83,6 +88,10 @@ void PlayerMove::CheckMoveDirection()
 	{
 		Jump();
 	}
+	if (_isJumping)
+	{
+		CheckIsOnGround();
+	}
 }
 
 
@@ -102,7 +111,7 @@ bool PlayerMove::CheckIsOnGround()
 	{
 		//RocketEngine::RMFLOAT4 worldPos = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(pos.x + x[i], pos.y, pos.z + z[i], 1.0f), gameObject->transform.GetWorldTM());
 		float halfHeight = _playerCollider->GetHeight() / 2.0f;
-		Vector3 worldPos = Vector3(pos.x + x[i], pos.y + 0.01f * i - halfHeight, pos.z + z[i]);
+		Vector3 worldPos = Vector3(pos.x + x[i], pos.y - halfHeight - 0.001f * (i - 1), pos.z + z[i]);
 
 		int type = 0;
 		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f, -1.0f,0.0f }, 0.05f, &type);
@@ -117,7 +126,7 @@ bool PlayerMove::CheckIsOnGround()
 				// 상태 변경 및 착지 Sound.
 				if (_isOnGround == false)
 				{
-					_isOnGround = true;
+ 					_isOnGround = true;
 					_isJumping = false;
 					//_playerAudio->Play3DOnce("landing");
 					//_jumpCount = 0;
@@ -126,7 +135,7 @@ bool PlayerMove::CheckIsOnGround()
 			}
 		}
 	}
-	//_isOnGround = false;
+	_isOnGround = false;
 
 	return false;
 }
@@ -137,68 +146,6 @@ void PlayerMove::Move(int direction)
 	// 7 8 9
 	// 4 5 6
 	// 1 2 3
-
-	//switch (direction)
-	//{
-	//	case 1:
-	//	{
-	//		moveStep =
-	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed
-	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
-	//	}
-	//	break;
-	//	case 2:
-	//	{
-	//		moveStep = GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed;
-	//	}
-	//	break;
-	//	case 3:
-	//	{
-	//		moveStep =
-	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed
-	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
-	//	}
-	//	break;
-	//	case 4:
-	//	{
-	//		moveStep = GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
-	//	}
-	//	break;
-	//	case 5:
-	//	{
-	//		// 정지 상태
-	//	}
-	//	break;
-	//	case 6:
-	//	{
-	//		moveStep = GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
-	//	}
-	//	break;
-	//	case 7:
-	//	{
-	//		moveStep =
-	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed
-	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
-	//	}
-	//	break;
-	//	case 8:
-	//	{
-	//		moveStep = GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed;
-	//	}
-	//	break;
-	//	case 9:
-	//	{
-	//		moveStep =
-	//			GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed
-	//			+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed;
-	//	}
-	//	break;
-	//	default:
-	//	{
-
-	//	}
-	//	break;
-	//}
 
 	// PhysX로 오브젝트 옮겨주기
 	if (_moveDirection == 5)
@@ -217,9 +164,31 @@ void PlayerMove::Move(int direction)
 	_prevDirection = _moveDirection;
 }
 
+void PlayerMove::SetHeadCam(HDData::Camera* cam)
+{
+	_headCam = cam;
+}
+
+void PlayerMove::ToggleCam()
+{
+	HDData::Camera* nowCam = API::GetMainCamera();
+
+	if (nowCam == _headCam)
+	{
+		API::SetMainCamera(_prevCam);
+		_prevCam = nullptr;
+		_isHeadCam = false;
+	}
+	else
+	{
+		_prevCam = API::SetMainCamera(_headCam);
+		_isHeadCam = true;
+	}
+}
+
 void PlayerMove::Jump()
 {
-	CheckIsOnGround();
+	//CheckIsOnGround();
 
 	if ((!_isJumping) && (_isOnGround))
 		//if (!_isJumping)
@@ -227,7 +196,7 @@ void PlayerMove::Jump()
 		// 점프
 		_playerCollider->Jump();
 		_isJumping = true;
-		_isOnGround = false;
+		//_isOnGround = false;
 	}
 }
 
@@ -306,11 +275,12 @@ void PlayerMove::CameraControl()
 
 	if (API::GetKeyDown(DIK_P))
 	{
-		ToggleCameraView();
+		//ToggleCameraView();
+		ToggleCam();
 	}
 
 	// camera move
-	if (_isCameraConnected)
+	if (_isHeadCam)
 	{
 		CameraMove();
 	}
@@ -319,11 +289,11 @@ void PlayerMove::CameraControl()
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float rotationValue)
 {
-	HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
+	HDData::Transform* cameraTransform = _headCam->GetGameObject()->GetTransform();
 	Quaternion rot = cameraTransform->GetLocalRotation();
 	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
 
-	if (89.0f < eulerAngleX)
+	if (eulerAngleX > 89.0f)
 	{
 		//constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
 		constexpr float radX = DirectX::XMConvertToRadians(89.0f) * 0.5f;
@@ -398,12 +368,12 @@ void PlayerMove::Yaw(float radian)
 	// rotation along Z-direction. necessary?
 }
 
-void PlayerMove::ToggleCameraView()
+void PlayerMove::SwitchCamera()
 {
 	HDData::Transform* playerTransform = this->GetGameObject()->GetTransform();
 	HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
 
-	if (!_isCameraConnected)
+	if (!_isHeadCam)
 	{
 		HDData::Transform* playerTransform = this->GetGameObject()->GetTransform();
 		HDData::Transform* cameraTransform = _playerCamera->GetGameObject()->GetTransform();
@@ -414,14 +384,14 @@ void PlayerMove::ToggleCameraView()
 		cameraTransform->SetPosition(playerTransform->GetPosition() + Vector3(0.f, 4.f, 0.f));
 		cameraTransform->SetRotation(playerTransform->GetRotation());
 		_playerCamera->GetGameObject()->SetParentObject(this->GetGameObject());
-		_isCameraConnected = true;
+		_isHeadCam = true;
 	}
 	else
 	{
 		_playerCamera->GetGameObject()->SetParentObject(nullptr);
 		cameraTransform->SetPosition(_prevCameraPos);
 		cameraTransform->SetRotation(_prevCameraRot);
-		_isCameraConnected = false;
+		_isHeadCam = false;
 	}
 }
 

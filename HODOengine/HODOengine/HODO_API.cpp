@@ -183,8 +183,17 @@ namespace API
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}
+
+		HODO_API HDData::Camera* GetMainCamera()
+		{
+			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
+		}
+
+		HODO_API HDData::Camera* SetMainCamera(HDData::Camera* camera)
+		{
+			HDData::Camera* prevCam = GetMainCamera();
+			HDEngine::SceneSystem::Instance().GetCurrentScene()->SetMainCamera(camera);
+			return prevCam;
+		}
 	}
-
-
-
 }

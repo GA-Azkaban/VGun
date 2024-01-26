@@ -258,7 +258,8 @@ namespace HDEngine
 			mousePoint = { x, y };
 			ScreenToClient(_hWnd, &mousePoint);
 			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
 		}
 		else if (_mousePos.x <= windowRect.left + 1)
 		{
@@ -267,7 +268,8 @@ namespace HDEngine
 			mousePoint = { x, y };
 			ScreenToClient(_hWnd, &mousePoint);
 			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
 		}
 		if (windowRect.bottom - 1 <= _mousePos.y)
 		{
@@ -276,7 +278,8 @@ namespace HDEngine
 			mousePoint = { x, y };
 			ScreenToClient(_hWnd, &mousePoint);
 			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
 		}
 		else if (_mousePos.y <= windowRect.top + 1)
 		{
@@ -285,7 +288,8 @@ namespace HDEngine
 			mousePoint = { x, y };
 			ScreenToClient(_hWnd, &mousePoint);
 			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
 		}
 
 		//SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2.0f, GetSystemMetrics(SM_CYSCREEN) / 2.0f);

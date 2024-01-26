@@ -34,7 +34,7 @@ private:
 	void CameraMove();
 	void Pitch(float rotationValue);
 	void Yaw(float radian);
-	void ToggleCameraView();
+	void SwitchCamera();
 
 	// player's move
 	Vector3 _nextPosition;
@@ -57,7 +57,14 @@ private:
 	HDData::Camera* _playerCamera;
 	Vector3 _prevCameraPos;
 	Quaternion _prevCameraRot;
-	bool _isCameraConnected;
+	bool _isHeadCam;
 
 	float pitchAngle;
+
+public:
+	void SetHeadCam(HDData::Camera* cam);
+	void ToggleCam();
+private:
+	HDData::Camera* _headCam;
+	HDData::Camera* _prevCam;
 };

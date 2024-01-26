@@ -19,7 +19,8 @@ enum eColliderType
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
-	auto mainCam = _scene->GetMainCamera()->GetGameObject();
+	//auto mainCam = _scene->GetMainCamera()->GetGameObject();
+	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
 	//auto camera = API::CreateObject(_scene);
@@ -47,24 +48,28 @@ TestScene::TestScene()
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
-	playerTest->AddComponent<PlayerMove>();
-	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
+	auto playerMove = playerTest->AddComponent<PlayerMove>();
+	playerMove->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMesh("Rob02.fbx");
 	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
 	meshComp->LoadNormalMap("Rob02White_Normal.png");
 	meshComp->PlayAnimation(0, true);
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{1.f, 1.f, 1.f});
+
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{0.f, 3.f, 0.f});
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 	
 	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
-	playerTestHead->AddComponent<HDData::MeshRenderer>();
+	//playerTestHead->AddComponent<HDData::MeshRenderer>();
 	playerTestHead->SetParentObject(playerTest);
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
+	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
+	playerMove->SetHeadCam(headCam);
 
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });

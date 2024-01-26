@@ -57,6 +57,9 @@ namespace API
 		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 
+		// 메인 카메라 조작을 위한 함수
+		HODO_API HDData::Camera* GetMainCamera();
+		HODO_API HDData::Camera* SetMainCamera(HDData::Camera* camera);
 
 		// 키 입력을 위한 함수 (키보드, 마우스)
 		HODO_API bool GetKeyDown(BYTE keyCode);

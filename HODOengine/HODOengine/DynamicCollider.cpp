@@ -53,9 +53,8 @@ void HDData::DynamicCollider::UpdateToPhysics()
 
 void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 {
-	this->GetTransform()->SetPosition(pos.x, pos.y, pos.z);
-	this->GetTransform()->SetRotation(quat);
-
+	GetTransform()->SetPosition(pos.x, pos.y, pos.z);
+	GetTransform()->SetRotation(quat);
 }
 
 void HDData::DynamicCollider::DrawDebug()
