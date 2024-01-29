@@ -90,6 +90,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
 
-	return float4(totalLight, 1.0f);
-	//return textureColor;
+	//return float4(totalLight, 1.0f);
+	return textureColor;
 }

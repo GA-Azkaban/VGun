@@ -59,12 +59,12 @@ void CameraMove::Update()
 
 	if (API::GetKeyPressing(DIK_DOWNARROW))
 	{
-		Pitch(rotateSpeed * deltaTime / 4);
+		Pitch(rotateSpeed * deltaTime * 10);
 	}
 
 	if (API::GetKeyPressing(DIK_UPARROW))
 	{
-		Pitch(-rotateSpeed * deltaTime / 4);
+		Pitch(-rotateSpeed * deltaTime * 10);
 	}
 
 
