@@ -9,7 +9,6 @@
 #include "TestSound.h"
 #include "SliderSoundScript.h"
 
-
 enum eColliderType
 {
 	PLAYER = 1,
@@ -19,7 +18,8 @@ enum eColliderType
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
-	auto mainCam = _scene->GetMainCamera()->GetGameObject();
+	//auto mainCam = _scene->GetMainCamera()->GetGameObject();
+	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
 	//auto camera = API::CreateObject(_scene);
@@ -47,9 +47,25 @@ TestScene::TestScene()
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	//playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
-	playerTest->AddComponent<PlayerMove>();
-	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
+	auto playerPosText = API::CreateTextbox(_scene);
+	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
+	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
+	auto aimText = API::CreateTextbox(_scene);
+	aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
+	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
+	aimText->GetComponent<HDData::TextUI>()->SetText("");
+	auto hitText = API::CreateTextbox(_scene);
+	hitText->GetTransform()->SetPosition(Vector3());
+	hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
+	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!!!!!!!!!!!!!");
+	//playerTest->AddComponent<HDData::TextUI>();
+	//playerTest->GetComponent<HDData::TextUI>()->SetText("x : ,  y: , z : ");
+	//playerTest->GetComponent<HDData::TextUI>()->SetPosition(1200.0f, 1200.0f, 0.0f);
+	auto playerMove = playerTest->AddComponent<PlayerMove>();
+	playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
 	//meshComp->LoadMesh("Rob02.fbx");
@@ -58,19 +74,24 @@ TestScene::TestScene()
 	meshComp->LoadMesh("A_TP_CH_Sprint_F.fbx");
 	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
 	meshComp->PlayAnimation(0, true);
-	playerTest->GetComponent<HDData::Transform>()->SetScale(Vector3{0.3f, 0.3f, 0.3f});
-	playerTest->GetComponent<HDData::Transform>()->Rotate(-90.0f, 0.0f, 0.0f);
-	//playerTest->GetComponent<HDData::Transform>()->SetRotation(Quaternion{0.6f, 0.0f, 0.0f, 0.0f});
-	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{1.f, 1.f, 1.f});
+
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 3.f, 0.f });
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
-	
+
 	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
-	
+
 	/*auto playerTestHead = API::CreateObject(_scene, "playerHead");
-	playerTestHead->AddComponent<HDData::MeshRenderer>();
+	//playerTestHead->AddComponent<HDData::MeshRenderer>();
 	playerTestHead->SetParentObject(playerTest);
-	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
+	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
+	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
+	playerMove->SetHeadCam(headCam);
+
+	auto sphereTest = API::CreateObject(_scene, "sphereTest");
+	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
+	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+
 
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
@@ -121,7 +142,7 @@ TestScene::~TestScene()
 
 void TestScene::Start()
 {
-	
+
 }
 
 void TestScene::ClickEvent()

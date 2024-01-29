@@ -23,11 +23,13 @@ namespace HDData
 
 	public:
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
-		void Move(Vector3 moveStep);
+		void Move(Vector3 moveStep, float speed);
 		void Rotate(float rotationAmount);
 		void Jump();
 		void Sleep();
 		void Stop();
+		void AddForce(Vector3 direction, float force = 1.0f);
+		void AdjustVelocity(float ratio);
 
 	public:
 		// PhysX 씬과 데이터를 주고받는 함수

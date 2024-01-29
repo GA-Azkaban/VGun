@@ -1,4 +1,4 @@
-#include "SceneSystem.h"
+﻿#include "SceneSystem.h"
 #include "UISystem.h"
 #include "GameObject.h"
 #include "Scene.h"
@@ -30,6 +30,12 @@ namespace HDEngine
 
 		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
+
+		if (!_currentScene)
+		{
+			_currentScene = scene;
+		}
+
 		return scene;
 	}
 

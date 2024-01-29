@@ -176,22 +176,6 @@ namespace HDData
 		}
 
 		_rotation = result;
-
-		// 		else
-		// 		{
-		// 			Matrix worldTM =
-		// 				worldTM *= Matrix::CreateScale(_scale);
-		// 			worldTM *= Matrix::CreateFromQuaternion(rotation);
-		// 			worldTM *= Matrix::CreateTranslation(_position);
-		// 
-		// 			Matrix invParent = Matrix::Identity;
-		// 			invParent = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM().Invert();
-		// 			invParent *= worldTM;
-		// 
-		// 			Vector3 temp1;
-		// 			Vector3 temp2;
-		// 			invParent.Decompose(temp1, _rotation, temp2);
-		// 		}
 	}
 
 	void Transform::SetScale(const Vector3& scale)
