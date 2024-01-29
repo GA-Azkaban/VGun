@@ -14,10 +14,10 @@ void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
 	_physXRigid = rigid;
 }
 
-void HDData::DynamicCollider::Move(Vector3 moveStep)
+void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 {
 	//_physXRigid->wakeUp();
-	_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z), physx::PxForceMode::eVELOCITY_CHANGE);
+	_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 }
 
 void HDData::DynamicCollider::Rotate(float rotationAmount)
@@ -49,6 +49,11 @@ void HDData::DynamicCollider::Stop()
 void HDData::DynamicCollider::AddForce(Vector3 direction, float force)
 {
 	_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
+}
+
+void HDData::DynamicCollider::AdjustVelocity(float ratio)
+{
+	_physXRigid->setLinearVelocity(_physXRigid->getLinearVelocity() * ratio);
 }
 
 void HDData::DynamicCollider::UpdateToPhysics()

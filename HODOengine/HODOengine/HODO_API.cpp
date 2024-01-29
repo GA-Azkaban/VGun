@@ -174,6 +174,11 @@ namespace API
 			return HDEngine::PhysicsSystem::Instance().RayCast(origin.x, origin.y, origin.z, direction.x, direction.y, direction.z, length, type);
 		}
 
+		HODO_API HDData::Collider* ShootRayHitPoint(Vector3 origin, Vector3 direction, Vector3& hitPoint, float length /*= 100.0f*/, int* type /*= nullptr*/)
+		{
+			return HDEngine::PhysicsSystem::Instance().RayCastHitPoint(origin.x, origin.y, origin.z, direction.x, direction.y, direction.z, hitPoint, length, type);
+		}
+
 		HODO_API void DrawLine(Vector3 start, Vector3 end, Vector4 color)
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, end, color);

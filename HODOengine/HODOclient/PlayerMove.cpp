@@ -10,7 +10,7 @@ PlayerMove::PlayerMove()
 void PlayerMove::Start()
 {
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
-	_moveSpeed = 10.0f;
+	_moveSpeed = 3.5f;
 
 	pitchAngle = 0.0f;
 
@@ -38,7 +38,7 @@ void PlayerMove::Update()
 	CheckLookDirection();
 
 	// 키보드에 따른 플레이어 이동 방향 체크
-	CheckMoveDirection();
+	CheckMoveInfo();
 
 	CameraControl();
 
@@ -48,6 +48,8 @@ void PlayerMove::Update()
 	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 	
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
+
+	UpdatePlayerPositionDebug();
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -55,8 +57,15 @@ void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
 	_playerCamera = camera;
 }
 
+void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim, HDData::TextUI* hit)
+{
+	_playerInfoText = pos;
+	_aimText = aim;
+	_hitText = hit;
+}
+
 // 조이스틱 개념
-void PlayerMove::CheckMoveDirection()
+void PlayerMove::CheckMoveInfo()
 {
 	_moveDirection = 5;
 
@@ -95,6 +104,15 @@ void PlayerMove::CheckMoveDirection()
 	if (API::GetKeyDown(DIK_SPACE))
 	{
 		Jump();
+	}
+	if (API::GetKeyDown(DIK_LSHIFT))
+	{
+		_moveSpeed = 4.0f;
+	}
+	if (API::GetKeyUp(DIK_LSHIFT))
+	{
+		_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
+		_moveSpeed = 3.5f;
 	}
 }
 
@@ -162,7 +180,7 @@ void PlayerMove::Move(int direction)
 	}
 	else
 	{
-		_playerCollider->Move(DecideMoveDirection(_moveDirection));
+		_playerCollider->Move(DecideMoveDirection(_moveDirection), _moveSpeed);
 	}
 
 	_prevDirection = _moveDirection;
@@ -173,16 +191,25 @@ void PlayerMove::ShootGun()
 	HDData::Collider* hitCollider = nullptr;
 
 	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
+	Vector3 hitPoint = {1.0f, 1.0f, 1.0f};
 
-	hitCollider = API::ShootRay(rayOrigin, GetTransform()->GetForward());
+	hitCollider = API::ShootRayHitPoint(rayOrigin, GetTransform()->GetForward(), hitPoint);
 	
 	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
 	
 	if (hitDynamic != nullptr)
 	{
-		Vector3 vecBtwnCenter = hitCollider->GetTransform()->GetPosition() - GetTransform()->GetPosition();
-		hitDynamic->AddForce(vecBtwnCenter - GetTransform()->GetForward(), 1.0f);
+		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
+		hitDynamic->AddForce(forceDirection, 5.0f);
+		//_hitText->GetTransform()->SetPosition(hitPoint); // mist setPos in screenSpace
 	}
+}
+
+void PlayerMove::UpdatePlayerPositionDebug()
+{
+	Vector3 pos = GetTransform()->GetPosition();
+	std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
+	_playerInfoText->SetText(posText);
 }
 
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
@@ -201,11 +228,13 @@ void PlayerMove::ToggleCam()
 		API::SetMainCamera(_prevCam);
 		_prevCam = nullptr;
 		_isHeadCam = false;
+		_aimText->SetText("");
 	}
 	else
 	{
 		_prevCam = API::SetMainCamera(_headCam);
 		_isHeadCam = true;
+		_aimText->SetText("O");
 	}
 }
 

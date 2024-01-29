@@ -16,6 +16,7 @@ public:
 
 public:
 	void SetPlayerCamera(HDData::Camera* camera);
+	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim, HDData::TextUI* hit);
 
 private:
 	bool _isMoveActive;
@@ -23,7 +24,7 @@ private:
 
 	// check ~~ series
 private:
-	void CheckMoveDirection();
+	void CheckMoveInfo();
 	void CheckLookDirection();
 	bool CheckIsOnGround();
 	Vector3 DecideMoveDirection(int direction);
@@ -49,6 +50,9 @@ private:
 	void ShootGun();
 
 private:
+	void UpdatePlayerPositionDebug();
+
+private:
 	bool _isJumping;
 	bool _isOnGround;
 	float _moveSpeed;
@@ -70,4 +74,9 @@ public:
 private:
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;
+
+private:
+	HDData::TextUI* _playerInfoText;
+	HDData::TextUI* _aimText;
+	HDData::TextUI* _hitText;
 };

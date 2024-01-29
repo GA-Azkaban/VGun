@@ -82,6 +82,7 @@ namespace API
 
 		/// physics stuff
 		HODO_API HDData::Collider* ShootRay(Vector3 origin, Vector3 direction, float length = 100.0f, int* type = nullptr);
+		HODO_API HDData::Collider* ShootRayHitPoint(Vector3 origin, Vector3 direction, Vector3& hitPoint, float length = 100.0f, int* type = nullptr);
 	}
 }
 

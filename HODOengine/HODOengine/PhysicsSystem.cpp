@@ -338,6 +338,61 @@ namespace HDEngine
 		return hitCol;
 	}
 
+
+	HDData::Collider* PhysicsSystem::RayCastHitPoint(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, Vector3& hitPos, float length, int* type)
+	{
+		physx::PxVec3 rayOrigin;
+		rayOrigin.x = originX;
+		rayOrigin.y = originY;
+		rayOrigin.z = originZ;
+
+		physx::PxVec3 rayDirection;
+		rayDirection.x = directionX;
+		rayDirection.y = directionY;
+		rayDirection.z = directionZ;
+
+		HDData::Collider* hitCol = nullptr;
+
+		// determine if hit or not
+		physx::PxRaycastBuffer hitBuffer;
+		bool isHit = _pxScene->raycast(rayOrigin, rayDirection, length, hitBuffer);
+
+		// process when hit. target's pointer, hit location, etc.
+		if (isHit)
+		{
+			// collided actor's pointer
+			physx::PxRigidActor* hitActor = hitBuffer.block.actor;
+
+			// find actor's type out
+			if (hitActor->getType() == physx::PxActorType::eRIGID_STATIC)
+			{
+				hitActor = static_cast<physx::PxRigidStatic*>(hitActor);
+				if (type != nullptr)
+				{
+					*type = 1;
+				}
+			}
+			else if (hitActor->getType() == physx::PxActorType::eRIGID_DYNAMIC)
+			{
+				hitActor = static_cast<physx::PxRigidDynamic*>(hitActor);
+				if (type != nullptr)
+				{
+					*type = 2;
+				}
+			}
+
+			// save collision info in userdata
+			hitCol = static_cast<HDData::Collider*>(hitActor->userData);
+
+			// save hitpoint(for particle effect or sth)
+			physx::PxVec3 hitPoint = hitBuffer.block.position;
+			hitPos = Vector3(hitPoint.x, hitPoint.y, hitPoint.z);
+		}
+
+		return hitCol;
+
+	}
+
 	physx::PxScene* PhysicsSystem::GetScene() const
 	{
 		return _pxScene;

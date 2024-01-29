@@ -9,7 +9,6 @@
 #include "TestSound.h"
 #include "SliderSoundScript.h"
 
-
 enum eColliderType
 {
 	PLAYER = 1,
@@ -50,24 +49,39 @@ TestScene::TestScene()
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
+	auto playerPosText = API::CreateTextbox(_scene);
+	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
+	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
+	auto aimText = API::CreateTextbox(_scene);
+	aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
+	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
+	aimText->GetComponent<HDData::TextUI>()->SetText("");
+	auto hitText = API::CreateTextbox(_scene);
+	hitText->GetTransform()->SetPosition(Vector3());
+	hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
+	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!!!!!!!!!!!!!");
+	//playerTest->AddComponent<HDData::TextUI>();
+	//playerTest->GetComponent<HDData::TextUI>()->SetText("x : ,  y: , z : ");
+	//playerTest->GetComponent<HDData::TextUI>()->SetPosition(1200.0f, 1200.0f, 0.0f);
 	auto playerMove = playerTest->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMesh("Rob02.fbx");
 	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
 	meshComp->LoadNormalMap("Rob02White_Normal.png");
 	meshComp->PlayAnimation(0, true);
 
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{0.f, 3.f, 0.f});
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 3.f, 0.f });
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
-	
+
 	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
-	
+
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	//playerTestHead->AddComponent<HDData::MeshRenderer>();
 	playerTestHead->SetParentObject(playerTest);
-	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
+	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	playerMove->SetHeadCam(headCam);
 
@@ -123,7 +137,7 @@ TestScene::~TestScene()
 
 void TestScene::Start()
 {
-	
+
 }
 
 void TestScene::ClickEvent()
