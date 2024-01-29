@@ -68,6 +68,8 @@ namespace HDData
 					_text->SetText(newVal);
 				}
 			}
+
+			_cursor->GetTransform()->SetPosition(_text->GetRight(), _text->GetTop(), 0);
 		}
 	}
 

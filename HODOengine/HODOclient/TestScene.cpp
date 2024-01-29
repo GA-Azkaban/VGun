@@ -100,8 +100,7 @@ TestScene::TestScene()
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
 	auto textTest = API::CreateTextbox(_scene);
-	//textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
+	textTest->GetTransform()->SetPosition({ 0.0f,0.0f,0.0f });
 	textTest->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Blue);
 
 	//HDData::GameObject* imageTest = API::CreateObject(_scene);

@@ -13,8 +13,6 @@ namespace RocketCore::Graphics
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
 		_color = DirectX::Colors::White;
-		_isTranslated = false;
-
 	}
 
 	TextRenderer::~TextRenderer()
@@ -25,6 +23,7 @@ namespace RocketCore::Graphics
 	void TextRenderer::SetText(const std::string& str)
 	{
 		_str = str;
+		MeasureTextSize();
 	}
 
 	const std::string TextRenderer::GetText()
@@ -44,11 +43,8 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::SetWorldTM(const Matrix& worldTM)
 	{
-		if (_isTranslated != true)
-		{
-			_xLocation = worldTM._41;
-			_yLocation = worldTM._42;
-		}
+		_xLocation = worldTM._41;
+		_yLocation = worldTM._42;
 	}
 
 	void TextRenderer::SetActive(bool isActive)
@@ -65,8 +61,6 @@ namespace RocketCore::Graphics
 	{
 		_xLocation = x;
 		_yLocation = y;
-
-		_isTranslated = true;
 	}
 
 	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
@@ -87,11 +81,22 @@ namespace RocketCore::Graphics
 
 	float TextRenderer::GetWidth()
 	{
-		return {};
+		MeasureTextSize();
+		return _width;
 	}
 
 	float TextRenderer::GetHeight()
 	{
-		return {};
+		MeasureTextSize();
+		return _height;
 	}
+
+	void TextRenderer::MeasureTextSize()
+	{
+		std::wstring wstr(_str.begin(), _str.end());
+		_size = _font->MeasureString(wstr.c_str());
+		_width = DirectX::XMVectorGetX(_size);
+		_height = DirectX::XMVectorGetY(_size);
+	}
+
 }
