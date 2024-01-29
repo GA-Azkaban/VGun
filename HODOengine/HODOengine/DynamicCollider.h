@@ -28,6 +28,7 @@ namespace HDData
 		void Jump();
 		void Sleep();
 		void Stop();
+		void AddForce(Vector3 direction, float force = 1.0f);
 
 	public:
 		// PhysX 씬과 데이터를 주고받는 함수

@@ -23,8 +23,16 @@ void PlayerMove::Update()
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	// check on ground state
-	//CheckIsOnGround();
+	// check on_ground state
+	if (_isJumping)
+	{
+		CheckIsOnGround();
+	}
+
+	if (API::GetMouseDown(0))
+	{
+		ShootGun();
+	}
 
 	// 마우스에 따른 플레이어 회전 체크
 	CheckLookDirection();
@@ -87,10 +95,6 @@ void PlayerMove::CheckMoveDirection()
 	if (API::GetKeyDown(DIK_SPACE))
 	{
 		Jump();
-	}
-	if (_isJumping)
-	{
-		CheckIsOnGround();
 	}
 }
 
@@ -164,9 +168,28 @@ void PlayerMove::Move(int direction)
 	_prevDirection = _moveDirection;
 }
 
+void PlayerMove::ShootGun()
+{
+	HDData::Collider* hitCollider = nullptr;
+
+	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
+
+	hitCollider = API::ShootRay(rayOrigin, GetTransform()->GetForward());
+	
+	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
+	
+	if (hitDynamic != nullptr)
+	{
+		Vector3 vecBtwnCenter = hitCollider->GetTransform()->GetPosition() - GetTransform()->GetPosition();
+		hitDynamic->AddForce(vecBtwnCenter - GetTransform()->GetForward(), 1.0f);
+	}
+}
+
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
 {
 	_headCam = cam;
+	HDData::Transform* headCamTransform = _headCam->GetTransform();
+	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.5f);
 }
 
 void PlayerMove::ToggleCam()

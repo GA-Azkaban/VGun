@@ -278,6 +278,7 @@ namespace HDEngine
 
 				_pxScene->addActor(*sphereRigid);
 				_rigidDynamics.push_back(sphereRigid);
+				sphere->SetPhysXRigid(sphereRigid);
 				sphereRigid->userData = sphere;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?

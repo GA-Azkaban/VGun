@@ -46,6 +46,9 @@ private:
 	void Move(int direction);
 
 private:
+	void ShootGun();
+
+private:
 	bool _isJumping;
 	bool _isOnGround;
 	float _moveSpeed;

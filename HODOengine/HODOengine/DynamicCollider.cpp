@@ -46,6 +46,11 @@ void HDData::DynamicCollider::Stop()
 	_physXRigid->setLinearVelocity(physx::PxVec3(0.f, _physXRigid->getLinearVelocity().y, 0.f));
 }
 
+void HDData::DynamicCollider::AddForce(Vector3 direction, float force)
+{
+	_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
+}
+
 void HDData::DynamicCollider::UpdateToPhysics()
 {
 

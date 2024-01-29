@@ -71,6 +71,11 @@ TestScene::TestScene()
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	playerMove->SetHeadCam(headCam);
 
+	auto sphereTest = API::CreateObject(_scene, "sphereTest");
+	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
+	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+
+
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
