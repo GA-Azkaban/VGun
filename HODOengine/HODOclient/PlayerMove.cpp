@@ -2,7 +2,6 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
-	: _moveSpeed(5.0f)
 {
 
 }
@@ -10,7 +9,7 @@ PlayerMove::PlayerMove()
 void PlayerMove::Start()
 {
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
-	_moveSpeed = 3.5f;
+	_moveSpeed = 3.0f;
 
 	pitchAngle = 0.0f;
 
@@ -29,7 +28,7 @@ void PlayerMove::Update()
 		CheckIsOnGround();
 	}
 
-	if (API::GetMouseDown(0))
+	if (API::GetMouseDown(MOUSE_LEFT))
 	{
 		ShootGun();
 	}
@@ -107,12 +106,13 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
-		_moveSpeed = 4.0f;
+		_playerCollider->AdjustVelocity(2.0f);
+		_moveSpeed = 6.0f;
 	}
 	if (API::GetKeyUp(DIK_LSHIFT))
 	{
 		_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
-		_moveSpeed = 3.5f;
+		_moveSpeed = 3.0f;
 	}
 }
 
@@ -201,7 +201,7 @@ void PlayerMove::ShootGun()
 	{
 		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
 		hitDynamic->AddForce(forceDirection, 5.0f);
-		//_hitText->GetTransform()->SetPosition(hitPoint); // mist setPos in screenSpace
+		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
 	}
 }
 
