@@ -1,10 +1,12 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+
 #include "InputData.h"
 #include "MathHeader.h"
 #include "Singleton.h"
-#include <unordered_map>
-#include <unordered_set>
 /// <summary>
 /// 오수안
 /// DirectInput을 이용한 개선된 인풋 시스템
@@ -34,12 +36,12 @@ namespace HDEngine
 		bool GetMouseDown(BYTE key);
 		bool GetMouseUp(BYTE key);
 
-		bool CheckMouseMove();
-		bool Check2DClicked(float x, float y, float width, float height);
-
 		Vector2 GetMousePosition();
 		Vector2 GetMouseDelta();
-	
+
+		char ConvertKeyToChar(BYTE key, bool isShiftPressed);
+		char GetInputText(BYTE i);
+
 		float GetMouseWheel();
 
 		void Flush();
@@ -67,6 +69,8 @@ namespace HDEngine
 		bool					_prevMouseState[3];
 		bool					_keyState[256];
 		bool					_prevKeyState[256];
+
+		bool					_isShiftPressed;
 
 		POINT					_mousePos;
 		POINT					_prevMousePos;

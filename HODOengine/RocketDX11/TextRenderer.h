@@ -42,6 +42,9 @@ namespace RocketCore::Graphics
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
 
+	private:
+		void MeasureTextSize();
+
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
 
@@ -52,11 +55,13 @@ namespace RocketCore::Graphics
 		std::string _str;
 		float _renderFloat;
 		int _renderInt;
+
 		DirectX::XMVECTOR _color;
 		float _xLocation;
 		float _yLocation;
 
-		bool _isTranslated;
-
+		DirectX::XMVECTOR _size;
+		float _width;
+		float _height;
 	};
 }

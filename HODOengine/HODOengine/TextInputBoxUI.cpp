@@ -11,7 +11,8 @@ namespace HDData
 
 	TextInputBoxUI::TextInputBoxUI()
 		: _isCursorOn(false),
-		_blankTime(0.f)
+		_blankTime(0.f),
+		newVal("")
 	{
 
 	}
@@ -58,6 +59,17 @@ namespace HDData
 				_isCursorOn = !_isCursorOn;
 				_cursor->SetActive(_isCursorOn);
 			}
+
+			for (int i = 0; i < 256; ++i)
+			{
+				if (HDEngine::InputSystem::Instance().GetKeyDown(i))
+				{
+					newVal += HDEngine::InputSystem::Instance().GetInputText(i);
+					_text->SetText(newVal);
+				}
+			}
+
+			_cursor->GetTransform()->SetPosition(_text->GetRight(), _text->GetTop(), 0);
 		}
 	}
 

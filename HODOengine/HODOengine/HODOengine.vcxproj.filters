@@ -115,6 +115,9 @@
     <ClCompile Include="InputSystem.cpp">
       <Filter>06_System\InputSystem</Filter>
     </ClCompile>
+    <ClCompile Include="HODOengine.cpp">
+      <Filter>01_EngineProcess\0. Interface</Filter>
+    </ClCompile>
     <ClCompile Include="GraphicsObjFactory.cpp">
       <Filter>06_System\GraphicsObjectFactory</Filter>
     </ClCompile>
@@ -176,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>04_GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="HODOengine.h">
+      <Filter>00_Default</Filter>
     </ClInclude>
     <ClInclude Include="ObjectSystem.h">
       <Filter>06_System\ObjectSystem</Filter>
@@ -258,6 +264,9 @@
     <ClInclude Include="Resource.h">
       <Filter>00_Default</Filter>
     </ClInclude>
+    <ClInclude Include="IHODOengine.h">
+      <Filter>01_EngineProcess\0. Interface</Filter>
+    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>00_Default</Filter>
     </ClInclude>
@@ -278,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="MathHeader.h">
       <Filter>01_EngineProcess\2. API</Filter>
+    </ClInclude>
+    <ClInclude Include="TextInputBoxUI.h">
+      <Filter>05_Component\UserInterface\TextInputBoxUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

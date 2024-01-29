@@ -1,5 +1,6 @@
 ﻿#include "InputSystem.h"
 #include <cassert>
+#include <ctype.h>
 
 
 namespace HDEngine
@@ -60,16 +61,6 @@ namespace HDEngine
 		{
 			_mousePos.x = 0;
 			_mousePos.y = 0;
-		}
-
-		// 휠값 벗어나는 경우 보정
-		if (_mouseWheel > _wheelMax)
-		{
-			_mouseWheel = _wheelMax;
-		}
-		if (_mouseWheel < _wheelMin)
-		{
-			_mouseWheel = _wheelMin;
 		}
 	}
 
@@ -187,26 +178,6 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
-	bool InputSystem::CheckMouseMove()
-	{
-		if (std::abs(_prevMousePos.x - _mousePos.x) > 2 ||
-			std::abs(_prevMousePos.y != _mousePos.y) > 2)
-		{
-			return true;
-		}
-	}
-
-	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
-	{
-		if (_mousePos.x > x &&
-			_mousePos.y > y &&
-			_mousePos.x < x + width &&
-			_mousePos.y < y + height)
-		{
-			return true;
-		}
-	}
-
 	Vector2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
@@ -304,4 +275,340 @@ Vector2 HDEngine::InputSystem::GetMouseDelta()
 	_prevMouseDelta = _mouseDelta;
 
 	return result;
+}
+
+char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
+{
+	if (_isShiftPressed)
+	{
+		switch (key)
+		{
+			case DIK_1:
+			{
+				return'!';
+			}
+			break;
+			case DIK_2:
+			{
+				return '@';
+			}
+			break;
+			case DIK_3:
+			{
+				return '#';
+			}
+			break;
+			case DIK_4:
+			{
+				return '$';
+			}
+			break;
+			case DIK_5:
+			{
+				return '%';
+			}
+			break;
+			case DIK_6:
+			{
+				return '^';
+			}
+			break;
+			case DIK_7:
+			{
+				return '&';
+			}
+			break;
+			case DIK_8:
+			{
+				return '*';
+			}
+			break;
+			case DIK_9:
+			{
+				return '(';
+			}
+			break;
+			case DIK_0:
+			{
+				return ')';
+			}
+			break;
+			case DIK_MINUS:
+			{
+				return '_';
+			}
+			break;
+			case DIK_EQUALS:
+			{
+				return '+';
+			}
+			break;
+			case DIK_SEMICOLON:
+			{
+				return ':';
+			}
+			break;
+			case DIK_APOSTROPHE:
+			{
+				return '\"';
+			}
+			break;
+			case DIK_GRAVE:
+			{
+				return '~';
+			}
+			break;
+			case DIK_BACKSLASH:
+			{
+				return '|';
+			}
+			break;
+			case DIK_COMMA:
+			{
+				return '<';
+			}
+			break;
+			case DIK_PERIOD:
+			{
+				return '>';
+			}
+			break;
+			case DIK_SLASH:
+			{
+				return '?';
+			}
+			break;
+			default:
+			{
+				return static_cast<char>(key);
+			}
+			break;
+		}
+	}
+	else
+	{
+		switch (key)
+		{
+			case DIK_1:
+			{
+				return '1';
+			}
+			break;
+			case DIK_2:
+			{
+				return '2';
+			}
+			break;
+			case DIK_3:
+			{
+				return '3';
+			}
+			break;
+			case DIK_4:
+			{
+				return '4';
+			}
+			break;
+			case DIK_5:
+			{
+				return '5';
+			}
+			break;
+			case DIK_6:
+			{
+				return '6';
+			}
+			break;
+			case DIK_7:
+			{
+				return '7';
+			}
+			break;
+			case DIK_8:
+			{
+				return '8';
+			}
+			break;
+			case DIK_9:
+			{
+				return '9';
+			}
+			break;
+			case DIK_0:
+			{
+				return 0;
+			}
+			break;
+			case DIK_MINUS:
+			{
+				return '-';
+			}
+			break;
+			case DIK_EQUALS:
+			{
+				return '=';
+			}
+			break;
+			case DIK_Q:
+			{
+				return 'q';
+			}
+			break;
+			case DIK_W:
+			{
+				return 'w';
+			}
+			break;
+			case DIK_E:
+			{
+				return 'e';
+			}
+			break;
+			case DIK_R:
+			{
+				return 'r';
+			}
+			break;
+			case DIK_T:
+			{
+				return 't';
+			}
+			break;
+			case DIK_Y:
+			{
+				return 'y';
+			}
+			break;
+			case DIK_U:
+			{
+				return 'u';
+			}
+			break;
+			case DIK_I:
+			{
+				return 'i';
+			}
+			break;
+			case DIK_O:
+			{
+				return 'o';
+			}
+			break;
+			case DIK_P:
+			{
+				return 'p';
+			}
+			break;
+			case DIK_A:
+			{
+				return 'a';
+			}
+			break;
+			case DIK_S:
+			{
+				return 's';
+			}
+			break;
+			case DIK_D:
+			{
+				return 'd';
+			}
+			break;
+			case DIK_F:
+			{
+				return 'f';
+			}
+			break;
+			case DIK_G:
+			{
+				return 'g';
+			}
+			break;
+			case DIK_H:
+			{
+				return 'h';
+			}
+			break;
+			case DIK_J:
+			{
+				return 'j';
+			}
+			break;
+			case DIK_K:
+			{
+				return 'k';
+			}
+			break;
+			case DIK_L:
+			{
+				return 'l';
+			}
+			break;
+			case DIK_SEMICOLON:
+			{
+				return '\,';
+			}
+			break;
+			case DIK_APOSTROPHE:
+			{
+				return '\.';
+			}
+			break;
+			case DIK_GRAVE:
+			{
+				return '\`';
+			}
+			break;
+			case DIK_BACKSLASH:
+			{
+				return '\\';
+			}
+			break;
+			case DIK_Z:
+			{
+				return 'z';
+			}
+			break;
+			case DIK_X:
+			{
+				return 'x';
+			}
+			break;
+			case DIK_C:
+			{
+				return 'c';
+			}
+			break;
+			case DIK_V:
+			{
+				return 'v';
+			}
+			break;
+			case DIK_B:
+			{
+				return 'b';
+			}
+			break;
+			case DIK_N:
+			{
+				return 'n';
+			}
+			break;
+			case DIK_M:
+			{
+				return 'm';
+			}
+			break;
+			default:
+				break;
+		}
+	}
+}
+
+char HDEngine::InputSystem::GetInputText(BYTE i)
+{
+	// shift 키 여부
+	_isShiftPressed = (_keyState[DIK_LSHIFT] & 0x80) || (_keyState[DIK_RSHIFT] & 0x80);
+
+	return ConvertKeyToChar(i, _isShiftPressed);
 }

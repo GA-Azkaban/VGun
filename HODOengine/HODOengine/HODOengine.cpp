@@ -21,7 +21,11 @@
 
 #include "DLL_Loader.h"
 
+#ifdef _DEBUG
+#define GRAPHICSDLL_PATH (L"RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#else
 #define GRAPHICSDLL_PATH (L"RocketDX11.dll")
+#endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
 

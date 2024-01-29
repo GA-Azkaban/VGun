@@ -19,6 +19,7 @@ namespace HDEngine
 		virtual void SetWorldSpace() = 0;
 
 		virtual const std::string GetText() = 0;
+		
 
 	};
 }

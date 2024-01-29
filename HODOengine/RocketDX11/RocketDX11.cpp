@@ -395,9 +395,9 @@ namespace RocketCore::Graphics
 		SetCubemapDSS();
 		_cubemap->Render();
 
-		RenderText();
 		RenderTexture();
 		RenderLine();
+		RenderText();
 		if (_isDebug)
 		{
 			RenderDebug();
