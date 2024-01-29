@@ -1,11 +1,7 @@
 #include "StaticPlaneCollider.h"
 
 HDData::StaticPlaneCollider::StaticPlaneCollider()
-{
-
-}
-
-void HDData::StaticPlaneCollider::Update()
+	: _normalVector(0.f, 1.f, 0.f), _distance(0.f)
 {
 
 }
@@ -13,10 +9,10 @@ void HDData::StaticPlaneCollider::Update()
 Vector3 HDData::StaticPlaneCollider::GetNormalVector() const
 {
 	//HDMaths::HDFLOAT3 axis = GetGameObject().GetTransform()->GetRight();
-	return {};
+	return _normalVector;
 }
 
 float HDData::StaticPlaneCollider::GetDistance() const
 {
-	return {};
+	return _distance;
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 
 namespace HDData
@@ -30,4 +30,5 @@ public:
 
 public:
 	float moveSpeed;
+	float rotateSpeed;
 };

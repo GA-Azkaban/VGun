@@ -1,7 +1,8 @@
 ﻿#include "CameraMove.h"
 
 CameraMove::CameraMove()
-	: moveSpeed(2.0f)
+	: moveSpeed(5.0f),
+	rotateSpeed(5.0f)
 {
 }
 
@@ -13,7 +14,7 @@ void CameraMove::Update()
 
 	if (API::GetKeyPressing(DIK_LSHIFT))
 	{
-		moveSpeed *= 2.0f;
+		moveSpeed *= 5.0f;
 	}
 
 	if (API::GetKeyPressing(DIK_W))
@@ -48,22 +49,22 @@ void CameraMove::Update()
 
 	if (API::GetKeyPressing(DIK_LEFTARROW))
 	{
-		RotateY(-moveSpeed * deltaTime / 4);
+		RotateY(-rotateSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(DIK_RIGHTARROW))
 	{
-		RotateY(moveSpeed * deltaTime / 4);
+		RotateY(rotateSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(DIK_DOWNARROW))
 	{
-		Pitch(moveSpeed * deltaTime / 4);
+		Pitch(rotateSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(DIK_UPARROW))
 	{
-		Pitch(-moveSpeed * deltaTime / 4);
+		Pitch(-rotateSpeed * deltaTime / 4);
 	}
 
 

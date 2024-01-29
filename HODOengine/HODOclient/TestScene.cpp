@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -37,11 +37,19 @@ TestScene::TestScene()
 	//auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
 	//colli->Setflag(eColliderType::PLAYER);
 
+
+	// floor as static plane
+	auto groundFloor = API::CreateObject(_scene);
+	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
+
+
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
+	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMesh("Rob02.fbx");
 	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
@@ -58,51 +66,9 @@ TestScene::TestScene()
 	playerTestHead->SetParentObject(playerTest);
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
 
-
-	/*
-	// collider 여러 개를 만들어 보자.
-	auto boxTest = API::CreateObject(_scene);
-	boxTest->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{5.f, 5.f, 1.f});
-	boxTest->AddComponent<HDData::MeshRenderer>();
-	//auto boxCollider = boxTest->AddComponent<HDData::DynamicBoxCollider>();
-
-	auto boxTest2 = API::CreateObject(_scene);
-	boxTest2->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{-3.f, 6.f, 0.f});
-	boxTest2->AddComponent<HDData::MeshRenderer>();
-	auto boxCollider2 = boxTest2->AddComponent<HDData::DynamicBoxCollider>();
-
-	auto boxTest3 = API::CreateObject(_scene);
-	boxTest3->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{5.f, 7.f, 0.5f});
-	boxTest3->AddComponent<HDData::MeshRenderer>();
-	auto boxCollider3 = boxTest3->AddComponent<HDData::DynamicBoxCollider>();
-
-	auto boxTest4 = API::CreateObject(_scene);
-	boxTest4->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{3.f, 8.f, -1.f});
-	boxTest4->AddComponent<HDData::MeshRenderer>();
-	auto boxCollider4 = boxTest4->AddComponent<HDData::DynamicBoxCollider>();
-
-	auto boxTest5 = API::CreateObject(_scene);
-	boxTest5->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{-2.f, 9.f, -2.f});
-	boxTest5->AddComponent<HDData::MeshRenderer>();
-	auto boxCollider5 = boxTest5->AddComponent<HDData::DynamicBoxCollider>();
-
-	for (int i = 0; i < 10; ++i)
-	{
-		auto boxbox = API::CreateObject(_scene);
-		boxbox->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{-7.f + 1.5f * i, 20.f + 5 * i, -7.f + 1.5f * i});
-		boxbox->AddComponent<HDData::MeshRenderer>();
-		auto boxboxCol = boxbox->AddComponent<HDData::DynamicBoxCollider>();
-	}
-	*/
-
-	//auto sphereTest = API::CreateObject(_scene);
-	//sphereTest->GetComponent<HDData::Transform>()->SetWorldPosition(Vector3{-5.f, 10.f, 1.f});
-	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
-
 	auto textTest = API::CreateTextbox(_scene);
-	//textTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
+	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
-	textTest->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Blue);
 
 	//HDData::GameObject* imageTest = API::CreateObject(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
@@ -112,7 +78,12 @@ TestScene::TestScene()
 	//imageComp->SetColor(DirectX::Colors::AliceBlue);
 
 	//auto UItest = API::CreateSlidebox(_scene);
-	//UItest->GetTransform()->SetWorldPosition({ 1000.f, 100.f, 0.f });
+	//UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
+	//auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
+	//sliderComp->AddTextList("1");
+	//sliderComp->AddTextList("2");
+	//sliderComp->AddTextList("3");
+	//sliderComp->AddTextList("4");
 
 	//auto imageTest = API::CreateImageBox(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });

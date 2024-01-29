@@ -1,4 +1,4 @@
-#include "InputSystem.h"
+﻿#include "InputSystem.h"
 #include <cassert>
 
 
@@ -11,6 +11,9 @@ namespace HDEngine
 
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
+
+		_widthOffset = (screenWidth - 1920) / 2;
+		_heightOffset = 0;
 
 		_wheelMax = 500;
 		_wheelMin = -500;
@@ -232,6 +235,60 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
+
+		//RecursiveMouse();
+	}
+
+	void InputSystem::RecursiveMouse()
+	{
+		RECT windowRect;
+		GetWindowRect(_hWnd, &windowRect);
+
+		POINT mousePoint;
+
+		
+		LONG x = 0;
+		LONG y = 0;
+
+		/// 마우스 위치 이동 방식
+		if (windowRect.right - 1 <= _mousePos.x)
+		{
+			x = windowRect.left + 2;
+			y = _mousePos.y;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+		}
+		else if (_mousePos.x <= windowRect.left + 1)
+		{
+			x = windowRect.right - 2;
+			y = _mousePos.y;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+		}
+		if (windowRect.bottom - 1 <= _mousePos.y)
+		{
+			x = _mousePos.x;
+			y = windowRect.top + 2;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+		}
+		else if (_mousePos.y <= windowRect.top + 1)
+		{
+			x = _mousePos.x;
+			y = windowRect.bottom - 2;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+		}
+
+		//SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2.0f, GetSystemMetrics(SM_CYSCREEN) / 2.0f);
 	}
 }
 

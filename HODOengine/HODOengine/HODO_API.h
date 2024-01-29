@@ -21,6 +21,7 @@
 #include "Camera.h"
 #include "Script.h"
 #include "Collider.h"
+#include "StaticPlaneCollider.h"
 #include "StaticBoxCollider.h"
 #include "DynamicBoxCollider.h"
 #include "DynamicCapsuleCollider.h"

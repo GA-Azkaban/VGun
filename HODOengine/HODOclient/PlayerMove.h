@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 
 /// <summary>
@@ -14,6 +14,9 @@ public:
 	void Start() override;
 	void Update() override;
 
+public:
+	void SetPlayerCamera(HDData::Camera* camera);
+
 private:
 	bool _isMoveActive;
 	float _deltaTime;
@@ -27,9 +30,11 @@ private:
 
 private:
 	// 마우스 회전에 따른 시야 변경 체크
+	void CameraControl();
 	void CameraMove();
-	void Pitch(float radian);
+	void Pitch(float rotationValue);
 	void Yaw(float radian);
+	void ToggleCameraView();
 
 	// player's move
 	Vector3 _nextPosition;
@@ -46,7 +51,13 @@ private:
 	float _moveSpeed;
 	int _moveDirection;
 	int _prevDirection;	// useless on immediate stop mechanism
+
 private:
 	HDData::DynamicBoxCollider* _playerCollider;
 	HDData::Camera* _playerCamera;
+	Vector3 _prevCameraPos;
+	Quaternion _prevCameraRot;
+	bool _isCameraConnected;
+
+	float pitchAngle;
 };

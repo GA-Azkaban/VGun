@@ -31,11 +31,8 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.5f);
-
-		// 임시로 평면과 박스 하나를 만들어 둠
-		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
-		_pxScene->addActor(*groundPlane);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.2f, 0.2f, 0.0f);
 
 		//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
 		//physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
@@ -116,6 +113,10 @@ namespace HDEngine
 
 	void PhysicsSystem::CreateRigidBodies()
 	{
+		// fundamental ground
+		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
+		_pxScene->addActor(*groundPlane);
+
 		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
 
 		for (auto& object : sceneIter->GetGameObjectList())
@@ -143,6 +144,8 @@ namespace HDEngine
 
 				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
 				_pxScene->addActor(*planeRigid);
+				//planeCollider->SetPhysXRigid(planeRigid);
+				planeRigid->userData = planeCollider;
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
@@ -200,7 +203,8 @@ namespace HDEngine
 			{
 				HDData::DynamicBoxCollider* box = dynamic_cast<HDData::DynamicBoxCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
+				// switch material if player
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_playerMaterial);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -208,6 +212,14 @@ namespace HDEngine
 				boxRigid->setLinearDamping(0.5f);
 				boxRigid->setAngularDamping(0.2f);
 				boxRigid->attachShape(*shape);
+
+				// add only if player
+				if (object != nullptr)
+				{
+					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+					//boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+				}
 
 				_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
