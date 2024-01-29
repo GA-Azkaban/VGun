@@ -12,7 +12,7 @@
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 
-#define MODELS_DIRECTORY_NAME "Resources/Models/"
+#define MODELS_DIRECTORY_NAME "Build/Debug/Resources/Models/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;

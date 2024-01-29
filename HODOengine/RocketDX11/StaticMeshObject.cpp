@@ -115,8 +115,8 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void StaticMeshObject::SetModel(Model* model)
+	/*void StaticMeshObject::SetModel(Model* model)
 	{
 		_model = model;
-	}
+	}*/
 }

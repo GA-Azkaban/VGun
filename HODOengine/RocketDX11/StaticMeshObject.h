@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
@@ -37,13 +37,12 @@ namespace RocketCore::Graphics
 		void Render();
 
 	public:
-		void SetModel(Model* model);
+		//void SetModel(Model* model);
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState) { m_renderState = renderState; }
 
 	private:
-		Model* _model;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 
@@ -55,4 +54,3 @@ namespace RocketCore::Graphics
 		bool m_isActive;
 	};
 }
-	
