@@ -150,7 +150,7 @@ void HODOengine::Run()
 	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
-	HDEngine::PhysicsSystem::Instance().Update();
+	//HDEngine::PhysicsSystem::Instance().Update();
 
 	_eventSystem.InvokeEvent();
 

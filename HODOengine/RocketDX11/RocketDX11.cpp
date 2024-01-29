@@ -208,6 +208,7 @@ namespace RocketCore::Graphics
 
 		/// Load resources
 		_resourceManager.LoadFBXFile("Rob02.fbx");
+		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
 		_resourceManager.LoadTextureFile("sunsetcube1024.dds");
 
 		CreateDepthStencilStates();
@@ -245,11 +246,6 @@ namespace RocketCore::Graphics
 			shaderByteCode, byteCodeLength,
 			&_lineInputLayout));
 
-		/*SkinningMeshObject* test1 = ObjectManager::Instance().CreateSkinningMeshObject();
-		test1->LoadMesh("Rob02.fbx");
-		test1->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
-		test1->LoadNormalMap("Rob02White_Normal.png");
-		test1->PlayAnimation(0, true);*/
 	}
 
 	void RocketDX11::BeginRender()

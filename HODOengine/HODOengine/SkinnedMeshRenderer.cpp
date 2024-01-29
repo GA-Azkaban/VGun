@@ -1,4 +1,4 @@
-#include "SkinnedMeshRenderer.h"
+﻿#include "SkinnedMeshRenderer.h"
 #include "RenderSystem.h"
 #include "GraphicsObjFactory.h"
 #include "Transform.h"
@@ -24,16 +24,6 @@ namespace HDData
 	void SkinnedMeshRenderer::LoadDiffuseMap(const std::string& fileName)
 	{
 		_skinnedMesh->LoadDiffuseMap(fileName);
-	}
-
-	void SkinnedMeshRenderer::LoadVertexShader(const std::string& fileName)
-	{
-		_skinnedMesh->LoadVertexShader(fileName);
-	}
-
-	void SkinnedMeshRenderer::LoadPixelShader(const std::string& fileName)
-	{
-		_skinnedMesh->LoadPixelShader(fileName);
 	}
 
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)

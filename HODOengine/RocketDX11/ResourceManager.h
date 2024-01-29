@@ -22,7 +22,6 @@ using Microsoft::WRL::ComPtr;
 namespace RocketCore::Graphics
 {
 	class Mesh;
-	class Model;
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
@@ -92,7 +91,6 @@ namespace RocketCore::Graphics
 		/// <returns>animation name and animation infos of all animations in model file</returns>
 		std::unordered_map<std::string, Animation*>& GetAnimations(const std::string& fileName);
 
-		Model* GetCubeModel();
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont();
@@ -127,9 +125,6 @@ namespace RocketCore::Graphics
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;
-
-		// 기본 큐브 모델
-		Model* _cubeModel;
 
 		// primitive models
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cubePrimitive;

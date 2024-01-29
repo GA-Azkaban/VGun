@@ -48,9 +48,6 @@
     <ClCompile Include="DeviceBuilderDX11.cpp">
       <Filter>Builder</Filter>
     </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
-      <Filter>FBXLoader</Filter>
-    </ClCompile>
     <ClCompile Include="Grid.cpp">
       <Filter>Object\HelperObject</Filter>
     </ClCompile>
@@ -62,9 +59,6 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Resource\Model</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>Object\ObjectFactory</Filter>
@@ -131,9 +125,6 @@
     <ClInclude Include="dllExporter.h">
       <Filter>dllExporter</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h">
-      <Filter>FBXLoader</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsStruct.h">
       <Filter>Struct</Filter>
     </ClInclude>
@@ -154,9 +145,6 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Resource\Model</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
       <Filter>Object\ObjectFactory</Filter>
@@ -241,9 +229,6 @@
     <Filter Include="dllExporter">
       <UniqueIdentifier>{469f1d43-ecb9-4ad1-b5c5-b895bec72d42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FBXLoader">
-      <UniqueIdentifier>{9e7db707-89b2-42b9-94c7-8b4977f88a36}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{7dcc5874-dd39-4cbf-8c16-a378066fa391}</UniqueIdentifier>
     </Filter>
@@ -279,9 +264,6 @@
     </Filter>
     <Filter Include="Resource\Interface">
       <UniqueIdentifier>{09e22f74-861b-465b-87d5-06f2a3723283}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Model">
-      <UniqueIdentifier>{586dfed4-01c4-4914-8839-59d9102b8d16}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Resource3D">
       <UniqueIdentifier>{0f5090f8-5e58-4fec-a487-5152d2dfacca}</UniqueIdentifier>
