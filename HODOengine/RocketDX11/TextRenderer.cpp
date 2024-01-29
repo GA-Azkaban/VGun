@@ -49,7 +49,7 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::SetActive(bool isActive)
 	{
-		isActive = 1;
+		isActive = isActive;
 	}
 
 	void TextRenderer::SetColor(DirectX::FXMVECTOR color)
