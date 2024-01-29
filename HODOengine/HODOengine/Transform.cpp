@@ -256,7 +256,11 @@ namespace HDData
 
 	void Transform::Rotate(float angleX, float angleY, float angleZ)
 	{
-		Quaternion rotQuat = Quaternion::CreateFromYawPitchRoll({ angleX,angleY,angleZ });
+		float x = DirectX::XMConvertToRadians(angleX);
+		float y = DirectX::XMConvertToRadians(angleY);
+		float z = DirectX::XMConvertToRadians(angleZ);
+
+		Quaternion rotQuat = Quaternion::CreateFromYawPitchRoll({ x,y,z });
 
 		_rotation = Quaternion::Concatenate(_rotation, rotQuat);
 		// 

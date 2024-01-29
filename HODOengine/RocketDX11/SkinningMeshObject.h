@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <vector>
@@ -36,8 +36,6 @@ namespace RocketCore::Graphics
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName);
 		virtual void LoadDiffuseMap(const std::string& fileName);
-		virtual void LoadVertexShader(const std::string& fileName) override;
-		virtual void LoadPixelShader(const std::string& fileName) override;
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
 		virtual void PlayAnimation(UINT index, bool isLoop = true) override;

@@ -1,4 +1,4 @@
-#include "MeshRenderer.h"
+﻿#include "MeshRenderer.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
@@ -24,16 +24,6 @@ namespace HDData
 	void MeshRenderer::LoadDiffuseMap(const std::string& fileName)
 	{
 		_staticMesh->LoadDiffuseMap(fileName);
-	}
-
-	void MeshRenderer::LoadVertexShader(const std::string& fileName)
-	{
-		_staticMesh->LoadVertexShader(fileName);
-	}
-
-	void MeshRenderer::LoadPixelShader(const std::string& fileName)
-	{
-		_staticMesh->LoadPixelShader(fileName);
 	}
 
 	void MeshRenderer::UpdateRenderData()

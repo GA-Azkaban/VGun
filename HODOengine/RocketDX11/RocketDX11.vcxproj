@@ -217,11 +217,9 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="HelperObject.cpp" />
     <ClCompile Include="ImageRenderer.cpp" />
-    <ClCompile Include="FBXLoader.cpp" />
     <ClCompile Include="IShader.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathHelper.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
@@ -248,13 +246,11 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="HelperObject.h" />
     <ClInclude Include="ImageRenderer.h" />
-    <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="GraphicsStruct.h" />
     <ClInclude Include="LightStruct.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="MathHelper.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="IBuilder.h" />

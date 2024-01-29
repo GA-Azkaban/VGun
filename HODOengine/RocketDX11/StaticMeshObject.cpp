@@ -43,20 +43,6 @@ namespace RocketCore::Graphics
 		_pixelShader = shader;
 	}
 
-	void StaticMeshObject::LoadVertexShader(const std::string& fileName)
-	{
-		VertexShader* vs = ResourceManager::Instance().GetVertexShader(fileName);
-		if (vs != nullptr)
-			m_material->SetVertexShader(vs);
-	}
-
-	void StaticMeshObject::LoadPixelShader(const std::string& fileName)
-	{
-		PixelShader* ps = ResourceManager::Instance().GetPixelShader(fileName);
-		if (ps != nullptr)
-			m_material->SetPixelShader(ps);
-	}
-
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
@@ -115,8 +101,4 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void StaticMeshObject::SetModel(Model* model)
-	{
-		_model = model;
-	}
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
@@ -30,20 +30,17 @@ namespace RocketCore::Graphics
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
-		virtual void LoadVertexShader(const std::string& fileName) override;
-		virtual void LoadPixelShader(const std::string& fileName) override;
 
 	public:
 		void Render();
 
 	public:
-		void SetModel(Model* model);
+		//void SetModel(Model* model);
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState) { m_renderState = renderState; }
 
 	private:
-		Model* _model;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 
@@ -55,4 +52,3 @@ namespace RocketCore::Graphics
 		bool m_isActive;
 	};
 }
-	

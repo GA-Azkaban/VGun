@@ -46,29 +46,35 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	playerTest->AddComponent<PlayerMove>();
 	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMesh("Rob02.fbx");
-	meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
-	meshComp->LoadNormalMap("Rob02White_Normal.png");
+	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
+	//meshComp->LoadMesh("Rob02.fbx");
+	//meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
+	//meshComp->LoadNormalMap("Rob02White_Normal.png");
+	meshComp->LoadMesh("A_TP_CH_Sprint_F.fbx");
+	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
 	meshComp->PlayAnimation(0, true);
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{1.f, 1.f, 1.f});
+	playerTest->GetComponent<HDData::Transform>()->SetScale(Vector3{0.3f, 0.3f, 0.3f});
+	playerTest->GetComponent<HDData::Transform>()->Rotate(-90.0f, 0.0f, 0.0f);
+	//playerTest->GetComponent<HDData::Transform>()->SetRotation(Quaternion{0.6f, 0.0f, 0.0f, 0.0f});
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{1.f, 1.f, 1.f});
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	//playerTest->AddComponent<HDData::StaticBoxCollider>();
 	
 	//auto playerHeadCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 	
-	auto playerTestHead = API::CreateObject(_scene, "playerHead");
+	/*auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	playerTestHead->AddComponent<HDData::MeshRenderer>();
 	playerTestHead->SetParentObject(playerTest);
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
 
 	auto textTest = API::CreateTextbox(_scene);
 	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
+	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");*/
 
 	//HDData::GameObject* imageTest = API::CreateObject(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });

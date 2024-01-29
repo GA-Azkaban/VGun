@@ -12,7 +12,7 @@
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 
-#define MODELS_DIRECTORY_NAME "Resources/Models/"
+#define MODELS_DIRECTORY_NAME "Build/Debug/Resources/Models/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;
@@ -28,10 +28,6 @@ namespace RocketCore::Graphics
 	{
 		_device = device;
 		_deviceContext = deviceContext;
-		_cubeModel = new Model();
-		_cubeModel->AddMesh(new CubeMesh());
-		_cubeModel->Initialize(device);
-		_cubeModel->LoadTexture(device, L"Resources/Textures/darkbrickdxt1.dds");
 
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
 
@@ -126,11 +122,6 @@ namespace RocketCore::Graphics
 	DirectX::SpriteFont* ResourceManager::GetDefaultFont()
 	{
 		return _defaultFont;
-	}
-
-	Model* ResourceManager::GetCubeModel()
-	{
-		return _cubeModel;
 	}
 
 	ID3D11Device* ResourceManager::GetDevice()
