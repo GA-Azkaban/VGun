@@ -124,6 +124,7 @@
     <ClCompile Include="HODOengine.cpp">
       <Filter>01_EngineProcess</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -282,6 +283,7 @@
     <ClInclude Include="HODOengine.h">
       <Filter>01_EngineProcess</Filter>
     </ClInclude>
+    <ClInclude Include="UnitySceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -429,6 +431,9 @@
     </Filter>
     <Filter Include="06_System\UISystem">
       <UniqueIdentifier>{9a36e062-351c-4e18-8ce3-b112b20b1cc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UnitySceneLoader">
+      <UniqueIdentifier>{067b2b6f-d0f1-48ce-bafc-049e5dac71eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
