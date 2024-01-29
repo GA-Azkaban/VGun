@@ -39,6 +39,7 @@ namespace HDEngine
 		Vector2 GetMousePosition();
 		Vector2 GetMouseDelta();
 
+		bool GetKeyPushed();
 		char ConvertKeyToChar(BYTE key, bool isShiftPressed);
 		char GetInputText(BYTE i);
 
@@ -70,6 +71,7 @@ namespace HDEngine
 		bool					_keyState[256];
 		bool					_prevKeyState[256];
 
+		bool					_isKeyPushed;
 		bool					_isShiftPressed;
 
 		POINT					_mousePos;
