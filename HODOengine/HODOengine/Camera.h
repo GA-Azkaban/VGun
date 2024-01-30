@@ -1,4 +1,4 @@
-#include "dllExporter.h"
+﻿#include "dllExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
 
@@ -51,6 +51,11 @@ namespace HDData
 	private:
 		void SetAsMainCamera();	// main 카메라로 바꾸는 함수. Scene에서만 호출했으면 좋겠음.
 
+	// behavior functions
+	public:
+		void ShakeCamera(float deltaTime);
+		void EnableCameraShake();
+
 	private:
 		float _nearZ;				// frustum의 가까운 평면까지의 거리
 		float _farZ;				// frustum의 먼 평면까지의 거리
@@ -64,5 +69,10 @@ namespace HDData
 
 	private:
 		HDEngine::ICamera* _graphicsCamera;
+
+	private:
+		bool _isShakingCamera;
+		float _shootDuration;
+		float _distYOnShoot;
 	};
 }

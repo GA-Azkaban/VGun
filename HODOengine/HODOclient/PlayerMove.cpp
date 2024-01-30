@@ -41,6 +41,8 @@ void PlayerMove::Update()
 
 	CameraControl();
 
+	_headCam->ShakeCamera(_deltaTime);
+
 	// 이동, 회전
 	Move(_moveDirection);
 
@@ -188,6 +190,8 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::ShootGun()
 {
+	_headCam->EnableCameraShake();
+
 	HDData::Collider* hitCollider = nullptr;
 
 	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
