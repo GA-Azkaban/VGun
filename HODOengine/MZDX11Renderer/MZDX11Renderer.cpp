@@ -307,13 +307,13 @@ void MZDX11Renderer::SetObjects()
 	axis->SetMesh("axis");*/
 
 	// FBX Test
-	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/Rob02.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/4QCharacter_tpose.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/4QCharacter_idle_ani.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/A_TP_CH_Sprint_F.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("../3DModels/model.dae");
-	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/sunsetcube1024.dds");
-	ResourceManager::Instance.Get().LoadTextureFile("../3DModels/Textures/diffuse.png");
+	ResourceManager::Instance.Get().LoadFBXFile("Rob02.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("4QCharacter_tpose.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("4QCharacter_idle_ani.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("A_TP_CH_Sprint_F.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("model.dae");
+	ResourceManager::Instance.Get().LoadTextureFile("sunsetcube1024.dds");
+	ResourceManager::Instance.Get().LoadTextureFile("diffuse.png");
 
 	//StaticMeshObject* test1 = new StaticMeshObject();
 	SkinningMeshObject* test1 = new SkinningMeshObject();
