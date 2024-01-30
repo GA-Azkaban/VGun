@@ -62,6 +62,8 @@ namespace HDEngine
 			_mousePos.x = 0;
 			_mousePos.y = 0;
 		}
+
+		
 	}
 
 	void InputSystem::Finalize()
@@ -155,7 +157,6 @@ namespace HDEngine
 
 	bool InputSystem::GetKeyDown(BYTE key)
 	{
-		_isKeyPushed = true;
 		return _keyState[key] && _prevKeyState[key] == false;
 	}
 
@@ -207,7 +208,7 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
-		_isKeyPushed = false;
+		_isKeyPressed = false;
 
 		//RecursiveMouse();
 	}
@@ -219,7 +220,7 @@ namespace HDEngine
 
 		POINT mousePoint;
 
-		
+
 		LONG x = 0;
 		LONG y = 0;
 
@@ -281,11 +282,6 @@ Vector2 HDEngine::InputSystem::GetMouseDelta()
 	_prevMouseDelta = _mouseDelta;
 
 	return result;
-}
-
-bool HDEngine::InputSystem::GetKeyPushed()
-{
-	return _isKeyPushed;
 }
 
 char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
@@ -447,7 +443,7 @@ char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
 			break;
 			case DIK_0:
 			{
-				return 0;
+				return '0';
 			}
 			break;
 			case DIK_MINUS:
@@ -555,24 +551,49 @@ char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
 				return 'l';
 			}
 			break;
+			case DIK_LBRACKET:
+			{
+				return '[';
+			}
+			break;
+			case DIK_RBRACKET:
+			{
+				return ']';
+			}
+			break;
 			case DIK_SEMICOLON:
 			{
-				return '\,';
+				return ';';
 			}
 			break;
 			case DIK_APOSTROPHE:
 			{
-				return '\.';
+				return '\'';
+			}
+			break;
+			case DIK_PERIOD:
+			{
+				return '.';
+			}
+			break;
+			case DIK_COMMA:
+			{
+				return ',';
 			}
 			break;
 			case DIK_GRAVE:
 			{
-				return '\`';
+				return '`';
 			}
 			break;
 			case DIK_BACKSLASH:
 			{
 				return '\\';
+			}
+			break;
+			case DIK_SLASH:
+			{
+				return '/';
 			}
 			break;
 			case DIK_Z:
@@ -611,15 +632,18 @@ char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
 			}
 			break;
 			default:
-				break;
+			{
+				return static_cast<char>(key);
+			}
+			break;
 		}
 	}
 }
 
-char HDEngine::InputSystem::GetInputText(BYTE i)
+char HDEngine::InputSystem::GetInputText(BYTE key)
 {
 	// shift 키 여부
 	_isShiftPressed = (_keyState[DIK_LSHIFT] & 0x80) || (_keyState[DIK_RSHIFT] & 0x80);
-
-	return ConvertKeyToChar(i, _isShiftPressed);
+	
+	return ConvertKeyToChar(key, _isShiftPressed);
 }

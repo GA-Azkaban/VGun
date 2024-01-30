@@ -122,8 +122,8 @@ TestScene::TestScene()
 	auto toggle = API::CreateToggle(_scene);
 	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
 
-	//auto textInputBox = API::CreateTextInputBox(_scene);
-	//textInputBox->GetTransform()->SetPosition({1500.f, 500.f, 0});
+	auto textInputBox = API::CreateTextInputBox(_scene);
+	textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
 
 	API::LoadScene(_scene);
 

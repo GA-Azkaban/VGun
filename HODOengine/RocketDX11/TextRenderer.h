@@ -61,6 +61,7 @@ namespace RocketCore::Graphics
 		float _yLocation;
 
 		DirectX::XMVECTOR _size;
+		DirectX::XMVECTOR _measureLong;
 		float _width;
 		float _height;
 	};

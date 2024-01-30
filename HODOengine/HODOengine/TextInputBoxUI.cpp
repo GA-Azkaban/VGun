@@ -37,6 +37,9 @@ namespace HDData
 			}
 		}
 
+		_text->GetTransform()->SetPosition(_background->GetLeft(), _text->GetTop(), 0.f);
+		_cursor->GetTransform()->SetPosition(_text->GetLeft(), _text->GetBottom(), 0.f);
+		_textOriginPos = _text->GetLeft();
 		_background->SetActive(true);
 		_cursor->SetActive(false);
 	}
@@ -60,17 +63,39 @@ namespace HDData
 				_cursor->SetActive(_isCursorOn);
 			}
 
-			for (int i = 0; i < 256; ++i)
+			for (int i = 0; i < 100; ++i)
 			{
 				if (HDEngine::InputSystem::Instance().GetKeyDown(i))
 				{
-					newVal += HDEngine::InputSystem::Instance().GetInputText(i);
-					_text->SetText(newVal);
+					if (_text->_sketchable->GetWidth() < _background->_sketchable->GetWidth())
+					{
+						if (i != DIK_LSHIFT && i != DIK_RSHIFT && i != DIK_BACKSPACE && i != DIK_SPACE)
+						{
+							newVal += HDEngine::InputSystem::Instance().GetInputText(i);
+							_text->SetText(newVal);
+							_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth(), _text->GetBottom(), 0.f);
+						}
+					}
+					if (i == DIK_BACKSPACE && newVal.size() > 0)
+					{
+						newVal.pop_back();
+						_text->SetText(newVal);
+						_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth(), _text->GetBottom(), 0.f);
+					}
 				}
 			}
 
-			_cursor->GetTransform()->SetPosition(_text->GetRight(), _text->GetTop(), 0);
+			if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT) && !_background->GetIsClicked())
+			{
+				_cursor->SetActive(false);
+				_inputReady = false;
+			}
 		}
+	}
+
+	std::string TextInputBoxUI::GetCurrentText()
+	{
+		return newVal;
 	}
 
 }
