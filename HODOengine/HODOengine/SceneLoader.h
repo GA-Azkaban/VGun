@@ -41,10 +41,10 @@ namespace HDEngine
 		void LoadFromJson(std::string filePath);
 		void CreateObject();
 		void LinkHierachy();
+		void SetTransform();
 
 	private:
 		std::vector<InfoStruct> _infoList;
-		std::vector<HDData::GameObject*> _gameObjectList;
 		std::unordered_map<int, HDData::GameObject*> _gameObjectMap;
 	};
 }

@@ -33,6 +33,7 @@ namespace HDEngine
 		LoadFromJson(filePath);
 		CreateObject();
 		LinkHierachy();
+		SetTransform();
 	}
 
 	void SceneLoader::LoadFromJson(std::string filePath)
@@ -110,9 +111,9 @@ namespace HDEngine
 				default:
 					break;
 			}
-			meshRenderer->LoadMesh(RESOURCE_PATH + info.meshName);
+			// TODO : 우선 기본 큐브메쉬로 해야함
+			// meshRenderer->LoadMesh(RESOURCE_PATH + info.meshName);
 
-			_gameObjectList.emplace_back(object);
 			_gameObjectMap.insert(std::make_pair(info.id, object));
 		}
 	}
@@ -128,7 +129,18 @@ namespace HDEngine
 
 			HDData::GameObject* object = _gameObjectMap[info.id];
 			HDData::GameObject* parent = _gameObjectMap[info.parentID];
-			object->SetParent(parent);
+			object->SetParentObject(parent);
+		}
+	}
+
+	void SceneLoader::SetTransform()
+	{
+		for (auto& info : _infoList)
+		{
+			HDData::GameObject* object = _gameObjectMap[info.id];
+			object->GetTransform()->SetLocalPosition(info.position);
+			object->GetTransform()->SetLocalRotation(info.rotation);
+			object->GetTransform()->SetLocalScale(info.scale);
 		}
 	}
 
