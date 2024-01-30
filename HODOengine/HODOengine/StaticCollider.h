@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "Collider.h"
 
@@ -11,6 +11,7 @@ namespace HDData
 
 	public:
 		void UpdateToPhysics() override;
+		virtual void DrawDebug() override;
 
 	public:
 		void Collided();

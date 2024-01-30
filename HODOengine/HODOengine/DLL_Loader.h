@@ -3,12 +3,15 @@
 #include <string>
 
 #ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+//#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 #else
-#define GRAPHICSDLL_PATH ("Graphics\\RocketDX11.dll"#filename)
+//#define GRAPHICSDLL_PATH (L"Graphics\\RocketDX11.dll"#filename)
+//#define GRAPHICSDLL_PATH (L"../x64/Release/RocketDX11.dll")
+#define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 #endif // _DEBUG
 
-// TODO : DLL ·ÎµåÇØ¼­ ¿©±â¼­ µé°íÀÖ°Ô ÇÏÀÚ ¿Ö³ÄÇÏ¸é..? ¾Æ´Ñ°¡?.. º»Ã¼¿¡¼­ µé°íÀÖ´Ù°¡ ¸Å°³º¯¼ö·Î ³ª´²Áà¾ßÇÏ³ª..?
+// TODO : DLL ë¡œë“œí•´ì„œ ì—¬ê¸°ì„œ ë“¤ê³ ìˆê²Œ í•˜ì ì™œëƒí•˜ë©´..? ì•„ë‹Œê°€?.. ë³¸ì²´ì—ì„œ ë“¤ê³ ìˆë‹¤ê°€ ë§¤ê°œë³€ìˆ˜ë¡œ ë‚˜ëˆ ì¤˜ì•¼í•˜ë‚˜..?
 
 namespace HDEngine
 {

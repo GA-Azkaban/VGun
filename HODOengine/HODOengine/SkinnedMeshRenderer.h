@@ -1,7 +1,7 @@
 #pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "../HODO3DGraphicsInterface/ISkinnedMesh.h"
+#include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
 
 namespace HDData
 {
@@ -9,11 +9,19 @@ namespace HDData
 	{
 	public:
 		SkinnedMeshRenderer();
-		HDEngine::ISkinnedMesh& Get();
 
+		void LoadMesh(const std::string& fileName);
+		void LoadNormalMap(const std::string& fileName);
+		void LoadDiffuseMap(const std::string& fileName);
+		void LoadVertexShader(const std::string& fileName);
+		void LoadPixelShader(const std::string& fileName);
+		void PlayAnimation(const std::string& animName, bool isLoop = true);
+		void PlayAnimation(UINT index, bool isLoop = true);
+
+	protected:
+		virtual void UpdateRenderData() override;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
-		virtual void Update() override;
 
 	private:
 		HDEngine::ISkinnedMesh* _skinnedMesh;

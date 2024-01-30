@@ -1,36 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Camera">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Renderable">
-      <UniqueIdentifier>{051ba127-460d-4151-9c21-0478391e2c9a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderable\DebugObject">
-      <UniqueIdentifier>{5fc00043-1acb-4a68-888a-2fba4edf2eca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderable\MeshObject">
-      <UniqueIdentifier>{e8cf3103-d589-4fd1-8d93-a0a6f3a8a86f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderable\MeshObject\StaticMesh">
-      <UniqueIdentifier>{982b6af9-e2df-470d-b43c-ecaf6281d7e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Renderable\MeshObject\SkinnedMesh">
-      <UniqueIdentifier>{11f9e053-7cc9-4787-beab-a221337560c9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RendererInterface">
       <UniqueIdentifier>{9eebf368-d994-4754-b2d0-4d45b408782d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sketchable">
-      <UniqueIdentifier>{65997900-f228-4e10-8e8a-d76c351ed68d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sketchable\ImageUI">
-      <UniqueIdentifier>{c3b69451-c3aa-4546-bd99-b7a34ba57d0f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sketchable\TextUI">
-      <UniqueIdentifier>{cf2933be-79bf-4fc2-ad2c-a7cb007b8c1e}</UniqueIdentifier>
     </Filter>
     <Filter Include="FactoryInterface">
       <UniqueIdentifier>{bf22af1d-fc4d-438e-9ba1-95553a22aba2}</UniqueIdentifier>
@@ -41,8 +13,45 @@
     <Filter Include="Material">
       <UniqueIdentifier>{08a72f2f-1fe6-459d-840b-63790ae16ca8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Renderable\Skybox">
+    <Filter Include="Objects">
+      <UniqueIdentifier>{a19ad3b1-e1bc-4c48-a66b-f9de12b602c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable">
+      <UniqueIdentifier>{051ba127-460d-4151-9c21-0478391e2c9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable\DebugObject">
+      <UniqueIdentifier>{5fc00043-1acb-4a68-888a-2fba4edf2eca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable\MeshObject">
+      <UniqueIdentifier>{e8cf3103-d589-4fd1-8d93-a0a6f3a8a86f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable\MeshObject\StaticMesh">
+      <UniqueIdentifier>{982b6af9-e2df-470d-b43c-ecaf6281d7e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable\MeshObject\SkinnedMesh">
+      <UniqueIdentifier>{11f9e053-7cc9-4787-beab-a221337560c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable\Skybox">
       <UniqueIdentifier>{c96f7985-d44c-426e-8929-63e6f2a8e3a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Camera">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Objects\Sketchable">
+      <UniqueIdentifier>{65997900-f228-4e10-8e8a-d76c351ed68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Sketchable\ImageUI">
+      <UniqueIdentifier>{c3b69451-c3aa-4546-bd99-b7a34ba57d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Sketchable\TextUI">
+      <UniqueIdentifier>{cf2933be-79bf-4fc2-ad2c-a7cb007b8c1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{e689d5ed-6e4d-4bc1-a2e3-704794ce8b76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Primitive">
+      <UniqueIdentifier>{97c467d8-1eb6-420d-8283-f2482fa5f16a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -50,34 +59,34 @@
       <Filter>RendererInterface</Filter>
     </ClInclude>
     <ClInclude Include="IRenderable.h">
-      <Filter>Renderable</Filter>
+      <Filter>Objects\Renderable</Filter>
     </ClInclude>
     <ClInclude Include="IDebugObject.h">
-      <Filter>Renderable\DebugObject</Filter>
+      <Filter>Objects\Renderable\DebugObject</Filter>
     </ClInclude>
     <ClInclude Include="IStaticMesh.h">
-      <Filter>Renderable\MeshObject\StaticMesh</Filter>
+      <Filter>Objects\Renderable\MeshObject\StaticMesh</Filter>
     </ClInclude>
     <ClInclude Include="ISkinnedMesh.h">
-      <Filter>Renderable\MeshObject\SkinnedMesh</Filter>
+      <Filter>Objects\Renderable\MeshObject\SkinnedMesh</Filter>
     </ClInclude>
     <ClInclude Include="IDebugCube.h">
-      <Filter>Renderable\DebugObject</Filter>
+      <Filter>Objects\Renderable\DebugObject</Filter>
     </ClInclude>
     <ClInclude Include="ISketchable.h">
-      <Filter>Sketchable</Filter>
+      <Filter>Objects\Sketchable</Filter>
     </ClInclude>
     <ClInclude Include="ISketchableImage.h">
-      <Filter>Sketchable\ImageUI</Filter>
+      <Filter>Objects\Sketchable\ImageUI</Filter>
     </ClInclude>
     <ClInclude Include="ISketchableText.h">
-      <Filter>Sketchable\TextUI</Filter>
+      <Filter>Objects\Sketchable\TextUI</Filter>
     </ClInclude>
     <ClInclude Include="IFactory.h">
       <Filter>FactoryInterface</Filter>
     </ClInclude>
     <ClInclude Include="ICamera.h">
-      <Filter>Camera</Filter>
+      <Filter>Objects\Camera</Filter>
     </ClInclude>
     <ClInclude Include="IResourceManager.h">
       <Filter>ResourceManager</Filter>
@@ -85,8 +94,14 @@
     <ClInclude Include="IMaterial.h">
       <Filter>Material</Filter>
     </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveHeader.h">
+      <Filter>Objects\Primitive</Filter>
+    </ClInclude>
     <ClInclude Include="ISkybox.h">
-      <Filter>Renderable\Skybox</Filter>
+      <Filter>Objects\Renderable\Skybox</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

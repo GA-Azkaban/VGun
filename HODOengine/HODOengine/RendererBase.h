@@ -7,7 +7,8 @@ namespace HDData
 	class RendererBase : public Component
 	{
 	public:
-		RendererBase();
+		virtual ~RendererBase() {};
+		virtual void UpdateRenderData() = 0;
 	};
 }
 

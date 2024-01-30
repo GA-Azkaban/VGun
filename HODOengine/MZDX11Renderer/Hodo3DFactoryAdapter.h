@@ -39,5 +39,6 @@ namespace hodoGIAdapter
 			Skybox* skybox = new Skybox();
 			return new hodoGIAdapter::SkyboxAdapter(skybox);
 		}
+
 	};
 }

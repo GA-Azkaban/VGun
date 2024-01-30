@@ -1,4 +1,4 @@
-#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
+﻿#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #pragma once
 
 #include <vector>
@@ -6,12 +6,13 @@
 #include "Singleton.h"
 #include "HODO_API.h"
 
-#include "../Include/physx/PxPhysics.h"
-#include "../Include/physx/PxPhysicsAPI.h"
+#include "../include/physX/PxPhysics.h"
+#include "../include/physX/PxPhysicsAPI.h"
 
 namespace HDData
 {
 	class GameObject;
+	class Collider;
 }
 
 namespace HDEngine
@@ -45,8 +46,9 @@ namespace HDEngine
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
 
 	public:
-		void GetKeyInput();
-		void MovePlayer(HDData::GameObject* object);
+		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
+		HDData::Collider* RayCast(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, float length, int* type);
+		HDData::Collider* RayCastHitPoint(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, Vector3& hitPos, float length, int* type);
 
 	private:
 		physx::PxDefaultAllocator		_allocator;
@@ -56,6 +58,7 @@ namespace HDEngine
 		physx::PxDefaultCpuDispatcher* _dispatcher;
 		physx::PxScene* _pxScene;
 		physx::PxMaterial* _material;
+		physx::PxMaterial* _playerMaterial;
 		physx::PxPvd* _pvd;
 
 	private:

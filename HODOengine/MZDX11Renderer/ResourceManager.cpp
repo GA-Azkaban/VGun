@@ -7,7 +7,7 @@
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 
-#define RESOURCES_DIRECTORY_NAME "../3DModels/"
+#define RESOURCES_DIRECTORY_NAME "Resources/3DModels/"
 
 LazyObjects<ResourceManager> ResourceManager::Instance;
 
@@ -34,63 +34,63 @@ void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* devi
 void ResourceManager::LoadShaders()
 {
 	VertexShader* vertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (vertexShader->LoadShaderFile(L"../Shaders/VertexShader.cso"))
+	if (vertexShader->LoadShaderFile(L"Resources/Shaders/VertexShader.cso"))
 		_vertexShaders.insert(std::make_pair("VertexShader.cso", vertexShader));
 
 	PixelShader* pixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (pixelShader->LoadShaderFile(L"../Shaders/PixelShader.cso"))
+	if (pixelShader->LoadShaderFile(L"Resources/Shaders/PixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("PixelShader.cso", pixelShader));
 
 	VertexShader* skeletonVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (skeletonVertexShader->LoadShaderFile(L"../Shaders/SkeletonVertexShader.cso"))
+	if (skeletonVertexShader->LoadShaderFile(L"Resources/Shaders/SkeletonVertexShader.cso"))
 		_vertexShaders.insert(std::make_pair("SkeletonVertexShader.cso", skeletonVertexShader));
 
 	PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (skeletonPixelShader->LoadShaderFile(L"../Shaders/SkeletonPixelShader.cso"))
+	if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
 
 	VertexShader* deferredVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (deferredVertexShader->LoadShaderFile(L"../Shaders/DeferredStaticMeshVS.cso"))
+	if (deferredVertexShader->LoadShaderFile(L"Resources/Shaders/DeferredStaticMeshVS.cso"))
 		_vertexShaders.insert(std::make_pair("DeferredStaticMeshVS.cso", deferredVertexShader));
 
 	PixelShader* deferredPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (deferredPixelShader->LoadShaderFile(L"../Shaders/DeferredStaticMeshPS.cso"))
+	if (deferredPixelShader->LoadShaderFile(L"Resources/Shaders/DeferredStaticMeshPS.cso"))
 		_pixelShaders.insert(std::make_pair("DeferredStaticMeshPS.cso", deferredPixelShader));
 
 	VertexShader* deferredSkeletonVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (deferredSkeletonVertexShader->LoadShaderFile(L"../Shaders/DeferredSkeletonMeshVS.cso"))
+	if (deferredSkeletonVertexShader->LoadShaderFile(L"Resources/Shaders/DeferredSkeletonMeshVS.cso"))
 		_vertexShaders.insert(std::make_pair("DeferredSkeletonMeshVS.cso", deferredSkeletonVertexShader));
 
 	PixelShader* deferredSkeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (deferredSkeletonPixelShader->LoadShaderFile(L"../Shaders/DeferredSkeletonMeshPS.cso"))
+	if (deferredSkeletonPixelShader->LoadShaderFile(L"Resources/Shaders/DeferredSkeletonMeshPS.cso"))
 		_pixelShaders.insert(std::make_pair("DeferredSkeletonMeshPS.cso", deferredSkeletonPixelShader));
 
 	VertexShader* debugVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (debugVertexShader->LoadShaderFile(L"../Shaders/DebugVertexShader.cso"))
+	if (debugVertexShader->LoadShaderFile(L"Resources/Shaders/DebugVertexShader.cso"))
 		_vertexShaders.insert(std::make_pair("DebugVertexShader.cso", debugVertexShader));
 
 	PixelShader* debugPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (debugPixelShader->LoadShaderFile(L"../Shaders/DebugPixelShader.cso"))
+	if (debugPixelShader->LoadShaderFile(L"Resources/Shaders/DebugPixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
 
 	VertexShader* skyboxVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (skyboxVertexShader->LoadShaderFile(L"../Shaders/SkyboxVertexShader.cso"))
+	if (skyboxVertexShader->LoadShaderFile(L"Resources/Shaders/SkyboxVertexShader.cso"))
 		_vertexShaders.insert(std::make_pair("SkyboxVertexShader.cso", skyboxVertexShader));
 
 	PixelShader* skyboxPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (skyboxPixelShader->LoadShaderFile(L"../Shaders/SkyboxPixelShader.cso"))
+	if (skyboxPixelShader->LoadShaderFile(L"Resources/Shaders/SkyboxPixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("SkyboxPixelShader.cso", skyboxPixelShader));
 
 	VertexShader* quadVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-	if (quadVertexShader->LoadShaderFile(L"../Shaders/FullScreenQuadVertexShader.cso"))
+	if (quadVertexShader->LoadShaderFile(L"Resources/Shaders/FullScreenQuadVertexShader.cso"))
 		_vertexShaders.insert(std::make_pair("FullScreenQuadVertexShader.cso", quadVertexShader));
 
 	PixelShader* quadPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (quadPixelShader->LoadShaderFile(L"../Shaders/FullScreenQuadPixelShader.cso"))
+	if (quadPixelShader->LoadShaderFile(L"Resources/Shaders/FullScreenQuadPixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("FullScreenQuadPixelShader.cso", quadPixelShader));
 
 	PixelShader* blitPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-	if (blitPixelShader->LoadShaderFile(L"../Shaders/BlitPixelShader.cso"))
+	if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
 		_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
 
 }

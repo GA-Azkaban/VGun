@@ -3,7 +3,6 @@
 
 namespace HDData
 {
-
 	SkyboxRenderer::SkyboxRenderer()
 		: _skybox(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSkybox())
 	{
@@ -24,5 +23,4 @@ namespace HDData
 	{
 		_skybox->SetActive(false);
 	}
-
 }

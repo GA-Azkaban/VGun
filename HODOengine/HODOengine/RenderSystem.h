@@ -6,10 +6,13 @@
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Singleton.h"
+#include "MathHeader.h"
 
 namespace HDData
 {
 	class RendererBase;
+	class UIBase;
+	class Collider;
 }
 
 namespace HDEngine
@@ -33,7 +36,10 @@ namespace HDEngine
 		/// 렌더링 관련
 	public:
 		void Update(float deltaTime);
-		void Render();
+		void DrawProcess();
+
+	private:
+		void UpdateRenderData();
 
 	public:
 		int GetScreenWidth() const;
@@ -52,8 +58,12 @@ namespace HDEngine
 
 	public:
 		void PushRenderComponent(HDData::RendererBase* comp);
+		void PushSketchComponent(HDData::UIBase* comp);
+		void PushCollider(HDData::Collider* col);
 
 	private:
 		std::vector<HDData::RendererBase*> _rendererList;
+		std::vector<HDData::UIBase*> _uiList;
+		std::vector<HDData::Collider*> _colliderList;
 	};
 };

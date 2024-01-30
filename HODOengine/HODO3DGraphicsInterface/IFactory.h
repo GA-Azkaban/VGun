@@ -11,6 +11,12 @@ namespace HDEngine
 	class IStaticMesh;
 	class ISkinnedMesh;
 	class ISkybox;
+	class ISketchableText;
+	class ISketchableImage;
+	class ILineRenderer;
+	struct CubePrimitive;
+	struct SpherePrimitive;
+	struct CylinderPrimitive;
 
 	class IFactory
 	{
@@ -19,6 +25,12 @@ namespace HDEngine
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
 		virtual ISkybox* CreateSkybox() = 0;
+		/*virtual ISketchableText* CreateText() = 0;
+		virtual ISketchableImage* CreateImage() = 0;
+		virtual ILineRenderer* CreateLineRenderer() = 0;
+		virtual CubePrimitive* CreateCubePrimitive() = 0;
+		virtual SpherePrimitive* CreateSpherePrimitive() = 0;
+		virtual CylinderPrimitive* CreateCylinderPrimitive() = 0;*/
 	};
 
 	/// dllexport 하는 오브젝트팩토리를 반환하는 팩토리 함수.

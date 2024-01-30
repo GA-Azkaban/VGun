@@ -1,10 +1,11 @@
 #include "DynamicBoxCollider.h"
 #include "GameObject.h"
+#include "GraphicsObjFactory.h"
 
 HDData::DynamicBoxCollider::DynamicBoxCollider()
 	: _width(1.0f), _height(1.0f), _depth(1.0f)
 {
-
+	_debugStruct = nullptr; // HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 }
 
 void HDData::DynamicBoxCollider::SetVolume(float w, float h, float d)
@@ -30,4 +31,10 @@ float HDData::DynamicBoxCollider::GetDepth() const
 {
 	//return _depth * _scaleOffset.x * GetGameObject()->GetTransform()->GetWorldScale().z;
 	return _depth;
+}
+
+void HDData::DynamicBoxCollider::DrawDebug()
+{
+	_debugStruct->worldTM = GetTransform()->GetWorldTM();
+	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
 }

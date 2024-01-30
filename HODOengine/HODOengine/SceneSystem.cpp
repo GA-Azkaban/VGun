@@ -1,4 +1,5 @@
-#include "SceneSystem.h"
+﻿#include "SceneSystem.h"
+#include "UISystem.h"
 #include "GameObject.h"
 #include "Scene.h"
 
@@ -29,6 +30,12 @@ namespace HDEngine
 
 		HDData::Scene* scene = new HDData::Scene(sceneName);
 		_sceneList.insert({ sceneName, scene });
+
+		if (!_currentScene)
+		{
+			_currentScene = scene;
+		}
+
 		return scene;
 	}
 
@@ -41,11 +48,14 @@ namespace HDEngine
 			return;
 		}
 		_currentScene = sceneIter->second;
+
+		UISystem::Instance().SetChangedScene(_currentScene);
 	}
 
 	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
 		_currentScene = scene;
+		UISystem::Instance().SetChangedScene(_currentScene);
 	}
 
 	std::unordered_map<std::string, HDData::Scene*>& SceneSystem::GetAllScenes()

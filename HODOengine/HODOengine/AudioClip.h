@@ -1,7 +1,7 @@
 #pragma once
 #include "SoundGroup.h"
 #include <string>
-#include "..\\SoundLib\\inc\\fmod.hpp"
+#include "../include/FMOD/fmod.hpp"
 
 namespace HDData
 {

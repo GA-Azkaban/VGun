@@ -16,6 +16,7 @@ namespace HDEngine
 	class GraphicsObjFactory;
 	class EventSystem;
 	class SoundSystem;
+	class UISystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -54,14 +55,15 @@ private:
 	HDEngine::DLL_Loader* _dllLoader;
 
 private:
-	HDEngine::SceneSystem& _sceneSystem;
-	HDEngine::ObjectSystem& _objectSystem;
-	HDEngine::TimeSystem& _timeSystem;
-	HDEngine::InputSystem& _inputSystem;
-	HDEngine::DebugSystem& _debugSystem;
-	HDEngine::PhysicsSystem& _physicsSystem;
-	HDEngine::RenderSystem& _renderSystem;
-	HDEngine::GraphicsObjFactory& _graphicsObjFactory;
-	HDEngine::EventSystem& _eventSystem;
-	HDEngine::SoundSystem& _soundSystem;
+	HDEngine::SceneSystem&			_sceneSystem;
+	HDEngine::ObjectSystem&			_objectSystem;
+	HDEngine::TimeSystem&			_timeSystem;
+	HDEngine::InputSystem&			_inputSystem;
+	HDEngine::DebugSystem&			_debugSystem;
+	HDEngine::PhysicsSystem&		_physicsSystem;
+	HDEngine::RenderSystem&			_renderSystem;
+	HDEngine::GraphicsObjFactory&	_graphicsObjFactory;
+	HDEngine::EventSystem&			_eventSystem;
+	HDEngine::SoundSystem&			_soundSystem;
+	HDEngine::UISystem&				_uiSystem;
 };

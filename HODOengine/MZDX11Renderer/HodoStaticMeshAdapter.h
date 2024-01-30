@@ -1,7 +1,7 @@
 #pragma once
 #include "../HODO3DGraphicsInterface/IStaticMesh.h"
 #include "StaticMeshObject.h"
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 #include <memory>
 
 namespace hodoGIAdapter
@@ -15,7 +15,7 @@ namespace hodoGIAdapter
 
 		}
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override;
 
 		virtual void LoadMesh(const std::string& fileName) override;

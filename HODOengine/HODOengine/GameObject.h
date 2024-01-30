@@ -1,19 +1,19 @@
-#pragma once
-#include "dllExporter.h"
-//#include "Component.h"
-#include "Transform.h"
+ï»¿#pragma once
 #include <unordered_set>
 #include <vector>
 #include <string>
+#include "dllExporter.h"
+//#include "Component.h"
+#include "Transform.h"
 
 /// <summary>
-/// °ÔÀÓ ¿ÀºêÁ§Æ®´Â °ÔÀÓ ¾À¿¡ ¹èÄ¡µÉ ¼ö ÀÖ´Â °¡Àå ±âº»ÀûÀÎ ´ÜÀ§ÀÇ °´Ã¼ÀÔ´Ï´Ù.
-/// °ÔÀÓ ¿ÀºêÁ§Æ®´Â ±âº»ÀûÀ¸·Î Transform ÄÄÆ÷³ÍÆ®¸¦ °®°í ÀÖ½À´Ï´Ù.
-/// °ÔÀÓ ¿ÀºêÁ§Æ®´Â ÀÌ¿Ü¿¡µµ ´Ù¾çÇÑ ÄÄÆ÷³ÍÆ®µéÀ» Ãß°¡·Î °¡Áú ¼ö ÀÖÀ¸¸ç,
-/// °¡Áö°í ÀÖ´Â ÄÄÆ÷³ÍÆ®µé¿¡ ÀÇÇØ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ ¼ºÁúÀÌ °áÁ¤µË´Ï´Ù.
-/// ¶ÇÇÑ °ÔÀÓ ¿ÀºêÁ§Æ®´Â ÀÚ½Ä°ú ºÎ¸ğ ¿ÀºêÁ§Æ®¸¦ °¡Áö´Â °èÃş ±¸Á¶·Î ±¸¼ºµË´Ï´Ù.
-/// ÀÚ½Ä °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ À§Ä¡¿Í °¢µµ´Â ºÎ¸ğ °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ À§Ä¡¿Í °¢µµ¿¡ Á¾¼ÓÀûÀÔ´Ï´Ù.
-/// 2023.11.01 ±è¹ÎÁ¤
+/// ê²Œì„ ì˜¤ë¸Œì íŠ¸ëŠ” ê²Œì„ ì”¬ì— ë°°ì¹˜ë  ìˆ˜ ìˆëŠ” ê°€ì¥ ê¸°ë³¸ì ì¸ ë‹¨ìœ„ì˜ ê°ì²´ì…ë‹ˆë‹¤.
+/// ê²Œì„ ì˜¤ë¸Œì íŠ¸ëŠ” ê¸°ë³¸ì ìœ¼ë¡œ Transform ì»´í¬ë„ŒíŠ¸ë¥¼ ê°–ê³  ìˆìŠµë‹ˆë‹¤.
+/// ê²Œì„ ì˜¤ë¸Œì íŠ¸ëŠ” ì´ì™¸ì—ë„ ë‹¤ì–‘í•œ ì»´í¬ë„ŒíŠ¸ë“¤ì„ ì¶”ê°€ë¡œ ê°€ì§ˆ ìˆ˜ ìˆìœ¼ë©°,
+/// ê°€ì§€ê³  ìˆëŠ” ì»´í¬ë„ŒíŠ¸ë“¤ì— ì˜í•´ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ì„±ì§ˆì´ ê²°ì •ë©ë‹ˆë‹¤.
+/// ë˜í•œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ëŠ” ìì‹ê³¼ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸ë¥¼ ê°€ì§€ëŠ” ê³„ì¸µ êµ¬ì¡°ë¡œ êµ¬ì„±ë©ë‹ˆë‹¤.
+/// ìì‹ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ìœ„ì¹˜ì™€ ê°ë„ëŠ” ë¶€ëª¨ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ìœ„ì¹˜ì™€ ê°ë„ì— ì¢…ì†ì ì…ë‹ˆë‹¤.
+/// 2023.11.01 ê¹€ë¯¼ì •
 /// </summary>
 
 namespace HDData
@@ -29,7 +29,7 @@ namespace HDData
 	{
 	public:
 		friend Component::Component();
-		// GameObjectÀÇ »ı¼º°ú ÃÊ±âÈ­ ÀÛ¾÷Àº Scene¿¡¼­ AddGameObject()¸¦ È£ÃâÇÒ ¶§ ÇÒ °ÍÀÓ.
+		// GameObjectì˜ ìƒì„±ê³¼ ì´ˆê¸°í™” ì‘ì—…ì€ Sceneì—ì„œ AddGameObject()ë¥¼ í˜¸ì¶œí•  ë•Œ í•  ê²ƒì„.
 		~GameObject() = default;
 		GameObject(std::string name = "");
 		GameObject(const GameObject&) = delete;
@@ -102,10 +102,12 @@ namespace HDData
 
 		void SetParentObject(GameObject* parentObject);
 		void SetSelfActive(bool active);
+		bool GetSelfActive();
+		std::string GetObjectName();
 
 	private:
 		std::unordered_set<Component*> _components;
-		std::vector<Component*> _indexedComponents;
+
 		std::unordered_set<GameObject*> _childGameObjects;
 		std::string _objectName;
 		GameObject* _parentGameObject;

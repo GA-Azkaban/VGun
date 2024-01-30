@@ -17,13 +17,14 @@
 #include "GraphicsObjFactory.h"
 #include "EventSystem.h"
 #include "SoundSystem.h"
+#include "UISystem.h"
 
 #include "DLL_Loader.h"
 
 #ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\MZDX11Renderer.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#define GRAPHICSDLL_PATH (L"MZDX11Renderer.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
 #else
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\MZDX11Renderer.dll")
+#define GRAPHICSDLL_PATH (L"MZDX11Renderer.dll")
 #endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
@@ -51,7 +52,8 @@ HODOengine::HODOengine()
 	_physicsSystem(HDEngine::PhysicsSystem::Instance()),
 	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
 	_eventSystem(HDEngine::EventSystem::Instance()),
-	_soundSystem(HDEngine::SoundSystem::Instance())
+	_soundSystem(HDEngine::SoundSystem::Instance()),
+	_uiSystem(HDEngine::UISystem::Instance())
 {
 	
 }
@@ -72,17 +74,25 @@ HODOengine& HODOengine::Instance()
 
 void HODOengine::Initialize()
 {
+	_debugSystem.Initialize();
+	
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
+
+	// 임시로 스크린 폭과 높이를 직접 넣어주자. 24.1.23.AJY.
+	_screenWidth = 1920;
+	_screenHeight = 1080;
+
 	CreateWindows(ins);
 	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
+	// 렌더 먼저 그다음에 인풋
+	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
+	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_timeSystem.Initialize();
 	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
-	_debugSystem.Initialize();
-	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
-	//_physicsSystem.Initialize();
-	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
+	_physicsSystem.Initialize();
+	_uiSystem.Initialize();
 }
 
 void HODOengine::Loop()
@@ -109,6 +119,7 @@ void HODOengine::Loop()
 
 void HODOengine::Finalize()
 {
+	_uiSystem.Finalize();
 	_physicsSystem.Finalize();
 	_renderSystem.Finalize();
 	// _debugSystem.Finalize();
@@ -131,6 +142,7 @@ void HODOengine::Run()
 
 	_inputSystem.Update();
 	_debugSystem.Update();
+	_uiSystem.Update();
 
 	_objectSystem.UpdateCurrentSceneObjects();
 	_soundSystem.Update();
@@ -139,10 +151,10 @@ void HODOengine::Run()
 
 	// draw
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
-	_renderSystem.Render();
+	_renderSystem.DrawProcess();
 
 	// physicsUpdate, temporary location
-	//HDEngine::PhysicsSystem::Instance().Update();
+	HDEngine::PhysicsSystem::Instance().Update();
 
 	_eventSystem.InvokeEvent();
 
@@ -173,8 +185,12 @@ ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
 
 BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 {
+	// 임시로, 윈도우가 항상 가운데 위치하도록 계산하여 넣어보자. 24.1.23.AJY.
+	int winPosX = (GetSystemMetrics(SM_CXSCREEN) - _screenWidth) / 2; 
+	int winPosY = (GetSystemMetrics(SM_CYSCREEN) - _screenHeight) / 2;
+
 	_hWnd = CreateWindowW(_appName, _appName, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+		winPosX, winPosY, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 
 	if (!_hWnd)
 	{

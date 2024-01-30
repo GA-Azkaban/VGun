@@ -10,12 +10,9 @@
 #include "Camera.h"
 #include "TimeSystem.h"
 #include "RendererBase.h"
-
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\HODOmath.lib")
-#endif // _DEBUG
+#include "UIBase.h"
+#include "GraphicsObjFactory.h"
+#include "Collider.h"
 
 using GRAPHICS_CREATE_SIGNATURE = HDEngine::I3DRenderer* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
@@ -50,15 +47,35 @@ namespace HDEngine
 
 	void RenderSystem::Update(float deltaTime)
 	{
-		/*HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
-		HDData::Camera* mainCam = currentScene->GetMainCamera();
-		mainCam->UpdateRenderData();*/
+		UpdateRenderData();
 		_dx11Renderer->Update(deltaTime);
 	}
 
-	void RenderSystem::Render()
+	void RenderSystem::DrawProcess()
 	{
 		_dx11Renderer->Render();
+	}
+
+	void RenderSystem::UpdateRenderData()
+	{
+		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		HDData::Camera* mainCam = currentScene->GetMainCamera();
+		mainCam->UpdateRenderData();
+
+		for (auto rendererBase : _rendererList)
+		{
+			rendererBase->UpdateRenderData();
+		}
+
+		for (auto uiBase : _uiList)
+		{
+			uiBase->UpdateRenderData();
+		}
+
+		for (auto collider : _colliderList)
+		{
+			collider->DrawDebug();
+		}
 	}
 
 	int RenderSystem::GetScreenWidth() const
@@ -73,7 +90,17 @@ namespace HDEngine
 
 	void RenderSystem::PushRenderComponent(HDData::RendererBase* comp)
 	{
-		_rendererList.push_back(comp);
+		_rendererList.emplace_back(comp);
+	}
+
+	void RenderSystem::PushSketchComponent(HDData::UIBase* comp)
+	{
+		_uiList.emplace_back(comp);
+	}
+
+	void RenderSystem::PushCollider(HDData::Collider* col)
+	{
+		_colliderList.emplace_back(col);
 	}
 
 }

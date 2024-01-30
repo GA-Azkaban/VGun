@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 
 namespace HDEngine
 {
@@ -11,7 +11,7 @@ namespace HDEngine
 		virtual void SetVertexShader(const std::string& vertexShader) = 0;
 		virtual void SetPixelShader(const std::string& pixelShader) = 0;
 		virtual void SetTexture(const unsigned int index, const std::string& texture) = 0;
-		virtual void SetColor(const HDMath::HDFLOAT4 color) = 0;
+		virtual void SetColor(const Color color) = 0;
 
 		virtual const std::string& GetMaterialName() const = 0;
 	};
@@ -23,6 +23,6 @@ namespace HDEngine
 		std::string pixelShader;
 		std::string texture;
 		unsigned int textureIndex;
-		HDMath::HDFLOAT4 color;
+		Color color;
 	};
 }

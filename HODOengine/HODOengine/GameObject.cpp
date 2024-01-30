@@ -1,4 +1,4 @@
-#include "GameObject.h"
+ï»¿#include "GameObject.h"
 #include "Transform.h"
 
 namespace HDData
@@ -123,8 +123,20 @@ namespace HDData
 
 	void GameObject::SetParentObject(GameObject* parentObject)
 	{
-		_parentGameObject = parentObject;
-		_parentGameObject->_childGameObjects.insert(this);
+		// clear parent
+		if (parentObject == nullptr)
+		{
+			if (_parentGameObject != nullptr)
+			{
+				std::erase_if(_parentGameObject->_childGameObjects, [this](GameObject* obj) {return obj == this; });
+				_parentGameObject = nullptr;
+			}
+		}
+		else
+		{
+			_parentGameObject = parentObject;
+			_parentGameObject->_childGameObjects.insert(this);
+		}
 	}
 
 	void GameObject::SetSelfActive(bool active)
@@ -136,10 +148,21 @@ namespace HDData
 			comp->SetActive(active);
 		}
 
-		// ÀÚ½Ä ¿ÀºêÁ§Æ®µµ ¸ðµÎ È°¼ºÈ­/ºñÈ°¼ºÈ­
+		// ìžì‹ ì˜¤ë¸Œì íŠ¸ë„ ëª¨ë‘ í™œì„±í™”/ë¹„í™œì„±í™”
 		for (auto child : _childGameObjects)
 		{
 			child->SetSelfActive(active);
 		}
 	}
+
+	bool GameObject::GetSelfActive()
+	{
+		return _selfActive;
+	}
+
+	std::string GameObject::GetObjectName()
+	{
+		return _objectName;
+	}
+
 }
