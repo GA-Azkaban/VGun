@@ -72,7 +72,7 @@ namespace HDData
 
 	private:
 		bool _isShakingCamera;
-		float _shootDuration;
+		float _shakeDuration;
 		float _distYOnShoot;
 	};
 }

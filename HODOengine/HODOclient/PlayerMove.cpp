@@ -11,7 +11,7 @@ void PlayerMove::Start()
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_moveSpeed = 3.0f;
 
-	pitchAngle = 0.0f;
+	_pitchAngle = 0.0f;
 
 	_isOnGround = false;
 	_isJumping = true;
@@ -68,6 +68,8 @@ void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim, HDData:
 // 조이스틱 개념
 void PlayerMove::CheckMoveInfo()
 {
+	_prevDirection = _moveDirection;
+
 	_moveDirection = 5;
 
 	if (API::GetKeyPressing(DIK_I))
@@ -133,13 +135,11 @@ bool PlayerMove::CheckIsOnGround()
 
 	for (int i = 0; i < 9; ++i)
 	{
-		//RocketEngine::RMFLOAT4 worldPos = RMFloat4MultiplyMatrix(RocketEngine::RMFLOAT4(pos.x + x[i], pos.y, pos.z + z[i], 1.0f), gameObject->transform.GetWorldTM());
 		float halfHeight = _playerCollider->GetHeight() / 2.0f;
 		Vector3 worldPos = Vector3(pos.x + x[i], pos.y - halfHeight - 0.001f * (i - 1), pos.z + z[i]);
 
 		int type = 0;
 		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f, -1.0f,0.0f }, 0.05f, &type);
-		//RocketEngine::DrawDebugLine({ worldPos.x,worldPos.y,worldPos.z }, { eachDir.x,eachDir.y,eachDir.z });
 		API::DrawLineDir(worldPos, Vector3(0.f, -1.f, 0.f), 0.05f, Vector4(1.f, 0.f, 0.f, 0.f));
 
 		if (temp)
@@ -171,6 +171,11 @@ void PlayerMove::Move(int direction)
 	// 4 5 6
 	// 1 2 3
 
+	if (_prevDirection != _moveDirection)
+	{
+		//_playerCollider->Stop();
+	}
+
 	// PhysX로 오브젝트 옮겨주기
 	if (_moveDirection == 5)
 	{
@@ -182,7 +187,7 @@ void PlayerMove::Move(int direction)
 	}
 	else
 	{
-		_playerCollider->Move(DecideMoveDirection(_moveDirection), _moveSpeed);
+		_playerCollider->Move(DecideDisplacement(_moveDirection), _moveSpeed);
 	}
 
 	_prevDirection = _moveDirection;
@@ -233,12 +238,14 @@ void PlayerMove::ToggleCam()
 		_prevCam = nullptr;
 		_isHeadCam = false;
 		_aimText->SetText("");
+		_isFirstPersonPerspective = false;
 	}
 	else
 	{
 		_prevCam = API::SetMainCamera(_headCam);
 		_isHeadCam = true;
 		_aimText->SetText("O");
+		_isFirstPersonPerspective = true;
 	}
 }
 
@@ -257,70 +264,129 @@ void PlayerMove::Jump()
 }
 
 
-Vector3 PlayerMove::DecideMoveDirection(int direction)
+Vector3 PlayerMove::DecideDisplacement(int direction)
 {
 	Vector3 moveStep;
 
-	switch (direction)
+	if (_isFirstPersonPerspective)
 	{
-		case 1:
+		switch (direction)
 		{
-			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
-		}
-		break;
-		case 2:
-		{
-			moveStep = GetTransform()->GetForward() * _deltaTime * -_moveSpeed;
-		}
-		break;
-		case 3:
-		{
-			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
-		}
-		break;
-		case 4:
-		{
-			moveStep = GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
-		}
-		break;
-		case 5:
-		{
-			moveStep = Vector3::Zero;
-		}
-		break;
-		case 6:
-		{
-			moveStep = GetTransform()->GetRight() * _deltaTime * _moveSpeed;
-		}
-		break;
-		case 7:
-		{
-			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
-		}
-		break;
-		case 8:
-		{
-			moveStep = GetTransform()->GetForward() * _deltaTime * _moveSpeed;
-		}
-		break;
-		case 9:
-		{
-			moveStep =
-				GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
-				+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
-		}
-		break;
-		default:
-		{
+			case 1:
+			{
+				moveStep =
+					GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
+			}
+			break;
+			case 2:
+			{
+				moveStep = GetTransform()->GetForward() * _deltaTime * -_moveSpeed;
+			}
+			break;
+			case 3:
+			{
+				moveStep =
+					GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
+			}
+			break;
+			case 4:
+			{
+				moveStep = GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+			}
+			break;
+			case 5:
+			{
+				moveStep = Vector3::Zero;
+			}
+			break;
+			case 6:
+			{
+				moveStep = GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+			}
+			break;
+			case 7:
+			{
+				moveStep =
+					GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
+			}
+			break;
+			case 8:
+			{
+				moveStep = GetTransform()->GetForward() * _deltaTime * _moveSpeed;
+			}
+			break;
+			case 9:
+			{
+				moveStep =
+					GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
+			}
+			break;
+			default:
+			{
 
+			}
+			break;
 		}
-		break;
+	}
+	else
+	{
+		switch (direction)
+		{
+			case 1:
+			{
+				moveStep = Vector3(_deltaTime * -_moveSpeed * 0.7f, 0.0f, _deltaTime * -_moveSpeed * 0.7f);
+			}
+			break;
+			case 2:
+			{
+				moveStep = Vector3(0.0f, 0.0f, _deltaTime * -_moveSpeed);
+			}
+			break;
+			case 3:
+			{
+				moveStep = Vector3(_deltaTime * _moveSpeed * 0.7f, 0.0f, _deltaTime * -_moveSpeed * 0.7f);
+			}
+			break;
+			case 4:
+			{
+				moveStep = Vector3(_deltaTime * -_moveSpeed, 0.0f, 0.0f);
+			}
+			break;
+			case 5:
+			{
+				moveStep = Vector3::Zero;
+			}
+			break;
+			case 6:
+			{
+				moveStep = Vector3(_deltaTime * _moveSpeed, 0.0f, 0.0f);
+			}
+			break;
+			case 7:
+			{
+				moveStep = Vector3(_deltaTime * -_moveSpeed * 0.7f, 0.0f, _deltaTime * _moveSpeed * 0.7f);
+			}
+			break;
+			case 8:
+			{
+				moveStep = Vector3(0.0f, 0.0f, _deltaTime * _moveSpeed);
+			}
+			break;
+			case 9:
+			{
+				moveStep = Vector3(_deltaTime * _moveSpeed * 0.7f, 0.0f, _deltaTime * _moveSpeed * 0.7f);
+			}
+			break;
+			default:
+			{
+
+			}
+			break;
+		}
 	}
 
 	return moveStep;
@@ -412,8 +478,8 @@ void PlayerMove::Pitch(float rotationValue)
 		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
 		rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
 
-		pitchAngle += rotationValue;
-		Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), pitchAngle);
+		_pitchAngle += rotationValue;
+		Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), _pitchAngle);
 
 		cameraTransform->SetLocalRotation(rotToX);
 	}

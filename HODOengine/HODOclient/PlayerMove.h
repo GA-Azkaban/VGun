@@ -27,7 +27,7 @@ private:
 	void CheckMoveInfo();
 	void CheckLookDirection();
 	bool CheckIsOnGround();
-	Vector3 DecideMoveDirection(int direction);
+	Vector3 DecideDisplacement(int direction);
 
 private:
 	// 마우스 회전에 따른 시야 변경 체크
@@ -55,6 +55,9 @@ private:
 private:
 	bool _isJumping;
 	bool _isOnGround;
+	bool _isFirstPersonPerspective;
+
+private:
 	float _moveSpeed;
 	int _moveDirection;
 	int _prevDirection;	// useless on immediate stop mechanism
@@ -66,7 +69,7 @@ private:
 	Quaternion _prevCameraRot;
 	bool _isHeadCam;
 
-	float pitchAngle;
+	float _pitchAngle;
 
 public:
 	void SetHeadCam(HDData::Camera* cam);
