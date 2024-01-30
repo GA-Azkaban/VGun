@@ -299,8 +299,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UISystem.h" />
-    <ClInclude Include="UnitySceneLoader.h" />
-    <ClInclude Include="Yaml.hpp" />
+    <ClInclude Include="SceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioSource.cpp" />
@@ -365,8 +364,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UISystem.cpp" />
-    <ClCompile Include="UnitySceneLoader.cpp" />
-    <ClCompile Include="Yaml.cpp" />
+    <ClCompile Include="SceneLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOengine.rc" />

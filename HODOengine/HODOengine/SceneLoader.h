@@ -1,12 +1,11 @@
 ﻿#pragma once
-#include <string>
 
 namespace HDEngine
 {
-	class UnitySceneLoader
+	class SceneLoader
 	{
 	public:
-		UnitySceneLoader();
+		SceneLoader();
 
 		void LoadUnityScene(std::string filePath);
 	};
