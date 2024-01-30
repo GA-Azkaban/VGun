@@ -48,7 +48,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 	input.tangent = normalize(input.tangent);
 
 	// Read and unpack normal from map
-	float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
+	//float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
+	float3 normalFromMap = input.normal;
 
 	// Transform from tangent to world space
 	float3 N = input.normal;
@@ -65,7 +66,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	// Directional light calculation
 	float dirLightAmount = saturate(dot(input.normal, -normalize(dirLight.Direction)));
-	float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
+	//float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
+	float3 totalDirLight = dirLight.Color * dirLightAmount;
 
 	// Point light calculation
 	float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
@@ -88,8 +90,11 @@ float4 main(VertexToPixel input) : SV_TARGET
 		totalSpotLight += (spotAmount * spotLight[i].Color * textureColor);
 	}
 
-	float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
+	//float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
+	//float3 totalLight = totalDirLight;
+	float4 totalLight = float4(totalDirLight, 1.0f) + textureColor;
 
-	return float4(totalLight, 1.0f);
+	//return float4(totalLight, 1.0f);
+	return totalLight;
 	//return textureColor;
 }
