@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 
+#include "Singleton.h"
 #include "MathHeader.h"
 
 namespace HDData
@@ -12,8 +13,12 @@ namespace HDData
 
 namespace HDEngine
 {
-	class SceneLoader
+	class SceneLoader : public Singleton<SceneLoader>
 	{
+		friend Singleton;
+	private:
+		SceneLoader();
+
 		struct InfoStruct
 		{
 			int id;
@@ -23,15 +28,13 @@ namespace HDEngine
 			Vector3 position;
 			Quaternion rotation;
 			Vector3 scale;
-			int colliderType;		// box = 1, sphere = 2
+			int colliderType;		// box static = 1, sphere dynamic = 2
 			Vector3 colliderCenter;
 			Vector3 boxColliderSize;
 			float sphereColliderRadius;
 		};
 
 	public:
-		SceneLoader();
-
 		void LoadUnityScene(std::string filePath);
 
 	private:

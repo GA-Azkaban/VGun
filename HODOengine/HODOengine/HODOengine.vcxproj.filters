@@ -125,7 +125,7 @@
       <Filter>01_EngineProcess</Filter>
     </ClCompile>
     <ClCompile Include="SceneLoader.cpp">
-      <Filter>UnitySceneLoader</Filter>
+      <Filter>06_System\SceneLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -286,7 +286,7 @@
       <Filter>01_EngineProcess</Filter>
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
-      <Filter>UnitySceneLoader</Filter>
+      <Filter>06_System\SceneLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,7 +436,7 @@
     <Filter Include="06_System\UISystem">
       <UniqueIdentifier>{9a36e062-351c-4e18-8ce3-b112b20b1cc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UnitySceneLoader">
+    <Filter Include="06_System\SceneLoader">
       <UniqueIdentifier>{067b2b6f-d0f1-48ce-bafc-049e5dac71eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
