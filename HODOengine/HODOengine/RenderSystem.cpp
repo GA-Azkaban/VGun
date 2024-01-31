@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 #include <algorithm>
 
 #include "RenderSystem.h"
@@ -12,12 +12,7 @@
 #include "RendererBase.h"
 #include "UIBase.h"
 #include "GraphicsObjFactory.h"
-
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\HODOmath.lib")
-#endif // _DEBUG
+#include "Collider.h"
 
 using GRAPHICS_CREATE_SIGNATURE = HDEngine::I3DRenderer* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
@@ -54,7 +49,7 @@ namespace HDEngine
 	void RenderSystem::Update(float deltaTime)
 	{
 		UpdateRenderData();
-		_dx11Renderer->Update(deltaTime);
+		_dx11Renderer->Update(deltaTime, true);
 	}
 
 	void RenderSystem::DrawProcess()
@@ -76,6 +71,11 @@ namespace HDEngine
 		for (auto uiBase : _uiList)
 		{
 			uiBase->UpdateRenderData();
+		}
+
+		for (auto collider : _colliderList)
+		{
+			collider->DrawDebug();
 		}
 	}
 
@@ -99,12 +99,17 @@ namespace HDEngine
 		_uiList.emplace_back(comp);
 	}
 
-	void RenderSystem::DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color)
+	void RenderSystem::PushCollider(HDData::Collider* col)
+	{
+		_colliderList.emplace_back(col);
+	}
+
+	void RenderSystem::DrawLine(Vector3 start, Vector3 end, Vector4 color)
 	{
 		_lineRenderer->DrawLine(start, end, color);
 	}
 
-	void RenderSystem::DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color)
+	void RenderSystem::DrawLine(Vector3 start, Vector3 direction, float length, Vector4 color)
 	{
 		_lineRenderer->DrawLine(start, direction, length, color);
 	}

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "Mesh.h"
-#include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "Animation.h"
 
 #include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
 
@@ -25,25 +25,22 @@ namespace RocketCore::Graphics
 		~StaticMeshObject();
 
 	public:
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override;
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
-		virtual void LoadVertexShader(const std::string& fileName) override;
-		virtual void LoadPixelShader(const std::string& fileName) override;
 
 	public:
 		void Render();
 
 	public:
-		void SetModel(Model* model);
+		//void SetModel(Model* model);
 		void SetVertexShader(VertexShader* shader);
 		void SetPixelShader(PixelShader* shader);
 		void SetRenderState(ID3D11RasterizerState* renderState) { m_renderState = renderState; }
 
 	private:
-		Model* _model;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 
@@ -51,8 +48,8 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;
+		Node* m_node;
 		Material* m_material;
 		bool m_isActive;
 	};
 }
-	

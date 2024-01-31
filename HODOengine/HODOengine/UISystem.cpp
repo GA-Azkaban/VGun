@@ -1,4 +1,4 @@
-#include "UISystem.h"
+﻿#include "UISystem.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "UIBase.h"
@@ -50,7 +50,7 @@ namespace HDEngine
 	{
 		for (const auto& ui : _uiList)
 		{
-			if (!ui->GetGameObject()->IsActive())
+			if (!ui->GetGameObject()->GetSelfActive())
 			{
 				continue;
 			}
@@ -58,20 +58,28 @@ namespace HDEngine
 			if (ui->CheckFocus())
 			{
 				_focusedUI = ui;
-				break;
+				_focusedUI->SetIsHovering(true);
+
+				if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
+				{
+					_focusedUI->SetIsClicked(true);
+					_focusedUI->SetIsGrabbing(true);
+					_focusedUI->OnClickEvent();
+					continue;
+				}
+
+				ui->SetIsClicked(false);
+				continue;
 			}
+
+			ui->SetIsClicked(false);
+			ui->SetIsHovering(false);
+
+			if (_focusedUI != nullptr && InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
+			{
+				_focusedUI->SetIsGrabbing(false);
+			}
+
 		}
-
-		//if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
-		//{
-		//	_focusedUI->SetIsClicked(true);
-		//}
-		//else
-		//{
-		//	_focusedUI->SetIsHovering(true);
-		//}
 	}
-
-
-
 }

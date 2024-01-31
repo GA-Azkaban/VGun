@@ -1,4 +1,4 @@
-#include "Button.h"
+﻿#include "Button.h"
 #include "ImageUI.h"
 #include "TextUI.h"
 #include "GameObject.h"
@@ -24,9 +24,9 @@ namespace HDData
 
 	void Button::Update()
 	{
-		if (GetIsClicked() == true)
+		if (GetIsClicked())
 		{
-			_onClickEvent;
+			CallClickEvent();
 		}
 	}
 

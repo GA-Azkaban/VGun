@@ -1,10 +1,12 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
-#include "InputData.h"
-#include "../HODOmath/HODOmath.h"
-#include "Singleton.h"
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
+
+#include "InputData.h"
+#include "MathHeader.h"
+#include "Singleton.h"
 /// <summary>
 /// 오수안
 /// DirectInput을 이용한 개선된 인풋 시스템
@@ -34,15 +36,17 @@ namespace HDEngine
 		bool GetMouseDown(BYTE key);
 		bool GetMouseUp(BYTE key);
 
-		bool CheckMouseMove();
-		bool Check2DClicked(float x, float y, float width, float height);
+		Vector2 GetMousePosition();
+		Vector2 GetMouseDelta();
 
-		HDMath::HDFLOAT2 GetMousePosition();
-		HDMath::HDFLOAT2 GetMouseDelta();
-	
+		bool GetKeyPushed();
+		char ConvertKeyToChar(BYTE key, bool isShiftPressed);
+		char GetInputText(BYTE i);
+
 		float GetMouseWheel();
 
 		void Flush();
+		void RecursiveMouse();
 
 	private:
 		bool StartDXInput();
@@ -54,6 +58,8 @@ namespace HDEngine
 
 		int						_screenWidth;
 		int						_screenHeight;
+		int						_widthOffset;
+		int						_heightOffset;
 
 		LPDIRECTINPUT8			_DI;
 		LPDIRECTINPUTDEVICE8	_keyboardDevice;
@@ -64,6 +70,9 @@ namespace HDEngine
 		bool					_prevMouseState[3];
 		bool					_keyState[256];
 		bool					_prevKeyState[256];
+
+		bool					_isKeyPushed;
+		bool					_isShiftPressed;
 
 		POINT					_mousePos;
 		POINT					_prevMousePos;

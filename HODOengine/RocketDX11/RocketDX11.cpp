@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include "RocketDX11.h"
 #include "Grid.h"
@@ -24,6 +24,9 @@
 #include "Cubemap.h"
 
 #include "LightStruct.h"
+
+#include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
+
 using namespace DirectX;
 
 namespace HDEngine
@@ -205,6 +208,7 @@ namespace RocketCore::Graphics
 
 		/// Load resources
 		_resourceManager.LoadFBXFile("Rob02.fbx");
+		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
 		_resourceManager.LoadTextureFile("sunsetcube1024.dds");
 
 		CreateDepthStencilStates();
@@ -242,11 +246,6 @@ namespace RocketCore::Graphics
 			shaderByteCode, byteCodeLength,
 			&_lineInputLayout));
 
-		/*SkinningMeshObject* test1 = ObjectManager::Instance().CreateSkinningMeshObject();
-		test1->LoadMesh("Rob02.fbx");
-		test1->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
-		test1->LoadNormalMap("Rob02White_Normal.png");
-		test1->PlayAnimation(0, true);*/
 	}
 
 	void RocketDX11::BeginRender()
@@ -367,8 +366,10 @@ namespace RocketCore::Graphics
 		return;
 	}
 
-	void RocketDX11::Update(float deltaTime)
+	void RocketDX11::Update(float deltaTime, bool isDebug)
 	{
+		_isDebug = isDebug;
+
 		Camera::GetMainCamera()->UpdateViewMatrix();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
@@ -390,9 +391,13 @@ namespace RocketCore::Graphics
 		SetCubemapDSS();
 		_cubemap->Render();
 
-		RenderText();
 		RenderTexture();
 		RenderLine();
+		RenderText();
+		if (_isDebug)
+		{
+			RenderDebug();
+		}
 		EndRender();
 	}
 
@@ -495,6 +500,26 @@ namespace RocketCore::Graphics
 		spotLight[1].SpotPower = 1.0f;
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
+	}
+
+	void RocketDX11::RenderDebug()
+	{
+		Camera* cam = Camera::GetMainCamera();
+
+		for (auto e : ObjectManager::Instance().GetCubePrimitiveList())
+		{
+			ResourceManager::Instance().GetCubePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
+		}
+
+		for (auto e : ObjectManager::Instance().GetSpherePrimitiveList())
+		{
+			ResourceManager::Instance().GetSpherePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
+		}
+
+		for (auto e : ObjectManager::Instance().GetCylinderPrimitiveList())
+		{
+			ResourceManager::Instance().GetCylinderPrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
+		}
 	}
 
 }

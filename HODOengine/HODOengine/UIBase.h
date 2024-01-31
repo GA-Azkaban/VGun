@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 
 #include "Component.h"
 #include "Transform.h"
+#include "MathHeader.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchable.h"
 
 namespace HDData
@@ -35,6 +36,8 @@ namespace HDData
 		float GetRight();
 		float GetTop();
 		float GetBottom();
+
+		virtual void OnClickEvent() {};
 
 		HDEngine::ISketchable* _sketchable;
 

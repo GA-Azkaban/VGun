@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "..\\HODO3DGraphicsInterface\\IFactory.h"
 
 namespace RocketCore::Graphics
@@ -12,6 +12,9 @@ namespace RocketCore::Graphics
 		virtual HDEngine::ISketchableText* CreateText() override;
 		virtual HDEngine::ISketchableImage* CreateImage() override;
 		virtual HDEngine::ILineRenderer* CreateLineRenderer() override;
+		virtual HDEngine::CubePrimitive* CreateCubePrimitive() override;
+		virtual HDEngine::SpherePrimitive* CreateSpherePrimitive() override;
+		virtual HDEngine::CylinderPrimitive* CreateCylinderPrimitive() override;
 	};
 }
 

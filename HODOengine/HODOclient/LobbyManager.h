@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 
 class LobbyManager : public HDData::Script
@@ -19,7 +19,6 @@ public:
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);
 	void SetIDTextBox();
-
 
 private:
 	// 메인 화면

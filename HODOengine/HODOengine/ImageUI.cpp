@@ -1,7 +1,10 @@
-#include "ImageUI.h"
+﻿#include "ImageUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
+#include "GameObject.h"
+#include "ToggleUI.h"
+#include "Component.h"
 
 namespace HDData
 {
@@ -10,6 +13,7 @@ namespace HDData
 	{
 		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable = _imageUI;
+		_imageUI->SetActive(true);
 	}
 
 	void ImageUI::SetActive(bool active)
@@ -42,6 +46,11 @@ namespace HDData
 		return _imageUI->GetScreenSpacePositionY();
 	}
 
+	DirectX::FXMVECTOR ImageUI::SetColor(DirectX::FXMVECTOR color)
+	{
+		return _imageUI->SetColor(color);
+	}
+
 	float ImageUI::GetImageWidth()
 	{
 		return _imageUI->GetWidth();
@@ -50,6 +59,21 @@ namespace HDData
 	float ImageUI::GetImageHeight()
 	{
 		return _imageUI->GetHeight();
+	}
+
+	void ImageUI::OnEnable()
+	{
+		_imageUI->SetActive(true);
+	}
+
+	void ImageUI::OnDisable()
+	{
+		_imageUI->SetActive(false);
+	}
+
+	void ImageUI::OnClickEvent()
+	{
+
 	}
 
 	void ImageUI::ChangeScale(float x, float y)

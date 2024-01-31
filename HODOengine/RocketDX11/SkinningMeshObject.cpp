@@ -1,4 +1,4 @@
-#include "SkinningMeshObject.h"
+﻿#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -36,7 +36,8 @@ namespace RocketCore::Graphics
 
 			if (!m_currentAnimation->isEnd)
 			{
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform);
+				//UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * m_world);
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_world);
 			}
 
 			if (m_currentAnimation->isLoop == false)
@@ -62,7 +63,7 @@ namespace RocketCore::Graphics
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = m_world * view * proj;
+		XMMATRIX worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
 		XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 
 		VertexShader* vertexShader = m_material->GetVertexShader();
@@ -92,15 +93,9 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void SkinningMeshObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	void SkinningMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-			}
-		}
+		m_world = worldTM;
 	}
 
 	void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
@@ -277,20 +272,6 @@ namespace RocketCore::Graphics
 		// 일단은 메쉬를 세팅해주면 노드 정보와 애니메이션 정보도 불러와서 세팅해주기로 한다.
 		m_node = ResourceManager::Instance().GetNode(fileName);
 		m_animations = ResourceManager::Instance().GetAnimations(fileName);
-	}
-
-	void SkinningMeshObject::LoadVertexShader(const std::string& fileName)
-	{
-		VertexShader* vs = ResourceManager::Instance().GetVertexShader(fileName);
-		if (vs != nullptr)
-			m_material->SetVertexShader(vs);
-	}
-
-	void SkinningMeshObject::LoadPixelShader(const std::string& fileName)
-	{
-		PixelShader* ps = ResourceManager::Instance().GetPixelShader(fileName);
-		if (ps != nullptr)
-			m_material->SetPixelShader(ps);
 	}
 
 	void SkinningMeshObject::LoadDiffuseMap(const std::string& fileName)

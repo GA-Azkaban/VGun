@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <vector>
@@ -7,7 +7,7 @@
 #include "Animation.h"
 
 #include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
-#include "..\\HODOmath\HODOmath.h"
+#include "MathHeader.h"
 
 /// <summary>
 /// 2023.07.07 MJKIM
@@ -30,14 +30,12 @@ namespace RocketCore::Graphics
 		void Update(float deltaTime);
 		void Render();
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName);
 		virtual void LoadDiffuseMap(const std::string& fileName);
-		virtual void LoadVertexShader(const std::string& fileName) override;
-		virtual void LoadPixelShader(const std::string& fileName) override;
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
 		virtual void PlayAnimation(UINT index, bool isLoop = true) override;

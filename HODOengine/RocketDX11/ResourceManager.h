@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
 #include <wrl.h>
@@ -9,6 +9,8 @@
 #include <assimp\Importer.hpp>
 #include <assimp\scene.h>
 #include <assimp\postprocess.h>
+#include <GeometricPrimitive.h>
+#include <memory>
 
 #include "Singleton.h"
 #include "Animation.h"
@@ -20,7 +22,6 @@ using Microsoft::WRL::ComPtr;
 namespace RocketCore::Graphics
 {
 	class Mesh;
-	class Model;
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
@@ -90,7 +91,6 @@ namespace RocketCore::Graphics
 		/// <returns>animation name and animation infos of all animations in model file</returns>
 		std::unordered_map<std::string, Animation*>& GetAnimations(const std::string& fileName);
 
-		Model* GetCubeModel();
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
 		DirectX::SpriteFont* GetDefaultFont();
@@ -100,6 +100,12 @@ namespace RocketCore::Graphics
 		ID3D11DeviceContext* GetDeviceContext();
 		ID3D11RasterizerState* GetRenderState(eRenderState eState);
 		ID3D11SamplerState* GetSamplerState(eSamplerState eState);
+
+	public:
+		DirectX::DX11::GeometricPrimitive* GetCubePrimitive();
+		DirectX::DX11::GeometricPrimitive* GetSpherePrimitive();
+		DirectX::DX11::GeometricPrimitive* GetCylinderPrimitive();
+
 
 	private:
 		void LoadShaders();
@@ -120,8 +126,10 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;
 
-		// 기본 큐브 모델
-		Model* _cubeModel;
+		// primitive models
+		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cubePrimitive;
+		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _spherePrimitive;
+		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cylinderPrimitive;
 
 		// 기본 폰트 들고있음
 		DirectX::SpriteFont* _defaultFont;

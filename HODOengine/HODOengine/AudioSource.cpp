@@ -33,14 +33,14 @@ void HDData::AudioSource::PlayRepeat(std::string soundName)
 		_soundSystem.PlayRepeat(iter->second);
 }
 
-void HDData::AudioSource::Play3DOnce(std::string soundName, HDMath::HDFLOAT3 startPos)
+void HDData::AudioSource::Play3DOnce(std::string soundName, Vector3 startPos)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
 		_soundSystem.Play3DOnce(iter->second, startPos);
 }
 
-void HDData::AudioSource::Play3DRepeat(std::string soundName, HDMath::HDFLOAT3 startPos)
+void HDData::AudioSource::Play3DRepeat(std::string soundName, Vector3 startPos)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())

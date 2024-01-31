@@ -1,5 +1,5 @@
-#include "StaticMeshObject.h"
-#include "..\\HODOmath\\HODOmath.h"
+﻿#include "StaticMeshObject.h"
+#include "MathHeader.h"
 #include "RocketMacroDX11.h"
 #include "ResourceManager.h"
 #include "GraphicsStruct.h"
@@ -23,15 +23,9 @@ namespace RocketCore::Graphics
 		delete m_material;
 	}
 
-	void StaticMeshObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	void StaticMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-			}
-		}
+		m_world = worldTM;
 	}
 
 	void StaticMeshObject::SetActive(bool isActive)
@@ -49,23 +43,10 @@ namespace RocketCore::Graphics
 		_pixelShader = shader;
 	}
 
-	void StaticMeshObject::LoadVertexShader(const std::string& fileName)
-	{
-		VertexShader* vs = ResourceManager::Instance().GetVertexShader(fileName);
-		if (vs != nullptr)
-			m_material->SetVertexShader(vs);
-	}
-
-	void StaticMeshObject::LoadPixelShader(const std::string& fileName)
-	{
-		PixelShader* ps = ResourceManager::Instance().GetPixelShader(fileName);
-		if (ps != nullptr)
-			m_material->SetPixelShader(ps);
-	}
-
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_node = ResourceManager::Instance().GetNode(fileName);
 	}
 
 	void StaticMeshObject::LoadNormalMap(const std::string& fileName)
@@ -92,7 +73,7 @@ namespace RocketCore::Graphics
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = m_world * view * proj;
+		XMMATRIX worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
 		XMMATRIX wvp = XMMatrixTranspose(worldViewProj);
 
 		VertexShader* vertexShader = m_material->GetVertexShader();
@@ -121,8 +102,4 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void StaticMeshObject::SetModel(Model* model)
-	{
-		_model = model;
-	}
 }

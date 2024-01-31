@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UIBase.h"
 #include "dllExporter.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
@@ -18,8 +18,15 @@ namespace HDData
 		float GetScreenSpacePositionX();
 		float GetScreenSpacePositionY();
 
+		DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color);
+
 		float GetImageWidth();
 		float GetImageHeight();
+
+		void OnEnable() override;
+		void OnDisable() override;
+
+		void OnClickEvent() override;
 
 		void ChangeScale(float x, float y);
 

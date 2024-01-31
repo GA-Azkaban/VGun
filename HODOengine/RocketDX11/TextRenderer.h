@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -25,7 +25,7 @@ namespace RocketCore::Graphics
 
 		virtual void SetintValue(const int value) override;
 
-		virtual void SetColor(DirectX::FXMVECTOR color);
+		virtual void SetColor(DirectX::FXMVECTOR color) override;
 
 		virtual const std::string GetText() override;
 
@@ -35,12 +35,15 @@ namespace RocketCore::Graphics
 
 		virtual void SetWorldSpace() override;
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 
 		virtual void SetActive(bool isActive) override;
 
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
+
+	private:
+		void MeasureTextSize();
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
@@ -52,11 +55,13 @@ namespace RocketCore::Graphics
 		std::string _str;
 		float _renderFloat;
 		int _renderInt;
+
 		DirectX::XMVECTOR _color;
 		float _xLocation;
 		float _yLocation;
 
-		bool _isTranslated;
-
+		DirectX::XMVECTOR _size;
+		float _width;
+		float _height;
 	};
 }

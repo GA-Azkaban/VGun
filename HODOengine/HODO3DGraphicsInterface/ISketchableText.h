@@ -1,8 +1,8 @@
-#pragma once
-#include "ISketchable.h"
+﻿#pragma once
 #include <windows.h>
 #include <string>
-#include <DirectXMath.h>
+#include "MathHeader.h"
+#include "ISketchable.h"
 
 namespace HDEngine
 {
@@ -19,6 +19,7 @@ namespace HDEngine
 		virtual void SetWorldSpace() = 0;
 
 		virtual const std::string GetText() = 0;
+		
 
 	};
 }

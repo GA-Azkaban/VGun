@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -8,7 +8,7 @@
 #include <wrl\client.h>
 
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "MathHeader.h"
 
 
 
@@ -27,11 +27,13 @@ namespace RocketCore::Graphics
 		virtual float GetScreenSpacePositionX() override;
 		virtual float GetScreenSpacePositionY() override;
 
+		virtual DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color) override;
+
 		virtual void SetScreenSpace() override;
 
 		virtual void SetWorldSpace() override;
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 
 		virtual void SetActive(bool isActive) override;
 
@@ -55,6 +57,7 @@ namespace RocketCore::Graphics
 		float _ylocation;
 		float _scaleX;
 		float _scaleY;
+		bool _active;
 
 		// 원점 구하기
 		float _centerX;
@@ -70,7 +73,5 @@ namespace RocketCore::Graphics
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
-
-		bool _isTranslated;
 	};
 }

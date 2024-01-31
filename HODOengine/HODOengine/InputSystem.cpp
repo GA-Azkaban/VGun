@@ -1,5 +1,6 @@
-#include "InputSystem.h"
+﻿#include "InputSystem.h"
 #include <cassert>
+#include <ctype.h>
 
 
 namespace HDEngine
@@ -11,6 +12,9 @@ namespace HDEngine
 
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
+
+		_widthOffset = (screenWidth - 1920) / 2;
+		_heightOffset = 0;
 
 		_wheelMax = 500;
 		_wheelMin = -500;
@@ -57,16 +61,6 @@ namespace HDEngine
 		{
 			_mousePos.x = 0;
 			_mousePos.y = 0;
-		}
-
-		// 휠값 벗어나는 경우 보정
-		if (_mouseWheel > _wheelMax)
-		{
-			_mouseWheel = _wheelMax;
-		}
-		if (_mouseWheel < _wheelMin)
-		{
-			_mouseWheel = _wheelMin;
 		}
 	}
 
@@ -161,6 +155,7 @@ namespace HDEngine
 
 	bool InputSystem::GetKeyDown(BYTE key)
 	{
+		_isKeyPushed = true;
 		return _keyState[key] && _prevKeyState[key] == false;
 	}
 
@@ -184,32 +179,12 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
-	bool InputSystem::CheckMouseMove()
-	{
-		if (std::abs(_prevMousePos.x - _mousePos.x) > 2 ||
-			std::abs(_prevMousePos.y != _mousePos.y) > 2)
-		{
-			return true;
-		}
-	}
-
-	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
-	{
-		if (_mousePos.x > x &&
-			_mousePos.y > y &&
-			_mousePos.x < x + width &&
-			_mousePos.y < y + height)
-		{
-			return true;
-		}
-	}
-
-	HDMath::HDFLOAT2 InputSystem::GetMousePosition()
+	Vector2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
 		float y = static_cast<float>(_mousePos.y);
 
-		return HDMath::HDFLOAT2{ x, y };
+		return Vector2{ x, y };
 	}
 
 	float InputSystem::GetMouseWheel()
@@ -232,19 +207,419 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
+		_isKeyPushed = false;
+
+		//RecursiveMouse();
+	}
+
+	void InputSystem::RecursiveMouse()
+	{
+		RECT windowRect;
+		GetWindowRect(_hWnd, &windowRect);
+
+		POINT mousePoint;
+
+		
+		LONG x = 0;
+		LONG y = 0;
+
+		/// 마우스 위치 이동 방식
+		if (windowRect.right - 1 <= _mousePos.x)
+		{
+			x = windowRect.left + 2;
+			y = _mousePos.y;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
+		}
+		else if (_mousePos.x <= windowRect.left + 1)
+		{
+			x = windowRect.right - 2;
+			y = _mousePos.y;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
+		}
+		if (windowRect.bottom - 1 <= _mousePos.y)
+		{
+			x = _mousePos.x;
+			y = windowRect.top + 2;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
+		}
+		else if (_mousePos.y <= windowRect.top + 1)
+		{
+			x = _mousePos.x;
+			y = windowRect.bottom - 2;
+			mousePoint = { x, y };
+			ScreenToClient(_hWnd, &mousePoint);
+			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
+			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
+			SetCursorPos(mousePoint.x, mousePoint.y);
+		}
+
+		//SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2.0f, GetSystemMetrics(SM_CYSCREEN) / 2.0f);
 	}
 }
 
-HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
+Vector2 HDEngine::InputSystem::GetMouseDelta()
 {
 	_mouseDelta.x = _mousePos.x - _prevMousePos.x;
 	_mouseDelta.y = _mousePos.y - _prevMousePos.y;
 
-	HDMath::HDFLOAT2 result{};
+	Vector2 result{};
 	result.x = static_cast<float>((_mouseDelta.x + _prevMouseDelta.x) / 2.0f);
 	result.y = static_cast<float>((_mouseDelta.y + _prevMouseDelta.y) / 2.0f);
 
 	_prevMouseDelta = _mouseDelta;
 
 	return result;
+}
+
+bool HDEngine::InputSystem::GetKeyPushed()
+{
+	return _isKeyPushed;
+}
+
+char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
+{
+	if (_isShiftPressed)
+	{
+		switch (key)
+		{
+			case DIK_1:
+			{
+				return'!';
+			}
+			break;
+			case DIK_2:
+			{
+				return '@';
+			}
+			break;
+			case DIK_3:
+			{
+				return '#';
+			}
+			break;
+			case DIK_4:
+			{
+				return '$';
+			}
+			break;
+			case DIK_5:
+			{
+				return '%';
+			}
+			break;
+			case DIK_6:
+			{
+				return '^';
+			}
+			break;
+			case DIK_7:
+			{
+				return '&';
+			}
+			break;
+			case DIK_8:
+			{
+				return '*';
+			}
+			break;
+			case DIK_9:
+			{
+				return '(';
+			}
+			break;
+			case DIK_0:
+			{
+				return ')';
+			}
+			break;
+			case DIK_MINUS:
+			{
+				return '_';
+			}
+			break;
+			case DIK_EQUALS:
+			{
+				return '+';
+			}
+			break;
+			case DIK_SEMICOLON:
+			{
+				return ':';
+			}
+			break;
+			case DIK_APOSTROPHE:
+			{
+				return '\"';
+			}
+			break;
+			case DIK_GRAVE:
+			{
+				return '~';
+			}
+			break;
+			case DIK_BACKSLASH:
+			{
+				return '|';
+			}
+			break;
+			case DIK_COMMA:
+			{
+				return '<';
+			}
+			break;
+			case DIK_PERIOD:
+			{
+				return '>';
+			}
+			break;
+			case DIK_SLASH:
+			{
+				return '?';
+			}
+			break;
+			default:
+			{
+				return static_cast<char>(key);
+			}
+			break;
+		}
+	}
+	else
+	{
+		switch (key)
+		{
+			case DIK_1:
+			{
+				return '1';
+			}
+			break;
+			case DIK_2:
+			{
+				return '2';
+			}
+			break;
+			case DIK_3:
+			{
+				return '3';
+			}
+			break;
+			case DIK_4:
+			{
+				return '4';
+			}
+			break;
+			case DIK_5:
+			{
+				return '5';
+			}
+			break;
+			case DIK_6:
+			{
+				return '6';
+			}
+			break;
+			case DIK_7:
+			{
+				return '7';
+			}
+			break;
+			case DIK_8:
+			{
+				return '8';
+			}
+			break;
+			case DIK_9:
+			{
+				return '9';
+			}
+			break;
+			case DIK_0:
+			{
+				return 0;
+			}
+			break;
+			case DIK_MINUS:
+			{
+				return '-';
+			}
+			break;
+			case DIK_EQUALS:
+			{
+				return '=';
+			}
+			break;
+			case DIK_Q:
+			{
+				return 'q';
+			}
+			break;
+			case DIK_W:
+			{
+				return 'w';
+			}
+			break;
+			case DIK_E:
+			{
+				return 'e';
+			}
+			break;
+			case DIK_R:
+			{
+				return 'r';
+			}
+			break;
+			case DIK_T:
+			{
+				return 't';
+			}
+			break;
+			case DIK_Y:
+			{
+				return 'y';
+			}
+			break;
+			case DIK_U:
+			{
+				return 'u';
+			}
+			break;
+			case DIK_I:
+			{
+				return 'i';
+			}
+			break;
+			case DIK_O:
+			{
+				return 'o';
+			}
+			break;
+			case DIK_P:
+			{
+				return 'p';
+			}
+			break;
+			case DIK_A:
+			{
+				return 'a';
+			}
+			break;
+			case DIK_S:
+			{
+				return 's';
+			}
+			break;
+			case DIK_D:
+			{
+				return 'd';
+			}
+			break;
+			case DIK_F:
+			{
+				return 'f';
+			}
+			break;
+			case DIK_G:
+			{
+				return 'g';
+			}
+			break;
+			case DIK_H:
+			{
+				return 'h';
+			}
+			break;
+			case DIK_J:
+			{
+				return 'j';
+			}
+			break;
+			case DIK_K:
+			{
+				return 'k';
+			}
+			break;
+			case DIK_L:
+			{
+				return 'l';
+			}
+			break;
+			case DIK_SEMICOLON:
+			{
+				return '\,';
+			}
+			break;
+			case DIK_APOSTROPHE:
+			{
+				return '\.';
+			}
+			break;
+			case DIK_GRAVE:
+			{
+				return '\`';
+			}
+			break;
+			case DIK_BACKSLASH:
+			{
+				return '\\';
+			}
+			break;
+			case DIK_Z:
+			{
+				return 'z';
+			}
+			break;
+			case DIK_X:
+			{
+				return 'x';
+			}
+			break;
+			case DIK_C:
+			{
+				return 'c';
+			}
+			break;
+			case DIK_V:
+			{
+				return 'v';
+			}
+			break;
+			case DIK_B:
+			{
+				return 'b';
+			}
+			break;
+			case DIK_N:
+			{
+				return 'n';
+			}
+			break;
+			case DIK_M:
+			{
+				return 'm';
+			}
+			break;
+			default:
+				break;
+		}
+	}
+}
+
+char HDEngine::InputSystem::GetInputText(BYTE i)
+{
+	// shift 키 여부
+	_isShiftPressed = (_keyState[DIK_LSHIFT] & 0x80) || (_keyState[DIK_RSHIFT] & 0x80);
+
+	return ConvertKeyToChar(i, _isShiftPressed);
 }

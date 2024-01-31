@@ -1,4 +1,4 @@
-#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
+﻿#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #pragma once
 
 #include <vector>
@@ -46,8 +46,9 @@ namespace HDEngine
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
 
 	public:
-		//HDData::Collider* RayCast(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length, int* type);
+		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
 		HDData::Collider* RayCast(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, float length, int* type);
+		HDData::Collider* RayCastHitPoint(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, Vector3& hitPos, float length, int* type);
 
 	private:
 		physx::PxDefaultAllocator		_allocator;
@@ -57,6 +58,7 @@ namespace HDEngine
 		physx::PxDefaultCpuDispatcher* _dispatcher;
 		physx::PxScene* _pxScene;
 		physx::PxMaterial* _material;
+		physx::PxMaterial* _playerMaterial;
 		physx::PxPvd* _pvd;
 
 	private:

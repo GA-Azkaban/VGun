@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 
 #include "UIBase.h"
@@ -16,6 +16,7 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
+		void SetColor(DirectX::FXMVECTOR color);
 		void SetText(const std::string& str);
 		std::string GetText();
 

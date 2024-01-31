@@ -1,12 +1,12 @@
 #pragma once
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 
 namespace HDEngine
 {
 	class ILineRenderer
 	{
 	public:
-		virtual void DrawLine(HDMath::HDFLOAT3 startPos, HDMath::HDFLOAT3 endPos, HDMath::HDFLOAT4 color) = 0;
-		virtual void DrawLine(HDMath::HDFLOAT3 startPos, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color) = 0;
+		virtual void DrawLine(Vector3 startPos, Vector3 endPos, Color color) = 0;
+		virtual void DrawLine(Vector3 startPos, Vector3 direction, float length, Color color) = 0;
 	};
 }
