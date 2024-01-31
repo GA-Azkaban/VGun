@@ -110,6 +110,8 @@ namespace RocketCore::Graphics
 
 		_xLocation -= _width * 0.5f;
 		_yLocation -= _height * 0.5f;
+
+		int a = 0;
 	}
 
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
