@@ -13,6 +13,7 @@
 #include "AssimpMathConverter.h"
 
 #define MODELS_DIRECTORY_NAME "Resources/Models/"
+#define TEXTURES_DIRECTORY_NAME "Resources/Textures/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;
@@ -53,7 +54,7 @@ namespace RocketCore::Graphics
 			_fileName = fileName;
 		}
 
-		std::string path = std::string(MODELS_DIRECTORY_NAME) + _fileName;
+		std::string path = std::string(MODELS_DIRECTORY_NAME) + fileName;
 
 		Assimp::Importer importer;
 
@@ -72,12 +73,12 @@ namespace RocketCore::Graphics
 	void ResourceManager::LoadTextureFile(std::string fileName)
 	{
 		ID3D11ShaderResourceView* srv;
-		UINT slashIndex = fileName.find_last_of("/\\");
+		/*UINT slashIndex = fileName.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
 			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
-		}
-		std::string path = std::string(MODELS_DIRECTORY_NAME) + "Textures/" + fileName;
+		}*/
+		std::string path = std::string(TEXTURES_DIRECTORY_NAME) + fileName;
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
 		std::wstring pathWS = std::wstring(path.begin(), path.end());
 
@@ -278,6 +279,10 @@ namespace RocketCore::Graphics
 		PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
+
+		PixelShader* skeletonPixelShader_NoNormalMap = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (skeletonPixelShader_NoNormalMap->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader_NoNormalMap.cso"))
+			_pixelShaders.insert(std::make_pair("SkeletonPixelShader_NoNormalMap.cso", skeletonPixelShader_NoNormalMap));
 
 		VertexShader* debugVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (debugVertexShader->LoadShaderFile(L"Resources/Shaders/DebugVertexShader.cso"))
@@ -583,17 +588,17 @@ namespace RocketCore::Graphics
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
 
-		/*aiMatrix4x4 mat(
+		aiMatrix4x4 mat(
 			rightVec.x, rightVec.y, rightVec.z, 0.0f,
 			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
 			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
+			0.0f, 0.0f, 0.0f, 1.0f);
 
-		aiMatrix4x4 mat(
+		/*aiMatrix4x4 mat(
 			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
 			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);
+			0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		// create node hierarchy
 		Node* rootNode = new Node();

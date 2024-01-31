@@ -65,32 +65,33 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	// Directional light calculation
 	float dirLightAmount = saturate(dot(input.normal, -normalize(dirLight.Direction)));
-	float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
+	//float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
+	float3 totalDirLight = dirLight.Color * dirLightAmount * 0.45f;
 
 	// Point light calculation
-	float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < 4; ++i)
-	{
-		float dirToPointLight = normalize(pointLight[i].Position - input.worldPos);
-		float pointLightAmount = saturate(dot(input.normal, dirToPointLight));
-		float3 refl = reflect(-dirToPointLight, input.normal);
-		float spec = pow(max(dot(refl, toCamera), 0), 32);
-		totalPointLight += pointLight[i].Color * pointLightAmount * textureColor + spec;
-	}
+	//float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
+	//for (int i = 0; i < 4; ++i)
+	//{
+	//	float dirToPointLight = normalize(pointLight[i].Position - input.worldPos);
+	//	float pointLightAmount = saturate(dot(input.normal, dirToPointLight));
+	//	float3 refl = reflect(-dirToPointLight, input.normal);
+	//	float spec = pow(max(dot(refl, toCamera), 0), 32);
+	//	totalPointLight += pointLight[i].Color * pointLightAmount * textureColor + spec;
+	//}
 
-	// Spot light calculation
-	float3 totalSpotLight = float3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < 2; ++i)
-	{
-		float dirToSpotLight = normalize(spotLight[i].Position - input.worldPos);
-		float angleFromCenter = max(dot(dirToSpotLight, spotLight[i].Direction), 0.0f);
-		float spotAmount = pow(angleFromCenter, spotLight[i].SpotPower);
-		totalSpotLight += (spotAmount * spotLight[i].Color * textureColor);
-	}
+	//// Spot light calculation
+	//float3 totalSpotLight = float3(0.0f, 0.0f, 0.0f);
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	float dirToSpotLight = normalize(spotLight[i].Position - input.worldPos);
+	//	float angleFromCenter = max(dot(dirToSpotLight, spotLight[i].Direction), 0.0f);
+	//	float spotAmount = pow(angleFromCenter, spotLight[i].SpotPower);
+	//	totalSpotLight += (spotAmount * spotLight[i].Color * textureColor);
+	//}
 
-	float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
-	//float3 totalLight = totalDirLight + totalPointLight;
+	//float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
+	float4 totalLight = float4(totalDirLight, 1.0f) + textureColor;
 
 	//return float4(totalLight, 1.0f);
-	return textureColor;
+	return totalLight;
 }

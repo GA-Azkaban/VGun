@@ -37,6 +37,9 @@
     <FxCompile Include="DebugPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\DebugMesh</Filter>
     </FxCompile>
+    <FxCompile Include="SkeletonPixelShader_NoNormalMap.hlsl">
+      <Filter>Resource\Shader\HLSL\SkeletonMesh</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axis.cpp">

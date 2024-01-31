@@ -71,12 +71,9 @@ TestScene::TestScene()
 	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
-	//meshComp->LoadMesh("Rob02.fbx");
-	//meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
-	//meshComp->LoadNormalMap("Rob02White_Normal.png");
-	meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
+	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
 	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	meshComp->PlayAnimation(0, true);
+	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");	
 }
