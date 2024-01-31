@@ -92,7 +92,13 @@ namespace HDEngine
 		for (auto& info : _infoList)
 		{
 			HDData::GameObject* object = currentScene->CreateObject(info.name);
-			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
+
+			if (info.meshName != "")
+			{
+				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
+				meshRenderer->LoadMesh(info.meshName + ".fbx");
+			}
+
 			switch (info.colliderType)
 			{
 				case 1:	// box static
@@ -115,10 +121,7 @@ namespace HDEngine
 					break;
 			}
 			
-			if (info.meshName != "")
-			{
-				meshRenderer->LoadMesh(info.meshName + ".fbx");
-			}
+
 
 			_gameObjectMap.insert(std::make_pair(info.id, object));
 		}

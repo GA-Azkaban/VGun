@@ -25,10 +25,15 @@ TestScene::TestScene()
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-// 	auto testBox = API::CreateObject(_scene);
-// 	auto boxRender = testBox->AddComponent<HDData::MeshRenderer>();
-// 	boxRender->LoadMesh("Cube.fbx");
-	//boxRender->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
+// 	auto testBox1 = API::CreateObject(_scene);
+// 	testBox1->GetComponent<HDData::Transform>()->SetPosition(1.f, 0.f, 0.f);
+// 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+// 	boxRender1->LoadMesh("Box01.fbx");
+// 
+// 	auto testBox2 = API::CreateObject(_scene);
+// 	testBox2->GetComponent<HDData::Transform>()->SetPosition(-1.f, 0.f, 0.f);
+// 	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
+// 	boxRender2->LoadMesh("Box01.fbx");
 
 	//auto camera = API::CreateObject(_scene);
 	//camera->AddComponent<MovableCamera>()->SetMainCamera();
