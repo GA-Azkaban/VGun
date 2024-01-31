@@ -20,6 +20,7 @@ namespace HDData
 		float _width;
 		float _height;
 		float _depth;
+		HDEngine::CubePrimitive* _cubeDebugStruct;
 	};
 }
 

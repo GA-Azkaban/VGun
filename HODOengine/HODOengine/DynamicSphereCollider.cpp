@@ -5,7 +5,8 @@
 HDData::DynamicSphereCollider::DynamicSphereCollider()
 	: _radius(0.5f)
 {
-	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
+	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
+	_debugStruct = _sphereDebugStruct;
 }
 
 float HDData::DynamicSphereCollider::GetWidth() const
@@ -35,6 +36,11 @@ void HDData::DynamicSphereCollider::SetRadius(float radius)
 
 void HDData::DynamicSphereCollider::DrawDebug()
 {
-	_debugStruct->worldTM = GetTransform()->GetWorldTM();
+	Matrix colWorld = Matrix::Identity;
+	colWorld *= GetTransformMatrix();
+	colWorld *= GetTransform()->GetWorldTM();
+	_debugStruct->worldTM = colWorld;
 	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
+
+	_sphereDebugStruct->diameter = _radius * 2;
 }

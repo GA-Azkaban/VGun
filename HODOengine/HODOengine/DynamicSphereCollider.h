@@ -22,6 +22,7 @@ namespace HDData
 
 	private:
 		float _radius;
+		HDEngine::SpherePrimitive* _sphereDebugStruct;
 	};
 }
 
