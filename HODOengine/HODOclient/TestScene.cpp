@@ -18,8 +18,17 @@ enum eColliderType
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
+	API::LoadScene(_scene);
+
+	API::LoadSceneFromData("ObjectInfo.json");
+
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+
+// 	auto testBox = API::CreateObject(_scene);
+// 	auto boxRender = testBox->AddComponent<HDData::MeshRenderer>();
+// 	boxRender->LoadMesh("Cube.fbx");
+	//boxRender->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
 
 	//auto camera = API::CreateObject(_scene);
 	//camera->AddComponent<MovableCamera>()->SetMainCamera();
