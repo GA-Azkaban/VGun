@@ -131,7 +131,7 @@
       <Filter>01_EngineProcess</Filter>
     </ClCompile>
     <ClCompile Include="SceneLoader.cpp">
-      <Filter>06_System\SceneLoader</Filter>
+      <Filter>SceneLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,7 +295,7 @@
       <Filter>05_Component\UserInterface\TextInputBoxUI</Filter>
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
-      <Filter>06_System\SceneLoader</Filter>
+      <Filter>SceneLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -444,6 +444,9 @@
     </Filter>
     <Filter Include="05_Component\UserInterface\TextInputBoxUI">
       <UniqueIdentifier>{66895885-218e-4ff5-9ec5-70f6065b64e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneLoader">
+      <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
