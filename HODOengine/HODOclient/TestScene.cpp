@@ -83,7 +83,6 @@ TestScene::TestScene()
 	centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
 	centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
 
-
 	//auto playerMove = playerTest->AddComponent<PlayerMove>();
 	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
 	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
