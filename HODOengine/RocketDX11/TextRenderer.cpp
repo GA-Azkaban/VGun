@@ -105,6 +105,10 @@ namespace RocketCore::Graphics
 		_size = _font->MeasureString(wstr.c_str());
 		_width = DirectX::XMVectorGetX(_size);
 		_height = DirectX::XMVectorGetY(_size);
+
+		_yLocation -= _height * 0.5f;
+		_xLocation -= _width * 0.5f;
+
 	}
 
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
