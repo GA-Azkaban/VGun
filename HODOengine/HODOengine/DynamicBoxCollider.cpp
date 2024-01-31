@@ -5,7 +5,8 @@
 HDData::DynamicBoxCollider::DynamicBoxCollider()
 	: _width(1.0f), _height(1.0f), _depth(1.0f)
 {
-	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_debugStruct = _cubeDebugStruct;
 }
 
 void HDData::DynamicBoxCollider::SetVolume(float w, float h, float d)
@@ -35,6 +36,11 @@ float HDData::DynamicBoxCollider::GetDepth() const
 
 void HDData::DynamicBoxCollider::DrawDebug()
 {
-	_debugStruct->worldTM = GetTransform()->GetWorldTM();
+	Matrix colWorld = Matrix::Identity;
+	colWorld *= GetTransformMatrix();
+	colWorld *= GetTransform()->GetWorldTM();
+	_debugStruct->worldTM = colWorld;
 	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
+
+	_cubeDebugStruct->widthHeightDepth = { _width, _height, _depth };
 }

@@ -5,7 +5,8 @@
 HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
 	: _radius(1.0f), _halfHeight(1.0f)
 {
-	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCylinderPrimitive();
+	_cylinderDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCylinderPrimitive();
+	_debugStruct = _cylinderDebugStruct;
 }
 
 float HDData::DynamicCapsuleCollider::GetWidth() const
@@ -51,6 +52,12 @@ void HDData::DynamicCapsuleCollider::SetHalfHeight(float val)
 
 void HDData::DynamicCapsuleCollider::DrawDebug()
 {
-	_debugStruct->worldTM = GetTransform()->GetWorldTM();
+	Matrix colWorld = Matrix::Identity;
+	colWorld *= GetTransformMatrix();
+	colWorld *= GetTransform()->GetWorldTM();
+	_debugStruct->worldTM = colWorld;
 	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
+
+	_cylinderDebugStruct->height = _halfHeight * 2;
+	_cylinderDebugStruct->diameter = _radius * 2;
 }

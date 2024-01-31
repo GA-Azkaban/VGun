@@ -5,7 +5,8 @@
 HDData::StaticBoxCollider::StaticBoxCollider()
 	: _width(1.0f), _height(1.0f), _depth(1.0f)
 {
-	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_debugStruct = _cubeDebugStruct;
 	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
 }
 
@@ -48,6 +49,11 @@ void HDData::StaticBoxCollider::SetDepth(float val)
 
 void HDData::StaticBoxCollider::DrawDebug()
 {
-	_debugStruct->worldTM = GetTransform()->GetWorldTM();
+	Matrix colWorld = Matrix::Identity;
+	colWorld *= GetTransformMatrix();
+	colWorld *= GetTransform()->GetWorldTM();
+	_debugStruct->worldTM = colWorld;
 	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
+
+	_cubeDebugStruct->widthHeightDepth = { _width, _height, _depth };
 }

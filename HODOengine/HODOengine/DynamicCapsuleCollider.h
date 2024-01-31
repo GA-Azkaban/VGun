@@ -28,6 +28,7 @@ namespace HDData
 	private:
 		float _radius;
 		float _halfHeight;
+		HDEngine::CylinderPrimitive* _cylinderDebugStruct;
 	};
 }
 
