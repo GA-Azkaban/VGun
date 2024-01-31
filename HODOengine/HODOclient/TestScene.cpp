@@ -62,7 +62,13 @@ TestScene::TestScene()
 	auto hitText = API::CreateTextbox(_scene);
 	hitText->GetTransform()->SetPosition(Vector3());
 	hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
-	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!!!!!!!!!!!!!");
+	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
+
+	auto centerText = API::CreateTextbox(_scene);
+	centerText->GetTransform()->SetPosition(Vector3(1000.0f,1000.0f,0.0f));
+	centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
+	centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
+
 
 	auto playerMove = playerTest->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(_scene->GetMainCamera());
