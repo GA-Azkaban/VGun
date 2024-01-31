@@ -104,12 +104,30 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 	signUp.In_Password(password, pkt.password());
 	signUp.In_NickName(nickName, pkt.nickname());
 
-	if (signUp.Execute() && signUp.Fetch())
-	{
-		Protocol::S_SIGNUP_OK packet;
+	int32 result = 0;
+	signUp.Out_Result(result);
 
-		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
-		session->Send(sendBuffer);
+	ASSERT_CRASH(signUp.Execute());
+
+	if (signUp.Fetch())
+	{
+		if (result == 1)
+		{
+			Protocol::S_SIGNIN_OK packet;
+
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
+			session->Send(sendBuffer);
+		}
+		else
+		{
+			Protocol::S_ERROR packet;
+			// Todo Log
+
+			packet.set_errorcode(result);
+
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
+			session->Send(sendBuffer);
+		}
 	}
 	else
 	{

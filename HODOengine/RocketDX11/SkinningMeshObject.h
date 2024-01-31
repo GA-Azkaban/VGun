@@ -37,8 +37,8 @@ namespace RocketCore::Graphics
 		virtual void LoadNormalMap(const std::string& fileName);
 		virtual void LoadDiffuseMap(const std::string& fileName);
 
-		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
-		virtual void PlayAnimation(UINT index, bool isLoop = true) override;
+		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
+		void PlayAnimation(UINT index, bool isLoop = true);
 
 		void SetSamplerState(ID3D11SamplerState* sampler);
 

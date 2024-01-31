@@ -30,7 +30,6 @@ cbuffer lightData : register(b0)
 
 // External texture-related data
 Texture2D Texture		: register(t0);
-Texture2D NormalMap		: register(t1);
 SamplerState Sampler	: register(s0);
 
 struct VertexToPixel
@@ -47,18 +46,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 	input.normal = normalize(input.normal);
 	input.tangent = normalize(input.tangent);
 
-	// Read and unpack normal from map
-	//float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
-	float3 normalFromMap = input.normal;
-
-	// Transform from tangent to world space
-	float3 N = input.normal;
-	float3 T = normalize(input.tangent - N * dot(input.tangent, N));
-	float3 B = cross(T, N);
-
-	float3x3 TBN = float3x3(T, B, N);
-	input.normal = normalize(mul(normalFromMap, TBN));
-
 	// Sample the texture
 	float4 textureColor = Texture.Sample(Sampler, input.uv);
 
@@ -66,8 +53,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	// Directional light calculation
 	float dirLightAmount = saturate(dot(input.normal, -normalize(dirLight.Direction)));
-	//float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
-	float3 totalDirLight = dirLight.Color * dirLightAmount;
+	float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
 
 	// Point light calculation
 	float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
@@ -76,8 +62,9 @@ float4 main(VertexToPixel input) : SV_TARGET
 		float dirToPointLight = normalize(pointLight[i].Position - input.worldPos);
 		float pointLightAmount = saturate(dot(input.normal, dirToPointLight));
 		float3 refl = reflect(-dirToPointLight, input.normal);
-		float spec = pow(max(dot(refl, toCamera), 0), 32);
-		totalPointLight += pointLight[i].Color * pointLightAmount * textureColor + spec;
+		//float spec = pow(max(dot(refl, toCamera), 0), 32);
+		//totalPointLight += pointLight[i].Color * pointLightAmount * textureColor + spec;
+		totalPointLight += pointLight[i].Color * pointLightAmount * textureColor;
 	}
 
 	// Spot light calculation
@@ -90,11 +77,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 		totalSpotLight += (spotAmount * spotLight[i].Color * textureColor);
 	}
 
-	//float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
-	//float3 totalLight = totalDirLight;
-	float4 totalLight = float4(totalDirLight, 1.0f) + textureColor;
+	float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
 
-	//return float4(totalLight, 1.0f);
-	return totalLight;
-	//return textureColor;
+	return float4(totalLight, 1.0f);
 }

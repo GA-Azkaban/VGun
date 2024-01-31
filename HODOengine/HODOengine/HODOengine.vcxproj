@@ -161,7 +161,7 @@
       <PreprocessorDefinitions>_WINDOWS;_EXPORT_API;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,7 +183,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
       <PreprocessorDefinitions>_WINDOWS;_EXPORT_API;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -206,7 +206,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_WINDOWS;_EXPORT_API;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
@@ -300,6 +300,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UISystem.h" />
+    <ClInclude Include="SceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioSource.cpp" />
@@ -365,6 +366,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UISystem.cpp" />
+    <ClCompile Include="SceneLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOengine.rc" />

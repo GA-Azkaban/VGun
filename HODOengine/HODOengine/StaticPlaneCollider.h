@@ -22,4 +22,3 @@ namespace HDData
 		float _distance;
 	};
 }
-
