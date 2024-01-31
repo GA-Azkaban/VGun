@@ -59,7 +59,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 3.f, 0.f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -3.f, 3.f, 0.f });
 	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();

@@ -3,7 +3,7 @@
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicSphereCollider::DynamicSphereCollider()
-	: _radius(1.0f)
+	: _radius(0.5f)
 {
 	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 }
