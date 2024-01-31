@@ -13,8 +13,10 @@ Skybox::Skybox()
 	: _material(nullptr), _isActive(true)
 {
 	_skyboxObjects.push_back(this);
-	_meshes = ResourceManager::Instance.Get().GetMeshes("skybox");
-	_material = new Material(ResourceManager::Instance.Get().GetVertexShader("SkyboxVertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("SkyboxPixelShader.cso"));
+	//_meshes = ResourceManager::Instance.Get().GetMeshes("skybox");
+	//_material = new Material(ResourceManager::Instance.Get().GetVertexShader("SkyboxVertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("SkyboxPixelShader.cso"));
+	_meshes = ResourceManager::Instance.Get().GetMeshes("skySphere");
+	_material = new Material(ResourceManager::Instance.Get().GetVertexShader("CubeMapVertexShader.cso"), ResourceManager::Instance.Get().GetPixelShader("CubeMapPixelShader.cso"));
 }
 
 Skybox::~Skybox()
@@ -33,13 +35,16 @@ void Skybox::Render()
 		return;
 
 	MZDX11Renderer::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	MZDX11Renderer::Instance().GetDeviceContext()->RSSetState(RasterizerState::Instance.Get().GetSolidRS());
+	MZDX11Renderer::Instance().GetDeviceContext()->RSSetState(RasterizerState::Instance.Get().GetCubeMapRS());
 	
 	XMFLOAT3 cameraPos = MZCamera::GetMainCamera()->GetPosition();
 	XMMATRIX cameraTranslate = XMMatrixTranslation(cameraPos.x, cameraPos.y, cameraPos.z);
 
+	//XMMATRIX scaleMatrix = XMMatrixScaling(500, 500, 500);
+
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
 	XMMATRIX proj = MZCamera::GetMainCamera()->Proj();
+	//XMMATRIX worldViewProj = scaleMatrix * cameraTranslate * view * proj;
 	XMMATRIX worldViewProj = cameraTranslate * view * proj;
 	XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 

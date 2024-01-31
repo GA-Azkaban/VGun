@@ -1,5 +1,4 @@
 #include "StaticMeshObject.h"
-#include "..\\HODOmath\\HODOmath.h"
 #include "RocketMacroDX11.h"
 #include "ResourceManager.h"
 
@@ -23,19 +22,9 @@ namespace RocketCore::Graphics
 		_mesh = mesh;
 	}
 
-	void StaticMeshObject::SetWorldTM(const HDMath::HDFLOAT4X4& worldTM)
+	void StaticMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
-		DirectX::XMFLOAT4X4 temp;
-
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				temp.m[i][j] = worldTM.element[i][j];
-			}
-		}
-
-		_worldTM = XMLoadFloat4x4(&temp);
+		_worldTM = worldTM;
 	}
 
 	void StaticMeshObject::SetActive(bool isActive)

@@ -574,6 +574,12 @@
     <FxCompile Include="BlitPixelShader.hlsl">
       <Filter>3. HLSL</Filter>
     </FxCompile>
+    <FxCompile Include="CubeMapPixelShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
+    <FxCompile Include="CubeMapVertexShader.hlsl">
+      <Filter>3. HLSL</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MZDX11Renderer.rc">

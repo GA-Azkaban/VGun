@@ -16,10 +16,10 @@ namespace RocketCore::Graphics
 		~Camera();
 
 
-		virtual void SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot) override;
+		virtual void SetPositionAndRotation(const Vector3& pos, const Quaternion& rot) override;
 
 	public:
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& matrix) override;
+		virtual void SetWorldTM(const Matrix& matrix) override;
 		virtual void SetNearZ(float nearZ) override;
 		virtual void SetFarZ(float farZ) override;
 		virtual void SetAspect(float aspect) override;

@@ -69,8 +69,7 @@ private:
     void SetLights();
     void SetObjects();
 
-	void EnableZBuffering();
-	void DisableZBuffering();
+    void SetDepthStencilState(ID3D11DepthStencilState* dss);
 
 
 private:
@@ -85,6 +84,7 @@ private:
 
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateEnable;
 	ComPtr<ID3D11DepthStencilState> m_depthStencilStateDisable;
+	ComPtr<ID3D11DepthStencilState> m_cubemapDepthStencilState;
 
     ComPtr<ID3D11RenderTargetView> m_backBufferRTV;
 

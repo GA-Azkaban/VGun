@@ -52,10 +52,10 @@ PSOutput main(VertexToPixel input)
 	//float4 emissive = Emissive.Sample(LinearSampler, input.uv);
 
 	output.diffuse = textureColor;
+	output.normal = float4(input.normal, 1.0f);
 	//output.metalRoughOcclusion.r = metallic;
 	//output.metalRoughOcclusion.g = roughness;
 	//output.metalRoughOcclusion.b = occlusion;
-	output.normal = float4(input.normal, 1.0f);
 	//output.emissive = emissive;
 
 	return output;

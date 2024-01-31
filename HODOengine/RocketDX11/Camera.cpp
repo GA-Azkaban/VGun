@@ -1,6 +1,5 @@
 #include <cmath>
 #include "Camera.h"
-#include "..\\HODOmath\\HODOmath.h"
 #include "ResourceManager.h"
 
 using namespace DirectX;
@@ -165,15 +164,9 @@ namespace RocketCore::Graphics
 		return result;
 	}
 
-	void Camera::SetWorldTM(const HDMath::HDFLOAT4X4& matrix)
+	void Camera::SetWorldTM(const Matrix& matrix)
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				_worldMatrix.m[i][j] = matrix.element[i][j];
-			}
-		}
+		_worldMatrix = matrix;
 	}
 
 	void Camera::SetNearZ(float nearZ)
@@ -222,7 +215,7 @@ namespace RocketCore::Graphics
 		return _mainCamera;
 	}
 
-	void Camera::SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot)
+	void Camera::SetPositionAndRotation(const Vector3& pos, const Quaternion& rot)
 	{
 		SetPosition(pos.x, pos.y, pos.z);
 		SetRotation(rot.w, rot.x, rot.y, rot.z);

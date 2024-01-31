@@ -146,7 +146,6 @@ void MZDX11Renderer::SetOutputWindow(unsigned int hWnd)
 	dxgiFactory->Release();
 
 	ResizeBuffers();
-	EnableZBuffering();
 }
 
 void MZDX11Renderer::Update(float deltaTime)
@@ -159,13 +158,14 @@ void MZDX11Renderer::Update(float deltaTime)
 
 void MZDX11Renderer::Render()
 {
-	//EnableZBuffering();
-
+	SetDepthStencilState(m_depthStencilStateEnable.Get());
 	_GBufferPass->Render();
 	_deferredPass->Render();
+
+	SetDepthStencilState(m_cubemapDepthStencilState.Get());
 	_skyboxPass->Render();
 	
-	//DisableZBuffering();
+	SetDepthStencilState(m_depthStencilStateDisable.Get());
 	_blitPass->Render();
 
 	assert(m_swapChain);
@@ -263,6 +263,30 @@ void MZDX11Renderer::CreateDepthStecilStates()
 
 	// Create the depth stencil state for disabling Z buffering
 	m_d3dDevice->CreateDepthStencilState(&disableDepthStencilDescription, &m_depthStencilStateDisable);
+
+	// Initialize the depth stencil states
+	D3D11_DEPTH_STENCIL_DESC cubemapDepthStencilDescription;
+	ZeroMemory(&cubemapDepthStencilDescription, sizeof(cubemapDepthStencilDescription));
+
+	cubemapDepthStencilDescription.DepthEnable = true;
+	cubemapDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	cubemapDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	cubemapDepthStencilDescription.StencilEnable = true;
+	cubemapDepthStencilDescription.StencilReadMask = 0xFF;
+	cubemapDepthStencilDescription.StencilWriteMask = 0xFF;
+	// Stencil operations if pixel is front-facing.
+	cubemapDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+	cubemapDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+	// Stencil operations if pixel is back-facing.
+	cubemapDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+	cubemapDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+	cubemapDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+	// Create the depth stencil state for cube mapping
+	m_d3dDevice->CreateDepthStencilState(&cubemapDepthStencilDescription, &m_cubemapDepthStencilState);
 }
 
 void MZDX11Renderer::SetLights()
@@ -318,9 +342,6 @@ void MZDX11Renderer::SetObjects()
 
 	//StaticMeshObject* test1 = new StaticMeshObject();
 	SkinningMeshObject* test1 = new SkinningMeshObject();
-	//test1->SetMesh("Rob02.fbx");
-	//test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
-	//test1->SetNormalTexture("Rob02White_Normal.png");
 	//test1->SetMesh("A_TP_CH_Breathing.fbx");
 	test1->SetMesh("newSprint.fbx");
 	test1->SetDiffuseTexture("T_TP_CH_Basic_001_001_D.png");
@@ -328,17 +349,11 @@ void MZDX11Renderer::SetObjects()
 
 	Skybox* sky = new Skybox();
 	sky->SetCubeMapTexture("sunsetcube1024.dds");
-	sky->SetActive(false);
 }
 
-void MZDX11Renderer::EnableZBuffering()
+void MZDX11Renderer::SetDepthStencilState(ID3D11DepthStencilState* dss)
 {
-	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilStateEnable.Get(), 1);
-}
-
-void MZDX11Renderer::DisableZBuffering()
-{
-	m_d3dDeviceContext->OMSetDepthStencilState(m_depthStencilStateDisable.Get(), 1);
+	m_d3dDeviceContext->OMSetDepthStencilState(dss, 1);
 }
 
 void MZDX11Renderer::SetRenderTarget()
