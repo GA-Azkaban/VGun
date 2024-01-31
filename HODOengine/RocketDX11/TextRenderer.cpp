@@ -1,4 +1,4 @@
-﻿#include "TextRenderer.h"
+#include "TextRenderer.h"
 #include "ResourceManager.h"
 #include "MathHeader.h"
 
@@ -64,10 +64,14 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 	{
+		MeasureTextSize();	//여기두면 안되는데
+
 		std::wstring wstr(_str.begin(), _str.end());
-		_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_xLocation, _yLocation), _color);
-	
-		MeasureTextSize();
+		_font->DrawString(
+			spriteBatch,
+			wstr.c_str(),
+			DirectX::XMFLOAT2(_xLocation, _yLocation),
+			_color);
 	}
 
 	void TextRenderer::SetFloatValue(const float value)
@@ -93,9 +97,9 @@ namespace RocketCore::Graphics
 	void TextRenderer::MeasureTextSize()
 	{
 		std::wstring wstr(_str.begin(), _str.end());
-		_measureLong = _font->MeasureString(wstr.c_str());
-		_width = DirectX::XMVectorGetX(_measureLong);
-		_height = DirectX::XMVectorGetY(_measureLong);
+		_size = _font->MeasureString(wstr.c_str());
+		_width = DirectX::XMVectorGetX(_size);
+		_height = DirectX::XMVectorGetY(_size);
 	}
 
 }
