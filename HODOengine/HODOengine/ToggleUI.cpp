@@ -38,8 +38,8 @@ void HDData::ToggleUI::Update()
 	if (_toggleOff->GetIsClicked())
 	{
 		_isToggleOn = !_isToggleOn;
-		_toggleOff->SetActive(_isToggleOn);
-		_toggleOn->SetActive(!_isToggleOn);
+		_toggleOff->SetActive(!_isToggleOn);
+		_toggleOn->SetActive(_isToggleOn);
 	}
 }
 
