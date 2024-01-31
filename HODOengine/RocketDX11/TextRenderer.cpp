@@ -8,7 +8,11 @@ namespace RocketCore::Graphics
 		: _renderFloat(),
 		_renderInt(),
 		_xLocation(),
-		_yLocation()
+		_yLocation(),
+		_zLocation(),
+		_size(),
+		_width(),
+		_height()
 	{
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
@@ -44,6 +48,7 @@ namespace RocketCore::Graphics
 	{
 		_xLocation = worldTM._41;
 		_yLocation = worldTM._42;
+		_zLocation = worldTM._43;	// for Debugging text
 	}
 
 	void TextRenderer::SetActive(bool isActive)
@@ -105,6 +110,11 @@ namespace RocketCore::Graphics
 
 		_xLocation -= _width * 0.5f;
 		_yLocation -= _height * 0.5f;
+	}
+
+	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
+	{
+
 	}
 
 }

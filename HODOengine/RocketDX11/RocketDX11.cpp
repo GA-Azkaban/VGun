@@ -522,6 +522,13 @@ namespace RocketCore::Graphics
 		{
 			ResourceManager::Instance().GetCylinderPrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}
+
+		_spriteBatch->Begin();
+		for (auto textRenderer : ObjectManager::Instance().GetTextList())
+		{
+			textRenderer->RenderDebug(_spriteBatch);
+		}
+		_spriteBatch->End();
 	}
 
 }

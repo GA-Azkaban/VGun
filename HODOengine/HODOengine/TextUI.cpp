@@ -36,7 +36,7 @@ namespace HDData
 	{
 		_textUI->SetText(str);
 	}
-	
+
 	std::string TextUI::GetText()
 	{
 		return _textUI->GetText();
