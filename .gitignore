@@ -1,7 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c++,windows,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++,windows,visualstudio
 
-!*.png
+
 
 ### C++ ###
 # Prerequisites

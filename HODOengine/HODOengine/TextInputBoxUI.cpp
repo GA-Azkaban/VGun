@@ -37,7 +37,7 @@ namespace HDData
 			}
 		}
 
-		_text->GetTransform()->SetPosition(_background->GetLeft(), _text->GetTop(), 0.f);
+		_text->GetTransform()->SetPosition(_background->GetLeft(), _text->GetBottom(), 0.f);
 		_cursor->GetTransform()->SetPosition(_text->GetLeft(), _text->GetBottom(), 0.f);
 		_textOriginPos = _text->GetLeft();
 		_background->SetActive(true);
@@ -52,7 +52,7 @@ namespace HDData
 			_inputReady = true;
 		}
 
-		if (_inputReady == true)
+		if (_inputReady)
 		{
 			_blankTime += HDEngine::TimeSystem::Instance().GetDeltaTime();
 
@@ -63,16 +63,20 @@ namespace HDData
 				_cursor->SetActive(_isCursorOn);
 			}
 
-			for (int i = 0; i < 100; ++i)
+			for (int i = 0; i < 0x37; ++i)
 			{
 				if (HDEngine::InputSystem::Instance().GetKeyDown(i))
 				{
-					if (_text->_sketchable->GetWidth() < _background->_sketchable->GetWidth())
+					if (newVal.size() < 20)
 					{
-						if (i != DIK_LSHIFT && i != DIK_RSHIFT && i != DIK_BACKSPACE && i != DIK_SPACE)
+						if (i != DIK_ESCAPE && i != DIK_TAB && 
+							i != DIK_BACK && i != DIK_RETURN &&
+							i != DIK_LCONTROL && i != DIK_LSHIFT && 
+							i != DIK_RSHIFT)
 						{
 							newVal += HDEngine::InputSystem::Instance().GetInputText(i);
 							_text->SetText(newVal);
+							
 							_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth(), _text->GetBottom(), 0.f);
 						}
 					}

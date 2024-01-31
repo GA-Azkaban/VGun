@@ -66,10 +66,8 @@ namespace RocketCore::Graphics
 	{
 		std::wstring wstr(_str.begin(), _str.end());
 		_font->DrawString(spriteBatch, wstr.c_str(), DirectX::XMFLOAT2(_xLocation, _yLocation), _color);
-		
-		_measureLong = _font->MeasureString(wstr.c_str());
-		_width = DirectX::XMVectorGetX(_measureLong);
-		_height = DirectX::XMVectorGetY(_measureLong);
+	
+		MeasureTextSize();
 	}
 
 	void TextRenderer::SetFloatValue(const float value)
@@ -90,6 +88,14 @@ namespace RocketCore::Graphics
 	float TextRenderer::GetHeight()
 	{
 		return _height;
+	}
+
+	void TextRenderer::MeasureTextSize()
+	{
+		std::wstring wstr(_str.begin(), _str.end());
+		_measureLong = _font->MeasureString(wstr.c_str());
+		_width = DirectX::XMVectorGetX(_measureLong);
+		_height = DirectX::XMVectorGetY(_measureLong);
 	}
 
 }
