@@ -37,9 +37,7 @@ namespace HDData
 			}
 		}
 
-		_text->GetTransform()->SetPosition(_background->GetLeft(), _text->GetBottom(), 0.f);
-		_cursor->GetTransform()->SetPosition(_text->GetLeft(), _text->GetBottom(), 0.f);
-		_textOriginPos = _text->GetLeft();
+		_textOriginPos = _text->GetTransform()->GetPosition().x + 5;
 		_background->SetActive(true);
 		_cursor->SetActive(false);
 	}
@@ -76,15 +74,14 @@ namespace HDData
 						{
 							newVal += HDEngine::InputSystem::Instance().GetInputText(i);
 							_text->SetText(newVal);
-							
-							_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth(), _text->GetBottom(), 0.f);
+							_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth() / 2, _text->GetTop() + _text->_sketchable->GetHeight() / 2, 0.f);
 						}
 					}
 					if (i == DIK_BACKSPACE && newVal.size() > 0)
 					{
 						newVal.pop_back();
 						_text->SetText(newVal);
-						_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth(), _text->GetBottom(), 0.f);
+						_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth() / 2 - 5, _text->GetTop() + _text->_sketchable->GetHeight() / 2, 0.f);
 					}
 				}
 			}

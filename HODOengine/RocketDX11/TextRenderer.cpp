@@ -1,4 +1,4 @@
-#include "TextRenderer.h"
+﻿#include "TextRenderer.h"
 #include "ResourceManager.h"
 #include "MathHeader.h"
 
@@ -108,7 +108,6 @@ namespace RocketCore::Graphics
 
 		_yLocation -= _height * 0.5f;
 		_xLocation -= _width * 0.5f;
-
 	}
 
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)

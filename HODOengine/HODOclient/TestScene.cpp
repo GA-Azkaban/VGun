@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -100,16 +100,16 @@ TestScene::TestScene()
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
-	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
-	playerMove->SetHeadCam(headCam);
+	//auto headCam = playerTestHead->AddComponent<HDData::Camera>();
+	//playerMove->SetHeadCam(headCam);
 
-	auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
-	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+	//auto sphereTest = API::CreateObject(_scene, "sphereTest");
+	//sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
+	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
-	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	auto textTest = API::CreateTextbox(_scene);
-	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
+	//textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
+	//auto textTest = API::CreateTextbox(_scene);
+	//textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
 	//HDData::GameObject* imageTest = API::CreateObject(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
