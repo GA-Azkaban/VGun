@@ -75,7 +75,7 @@ namespace HDEngine
 			ui->SetIsClicked(false);
 			ui->SetIsHovering(false);
 
-			if (InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
+			if (_focusedUI != nullptr && InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
 			{
 				_focusedUI->SetIsGrabbing(false);
 			}

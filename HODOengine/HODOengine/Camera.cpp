@@ -4,12 +4,6 @@
 #include "..\\HODO3DGraphicsInterface\\ICamera.h"
 #include "GraphicsObjFactory.h"
 
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\HODOmath.lib")
-#endif
-
 namespace HDData
 {
 	Camera::Camera()

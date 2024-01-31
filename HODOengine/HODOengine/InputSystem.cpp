@@ -155,6 +155,7 @@ namespace HDEngine
 
 	bool InputSystem::GetKeyDown(BYTE key)
 	{
+		_isKeyPushed = true;
 		return _keyState[key] && _prevKeyState[key] == false;
 	}
 
@@ -206,6 +207,7 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
+		_isKeyPushed = false;
 
 		//RecursiveMouse();
 	}
@@ -279,6 +281,11 @@ Vector2 HDEngine::InputSystem::GetMouseDelta()
 	_prevMouseDelta = _mouseDelta;
 
 	return result;
+}
+
+bool HDEngine::InputSystem::GetKeyPushed()
+{
+	return _isKeyPushed;
 }
 
 char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)

@@ -6,9 +6,9 @@
 #include <vector>
 
 #include "Mesh.h"
-#include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "Animation.h"
 
 #include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
 
@@ -48,6 +48,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;
+		Node* m_node;
 		Material* m_material;
 		bool m_isActive;
 	};

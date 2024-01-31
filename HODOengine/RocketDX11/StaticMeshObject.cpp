@@ -46,6 +46,7 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_node = ResourceManager::Instance().GetNode(fileName);
 	}
 
 	void StaticMeshObject::LoadNormalMap(const std::string& fileName)
@@ -72,7 +73,7 @@ namespace RocketCore::Graphics
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = m_world * view * proj;
+		XMMATRIX worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
 		XMMATRIX wvp = XMMatrixTranspose(worldViewProj);
 
 		VertexShader* vertexShader = m_material->GetVertexShader();

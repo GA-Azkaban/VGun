@@ -12,7 +12,7 @@
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 
-#define MODELS_DIRECTORY_NAME "Build/Debug/Resources/Models/"
+#define MODELS_DIRECTORY_NAME "Resources/Models/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;
@@ -21,7 +21,7 @@ namespace RocketCore::Graphics
 {
 	ResourceManager::ResourceManager()
 	{
-		
+
 	}
 
 	void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -58,6 +58,7 @@ namespace RocketCore::Graphics
 		Assimp::Importer importer;
 
 		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+		//const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
@@ -380,6 +381,56 @@ namespace RocketCore::Graphics
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
 		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
 
+		int upAxis = 0;
+		scene->mMetaData->Get<int>("UpAxis", upAxis);
+		int upAxisSign = 1;
+		scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+		int frontAxis = 0;
+		scene->mMetaData->Get<int>("FrontAxis", frontAxis);
+		int frontAxisSign = 1;
+		scene->mMetaData->Get<int>("FrontAxisSign", frontAxisSign);
+		int coordAxis = 0;
+		scene->mMetaData->Get<int>("CoordAxis", coordAxis);
+		int coordAxisSign = 1;
+		scene->mMetaData->Get<int>("CoordAxisSign", coordAxisSign);
+
+		int originalUpAxis = 0;
+		scene->mMetaData->Get<int>("OriginalUpAxis", originalUpAxis);
+		int originalUpAxisSign = 1;
+		scene->mMetaData->Get<int>("OriginalUpAxisSign", originalUpAxisSign);
+
+		float unitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("UnitScaleFactor", unitScaleFactor);
+		float originalUnitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("OriginalUnitScaleFactor", originalUnitScaleFactor);
+
+		aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
+		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
+		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
+
+		upVec *= unitScaleFactor;
+		forwardVec *= unitScaleFactor;
+		rightVec *= unitScaleFactor;
+
+		/*aiMatrix4x4 mat(
+			rightVec.x, rightVec.y, rightVec.z, 0.0f,
+			-upVec.x, -upVec.y, -upVec.z, 0.0f,
+			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);	*/
+
+		aiMatrix4x4 mat(
+			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
+			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
+			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
+
+		// create node hierarchy
+		Node* rootNode = new Node();
+		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+
+		_loadedFileInfo[_fileName].node = rootNode;
+
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -492,9 +543,61 @@ namespace RocketCore::Graphics
 			}
 		}
 
+		/*UINT metaDataCount = scene->mMetaData->mNumProperties;
+		for (UINT i = 0; i < metaDataCount; ++i)
+		{
+			const aiString* key;
+			const aiMetadataEntry* entry;
+			auto res = scene->mMetaData->Get(i, key, entry);
+			auto type = entry->mType;
+		}*/
+
+		int upAxis = 0;
+		scene->mMetaData->Get<int>("UpAxis", upAxis);
+		int upAxisSign = 1;
+		scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+		int frontAxis = 0;
+		scene->mMetaData->Get<int>("FrontAxis", frontAxis);
+		int frontAxisSign = 1;
+		scene->mMetaData->Get<int>("FrontAxisSign", frontAxisSign);
+		int coordAxis = 0;
+		scene->mMetaData->Get<int>("CoordAxis", coordAxis);
+		int coordAxisSign = 1;
+		scene->mMetaData->Get<int>("CoordAxisSign", coordAxisSign);
+
+		int originalUpAxis = 0;
+		scene->mMetaData->Get<int>("OriginalUpAxis", originalUpAxis);
+		int originalUpAxisSign = 1;
+		scene->mMetaData->Get<int>("OriginalUpAxisSign", originalUpAxisSign);
+
+		float unitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("UnitScaleFactor", unitScaleFactor);
+		float originalUnitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("OriginalUnitScaleFactor", originalUnitScaleFactor);
+
+		aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
+		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
+		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
+
+		upVec *= unitScaleFactor;
+		forwardVec *= unitScaleFactor;
+		rightVec *= unitScaleFactor;
+
+		/*aiMatrix4x4 mat(
+			rightVec.x, rightVec.y, rightVec.z, 0.0f,
+			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
+			-upVec.x, -upVec.y, -upVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
+
+		aiMatrix4x4 mat(
+			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
+			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
+			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
+
 		// create node hierarchy
 		Node* rootNode = new Node();
-		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
+		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
