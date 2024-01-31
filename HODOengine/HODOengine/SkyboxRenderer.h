@@ -10,7 +10,6 @@ namespace HDData
 		SkyboxRenderer();
 		HDEngine::ISkybox& Get();
 
-
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
 

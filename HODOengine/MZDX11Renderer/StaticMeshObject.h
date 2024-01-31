@@ -1,6 +1,7 @@
 #pragma once
 #include "DX11Define.h"
 #include "IMeshObject.h"
+#include "Animation.h"
 #include <vector>
 
 class Mesh;
@@ -35,6 +36,7 @@ public:
 
 private:
 	std::vector<Mesh*> m_meshes;
+	Node* m_node;
 	Material* m_material;
 	bool m_isActive;
 

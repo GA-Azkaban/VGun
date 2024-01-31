@@ -13,8 +13,6 @@ namespace HDData
 		void LoadMesh(const std::string& fileName);
 		void LoadNormalMap(const std::string& fileName);
 		void LoadDiffuseMap(const std::string& fileName);
-		void LoadVertexShader(const std::string& fileName);
-		void LoadPixelShader(const std::string& fileName);
 
 	protected:
 		virtual void UpdateRenderData() override;

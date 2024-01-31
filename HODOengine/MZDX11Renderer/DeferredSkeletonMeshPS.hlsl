@@ -30,7 +30,8 @@ PSOutput main(VertexToPixel input)
 	input.tangent = normalize(input.tangent);
 
 	// Read and unpack normal from map
-	float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
+	//float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
+	float3 normalFromMap = input.normal;
 
 	// Transform from tangent to world space
 	float3 N = input.normal;
@@ -38,7 +39,7 @@ PSOutput main(VertexToPixel input)
 	float3 B = cross(T, N);
 
 	float3x3 TBN = float3x3(T, B, N);
-	input.normal = normalize(mul(normalFromMap, TBN));
+	//input.normal = normalize(mul(normalFromMap, TBN));
 
 	// Sample the texture
 	float4 textureColor = Albedo.Sample(LinearSampler, input.uv);

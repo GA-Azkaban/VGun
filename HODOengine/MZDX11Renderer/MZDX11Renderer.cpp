@@ -307,25 +307,28 @@ void MZDX11Renderer::SetObjects()
 	axis->SetMesh("axis");*/
 
 	// FBX Test
-	ResourceManager::Instance.Get().LoadFBXFile("Rob02.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("4QCharacter_tpose.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("4QCharacter_idle_ani.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("A_TP_CH_Sprint_F.fbx");
-	ResourceManager::Instance.Get().LoadFBXFile("model.dae");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/Rob02.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/4QCharacter_tpose.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/4QCharacter_idle_ani.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/A_TP_CH_Sprint_F.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/untitled.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/newSprint.fbx");
+	ResourceManager::Instance.Get().LoadFBXFile("Characters/model.dae");
 	ResourceManager::Instance.Get().LoadTextureFile("sunsetcube1024.dds");
-	ResourceManager::Instance.Get().LoadTextureFile("diffuse.png");
 
 	//StaticMeshObject* test1 = new StaticMeshObject();
 	SkinningMeshObject* test1 = new SkinningMeshObject();
-	test1->SetMesh("Rob02.fbx");
-	//test1->SetMesh("A_TP_CH_Sprint_F.fbx");
-	test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
-	test1->SetNormalTexture("Rob02White_Normal.png");
-	//test1->PlayAnimation(1, false);
+	//test1->SetMesh("Rob02.fbx");
+	//test1->SetDiffuseTexture("Rob02Yellow_AlbedoTransparency.png");
+	//test1->SetNormalTexture("Rob02White_Normal.png");
+	//test1->SetMesh("A_TP_CH_Breathing.fbx");
+	test1->SetMesh("newSprint.fbx");
+	test1->SetDiffuseTexture("T_TP_CH_Basic_001_001_D.png");
 	test1->PlayAnimation(0, true);
 
 	Skybox* sky = new Skybox();
 	sky->SetCubeMapTexture("sunsetcube1024.dds");
+	sky->SetActive(false);
 }
 
 void MZDX11Renderer::EnableZBuffering()

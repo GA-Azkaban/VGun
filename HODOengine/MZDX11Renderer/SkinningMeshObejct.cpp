@@ -34,7 +34,7 @@ void SkinningMeshObject::Update(float deltaTime)
 
 		if (!m_currentAnimation->isEnd)
 		{
-			UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform);
+			UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_world);
 		}
 
 		if (m_currentAnimation->isLoop == false)
@@ -59,7 +59,7 @@ void SkinningMeshObject::Render()
 
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
 	XMMATRIX proj = MZCamera::GetMainCamera()->Proj();
-	XMMATRIX worldViewProj = m_world * view * proj;
+	XMMATRIX worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
 	XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 
 	VertexShader* vertexShader = m_material->GetVertexShader();

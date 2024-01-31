@@ -19,7 +19,6 @@ TestScene::TestScene()
 	_scene = API::CreateScene("Test");
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
-	mainCam->GetTransform()->SetPosition(Vector3{ 0.0f, 0.0f, -10.0f });
 
 	API::LoadScene(_scene);
 

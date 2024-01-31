@@ -8,7 +8,7 @@ MZCamera* MZCamera::GetMainCamera()
 }
 
 MZCamera::MZCamera()
-	: m_position(0.0f, 0.0f, 0.0f),
+	: m_position(0.0f, 2.0f, -10.0f),
 	m_right(1.0f, 0.0f, 0.0f),
 	m_up(0.0f, 1.0f, 0.0f),
 	m_look(0.0f, 0.0f, 1.0f)

@@ -38,7 +38,7 @@ void StaticMeshObject::Render()
 
 	XMMATRIX view = MZCamera::GetMainCamera()->View();
 	XMMATRIX proj = MZCamera::GetMainCamera()->Proj();
-	XMMATRIX worldViewProj = m_world * view * proj;
+	XMMATRIX worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
 	XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 
 	VertexShader* vertexShader = m_material->GetVertexShader();
@@ -67,6 +67,7 @@ void StaticMeshObject::SetMesh(const std::string& fileName)
 {
 	m_fileName = fileName;
 	m_meshes = ResourceManager::Instance.Get().GetMeshes(fileName);
+	m_node = ResourceManager::Instance.Get().GetNode(fileName);
 }
 
 void StaticMeshObject::SetVertexShader(const std::string& fileName)
