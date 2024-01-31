@@ -56,12 +56,12 @@ TestScene::TestScene()
 	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
-
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 3.f, 0.f });
 	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
+
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 
 	auto playerPosText = API::CreateTextbox(_scene);
@@ -76,19 +76,23 @@ TestScene::TestScene()
 	auto hitText = API::CreateTextbox(_scene);
 	hitText->GetTransform()->SetPosition(Vector3());
 	hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
-	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!!!!!!!!!!!!!");
+	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
 
-	auto playerMove = playerTest->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
+	auto centerText = API::CreateTextbox(_scene);
+	centerText->GetTransform()->SetPosition(Vector3(1000.0f,1000.0f,0.0f));
+	centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
+	centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
+
+	//auto playerMove = playerTest->AddComponent<PlayerMove>();
+	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
+	//playerTest->AddComponent<PlayerMove>();
+	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
-	//meshComp->LoadMesh("Rob02.fbx");
-	//meshComp->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
-	//meshComp->LoadNormalMap("Rob02White_Normal.png");
-	meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
+	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
 	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	meshComp->PlayAnimation(0, true);
+	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
@@ -96,21 +100,21 @@ TestScene::TestScene()
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
-	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
-	playerMove->SetHeadCam(headCam);
+	//auto headCam = playerTestHead->AddComponent<HDData::Camera>();
+	//playerMove->SetHeadCam(headCam);
 
-	auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
-	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+	//auto sphereTest = API::CreateObject(_scene, "sphereTest");
+	//sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
+	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
-	auto textTest = API::CreateTextbox(_scene);
-	textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
+	//textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
+	//auto textTest = API::CreateTextbox(_scene);
+	//textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
 
 	//HDData::GameObject* imageTest = API::CreateObject(_scene);
 	//imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	//HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
 	//imageComp->ChangeScale(0.5f, 0.5f);
+	//HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
 	//imageComp->GetGameObject();
 	//imageComp->SetColor(DirectX::Colors::AliceBlue);
 
@@ -134,10 +138,10 @@ TestScene::TestScene()
 	slider->AddComponent<HDData::AudioSource>();
 
 	auto toggle = API::CreateToggle(_scene);
-	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
 
-	//auto textInputBox = API::CreateTextInputBox(_scene);
-	//textInputBox->GetTransform()->SetPosition({1500.f, 500.f, 0});
+	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
+	auto textInputBox = API::CreateTextInputBox(_scene);
+	textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
 
 	API::LoadScene(_scene);
 

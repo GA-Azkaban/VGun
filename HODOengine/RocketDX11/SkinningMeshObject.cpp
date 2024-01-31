@@ -17,7 +17,7 @@ namespace RocketCore::Graphics
 		: m_material(nullptr), m_isActive(true),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr)
 	{
-		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
+		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso"));
 		m_material->SetSamplerState(ResourceManager::Instance().GetSamplerState(ResourceManager::eSamplerState::DEFAULT));
 		m_boneTransform.resize(96, XMMatrixIdentity());
 	}
@@ -36,8 +36,7 @@ namespace RocketCore::Graphics
 
 			if (!m_currentAnimation->isEnd)
 			{
-				//UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * m_world);
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_world);
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * m_world);
 			}
 
 			if (m_currentAnimation->isLoop == false)
@@ -63,7 +62,7 @@ namespace RocketCore::Graphics
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
+		XMMATRIX worldViewProj = m_world * view * proj;
 		XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 
 		VertexShader* vertexShader = m_material->GetVertexShader();
@@ -229,20 +228,10 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
-		auto animIter = m_animations.find(animName);
-		if (animIter != m_animations.end())
-		{
-			m_currentAnimation = animIter->second;
-			m_currentAnimation->isLoop = isLoop;
-			if (m_currentAnimation->isLoop == false)
-			{
-				m_currentAnimation->accumulatedTime = 0.0f;
-				m_currentAnimation->isEnd = false;
-			}
-		}
-		m_currentAnimation = nullptr;
+		LoadMesh(fileName);
+		PlayAnimation(0, isLoop);
 	}
 
 	void SkinningMeshObject::PlayAnimation(UINT index, bool isLoop /*= true*/)
@@ -259,9 +248,9 @@ namespace RocketCore::Graphics
 		}
 		m_currentAnimation = animIter->second;
 		m_currentAnimation->isLoop = isLoop;
+		m_currentAnimation->accumulatedTime = 0.0f;
 		if (m_currentAnimation->isLoop == false)
 		{
-			m_currentAnimation->accumulatedTime = 0.0f;
 			m_currentAnimation->isEnd = false;
 		}
 	}
@@ -284,6 +273,8 @@ namespace RocketCore::Graphics
 	{
 		ID3D11ShaderResourceView* normalTex = ResourceManager::Instance().GetTexture(fileName);
 		m_material->SetNormalTexture(normalTex);
+		if(normalTex != nullptr)
+			m_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 	}
 
 	void SkinningMeshObject::SetSamplerState(ID3D11SamplerState* sampler)

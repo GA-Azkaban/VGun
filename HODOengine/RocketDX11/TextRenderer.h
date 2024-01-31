@@ -47,6 +47,7 @@ namespace RocketCore::Graphics
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
+		void RenderDebug(DirectX::SpriteBatch* spriteBatch);
 
 		DirectX::SpriteFont* _font;
 
@@ -59,8 +60,10 @@ namespace RocketCore::Graphics
 		DirectX::XMVECTOR _color;
 		float _xLocation;
 		float _yLocation;
+		float _zLocation;
 
 		DirectX::XMVECTOR _size;
+		DirectX::XMVECTOR _measureLong;
 		float _width;
 		float _height;
 	};

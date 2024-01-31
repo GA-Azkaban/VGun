@@ -62,6 +62,8 @@ namespace HDEngine
 			_mousePos.x = 0;
 			_mousePos.y = 0;
 		}
+
+
 	}
 
 	void InputSystem::Finalize()
@@ -155,7 +157,6 @@ namespace HDEngine
 
 	bool InputSystem::GetKeyDown(BYTE key)
 	{
-		_isKeyPushed = true;
 		return _keyState[key] && _prevKeyState[key] == false;
 	}
 
@@ -207,7 +208,7 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
-		_isKeyPushed = false;
+		_isKeyPressed = false;
 
 		//RecursiveMouse();
 	}
@@ -219,7 +220,7 @@ namespace HDEngine
 
 		POINT mousePoint;
 
-		
+
 		LONG x = 0;
 		LONG y = 0;
 
@@ -283,343 +284,70 @@ Vector2 HDEngine::InputSystem::GetMouseDelta()
 	return result;
 }
 
-bool HDEngine::InputSystem::GetKeyPushed()
-{
-	return _isKeyPushed;
-}
-
 char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
 {
-	if (_isShiftPressed)
-	{
 		switch (key)
 		{
-			case DIK_1:
-			{
-				return'!';
-			}
-			break;
-			case DIK_2:
-			{
-				return '@';
-			}
-			break;
-			case DIK_3:
-			{
-				return '#';
-			}
-			break;
-			case DIK_4:
-			{
-				return '$';
-			}
-			break;
-			case DIK_5:
-			{
-				return '%';
-			}
-			break;
-			case DIK_6:
-			{
-				return '^';
-			}
-			break;
-			case DIK_7:
-			{
-				return '&';
-			}
-			break;
-			case DIK_8:
-			{
-				return '*';
-			}
-			break;
-			case DIK_9:
-			{
-				return '(';
-			}
-			break;
-			case DIK_0:
-			{
-				return ')';
-			}
-			break;
-			case DIK_MINUS:
-			{
-				return '_';
-			}
-			break;
-			case DIK_EQUALS:
-			{
-				return '+';
-			}
-			break;
-			case DIK_SEMICOLON:
-			{
-				return ':';
-			}
-			break;
-			case DIK_APOSTROPHE:
-			{
-				return '\"';
-			}
-			break;
-			case DIK_GRAVE:
-			{
-				return '~';
-			}
-			break;
-			case DIK_BACKSLASH:
-			{
-				return '|';
-			}
-			break;
-			case DIK_COMMA:
-			{
-				return '<';
-			}
-			break;
-			case DIK_PERIOD:
-			{
-				return '>';
-			}
-			break;
-			case DIK_SLASH:
+			case DIK_1: {return _isShiftPressed ? '!' : '1'; } break;
+			case DIK_2: {return _isShiftPressed ? '@' : '2'; } break;
+			case DIK_3: {return _isShiftPressed ? '#' : '3'; } break;
+			case DIK_4: {return _isShiftPressed ? '$' : '4'; } break;
+			case DIK_5: {return _isShiftPressed ? '%' : '5'; } break;
+			case DIK_6: {return _isShiftPressed ? '^' : '6'; } break;
+			case DIK_7: {return _isShiftPressed ? '&' : '7'; } break;
+			case DIK_8: {return _isShiftPressed ? '*' : '8'; } break;
+			case DIK_9: {return _isShiftPressed ? '(' : '9'; } break;
+			case DIK_0: {return _isShiftPressed ? ')' : '0'; } break;
+			case DIK_MINUS: {return _isShiftPressed ? '_' : '-'; } break;
+			case DIK_EQUALS: {return _isShiftPressed ? '+' : '='; } break;
+			case DIK_SEMICOLON: {return _isShiftPressed ? ':' : ';'; } break;
+			case DIK_APOSTROPHE: {return _isShiftPressed ? '"' : '\''; } break;
+			case DIK_GRAVE: {return _isShiftPressed ? '~' : '`'; } break;
+			case DIK_BACKSLASH: {return _isShiftPressed ? '|' : '\\'; } break;
+			case DIK_COMMA: {return _isShiftPressed ? '<' : ','; } break;
+			case DIK_PERIOD: {return _isShiftPressed ? '>' : '.'; } break;
+			case DIK_SLASH: {return _isShiftPressed ? '?' : '/'; } break;
+			case DIK_LBRACKET: {return _isShiftPressed ? '{' : '['; } break;
+			case DIK_RBRACKET: {return _isShiftPressed ? '}' : ']'; } break;
+			case DIK_Q : {return _isShiftPressed ? 'Q' : 'q'; } break;
+			case DIK_W: {return _isShiftPressed ? 'W' : 'w'; } break;
+			case DIK_E: {return _isShiftPressed ? 'E' : 'e'; } break;
+			case DIK_R: {return _isShiftPressed ? 'R' : 'r'; } break;
+			case DIK_T: {return _isShiftPressed ? 'T' : 't'; } break;
+			case DIK_Y: {return _isShiftPressed ? 'Y' : 'y'; } break;
+			case DIK_U: {return _isShiftPressed ? 'U' : 'u'; } break;
+			case DIK_I: {return _isShiftPressed ? 'I' : 'i'; } break;
+			case DIK_O: {return _isShiftPressed ? 'O' : 'o'; } break;
+			case DIK_P: {return _isShiftPressed ? 'P' : 'p'; } break;
+			case DIK_A: {return _isShiftPressed ? 'A' : 'a'; } break;
+			case DIK_S: {return _isShiftPressed ? 'S' : 's'; } break;
+			case DIK_D: {return _isShiftPressed ? 'D' : 'd'; } break;
+			case DIK_F: {return _isShiftPressed ? 'F' : 'f'; } break;
+			case DIK_G: {return _isShiftPressed ? 'G' : 'g'; } break;
+			case DIK_H: {return _isShiftPressed ? 'H' : 'h'; } break;
+			case DIK_J: {return _isShiftPressed ? 'J' : 'j'; } break;
+			case DIK_K: {return _isShiftPressed ? 'K' : 'k'; } break;
+			case DIK_L: {return _isShiftPressed ? 'L' : 'l'; } break;
+			case DIK_Z: {return _isShiftPressed ? 'Z' : 'z'; } break;
+			case DIK_X: {return _isShiftPressed ? 'X' : 'x'; } break;
+			case DIK_C: {return _isShiftPressed ? 'C' : 'c'; } break;
+			case DIK_V: {return _isShiftPressed ? 'V' : 'v'; } break;
+			case DIK_B: {return _isShiftPressed ? 'B' : 'b'; } break;
+			case DIK_N: {return _isShiftPressed ? 'N' : 'n'; } break;
+			case DIK_M: {return _isShiftPressed ? 'M' : 'm'; } break;
+			default:
 			{
 				return '?';
 			}
 			break;
-			default:
-			{
-				return static_cast<char>(key);
-			}
-			break;
 		}
-	}
-	else
-	{
-		switch (key)
-		{
-			case DIK_1:
-			{
-				return '1';
-			}
-			break;
-			case DIK_2:
-			{
-				return '2';
-			}
-			break;
-			case DIK_3:
-			{
-				return '3';
-			}
-			break;
-			case DIK_4:
-			{
-				return '4';
-			}
-			break;
-			case DIK_5:
-			{
-				return '5';
-			}
-			break;
-			case DIK_6:
-			{
-				return '6';
-			}
-			break;
-			case DIK_7:
-			{
-				return '7';
-			}
-			break;
-			case DIK_8:
-			{
-				return '8';
-			}
-			break;
-			case DIK_9:
-			{
-				return '9';
-			}
-			break;
-			case DIK_0:
-			{
-				return 0;
-			}
-			break;
-			case DIK_MINUS:
-			{
-				return '-';
-			}
-			break;
-			case DIK_EQUALS:
-			{
-				return '=';
-			}
-			break;
-			case DIK_Q:
-			{
-				return 'q';
-			}
-			break;
-			case DIK_W:
-			{
-				return 'w';
-			}
-			break;
-			case DIK_E:
-			{
-				return 'e';
-			}
-			break;
-			case DIK_R:
-			{
-				return 'r';
-			}
-			break;
-			case DIK_T:
-			{
-				return 't';
-			}
-			break;
-			case DIK_Y:
-			{
-				return 'y';
-			}
-			break;
-			case DIK_U:
-			{
-				return 'u';
-			}
-			break;
-			case DIK_I:
-			{
-				return 'i';
-			}
-			break;
-			case DIK_O:
-			{
-				return 'o';
-			}
-			break;
-			case DIK_P:
-			{
-				return 'p';
-			}
-			break;
-			case DIK_A:
-			{
-				return 'a';
-			}
-			break;
-			case DIK_S:
-			{
-				return 's';
-			}
-			break;
-			case DIK_D:
-			{
-				return 'd';
-			}
-			break;
-			case DIK_F:
-			{
-				return 'f';
-			}
-			break;
-			case DIK_G:
-			{
-				return 'g';
-			}
-			break;
-			case DIK_H:
-			{
-				return 'h';
-			}
-			break;
-			case DIK_J:
-			{
-				return 'j';
-			}
-			break;
-			case DIK_K:
-			{
-				return 'k';
-			}
-			break;
-			case DIK_L:
-			{
-				return 'l';
-			}
-			break;
-			case DIK_SEMICOLON:
-			{
-				return '\,';
-			}
-			break;
-			case DIK_APOSTROPHE:
-			{
-				return '\.';
-			}
-			break;
-			case DIK_GRAVE:
-			{
-				return '\`';
-			}
-			break;
-			case DIK_BACKSLASH:
-			{
-				return '\\';
-			}
-			break;
-			case DIK_Z:
-			{
-				return 'z';
-			}
-			break;
-			case DIK_X:
-			{
-				return 'x';
-			}
-			break;
-			case DIK_C:
-			{
-				return 'c';
-			}
-			break;
-			case DIK_V:
-			{
-				return 'v';
-			}
-			break;
-			case DIK_B:
-			{
-				return 'b';
-			}
-			break;
-			case DIK_N:
-			{
-				return 'n';
-			}
-			break;
-			case DIK_M:
-			{
-				return 'm';
-			}
-			break;
-			default:
-				break;
-		}
-	}
 }
 
-char HDEngine::InputSystem::GetInputText(BYTE i)
+char HDEngine::InputSystem::GetInputText(BYTE key)
 {
 	// shift 키 여부
 	_isShiftPressed = (_keyState[DIK_LSHIFT] & 0x80) || (_keyState[DIK_RSHIFT] & 0x80);
 
-	return ConvertKeyToChar(i, _isShiftPressed);
+	return ConvertKeyToChar(key, _isShiftPressed);
+
 }

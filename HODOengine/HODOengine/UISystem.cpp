@@ -79,7 +79,6 @@ namespace HDEngine
 			{
 				_focusedUI->SetIsGrabbing(false);
 			}
-
 		}
 	}
 }
