@@ -19,7 +19,8 @@ using rapidjson::Document;
 using rapidjson::SizeType;
 using rapidjson::Value;
 
-const std::string RESOURCE_PATH = "Resources/";
+const std::string MODEL_PATH = "Resources/Models/";
+const std::string SCENEDATA_PATH = "Resources/SceneData/";
 
 namespace HDEngine
 {
@@ -28,9 +29,9 @@ namespace HDEngine
 
 	}
 
-	void SceneLoader::LoadUnityScene(std::string filePath)
+	void SceneLoader::LoadUnityScene(std::string fileName)
 	{
-		LoadFromJson(filePath);
+		LoadFromJson(SCENEDATA_PATH + fileName);
 		CreateObject();
 		LinkHierachy();
 		SetTransform();
@@ -62,24 +63,26 @@ namespace HDEngine
 			info.parentID = obj["ParentID"].GetInt();
 			info.name = obj["Name"].GetString();
 			info.meshName = obj["MeshName"].GetString();
-			info.position.x = obj["Position"][0].GetFloat();
-			info.position.y = obj["Position"][1].GetFloat();
-			info.position.z = obj["Position"][2].GetFloat();
-			info.rotation.x = obj["Rotation"][0].GetFloat();
-			info.rotation.y = obj["Rotation"][1].GetFloat();
-			info.rotation.z = obj["Rotation"][2].GetFloat();
-			info.rotation.w = obj["Rotation"][3].GetFloat();
-			info.scale.x = obj["Scale"][0].GetFloat();
-			info.scale.y = obj["Scale"][1].GetFloat();
-			info.scale.z = obj["Scale"][2].GetFloat();
+			info.position.x = obj["Position"]["x"].GetFloat();
+			info.position.y = obj["Position"]["y"].GetFloat();
+			info.position.z = obj["Position"]["z"].GetFloat();
+			info.rotation.x = obj["Rotation"]["x"].GetFloat();
+			info.rotation.y = obj["Rotation"]["y"].GetFloat();
+			info.rotation.z = obj["Rotation"]["z"].GetFloat();
+			info.rotation.w = obj["Rotation"]["w"].GetFloat();
+			info.scale.x = obj["Scale"]["x"].GetFloat();
+			info.scale.y = obj["Scale"]["y"].GetFloat();
+			info.scale.z = obj["Scale"]["z"].GetFloat();
 			info.colliderType = obj["ColliderType"].GetInt();
-			info.colliderCenter.x = obj["ColliderCenter"][0].GetFloat();
-			info.colliderCenter.y = obj["ColliderCenter"][1].GetFloat();
-			info.colliderCenter.z = obj["ColliderCenter"][2].GetFloat();
-			info.boxColliderSize.x = obj["BoxColliderSize"][0].GetFloat();
-			info.boxColliderSize.y = obj["BoxColliderSize"][1].GetFloat();
-			info.boxColliderSize.z = obj["BoxColliderSize"][2].GetFloat();
+			info.colliderCenter.x = obj["ColliderCenter"]["x"].GetFloat();
+			info.colliderCenter.y = obj["ColliderCenter"]["y"].GetFloat();
+			info.colliderCenter.z = obj["ColliderCenter"]["z"].GetFloat();
+			info.boxColliderSize.x = obj["BoxColliderSize"]["x"].GetFloat();
+			info.boxColliderSize.y = obj["BoxColliderSize"]["y"].GetFloat();
+			info.boxColliderSize.z = obj["BoxColliderSize"]["z"].GetFloat();
 			info.sphereColliderRadius = obj["SphereColliderRadius"].GetFloat();
+
+			_infoList.emplace_back(info);
 		}
 	}
 
@@ -111,8 +114,11 @@ namespace HDEngine
 				default:
 					break;
 			}
-			// TODO : 우선 기본 큐브메쉬로 해야함
-			// meshRenderer->LoadMesh(RESOURCE_PATH + info.meshName);
+			
+			if (info.meshName != "")
+			{
+				meshRenderer->LoadMesh(info.meshName + ".fbx");
+			}
 
 			_gameObjectMap.insert(std::make_pair(info.id, object));
 		}
@@ -143,5 +149,4 @@ namespace HDEngine
 			object->GetTransform()->SetLocalScale(info.scale);
 		}
 	}
-
 }

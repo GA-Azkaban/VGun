@@ -35,7 +35,7 @@ namespace HDEngine
 		};
 
 	public:
-		void LoadUnityScene(std::string filePath);
+		void LoadUnityScene(std::string fileName);
 
 	private:
 		void LoadFromJson(std::string filePath);

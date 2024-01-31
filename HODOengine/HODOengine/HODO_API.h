@@ -48,6 +48,9 @@ namespace API
 		HODO_API HDData::Scene* CreateScene(std::string sceneName);
 		HODO_API void LoadScene(HDData::Scene* scene);
 
+		// 씬 데이터에서 씬 로드
+		HODO_API void LoadSceneFromData(std::string fileName);
+
 		// 각종 오브젝트 생성
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateImageBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);

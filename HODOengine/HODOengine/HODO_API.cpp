@@ -8,6 +8,7 @@
 #include "DebugSystem.h"
 #include "PhysicsSystem.h"
 #include "RenderSystem.h"
+#include "SceneLoader.h"
 
 namespace API
 {
@@ -183,8 +184,10 @@ namespace API
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}
+
+		HODO_API void LoadSceneFromData(std::string fileName)
+		{
+			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName);
+		}
 	}
-
-
-
 }
