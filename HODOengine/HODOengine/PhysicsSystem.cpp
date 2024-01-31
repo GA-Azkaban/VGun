@@ -162,12 +162,25 @@ namespace HDEngine
 			for (auto& collider : colliderVector)
 			{
 				HDData::StaticBoxCollider* box = dynamic_cast<HDData::StaticBoxCollider*>(collider);
+				Vector3 scale = object->GetTransform()->GetScale();
 
-				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
 				 
 				// TODO : 여기 작업하고 있었음.
-				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				Vector3 position = object->GetTransform()->GetPosition();
+
+				if (collider->GetPositionOffset() != Vector3::Zero)
+				{
+					position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				}
+
+				Quaternion rot = object->GetTransform()->GetRotation();
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				localTransform.q.x = rot.x;
+				localTransform.q.y = rot.y;
+				localTransform.q.z = rot.z;
+				localTransform.q.w = rot.w;
+
 				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
 				boxRigid->attachShape(*shape);
 

@@ -15,15 +15,17 @@ namespace HDData
 		void Start() override;
 		void Update() override;
 
+		std::string GetCurrentText();
+
 	private:
 		ImageUI* _background;
 		ImageUI* _cursor;
-		TextUI* _text;
+		TextUI* _text; 
 
 		bool _inputReady;
 		bool _isCursorOn;
 		float _blankTime;
-
+		float _textOriginPos;
 
 		std::string newVal;
 		

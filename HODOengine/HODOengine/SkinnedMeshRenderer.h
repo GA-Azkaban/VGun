@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
 #include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
@@ -15,8 +15,7 @@ namespace HDData
 		void LoadDiffuseMap(const std::string& fileName);
 		void LoadVertexShader(const std::string& fileName);
 		void LoadPixelShader(const std::string& fileName);
-		void PlayAnimation(const std::string& animName, bool isLoop = true);
-		void PlayAnimation(UINT index, bool isLoop = true);
+		void PlayAnimation(const std::string& fileName, bool isLoop = true);
 
 	protected:
 		virtual void UpdateRenderData() override;

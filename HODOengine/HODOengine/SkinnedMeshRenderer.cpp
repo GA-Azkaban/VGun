@@ -26,14 +26,9 @@ namespace HDData
 		_skinnedMesh->LoadDiffuseMap(fileName);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
-		_skinnedMesh->PlayAnimation(animName, isLoop);
-	}
-
-	void SkinnedMeshRenderer::PlayAnimation(UINT index, bool isLoop /*= true*/)
-	{
-		_skinnedMesh->PlayAnimation(index, isLoop);
+		_skinnedMesh->PlayAnimation(fileName, isLoop);
 	}
 
 	void SkinnedMeshRenderer::UpdateRenderData()

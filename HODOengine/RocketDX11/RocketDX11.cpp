@@ -207,7 +207,6 @@ namespace RocketCore::Graphics
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		/// Load resources
-		_resourceManager.LoadFBXFile("Rob02.fbx");
 		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
 		_resourceManager.LoadTextureFile("sunsetcube1024.dds");
 
@@ -476,6 +475,7 @@ namespace RocketCore::Graphics
 		dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso")->SetDirectionalLight("dirLight", *dirLight);
 
 		PointLight pointLight[4];
 		pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
@@ -488,6 +488,7 @@ namespace RocketCore::Graphics
 		pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetPointLight("pointLight", pointLight);
+		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso")->SetPointLight("pointLight", pointLight);
 
 		SpotLight spotLight[2];
 		spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
@@ -500,6 +501,7 @@ namespace RocketCore::Graphics
 		spotLight[1].SpotPower = 1.0f;
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
+		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso")->SetSpotLight("spotLight", spotLight);
 	}
 
 	void RocketDX11::RenderDebug()
@@ -520,6 +522,13 @@ namespace RocketCore::Graphics
 		{
 			ResourceManager::Instance().GetCylinderPrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}
+
+		_spriteBatch->Begin();
+		for (auto textRenderer : ObjectManager::Instance().GetTextList())
+		{
+			textRenderer->RenderDebug(_spriteBatch);
+		}
+		_spriteBatch->End();
 	}
 
 }

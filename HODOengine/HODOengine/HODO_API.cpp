@@ -8,6 +8,7 @@
 #include "DebugSystem.h"
 #include "PhysicsSystem.h"
 #include "RenderSystem.h"
+#include "SceneLoader.h"
 
 namespace API
 {
@@ -130,7 +131,7 @@ namespace API
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "text", obj);
 			valueText->AddComponent<HDData::TextUI>();
-			valueText->GetComponent<HDData::TextUI>()->SetText("test");
+			valueText->GetComponent<HDData::TextUI>()->SetText("");
 			valueText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
 
 			return obj;
@@ -209,6 +210,11 @@ namespace API
 		HODO_API void DrawLineDir(Vector3 start, Vector3 direction, float length, Vector4 color)
 		{
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
+		}
+
+		HODO_API void LoadSceneFromData(std::string fileName)
+		{
+			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName);
 		}
 
 		HODO_API HDData::Camera* GetMainCamera()
