@@ -70,11 +70,11 @@ namespace DB
 
 	};
 
-	class SignUp : public Horang::DBBind<3, 0>
+	class SignUp : public Horang::DBBind<3, 1>
 	{
 	public:
 		SignUp(Horang::DBConnection& conn)
-			: DBBind(conn, L"INSERT INTO user (id, password, nickname) VALUES(?, ?, ?)") {}
+			: DBBind(conn, L"CALL vgundb.SignUp(?, ?, ?);") {}
 
 	public:
 		template<int32 N>
@@ -118,6 +118,9 @@ namespace DB
 			DB::WstrCpy(v, str);
 			this->In_NickName(v);
 		}
+
+	public:
+		void Out_Result(int32& v) { BindCol(0, v); }
 
 	private:
 
