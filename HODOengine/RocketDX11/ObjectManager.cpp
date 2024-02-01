@@ -7,6 +7,7 @@
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "Cubemap.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -51,6 +52,13 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
+	RocketCore::Graphics::Cubemap* ObjectManager::CreateCubeMap()
+	{
+		Cubemap* temp = new Cubemap();
+		_cubemapList.emplace_back(temp);
+		return temp;
+	}
+
 	RocketCore::Graphics::ImageRenderer* ObjectManager::CreateImage()
 	{
 		auto& resourceMgr = ResourceManager::Instance();
@@ -63,46 +71,9 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
-	std::vector<ImageRenderer*>& ObjectManager::GetImageList()
-	{
-		return _ImageList;
-	}
-
-	std::vector<HelperObject*>& ObjectManager::GetHelperObjList()
-	{
-		return _helperObjectList;
-	}
-
-	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()
-	{
-		return _staticMeshObjectList;
-	}
-
-	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
-	{
-		return _skinningMeshObjectList;
-	}
-
-	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()
-	{
-		TextRenderer* TextObject = new TextRenderer();
-		_textList.emplace_back(TextObject);
-		return TextObject;
-	}
-
-	std::vector<TextRenderer*>& ObjectManager::GetTextList()
-	{
-		return _textList;
-	}
-
 	LineRenderer* ObjectManager::CreateLineRenderer()
 	{
 		_lineRenderer = new LineRenderer();
-		return _lineRenderer;
-	}
-
-	LineRenderer* ObjectManager::GetLineRenderer()
-	{
 		return _lineRenderer;
 	}
 
@@ -128,6 +99,48 @@ namespace RocketCore::Graphics
 		cylinder->isWire = true;
 		_cylinderPrimitiveList.emplace_back(cylinder);
 		return cylinder;
+	}
+
+	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()
+	{
+		TextRenderer* TextObject = new TextRenderer();
+		_textList.emplace_back(TextObject);
+		return TextObject;
+	}
+
+	std::vector<HelperObject*>& ObjectManager::GetHelperObjList()
+	{
+		return _helperObjectList;
+	}
+
+	std::vector<StaticMeshObject*>& ObjectManager::GetStaticMeshObjList()
+	{
+		return _staticMeshObjectList;
+	}
+
+	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
+	{
+		return _skinningMeshObjectList;
+	}
+
+	std::vector<Cubemap*>& ObjectManager::GetCubeMapList()
+	{
+		return _cubemapList;
+	}
+
+	std::vector<TextRenderer*>& ObjectManager::GetTextList()
+	{
+		return _textList;
+	}
+
+	std::vector<ImageRenderer*>& ObjectManager::GetImageList()
+	{
+		return _ImageList;
+	}
+
+	LineRenderer* ObjectManager::GetLineRenderer()
+	{
+		return _lineRenderer;
 	}
 
 }

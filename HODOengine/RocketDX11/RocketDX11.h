@@ -32,6 +32,7 @@ namespace RocketCore::Graphics
 	class QuadBuffer;
 	class GBufferPass;
 	class DeferredPass;
+	class DebugMeshPass;
 	class SkyboxPass;
 	class BlitPass;
 	
@@ -51,16 +52,12 @@ namespace RocketCore::Graphics
 
 		virtual void Finalize() override;
 
-	private:
-		void BeginRender();
-		void BeginRender(float r, float g, float b, float a);
-		void RenderHelperObject();
-		/*void RenderStaticMesh();
-		void RenderSkinningMesh();*/
+		virtual void OnResize(int screenWidth, int screenHeight) override;
+
+	private:		
 		void RenderText();
 		void RenderLine();
 		void RenderTexture();
-		void RenderDebug();
 		void EndRender();
 
 		void CreateDepthStencilStates();
@@ -107,6 +104,7 @@ namespace RocketCore::Graphics
 		QuadBuffer* _quadBuffer;
 		GBufferPass* _GBufferPass;
 		DeferredPass* _deferredPass;
+		DebugMeshPass* _debugMeshPass;
 		SkyboxPass* _skyboxPass;
 		BlitPass* _blitPass;
 	};

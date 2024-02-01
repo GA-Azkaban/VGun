@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "Cubemap.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -38,6 +39,11 @@ namespace RocketCore::Graphics
 	HDEngine::ISkinnedMesh* ObjectFactory::CreateSkinnedMeshObject()
 	{
 		return ObjectManager::Instance().CreateSkinningMeshObject();
+	}
+
+	HDEngine::ICubeMap* ObjectFactory::CreateCubeMap()
+	{
+		return ObjectManager::Instance().CreateCubeMap();
 	}
 
 	HDEngine::ISketchableText* ObjectFactory::CreateText()

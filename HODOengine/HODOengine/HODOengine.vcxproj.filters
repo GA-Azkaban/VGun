@@ -133,6 +133,9 @@
     <ClCompile Include="SceneLoader.cpp">
       <Filter>SceneLoader</Filter>
     </ClCompile>
+    <ClCompile Include="CubeMapRenderer.cpp">
+      <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -296,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
       <Filter>SceneLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMapRenderer.h">
+      <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

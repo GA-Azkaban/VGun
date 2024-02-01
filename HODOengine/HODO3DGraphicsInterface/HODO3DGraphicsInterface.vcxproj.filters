@@ -53,6 +53,9 @@
     <Filter Include="Objects\Primitive">
       <UniqueIdentifier>{2a3c4158-ee49-439e-9648-a55b482c0086}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Renderable\ICubeMap">
+      <UniqueIdentifier>{70595cdf-0f97-461f-83a6-4700b1edc2ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -102,6 +105,9 @@
     </ClInclude>
     <ClInclude Include="PrimitiveHeader.h">
       <Filter>Objects\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="ICubeMap.h">
+      <Filter>Objects\Renderable\ICubeMap</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

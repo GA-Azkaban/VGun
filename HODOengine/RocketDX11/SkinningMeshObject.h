@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
+#include <wrl.h>
 #include "Animation.h"
 
 #include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
@@ -51,7 +52,7 @@ namespace RocketCore::Graphics
 		Material* m_material;
 		bool m_isActive;
 
-		ComPtr<ID3D11RasterizerState> m_rasterizerState;
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
 		// Animation
 		std::unordered_map<std::string, Animation*> m_animations;

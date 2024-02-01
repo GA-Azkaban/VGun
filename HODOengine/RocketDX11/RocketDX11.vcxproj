@@ -209,10 +209,12 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Axis.cpp" />
     <ClCompile Include="BlitPass.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cubemap.cpp" />
+    <ClCompile Include="DebugMeshPass.cpp" />
+    <ClCompile Include="Line.cpp" />
+    <ClCompile Include="SkyboxPass.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
     <ClCompile Include="DeferredBuffers.cpp" />
     <ClCompile Include="DeferredPass.cpp" />
@@ -225,7 +227,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="ObjectFactory.cpp" />
-    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -235,6 +236,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClCompile Include="RocketDX11.cpp" />
     <ClCompile Include="SamplerState.cpp" />
     <ClCompile Include="SkinningMeshObject.cpp" />
+    <ClCompile Include="SpritePass.cpp" />
     <ClCompile Include="StaticMeshObject.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -243,10 +245,12 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssimpMathConverter.h" />
-    <ClInclude Include="Axis.h" />
     <ClInclude Include="BlitPass.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cubemap.h" />
+    <ClInclude Include="DebugMeshPass.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="SkyboxPass.h" />
     <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="DeferredBuffers.h" />
     <ClInclude Include="DeferredPass.h" />
@@ -262,7 +266,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="ObjectFactory.h" />
-    <ClInclude Include="Grid.h" />
     <ClInclude Include="IBuilder.h" />
     <ClInclude Include="IResource.h" />
     <ClInclude Include="ObjectManager.h" />
@@ -278,6 +281,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClInclude Include="ShaderStruct.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SkinningMeshObject.h" />
+    <ClInclude Include="SpritePass.h" />
     <ClInclude Include="StaticMeshObject.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Texture.h" />

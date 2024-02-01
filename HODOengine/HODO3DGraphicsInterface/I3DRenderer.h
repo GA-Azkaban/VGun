@@ -10,7 +10,7 @@ namespace HDEngine
 	class I3DRenderer
 	{
 	public:
-		// 그래픽스 엔진을 초기화한다.
+		
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) abstract;
 
 		virtual void Update(float deltaTime) abstract;
@@ -18,6 +18,8 @@ namespace HDEngine
 		virtual void Render() abstract;
 
 		virtual void Finalize() abstract;
+
+		virtual void OnResize(int screenWidth, int screenHeight) abstract;
 	};
 
 	/// dllexport 하는 렌더러를 반환하는 팩토리 함수.

@@ -3,11 +3,14 @@
 #include "QuadBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include <DirectXMath.h>
+#include <DirectXColors.h>
 
 namespace RocketCore::Graphics
 {
-	BlitPass::BlitPass(QuadBuffer* quadBuffer)
-		: _quadBuffer(quadBuffer), _resourceManager(ResourceManager::Instance())
+	BlitPass::BlitPass(QuadBuffer* quadBuffer, ID3D11RenderTargetView* backBufferRTV)
+		: _quadBuffer(quadBuffer), _resourceManager(ResourceManager::Instance()),
+		_backBufferRTV(backBufferRTV)
 	{
 		_vertexShader = _resourceManager.GetVertexShader("FullScreenQuadVS.cso");
 		_pixelShader = _resourceManager.GetPixelShader("BlitPixelShader.cso");
@@ -22,8 +25,8 @@ namespace RocketCore::Graphics
 
 	void BlitPass::Render()
 	{
-		_mzRenderer.SetRenderTarget();
-		_mzRenderer.ClearRenderTarget();
+		_resourceManager.GetDeviceContext()->OMSetRenderTargets(1, _backBufferRTV.GetAddressOf(), nullptr);
+		_resourceManager.GetDeviceContext()->ClearRenderTargetView(_backBufferRTV.Get(), reinterpret_cast<const float*>(&DirectX::Colors::Transparent));
 
 		_resourceManager.GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		_resourceManager.GetDeviceContext()->RSSetState(_resourceManager.GetRasterizerState(ResourceManager::eRasterizerState::SOLID));

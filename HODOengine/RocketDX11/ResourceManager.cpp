@@ -266,10 +266,6 @@ namespace RocketCore::Graphics
 		if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
 
-		PixelShader* skeletonPixelShader_NoNormalMap = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (skeletonPixelShader_NoNormalMap->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader_NoNormalMap.cso"))
-			_pixelShaders.insert(std::make_pair("SkeletonPixelShader_NoNormalMap.cso", skeletonPixelShader_NoNormalMap));
-
 		VertexShader* debugVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (debugVertexShader->LoadShaderFile(L"Resources/Shaders/DebugVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("DebugVertexShader.cso", debugVertexShader));
@@ -285,6 +281,18 @@ namespace RocketCore::Graphics
 		PixelShader* cubeMapPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (cubeMapPixelShader->LoadShaderFile(L"Resources/Shaders/CubeMapPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("CubeMapPixelShader.cso", cubeMapPixelShader));
+
+		VertexShader* fullScreenQuadVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (fullScreenQuadVS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadVS.cso"))
+			_vertexShaders.insert(std::make_pair("FullScreenQuadVS.cso", fullScreenQuadVS));
+
+		PixelShader* fullScreenQuadPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (fullScreenQuadPS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadPS.cso"))
+			_pixelShaders.insert(std::make_pair("FullScreenQuadPS.cso", fullScreenQuadPS));
+
+		PixelShader* blitPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()

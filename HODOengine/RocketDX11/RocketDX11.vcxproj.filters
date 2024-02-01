@@ -48,17 +48,11 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Axis.cpp">
-      <Filter>Object\HelperObject</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
     <ClCompile Include="DeviceBuilderDX11.cpp">
       <Filter>Builder</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Object\HelperObject</Filter>
     </ClCompile>
     <ClCompile Include="ImageRenderer.cpp">
       <Filter>Object\ImageRenderer</Filter>
@@ -138,11 +132,20 @@
     <ClCompile Include="BlitPass.cpp">
       <Filter>DeferredRendering\RenderPasses\BlitPass</Filter>
     </ClCompile>
+    <ClCompile Include="SkyboxPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
+    </ClCompile>
+    <ClCompile Include="SpritePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugMeshPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Object\Line</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Axis.h">
-      <Filter>Object\HelperObject</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Object\Camera</Filter>
     </ClInclude>
@@ -154,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="GraphicsStruct.h">
       <Filter>Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Object\HelperObject</Filter>
     </ClInclude>
     <ClInclude Include="IBuilder.h">
       <Filter>Builder\Interface</Filter>
@@ -262,6 +262,18 @@
     </ClInclude>
     <ClInclude Include="BlitPass.h">
       <Filter>DeferredRendering\RenderPasses\BlitPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxPass.h">
+      <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePass.h">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugMeshPass.h">
+      <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Object\Line</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -409,9 +421,6 @@
     <Filter Include="DeferredRendering\RenderPasses\BlitPass">
       <UniqueIdentifier>{d47a6d75-f934-4319-91d2-fa2da18ca9a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DeferredRendering\RenderPasses\CubeMapPass">
-      <UniqueIdentifier>{bfa3219e-18fc-4d99-9559-2e1d9e0ebe40}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DeferredRendering\RenderPasses\DeferredPass">
       <UniqueIdentifier>{6a970d8f-0039-4675-a714-deb48e9e482f}</UniqueIdentifier>
     </Filter>
@@ -429,6 +438,18 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\Blit">
       <UniqueIdentifier>{af0681c4-fccc-4e74-b680-bf064743ad4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\SpritePass">
+      <UniqueIdentifier>{2baf4854-637d-41df-b8aa-91c3b8bde7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\SkyboxPass">
+      <UniqueIdentifier>{bfa3219e-18fc-4d99-9559-2e1d9e0ebe40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\DebugMeshPass">
+      <UniqueIdentifier>{7dc68242-c951-4d0e-be71-d43553753539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Line">
+      <UniqueIdentifier>{fef4642c-22f2-447b-b01e-e62180ce51b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

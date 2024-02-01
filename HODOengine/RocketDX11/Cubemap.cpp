@@ -1,4 +1,4 @@
-#include "Cubemap.h"
+﻿#include "Cubemap.h"
 #include "Camera.h"
 #include "ResourceManager.h"
 #include "Mesh.h"
@@ -12,7 +12,7 @@ namespace RocketCore::Graphics
 		: m_material(nullptr), m_isActive(true)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("CubeMapVertexShader.cso"), ResourceManager::Instance().GetPixelShader("CubeMapPixelShader.cso"));
-		m_material->SetSamplerState(ResourceManager::Instance().GetSamplerState(ResourceManager::eSamplerState::DEFAULT));
+		m_meshes = ResourceManager::Instance().GetMeshes("skySphere");
 	}
 
 	Cubemap::~Cubemap()
@@ -31,7 +31,7 @@ namespace RocketCore::Graphics
 			return;
 
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ResourceManager::Instance().GetDeviceContext()->RSSetState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::CUBEMAP));
+		ResourceManager::Instance().GetDeviceContext()->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::CUBEMAP));
 		
 		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
 		XMMATRIX cameraTranslate = XMMatrixTranslation(cameraPos.x, cameraPos.y, cameraPos.z);
@@ -49,7 +49,6 @@ namespace RocketCore::Graphics
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();
 
-		pixelShader->SetSamplerState("Sampler", m_material->GetSamplerState());
 		pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
 
 		pixelShader->CopyAllBufferData();
@@ -85,8 +84,4 @@ namespace RocketCore::Graphics
 		m_material->SetTextureSRV(diffuseTex);
 	}
 
-	void Cubemap::SetSamplerState(ID3D11SamplerState* sampler)
-	{
-		m_material->SetSamplerState(sampler);
-	}
 }

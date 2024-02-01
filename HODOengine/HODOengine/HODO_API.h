@@ -28,6 +28,7 @@
 #include "DynamicSphereCollider.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
+#include "CubeMapRenderer.h"
 #include "InputData.h"
 #include "TextUI.h"
 #include "Button.h"

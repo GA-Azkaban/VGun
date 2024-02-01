@@ -27,6 +27,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ICubeMap.h" />
     <ClInclude Include="PrimitiveHeader.h" />
     <ClInclude Include="IDebugCube.h" />
     <ClInclude Include="IDebugObject.h" />

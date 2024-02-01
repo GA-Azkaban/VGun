@@ -36,7 +36,7 @@ namespace RocketCore::Graphics
 
 			if (!m_currentAnimation->isEnd)
 			{
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * m_world);
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
 			}
 
 			if (m_currentAnimation->isLoop == false)

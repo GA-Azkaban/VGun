@@ -1,8 +1,6 @@
 ﻿#include <cassert>
 
 #include "RocketDX11.h"
-#include "Grid.h"
-#include "Axis.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -29,6 +27,7 @@
 #include "QuadBuffer.h"
 #include "GBufferPass.h"
 #include "DeferredPass.h"
+#include "DebugMeshPass.h"
 #include "SkyboxPass.h"
 #include "BlitPass.h"
 
@@ -134,45 +133,13 @@ namespace RocketCore::Graphics
 		hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
 		hr = _device->CreateRenderTargetView(backBuffer, nullptr, _renderTargetView.GetAddressOf());
 
-		CD3D11_TEXTURE2D_DESC depthStencilDesc(
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
-			static_cast<UINT> (backBufferDesc.Width),
-			static_cast<UINT> (backBufferDesc.Height),
-			1, // This depth stencil view has only one texture.
-			1, // Use a single mipmap level.
-			D3D11_BIND_DEPTH_STENCIL
-		);
-
-		depthStencilDesc.SampleDesc.Count = 4;
-		depthStencilDesc.SampleDesc.Quality = _m4xMsaaQuality - 1;
-
-		hr = _device->CreateTexture2D(
-			&depthStencilDesc,
-			nullptr,
-			&_depthStencilBuffer
-		);
-
-		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-
-		hr = _device->CreateDepthStencilView(
-			_depthStencilBuffer.Get(),
-			nullptr,
-			&_depthStencilView
-		);
-
-		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
-		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
-
 		ZeroMemory(&_viewport, sizeof(D3D11_VIEWPORT));
-		_viewport.Height = (float)backBufferDesc.Height;
-		_viewport.Width = (float)backBufferDesc.Width;
+		_viewport.Height = static_cast<float>(_screenHeight);
+		_viewport.Width = static_cast<float>(_screenWidth);
 		_viewport.MinDepth = 0;
 		_viewport.MaxDepth = 1;
 
-		_deviceContext->RSSetViewports(
-			1,
-			&_viewport
-		);
+		_deviceContext->RSSetViewports(1, &_viewport);
 
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
@@ -185,11 +152,15 @@ namespace RocketCore::Graphics
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
+		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
+		_quadBuffer->Initialize(_screenWidth, _screenHeight);
 
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
+		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
+		//_spritePass
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
-		_blitPass = new BlitPass(_quadBuffer);
+		_blitPass = new BlitPass(_quadBuffer, _renderTargetView.Get());
 
 		/// DEBUG Obejct
 		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
@@ -214,65 +185,42 @@ namespace RocketCore::Graphics
 
 	}
 
-	void RocketDX11::BeginRender()
+	void RocketDX11::Finalize()
 	{
-		float color[4];
 
-		// Setup the color to clear the buffer to.
-		color[0] = 0.1f;	// r
-		color[1] = 0.1f;	// g
-		color[2] = 0.1f;	// b
-		color[3] = 0.1f;	// a
-		// Clear the back buffer.
-		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
-		// Clear the depth buffer.
-		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
-
-		return;
 	}
 
-	void RocketDX11::BeginRender(float r, float g, float b, float a)
+	void RocketDX11::OnResize(int screenWidth, int screenHeight)
 	{
-		float color[4];
+		_screenWidth = screenWidth;
+		_screenHeight = screenHeight;
 
-		// Setup the color to clear the buffer to.
-		color[0] = r;	// r
-		color[1] = g;	// g
-		color[2] = b;	// b
-		color[3] = a;	// a
-		// Clear the back buffer.
-		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
-		// Clear the depth buffer.
-		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
+		// 투영 행렬 재계산
+		Camera::GetMainCamera()->SetAspect(static_cast<float>(_screenWidth / _screenHeight));
+		Camera::GetMainCamera()->UpdateProjectionMatrix();
 
-		return;
+		_renderTargetView.Reset();
+
+		_swapChain->ResizeBuffers(0, _screenWidth, _screenHeight, DXGI_FORMAT_UNKNOWN, 0);
+
+		ID3D11Texture2D* backBuffer;
+		HR(_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+		HR(_device->CreateRenderTargetView(backBuffer, 0, _renderTargetView.GetAddressOf()));
+		backBuffer->Release();
+
+		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
+		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+
+		// set the viewport transform
+		_viewport.TopLeftX = 0;
+		_viewport.TopLeftY = 0;
+		_viewport.Width = static_cast<float>(_screenWidth);
+		_viewport.Height = static_cast<float>(_screenHeight);
+		_viewport.MinDepth = 0.0f;
+		_viewport.MaxDepth = 1.0f;
+
+		_deviceContext->RSSetViewports(1, &_viewport);
 	}
-
-	void RocketDX11::RenderHelperObject()
-	{	
-		for (auto& helperObject : ObjectManager::Instance().GetHelperObjList())
-		{
-			helperObject->Render();
-		}
-	}
-
-	/*void RocketDX11::RenderStaticMesh()
-	{
-		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
-		{
-			staticMeshObj->Render();
-		}
-	}
-
-	void RocketDX11::RenderSkinningMesh()
-	{
-		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
-		{
-			skinningMeshObj->Render();
-		}
-	}*/
 
 	void RocketDX11::RenderText()
 	{
@@ -345,28 +293,19 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_GBufferPass->Render();
 		_deferredPass->Render();
-
-		//RenderHelperObject();
-		//RenderStaticMesh();
-		//RenderSkinningMesh();
+		_debugMeshPass->Render();
+		RenderLine();
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
 
 		RenderTexture();
-		RenderLine();
-		RenderText();		
-		RenderDebug();		
+		RenderText();	
 
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_blitPass->Render();
 
 		EndRender();
-	}
-
-	void RocketDX11::Finalize()
-	{
-		
 	}
 
 	void RocketDX11::CreateDepthStencilStates()
@@ -454,8 +393,7 @@ namespace RocketCore::Graphics
 		DirectionalLight* dirLight = new DirectionalLight();
 		dirLight->Color = XMFLOAT4{ 0.3f, 0.3f, 0.3f, 1.0f };
 		dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
-		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+		ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso")->SetDirectionalLight("dirLight", *dirLight);
 
 		PointLight pointLight[4];
 		pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
@@ -466,8 +404,7 @@ namespace RocketCore::Graphics
 		pointLight[2].Position = XMFLOAT4{ -1.0f, 0.0f, 0.0f, 1.0f };
 		pointLight[3].Color = XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f };
 		pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
-		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetPointLight("pointLight", pointLight);
+		ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso")->SetPointLight("pointLight", pointLight);
 
 		SpotLight spotLight[2];
 		spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
@@ -478,48 +415,7 @@ namespace RocketCore::Graphics
 		spotLight[1].Direction = XMFLOAT3{ -10.0f, 0.0f, -5.0f };
 		spotLight[1].Position = XMFLOAT4{ 10.0f, 20.0f, 5.0f, 1.0f };
 		spotLight[1].SpotPower = 1.0f;
-		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
+		ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso")->SetSpotLight("spotLight", spotLight);
 	}
 
-	void RocketDX11::RenderDebug()
-	{
-#ifdef _DEBUG
-		Camera* cam = Camera::GetMainCamera();
-
-		for (auto e : ObjectManager::Instance().GetCubePrimitiveList())
-		{
-			e->worldTM.m[0][0] *= e->widthHeightDepth.x;
-			e->worldTM.m[1][1] *= e->widthHeightDepth.y;
-			e->worldTM.m[2][2] *= e->widthHeightDepth.z;
-
-			ResourceManager::Instance().GetCubePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
-		}
-
-		for (auto e : ObjectManager::Instance().GetSpherePrimitiveList())
-		{
-			e->worldTM.m[0][0] *= e->diameter;
-			e->worldTM.m[1][1] *= e->diameter;
-			e->worldTM.m[2][2] *= e->diameter;
-			
-			ResourceManager::Instance().GetSpherePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
-		}
-
-		for (auto e : ObjectManager::Instance().GetCylinderPrimitiveList())
-		{
-			e->worldTM.m[0][0] *= e->diameter;
-			e->worldTM.m[1][1] *= e->height/2;
-			e->worldTM.m[2][2] *= e->diameter;
-
-			ResourceManager::Instance().GetCylinderPrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
-		}
-
-		_spriteBatch->Begin();
-		for (auto textRenderer : ObjectManager::Instance().GetTextList())
-		{
-			textRenderer->RenderDebug(_spriteBatch);
-		}
-		_spriteBatch->End();
-	}
-#endif
 }
