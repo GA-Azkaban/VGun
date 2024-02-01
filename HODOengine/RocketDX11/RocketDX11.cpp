@@ -29,6 +29,7 @@
 #include "DeferredPass.h"
 #include "DebugMeshPass.h"
 #include "SkyboxPass.h"
+#include "SpritePass.h"
 #include "BlitPass.h"
 
 #include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
@@ -158,8 +159,8 @@ namespace RocketCore::Graphics
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
-		//_spritePass
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
+		_spritePass = new SpritePass(_quadBuffer);
 		_blitPass = new BlitPass(_quadBuffer, _renderTargetView.Get());
 
 		/// DEBUG Obejct
@@ -168,7 +169,6 @@ namespace RocketCore::Graphics
 		HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
 		axis->SetMesh("axis");
 
-		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
 		_basicEffect->SetVertexColorEnabled(true);
@@ -220,25 +220,6 @@ namespace RocketCore::Graphics
 		_viewport.MaxDepth = 1.0f;
 
 		_deviceContext->RSSetViewports(1, &_viewport);
-	}
-
-	void RocketDX11::RenderText()
-	{
-		_spriteBatch->Begin();
-		for (auto textRenderer : ObjectManager::Instance().GetTextList())
-		{
-			textRenderer->Render(_spriteBatch);
-		}
-		_spriteBatch->End();
-	}
-
-	void RocketDX11::RenderTexture()
-	{
-		// 이미지(UI)를 그리기 위한 함수
-		for (auto imageRenderer : ObjectManager::Instance().GetImageList())
-		{
-			imageRenderer->Render(_spriteBatch);
-		}		
 	}
 
 	void RocketDX11::RenderLine()
@@ -299,8 +280,7 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
 
-		RenderTexture();
-		RenderText();	
+		_spritePass->Render();
 
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_blitPass->Render();

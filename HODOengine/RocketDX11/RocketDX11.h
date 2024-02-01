@@ -4,7 +4,6 @@
 #include <dxgi1_3.h>
 #include <wrl.h>
 #include <DirectXMath.h>
-#include <DXTK/SpriteBatch.h>
 #include <DXTK/PrimitiveBatch.h>
 #include <DXTK/VertexTypes.h>
 #include <DXTK/Effects.h>
@@ -34,6 +33,7 @@ namespace RocketCore::Graphics
 	class DeferredPass;
 	class DebugMeshPass;
 	class SkyboxPass;
+	class SpritePass;
 	class BlitPass;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
@@ -55,9 +55,8 @@ namespace RocketCore::Graphics
 		virtual void OnResize(int screenWidth, int screenHeight) override;
 
 	private:		
-		void RenderText();
 		void RenderLine();
-		void RenderTexture();
+		
 		void EndRender();
 
 		void CreateDepthStencilStates();
@@ -91,7 +90,6 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11DepthStencilState> _cubemapDepthStencilState;
 
 	private:
-		DirectX::SpriteBatch* _spriteBatch;
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
@@ -106,6 +104,7 @@ namespace RocketCore::Graphics
 		DeferredPass* _deferredPass;
 		DebugMeshPass* _debugMeshPass;
 		SkyboxPass* _skyboxPass;
+		SpritePass* _spritePass;
 		BlitPass* _blitPass;
 	};
 }

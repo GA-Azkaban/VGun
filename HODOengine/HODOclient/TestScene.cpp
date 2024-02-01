@@ -68,14 +68,14 @@ TestScene::TestScene()
 
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 
-	//auto playerPosText = API::CreateTextbox(_scene);
-	//playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
-	//playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
+	auto playerPosText = API::CreateTextbox(_scene);
+	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
+	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
 
-	//auto aimText = API::CreateTextbox(_scene);
-	//aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
-	//aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
-	//aimText->GetComponent<HDData::TextUI>()->SetText("");
+	/*auto aimText = API::CreateTextbox(_scene);
+	aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
+	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
+	aimText->GetComponent<HDData::TextUI>()->SetText("");*/
 
 	//auto hitText = API::CreateTextbox(_scene);
 	//hitText->GetTransform()->SetPosition(Vector3());
