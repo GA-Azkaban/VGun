@@ -91,7 +91,7 @@ TestScene::TestScene()
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
 	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
 	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
+	meshComp->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
 
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
@@ -103,9 +103,9 @@ TestScene::TestScene()
 	firstPersonObj->SetParentObject(playerTestHead);
 	firstPersonObj->GetTransform()->SetLocalPosition(Vector3{ 0.f, 0.f, 0.3f });
 	firstPersonObj->GetTransform()->Rotate(0.0f,180.0f,0.0f);
-	auto firstPersonMesh = firstPersonObj->AddComponent<HDData::SkinnedMeshRenderer>();
-	firstPersonMesh->LoadDiffuseMap("T_FP_CH_Camo_001_001_D.png");
-	firstPersonMesh->PlayAnimation("A_FP_PCH_AR_01_Idle_Pose.fbx", true);
+// 	auto firstPersonMesh = firstPersonObj->AddComponent<HDData::SkinnedMeshRenderer>();
+// 	firstPersonMesh->LoadDiffuseMap("T_FP_CH_Camo_001_001_D.png");
+// 	firstPersonMesh->PlayAnimation("A_FP_PCH_Aim_Walk_F.fbx", true);
 
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	playerMove->SetHeadCam(headCam);

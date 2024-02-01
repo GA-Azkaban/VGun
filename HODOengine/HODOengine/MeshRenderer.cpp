@@ -9,7 +9,7 @@ namespace HDData
 		: _staticMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
 	{
 		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
-		LoadDiffuseMap("Default.png");
+		LoadDiffuseMap("darkbrickdxt1.dds");
 	}
 
 	void MeshRenderer::LoadMesh(const std::string& fileName)
