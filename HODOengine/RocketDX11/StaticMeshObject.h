@@ -4,18 +4,14 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <vector>
-
-#include "Mesh.h"
-#include "VertexShader.h"
-#include "PixelShader.h"
 #include "Animation.h"
-
 #include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
 
 using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
+	class Mesh;
 	class Material;
 
 	class StaticMeshObject : public HDEngine::IStaticMesh
@@ -34,17 +30,11 @@ namespace RocketCore::Graphics
 	public:
 		void Render();
 
-	public:
-		//void SetModel(Model* model);
-		void SetVertexShader(VertexShader* shader);
-		void SetPixelShader(PixelShader* shader);
-		void SetRenderState(ID3D11RasterizerState* renderState) { m_renderState = renderState; }
+	public:		
+		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
 
 	private:
-		VertexShader* _vertexShader;
-		PixelShader* _pixelShader;
-
-		ComPtr<ID3D11RasterizerState> m_renderState;
+		ComPtr<ID3D11RasterizerState> m_rasterizerState;
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;

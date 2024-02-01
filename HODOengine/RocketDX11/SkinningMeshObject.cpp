@@ -1,4 +1,4 @@
-﻿#include "SkinningMeshObject.h"
+#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -17,8 +17,8 @@ namespace RocketCore::Graphics
 		: m_material(nullptr), m_isActive(true),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr)
 	{
-		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso"));
-		m_material->SetSamplerState(ResourceManager::Instance().GetSamplerState(ResourceManager::eSamplerState::DEFAULT));
+		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
+		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
 	}
 
@@ -36,8 +36,7 @@ namespace RocketCore::Graphics
 
 			if (!m_currentAnimation->isEnd)
 			{
-				//UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * m_world);
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * XMMatrixInverse(NULL, m_world));
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
 			}
 
 			if (m_currentAnimation->isLoop == false)
@@ -57,8 +56,8 @@ namespace RocketCore::Graphics
 
 		// 이거는 바깥쪽에서 한번만 하도록 한다면..?
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ResourceManager::Instance().GetDeviceContext()->RSSetState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::SOLID));
-
+		ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
+		
 		XMMATRIX invWorld = XMMatrixTranspose(m_world);
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
@@ -76,12 +75,16 @@ namespace RocketCore::Graphics
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();
 
-		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		pixelShader->SetFloat3("cameraPosition", cameraPos);
-
-		pixelShader->SetSamplerState("Sampler", m_material->GetSamplerState());
-		pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
-		pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
+		pixelShader->SetShaderResourceView("Albedo", m_material->GetTextureSRV());
+		if (m_material->GetNormalMapSRV())
+		{
+			pixelShader->SetInt("useNormalMap", 1);
+			pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
+		}
+		else
+		{
+			pixelShader->SetInt("useNormalMap", 0);
+		}
 
 		pixelShader->CopyAllBufferData();
 		pixelShader->SetShader();
@@ -278,8 +281,4 @@ namespace RocketCore::Graphics
 			m_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 	}
 
-	void SkinningMeshObject::SetSamplerState(ID3D11SamplerState* sampler)
-	{
-		m_material->SetSamplerState(sampler);
-	}
 }

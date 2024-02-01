@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <DXTK/PrimitiveBatch.h>
 #include <DXTK/SimpleMath.h>
 #include <DXTK/VertexTypes.h>

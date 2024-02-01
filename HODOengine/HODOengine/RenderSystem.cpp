@@ -49,7 +49,7 @@ namespace HDEngine
 	void RenderSystem::Update(float deltaTime)
 	{
 		UpdateRenderData();
-		_dx11Renderer->Update(deltaTime, true);
+		_dx11Renderer->Update(deltaTime);
 	}
 
 	void RenderSystem::DrawProcess()

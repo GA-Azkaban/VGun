@@ -3,6 +3,7 @@
 #include "RocketMacroDX11.h"
 #include "ResourceManager.h"
 #include "GraphicsStruct.h"
+#include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
 using namespace DirectX;
@@ -14,8 +15,7 @@ namespace RocketCore::Graphics
 		m_world{ XMMatrixIdentity() }
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("VertexShader.cso"), ResourceManager::Instance().GetPixelShader("PixelShader.cso"));
-		m_material->SetSamplerState(ResourceManager::Instance().GetSamplerState(ResourceManager::eSamplerState::DEFAULT));
-		m_renderState = ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::SOLID);
+		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 	}
 
 	StaticMeshObject::~StaticMeshObject()
@@ -31,16 +31,6 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::SetActive(bool isActive)
 	{
 		m_isActive = isActive;
-	}
-
-	void StaticMeshObject::SetVertexShader(VertexShader* shader)
-	{
-		_vertexShader = shader;
-	}
-
-	void StaticMeshObject::SetPixelShader(PixelShader* shader)
-	{
-		_pixelShader = shader;
 	}
 
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
@@ -67,7 +57,7 @@ namespace RocketCore::Graphics
 			return;
 
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ResourceManager::Instance().GetDeviceContext()->RSSetState(m_renderState.Get());
+		ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
 
 		XMMATRIX world = XMMatrixTranspose(m_world);
 
@@ -85,12 +75,16 @@ namespace RocketCore::Graphics
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();
 
-		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		pixelShader->SetFloat3("cameraPosition", cameraPos);
-
-		pixelShader->SetSamplerState("Sampler", m_material->GetSamplerState());
-		pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
-		pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
+		pixelShader->SetShaderResourceView("Albedo", m_material->GetTextureSRV());
+		if (m_material->GetNormalMapSRV())
+		{
+			pixelShader->SetInt("useNormalMap", 1);
+			pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
+		}
+		else
+		{
+			pixelShader->SetInt("useNormalMap", 0);
+		}
 
 		pixelShader->CopyAllBufferData();
 		pixelShader->SetShader();

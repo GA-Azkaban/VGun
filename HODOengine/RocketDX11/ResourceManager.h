@@ -27,6 +27,7 @@ namespace RocketCore::Graphics
 	class PixelShader;
 	class ImageRenderer;
 	class GeometryGenerator;
+	class SamplerState;
 
 	struct FileInfo
 	{
@@ -42,15 +43,11 @@ namespace RocketCore::Graphics
 		ResourceManager();
 
 	public:
-		enum class eRenderState
+		enum class eRasterizerState
 		{
 			SOLID,
 			WIREFRAME,
 			CUBEMAP,
-		};
-		enum class eSamplerState
-		{
-			DEFAULT,
 		};
 
 	public:
@@ -98,8 +95,7 @@ namespace RocketCore::Graphics
 	public:
 		ID3D11Device* GetDevice();
 		ID3D11DeviceContext* GetDeviceContext();
-		ID3D11RasterizerState* GetRenderState(eRenderState eState);
-		ID3D11SamplerState* GetSamplerState(eSamplerState eState);
+		ID3D11RasterizerState* GetRasterizerState(eRasterizerState eState);
 
 	public:
 		DirectX::DX11::GeometricPrimitive* GetCubePrimitive();
@@ -109,7 +105,7 @@ namespace RocketCore::Graphics
 
 	private:
 		void LoadShaders();
-		void CreateRenderStates();
+		void CreateRasterizerStates();
 		void CreateSamplerStates();
 		void CreatePrimitiveMeshes();
 
@@ -136,8 +132,7 @@ namespace RocketCore::Graphics
 
 		std::unordered_map<std::string, VertexShader*> _vertexShaders;
 		std::unordered_map<std::string, PixelShader*> _pixelShaders;
-		std::vector<ID3D11RasterizerState*> _renderStates;
-		std::vector<ID3D11SamplerState*> _samplerStates;
+		std::vector<ID3D11RasterizerState*> _rasterizerStates;
 
 		std::unordered_map<std::string, FileInfo> _loadedFileInfo; //<fileName, infos>
 		std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures;	//<fileName, texture>
@@ -145,5 +140,6 @@ namespace RocketCore::Graphics
 		std::string _fileName;
 
 		GeometryGenerator* _geometryGen;
+		SamplerState* _samplerState;
 	};
 }

@@ -20,10 +20,14 @@ TestScene::TestScene()
 	_scene = API::CreateScene("Test");
 	API::LoadScene(_scene);
 
-	API::LoadSceneFromData("ObjectInfo.json");
+	//API::LoadSceneFromData("ObjectInfo.json");
 
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+
+	auto skybox = API::CreateObject(_scene);
+	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
 
 // 	auto testBox1 = API::CreateObject(_scene);
 // 	testBox1->GetComponent<HDData::Transform>()->SetPosition(1.f, 0.f, 0.f);
@@ -52,13 +56,13 @@ TestScene::TestScene()
 
 
 	// floor as static plane
-	auto groundFloor = API::CreateObject(_scene);
-	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
+	//auto groundFloor = API::CreateObject(_scene);
+	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	//auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
-	// 플레이어 테스트
+	//// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -3.f, 3.f, 0.f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 0.f, 0.f });
 	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 
@@ -68,20 +72,20 @@ TestScene::TestScene()
 	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
 	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
 
-	auto aimText = API::CreateTextbox(_scene);
+	/*auto aimText = API::CreateTextbox(_scene);
 	aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
 	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
-	aimText->GetComponent<HDData::TextUI>()->SetText("");
+	aimText->GetComponent<HDData::TextUI>()->SetText("");*/
 
-	auto hitText = API::CreateTextbox(_scene);
-	hitText->GetTransform()->SetPosition(Vector3());
-	hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
-	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
+	//auto hitText = API::CreateTextbox(_scene);
+	//hitText->GetTransform()->SetPosition(Vector3());
+	//hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
+	//hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
 
-	auto centerText = API::CreateTextbox(_scene);
-	centerText->GetTransform()->SetPosition(Vector3(1000.0f,1000.0f,0.0f));
-	centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
-	centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
+	//auto centerText = API::CreateTextbox(_scene);
+	//centerText->GetTransform()->SetPosition(Vector3(1000.0f,1000.0f,0.0f));
+	//centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
+	//centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
 
 	auto playerMove = playerTest->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(_scene->GetMainCamera());
@@ -94,9 +98,9 @@ TestScene::TestScene()
 	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
 
-	auto playerTestHead = API::CreateObject(_scene, "playerHead");
-	playerTestHead->SetParentObject(playerTest);
-	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
+	//auto playerTestHead = API::CreateObject(_scene, "playerHead");
+	//playerTestHead->SetParentObject(playerTest);
+	//playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
@@ -132,15 +136,15 @@ TestScene::TestScene()
 	//button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	//button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	auto slider = API::CreateSlider(_scene, 50, "slider");
-	slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
-	slider->AddComponent<HDData::AudioSource>();
-
-	auto toggle = API::CreateToggle(_scene);
-
-	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
-	auto textInputBox = API::CreateTextInputBox(_scene);
-	textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
+	//auto slider = API::CreateSlider(_scene, 50, "slider");
+	//slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
+	//slider->AddComponent<HDData::AudioSource>();
+	//
+	//auto toggle = API::CreateToggle(_scene);
+	//
+	//toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
+	//auto textInputBox = API::CreateTextInputBox(_scene);
+	//textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
 
 	API::LoadScene(_scene);
 

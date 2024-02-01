@@ -233,6 +233,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="CubeMapRenderer.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DLL_Loader.h" />
     <ClInclude Include="DynamicBoxCollider.h" />
@@ -308,6 +309,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="CubeMapRenderer.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="DLL_Loader.cpp" />
     <ClCompile Include="DynamicBoxCollider.cpp" />

@@ -1,4 +1,4 @@
-#include "HelperObject.h"
+﻿#include "HelperObject.h"
 #include "ResourceManager.h"
 #include "Material.h"
 #include "Mesh.h"
@@ -15,7 +15,7 @@ namespace RocketCore::Graphics
 	{
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("DebugVertexShader.cso"), ResourceManager::Instance().GetPixelShader("DebugPixelShader.cso"));
-		m_RS = ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::WIREFRAME);
+		m_RS = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::WIREFRAME);
 	}
 
 	HelperObject::~HelperObject()
@@ -64,23 +64,16 @@ namespace RocketCore::Graphics
 	void HelperObject::SetWorldTM(const Matrix& worldTM)
 	{
 		m_world = worldTM;
-// 		for (int i = 0; i < 4; i++)
-// 		{
-// 			for (int j = 0; j < 4; j++)
-// 			{
-// 				m_world.r[i].m128_f32[j] = worldTM.element[i][j];
-// 			}
-// 		}
 	}
 
 	void HelperObject::SetFillModeSolid()
 	{
-		m_RS = ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::SOLID);
+		m_RS = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 	}
 
 	void HelperObject::SetFillModeWireframe()
 	{
-		m_RS = ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::WIREFRAME);
+		m_RS = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::WIREFRAME);
 	}
 
 	void HelperObject::SetColor(const Vector4& color)
