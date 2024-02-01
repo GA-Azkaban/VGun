@@ -79,9 +79,7 @@ namespace HDData
 		}
 
 		Matrix parentWorldTM = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM();
-		Matrix result;
-		result *= GetLocalTM();
-		result *= parentWorldTM;
+		Matrix result = DirectX::XMMatrixMultiply(GetLocalTM(), parentWorldTM);
 
 		return result;
 	}

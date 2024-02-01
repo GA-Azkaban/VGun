@@ -13,7 +13,10 @@ namespace HDData
 		_fovY(70.0f),
 		_nearWindowHeight(),
 		_farWindowHeight(),
-		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera())
+		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera()),
+		_isShakingCamera(false),
+		_shakeDuration(0.1f),
+		_distYOnShoot(0.0f)
 	{
 
 	}
@@ -123,5 +126,37 @@ namespace HDData
 	void Camera::SetAsMainCamera()
 	{
 		_graphicsCamera->SetAsMainCamera();
+	}
+
+	void Camera::ShakeCamera(float deltaTime)
+	{
+		if (!_isShakingCamera)
+		{
+			return;
+		}
+
+		float shakeIntensity = 0.03f;
+		float shakeFrequency = 90.0f;
+
+		if (_shakeDuration > 0.0f)
+		{
+			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeDuration);
+			GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
+
+			_shakeDuration -= deltaTime;
+		}
+		else
+		{
+			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			_shakeDuration = 0.1f;
+			_isShakingCamera = false;
+			_distYOnShoot = 0.0f;
+		}
+	}
+
+	void Camera::EnableCameraShake()
+	{
+		_isShakingCamera = true;
 	}
 }

@@ -21,8 +21,13 @@ namespace HDData
 		virtual float GetDepth() const abstract;
 
 
+	// setting
 	public:
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
+		void LockPlayerRotation();
+
+	// Move and Control
+	public:
 		void Move(Vector3 moveStep, float speed);
 		void Rotate(float rotationAmount);
 		void Jump();

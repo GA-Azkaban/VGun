@@ -14,10 +14,23 @@ void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
 	_physXRigid = rigid;
 }
 
+void HDData::DynamicCollider::LockPlayerRotation()
+{
+	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+}
+
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 {
 	//_physXRigid->wakeUp();
-	_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
+	physx::PxTransform playerPos = _physXRigid->getGlobalPose();
+
+	playerPos.p.x += moveStep.x;
+	playerPos.p.z += moveStep.z;
+
+	_physXRigid->setGlobalPose(playerPos);
+	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 }
 
 void HDData::DynamicCollider::Rotate(float rotationAmount)
@@ -33,7 +46,7 @@ void HDData::DynamicCollider::Rotate(float rotationAmount)
 
 void HDData::DynamicCollider::Jump()
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 8.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 16.0f, 0.0f), physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
@@ -48,6 +61,7 @@ void HDData::DynamicCollider::Stop()
 
 void HDData::DynamicCollider::AddForce(Vector3 direction, float force)
 {
+	direction.Normalize();
 	_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
 }
 

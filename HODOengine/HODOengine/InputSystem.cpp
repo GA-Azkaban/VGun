@@ -14,7 +14,7 @@ namespace HDEngine
 		_screenHeight = screenHeight;
 
 		_widthOffset = (screenWidth - 1920) / 2;
-		_heightOffset = 0;
+		_heightOffset = GetSystemMetrics(SM_CYCAPTION) + 8;	// window title bar height. 24.1.31.AJY
 
 		_wheelMax = 500;
 		_wheelMin = -500;
@@ -57,13 +57,16 @@ namespace HDEngine
 		_mouseWheel += _DImouseState.lZ;
 
 		// 윈도우 벗어나는 경우 좌표값 보정
-		if (_mousePos.x < 0 || _mousePos.x > _screenWidth || _mousePos.y < 0 || _mousePos.y > _screenHeight)
+		//if (_mousePos.x < 0 || _mousePos.x > _screenWidth || _mousePos.y < 0 || _mousePos.y > _screenHeight)
+		//{
+		//	_mousePos.x = 0;
+		//	_mousePos.y = 0;
+		//}
+
+		if (GetKeyDown(DIK_P))
 		{
-			_mousePos.x = 0;
-			_mousePos.y = 0;
+			_isFirstPersonPerspective = !_isFirstPersonPerspective;
 		}
-
-
 	}
 
 	void InputSystem::Finalize()
@@ -210,7 +213,10 @@ namespace HDEngine
 		_prevMousePos = _mousePos;
 		_isKeyPressed = false;
 
-		//RecursiveMouse();
+		if (_isFirstPersonPerspective)
+		{
+			RecursiveMouse();
+		}
 	}
 
 	void InputSystem::RecursiveMouse()
@@ -218,55 +224,27 @@ namespace HDEngine
 		RECT windowRect;
 		GetWindowRect(_hWnd, &windowRect);
 
-		POINT mousePoint;
-
-
-		LONG x = 0;
-		LONG y = 0;
-
-		/// 마우스 위치 이동 방식
-		if (windowRect.right - 1 <= _mousePos.x)
+		/// when cursor get out of the window
+		if (_mousePos.x >= _screenWidth)
 		{
-			x = windowRect.left + 2;
-			y = _mousePos.y;
-			mousePoint = { x, y };
-			ScreenToClient(_hWnd, &mousePoint);
-			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
-			SetCursorPos(mousePoint.x, mousePoint.y);
+			_prevMousePos = { 0, _mousePos.y };
+			SetCursorPos(windowRect.left + 9, _mousePos.y + windowRect.top + _heightOffset);
 		}
-		else if (_mousePos.x <= windowRect.left + 1)
+		else if (_mousePos.x <= 0)
 		{
-			x = windowRect.right - 2;
-			y = _mousePos.y;
-			mousePoint = { x, y };
-			ScreenToClient(_hWnd, &mousePoint);
-			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
-			SetCursorPos(mousePoint.x, mousePoint.y);
+			_prevMousePos = { _screenWidth, _mousePos.y };
+			SetCursorPos(windowRect.right - 9, _mousePos.y + windowRect.top + _heightOffset);
 		}
-		if (windowRect.bottom - 1 <= _mousePos.y)
+		if (_mousePos.y >= _screenHeight)
 		{
-			x = _mousePos.x;
-			y = windowRect.top + 2;
-			mousePoint = { x, y };
-			ScreenToClient(_hWnd, &mousePoint);
-			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
-			SetCursorPos(mousePoint.x, mousePoint.y);
+			_prevMousePos = { _mousePos.x, _heightOffset - 1};
+			SetCursorPos(_mousePos.x + windowRect.left + 8, windowRect.top + _heightOffset + 1);
 		}
-		else if (_mousePos.y <= windowRect.top + 1)
+		else if (_mousePos.y <= 0)
 		{
-			x = _mousePos.x;
-			y = windowRect.bottom - 2;
-			mousePoint = { x, y };
-			ScreenToClient(_hWnd, &mousePoint);
-			_prevMousePos = { mousePoint.x - _widthOffset, mousePoint.y - _heightOffset };
-			//mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x * 65535 / GetSystemMetrics(SM_CXSCREEN), y * 65535 / GetSystemMetrics(SM_CYSCREEN), 0, 0);
-			SetCursorPos(mousePoint.x, mousePoint.y);
+			_prevMousePos = { _mousePos.x, _screenHeight };
+			SetCursorPos(_mousePos.x + windowRect.left + 8, windowRect.bottom - 9);
 		}
-
-		//SetCursorPos(GetSystemMetrics(SM_CXSCREEN) / 2.0f, GetSystemMetrics(SM_CYSCREEN) / 2.0f);
 	}
 }
 
