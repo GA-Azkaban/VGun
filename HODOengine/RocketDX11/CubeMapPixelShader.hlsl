@@ -1,6 +1,6 @@
+#include "Sampler.hlsli"
 
 TextureCube Texture	: register(t0);
-SamplerState Sampler	: register(s0);
 
 struct VertexToPixel
 {
@@ -10,5 +10,5 @@ struct VertexToPixel
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	return Texture.Sample(Sampler, input.worldPos);
+	return Texture.Sample(LinearSampler, input.worldPos);
 }

@@ -17,8 +17,6 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
-	class VertexShader;
-	class PixelShader;
 
 	class SkinningMeshObject : public HDEngine::ISkinnedMesh
 	{
@@ -39,8 +37,8 @@ namespace RocketCore::Graphics
 
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);
-
-		void SetSamplerState(ID3D11SamplerState* sampler);
+	
+		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
 
 	private:
 		void UpdateAnimation(float deltaTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
@@ -52,6 +50,8 @@ namespace RocketCore::Graphics
 		std::vector<Mesh*> m_meshes;
 		Material* m_material;
 		bool m_isActive;
+
+		ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
 		// Animation
 		std::unordered_map<std::string, Animation*> m_animations;

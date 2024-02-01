@@ -1,37 +1,14 @@
+#include "Sampler.hlsli"
 
-struct DirectionalLight
+cbuffer externalData : register(b0)
 {
-	float4 Color;
-	float3 Direction;
-};
-
-struct PointLight
-{
-	float4 Color;
-	float4 Position;
-};
-
-struct SpotLight
-{
-	float4 Color;
-	float4 Position;
-	float3 Direction;
-	float SpotPower;
-};
-
-cbuffer lightData : register(b0)
-{
-	DirectionalLight dirLight;
-	PointLight pointLight[4];
-	SpotLight spotLight[2];
-
-	float3 cameraPosition;
+	bool useNormalMap;
 }
 
-// External texture-related data
-Texture2D Texture		: register(t0);
-Texture2D NormalMap		: register(t1);
-SamplerState Sampler	: register(s0);
+Texture2D Albedo : register(t0);
+Texture2D NormalMap : register(t1);
+//Texture2D OcclusionRoughnessMetal : register(t2);
+//Texture2D Emissive : register(t3);
 
 struct VertexToPixel
 {
@@ -42,59 +19,51 @@ struct VertexToPixel
 	float2 uv			: TEXCOORD;
 };
 
-float4 main(VertexToPixel input) : SV_TARGET
+struct PSOutput
 {
+	float4 diffuse : SV_TARGET0;
+	float4 normal : SV_TARGET1;
+	//float4 metalRoughOcclusion : SV_TARGET3;
+	//float4 emissive : SV_TARGET4;
+};
+
+PSOutput main(VertexToPixel input)
+{
+	PSOutput output;
+
 	input.normal = normalize(input.normal);
 	input.tangent = normalize(input.tangent);
 
 	// Read and unpack normal from map
-	//float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
-	float3 normalFromMap = input.normal;
+	if (useNormalMap)
+	{
+		float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
 
-	// Transform from tangent to world space
-	float3 N = input.normal;
-	float3 T = normalize(input.tangent - N * dot(input.tangent, N));
-	float3 B = cross(T, N);
+		// Transform from tangent to world space
+		float3 N = input.normal;
+		float3 T = normalize(input.tangent - N * dot(input.tangent, N));
+		float3 B = cross(T, N);
 
-	float3x3 TBN = float3x3(T, B, N);
-	input.normal = normalize(mul(normalFromMap, TBN));
+		float3x3 TBN = float3x3(T, B, N);
+		input.normal = normalize(mul(normalFromMap, TBN));
+	}
 
 	// Sample the texture
-	float4 textureColor = Texture.Sample(Sampler, input.uv);
+	float4 textureColor = Albedo.Sample(LinearSampler, input.uv);
 
-	float3 toCamera = normalize(cameraPosition - input.worldPos);
+	//float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearSampler, input.uv).rgb;
+	//occlusion = occRoughMetal.r;
+	//roughness = occRoughMetal.g;
+	//metallic = occRoughMetal.b;
 
-	// Directional light calculation
-	float dirLightAmount = saturate(dot(input.normal, -normalize(dirLight.Direction)));
-	//float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
-	float3 totalDirLight = dirLight.Color * dirLightAmount;
+	//float4 emissive = Emissive.Sample(LinearSampler, input.uv);
 
-	// Point light calculation
-	float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < 4; ++i)
-	{
-		float dirToPointLight = normalize(pointLight[i].Position - input.worldPos);
-		float pointLightAmount = saturate(dot(input.normal, dirToPointLight));
-		float3 refl = reflect(-dirToPointLight, input.normal);
-		float spec = pow(max(dot(refl, toCamera), 0), 32);
-		totalPointLight += pointLight[i].Color * pointLightAmount * textureColor + spec;
-	}
+	output.diffuse = textureColor;
+	output.normal = float4(input.normal, 1.0f);
+	//output.metalRoughOcclusion.r = metallic;
+	//output.metalRoughOcclusion.g = roughness;
+	//output.metalRoughOcclusion.b = occlusion;
+	//output.emissive = emissive;
 
-	// Spot light calculation
-	float3 totalSpotLight = float3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < 2; ++i)
-	{
-		float dirToSpotLight = normalize(spotLight[i].Position - input.worldPos);
-		float angleFromCenter = max(dot(dirToSpotLight, spotLight[i].Direction), 0.0f);
-		float spotAmount = pow(angleFromCenter, spotLight[i].SpotPower);
-		totalSpotLight += (spotAmount * spotLight[i].Color * textureColor);
-	}
-
-	//float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
-	//float3 totalLight = totalDirLight;
-	float4 totalLight = float4(totalDirLight, 1.0f) + textureColor;
-
-	//return float4(totalLight, 1.0f);
-	return totalLight;
-	//return textureColor;
+	return output;
 }

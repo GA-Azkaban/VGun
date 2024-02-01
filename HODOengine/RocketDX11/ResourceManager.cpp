@@ -11,6 +11,7 @@
 #include "WICTextureLoader.h"
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
+#include "SamplerState.h"
 
 #define MODELS_DIRECTORY_NAME "Resources/Models/"
 #define TEXTURES_DIRECTORY_NAME "Resources/Textures/"
@@ -33,7 +34,7 @@ namespace RocketCore::Graphics
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
 
 		LoadShaders();
-		CreateRenderStates();
+		CreateRasterizerStates();
 		CreateSamplerStates();
 		CreatePrimitiveMeshes();
 
@@ -172,7 +173,7 @@ namespace RocketCore::Graphics
 		return _loadedFileInfo[fileName].loadedAnimation;
 	}
 
-	void ResourceManager::CreateRenderStates()
+	void ResourceManager::CreateRasterizerStates()
 	{
 		// Render State 중 Rasterizer State
 		D3D11_RASTERIZER_DESC solidDesc;
@@ -183,7 +184,7 @@ namespace RocketCore::Graphics
 		solidDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* solid;
 		HR(_device->CreateRasterizerState(&solidDesc, &solid));
-		_renderStates.emplace_back(solid);
+		_rasterizerStates.emplace_back(solid);
 
 		D3D11_RASTERIZER_DESC wireframeDesc;
 		ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -193,7 +194,7 @@ namespace RocketCore::Graphics
 		wireframeDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* wireframe;
 		HR(_device->CreateRasterizerState(&wireframeDesc, &wireframe));
-		_renderStates.emplace_back(wireframe);
+		_rasterizerStates.emplace_back(wireframe);
 
 		D3D11_RASTERIZER_DESC cubeMapDesc;
 		ZeroMemory(&cubeMapDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -203,33 +204,18 @@ namespace RocketCore::Graphics
 		cubeMapDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* cubemapRS;
 		HR(_device->CreateRasterizerState(&cubeMapDesc, &cubemapRS));
-		_renderStates.emplace_back(cubemapRS);
+		_rasterizerStates.emplace_back(cubemapRS);
 	}
 
-	ID3D11RasterizerState* ResourceManager::GetRenderState(eRenderState eState)
+	ID3D11RasterizerState* ResourceManager::GetRasterizerState(eRasterizerState eState)
 	{
-		return _renderStates[static_cast<int>(eState)];
+		return _rasterizerStates[static_cast<int>(eState)];
 	}
 
 	void ResourceManager::CreateSamplerStates()
 	{
-		D3D11_SAMPLER_DESC sampDesc;
-		ZeroMemory(&sampDesc, sizeof(sampDesc));
-		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		sampDesc.MinLOD = 0;
-		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-		ID3D11SamplerState* textureSampler;
-		_device->CreateSamplerState(&sampDesc, &textureSampler);
-		_samplerStates.push_back(textureSampler);
-	}
-
-	ID3D11SamplerState* ResourceManager::GetSamplerState(eSamplerState eState)
-	{
-		return _samplerStates[static_cast<int>(eState)];
+		_samplerState = new SamplerState();
+		_samplerState->CreateSamplerStates(_device.Get(), _deviceContext.Get());
 	}
 
 	void ResourceManager::LoadShaders()

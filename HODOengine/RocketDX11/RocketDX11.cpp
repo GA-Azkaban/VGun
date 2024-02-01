@@ -25,6 +25,13 @@
 
 #include "LightStruct.h"
 
+#include "DeferredBuffers.h"
+#include "QuadBuffer.h"
+#include "GBufferPass.h"
+#include "DeferredPass.h"
+#include "SkyboxPass.h"
+#include "BlitPass.h"
+
 #include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
 
 using namespace DirectX;
@@ -52,9 +59,7 @@ namespace RocketCore::Graphics
 		: _hWnd(), _screenWidth(), _screenHeight(), _vSyncEnabled(),
 		_device(), _deviceContext(),
 		_featureLevel(),_m4xMsaaQuality(),
-		_swapChain(), _backBuffer(),
-		_renderTargetView(), _depthStencilBuffer(), _depthStencilView(),
-		_viewport(),
+		_swapChain(), _renderTargetView(), _viewport(),
 		_resourceManager(ResourceManager::Instance())
 	{
 
@@ -67,7 +72,6 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Initialize(void* hWnd, int screenWidth, int screenHeight)
 	{
-		// 매크로로 변경하려고 작업중
 		HRESULT hr = S_OK;
 
 		_hWnd = static_cast<HWND>(hWnd);
@@ -80,16 +84,6 @@ namespace RocketCore::Graphics
 		deviceBuilder.SetLevelHolder(&_featureLevel);
 		deviceBuilder.SetDeviceContext(_deviceContext.GetAddressOf());
 		HR(deviceBuilder.Build());
-
-		/// 아래 if문은 용책에서의 코드
-		/// 버전이 11_0이 아닐때 false를 리턴한다.
-		/// 내 코드에서는 11_1을 사용하는데 이래도 되는건가?!
-		/// 23.04.07 강석원 인재원
-	// 	if (_featureLevel != D3D_FEATURE_LEVEL_11_0)
-	// 	{
-	// 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
-	// 		return false;
-	// 	}
 
 		/// 멀티 샘플링 품질레벨 체크
 		/// Direct11 에서는 항상 지원되므로, 반환된 품질 수준 값은 반드시 0보다 커야 한다.
@@ -115,13 +109,6 @@ namespace RocketCore::Graphics
 		//desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;	// MSDN 그대로 따라 친 것.
 		swapChainDesc.Flags = 0;
 
-		/// DXGIDevice로 DXGIAdapter를 만들고
-		/// DXGIAdapter로 DXGIFactory를 만들고
-		/// DXGIFactory로 SwapChain을 만든다!
-		/// 위의 swapchain 명세를 이용해 명세에 적힌대로 swapchain을 만드는 것!
-		/// 
-		/// 23.04.10 강석원 인재원
-		// Create the DXGI device object to use in other factories, such as Direct2D.
 		Microsoft::WRL::ComPtr<IDXGIDevice3> dxgiDevice;
 		_device.As(&dxgiDevice);
 
@@ -143,20 +130,9 @@ namespace RocketCore::Graphics
 			);
 		}
 
-		hr = _swapChain->GetBuffer(
-			0,
-			__uuidof(ID3D11Texture2D),
-			(void**)&_backBuffer);
-
-		hr = _device->CreateRenderTargetView(
-			_backBuffer.Get(),
-			nullptr,
-			_renderTargetView.GetAddressOf()
-		);
-
-		D3D11_TEXTURE2D_DESC backBufferDesc;
-
-		_backBuffer->GetDesc(&backBufferDesc);
+		ID3D11Texture2D* backBuffer;
+		hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
+		hr = _device->CreateRenderTargetView(backBuffer, nullptr, _renderTargetView.GetAddressOf());
 
 		CD3D11_TEXTURE2D_DESC depthStencilDesc(
 			DXGI_FORMAT_D24_UNORM_S8_UINT,
@@ -177,12 +153,6 @@ namespace RocketCore::Graphics
 		);
 
 		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-
-		// 	hr = d3dDevice_->CreateDepthStencilView(
-		// 		depthStencilBuffer_.Get(),
-		// 		&depthStencilViewDesc,
-		// 		&depthStencilView_
-		// 	);
 
 		hr = _device->CreateDepthStencilView(
 			_depthStencilBuffer.Get(),
@@ -213,22 +183,19 @@ namespace RocketCore::Graphics
 		CreateDepthStencilStates();
 		SetLights();
 
-		/*_axis = new Axis();
-		_axis->Initialize(_device.Get());
+		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
+		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
 
-		_grid = new Grid();
-		_grid->Initialize(_device.Get());*/
+		_GBufferPass = new GBufferPass(_deferredBuffers);
+		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
+		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
+		_blitPass = new BlitPass(_quadBuffer);
 
 		/// DEBUG Obejct
 		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
 		grid->SetMesh("grid");
 		HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
 		axis->SetMesh("axis");
-
-		/// CUBEMAP
-		_cubemap = new Cubemap();
-		_cubemap->LoadMesh("skySphere");
-		_cubemap->LoadCubeMapTexture("sunsetcube1024.dds");
 
 		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
@@ -291,10 +258,8 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void RocketDX11::RenderStaticMesh()
+	/*void RocketDX11::RenderStaticMesh()
 	{
-		Camera* mainCam = Camera::GetMainCamera();
-
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
 			staticMeshObj->Render();
@@ -307,7 +272,7 @@ namespace RocketCore::Graphics
 		{
 			skinningMeshObj->Render();
 		}
-	}
+	}*/
 
 	void RocketDX11::RenderText()
 	{
@@ -365,10 +330,8 @@ namespace RocketCore::Graphics
 		return;
 	}
 
-	void RocketDX11::Update(float deltaTime, bool isDebug)
+	void RocketDX11::Update(float deltaTime)
 	{
-		_isDebug = isDebug;
-
 		Camera::GetMainCamera()->UpdateViewMatrix();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
@@ -379,32 +342,31 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Render()
 	{
-		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
+		SetDepthStencilState(_depthStencilStateEnable.Get());
+		_GBufferPass->Render();
+		_deferredPass->Render();
 
-		EnableZBuffering();
+		//RenderHelperObject();
+		//RenderStaticMesh();
+		//RenderSkinningMesh();
 
-		RenderHelperObject();
-		RenderStaticMesh();
-		RenderSkinningMesh();
-
-		SetCubemapDSS();
-		_cubemap->Render();
+		SetDepthStencilState(_cubemapDepthStencilState.Get());
+		_skyboxPass->Render();
 
 		RenderTexture();
 		RenderLine();
-		RenderText();
-		if (_isDebug)
-		{
-			RenderDebug();
-		}
+		RenderText();		
+		RenderDebug();		
+
+		SetDepthStencilState(_depthStencilStateDisable.Get());
+		_blitPass->Render();
+
 		EndRender();
 	}
 
 	void RocketDX11::Finalize()
 	{
-		//delete _grid;
-		//delete _axis;
-		delete _cubemap;
+		
 	}
 
 	void RocketDX11::CreateDepthStencilStates()
@@ -416,22 +378,46 @@ namespace RocketCore::Graphics
 		enableDepthStencilDescription.DepthEnable = true;
 		enableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		enableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
-		enableDepthStencilDescription.StencilEnable = true;
-		enableDepthStencilDescription.StencilReadMask = 0xFF;
-		enableDepthStencilDescription.StencilWriteMask = 0xFF;
-		// Stencil operations if pixel is front-facing.
-		enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-		// Stencil operations if pixel is back-facing.
-		enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		enableDepthStencilDescription.StencilEnable = false;
+		//enableDepthStencilDescription.StencilReadMask = 0xFF;
+		//enableDepthStencilDescription.StencilWriteMask = 0xFF;
+		//// Stencil operations if pixel is front-facing.
+		//enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		//enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		//// Stencil operations if pixel is back-facing.
+		//enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		//enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 		// Create the depth stencil state for enabling Z buffering
-		_device->CreateDepthStencilState(&enableDepthStencilDescription, &_normalDepthStencilState);
+		_device->CreateDepthStencilState(&enableDepthStencilDescription, &_depthStencilStateEnable);
+
+		// Initialize the depth stencil states
+		D3D11_DEPTH_STENCIL_DESC disableDepthStencilDescription;
+		ZeroMemory(&disableDepthStencilDescription, sizeof(disableDepthStencilDescription));
+
+		disableDepthStencilDescription.DepthEnable = false;
+		disableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		disableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
+		disableDepthStencilDescription.StencilEnable = true;
+		disableDepthStencilDescription.StencilReadMask = 0xFF;
+		disableDepthStencilDescription.StencilWriteMask = 0xFF;
+		// Stencil operations if pixel is front-facing.
+		disableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		disableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		// Stencil operations if pixel is back-facing.
+		disableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		disableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		// Create the depth stencil state for disabling Z buffering
+		_device->CreateDepthStencilState(&disableDepthStencilDescription, &_depthStencilStateDisable);
 
 		// Initialize the depth stencil states
 		D3D11_DEPTH_STENCIL_DESC cubemapDepthStencilDescription;
@@ -458,14 +444,9 @@ namespace RocketCore::Graphics
 		_device->CreateDepthStencilState(&cubemapDepthStencilDescription, &_cubemapDepthStencilState);
 	}
 
-	void RocketDX11::EnableZBuffering()
+	void RocketDX11::SetDepthStencilState(ID3D11DepthStencilState* dss)
 	{
-		_deviceContext->OMSetDepthStencilState(_normalDepthStencilState.Get(), 1);
-	}
-
-	void RocketDX11::SetCubemapDSS()
-	{
-		_deviceContext->OMSetDepthStencilState(_cubemapDepthStencilState.Get(), 1);
+		_deviceContext->OMSetDepthStencilState(dss, 1);
 	}
 
 	void RocketDX11::SetLights()
@@ -475,7 +456,6 @@ namespace RocketCore::Graphics
 		dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso")->SetDirectionalLight("dirLight", *dirLight);
 
 		PointLight pointLight[4];
 		pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
@@ -488,7 +468,6 @@ namespace RocketCore::Graphics
 		pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetPointLight("pointLight", pointLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso")->SetPointLight("pointLight", pointLight);
 
 		SpotLight spotLight[2];
 		spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
@@ -501,11 +480,11 @@ namespace RocketCore::Graphics
 		spotLight[1].SpotPower = 1.0f;
 		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
 		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader_NoNormalMap.cso")->SetSpotLight("spotLight", spotLight);
 	}
 
 	void RocketDX11::RenderDebug()
 	{
+#ifdef _DEBUG
 		Camera* cam = Camera::GetMainCamera();
 
 		for (auto e : ObjectManager::Instance().GetCubePrimitiveList())
@@ -542,5 +521,5 @@ namespace RocketCore::Graphics
 		}
 		_spriteBatch->End();
 	}
-
+#endif
 }

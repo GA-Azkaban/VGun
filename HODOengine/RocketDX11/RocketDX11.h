@@ -28,7 +28,12 @@ namespace RocketCore::Graphics
 	class PixelShader;
 	class ResourceManager;
 	class ImageRenderer;
-	class Cubemap;
+	class DeferredBuffers;
+	class QuadBuffer;
+	class GBufferPass;
+	class DeferredPass;
+	class SkyboxPass;
+	class BlitPass;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
 	{
@@ -40,7 +45,7 @@ namespace RocketCore::Graphics
 		//그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
-		virtual void Update(float deltaTime, bool isDebug = false) override;
+		virtual void Update(float deltaTime) override;
 
 		virtual void Render() override;
 
@@ -50,8 +55,8 @@ namespace RocketCore::Graphics
 		void BeginRender();
 		void BeginRender(float r, float g, float b, float a);
 		void RenderHelperObject();
-		void RenderStaticMesh();
-		void RenderSkinningMesh();
+		/*void RenderStaticMesh();
+		void RenderSkinningMesh();*/
 		void RenderText();
 		void RenderLine();
 		void RenderTexture();
@@ -59,9 +64,8 @@ namespace RocketCore::Graphics
 		void EndRender();
 
 		void CreateDepthStencilStates();
-		void EnableZBuffering();
-		void SetCubemapDSS();
 
+		void SetDepthStencilState(ID3D11DepthStencilState* dss);
 		// 임시
 		void SetLights();
 
@@ -81,32 +85,29 @@ namespace RocketCore::Graphics
 		UINT _m4xMsaaQuality;
 
 		ComPtr<IDXGISwapChain> _swapChain;
-		ComPtr<ID3D11Texture2D> _backBuffer;
 		ComPtr<ID3D11RenderTargetView> _renderTargetView;
-		ComPtr<ID3D11Texture2D> _depthStencilBuffer;
-		ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		D3D11_VIEWPORT _viewport;
 
 	private:
-		// 폰트때문에 뎁스스탠실 스테이트가 강제가 됐다. 
-		ComPtr<ID3D11DepthStencilState> _normalDepthStencilState;
-		// 큐브맵 뎁스스텐실 스테이트
+		ComPtr<ID3D11DepthStencilState> _depthStencilStateEnable;
+		ComPtr<ID3D11DepthStencilState> _depthStencilStateDisable;
 		ComPtr<ID3D11DepthStencilState> _cubemapDepthStencilState;
 
 	private:
-		//Grid* _grid;
-		//Axis* _axis;
 		DirectX::SpriteBatch* _spriteBatch;
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
 		std::unique_ptr<DirectX::BasicEffect> _basicEffect;
 		ComPtr<ID3D11InputLayout> _lineInputLayout;
 
-		Cubemap* _cubemap;
-
-	private:
-		bool _isDebug = false;
-
 	private:
 		ResourceManager& _resourceManager;
+
+	private:
+		DeferredBuffers* _deferredBuffers;
+		QuadBuffer* _quadBuffer;
+		GBufferPass* _GBufferPass;
+		DeferredPass* _deferredPass;
+		SkyboxPass* _skyboxPass;
+		BlitPass* _blitPass;
 	};
 }

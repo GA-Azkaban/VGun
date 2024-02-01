@@ -37,8 +37,14 @@
     <FxCompile Include="DebugPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\DebugMesh</Filter>
     </FxCompile>
-    <FxCompile Include="SkeletonPixelShader_NoNormalMap.hlsl">
-      <Filter>Resource\Shader\HLSL\SkeletonMesh</Filter>
+    <FxCompile Include="FullScreenQuadVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Quad</Filter>
+    </FxCompile>
+    <FxCompile Include="FullScreenQuadPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Quad</Filter>
+    </FxCompile>
+    <FxCompile Include="BlitPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Blit</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +119,24 @@
     </ClCompile>
     <ClCompile Include="CubeMesh.cpp">
       <Filter>Resource\Resource3D\Primitive\Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerState.cpp">
+      <Filter>Resource\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="GBufferPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\GBufferPass</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredBuffers.cpp">
+      <Filter>DeferredRendering\DeferredBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadBuffer.cpp">
+      <Filter>DeferredRendering\QuadBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\DeferredPass</Filter>
+    </ClCompile>
+    <ClCompile Include="BlitPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\BlitPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -220,6 +244,24 @@
     </ClInclude>
     <ClInclude Include="CubeMesh.h">
       <Filter>Resource\Resource3D\Primitive\Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>Resource\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="GBufferPass.h">
+      <Filter>DeferredRendering\RenderPasses\GBufferPass</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredBuffers.h">
+      <Filter>DeferredRendering\DeferredBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadBuffer.h">
+      <Filter>DeferredRendering\QuadBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredPass.h">
+      <Filter>DeferredRendering\RenderPasses\DeferredPass</Filter>
+    </ClInclude>
+    <ClInclude Include="BlitPass.h">
+      <Filter>DeferredRendering\RenderPasses\BlitPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,5 +391,52 @@
     <Filter Include="Resource\Resource3D\Primitive\Deprecated">
       <UniqueIdentifier>{f4ba69ef-2cf5-47da-9cdc-4ffccc14b430}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\SamplerState">
+      <UniqueIdentifier>{d7b6e47f-d878-48ae-846c-3f969fd0dd9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Include">
+      <UniqueIdentifier>{30d25b20-4a36-4427-8418-c29a9081b387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering">
+      <UniqueIdentifier>{a633a54d-e5e6-48d6-8777-515abda28ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\DeferredBuffers">
+      <UniqueIdentifier>{52c89a44-d55e-4772-bd4a-2ffc392686ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses">
+      <UniqueIdentifier>{d0b0fdc2-11bc-4709-a96e-819237152dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\BlitPass">
+      <UniqueIdentifier>{d47a6d75-f934-4319-91d2-fa2da18ca9a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\CubeMapPass">
+      <UniqueIdentifier>{bfa3219e-18fc-4d99-9559-2e1d9e0ebe40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\DeferredPass">
+      <UniqueIdentifier>{6a970d8f-0039-4675-a714-deb48e9e482f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\GBufferPass">
+      <UniqueIdentifier>{b732ccb3-77b3-4460-b825-b275f997baca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\SSAOPass">
+      <UniqueIdentifier>{5a191154-60fd-4586-b9e7-e593bee1daee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\QuadBuffer">
+      <UniqueIdentifier>{bf84c0e8-ad27-43da-8e9f-72f35429f3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Quad">
+      <UniqueIdentifier>{f8f3c865-12a9-496e-92fb-de8ed8184ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Blit">
+      <UniqueIdentifier>{af0681c4-fccc-4e74-b680-bf064743ad4b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sampler.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="Lighting.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
   </ItemGroup>
 </Project>
