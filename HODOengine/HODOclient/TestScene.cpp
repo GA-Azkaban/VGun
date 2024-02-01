@@ -99,11 +99,19 @@ TestScene::TestScene()
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
+	auto firstPersonObj = API::CreateObject(_scene, "firstPerson");
+	firstPersonObj->SetParentObject(playerTestHead);
+	firstPersonObj->GetTransform()->SetLocalPosition(Vector3{ 0.f, 0.f, 0.3f });
+	firstPersonObj->GetTransform()->Rotate(0.0f,180.0f,0.0f);
+	auto firstPersonMesh = firstPersonObj->AddComponent<HDData::SkinnedMeshRenderer>();
+	firstPersonMesh->LoadDiffuseMap("T_FP_CH_Camo_001_001_D.png");
+	firstPersonMesh->PlayAnimation("A_FP_PCH_AR_01_Idle_Pose.fbx", true);
+
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	playerMove->SetHeadCam(headCam);
 
 	auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
+	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-3.f, 3.f, 1.f);
 	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 
 	//textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });

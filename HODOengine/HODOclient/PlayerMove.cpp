@@ -201,10 +201,10 @@ void PlayerMove::ShootGun()
 
 	HDData::Collider* hitCollider = nullptr;
 
-	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
+	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition();// +GetTransform()->GetForward() * 2.0f;
 	Vector3 hitPoint = {1.0f, 1.0f, 1.0f};
 
-	hitCollider = API::ShootRayHitPoint(rayOrigin, GetTransform()->GetForward(), hitPoint);
+	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 	
 	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
 	

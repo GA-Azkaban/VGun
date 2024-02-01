@@ -135,7 +135,7 @@ namespace HDData
 			return;
 		}
 
-		float shakeIntensity = 0.03f;
+		float shakeIntensity = 0.1f;
 		float shakeFrequency = 90.0f;
 
 		if (_shakeDuration > 0.0f)
