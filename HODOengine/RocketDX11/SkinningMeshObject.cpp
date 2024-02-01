@@ -31,12 +31,12 @@ namespace RocketCore::Graphics
 	{
 		if (m_currentAnimation != nullptr)
 		{
-			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;		
+			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
 			m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
 
 			if (!m_currentAnimation->isEnd)
 			{
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * m_world);
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, XMMatrixInverse(NULL, m_world));
 			}
 
 			if (m_currentAnimation->isLoop == false)
@@ -57,7 +57,7 @@ namespace RocketCore::Graphics
 		// 이거는 바깥쪽에서 한번만 하도록 한다면..?
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		ResourceManager::Instance().GetDeviceContext()->RSSetState(ResourceManager::Instance().GetRenderState(ResourceManager::eRenderState::SOLID));
-		
+
 		XMMATRIX invWorld = XMMatrixTranspose(m_world);
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();

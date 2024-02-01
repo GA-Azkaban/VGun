@@ -63,7 +63,10 @@ namespace HDEngine
 		//	_mousePos.y = 0;
 		//}
 
-
+		if (GetKeyDown(DIK_P))
+		{
+			_isFirstPersonPerspective = !_isFirstPersonPerspective;
+		}
 	}
 
 	void InputSystem::Finalize()
@@ -210,7 +213,10 @@ namespace HDEngine
 		_prevMousePos = _mousePos;
 		_isKeyPressed = false;
 
-		RecursiveMouse();
+		if (_isFirstPersonPerspective)
+		{
+			RecursiveMouse();
+		}
 	}
 
 	void InputSystem::RecursiveMouse()

@@ -31,17 +31,8 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
-		_playerMaterial = _physics->createMaterial(0.2f, 0.2f, 0.0f);
-
-		//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f), *_material);
-		//physx::PxTransform localTm(physx::PxVec3(2.0f, 20.0f, 2.0f));
-		//physx::PxRigidDynamic* _dynamic = _physics->createRigidDynamic(localTm);
-		//_dynamic->attachShape(*shape);
-		//_dynamic->setAngularDamping(0.5f);
-		//_dynamic->setLinearDamping(0.5f);
-		//_rigidDynamics.push_back(_dynamic);
-		//_pxScene->addActor(*_dynamic);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.4f);
+		_playerMaterial = _physics->createMaterial(0.1f, 0.1f, 0.0f);
 	}
 
 	void PhysicsSystem::PreparePhysics()
@@ -95,7 +86,7 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -98.1f, 0.0f);
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;

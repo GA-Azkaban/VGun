@@ -15,6 +15,8 @@ void PlayerMove::Start()
 
 	_isOnGround = false;
 	_isJumping = true;
+
+	_playerCollider->LockPlayerRotation();
 }
 
 void PlayerMove::Update()
@@ -209,7 +211,7 @@ void PlayerMove::ShootGun()
 	if (hitDynamic != nullptr)
 	{
 		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
-		hitDynamic->AddForce(forceDirection, 5.0f);
+		hitDynamic->AddForce(forceDirection, 50.0f);
 		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
 	}
 }
@@ -225,7 +227,7 @@ void PlayerMove::SetHeadCam(HDData::Camera* cam)
 {
 	_headCam = cam;
 	HDData::Transform* headCamTransform = _headCam->GetTransform();
-	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.5f);
+	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
 }
 
 void PlayerMove::ToggleCam()
@@ -415,66 +417,37 @@ void PlayerMove::Pitch(float rotationValue)
 	Quaternion rot = cameraTransform->GetLocalRotation();
 	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
 
-	if (eulerAngleX > 89.0f)
+	Vector3 rotAngle = rot.ToEuler() * 60.0f;
+
+	Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
+	rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
+
+
+	if (rotAngle.x > 60.0f)
 	{
 		//constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
-		constexpr float radX = DirectX::XMConvertToRadians(89.0f) * 0.5f;
-		Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
+		//constexpr float radX = DirectX::XMConvertToRadians(89.0f);
+		//Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
 
-		cameraTransform->SetLocalRotation(closedAngle);
+		//cameraTransform->SetLocalRotation(closedAngle);
+		//cameraTransform->SetLocalRotation(Quaternion(rot.x, DirectX::XMConvertToRadians(89.0f), rot.z, rot.w));
+
+		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(360.0f));
+		cameraTransform->SetLocalRotation(temp);
 	}
-	else if (eulerAngleX < -89.0f)
+	else if (rotAngle.x < -60.0f)
 	{
-		//constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
-		constexpr float radX = DirectX::XMConvertToRadians(-89.0f) * 0.5f;
-		Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
+		////constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
+		//constexpr float radX = DirectX::XMConvertToRadians(-89.0f) * 0.5f;
+		//Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
 
-		cameraTransform->SetLocalRotation(closedAngle);
+		//cameraTransform->SetLocalRotation(closedAngle);
+
+		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(-360.0f));
+		cameraTransform->SetLocalRotation(temp);
 	}
 	else
 	{
-		/*
-		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 1.0f };
-		//rotationAxis = Vector4MultiplyMatrix(rotationAxis, cameraTransform->GetLocalRotationMatrix());
-		//Quaternion newRot = HDMath::HDRotateQuaternion(cameraTransform->GetLocalRotation(),
-		//	{ rotationAxis.x, rotationAxis.y, rotationAxis.z }, rotationValue);
-		Matrix localRotMat = Matrix::CreateFromQuaternion(cameraTransform->GetLocalRotation());
-		rotationAxis = XMVector4Transform(rotationAxis, localRotMat);
-		
-		Quaternion newRot = XMQuaternionMultiply(cameraTransform->GetLocalRotation(), DirectX::XMQuaternionRotationAxis(rotationAxis, rotationValue));
-
-		//newRot.RotateTowards(rotationAxis, rotationValue);
-		cameraTransform->SetLocalRotation(newRot);
-
-		//cameraTransform->Rotate(rotationValue, 0.f, 0.f);
-		*/
-
-		/*
-		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 1.f };
-		rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetLocalRotation()));
-		Quaternion newRot = XMQuaternionMultiply(cameraTransform->GetLocalRotation(), DirectX::XMQuaternionRotationAxis(rotationAxis, rotationValue));
-		
-		cameraTransform->SetLocalRotation(newRot);
-		*/
-
-		/*
-		Vector3 rotationAxis = cameraTransform->GetRight();
-
-		Quaternion newRot = XMQuaternionMultiply(cameraTransform->GetLocalRotation(), Quaternion::CreateFromAxisAngle(rotationAxis, rotationValue));
-
-		cameraTransform->SetLocalRotation(newRot);
-		*/
-
-		/*
-		Quaternion curRot = cameraTransform->GetRotation();
-		Quaternion curRotInverse;
-		curRot.Inverse(curRotInverse);
-
-		cameraTransform->Rotate(curRotInverse);
-		cameraTransform->Rotate(rotationValue, 0.f, 0.f);
-		cameraTransform->Rotate(curRot);
-		*/
-
 		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
 		rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
 
@@ -523,6 +496,8 @@ void PlayerMove::CameraMove()
 
 	// RotateY
 	_playerCollider->Rotate(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
+
+	Vector3 temp = GetTransform()->GetRotation().ToEuler();
 
 	// Pitch in closed angle
 	Pitch(mouseDelta.y * 0.002f);
