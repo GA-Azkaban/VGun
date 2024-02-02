@@ -87,10 +87,10 @@ TestScene::TestScene()
 	//centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
 	//centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
 
-	auto playerMove = playerTest->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
-	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
+	//auto playerMove = playerTest->AddComponent<PlayerMove>();
+	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
+	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
 	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
@@ -103,8 +103,8 @@ TestScene::TestScene()
 	//playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
-	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
-	playerMove->SetHeadCam(headCam);
+	//auto headCam = playerTestHead->AddComponent<HDData::Camera>();
+	//playerMove->SetHeadCam(headCam);
 
 	auto sphereTest = API::CreateObject(_scene, "sphereTest");
 	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
