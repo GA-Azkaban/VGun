@@ -55,6 +55,7 @@ namespace HDData
 	public:
 		void ShakeCamera(float deltaTime);
 		void EnableCameraShake();
+		void Pitch(float radianAngle);
 
 	private:
 		float _nearZ;				// frustum의 가까운 평면까지의 거리
@@ -74,5 +75,6 @@ namespace HDData
 		bool _isShakingCamera;
 		float _shakeDuration;
 		float _distYOnShoot;
+		float _pitchAngle;
 	};
 }

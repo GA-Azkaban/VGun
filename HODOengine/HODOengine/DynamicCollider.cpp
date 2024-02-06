@@ -30,7 +30,6 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 	playerPos.p.z += moveStep.z;
 
 	_physXRigid->setGlobalPose(playerPos);
-	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 }
 
 void HDData::DynamicCollider::Rotate(float rotationAmount)

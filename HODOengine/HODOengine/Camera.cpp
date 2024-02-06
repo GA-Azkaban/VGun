@@ -16,7 +16,8 @@ namespace HDData
 		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera()),
 		_isShakingCamera(false),
 		_shakeDuration(0.1f),
-		_distYOnShoot(0.0f)
+		_distYOnShoot(0.0f),
+		_pitchAngle(0.0f)
 	{
 
 	}
@@ -159,4 +160,82 @@ namespace HDData
 	{
 		_isShakingCamera = true;
 	}
+
+	void Camera::Pitch(float radianAngle)
+	{
+		/*
+		//Vector4 rotAxis = XMVector4Transform(Vector4(1.0f, 0.0f, 0.0f, 1.0f), Matrix::CreateFromQuaternion(GetTransform()->GetRotation()));
+
+		Vector3 rotAngleEuler = GetTransform()->GetLocalRotationEuler();
+
+		Quaternion quatRotateY = DirectX::XMQuaternionRotationAxis(Vector3(0.0f,1.0f,0.0f), rotAngleEuler.y);
+		
+		Vector4 rotAxis = XMVector4Transform(Vector4(1.0f, 0.0f, 0.0f, 1.0f), Matrix::CreateFromQuaternion(quatRotateY));
+		
+		Vector3 normalizedAxis = DirectX::XMVector3Normalize(Vector3(rotAxis.x, rotAxis.y, rotAxis.z));
+
+		float halfAngle = radianAngle * 0.5f;
+
+		Quaternion rotQuat = DirectX::XMQuaternionRotationAxis(DirectX::XMLoadFloat3(&normalizedAxis), halfAngle);
+
+		Vector4 originalRotQuat = GetTransform()->GetLocalRotation();
+
+		Vector4 rotatedResult = DirectX::XMQuaternionMultiply(rotQuat, originalRotQuat);
+
+		GetTransform()->SetLocalRotation(rotatedResult);
+
+		//GetTransform()->Rotate(rotQuat);
+		*/
+		
+		/*
+		Vector3 rotAxis = DirectX::XMVector3Normalize(GetTransform()->GetRight());
+		
+		//Quaternion rotQuat = DirectX::XMQuaternionRotationRollPitchYaw(radianAngle, 0.0f, 0.0f);
+		Quaternion rotQuat = DirectX::XMQuaternionRotationAxis(rotAxis, radianAngle);
+
+		Quaternion nowRot = GetTransform()->GetLocalRotation();
+
+		GetTransform()->SetLocalRotation(Quaternion::Concatenate(rotQuat,nowRot));
+		*/
+
+		/*
+		Vector3 axis = DirectX::XMVector3Normalize(GetTransform()->GetRight());
+		Quaternion newRot = DirectX::XMQuaternionRotationAxis(axis, radianAngle);
+		GetTransform()->Rotate(newRot);
+		*/
+
+		/// 왜 복원력이
+		/*
+		//Quaternion newRot = Quaternion::Concatenate(DirectX::XMQuaternionRotationAxis(Vector3(1.0f, 0.0f, 0.0f), radianAngle), GetTransform()->GetLocalRotation());
+		float newPitchAngle = DirectX::XMConvertToRadians(GetTransform()->GetLocalRotation().ToEuler().x) + radianAngle;
+
+		float rotAngleY = GetTransform()->GetRotation().ToEuler().y;
+		Vector3 newAxisX = DirectX::XMVector3TransformCoord(Vector3(1.0f, 0.0f, 0.0f), DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(rotAngleY)));
+
+		Quaternion newRot = DirectX::XMQuaternionRotationAxis(newAxisX, newPitchAngle);
+
+		GetTransform()->SetLocalRotation(newRot);
+		*/
+
+
+
+
+		return;
+
+		HDData::Transform* cameraTransform = GetTransform();
+
+		Quaternion rot = cameraTransform->GetLocalRotation();
+
+		Vector3 rotAngle = rot.ToEuler();
+
+		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
+		rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
+
+
+		_pitchAngle += radianAngle;
+		Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), _pitchAngle);
+
+		cameraTransform->SetLocalRotation(rotToX);
+	}
+
 }

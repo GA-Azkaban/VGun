@@ -413,17 +413,25 @@ void PlayerMove::CameraControl()
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float rotationValue)
 {
+	/// Try 1
+	/*
 	HDData::Transform* cameraTransform = _headCam->GetGameObject()->GetTransform();
+	
 	Quaternion rot = cameraTransform->GetLocalRotation();
 	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
 
-	Vector3 rotAngle = rot.ToEuler() * 60.0f;
+	Vector3 rotAngle = rot.ToEuler();
 
 	Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
 	rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
 
+	
+	_pitchAngle += rotationValue;
+	Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), _pitchAngle);
 
-	if (rotAngle.x > 60.0f)
+	cameraTransform->SetLocalRotation(rotToX);
+
+	if (cameraTransform->GetLocalRotation().ToEuler().x > 60.0f)
 	{
 		//constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
 		//constexpr float radX = DirectX::XMConvertToRadians(89.0f);
@@ -432,10 +440,10 @@ void PlayerMove::Pitch(float rotationValue)
 		//cameraTransform->SetLocalRotation(closedAngle);
 		//cameraTransform->SetLocalRotation(Quaternion(rot.x, DirectX::XMConvertToRadians(89.0f), rot.z, rot.w));
 
-		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(360.0f));
+		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(60.0f));
 		cameraTransform->SetLocalRotation(temp);
 	}
-	else if (rotAngle.x < -60.0f)
+	else if (cameraTransform->GetLocalRotation().ToEuler().x < -60.0f)
 	{
 		////constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
 		//constexpr float radX = DirectX::XMConvertToRadians(-89.0f) * 0.5f;
@@ -443,18 +451,46 @@ void PlayerMove::Pitch(float rotationValue)
 
 		//cameraTransform->SetLocalRotation(closedAngle);
 
-		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(-360.0f));
+		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(-60.0f));
 		cameraTransform->SetLocalRotation(temp);
 	}
 	else
 	{
-		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
-		rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
 
-		_pitchAngle += rotationValue;
-		Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), _pitchAngle);
+	}
+	*/
+	
+	/// Try 2
+	/*
+	Vector3 euler = cameraTransform->GetLocalRotationEuler();
 
-		cameraTransform->SetLocalRotation(rotToX);
+	if (euler.x >= 60.0f)
+	{
+		cameraTransform->SetLocalRotationEuler(Vector3(59.9f, 0.0f, 0.0f));
+	}
+	else if (euler.x <= -60.0f)
+	{
+		cameraTransform->SetLocalRotationEuler(Vector3(-59.9f, 0.0f, 0.0f));
+	}
+	else
+	{
+		_headCam->Pitch(rotationValue * _deltaTime * 400.0f);
+	}
+	*/
+
+	/// Try 3
+	HDData::Transform* cameraTransform = _headCam->GetTransform();
+
+	cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
+
+	Vector3 rotAngleEuler = cameraTransform->GetLocalRotation().ToEuler();
+	if (DirectX::XMConvertToDegrees(rotAngleEuler.x) > 80.0f)
+	{
+		cameraTransform->SetLocalRotationEuler(Vector3(80.0f, 0.0f, 0.0f));
+	}
+	else if(DirectX::XMConvertToDegrees(rotAngleEuler.x) < -80.0f)
+	{
+		cameraTransform->SetLocalRotationEuler(Vector3(-80.0f, 0.0f, 0.0f));
 	}
 }
 
@@ -494,11 +530,11 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
+	// Pitch in closed angle
+	Pitch(mouseDelta.y);
+
+
 	// RotateY
 	_playerCollider->Rotate(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
 
-	Vector3 temp = GetTransform()->GetRotation().ToEuler();
-
-	// Pitch in closed angle
-	Pitch(mouseDelta.y * 0.002f);
 }

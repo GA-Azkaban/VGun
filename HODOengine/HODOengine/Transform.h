@@ -20,6 +20,7 @@ namespace HDData
 		Vector3 GetScale() const;				// world 기준
 		Vector3 GetLocalPosition() const;
 		Quaternion GetLocalRotation() const;
+		Vector3 GetLocalRotationEuler() const;
 		Vector3 GetLocalScale() const;
 		Matrix GetWorldTM() const;
 		Matrix GetLocalTM() const;
@@ -34,6 +35,7 @@ namespace HDData
 		void SetScale(float x, float y, float z);
 		void SetLocalPosition(const Vector3& position);
 		void SetLocalRotation(const Quaternion& rotation);
+		void SetLocalRotationEuler(const Vector3& eulerAngle);
 		void SetLocalScale(const Vector3& scale);
 
 	public:

@@ -96,8 +96,11 @@ TestScene::TestScene()
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	playerTestHead->SetParentObject(playerTest);
-	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
-	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
+	playerTestHead->GetTransform()->SetLocalPosition(Vector3{0.f, 1.1f, 0.f});
+	auto t = playerTestHead->AddComponent<HDData::MeshRenderer>();
+	t->LoadMesh("4QCharacter_tpose.fbx");
+	t->LoadDiffuseMap("TT_checker_2048x2048_UV_GRID_BaseColor.png");
+	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::StaticBoxCollider>();
 
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	playerMove->SetHeadCam(headCam);

@@ -217,14 +217,6 @@ namespace HDEngine
 				boxRigid->setAngularDamping(0.2f);
 				boxRigid->attachShape(*shape);
 
-				// add only if player
-				if (object != nullptr)
-				{
-					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-					//boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
-					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
-				}
-
 				_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
 				box->SetPhysXRigid(boxRigid);
