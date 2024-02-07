@@ -1,5 +1,6 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
+#include "LoginSceneView.h"
 
 Client::Client()
 {
@@ -15,4 +16,7 @@ void Client::Initialize()
 {
 	TestScene test;
 	test.Start();
+
+	//LoginSceneView login;
+	//login.Initialize();
 }

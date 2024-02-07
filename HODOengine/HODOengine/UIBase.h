@@ -21,6 +21,9 @@ namespace HDData
 			_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
 		}
 
+		void OnEnable() override;
+		void OnDisable() override;
+
 		int GetSortOrder() const;
 		bool GetIsHovering();
 		bool GetIsClicked();

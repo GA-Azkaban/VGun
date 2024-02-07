@@ -36,6 +36,16 @@ namespace HDData
 		return false;
 	}
 
+	void UIBase::OnEnable()
+	{
+		_sketchable->SetActive(true);
+	}
+
+	void UIBase::OnDisable()
+	{
+		_sketchable->SetActive(false);
+	}
+
 	int UIBase::GetSortOrder() const
 	{
 		return _sortOrder;

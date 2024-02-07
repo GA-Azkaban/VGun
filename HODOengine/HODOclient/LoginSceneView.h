@@ -1,5 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
+
+class LobbyManager;
 
 class LoginSceneView
 {
@@ -10,6 +12,12 @@ public:
 	void Initialize();
 
 private:
-	HDData::Scene* _scene;
-};
+	void LoginView();
+	void MainMenu();
+	void Lobby();
 
+private:
+	HDData::Scene* _scene;
+
+	LobbyManager& _lobbyManager;
+};

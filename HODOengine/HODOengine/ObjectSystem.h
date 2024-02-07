@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Singleton.h"
 
 #include <string>
@@ -39,6 +39,16 @@ namespace HDEngine
 		std::vector<HDData::GameObject*> _destroyStaticObjectList;
 		std::vector<HDData::GameObject*> _staticObjectList;
 		std::vector<HDData::GameObject*> _runningStaticObjectList;
+
+	public:
+		void UpdateEnableList();
+		void UpdateDisableList();
+		void AddOnEnableList(HDData::GameObject* obj);
+		void AddOnDisableList(HDData::GameObject* obj);
+
+	private:
+		std::vector<HDData::GameObject*> _onEnableList;
+		std::vector<HDData::GameObject*> _onDisableList;
 	};
 
 }

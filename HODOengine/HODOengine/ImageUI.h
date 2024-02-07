@@ -23,9 +23,6 @@ namespace HDData
 		float GetImageWidth();
 		float GetImageHeight();
 
-		void OnEnable() override;
-		void OnDisable() override;
-
 		void OnClickEvent() override;
 
 		void ChangeScale(float x, float y);

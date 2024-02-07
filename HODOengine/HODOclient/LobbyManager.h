@@ -4,7 +4,7 @@
 class LobbyManager : public HDData::Script
 {
 public:
-	static LobbyManager* Instance();
+	static LobbyManager& Instance();
 
 private:
 	static LobbyManager* _instance;
@@ -12,28 +12,31 @@ private:
 	~LobbyManager() = default;
 
 public:
+	void Start() override;
+
+public:
 	// 로그인 화면 기능
-	void Login();
+	void Login(std::string, std::string);
 	void Join();
+	void ExitJoin();
 
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);
-	void SetIDTextBox();
+	void SetJoinCanvas(HDData::GameObject* joinCanvas);
 
 private:
 	// 메인 화면
-	HDData::GameObject* _mainCanvas;	
-
-	// 로그인
-	HDData::GameObject* _idTextBox;
-	HDData::GameObject* _passwordTextBox;
-	HDData::GameObject* _nicknameTextBox;
+	HDData::GameObject* _mainCanvas;
+	// 회원가입
+	HDData::GameObject* _joinCanvas;
 
 	// 게임 로비
 	HDData::GameObject* _startButton;
 	HDData::GameObject* _settingButton;
 	HDData::GameObject* _quitButton;
 	HDData::GameObject* _logoImage;
+
+	///////////////////////////////////
 
 	// 게임 설정
 	HDData::GameObject* _gameSettingCanvas;
@@ -44,7 +47,7 @@ private:
 
 	HDData::GameObject* _monitorSettingButton;
 	HDData::GameObject* _monitorAspectRatio;
-	
+
 	HDData::GameObject* _inputSettingButton;
 	HDData::GameObject* _walkFrontSetBox;
 
@@ -52,7 +55,4 @@ private:
 	HDData::GameObject* _musicVolumeSlider;
 	HDData::GameObject* _fxVolumeSlider;
 
-	HDData::GameObject* _joinCanvas;	// 참가 화면
-
 };
-

@@ -61,16 +61,6 @@ namespace HDData
 		return _imageUI->GetHeight();
 	}
 
-	void ImageUI::OnEnable()
-	{
-		_imageUI->SetActive(true);
-	}
-
-	void ImageUI::OnDisable()
-	{
-		_imageUI->SetActive(false);
-	}
-
 	void ImageUI::OnClickEvent()
 	{
 
