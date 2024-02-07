@@ -6,7 +6,7 @@ namespace HDData
 	class ImageUI;
 	class TextUI;
 
-	class TextInputBoxUI : public Component
+	class HODO_API TextInputBoxUI : public Component
 	{
 	public:
 		TextInputBoxUI();
