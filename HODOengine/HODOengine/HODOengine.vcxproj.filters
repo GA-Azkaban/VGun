@@ -133,6 +133,9 @@
     <ClCompile Include="SceneLoader.cpp">
       <Filter>SceneLoader</Filter>
     </ClCompile>
+    <ClCompile Include="TriggerBoxCollider.cpp">
+      <Filter>05_Component\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -296,6 +299,9 @@
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
       <Filter>SceneLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerBoxCollider.h">
+      <Filter>05_Component\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

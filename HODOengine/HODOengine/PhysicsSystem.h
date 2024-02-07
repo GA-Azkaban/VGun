@@ -44,6 +44,7 @@ namespace HDEngine
 		void CreateDynamicBoxCollider(HDData::GameObject* object);
 		void CreateDynamicCapsuleCollider(HDData::GameObject* object);
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
+		void CreateTriggerBoxCollider(HDData::GameObject* object);
 
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);

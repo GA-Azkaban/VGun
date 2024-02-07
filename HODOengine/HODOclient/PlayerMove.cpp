@@ -112,12 +112,12 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
-		_playerCollider->AdjustVelocity(2.0f);
+		//_playerCollider->AdjustVelocity(2.0f);
 		_moveSpeed = 6.0f;
 	}
 	if (API::GetKeyUp(DIK_LSHIFT))
 	{
-		_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
+		//_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
 		_moveSpeed = 3.0f;
 	}
 }
@@ -481,16 +481,38 @@ void PlayerMove::Pitch(float rotationValue)
 	/// Try 3
 	HDData::Transform* cameraTransform = _headCam->GetTransform();
 
-	cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
+	float rotAngleX = DirectX::XMConvertToDegrees(cameraTransform->GetLocalRotation().ToEuler().x);
+	if (rotAngleX >= 79.0f)
+	{
+		if (rotationValue >= -0.0f)
+		{
+			return;
+		}
+	}
+	else if(rotAngleX <= -79.0f)
+	{
+		if (rotationValue <= 0.0f)
+		{
+			return;
+		}
+	}
 
-	Vector3 rotAngleEuler = cameraTransform->GetLocalRotation().ToEuler();
-	if (DirectX::XMConvertToDegrees(rotAngleEuler.x) > 80.0f)
+	HDData::Transform copy = *cameraTransform;
+	copy.Rotate(rotationValue, 0.0f, 0.0f);
+
+	float rotAnglePrediction = DirectX::XMConvertToDegrees(copy.GetLocalRotation().ToEuler().x);
+
+	if (rotAnglePrediction >= 79.0f)
 	{
 		cameraTransform->SetLocalRotationEuler(Vector3(80.0f, 0.0f, 0.0f));
 	}
-	else if(DirectX::XMConvertToDegrees(rotAngleEuler.x) < -80.0f)
+	else if (rotAnglePrediction <= -79.0f)
 	{
 		cameraTransform->SetLocalRotationEuler(Vector3(-80.0f, 0.0f, 0.0f));
+	}
+	else
+	{
+		cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
 	}
 }
 
@@ -531,7 +553,7 @@ void PlayerMove::CameraMove()
 	Vector2 mouseDelta = API::GetMouseDelta();
 
 	// Pitch in closed angle
-	Pitch(mouseDelta.y);
+	Pitch(mouseDelta.y * 0.2f);
 
 
 	// RotateY

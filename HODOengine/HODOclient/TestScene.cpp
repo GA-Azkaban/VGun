@@ -52,7 +52,7 @@ TestScene::TestScene()
 
 
 	// floor as static plane
-	auto groundFloor = API::CreateObject(_scene);
+	auto groundFloor = API::CreateObject(_scene, "ground");
 	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
@@ -93,6 +93,10 @@ TestScene::TestScene()
 	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
 	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
+	auto triggetTest = API::CreateObject(_scene, "triggerTest");
+	triggetTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -3.f, 1.f, 3.f });
+	triggetTest->GetComponent<HDData::Transform>()->SetRotation(Quaternion::Identity);
+	auto triggerColli = triggetTest->AddComponent<HDData::TriggerBoxCollider>();
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	playerTestHead->SetParentObject(playerTest);

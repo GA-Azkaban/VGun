@@ -9,6 +9,7 @@
 #include "DynamicBoxCollider.h"
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
+#include "TriggerBoxCollider.h"
 
 #include <windows.h>
 
@@ -31,7 +32,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.4f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
 		_playerMaterial = _physics->createMaterial(0.1f, 0.1f, 0.0f);
 	}
 
@@ -117,6 +118,7 @@ namespace HDEngine
 			CreateDynamicBoxCollider(object);
 			CreateDynamicCapsuleCollider(object);
 			CreateDynamicSphereCollider(object);
+			CreateTriggerBoxCollider(object);
 		}
 	}
 
@@ -277,6 +279,49 @@ namespace HDEngine
 				sphere->SetPhysXRigid(sphereRigid);
 				sphereRigid->userData = sphere;
 				shape->release();
+				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
+			}
+		}
+	}
+
+	void PhysicsSystem::CreateTriggerBoxCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::TriggerBoxCollider>();
+
+		if (isCorrectType)
+		{
+			auto colliderVector = object->GetComponents<HDData::TriggerBoxCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::TriggerBoxCollider* box = dynamic_cast<HDData::TriggerBoxCollider*>(collider);
+				Vector3 scale = object->GetTransform()->GetScale();
+
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
+				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+				shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+
+				// TODO : 여기 작업하고 있었음.
+				Vector3 position = object->GetTransform()->GetPosition();
+
+				if (collider->GetPositionOffset() != Vector3::Zero)
+				{
+					position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				}
+
+				Quaternion rot = object->GetTransform()->GetRotation();
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				localTransform.q.x = rot.x;
+				localTransform.q.y = rot.y;
+				localTransform.q.z = rot.z;
+				localTransform.q.w = rot.w;
+
+				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
+				boxRigid->attachShape(*shape);
+				_pxScene->addActor(*boxRigid);
+				boxRigid->userData = box;
+
+				shape->release();
+
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
 		}

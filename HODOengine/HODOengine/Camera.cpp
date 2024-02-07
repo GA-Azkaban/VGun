@@ -141,15 +141,15 @@ namespace HDData
 
 		if (_shakeDuration > 0.0f)
 		{
-			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, -_distYOnShoot);
 			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeDuration);
-			GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
+			GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, _distYOnShoot);
 
 			_shakeDuration -= deltaTime;
 		}
 		else
 		{
-			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, -_distYOnShoot);
 			_shakeDuration = 0.1f;
 			_isShakingCamera = false;
 			_distYOnShoot = 0.0f;
