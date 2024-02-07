@@ -1,5 +1,6 @@
 ﻿#include "GameObject.h"
 #include "Transform.h"
+#include "ObjectSystem.h"
 
 namespace HDData
 {
@@ -11,12 +12,22 @@ namespace HDData
 
 	void GameObject::OnEnable()
 	{
+		HDEngine::ObjectSystem::Instance().AddOnEnableList(this);
 
+		for (auto& child : _childGameObjects)
+		{
+			child->OnEnable();
+		}
 	}
 
 	void GameObject::OnDisable()
 	{
+		HDEngine::ObjectSystem::Instance().AddOnDisableList(this);
 
+		for (auto& child : _childGameObjects)
+		{
+			child->OnDisable();
+		}
 	}
 
 	void GameObject::Start()
@@ -26,7 +37,7 @@ namespace HDData
 
 		for (auto& component : _components)
 		{
-			if (component->_isStarted == false)
+			if (!component->_isStarted)
 			{
 				component->Start();
 				component->_isStarted = true;
