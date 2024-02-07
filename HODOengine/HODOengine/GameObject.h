@@ -39,6 +39,8 @@ namespace HDData
 
 		void OnEnable();
 		void OnDisable();
+		void FlushEnable();
+		void FlushDisable();
 		void Start();
 		void Update();
 		void LateUpdate();

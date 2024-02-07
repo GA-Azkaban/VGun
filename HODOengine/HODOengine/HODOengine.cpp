@@ -137,7 +137,7 @@ HWND HODOengine::GetHWND()
 void HODOengine::Run()
 {
 	_timeSystem.Update();
-
+	_objectSystem.UpdateEnableList();
 	_objectSystem.FlushDestroyObjectList();
 
 	_inputSystem.Update();
@@ -157,7 +157,7 @@ void HODOengine::Run()
 	HDEngine::PhysicsSystem::Instance().Update();
 
 	_eventSystem.InvokeEvent();
-
+	_objectSystem.UpdateDisableList();
 	// refresh input for next frame
 	_inputSystem.Flush();
 }

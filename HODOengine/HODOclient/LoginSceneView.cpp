@@ -38,14 +38,14 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", idTextbox);
 	idTextLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
-	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
 
 	// password input box
 	HDData::GameObject* passwordTextbox = API::CreateTextInputBox(_scene, "passwordTextBox", mainCanvas);
 	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", passwordTextbox);
 	passwordTextboxLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetText("PASSWORD");
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
 
 	// login button
 	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", mainCanvas);
@@ -73,71 +73,73 @@ void LoginSceneView::LoginView()
 
 	/// join canvas
 
-	//HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas");
-	//joinCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
-	//joinCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas");
+	joinCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
+	joinCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
-	////_lobbyManager.SetJoinCanvas(joinCanvas);
+	//_lobbyManager.SetJoinCanvas(joinCanvas);
 
-	//HDData::GameObject* newIDtextbox = API::CreateTextInputBox(_scene, "newIDtextbox", joinCanvas);
-	//auto newIDtext = newIDtextbox->GetComponent<HDData::TextUI>();
-	//HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
-	//newIDLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
-	//newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
-	//newIDLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	HDData::GameObject* newIDtextbox = API::CreateTextInputBox(_scene, "newIDtextbox", joinCanvas);
+	newIDtextbox->GetTransform()->SetPosition(0.f, -200.f, 0.f);
+	auto newIDtext = newIDtextbox->GetComponent<HDData::TextUI>();
+	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
+	newIDLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
+	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
+	newIDLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
 
-	//HDData::GameObject* newPasswordTextbox = API::CreateTextInputBox(_scene, "newPasswordTextbox", joinCanvas);
-	//auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextUI>();
-	//HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
-	//newPasswordLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
-	//newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
+	HDData::GameObject* newPasswordTextbox = API::CreateTextInputBox(_scene, "newPasswordTextbox", joinCanvas);
+	newPasswordTextbox->GetTransform()->SetPosition(0.f, -100.f, 0.f);
+	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextUI>();
+	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
+	newPasswordLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
+	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
 	//newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
 
-	//HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinCanvas);
-	//auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextUI>();
-	//HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
-	//newNicknameLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
-	//newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
+	HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinCanvas);
+	newNicknameTextbox->GetTransform()->SetPosition(0.f, 0.f, 0.f);
+	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextUI>();
+	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
+	newNicknameLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
+	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
 
-	//// error msg
-	//HDData::GameObject* errorMsg = API::CreateImageBox(_scene, "errorImg", joinCanvas);
-	//errorMsg->GetComponent<HDData::ImageUI>()->SetImage("errorMsg.png");
-	//HDData::GameObject* exitErrorBtn = API::CreateButton(_scene, "exitErrorBtn", errorMsg);
-	//exitErrorBtn->GetTransform()->SetPosition(960.f, 650.f, 0.f);
+	// error msg
+	HDData::GameObject* errorMsg = API::CreateImageBox(_scene, "errorImg", joinCanvas);
+	errorMsg->GetComponent<HDData::ImageUI>()->SetImage("errorMsg.png");
+	HDData::GameObject* exitErrorBtn = API::CreateButton(_scene, "exitErrorBtn", errorMsg);
+	exitErrorBtn->GetTransform()->SetPosition(960.f, 650.f, 0.f);
 
-	//errorMsg->OnDisable();
+	errorMsg->OnDisable();
 
-	//exitErrorBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-	//	[&errorMsg]()
-	//	{
-	//		errorMsg->OnDisable();
-	//	}
-	//);
+	exitErrorBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[&errorMsg]()
+		{
+			errorMsg->OnDisable();
+		}
+	);
 
-	//HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinCanvas);
+	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinCanvas);
 	//makeAccountBtn->GetComponent<HDData::ImageUI>()->SetImage("addNewAccount.png");
-	//makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-	//	[&newIDtext, &newPWtext, &newNNtext, &errorMsg]()
-	//	{
-	//		if (newIDtext->GetText().empty() || newPWtext->GetText().empty() || newNNtext->GetText().empty())
-	//		{
-	//			errorMsg->OnEnable();
-	//		}
-	//	}
-	//);
+	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[&newIDtext, &newPWtext, &newNNtext, &errorMsg]()
+		{
+			if (newIDtext->GetText().empty() || newPWtext->GetText().empty() || newNNtext->GetText().empty())
+			{
+				errorMsg->OnEnable();
+			}
+		}
+	);
 
-	//HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinCanvas);
+	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinCanvas);
 	//exitJoinBtn->GetComponent<HDData::ImageUI>()->SetImage("exitJoin.png");
-	//exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-	//	[this]()
-	//	{
-	//		_lobbyManager.ExitJoin();
-	//	}
-	//);
+	exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[this]()
+		{
+			_lobbyManager.ExitJoin();
+		}
+	);
 
-	//auto childs = mainCanvas->GetChildGameObjects();
-
-	//joinCanvas->OnDisable();
+	mainCanvas->OnDisable();
+	joinCanvas->OnDisable();
 }
 
 void LoginSceneView::MainMenu()

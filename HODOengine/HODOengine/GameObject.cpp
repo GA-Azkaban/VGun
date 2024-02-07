@@ -13,20 +13,36 @@ namespace HDData
 	void GameObject::OnEnable()
 	{
 		HDEngine::ObjectSystem::Instance().AddOnEnableList(this);
-
-		for (auto& child : _childGameObjects)
-		{
-			child->OnEnable();
-		}
 	}
 
 	void GameObject::OnDisable()
 	{
 		HDEngine::ObjectSystem::Instance().AddOnDisableList(this);
+	}
 
-		for (auto& child : _childGameObjects)
+	void GameObject::FlushEnable()
+	{
+		for (auto& component : _components)
 		{
-			child->OnDisable();
+			component->OnEnable();
+		}
+
+		for (auto& obj : _childGameObjects)
+		{
+			obj->FlushEnable();
+		}
+	}
+
+	void GameObject::FlushDisable()
+	{
+		for (auto& component : _components)
+		{
+			component->OnDisable();
+		}
+
+		for (auto& obj : _childGameObjects)
+		{
+			obj->FlushDisable();
 		}
 	}
 

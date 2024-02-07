@@ -157,10 +157,7 @@ namespace HDEngine
 	{
 		for (auto& obj : _onEnableList)
 		{
-			for (auto& comp : obj->GetAllComponents())
-			{
-				comp->OnEnable();
-			}
+			obj->FlushEnable();
 		}
 	}
 
@@ -168,10 +165,7 @@ namespace HDEngine
 	{
 		for (auto& obj : _onDisableList)
 		{
-			for (auto& comp : obj->GetAllComponents())
-			{
-				comp->OnDisable();
-			}
+			obj->FlushDisable();
 		}
 	}
 
