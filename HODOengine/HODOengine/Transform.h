@@ -33,6 +33,7 @@ namespace HDData
 		void SetScale(const Vector3& scale);
 		void SetScale(float x, float y, float z);
 		void SetLocalPosition(const Vector3& position);
+		void SetLocalPosition(float x, float y, float z);
 		void SetLocalRotation(const Quaternion& rotation);
 		void SetLocalScale(const Vector3& scale);
 

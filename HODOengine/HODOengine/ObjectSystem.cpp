@@ -1,8 +1,7 @@
-#include "ObjectSystem.h"
+﻿#include "ObjectSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "IDSystem.h"
 #include <algorithm>
 using namespace HDData;
 
@@ -152,6 +151,32 @@ namespace HDEngine
 	std::vector<HDData::GameObject*>& ObjectSystem::GetDestroyStaticObjectList()
 	{
 		return _destroyStaticObjectList;
+	}
+
+	void ObjectSystem::UpdateEnableList()
+	{
+		for (auto& obj : _onEnableList)
+		{
+			obj->FlushEnable();
+		}
+	}
+
+	void ObjectSystem::UpdateDisableList()
+	{
+		for (auto& obj : _onDisableList)
+		{
+			obj->FlushDisable();
+		}
+	}
+
+	void ObjectSystem::AddOnEnableList(HDData::GameObject* obj)
+	{
+		_onEnableList.push_back(obj);
+	}
+
+	void ObjectSystem::AddOnDisableList(HDData::GameObject* obj)
+	{
+		_onDisableList.push_back(obj);
 	}
 
 }

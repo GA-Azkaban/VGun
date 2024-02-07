@@ -30,6 +30,12 @@ namespace API
 			return obj;
 		}
 
+		HODO_API HDData::GameObject* CreateStaticObject(std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateStaticObject(objectName, parentObject);
+			return obj;
+		}
+
 		HODO_API HDData::GameObject* CreateImageBox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
@@ -229,4 +235,7 @@ namespace API
 			return prevCam;
 		}
 	}
+
+
+
 }
