@@ -6,7 +6,8 @@
 namespace HDData
 {
 	UIBase::UIBase()
-		:_sketchable(NULL)
+		:_sketchable(NULL),
+		_sortOrder(100)
 	{
 
 	}
@@ -69,6 +70,11 @@ namespace HDData
 	bool UIBase::IsIgnoreFocused()
 	{
 		return _ignoreFocus;
+	}
+
+	void UIBase::SetSortOrder(int orderNum)
+	{
+		_sortOrder = orderNum;
 	}
 
 	void UIBase::SetIsHovering(bool isHovering)
