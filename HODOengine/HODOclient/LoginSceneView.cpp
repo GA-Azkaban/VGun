@@ -40,6 +40,7 @@ void LoginSceneView::LoginView()
 
 	// id input box
 	HDData::GameObject* idTextbox = API::CreateTextInputBox(_scene, "idTextBox", mainCanvas);
+	auto id = idTextbox->GetComponent<HDData::TextInputBoxUI>();
 	idTextbox->GetTransform()->SetLocalPosition(0.f, -100.f, 0.f);
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", idTextbox);
 	idTextLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
@@ -48,6 +49,7 @@ void LoginSceneView::LoginView()
 
 	// password input box
 	HDData::GameObject* passwordTextbox = API::CreateTextInputBox(_scene, "passwordTextBox", mainCanvas);
+	auto pw = passwordTextbox->GetComponent<HDData::TextInputBoxUI>();
 	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", passwordTextbox);
 	passwordTextboxLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetText("PASSWORD");
@@ -58,11 +60,11 @@ void LoginSceneView::LoginView()
 	loginBtn->GetTransform()->SetPosition(870.f, 650.f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("login.png");
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[this, &idTextbox, &passwordTextbox]()
+		[id, pw]()
 		{
-			std::string id = idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
-			std::string password = passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
-			LobbyManager::Instance().Login(id, password);
+			std::string ID = id->GetCurrentText();
+			std::string password = pw->GetCurrentText();
+			LobbyManager::Instance().Login(ID, password);
 		}
 	);
 
@@ -71,7 +73,7 @@ void LoginSceneView::LoginView()
 	joinBtn->GetTransform()->SetPosition(1050.f, 650.f, 0.f);
 	joinBtn->GetComponent<HDData::Button>()->SetImage("join.png");
 	joinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[this, &idTextbox, &passwordTextbox]()
+		[]()
 		{
 			LobbyManager::Instance().Join();
 		}
@@ -99,7 +101,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
 	newPasswordLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
-	newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
 
 	HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinCanvas);
 	newNicknameTextbox->GetTransform()->SetLocalPosition(0.f, 0.f, 0.f);
@@ -107,14 +109,14 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
 	newNicknameLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
-	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
 
 	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinCanvas);
 	
 	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
 	makeAccountBtn->GetTransform()->SetLocalPosition(-150.f, 100.f, 0.f);
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[&newIDtext, &newPWtext, &newNNtext]()
+		[newIDtext, newPWtext, newNNtext]()
 		{
 			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
 			{
