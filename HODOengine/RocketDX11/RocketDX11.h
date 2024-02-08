@@ -43,7 +43,6 @@ namespace RocketCore::Graphics
 		~RocketDX11();
 
 	public:
-		//그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
 		virtual void Update(float deltaTime) override;
@@ -62,10 +61,7 @@ namespace RocketCore::Graphics
 		void CreateDepthStencilStates();
 
 		void SetDepthStencilState(ID3D11DepthStencilState* dss);
-		// 임시
-		void SetLights();
 
-		/// Initialize Member
 	private:
 		HWND _hWnd;
 		int _screenWidth;

@@ -18,6 +18,9 @@ namespace RocketCore::Graphics
 		~Material();
 		ID3D11ShaderResourceView* GetTextureSRV();
 		ID3D11ShaderResourceView* GetNormalMapSRV();
+		ID3D11ShaderResourceView* GetOcclusionRoughnessMetalMapSRV();
+		float GetMetallic();
+		float GetRoughness();
 		VertexShader* GetVertexShader();
 		PixelShader* GetPixelShader();
 
@@ -25,12 +28,19 @@ namespace RocketCore::Graphics
 		void SetPixelShader(PixelShader* pixelShader) { m_pixelShader = pixelShader; };
 		void SetTextureSRV(ID3D11ShaderResourceView* textureSRV) { m_materialSRV = textureSRV; }
 		void SetNormalTexture(ID3D11ShaderResourceView* normalTex) { m_materialNormal = normalTex; }
+		void SetOcclusionRoughnessMetalMap(ID3D11ShaderResourceView* occlusionRoughMetal) { m_occlusionRoughnessMetal = occlusionRoughMetal; }
+		void SetMetallic(float n);
+		void SetRoughness(float n);
 
 	private:
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
 		ComPtr<ID3D11ShaderResourceView> m_materialSRV;
 		ComPtr<ID3D11ShaderResourceView> m_materialNormal;
+		ComPtr<ID3D11ShaderResourceView> m_occlusionRoughnessMetal;
+
+		float m_metallic;
+		float m_roughness;
 	};
 }
 

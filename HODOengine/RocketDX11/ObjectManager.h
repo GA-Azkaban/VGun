@@ -18,6 +18,7 @@ namespace RocketCore::Graphics
 	class StaticMeshObject;
 	class SkinningMeshObject;
 	class Cubemap;
+	class LightAdapter;
 	class TextRenderer;
 	class ImageRenderer;
 	class LineRenderer;
@@ -32,7 +33,6 @@ namespace RocketCore::Graphics
 		std::vector<HelperObject*>& GetHelperObjList();
 		std::vector<StaticMeshObject*>& GetStaticMeshObjList();
 		std::vector<SkinningMeshObject*>& GetSkinningMeshObjList();
-		std::vector<Cubemap*>& GetCubeMapList();
 		std::vector<TextRenderer*>& GetTextList();
 		std::vector<ImageRenderer*>& GetImageList();
 		LineRenderer* GetLineRenderer();
@@ -46,6 +46,7 @@ namespace RocketCore::Graphics
 		StaticMeshObject* CreateStaticMeshObject();
 		SkinningMeshObject* CreateSkinningMeshObject();
 		Cubemap* CreateCubeMap();
+		LightAdapter* CreateLight();
 		TextRenderer* CreateText();
 		ImageRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
@@ -58,7 +59,6 @@ namespace RocketCore::Graphics
 		std::vector<HelperObject*> _helperObjectList;
 		std::vector<StaticMeshObject*> _staticMeshObjectList;
 		std::vector<SkinningMeshObject*> _skinningMeshObjectList;
-		std::vector<Cubemap*> _cubemapList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<ImageRenderer*> _ImageList;
 		LineRenderer* _lineRenderer;

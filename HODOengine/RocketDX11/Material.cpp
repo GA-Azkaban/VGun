@@ -4,7 +4,8 @@ namespace RocketCore::Graphics
 {
 	Material::Material(VertexShader* vertexShader, PixelShader* pixelShader)
 		: m_vertexShader(vertexShader), m_pixelShader(pixelShader),
-		m_materialSRV(0), m_materialNormal(0)
+		m_materialSRV(0), m_materialNormal(0), m_occlusionRoughnessMetal(0),
+		m_metallic(0.0f), m_roughness(1.0f)
 	{
 
 	}
@@ -27,6 +28,21 @@ namespace RocketCore::Graphics
 		return m_materialNormal.Get();
 	}
 
+	ID3D11ShaderResourceView* Material::GetOcclusionRoughnessMetalMapSRV()
+	{
+		return m_occlusionRoughnessMetal.Get();
+	}
+
+	float Material::GetMetallic()
+	{
+		return m_metallic;
+	}
+
+	float Material::GetRoughness()
+	{
+		return m_roughness;
+	}
+
 	VertexShader* Material::GetVertexShader()
 	{
 		return m_vertexShader;
@@ -36,4 +52,5 @@ namespace RocketCore::Graphics
 	{
 		return m_pixelShader;
 	}
+
 }

@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "AudioListener.h"
+#include "Light.h"
 
 #include "ObjectSystem.h"
 #include <algorithm>
@@ -20,6 +21,12 @@ namespace HDData
 		camObj->GetTransform()->SetPosition(0.0f, 2.0f, -10.0f);
 		// 씬이 생성될 때 메인카메라에 오디오리스너 컴포넌트를 생성하여 부착한다
 		camObj->AddComponent<AudioListner>();
+		// 씬이 생성될 때 Directional Light를 자동으로 생성한다.
+		GameObject* dirLight = CreateObject("DirLight");
+		auto dirLightComp = dirLight->AddComponent<Light>();
+		dirLightComp->SetDirection(Vector4(-1, -1, 1, 0));
+		dirLightComp->SetColor(Vector4(5.0f, 5.0f, 5.0f, 1.0f));
+		dirLightComp->SetLightType(Light::DirectionalLight);
 	}
 
 	Scene::~Scene()

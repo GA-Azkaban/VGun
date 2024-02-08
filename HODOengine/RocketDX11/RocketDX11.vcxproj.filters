@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="ColorPS.hlsl">
-      <Filter>Resource\Shader\HLSL\Color</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Color</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturePS.hlsl">
-      <Filter>Resource\Shader\HLSL\Texture</Filter>
-    </FxCompile>
-    <FxCompile Include="TextureVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Texture</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
     </FxCompile>
@@ -45,6 +33,15 @@
     </FxCompile>
     <FxCompile Include="BlitPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\Blit</Filter>
+    </FxCompile>
+    <FxCompile Include="IrradianceMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\IrradianceMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SpecularPreFilterPS.hlsl">
+      <Filter>Resource\Shader\HLSL\SpecularPreFilter</Filter>
+    </FxCompile>
+    <FxCompile Include="IntegrateBRDF.hlsl">
+      <Filter>Resource\Shader\HLSL\IntegrateBRDF</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +80,6 @@
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Object\TextObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Resource\Texture</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Resource\Shader\VertexShader</Filter>
@@ -144,6 +138,12 @@
     <ClCompile Include="Line.cpp">
       <Filter>Object\Line</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Object\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightAdapter.cpp">
+      <Filter>Object\Light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -200,17 +200,11 @@
     <ClInclude Include="TextRenderer.h">
       <Filter>Object\TextObject</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Resource\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClInclude>
     <ClInclude Include="ShaderStruct.h">
       <Filter>Resource\Shader\ShaderStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="LightStruct.h">
-      <Filter>Object\Light</Filter>
     </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
       <Filter>GeometryGenerator</Filter>
@@ -274,6 +268,12 @@
     </ClInclude>
     <ClInclude Include="Line.h">
       <Filter>Object\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightAdapter.h">
+      <Filter>Object\Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -339,12 +339,6 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL">
       <UniqueIdentifier>{215b4f0b-7d91-4a0d-9303-f3dc430726f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Color">
-      <UniqueIdentifier>{68fef6da-5093-4b42-b063-173aaf7c8f7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Texture">
-      <UniqueIdentifier>{80cc8937-d3c0-4387-9237-e9b25aa161e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\Interface">
       <UniqueIdentifier>{7f875c8d-bce6-4837-919f-35ac117e4e09}</UniqueIdentifier>
@@ -451,12 +445,27 @@
     <Filter Include="Object\Line">
       <UniqueIdentifier>{fef4642c-22f2-447b-b01e-e62180ce51b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Shader\HLSL\IrradianceMap">
+      <UniqueIdentifier>{e56469f5-1ebe-4428-af53-7e3eeafcfaec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SpecularPreFilter">
+      <UniqueIdentifier>{e96f43f1-e783-4330-aaca-f7823fcd9b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\IntegrateBRDF">
+      <UniqueIdentifier>{d10a3675-3d80-48f9-a61c-d45124868211}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sampler.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
     <None Include="Lighting.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="BRDF.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="Shading.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
   </ItemGroup>

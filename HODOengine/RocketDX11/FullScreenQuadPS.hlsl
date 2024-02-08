@@ -1,25 +1,23 @@
 #include "Sampler.hlsli"
 #include "Lighting.hlsli"
+#include "Shading.hlsli"
+#include "BRDF.hlsli"
 
-Texture2D DepthTexture      : register(t0);
+//Texture2D DepthTexture      : register(t0);
+Texture2D Position      : register(t0);
 Texture2D Diffuse       : register(t1);
 Texture2D Normal        : register(t2);
-//Texture2D MetalRough    : register(t3);
+Texture2D MetalRough    : register(t3);
 //Texture2D AO        : register(t4);
+TextureCube EnvMap : register(t6);
+TextureCube PrefilteredSpecMap : register(t7);
+Texture2D BrdfLUT : register(t8);
 
-cbuffer lightData : register(b0)
-{
-	DirectionalLight dirLight;
-	PointLight pointLight[4];
-	SpotLight spotLight[2];
-
-	float3 cameraPosition;
-}
-
-cbuffer externalData : register(b1)
+cbuffer externalData : register(b0)
 {
 	float4x4 inverseView;
 	float4x4 inverseProjection;
+	int useEnvMap;
 }
 
 struct VertexToPixel
@@ -49,25 +47,71 @@ float3 CalculateWorldFromDepth(float depth, float2 texCoord)
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	float depth = DepthTexture.Sample(PointSampler, input.uv).r;
-	float3 posW = CalculateWorldFromDepth(depth, input.uv);
+	//float depth = DepthTexture.Sample(PointSampler, input.uv).r;
+	//float3 posW = CalculateWorldFromDepth(depth, input.uv);
+	float3 posW = Position.Sample(PointSampler, input.uv).rgb;
 	float3 albedo = Diffuse.Sample(PointSampler, input.uv).rgb;
 	float3 normal = Normal.Sample(PointSampler, input.uv).rgb;
-	//float3 metalRough = MetalRough.Sample(PointSampler, input.uv);
-	//float metallic = metalRough.r;
-	//float roughness = metalRough.g;
-	//float occlusion = metalRough.b;
+	float3 metalRough = MetalRough.Sample(PointSampler, input.uv);
+	float metallic = metalRough.r;
+	float roughness = metalRough.g;
+	float occlusion = metalRough.b;
 	//float3 emissive = Emissive.Sample(PointSampler, input.uv).rgb;
 
-	float3 toCamera = normalize(cameraPosition - posW);
+	SurfaceInfo surf;
+	surf.posW = float4(posW, 1.0f);
+	surf.N = normal;
+	surf.V = normalize(cameraPosition.xyz - posW);
+	surf.NdotV = dot(surf.N, surf.V);
 
-	// Directional light calculation
-	float dirLightAmount = saturate(dot(normal, -normalize(dirLight.Direction)));
-	//float3 totalDirLight = dirLight.Color * dirLightAmount * albedo;
-	float3 totalDirLight = dirLight.Color * dirLightAmount * 0.45f;
-	float3 total = totalDirLight + albedo;
-	return float4(total, 1.0f);
-	//return float4(totalDirLight, 1.0f);
-	//return float4(albedo, 1.0f);
+	float3 Lo = float3(0, 0, 0);
+	float3 F0 = float3(0.04, 0.04, 0.04);
+	F0 = lerp(F0, albedo, metallic);
+
+	// Light calculation
+	for (int i = 0; i < MAX_LIGHTS; ++i)
+	{
+		Light light = lights[i];
+		if (light.status == LIGHT_DISABLED)
+			continue;
+		LightingInfo li = EvalLightingInfo(surf, light);
+
+		// cook-torrance brdf
+		float NDF = DistributionGGX(saturate(li.NdotH), roughness);
+		float G = GeometrySmith(saturate(surf.NdotV), saturate(li.NdotL), roughness);
+		float3 F = fresnelSchlick(saturate(dot(li.H, surf.V)), F0);
+		float3 kS = F;
+		float3 kD = float3(1.0, 1.0, 1.0) - kS;
+		kD *= 1.0 - metallic;
+
+		float NdotL = saturate(li.NdotL);
+
+		float3 numerator = NDF * G * F;
+		float denominator = 4.0 * saturate(surf.NdotV) * NdotL;
+		float3 specular = numerator / max(denominator, 0.001);
+
+		Lo += (kD * albedo / PI + specular) * light.color.rgb * li.attenuation * NdotL * li.shadowFactor;
+	}
+
+	float3 ambient = globalAmbient.rgb * albedo;
+
+	if (useEnvMap)
+	{
+		float3 kS = fresnelSchlickRoughness(saturate(surf.NdotV), F0, roughness);
+		float3 kD = 1.0 - kS;
+		kD *= 1.0 - metallic;
+		float3 irradiance = EnvMap.Sample(LinearSampler, surf.N).rgb;
+		float3 diffuse = irradiance * albedo;
+
+		float3 R = normalize(reflect(-surf.V, surf.N));
+		float3 prefilteredColor = PrefilteredSpecMap.SampleLevel(LinearSampler, R, roughness * 5.0).rgb;
+		float2 envBrdf = BrdfLUT.Sample(PointSampler, float2(saturate(surf.NdotV), roughness)).rg;
+		float3 specular = prefilteredColor * (kS * envBrdf.x + envBrdf.y);
+		ambient = (kD * diffuse + specular);
+	}
+
+	ambient *= occlusion;
+	float3 color = ambient + Lo;
+	return float4(color, 1.0f);
 }
 

@@ -8,6 +8,7 @@ namespace RocketCore::Graphics
 	class QuadBuffer;
 	class VertexShader;
 	class PixelShader;
+	class EnvMapInfo;
 
 	class DeferredPass
 	{

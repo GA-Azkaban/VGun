@@ -1,10 +1,13 @@
 ﻿#include "DeferredBuffers.h"
+#include "ResourceManager.h"
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
 	DeferredBuffers::DeferredBuffers(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
-		: _device(device), _deviceContext(deviceContext)
+		: _device(device), _deviceContext(deviceContext),
+		_depthTexture(0), _depthStencilView(0), _depthShaderResourceView(0),
+		_envMap(0), _envPreFilter(0), _brdfLUT(0)
 	{
 		for (int iIndex = 0; iIndex < static_cast<int>(BUFFERTYPE::GBUFFER_COUNT); iIndex++)
 		{
@@ -172,4 +175,31 @@ namespace RocketCore::Graphics
 			_deviceContext->PSSetShaderResources(i, 1, &shaderResView);
 		}
 	}
+
+	void DeferredBuffers::SetEnvironmentMap(std::string fileName)
+	{
+		EnvMapInfo& info = ResourceManager::Instance().GetEnvMapInfo(fileName);
+		_envMap = info.envMapTexture.shaderResourceView.Get();
+		_envPreFilter = info.envPreFilterMapTexture.shaderResourceView.Get();
+		_brdfLUT = info.brdfLUT.shaderResourceView.Get();
+	}
+
+	ID3D11ShaderResourceView* DeferredBuffers::GetEnvMap()
+	{
+		//return _envMap.Get();
+		return _envMap;
+	}
+
+	ID3D11ShaderResourceView* DeferredBuffers::GetEnvPreFilterMap()
+	{
+		//return _envPreFilter.Get();
+		return _envPreFilter;
+	}
+
+	ID3D11ShaderResourceView* DeferredBuffers::GetBRDFLut()
+	{
+		//return _brdfLUT.Get();
+		return _brdfLUT;
+	}
+
 }

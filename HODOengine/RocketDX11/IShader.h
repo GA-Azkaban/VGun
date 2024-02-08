@@ -15,12 +15,6 @@ namespace RocketCore::Graphics
 	class IShader
 	{
 	public:
-		IShader() {};
-		virtual void Initialize(ID3D11Device* device, const std::string& path) = 0;
-
-
-		/// 2024.01.15 김민정
-	public:
 		IShader(ID3D11Device* device, ID3D11DeviceContext* context);
 		virtual ~IShader();
 

@@ -12,16 +12,14 @@
 
 #include "ResourceManager.h"
 #include "ObjectManager.h"
+#include "Light.h"
 
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
 #include "ImageRenderer.h"
 #include "LineRenderer.h"
-
 #include "Cubemap.h"
-
-#include "LightStruct.h"
 
 #include "DeferredBuffers.h"
 #include "QuadBuffer.h"
@@ -140,20 +138,20 @@ namespace RocketCore::Graphics
 		_viewport.MinDepth = 0;
 		_viewport.MaxDepth = 1;
 
-		_deviceContext->RSSetViewports(1, &_viewport);
-
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		/// Load resources
 		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
-		_resourceManager.LoadTextureFile("sunsetcube1024.dds");
+		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 
 		CreateDepthStencilStates();
-		SetLights();
+		
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
 		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
+		//_deferredBuffers->SetEnvironmentMap("sunsetcube1024.dds");
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
 
 		_GBufferPass = new GBufferPass(_deferredBuffers);
@@ -162,6 +160,8 @@ namespace RocketCore::Graphics
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_spritePass = new SpritePass(_quadBuffer);
 		_blitPass = new BlitPass(_quadBuffer, _renderTargetView.Get());
+
+		Cubemap::Instance()->_deferredBuffers = _deferredBuffers;
 
 		/// DEBUG Obejct
 		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
@@ -280,9 +280,10 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
 
+		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_spritePass->Render();
 
-		SetDepthStencilState(_depthStencilStateDisable.Get());
+		_deviceContext->RSSetViewports(1, &_viewport);
 		_blitPass->Render();
 
 		EndRender();
@@ -366,36 +367,6 @@ namespace RocketCore::Graphics
 	void RocketDX11::SetDepthStencilState(ID3D11DepthStencilState* dss)
 	{
 		_deviceContext->OMSetDepthStencilState(dss, 1);
-	}
-
-	void RocketDX11::SetLights()
-	{
-		DirectionalLight* dirLight = new DirectionalLight();
-		dirLight->Color = XMFLOAT4{ 0.3f, 0.3f, 0.3f, 1.0f };
-		dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
-		ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso")->SetDirectionalLight("dirLight", *dirLight);
-
-		PointLight pointLight[4];
-		pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
-		pointLight[0].Position = XMFLOAT4{ 5.0f, 5.0f, 0.0f, 1.0f };
-		pointLight[1].Color = XMFLOAT4{ 0.0f, 0.3f, 0.0f, 1.0f };
-		pointLight[1].Position = XMFLOAT4{ 0.0f, 3.0f, -5.0f, 1.0f };
-		pointLight[2].Color = XMFLOAT4{ 0.5f, 0.3f, 0.0f, 1.0f };
-		pointLight[2].Position = XMFLOAT4{ -1.0f, 0.0f, 0.0f, 1.0f };
-		pointLight[3].Color = XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f };
-		pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
-		ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso")->SetPointLight("pointLight", pointLight);
-
-		SpotLight spotLight[2];
-		spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
-		spotLight[0].Direction = XMFLOAT3{ 10.0f, -3.0f, 0.0f };
-		spotLight[0].Position = XMFLOAT4{ 20.0f, 10.0f, 0.0f, 1.0f };
-		spotLight[0].SpotPower = 1.0f;
-		spotLight[1].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
-		spotLight[1].Direction = XMFLOAT3{ -10.0f, 0.0f, -5.0f };
-		spotLight[1].Position = XMFLOAT4{ 10.0f, 20.0f, 5.0f, 1.0f };
-		spotLight[1].SpotPower = 1.0f;
-		ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso")->SetSpotLight("spotLight", spotLight);
 	}
 
 }

@@ -17,8 +17,6 @@
 
 using Microsoft::WRL::ComPtr;
 
-
-
 namespace RocketCore::Graphics
 {
 	class Mesh;
@@ -34,6 +32,21 @@ namespace RocketCore::Graphics
 		std::vector<Mesh*> loadedMeshes;
 		Node* node;
 		std::unordered_map<std::string, Animation*> loadedAnimation;	// <animName, animationInfo>
+	};
+
+	struct Texture
+	{
+		ComPtr<ID3D11Texture2D> texture;
+		std::vector<ComPtr<ID3D11RenderTargetView>> renderTargetViews;
+		ComPtr<ID3D11ShaderResourceView> shaderResourceView;
+	};
+
+	struct EnvMapInfo
+	{
+		Texture cubeMapTexture;
+		Texture envMapTexture;
+		Texture envPreFilterMapTexture;
+		Texture brdfLUT;
 	};
 
 	class ResourceManager : public Singleton<ResourceManager>
@@ -55,6 +68,7 @@ namespace RocketCore::Graphics
 
 		void LoadFBXFile(std::string fileName);
 		void LoadTextureFile(std::string fileName);
+		void LoadCubeMapTextureFile(std::string fileName);
 
 		/// <summary>
 	/// Get meshes informations in model file.
@@ -90,6 +104,9 @@ namespace RocketCore::Graphics
 
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
+
+		EnvMapInfo& GetEnvMapInfo(const std::string& fileName);
+
 		DirectX::SpriteFont* GetDefaultFont();
 
 	public:
@@ -101,7 +118,6 @@ namespace RocketCore::Graphics
 		DirectX::DX11::GeometricPrimitive* GetCubePrimitive();
 		DirectX::DX11::GeometricPrimitive* GetSpherePrimitive();
 		DirectX::DX11::GeometricPrimitive* GetCylinderPrimitive();
-
 
 	private:
 		void LoadShaders();
@@ -117,6 +133,10 @@ namespace RocketCore::Graphics
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo);
 		void LoadAnimation(const aiScene* scene);
+
+		void GenerateEnvMap(Texture& envMapTexture, ID3D11ShaderResourceView* cubeMapSRV);
+		void GenerateEnvPreFilter(Texture& envPreFilterMap, ID3D11ShaderResourceView* cubeMapSRV);
+		void GenerateBrdfLUT(Texture& brdfLUT);
 
 	private:
 		ComPtr<ID3D11Device> _device;
@@ -136,10 +156,13 @@ namespace RocketCore::Graphics
 
 		std::unordered_map<std::string, FileInfo> _loadedFileInfo; //<fileName, infos>
 		std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures;	//<fileName, texture>
+		std::unordered_map<std::string, EnvMapInfo> _loadedEnvMaps;
 
 		std::string _fileName;
 
 		GeometryGenerator* _geometryGen;
 		SamplerState* _samplerState;
+
+		const float cubeMapSize = 512.0f;
 	};
 }

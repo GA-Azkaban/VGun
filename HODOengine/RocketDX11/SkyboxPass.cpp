@@ -16,7 +16,6 @@ namespace RocketCore::Graphics
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 
-		UINT skyBoxIndex = ObjectManager::Instance().GetCubeMapList().size() - 1;
-		ObjectManager::Instance().GetCubeMapList()[skyBoxIndex]->Render();
+		Cubemap::Instance()->Render();
 	}
 }

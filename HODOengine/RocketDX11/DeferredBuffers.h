@@ -2,15 +2,17 @@
 #include <d3d11_2.h>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <string>
 
 namespace RocketCore::Graphics
 {
 	// Render Target Type
 	enum class BUFFERTYPE
 	{
+		BUFFER_POSITION,
 		BUFFER_DIFFUSE,
 		BUFFER_NORNAL,
-		//BUFFER_METALROUGHOCCLUSION,
+		BUFFER_METALROUGHOCCLUSION,
 
 		GBUFFER_COUNT,
 	};
@@ -23,9 +25,15 @@ namespace RocketCore::Graphics
 		void Initialize(UINT textureWidth, UINT textureHeight);
 
 		void SetRenderTargets();
+		void SetEnvironmentMap(std::string fileName);
+		
 		ID3D11ShaderResourceView* GetShaderResourceView(UINT index);
 		ID3D11DepthStencilView* GetDepthStencilView();
 		ID3D11ShaderResourceView* GetDepthSRV();
+		ID3D11ShaderResourceView* GetEnvMap();
+		ID3D11ShaderResourceView* GetEnvPreFilterMap();
+		ID3D11ShaderResourceView* GetBRDFLut();
+
 		void ClearRenderTargets(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
 		void FlushShaderResourceViews();
 
@@ -44,5 +52,13 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _depthTexture;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _depthShaderResourceView;
+
+		// Env map
+		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envMap;
+		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envPreFilter;
+		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _brdfLUT; 
+		ID3D11ShaderResourceView* _envMap;
+		ID3D11ShaderResourceView* _envPreFilter;
+		ID3D11ShaderResourceView* _brdfLUT;
 	};
 }

@@ -1,24 +1,33 @@
 #ifndef LIGHTING_COMMON
 #define LIGHTING_COMMON
 
-struct DirectionalLight
+#define MAX_LIGHTS 1
+#define DIRECTIONAL_LIGHT 0
+#define POINT_LIGHT 1
+#define SPOT_LIGHT 2
+
+#define LIGHT_DISABLED 0
+#define LIGHT_ENABLED 1
+#define LIGHT_ENABLED_W_SHADOWMAP 2
+
+struct Light
 {
-	float4 Color;
-	float3 Direction;
+	float4 position;
+	float4 direction;
+	float4 color;
+
+	float range;
+	float spotAngle;
+
+	int lightType;
+	int status;
 };
 
-struct PointLight
+cbuffer LightProperties : register(b1)
 {
-	float4 Color;
-	float4 Position;
-};
-
-struct SpotLight
-{
-	float4 Color;
-	float4 Position;
-	float3 Direction;
-	float SpotPower;
-};
+	float4 cameraPosition;
+	float4 globalAmbient;
+	Light lights[MAX_LIGHTS];
+}
 
 #endif

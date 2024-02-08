@@ -86,6 +86,18 @@ namespace RocketCore::Graphics
 			pixelShader->SetInt("useNormalMap", 0);
 		}
 
+		if (m_material->GetOcclusionRoughnessMetalMapSRV())
+		{
+			pixelShader->SetInt("useOccMetalRough", 1);
+			pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMapSRV());
+		}
+		else
+		{
+			pixelShader->SetInt("useOccMetalRough", 0);
+			pixelShader->SetInt("gMetallic", m_material->GetMetallic());
+			pixelShader->SetInt("gRoughness", m_material->GetRoughness());
+		}
+
 		pixelShader->CopyAllBufferData();
 		pixelShader->SetShader();
 
