@@ -27,11 +27,11 @@ namespace RocketCore::Graphics
 
 		_vertexShader->SetShader();
 
-		XMMATRIX invView = XMMatrixInverse(0, Camera::GetMainCamera()->GetViewMatrix());
-		_pixelShader->SetMatrix4x4Array("inverseView", &invView);
-
-		XMMATRIX invProj = XMMatrixInverse(0, Camera::GetMainCamera()->GetProjectionMatrix());
-		_pixelShader->SetMatrix4x4Array("inverseProjection", &invProj);
+		//XMMATRIX invView = XMMatrixInverse(0, Camera::GetMainCamera()->GetViewMatrix());
+		//_pixelShader->SetMatrix4x4Array("inverseView", &invView);
+		//
+		//XMMATRIX invProj = XMMatrixInverse(0, Camera::GetMainCamera()->GetProjectionMatrix());
+		//_pixelShader->SetMatrix4x4Array("inverseProjection", &invProj);
 
 		//_pixelShader->SetShaderResourceView("DepthTexture", _deferredBuffers->GetDepthSRV());
 		_pixelShader->SetShaderResourceView("Position", _deferredBuffers->GetShaderResourceView(0));
@@ -57,7 +57,7 @@ namespace RocketCore::Graphics
 
 		_pixelShader->SetFloat4("cameraPosition", lp.cameraPosition);
 		_pixelShader->SetFloat4("globalAmbient", lp.globalAmbient);
-		_pixelShader->SetLights("lights", lp.lights);
+		_pixelShader->SetLights("lights", &lp.lights[0]);
 
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();

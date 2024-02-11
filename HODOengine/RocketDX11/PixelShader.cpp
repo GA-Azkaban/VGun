@@ -48,7 +48,7 @@ namespace RocketCore::Graphics
 
 	void PixelShader::SetLights(std::string name, const Light* lights)
 	{
-		SetData(name, (void*)&lights, sizeof(Light) * MAX_LIGHTS);
+		SetData(name, (void*)lights, sizeof(Light) * MAX_LIGHTS);
 	}
 
 	// Creates the DirectX pixel shader

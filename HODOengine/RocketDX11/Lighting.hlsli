@@ -12,18 +12,18 @@
 
 struct Light
 {
-	float4 position;
+	//float4 position;
 	float4 direction;
 	float4 color;
 
-	float range;
-	float spotAngle;
+	//float range;
+	//float spotAngle;
 
 	int lightType;
 	int status;
 };
 
-cbuffer LightProperties : register(b1)
+cbuffer LightProperties : register(b0)
 {
 	float4 cameraPosition;
 	float4 globalAmbient;

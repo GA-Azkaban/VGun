@@ -10,7 +10,7 @@ namespace RocketCore::Graphics
 
 	void LightAdapter::SetPosition(const Vector4& position)
 	{
-		light->position = position;
+		//light->position = position;
 	}
 
 	void LightAdapter::SetDirection(const Vector4& direction)

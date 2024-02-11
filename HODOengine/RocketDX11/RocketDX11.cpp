@@ -143,6 +143,7 @@ namespace RocketCore::Graphics
 		/// Load resources
 		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
+		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.png");
 
 		CreateDepthStencilStates();
 		
@@ -219,7 +220,7 @@ namespace RocketCore::Graphics
 		_viewport.MinDepth = 0.0f;
 		_viewport.MaxDepth = 1.0f;
 
-		_deviceContext->RSSetViewports(1, &_viewport);
+		//_deviceContext->RSSetViewports(1, &_viewport);
 	}
 
 	void RocketDX11::RenderLine()

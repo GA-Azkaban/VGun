@@ -59,7 +59,8 @@ PSOutput main(VertexToPixel input)
 	float occlusion = 1.0f;
 
 	float metallic = gMetallic;
-	float roughness = gRoughness;
+	//float roughness = gRoughness;
+	float roughness = 1.0f;
 
 	if (useOccMetalRough)
 	{
@@ -74,9 +75,11 @@ PSOutput main(VertexToPixel input)
 	output.position = float4(input.worldPos, 1.0f);
 	output.diffuse = textureColor;
 	output.normal = float4(input.normal, 1.0f);
-	output.metalRoughOcclusion.r = metallic;
-	output.metalRoughOcclusion.g = roughness;
-	output.metalRoughOcclusion.b = occlusion;
+	output.metalRoughOcclusion = float4(metallic, roughness, occlusion, 1.0f);
+	//output.metalRoughOcclusion.r = metallic;
+	//output.metalRoughOcclusion.g = roughness;
+	//output.metalRoughOcclusion.b = occlusion;
+	//output.metalRoughOcclusion.a = 1.0f;
 	//output.emissive = emissive;
 
 	return output;

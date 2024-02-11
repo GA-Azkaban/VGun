@@ -126,7 +126,7 @@ namespace RocketCore::Graphics
 	{
 		EnvMapInfo envMapInfo;
 
-		ID3D11ShaderResourceView* srv;
+		ID3D11ShaderResourceView* skyboxTexture;
 		std::string path = std::string(TEXTURES_DIRECTORY_NAME) + fileName;
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
 		std::wstring pathWS = std::wstring(path.begin(), path.end());
@@ -135,19 +135,105 @@ namespace RocketCore::Graphics
 
 		if (extension == "dds")
 		{
-			hr = CreateDDSTextureFromFile(_device.Get(), pathWS.c_str(), nullptr, &srv);
+			hr = CreateDDSTextureFromFile(_device.Get(), pathWS.c_str(), nullptr, &skyboxTexture);
+			envMapInfo.cubeMapTexture.shaderResourceView = skyboxTexture;
 		}
 		else
 		{
-			hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &skyboxTexture);
+
+			D3D11_TEXTURE2D_DESC textureDesc;
+			ZeroMemory(&textureDesc, sizeof(textureDesc));
+			textureDesc.Width = cubeMapSize;
+			textureDesc.Height = cubeMapSize;
+			textureDesc.MipLevels = 1;
+			textureDesc.ArraySize = 6;
+			textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.Usage = D3D11_USAGE_DEFAULT;
+			textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+			textureDesc.CPUAccessFlags = 0;
+			textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+			HR(_device->CreateTexture2D(&textureDesc, nullptr, envMapInfo.cubeMapTexture.texture.GetAddressOf()));
+
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+			srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+			srvDesc.TextureCube.MostDetailedMip = 0;
+			srvDesc.TextureCube.MipLevels = 1;
+
+			HR(_device->CreateShaderResourceView(envMapInfo.cubeMapTexture.texture.Get(), &srvDesc, envMapInfo.cubeMapTexture.shaderResourceView.GetAddressOf()));
+
+			D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+			rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+			rtvDesc.Texture2DArray.MipSlice = 0;
+			rtvDesc.Texture2DArray.ArraySize = 1;
+			for (UINT i = 0; i < 6; ++i)
+			{
+				rtvDesc.Texture2DArray.FirstArraySlice = i;
+				ID3D11RenderTargetView* rtv;
+				HR(_device->CreateRenderTargetView(envMapInfo.cubeMapTexture.texture.Get(), &rtvDesc, &rtv));
+				envMapInfo.cubeMapTexture.renderTargetViews.push_back(rtv);
+			}
+
+			D3D11_VIEWPORT viewport{
+				.TopLeftX = 0.0f,
+				.TopLeftY = 0.0f,
+				.Width = cubeMapSize,
+				.Height = cubeMapSize,
+				.MinDepth = 0.0f,
+				.MaxDepth = 1.0f
+			};
+			_deviceContext->RSSetViewports(1, &viewport);
+
+			VertexShader* vs = GetVertexShader("CubeMapVertexShader.cso");
+			PixelShader* ps = GetPixelShader("RectToCubeMapPS.cso");
+
+			for (UINT i = 0; i < 6; ++i)
+			{
+				_deviceContext->OMSetRenderTargets(1, envMapInfo.cubeMapTexture.renderTargetViews[i].GetAddressOf(), nullptr);
+				XMVECTOR eyePos{ 0, 0, 0, 0 };
+				XMVECTOR lookAt = forward[i];
+				XMVECTOR upVec = up[i];
+				float nearZ = 0.0f;
+				float farZ = 10.0f;
+				float viewWidth = 2.0f;
+				float viewHeight = 2.0f;
+
+				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
+				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+				XMMATRIX viewProj = viewMatrix * projMatrix;
+				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
+
+				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->CopyAllBufferData();
+				vs->SetShader();
+
+				ps->SetShaderResourceView("CubeMap", skyboxTexture);
+				ps->CopyAllBufferData();
+				ps->SetShader();
+
+				_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				Mesh* mesh = GetMeshes("skybox")[0];
+				mesh->BindBuffers();
+				mesh->Draw();
+
+				_deviceContext->Flush();
+			}
+
+			ID3D11ShaderResourceView* nullSRV = nullptr;
+			_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+			ID3D11RenderTargetView* nullRTV = nullptr;
+			_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
 		}
 
 		if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 		}
-
-		envMapInfo.cubeMapTexture.shaderResourceView = srv;
 
 		GenerateEnvMap(envMapInfo.envMapTexture, envMapInfo.cubeMapTexture.shaderResourceView.Get());
 		GenerateEnvPreFilter(envMapInfo.envPreFilterMapTexture, envMapInfo.cubeMapTexture.shaderResourceView.Get());
@@ -314,6 +400,10 @@ namespace RocketCore::Graphics
 		PixelShader* cubeMapPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (cubeMapPixelShader->LoadShaderFile(L"Resources/Shaders/CubeMapPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("CubeMapPixelShader.cso", cubeMapPixelShader));
+
+		PixelShader* rectToCubeMapPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (rectToCubeMapPS->LoadShaderFile(L"Resources/Shaders/RectToCubeMapPS.cso"))
+			_pixelShaders.insert(std::make_pair("RectToCubeMapPS.cso", rectToCubeMapPS));
 
 		PixelShader* irradiancePS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (irradiancePS->LoadShaderFile(L"Resources/Shaders/IrradianceMapPS.cso"))
@@ -870,7 +960,7 @@ namespace RocketCore::Graphics
 
 		for (int i = 0; i < 6; ++i)
 		{
-			_deviceContext->OMSetRenderTargets(1, &(envMapTexture.renderTargetViews[i]), nullptr);
+			_deviceContext->OMSetRenderTargets(1, envMapTexture.renderTargetViews[i].GetAddressOf(), nullptr);
 			XMVECTOR eyePos{ 0, 0, 0, 0 };
 			XMVECTOR lookAt = forward[i];
 			XMVECTOR upVec = up[i];
@@ -897,6 +987,8 @@ namespace RocketCore::Graphics
 			Mesh* mesh = GetMeshes("skybox")[0];
 			mesh->BindBuffers();
 			mesh->Draw();
+
+			_deviceContext->Flush();
 		}
 
 		ID3D11ShaderResourceView* nullSRV = nullptr;
@@ -968,7 +1060,7 @@ namespace RocketCore::Graphics
 
 			for (UINT j = 0; j < 6; ++j)
 			{
-				_deviceContext->OMSetRenderTargets(1, &(envPreFilterMap.renderTargetViews[i * 6 + j]), nullptr);
+				_deviceContext->OMSetRenderTargets(1, envPreFilterMap.renderTargetViews[i * 6 + j].GetAddressOf(), nullptr);
 				XMVECTOR eyePos{ 0, 0, 0, 0 };
 				XMVECTOR lookAt = forward[j];
 				XMVECTOR upVec = up[j];
@@ -1051,7 +1143,7 @@ namespace RocketCore::Graphics
 			.MaxDepth = 1.0f
 		};
 		_deviceContext->RSSetViewports(1, &viewport);
-		_deviceContext->OMSetRenderTargets(1, &(brdfLUT.renderTargetViews[0]), nullptr);
+		_deviceContext->OMSetRenderTargets(1, brdfLUT.renderTargetViews[0].GetAddressOf(), nullptr);
 
 		vs->SetShader();
 		ps->SetShader();

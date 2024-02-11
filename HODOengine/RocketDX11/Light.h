@@ -19,20 +19,22 @@ namespace RocketCore::Graphics
 		Static_Shadows,
 	};
 
-	_declspec(align(16)) struct Light
+	//_declspec(align(16)) struct Light
+	struct Light
 	{
-		DirectX::XMFLOAT4 position;
-		DirectX::XMFLOAT4 direction;
-		DirectX::XMFLOAT4 color;
+		//DirectX::XMFLOAT4 position{0.0f, 0.0f, 0.0f, 0.0f};
+		DirectX::XMFLOAT4 direction{-1.0f, -1.0f, 1.0f, 0.0f};
+		DirectX::XMFLOAT4 color{5.0f, 5.0f, 5.0f, 1.0f};
 
-		float range = 2.0f;
-		float spotAngle = 0.0f;
+		//float range = 2.0f;
+		//float spotAngle = 0.0f;
 
 		int lightType = (int)LightType::DirectionalLight;
 		int status = (int)LightStatus::Enabled;
 	};
 
-	_declspec(align(16)) struct LightProperties
+	//_declspec(align(16)) struct LightProperties
+	struct LightProperties
 	{
 		DirectX::XMFLOAT4 cameraPosition;
 		DirectX::XMFLOAT4 globalAmbient;

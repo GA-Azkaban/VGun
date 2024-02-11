@@ -76,34 +76,34 @@ inline void EvalDirectionalLight(SurfaceInfo surf, Light light, inout LightingIn
     CalcCommonLightInfo(surf, li);
 }
 
-inline void EvalPointLight(SurfaceInfo surf, Light light, inout LightingInfo li)
-{
-    li.L = light.position.xyz - surf.posW.xyz;
-    li.distance = length(li.L);
-    li.L = normalize(li.L);
-    //li.attenuation = 1.0 / (light.constantAtt + light.linearAtt * li.distance + light.quadAtt * (li.distance * li.distance));
-    li.attenuation = 1.0;
-
-    li.shadowFactor = 1;
-    CalcCommonLightInfo(surf, li);
-}
-
-inline void EvalSpotLight(SurfaceInfo surf, Light light, inout LightingInfo li)
-{
-    li.L = light.position.xyz - surf.posW.xyz;
-    li.distance = length(li.L);
-    li.L = normalize(li.L);
-    //li.attenuation = 1.0 / (light.constantAtt + light.linearAtt * li.distance + light.quadAtt * (li.distance * li.distance));
-    li.attenuation = 1.0;
-    float minCos = cos(light.spotAngle);
-    float maxCos = (minCos + 1.0f) / 2.0f; // squash between [0, 1]
-    float cosAngle = dot(light.direction.xyz, -li.L);
-    float intensity = smoothstep(minCos, maxCos, cosAngle);
-    li.attenuation = intensity * li.attenuation;
-
-    li.shadowFactor = 1;
-    CalcCommonLightInfo(surf, li);
-}
+//inline void EvalPointLight(SurfaceInfo surf, Light light, inout LightingInfo li)
+//{
+//    li.L = light.position.xyz - surf.posW.xyz;
+//    li.distance = length(li.L);
+//    li.L = normalize(li.L);
+//    //li.attenuation = 1.0 / (light.constantAtt + light.linearAtt * li.distance + light.quadAtt * (li.distance * li.distance));
+//    li.attenuation = 1.0;
+//
+//    li.shadowFactor = 1;
+//    CalcCommonLightInfo(surf, li);
+//}
+//
+//inline void EvalSpotLight(SurfaceInfo surf, Light light, inout LightingInfo li)
+//{
+//    li.L = light.position.xyz - surf.posW.xyz;
+//    li.distance = length(li.L);
+//    li.L = normalize(li.L);
+//    //li.attenuation = 1.0 / (light.constantAtt + light.linearAtt * li.distance + light.quadAtt * (li.distance * li.distance));
+//    li.attenuation = 1.0;
+//    float minCos = cos(light.spotAngle);
+//    float maxCos = (minCos + 1.0f) / 2.0f; // squash between [0, 1]
+//    float cosAngle = dot(light.direction.xyz, -li.L);
+//    float intensity = smoothstep(minCos, maxCos, cosAngle);
+//    li.attenuation = intensity * li.attenuation;
+//
+//    li.shadowFactor = 1;
+//    CalcCommonLightInfo(surf, li);
+//}
 
 
 LightingInfo EvalLightingInfo(SurfaceInfo surf, Light light)
@@ -114,12 +114,12 @@ LightingInfo EvalLightingInfo(SurfaceInfo surf, Light light)
         case DIRECTIONAL_LIGHT:
             EvalDirectionalLight(surf, light, li);
             break;
-        case POINT_LIGHT:
+        /*case POINT_LIGHT:
             EvalPointLight(surf, light, li);
             break;
         case SPOT_LIGHT:
             EvalSpotLight(surf, light, li);
-            break;
+            break;*/
         default:
             break;
     }

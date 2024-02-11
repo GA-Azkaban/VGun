@@ -21,6 +21,7 @@ VertexToPixel main(VertexShaderInput input)
 
 	// Set z = w so that z/w = 1 (i.e., skydome always on far plane)
 	output.position = mul(float4(input.position, 1.0f), worldViewProj).xyww;
+	//output.position = mul(float4(input.position, 1.0f), worldViewProj);
 
 	// Use local vertex position as cubemap lookup vector.
 	output.uv = input.position;

@@ -43,6 +43,9 @@
     <FxCompile Include="IntegrateBRDF.hlsl">
       <Filter>Resource\Shader\HLSL\IntegrateBRDF</Filter>
     </FxCompile>
+    <FxCompile Include="RectToCubeMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\RectToCubeMap</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -331,9 +334,6 @@
     <Filter Include="Resource\Resource3D\Primitive">
       <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Texture">
-      <UniqueIdentifier>{b426d68d-4899-470b-8822-54d1393565eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader">
       <UniqueIdentifier>{dcfc1891-19ba-4656-930a-c318b65099f7}</UniqueIdentifier>
     </Filter>
@@ -453,6 +453,9 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\IntegrateBRDF">
       <UniqueIdentifier>{d10a3675-3d80-48f9-a61c-d45124868211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\RectToCubeMap">
+      <UniqueIdentifier>{9588e615-68c0-401c-86d8-992554bcf5e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

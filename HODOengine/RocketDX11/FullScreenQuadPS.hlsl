@@ -13,10 +13,10 @@ TextureCube EnvMap : register(t6);
 TextureCube PrefilteredSpecMap : register(t7);
 Texture2D BrdfLUT : register(t8);
 
-cbuffer externalData : register(b0)
+cbuffer externalData : register(b1)
 {
-	float4x4 inverseView;
-	float4x4 inverseProjection;
+	//float4x4 inverseView;
+	//float4x4 inverseProjection;
 	int useEnvMap;
 }
 
@@ -26,24 +26,24 @@ struct VertexToPixel
 	float2 uv           : TEXCOORD;
 };
 
-float3 CalculateWorldFromDepth(float depth, float2 texCoord)
-{
-	// clip space between [-1, 1]
-	// flip y so that +ve y is upwards
-	float2 clipXY = texCoord * 2.0 - 1.0;
-	clipXY.y = -clipXY.y;
-
-	// NOTE: depth is not linearized
-	// Also in range [0, 1] due to DirectX Convention
-	float4 clipSpace = float4(clipXY, depth, 1);
-	float4 viewSpace = mul(inverseProjection, clipSpace);
-
-	// perspective divide
-	viewSpace /= viewSpace.w;
-
-	float4 worldSpace = mul(inverseView, viewSpace);
-	return worldSpace.xyz;
-}
+//float3 CalculateWorldFromDepth(float depth, float2 texCoord)
+//{
+//	// clip space between [-1, 1]
+//	// flip y so that +ve y is upwards
+//	float2 clipXY = texCoord * 2.0 - 1.0;
+//	clipXY.y = -clipXY.y;
+//
+//	// NOTE: depth is not linearized
+//	// Also in range [0, 1] due to DirectX Convention
+//	float4 clipSpace = float4(clipXY, depth, 1);
+//	float4 viewSpace = mul(inverseProjection, clipSpace);
+//
+//	// perspective divide
+//	viewSpace /= viewSpace.w;
+//
+//	float4 worldSpace = mul(inverseView, viewSpace);
+//	return worldSpace.xyz;
+//}
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
@@ -52,7 +52,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 posW = Position.Sample(PointSampler, input.uv).rgb;
 	float3 albedo = Diffuse.Sample(PointSampler, input.uv).rgb;
 	float3 normal = Normal.Sample(PointSampler, input.uv).rgb;
-	float3 metalRough = MetalRough.Sample(PointSampler, input.uv);
+	float3 metalRough = MetalRough.Sample(PointSampler, input.uv).rgb;
 	float metallic = metalRough.r;
 	float roughness = metalRough.g;
 	float occlusion = metalRough.b;
