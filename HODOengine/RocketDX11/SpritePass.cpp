@@ -8,15 +8,15 @@
 namespace RocketCore::Graphics
 {
 
-	SpritePass::SpritePass(QuadBuffer* quadBuffer)
-		: _quadBuffer(quadBuffer)
+	SpritePass::SpritePass(QuadBuffer* toneMapBuffer)
+		: _toneMapBuffer(toneMapBuffer)
 	{
 		_spriteBatch = new DirectX::SpriteBatch(ResourceManager::Instance().GetDeviceContext());
 	}
 
 	void SpritePass::Render()
 	{
-		_quadBuffer->SetRenderTargets();
+		_toneMapBuffer->SetRenderTargets();
 
 		RenderImage();
 		RenderText();

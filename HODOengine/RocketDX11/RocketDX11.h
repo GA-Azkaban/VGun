@@ -33,6 +33,7 @@ namespace RocketCore::Graphics
 	class DeferredPass;
 	class DebugMeshPass;
 	class SkyboxPass;
+	class ToneMapPass;
 	class SpritePass;
 	class BlitPass;
 	
@@ -96,10 +97,12 @@ namespace RocketCore::Graphics
 	private:
 		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;
+		QuadBuffer* _toneMapBuffer;
 		GBufferPass* _GBufferPass;
 		DeferredPass* _deferredPass;
 		DebugMeshPass* _debugMeshPass;
 		SkyboxPass* _skyboxPass;
+		ToneMapPass* _toneMapPass;
 		SpritePass* _spritePass;
 		BlitPass* _blitPass;
 	};

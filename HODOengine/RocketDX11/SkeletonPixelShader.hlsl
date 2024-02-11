@@ -1,4 +1,5 @@
 #include "Sampler.hlsli"
+#include "Shading.hlsli"
 
 cbuffer externalData : register(b0)
 {

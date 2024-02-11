@@ -12,13 +12,13 @@ namespace RocketCore::Graphics
 	class BlitPass
 	{
 	public:
-		BlitPass(QuadBuffer* quadBuffer, ID3D11RenderTargetView* backBufferRTV);
+		BlitPass(QuadBuffer* toneMapBuffer, ID3D11RenderTargetView* backBufferRTV);
 		~BlitPass();
 
 		void Render();
 
 	private:
-		QuadBuffer* _quadBuffer;
+		QuadBuffer* _toneMapBuffer;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 

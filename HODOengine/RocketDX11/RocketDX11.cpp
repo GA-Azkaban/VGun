@@ -27,6 +27,7 @@
 #include "DeferredPass.h"
 #include "DebugMeshPass.h"
 #include "SkyboxPass.h"
+#include "ToneMapPass.h"
 #include "SpritePass.h"
 #include "BlitPass.h"
 
@@ -144,6 +145,7 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.png");
+		_resourceManager.LoadCubeMapTextureFile("Malibu_Overlook_3k.png");
 
 		CreateDepthStencilStates();
 		
@@ -151,16 +153,18 @@ namespace RocketCore::Graphics
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
+		_toneMapBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
 		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
-		//_deferredBuffers->SetEnvironmentMap("sunsetcube1024.dds");
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
 
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
-		_spritePass = new SpritePass(_quadBuffer);
-		_blitPass = new BlitPass(_quadBuffer, _renderTargetView.Get());
+		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
+		_spritePass = new SpritePass(_toneMapBuffer);
+		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
 
 		Cubemap::Instance()->_deferredBuffers = _deferredBuffers;
 
@@ -282,6 +286,7 @@ namespace RocketCore::Graphics
 		_skyboxPass->Render();
 
 		SetDepthStencilState(_depthStencilStateDisable.Get());
+		_toneMapPass->Render();
 		_spritePass->Render();
 
 		_deviceContext->RSSetViewports(1, &_viewport);

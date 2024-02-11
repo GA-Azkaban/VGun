@@ -46,6 +46,9 @@
     <FxCompile Include="RectToCubeMapPS.hlsl">
       <Filter>Resource\Shader\HLSL\RectToCubeMap</Filter>
     </FxCompile>
+    <FxCompile Include="ToneMapReinhardPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ToneMapReinhard</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="LightAdapter.cpp">
       <Filter>Object\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="ToneMapPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ToneMapPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="LightAdapter.h">
       <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="ToneMapPass.h">
+      <Filter>DeferredRendering\RenderPasses\ToneMapPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +465,12 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\RectToCubeMap">
       <UniqueIdentifier>{9588e615-68c0-401c-86d8-992554bcf5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ToneMapPass">
+      <UniqueIdentifier>{a1c4f2fd-9601-46a4-bfc6-bdb7477c43ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ToneMapReinhard">
+      <UniqueIdentifier>{1b00a9b2-7f5a-40f1-a1fb-05221e3907fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
