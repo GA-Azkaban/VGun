@@ -15,6 +15,12 @@ namespace RocketCore::Graphics
 
 	}
 
+	DebugMeshPass::~DebugMeshPass()
+	{
+		delete _deferredBuffers;
+		delete _quadBuffer;
+	}
+
 	void DebugMeshPass::Render()
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());

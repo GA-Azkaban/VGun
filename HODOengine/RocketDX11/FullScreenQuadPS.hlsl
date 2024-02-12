@@ -8,10 +8,10 @@ Texture2D Position      : register(t0);
 Texture2D Diffuse       : register(t1);
 Texture2D Normal        : register(t2);
 Texture2D MetalRough    : register(t3);
-//Texture2D AO        : register(t4);
-TextureCube EnvMap : register(t6);
-TextureCube PrefilteredSpecMap : register(t7);
-Texture2D BrdfLUT : register(t8);
+Texture2D AO        : register(t4);
+TextureCube EnvMap : register(t5);
+TextureCube PrefilteredSpecMap : register(t6);
+Texture2D BrdfLUT : register(t7);
 
 cbuffer externalData : register(b1)
 {
@@ -52,6 +52,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float3 posW = Position.Sample(PointSampler, input.uv).rgb;
 	float3 albedo = Diffuse.Sample(PointSampler, input.uv).rgb;
 	float3 normal = Normal.Sample(PointSampler, input.uv).rgb;
+	normal = normalize(normal * 2.0f - 1.0f);
 	float3 metalRough = MetalRough.Sample(PointSampler, input.uv).rgb;
 	float metallic = metalRough.r;
 	float roughness = metalRough.g;
@@ -110,7 +111,9 @@ float4 main(VertexToPixel input) : SV_TARGET
 		ambient = (kD * diffuse + specular);
 	}
 
-	ambient *= occlusion;
+	float ao = AO.Sample(PointSampler, input.uv).r;
+	ambient *= ao * occlusion;
+
 	float3 color = ambient + Lo;
 	return float4(color, 1.0f);
 }

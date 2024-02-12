@@ -425,6 +425,10 @@ namespace RocketCore::Graphics
 		if (fullScreenQuadPS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadPS.cso"))
 			_pixelShaders.insert(std::make_pair("FullScreenQuadPS.cso", fullScreenQuadPS));
 
+		PixelShader* SSAOPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (SSAOPixelShader->LoadShaderFile(L"Resources/Shaders/SSAOPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("SSAOPixelShader.cso", SSAOPixelShader));
+		
 		PixelShader* toneMapReinhardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (toneMapReinhardPS->LoadShaderFile(L"Resources/Shaders/ToneMapReinhardPS.cso"))
 			_pixelShaders.insert(std::make_pair("ToneMapReinhardPS.cso", toneMapReinhardPS));

@@ -12,6 +12,12 @@ namespace RocketCore::Graphics
 
 	}
 
+	SkyboxPass::~SkyboxPass()
+	{
+		delete _deferredBuffers;
+		delete _quadBuffer;
+	}
+
 	void SkyboxPass::Render()
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());

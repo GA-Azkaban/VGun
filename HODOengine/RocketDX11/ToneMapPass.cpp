@@ -15,6 +15,14 @@ namespace RocketCore::Graphics
 		_pixelShader = ResourceManager::Instance().GetPixelShader("ToneMapReinhardPS.cso");
 	}
 
+	ToneMapPass::~ToneMapPass()
+	{
+		delete _quadBuffer;
+		delete _toneMapBuffer;
+		delete _vertexShader;
+		delete _pixelShader;
+	}
+
 	void ToneMapPass::Render()
 	{
 		_toneMapBuffer->SetRenderTargets();

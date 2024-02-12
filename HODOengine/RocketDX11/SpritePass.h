@@ -9,7 +9,7 @@ namespace RocketCore::Graphics
 	{
 	public:
 		SpritePass(QuadBuffer* toneMapBuffer);
-
+		~SpritePass();
 		void Render();
 
 	private:

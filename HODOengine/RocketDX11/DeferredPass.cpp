@@ -17,6 +17,14 @@ namespace RocketCore::Graphics
 		_pixelShader = ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso");
 	}
 
+	DeferredPass::~DeferredPass()
+	{
+		delete _deferredBuffers;
+		delete _quadBuffer;
+		delete _vertexShader;
+		delete _pixelShader;
+	}
+
 	void DeferredPass::Render()
 	{
 		_quadBuffer->SetRenderTargets();
@@ -38,6 +46,7 @@ namespace RocketCore::Graphics
 		_pixelShader->SetShaderResourceView("Diffuse", _deferredBuffers->GetShaderResourceView(1));
 		_pixelShader->SetShaderResourceView("Normal", _deferredBuffers->GetShaderResourceView(2));
 		_pixelShader->SetShaderResourceView("MetalRough", _deferredBuffers->GetShaderResourceView(3));
+		_pixelShader->SetShaderResourceView("AO", _deferredBuffers->GetSSAOMap());
 
 		if (_deferredBuffers->GetEnvMap())
 		{

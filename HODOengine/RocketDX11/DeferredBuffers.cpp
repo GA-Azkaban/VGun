@@ -129,12 +129,48 @@ namespace RocketCore::Graphics
 		depthSRVDesc.Texture2D.MipLevels = 1;
 
 		_device->CreateShaderResourceView(_depthTexture.Get(), &depthSRVDesc, _depthShaderResourceView.GetAddressOf());
+
+		// Create AO Texture, RTV, SRV
+		D3D11_TEXTURE2D_DESC aoTextureDesc{
+			.Width = m_textureWidth,
+			.Height = m_textureHeight,
+			.MipLevels = 1,
+			.ArraySize = 1,
+			.Format = DXGI_FORMAT_R16_UNORM,
+			.SampleDesc{.Count = 1},
+			.Usage = D3D11_USAGE_DEFAULT,
+			.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
+			.CPUAccessFlags = 0,
+			.MiscFlags = 0
+		};
+
+		_device->CreateTexture2D(&aoTextureDesc, nullptr, _ssaoTexture.GetAddressOf());
+
+		D3D11_RENDER_TARGET_VIEW_DESC aoRTVDesc;
+		aoRTVDesc.Format = DXGI_FORMAT_R16_UNORM;
+		aoRTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		aoRTVDesc.Texture2D.MipSlice = 0;
+
+		_device->CreateRenderTargetView(_ssaoTexture.Get(), &aoRTVDesc, _ssaoRenderTargetView.GetAddressOf());
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC aoSRVDesc;
+		aoSRVDesc.Format = DXGI_FORMAT_R16_UNORM;
+		aoSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		aoSRVDesc.Texture2D.MostDetailedMip = 0;
+		aoSRVDesc.Texture2D.MipLevels = 1;
+
+		_device->CreateShaderResourceView(_ssaoTexture.Get(), &aoSRVDesc, _ssaoShaderResourceView.GetAddressOf());
 	}
 
 	void DeferredBuffers::SetRenderTargets()
 	{
 		// Sets the render targets in the array as the location where the shaders will write to
 		_deviceContext->OMSetRenderTargets((int)BUFFERTYPE::GBUFFER_COUNT, _renderTargetViews->GetAddressOf(), _depthStencilView.Get());
+	}
+
+	void DeferredBuffers::SetSSAORenderTarget()
+	{
+		_deviceContext->OMSetRenderTargets(1, _ssaoRenderTargetView.GetAddressOf(), nullptr);
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetShaderResourceView(UINT index)
@@ -167,6 +203,11 @@ namespace RocketCore::Graphics
 		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
+	void DeferredBuffers::ClearSSAORenderTarget(DirectX::XMVECTOR color)
+	{
+		_deviceContext->ClearRenderTargetView(_ssaoRenderTargetView.Get(), reinterpret_cast<const float*>(&color));
+	}
+
 	void DeferredBuffers::FlushShaderResourceViews()
 	{
 		ID3D11ShaderResourceView* shaderResView = NULL;
@@ -179,27 +220,29 @@ namespace RocketCore::Graphics
 	void DeferredBuffers::SetEnvironmentMap(std::string fileName)
 	{
 		EnvMapInfo& info = ResourceManager::Instance().GetEnvMapInfo(fileName);
-		_envMap = info.envMapTexture.shaderResourceView.Get();
-		_envPreFilter = info.envPreFilterMapTexture.shaderResourceView.Get();
-		_brdfLUT = info.brdfLUT.shaderResourceView.Get();
+		_envMap = info.envMapTexture.shaderResourceView;
+		_envPreFilter = info.envPreFilterMapTexture.shaderResourceView;
+		_brdfLUT = info.brdfLUT.shaderResourceView;
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetEnvMap()
 	{
-		//return _envMap.Get();
-		return _envMap;
+		return _envMap.Get();
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetEnvPreFilterMap()
 	{
-		//return _envPreFilter.Get();
-		return _envPreFilter;
+		return _envPreFilter.Get();
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetBRDFLut()
 	{
-		//return _brdfLUT.Get();
-		return _brdfLUT;
+		return _brdfLUT.Get();
+	}
+
+	ID3D11ShaderResourceView* DeferredBuffers::GetSSAOMap()
+	{
+		return _ssaoShaderResourceView.Get();
 	}
 
 }

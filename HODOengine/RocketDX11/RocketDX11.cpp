@@ -24,6 +24,7 @@
 #include "DeferredBuffers.h"
 #include "QuadBuffer.h"
 #include "GBufferPass.h"
+#include "SSAOPass.h"
 #include "DeferredPass.h"
 #include "DebugMeshPass.h"
 #include "SkyboxPass.h"
@@ -159,13 +160,14 @@ namespace RocketCore::Graphics
 		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
 
 		_GBufferPass = new GBufferPass(_deferredBuffers);
+		_SSAOPass = new SSAOPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
-
+		_SSAOPass->CreateTexture(screenWidth, screenHeight);
 		Cubemap::Instance()->_deferredBuffers = _deferredBuffers;
 
 		/// DEBUG Obejct
@@ -215,6 +217,7 @@ namespace RocketCore::Graphics
 
 		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+		_SSAOPass->CreateTexture(_screenWidth, _screenHeight);
 
 		// set the viewport transform
 		_viewport.TopLeftX = 0;
@@ -278,6 +281,7 @@ namespace RocketCore::Graphics
 	{
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_GBufferPass->Render();
+		_SSAOPass->Render();
 		_deferredPass->Render();
 		_debugMeshPass->Render();
 		RenderLine();

@@ -38,6 +38,7 @@ namespace RocketCore::Graphics
 		void SetFloat3(std::string name, const DirectX::XMFLOAT3& data);
 		void SetFloat4(std::string name, const float data[4]);
 		void SetFloat4(std::string name, const DirectX::XMFLOAT4& data);
+		void SetFloat4Array(std::string name, const DirectX::XMFLOAT4* data, UINT size);
 		void SetMatrix4x4(std::string name, const float data[16]);
 		void SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4& data);
 		void SetMatrix4x4(std::string name, const DirectX::XMMATRIX& data);

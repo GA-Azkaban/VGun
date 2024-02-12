@@ -14,7 +14,7 @@ namespace RocketCore::Graphics
 	{
 	public:
 		DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
-
+		~DeferredPass();
 		void Render();
 
 	private:

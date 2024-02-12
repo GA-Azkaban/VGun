@@ -25,16 +25,25 @@ namespace RocketCore::Graphics
 		void Initialize(UINT textureWidth, UINT textureHeight);
 
 		void SetRenderTargets();
+		// 임시
+		void SetSSAORenderTarget();
+
 		void SetEnvironmentMap(std::string fileName);
 		
+		UINT GetScreenWidth() { return m_textureWidth; }
+		UINT GetScreenHeight() { return m_textureHeight; }
 		ID3D11ShaderResourceView* GetShaderResourceView(UINT index);
 		ID3D11DepthStencilView* GetDepthStencilView();
 		ID3D11ShaderResourceView* GetDepthSRV();
 		ID3D11ShaderResourceView* GetEnvMap();
 		ID3D11ShaderResourceView* GetEnvPreFilterMap();
 		ID3D11ShaderResourceView* GetBRDFLut();
+		ID3D11ShaderResourceView* GetSSAOMap();
 
 		void ClearRenderTargets(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
+		// 임시
+		void ClearSSAORenderTarget(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
+		
 		void FlushShaderResourceViews();
 
 	private:
@@ -54,11 +63,13 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _depthShaderResourceView;
 
 		// Env map
-		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envMap;
-		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envPreFilter;
-		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _brdfLUT; 
-		ID3D11ShaderResourceView* _envMap;
-		ID3D11ShaderResourceView* _envPreFilter;
-		ID3D11ShaderResourceView* _brdfLUT;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envMap;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envPreFilter;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _brdfLUT; 
+		
+		// AO map
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _ssaoTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _ssaoRenderTargetView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _ssaoShaderResourceView;
 	};
 }

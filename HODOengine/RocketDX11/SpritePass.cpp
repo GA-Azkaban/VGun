@@ -14,6 +14,12 @@ namespace RocketCore::Graphics
 		_spriteBatch = new DirectX::SpriteBatch(ResourceManager::Instance().GetDeviceContext());
 	}
 
+	SpritePass::~SpritePass()
+	{
+		delete _spriteBatch;
+		delete _toneMapBuffer;
+	}
+
 	void SpritePass::Render()
 	{
 		_toneMapBuffer->SetRenderTargets();
