@@ -51,7 +51,7 @@ namespace RocketCore::Graphics
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();
 
-		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		ResourceManager::Instance().GetDeviceContext()->Draw(4, 0);
 
 		ID3D11ShaderResourceView* nullSRV = nullptr;
