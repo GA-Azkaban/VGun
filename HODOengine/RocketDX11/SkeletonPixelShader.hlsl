@@ -6,6 +6,7 @@ cbuffer externalData : register(b0)
 	float gMetallic;
 	float gRoughness;
 
+	int useAlbedo;
 	int useNormalMap;
 	int useOccMetalRough;
 }
@@ -55,7 +56,11 @@ PSOutput main(VertexToPixel input)
 	}
 
 	// Sample the texture
-	float4 textureColor = Albedo.Sample(LinearSampler, input.uv);
+	float4 textureColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	if (useAlbedo)
+	{
+		textureColor = Albedo.Sample(LinearSampler, input.uv);
+	}
 
 	float occlusion = 1.0f;
 

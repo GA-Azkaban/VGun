@@ -23,6 +23,7 @@
 
 #include "DeferredBuffers.h"
 #include "QuadBuffer.h"
+#include "ShadowMapPass.h"
 #include "GBufferPass.h"
 #include "SSAOPass.h"
 #include "DeferredPass.h"
@@ -159,9 +160,10 @@ namespace RocketCore::Graphics
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
 		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
 
+		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_SSAOPass = new SSAOPass(_deferredBuffers);
-		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
+		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer, _shadowMapPass);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
@@ -280,6 +282,7 @@ namespace RocketCore::Graphics
 	void RocketDX11::Render()
 	{
 		SetDepthStencilState(_depthStencilStateEnable.Get());
+		_shadowMapPass->Render();
 		_GBufferPass->Render();
 		_SSAOPass->Render();
 		_deferredPass->Render();

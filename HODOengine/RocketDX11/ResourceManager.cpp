@@ -384,6 +384,10 @@ namespace RocketCore::Graphics
 		PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
+		
+		PixelShader* shadowMapPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (shadowMapPS->LoadShaderFile(L"Resources/Shaders/ShadowMapPS.cso"))
+			_pixelShaders.insert(std::make_pair("ShadowMapPS.cso", shadowMapPS));
 
 		VertexShader* debugVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (debugVertexShader->LoadShaderFile(L"Resources/Shaders/DebugVertexShader.cso"))
@@ -432,6 +436,10 @@ namespace RocketCore::Graphics
 		PixelShader* toneMapReinhardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (toneMapReinhardPS->LoadShaderFile(L"Resources/Shaders/ToneMapReinhardPS.cso"))
 			_pixelShaders.insert(std::make_pair("ToneMapReinhardPS.cso", toneMapReinhardPS));
+		
+		PixelShader* toneMapAcesPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (toneMapAcesPS->LoadShaderFile(L"Resources/Shaders/ToneMapAcesPS.cso"))
+			_pixelShaders.insert(std::make_pair("ToneMapAcesPS.cso", toneMapAcesPS));
 
 		PixelShader* blitPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
@@ -455,6 +463,12 @@ namespace RocketCore::Graphics
 
 		Mesh* _skybox = new Mesh(&skybox.Vertices[0], skybox.Vertices.size(), &skybox.Indices[0], skybox.Indices.size());
 		_loadedFileInfo["skybox"].loadedMeshes.push_back(_skybox);
+
+		GeometryGenerator::MeshData cube;
+		_geometryGen->CreateBox(10, 2, 10, cube);
+
+		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size());
+		_loadedFileInfo["cube"].loadedMeshes.push_back(_cube);
 	}
 
 	void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)

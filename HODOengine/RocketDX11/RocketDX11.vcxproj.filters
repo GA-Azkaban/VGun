@@ -47,10 +47,16 @@
       <Filter>Resource\Shader\HLSL\RectToCubeMap</Filter>
     </FxCompile>
     <FxCompile Include="ToneMapReinhardPS.hlsl">
-      <Filter>Resource\Shader\HLSL\ToneMapReinhard</Filter>
+      <Filter>Resource\Shader\HLSL\ToneMapping</Filter>
     </FxCompile>
     <FxCompile Include="SSAOPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="ToneMapAcesPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ToneMapping</Filter>
+    </FxCompile>
+    <FxCompile Include="ShadowMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +164,9 @@
     </ClCompile>
     <ClCompile Include="SSAOPass.cpp">
       <Filter>DeferredRendering\RenderPasses\SSAOPass</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMapPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="SSAOPass.h">
       <Filter>DeferredRendering\RenderPasses\SSAOPass</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMapPass.h">
+      <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -478,11 +490,17 @@
     <Filter Include="DeferredRendering\RenderPasses\ToneMapPass">
       <UniqueIdentifier>{a1c4f2fd-9601-46a4-bfc6-bdb7477c43ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Shader\HLSL\ToneMapReinhard">
-      <UniqueIdentifier>{1b00a9b2-7f5a-40f1-a1fb-05221e3907fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader\HLSL\SSAO">
       <UniqueIdentifier>{609197ae-927f-4bda-b671-7a4c68c7991b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ToneMapping">
+      <UniqueIdentifier>{1b00a9b2-7f5a-40f1-a1fb-05221e3907fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ShadowMapPass">
+      <UniqueIdentifier>{b2aef3ea-9f8d-43aa-aa30-ee77e710e2a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ShadowMap">
+      <UniqueIdentifier>{86ff2d08-049d-45ef-9067-ebaf27727218}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

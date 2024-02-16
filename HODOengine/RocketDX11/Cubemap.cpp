@@ -63,7 +63,7 @@ namespace RocketCore::Graphics
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();
 
-		pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
+		pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap());
 
 		pixelShader->CopyAllBufferData();
 		pixelShader->SetShader();
@@ -95,7 +95,7 @@ namespace RocketCore::Graphics
 	void Cubemap::LoadCubeMapTexture(const std::string& fileName)
 	{
 		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetEnvMapInfo(fileName).cubeMapTexture.shaderResourceView.Get();
-		m_material->SetTextureSRV(diffuseTex);
+		m_material->SetAlbedoMap(diffuseTex);
 		_deferredBuffers->SetEnvironmentMap(fileName);
 	}
 

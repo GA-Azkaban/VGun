@@ -39,6 +39,10 @@ namespace RocketCore::Graphics
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);
 	
+		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
+		DirectX::XMMATRIX GetWorldTM();
+		std::vector<DirectX::XMMATRIX>& GetBoneTransform() { return m_boneTransform; }
+		bool IsActive() { return m_isActive; }
 		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
 
 	private:

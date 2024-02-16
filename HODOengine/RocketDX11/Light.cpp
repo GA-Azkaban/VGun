@@ -26,8 +26,7 @@ namespace RocketCore::Graphics
 		}
 		else
 		{
-			throw std::exception("LightManager:: Too many lights added");
-			return nullptr;
+			return &_lightProperties.lights[MAX_LIGHTS - 1];
 		}
 	}
 

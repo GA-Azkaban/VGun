@@ -75,21 +75,30 @@ namespace RocketCore::Graphics
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();
 
-		pixelShader->SetShaderResourceView("Albedo", m_material->GetTextureSRV());
-		if (m_material->GetNormalMapSRV())
+		if (m_material->GetAlbedoMap())
+		{
+			pixelShader->SetInt("useAlbedo", 1);
+			pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
+		}
+		else
+		{
+			pixelShader->SetInt("useAlbedo", 0);
+		}
+
+		if (m_material->GetNormalMap())
 		{
 			pixelShader->SetInt("useNormalMap", 1);
-			pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMapSRV());
+			pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMap());
 		}
 		else
 		{
 			pixelShader->SetInt("useNormalMap", 0);
 		}
 
-		if (m_material->GetOcclusionRoughnessMetalMapSRV())
+		if (m_material->GetOcclusionRoughnessMetalMap())
 		{
 			pixelShader->SetInt("useOccMetalRough", 1);
-			pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMapSRV());
+			pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMap());
 		}
 		else
 		{
@@ -282,15 +291,23 @@ namespace RocketCore::Graphics
 	void SkinningMeshObject::LoadDiffuseMap(const std::string& fileName)
 	{
 		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetTextureSRV(diffuseTex);
+		m_material->SetAlbedoMap(diffuseTex);
 	}
 
 	void SkinningMeshObject::LoadNormalMap(const std::string& fileName)
 	{
 		ID3D11ShaderResourceView* normalTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetNormalTexture(normalTex);
+		m_material->SetNormalMap(normalTex);
 		if(normalTex != nullptr)
 			m_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
+	}
+
+	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
+	{
+		//if (m_node != nullptr)
+		//	return m_node->rootNodeInvTransform * m_world;
+
+		return m_world;
 	}
 
 }

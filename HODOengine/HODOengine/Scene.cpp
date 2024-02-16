@@ -24,8 +24,8 @@ namespace HDData
 		// 씬이 생성될 때 Directional Light를 자동으로 생성한다.
 		GameObject* dirLight = CreateObject("DirLight");
 		auto dirLightComp = dirLight->AddComponent<Light>();
-		dirLightComp->SetDirection(Vector4(-1, -1, 1, 0));
-		dirLightComp->SetColor(Vector4(5.0f, 5.0f, 5.0f, 1.0f));
+		dirLightComp->SetDirection(Vector4(-1, -1, 0, 0));
+		dirLightComp->SetColor(Vector4(3.0f, 3.0f, 3.0f, 1.0f));
 		dirLightComp->SetLightType(Light::DirectionalLight);
 	}
 

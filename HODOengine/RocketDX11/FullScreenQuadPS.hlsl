@@ -13,7 +13,7 @@ TextureCube EnvMap : register(t5);
 TextureCube PrefilteredSpecMap : register(t6);
 Texture2D BrdfLUT : register(t7);
 
-cbuffer externalData : register(b1)
+cbuffer externalData : register(b2)
 {
 	//float4x4 inverseView;
 	//float4x4 inverseProjection;

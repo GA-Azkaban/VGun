@@ -36,6 +36,17 @@ namespace RocketCore::Graphics
 		pointSampDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 		device->CreateSamplerState(&pointSampDesc, _pointSampler.GetAddressOf());
+		
+		D3D11_SAMPLER_DESC shadowSampDesc;
+		ZeroMemory(&shadowSampDesc, sizeof(shadowSampDesc));
+		shadowSampDesc.Filter = D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR;
+		shadowSampDesc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
+		shadowSampDesc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
+		shadowSampDesc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
+		shadowSampDesc.BorderColor[0] = shadowSampDesc.BorderColor[1] = shadowSampDesc.BorderColor[2] = shadowSampDesc.BorderColor[3] = 1.0f;		
+		shadowSampDesc.ComparisonFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+		device->CreateSamplerState(&shadowSampDesc, _shadowSampler.GetAddressOf());
 
 		SetSamplers(deviceContext);
 	}
@@ -50,5 +61,6 @@ namespace RocketCore::Graphics
 	{
 		deviceContext->PSSetSamplers(0, 1, _linearSampler.GetAddressOf());
 		deviceContext->PSSetSamplers(1, 1, _pointSampler.GetAddressOf());
+		deviceContext->PSSetSamplers(2, 1, _shadowSampler.GetAddressOf());
 	}
 }

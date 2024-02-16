@@ -1,4 +1,5 @@
 #include "Sampler.hlsli"
+#define GAMMA 2.2
 
 Texture2D src : register(t0);
 
@@ -10,7 +11,7 @@ struct VertexToPixel
 
 float CalcLuminance(float3 color)
 {
-	return dot(color.xyz, float3(0.299f, 0.587f, 0.114f));
+	return dot(color.xyz, float3(0.2126f, 0.7152f, 0.0722f));
 }
 
 float4 main(VertexToPixel input) : SV_TARGET
@@ -18,6 +19,8 @@ float4 main(VertexToPixel input) : SV_TARGET
     float3 color = src.Sample(PointSampler, input.uv).rgb;
     float luminance = CalcLuminance(color);
     float reinhard = luminance / (luminance + 1);
-    return float4(color * (reinhard / luminance), 1.0f);
-    //return float4(color, 1.0f);
+    if (luminance > 1e-6)
+        color *= reinhard / luminance;
+    color = pow(color, 1.0f / GAMMA);
+    return float4(color, 1.0f);
 }

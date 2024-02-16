@@ -6,12 +6,13 @@
 #include "DeferredBuffers.h"
 #include "QuadBuffer.h"
 #include "Light.h"
+#include "ShadowMapPass.h"
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
-	DeferredPass::DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer)
-		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer)
+	DeferredPass::DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer, ShadowMapPass* shadowMapPass)
+		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer), _shadowMapPass(shadowMapPass)
 	{
 		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
 		_pixelShader = ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso");
@@ -47,6 +48,7 @@ namespace RocketCore::Graphics
 		_pixelShader->SetShaderResourceView("Normal", _deferredBuffers->GetShaderResourceView(2));
 		_pixelShader->SetShaderResourceView("MetalRough", _deferredBuffers->GetShaderResourceView(3));
 		_pixelShader->SetShaderResourceView("AO", _deferredBuffers->GetSSAOMap());
+		_pixelShader->SetShaderResourceView("ShadowMap", _deferredBuffers->GetShadowMap());
 
 		if (_deferredBuffers->GetEnvMap())
 		{
@@ -67,6 +69,12 @@ namespace RocketCore::Graphics
 		_pixelShader->SetFloat4("cameraPosition", lp.cameraPosition);
 		_pixelShader->SetFloat4("globalAmbient", lp.globalAmbient);
 		_pixelShader->SetLights("lights", &lp.lights[0]);
+
+		_pixelShader->SetFloat("mapWidth", static_cast<float>(_deferredBuffers->GetScreenWidth()));
+		_pixelShader->SetFloat("mapHeight", static_cast<float>(_deferredBuffers->GetScreenHeight()));
+		XMMATRIX lightView = _shadowMapPass->GetLightView();
+		XMMATRIX lightProj = _shadowMapPass->GetLightProj();
+		_pixelShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightView * lightProj));
 
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();

@@ -12,7 +12,8 @@ namespace RocketCore::Graphics
 		: _quadBuffer(quadBuffer), _toneMapBuffer(toneMapBuffer)
 	{
 		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
-		_pixelShader = ResourceManager::Instance().GetPixelShader("ToneMapReinhardPS.cso");
+		//_pixelShader = ResourceManager::Instance().GetPixelShader("ToneMapReinhardPS.cso");
+		_pixelShader = ResourceManager::Instance().GetPixelShader("ToneMapAcesPS.cso");
 	}
 
 	ToneMapPass::~ToneMapPass()
