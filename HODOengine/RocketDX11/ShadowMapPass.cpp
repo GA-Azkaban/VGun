@@ -21,6 +21,7 @@ namespace RocketCore::Graphics
 		_pixelShader = ResourceManager::Instance().GetPixelShader("ShadowMapPS.cso");
 
 		_proj = XMMatrixOrthographicLH(16, 12, 1, 20);
+		//_proj = XMMatrixOrthographicOffCenterLH(-10, 10, -10, 10, 1, 7.5);
 		_directionalLight = &(LightManager::Instance().GetLightProperties().lights[0]);
 	}
 

@@ -44,11 +44,17 @@ cbuffer ShadowMapConstants : register(b1)
 float ShadowFactor(float4 worldPos)
 {
 	float4 lightSpacePosition = mul(worldPos, lightViewProjection);
-	//float3 projCoords = lightSpacePosition.xyz / lightSpacePosition.w;
-	//float currentDepth = projCoords.z;
-
-	//if (currentDepth > 1)
-	//	return 0.0f;
+	float3 projCoords = lightSpacePosition.xyz / lightSpacePosition.w;
+	float currentDepth = projCoords.z;
+	if (currentDepth > 1)
+		return 0.0f;
+	projCoords = projCoords * 0.5 + 0.5;
+	projCoords.y = 1 - projCoords.y;
+	//projCoords = (projCoords + 1) / 2.0f;
+	//projCoords.y = -projCoords.y;
+	float closestDepth = ShadowMap.Sample(LinearSampler, projCoords.xy).r;
+	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
+	return shadow;
 
 	//projCoords = (projCoords + 1) / 2.0; // change to [0 - 1]
 	//projCoords.y = -projCoords.y; // bottom right corner if (1, -1) in NDC so we have to flip it
