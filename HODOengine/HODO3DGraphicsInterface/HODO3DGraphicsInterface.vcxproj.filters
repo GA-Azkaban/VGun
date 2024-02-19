@@ -56,6 +56,9 @@
     <Filter Include="Objects\Renderable\ICubeMap">
       <UniqueIdentifier>{70595cdf-0f97-461f-83a6-4700b1edc2ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{0cd91e06-de9d-4743-a4e7-368afe9cbf4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -108,6 +111,9 @@
     </ClInclude>
     <ClInclude Include="ICubeMap.h">
       <Filter>Objects\Renderable\ICubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="ILight.h">
+      <Filter>Light</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

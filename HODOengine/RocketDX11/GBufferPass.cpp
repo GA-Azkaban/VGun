@@ -1,5 +1,6 @@
 ﻿#include "GBufferPass.h"
 #include "ObjectManager.h"
+#include "ResourceManager.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
 #include "DeferredBuffers.h"
@@ -7,7 +8,7 @@
 namespace RocketCore::Graphics
 {
 	GBufferPass::GBufferPass(DeferredBuffers* deferredBuffers)
-		: _deferredBuffers(deferredBuffers)
+		: _deferredBuffers(deferredBuffers), _deviceContext(ResourceManager::Instance().GetDeviceContext())
 	{
 
 	}
@@ -31,5 +32,10 @@ namespace RocketCore::Graphics
 		{
 			skinningMeshObj->Render();
 		}
+
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(1, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(2, 1, &nullSRV);
 	}
 }

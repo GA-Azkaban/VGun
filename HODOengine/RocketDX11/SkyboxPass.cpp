@@ -12,11 +12,16 @@ namespace RocketCore::Graphics
 
 	}
 
+	SkyboxPass::~SkyboxPass()
+	{
+		delete _deferredBuffers;
+		delete _quadBuffer;
+	}
+
 	void SkyboxPass::Render()
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 
-		UINT skyBoxIndex = ObjectManager::Instance().GetCubeMapList().size() - 1;
-		ObjectManager::Instance().GetCubeMapList()[skyBoxIndex]->Render();
+		Cubemap::Instance()->Render();
 	}
 }

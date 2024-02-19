@@ -9,7 +9,7 @@ namespace RocketCore::Graphics
 	{
 	public:
 		DebugMeshPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
-
+		~DebugMeshPass();
 		void Render();
 
 	private:

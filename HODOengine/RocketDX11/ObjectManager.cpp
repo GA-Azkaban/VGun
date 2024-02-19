@@ -8,6 +8,7 @@
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
 #include "Cubemap.h"
+#include "LightAdapter.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -54,8 +55,13 @@ namespace RocketCore::Graphics
 
 	RocketCore::Graphics::Cubemap* ObjectManager::CreateCubeMap()
 	{
-		Cubemap* temp = new Cubemap();
-		_cubemapList.emplace_back(temp);
+		Cubemap* temp = Cubemap::Instance();
+		return temp;
+	}
+
+	RocketCore::Graphics::LightAdapter* ObjectManager::CreateLight()
+	{
+		LightAdapter* temp = new LightAdapter();
 		return temp;
 	}
 
@@ -121,11 +127,6 @@ namespace RocketCore::Graphics
 	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
 	{
 		return _skinningMeshObjectList;
-	}
-
-	std::vector<Cubemap*>& ObjectManager::GetCubeMapList()
-	{
-		return _cubemapList;
 	}
 
 	std::vector<TextRenderer*>& ObjectManager::GetTextList()

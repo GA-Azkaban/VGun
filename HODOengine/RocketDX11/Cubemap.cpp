@@ -3,21 +3,33 @@
 #include "ResourceManager.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "DeferredBuffers.h"
 #include <DirectXMath.h>
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
+	Cubemap* Cubemap::instance;
+
 	Cubemap::Cubemap()
-		: m_material(nullptr), m_isActive(true)
+		: m_material(nullptr), m_isActive(true), m_size(50.0f)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("CubeMapVertexShader.cso"), ResourceManager::Instance().GetPixelShader("CubeMapPixelShader.cso"));
-		m_meshes = ResourceManager::Instance().GetMeshes("skySphere");
+		m_meshes = ResourceManager::Instance().GetMeshes("skybox");
 	}
 
 	Cubemap::~Cubemap()
 	{
 		delete m_material;
+	}
+
+	Cubemap* Cubemap::Instance()
+	{
+		if (!instance)
+		{
+			instance = new Cubemap();
+		}
+		return instance;
 	}
 
 	void Cubemap::Update(float deltaTime)
@@ -36,9 +48,11 @@ namespace RocketCore::Graphics
 		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
 		XMMATRIX cameraTranslate = XMMatrixTranslation(cameraPos.x, cameraPos.y, cameraPos.z);
 
+		XMMATRIX scaleMatrix = XMMatrixScaling(m_size, m_size, m_size);
+
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = cameraTranslate * view * proj;
+		XMMATRIX worldViewProj = scaleMatrix * cameraTranslate * view * proj;
 		XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 
 		VertexShader* vertexShader = m_material->GetVertexShader();
@@ -49,7 +63,7 @@ namespace RocketCore::Graphics
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();
 
-		pixelShader->SetShaderResourceView("Texture", m_material->GetTextureSRV());
+		pixelShader->SetShaderResourceView("Texture", m_material->GetAlbedoMap());
 
 		pixelShader->CopyAllBufferData();
 		pixelShader->SetShader();
@@ -80,8 +94,9 @@ namespace RocketCore::Graphics
 
 	void Cubemap::LoadCubeMapTexture(const std::string& fileName)
 	{
-		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetTextureSRV(diffuseTex);
+		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetEnvMapInfo(fileName).cubeMapTexture.shaderResourceView.Get();
+		m_material->SetAlbedoMap(diffuseTex);
+		_deferredBuffers->SetEnvironmentMap(fileName);
 	}
 
 }

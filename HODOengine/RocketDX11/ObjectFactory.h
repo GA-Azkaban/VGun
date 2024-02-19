@@ -12,6 +12,7 @@ namespace RocketCore::Graphics
 		virtual HDEngine::ICubeMap* CreateCubeMap() override;
 		virtual HDEngine::ISketchableText* CreateText() override;
 		virtual HDEngine::ISketchableImage* CreateImage() override;
+		virtual HDEngine::ILight* CreateLight() override;
 		virtual HDEngine::ILineRenderer* CreateLineRenderer() override;
 		virtual HDEngine::CubePrimitive* CreateCubePrimitive() override;
 		virtual HDEngine::SpherePrimitive* CreateSpherePrimitive() override;
