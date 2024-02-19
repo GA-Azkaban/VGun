@@ -5,14 +5,14 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
-NetworkManager* NetworkManager::Instance()
+NetworkManager& NetworkManager::Instance()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new NetworkManager;
 	}
 
-	return _instance;
+	return *_instance;
 }
 
 NetworkManager* NetworkManager::_instance = nullptr;
@@ -33,7 +33,7 @@ void NetworkManager::Start()
 		1
 	);
 
-	_service->Start();
+	_isConnect = _service->Start();
 }
 
 void NetworkManager::Update()
@@ -60,4 +60,9 @@ void NetworkManager::SendCreateAccount(std::string id, std::string password, std
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
+}
+
+bool NetworkManager::IsConnected()
+{
+	return _isConnect;
 }

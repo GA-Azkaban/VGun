@@ -7,7 +7,7 @@
 class NetworkManager : public HDData::Script
 {
 public:
-	static NetworkManager* Instance();
+	static NetworkManager& Instance();
 
 private:
 	static NetworkManager* _instance;
@@ -22,8 +22,11 @@ public:
 	void SendLogin(std::string id, std::string password);
 	void SendCreateAccount(std::string id, std::string password, std::string nickname);
 	
+public:
+	bool IsConnected();
 
 private:
 	Horang::ClientServiceRef _service;
+	bool _isConnect;
 };
 
