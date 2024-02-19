@@ -44,6 +44,10 @@ namespace RocketCore::Graphics
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
 
+
+		virtual void SetSortOrder(float order) override;
+		float GetSortOrder() const { return _sortOrder; }
+
 	private:
 		void MeasureTextSize();
 
@@ -70,5 +74,7 @@ namespace RocketCore::Graphics
 		float _height;
 
 		bool _isActive;
+
+		float _sortOrder;
 	};
 }

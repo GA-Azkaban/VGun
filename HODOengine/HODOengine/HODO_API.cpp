@@ -124,21 +124,24 @@ namespace API
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-			obj->AddComponent<HDData::TextInputBoxUI>();
+			auto textInputBoxUI = obj->AddComponent<HDData::TextInputBoxUI>();
 
 			auto background = HDEngine::ObjectSystem::Instance().CreateObject(scene, "back", obj);
 			background->AddComponent<HDData::ImageUI>();
 			background->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+			textInputBoxUI->SetBackgroundImage(background->GetComponent<HDData::ImageUI>());
 
 			auto cursor = HDEngine::ObjectSystem::Instance().CreateObject(scene, "cursor", obj);
 			cursor->AddComponent<HDData::ImageUI>();
 			cursor->GetComponent<HDData::ImageUI>()->SetImage("cursor.png");
 			cursor->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+			textInputBoxUI->SetCursorImage(cursor->GetComponent<HDData::ImageUI>());
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "text", obj);
 			valueText->AddComponent<HDData::TextUI>();
 			valueText->GetComponent<HDData::TextUI>()->SetText("");
 			valueText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+			textInputBoxUI->SetTextUI(valueText->GetComponent<HDData::TextUI>());
 
 			return obj;
 		}

@@ -295,6 +295,7 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_toneMapPass->Render();
 		_spritePass->Render();
+		//_spritePass->Render(_deviceContext.Get(), _depthStencilStateEnable.Get());
 
 		_deviceContext->RSSetViewports(1, &_viewport);
 		_blitPass->Render();

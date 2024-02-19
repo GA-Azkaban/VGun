@@ -24,8 +24,10 @@ namespace RocketCore::Graphics
 	{
 		_toneMapBuffer->SetRenderTargets();
 
+		_spriteBatch->Begin(DirectX::DX11::SpriteSortMode_FrontToBack);
 		RenderImage();
 		RenderText();
+		_spriteBatch->End();
 	}
 
 	void SpritePass::RenderImage()
@@ -38,12 +40,10 @@ namespace RocketCore::Graphics
 
 	void SpritePass::RenderText()
 	{
-		_spriteBatch->Begin();
 		for (auto textRenderer : ObjectManager::Instance().GetTextList())
 		{
 			textRenderer->Render(_spriteBatch);
 		}
-		_spriteBatch->End();
 	}
 
 }
