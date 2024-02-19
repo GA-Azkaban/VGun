@@ -25,13 +25,13 @@ namespace HDData
 		void OnEnable() override;
 		void OnDisable() override;
 
-		int GetSortOrder() const;
+		float GetSortOrder() const;
 		bool GetIsHovering();
 		bool GetIsClicked();
 		bool GetIsGrabbing();
 		bool IsIgnoreFocused();
 
-		void SetSortOrder(int orderNum);
+		void SetSortOrder(float orderNum);
 		void SetIsHovering(bool isHovering);
 		void SetIsClicked(bool isClicked);
 		void SetIsGrabbing(bool isGrabbing);
@@ -47,7 +47,7 @@ namespace HDData
 		HDEngine::ISketchable* _sketchable;
 
 	private:
-		int		_sortOrder;
+		float	_sortOrder;
 		bool	_isHovering;
 		bool	_isClicked;
 		bool	_isGrabbing;

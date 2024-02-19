@@ -284,9 +284,6 @@
     <ClInclude Include="SkyboxPass.h">
       <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
     </ClInclude>
-    <ClInclude Include="SpritePass.h">
-      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
-    </ClInclude>
     <ClInclude Include="DebugMeshPass.h">
       <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
     </ClInclude>
@@ -307,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="ShadowMapPass.h">
       <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePass.h">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
