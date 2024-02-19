@@ -116,7 +116,7 @@ void LoginSceneView::LoginView()
 	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
 	makeAccountBtn->GetTransform()->SetLocalPosition(-150.f, 100.f, 0.f);
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[newIDtext, newPWtext, newNNtext]()
+		[=]()
 		{
 			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
 			{
