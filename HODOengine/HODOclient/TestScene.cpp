@@ -20,7 +20,7 @@ TestScene::TestScene()
 	_scene = API::CreateScene("Test");
 	API::LoadScene(_scene);
 
-	//API::LoadSceneFromData("ObjectInfo.json");
+	// API::LoadSceneFromData("ObjectInfo.json");
 
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
@@ -72,15 +72,15 @@ TestScene::TestScene()
 	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
 	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
 
-	/*auto aimText = API::CreateTextbox(_scene);
+	auto aimText = API::CreateTextbox(_scene);
 	aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
 	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
-	aimText->GetComponent<HDData::TextUI>()->SetText("");*/
+	aimText->GetComponent<HDData::TextUI>()->SetText("");
 
-	//auto hitText = API::CreateTextbox(_scene);
-	//hitText->GetTransform()->SetPosition(Vector3());
-	//hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
-	//hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
+	auto hitText = API::CreateTextbox(_scene);
+	hitText->GetTransform()->SetPosition(Vector3());
+	hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
+	hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
 
 	//auto centerText = API::CreateTextbox(_scene);
 	//centerText->GetTransform()->SetPosition(Vector3(1000.0f,1000.0f,0.0f));
@@ -98,9 +98,9 @@ TestScene::TestScene()
 	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
 
-	//auto playerTestHead = API::CreateObject(_scene, "playerHead");
-	//playerTestHead->SetParentObject(playerTest);
-	//playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
+	auto playerTestHead = API::CreateObject(_scene, "playerHead");
+	playerTestHead->SetParentObject(playerTest);
+	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
