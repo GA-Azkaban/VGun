@@ -29,10 +29,13 @@ namespace RocketCore::Graphics
 	class ImageRenderer;
 	class DeferredBuffers;
 	class QuadBuffer;
+	class ShadowMapPass;
 	class GBufferPass;
+	class SSAOPass;
 	class DeferredPass;
 	class DebugMeshPass;
 	class SkyboxPass;
+	class ToneMapPass;
 	class SpritePass;
 	class BlitPass;
 	
@@ -43,7 +46,6 @@ namespace RocketCore::Graphics
 		~RocketDX11();
 
 	public:
-		//그래픽스 엔진을 초기화한다.
 		virtual void Initialize(void* hWnd, int screenWidth, int screenHeight) override;
 
 		virtual void Update(float deltaTime) override;
@@ -62,10 +64,7 @@ namespace RocketCore::Graphics
 		void CreateDepthStencilStates();
 
 		void SetDepthStencilState(ID3D11DepthStencilState* dss);
-		// 임시
-		void SetLights();
 
-		/// Initialize Member
 	private:
 		HWND _hWnd;
 		int _screenWidth;
@@ -100,10 +99,14 @@ namespace RocketCore::Graphics
 	private:
 		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;
+		QuadBuffer* _toneMapBuffer;
+		ShadowMapPass* _shadowMapPass;
 		GBufferPass* _GBufferPass;
+		SSAOPass* _SSAOPass;
 		DeferredPass* _deferredPass;
 		DebugMeshPass* _debugMeshPass;
 		SkyboxPass* _skyboxPass;
+		ToneMapPass* _toneMapPass;
 		SpritePass* _spritePass;
 		BlitPass* _blitPass;
 	};

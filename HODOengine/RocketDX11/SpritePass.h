@@ -8,8 +8,8 @@ namespace RocketCore::Graphics
 	class SpritePass
 	{
 	public:
-		SpritePass(QuadBuffer* quadBuffer);
-
+		SpritePass(QuadBuffer* toneMapBuffer);
+		~SpritePass();
 		void Render();
 
 	private:
@@ -18,6 +18,6 @@ namespace RocketCore::Graphics
 
 	private:
 		DirectX::SpriteBatch* _spriteBatch;
-		QuadBuffer* _quadBuffer;
+		QuadBuffer* _toneMapBuffer;
 	};
 }

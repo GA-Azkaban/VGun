@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <DirectXMath.h>
 
 namespace RocketCore::Graphics
@@ -49,6 +49,8 @@ namespace RocketCore::Graphics
 			Normal(nx, ny, nz), Tangent(tx, ty, tz) {}
 		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT2& uv)
 			: Position(p), UV(uv), Normal{ 0, 0, 0 }, Tangent{ 0, 0, 0 } {}
+		Vertex(const DirectX::XMFLOAT3& p, const DirectX::XMFLOAT3& n, const DirectX::XMFLOAT2& uv)
+			: Position(p), Normal(n), UV(uv), Tangent{0, 0, 0} {}
 	};
 
 	struct VertexSkinning

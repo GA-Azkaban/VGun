@@ -24,6 +24,10 @@ void LoginSceneView::Initialize()
 
 void LoginSceneView::LoginView()
 {
+	auto skybox = API::CreateObject(_scene);
+	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+
 	/// main canvas
 	
 	// 임시 동작을 위한 큐브맵 나중에 지워야 함
