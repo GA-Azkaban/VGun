@@ -159,6 +159,8 @@ namespace HDEngine
 		{
 			obj->FlushEnable();
 		}
+
+		_onEnableList.clear();
 	}
 
 	void ObjectSystem::UpdateDisableList()
@@ -167,6 +169,8 @@ namespace HDEngine
 		{
 			obj->FlushDisable();
 		}
+
+		_onDisableList.clear();
 	}
 
 	void ObjectSystem::AddOnEnableList(HDData::GameObject* obj)

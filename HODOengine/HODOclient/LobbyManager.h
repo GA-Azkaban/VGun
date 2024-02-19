@@ -19,6 +19,7 @@ public:
 	void Login(std::string, std::string);
 	void Join();
 	void ExitJoin();
+	void MakeNewAccount(std::string, std::string, std::string);
 
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);

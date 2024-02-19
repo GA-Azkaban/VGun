@@ -24,7 +24,8 @@ void LobbyManager::Start()
 
 void LobbyManager::Login(std::string id, std::string password)
 {
-
+	std::string testid = id;
+	std::string testpw = password;
 }
 
 void LobbyManager::Join()
@@ -35,6 +36,11 @@ void LobbyManager::Join()
 void LobbyManager::ExitJoin()
 {
 	_joinCanvas->OnDisable();
+}
+
+void LobbyManager::MakeNewAccount(std::string id, std::string password, std::string nickname)
+{
+
 }
 
 void LobbyManager::SetLobbyMainCanvas(HDData::GameObject* mainCanvas)

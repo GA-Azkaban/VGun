@@ -39,6 +39,8 @@ namespace RocketCore::Graphics
 
 		virtual void SetActive(bool isActive) override;
 
+		virtual bool GetActive() override;
+
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
 
@@ -66,5 +68,7 @@ namespace RocketCore::Graphics
 		DirectX::XMVECTOR _measureLong;
 		float _width;
 		float _height;
+
+		bool _isActive;
 	};
 }

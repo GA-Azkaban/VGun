@@ -39,6 +39,7 @@
 #include "AudioClip.h"
 #include "ToggleUI.h"
 #include "TextInputBoxUI.h"
+#include "UIBase.h"
 
 #include "ObjectSystem.h"
 

@@ -12,7 +12,8 @@ namespace RocketCore::Graphics
 		_zLocation(),
 		_size(),
 		_width(),
-		_height()
+		_height(),
+		_isActive(true)
 	{
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
@@ -53,7 +54,7 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::SetActive(bool isActive)
 	{
-		isActive = isActive;
+		_isActive = isActive;
 	}
 
 	void TextRenderer::SetColor(DirectX::FXMVECTOR color)
@@ -69,14 +70,17 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 	{
-		MeasureTextSize();	//여기두면 안되는데
+		if (_isActive)
+		{
+			MeasureTextSize();	//여기두면 안되는데
 
-		std::wstring wstr(_str.begin(), _str.end());
-		_font->DrawString(
-			spriteBatch,
-			wstr.c_str(),
-			DirectX::XMFLOAT2(_xLocation, _yLocation),
-			_color);
+			std::wstring wstr(_str.begin(), _str.end());
+			_font->DrawString(
+				spriteBatch,
+				wstr.c_str(),
+				DirectX::XMFLOAT2(_xLocation, _yLocation),
+				_color);
+		}
 	}
 
 	void TextRenderer::SetFloatValue(const float value)
@@ -113,6 +117,11 @@ namespace RocketCore::Graphics
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
 	{
 
+	}
+
+	bool TextRenderer::GetActive()
+	{
+		return _isActive;
 	}
 
 }
