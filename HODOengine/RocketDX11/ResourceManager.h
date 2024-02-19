@@ -60,6 +60,7 @@ namespace RocketCore::Graphics
 		{
 			SOLID,
 			WIREFRAME,
+			SHADOWMAP,
 			CUBEMAP,
 		};
 

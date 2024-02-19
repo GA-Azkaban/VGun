@@ -50,30 +50,24 @@ float ShadowFactor(float4 worldPos)
 		return 0.0f;
 	projCoords = projCoords * 0.5 + 0.5;
 	projCoords.y = 1 - projCoords.y;
-	//projCoords = (projCoords + 1) / 2.0f;
-	//projCoords.y = -projCoords.y;
-	float closestDepth = ShadowMap.Sample(LinearSampler, projCoords.xy).r;
-	float shadow = currentDepth > closestDepth ? 1.0 : 0.0;
-	return shadow;
-
 	//projCoords = (projCoords + 1) / 2.0; // change to [0 - 1]
 	//projCoords.y = -projCoords.y; // bottom right corner if (1, -1) in NDC so we have to flip it
 
-	//float2 texelSize = float2(1, 1) / float2(mapWidth, mapHeight);
+	float2 texelSize = float2(1, 1) / float2(mapWidth, mapHeight);
 
-	//float shadow = 0;
-	//float epsilon = 0.01f;
-	//for (int x = -1; x < 2; ++x)
-	//{
-	//	for (int y = -1; y < 2; ++y)
-	//	{
-	//		float closestDepth = ShadowMap.Sample(LinearSampler, projCoords.xy + float2(x, y) * texelSize).r;
-	//		shadow += (closestDepth < currentDepth - epsilon);
-	//	}
-	//}
+	float shadow = 0;
+	float bias = 0.001f;
+	for (int x = -1; x < 2; ++x)
+	{
+		for (int y = -1; y < 2; ++y)
+		{
+			float closestDepth = ShadowMap.Sample(LinearSampler, projCoords.xy + float2(x, y) * texelSize).r;
+			shadow += currentDepth - bias > closestDepth ? 1.0 : 0.0;
+		}
+	}
 
-	//shadow /= 9;
-	//return shadow;
+	shadow /= 9;
+	return shadow;
 }
 
 #endif

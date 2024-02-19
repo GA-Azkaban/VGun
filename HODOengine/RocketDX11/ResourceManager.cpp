@@ -345,6 +345,16 @@ namespace RocketCore::Graphics
 		HR(_device->CreateRasterizerState(&wireframeDesc, &wireframe));
 		_rasterizerStates.emplace_back(wireframe);
 
+		D3D11_RASTERIZER_DESC shadowMapDesc;
+		ZeroMemory(&shadowMapDesc, sizeof(D3D11_RASTERIZER_DESC));
+		shadowMapDesc.FillMode = D3D11_FILL_SOLID;
+		shadowMapDesc.CullMode = D3D11_CULL_FRONT;
+		shadowMapDesc.FrontCounterClockwise = false;
+		shadowMapDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* shadowMapRS;
+		HR(_device->CreateRasterizerState(&shadowMapDesc, &shadowMapRS));
+		_rasterizerStates.emplace_back(shadowMapRS);
+
 		D3D11_RASTERIZER_DESC cubeMapDesc;
 		ZeroMemory(&cubeMapDesc, sizeof(D3D11_RASTERIZER_DESC));
 		cubeMapDesc.FillMode = D3D11_FILL_SOLID;

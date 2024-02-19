@@ -36,12 +36,12 @@ namespace RocketCore::Graphics
 		_deferredBuffers->ClearShadowMapRenderTarget();
 
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		_deviceContext->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID));
+		_deviceContext->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SHADOWMAP));
 
 		_vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
 		XMVECTOR lightDir = XMLoadFloat4(&_directionalLight->direction);
 		//XMVECTOR lightDirNorm = XMVector4Normalize(lightDir);
-		//_view = XMMatrixLookAtLH(XMVECTOR{10,10,0,0}, XMVECTOR{0, 0, 0, 1}, XMVECTOR{0, 1, 0, 0});
+		//_view = XMMatrixLookAtLH(XMVECTOR{-10,11,0,0}, XMVECTOR{0, 0, 0, 1}, XMVECTOR{0, 1, 0, 0});
 		_view = XMMatrixLookAtLH(-10 * lightDir, XMVECTOR{0, 0, 0, 1}, XMVECTOR{0, 1, 0, 0});
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())

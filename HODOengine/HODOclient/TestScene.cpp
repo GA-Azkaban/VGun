@@ -32,13 +32,13 @@ TestScene::TestScene()
 	//skyboxComp->LoadCubeMapTexture("skyboxmap.png");
 
  	auto testBox1 = API::CreateObject(_scene);
- 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -2.0f, 0.0f);
+ 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
  	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
  	boxRender1->LoadMesh("cube");
  	//boxRender1->LoadMesh("Box01.fbx");
 	//boxRender1->LoadDiffuseMap("Default.png");
 	auto testBox2 = API::CreateObject(_scene);
-	testBox2->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 2.0f, 0.0f);
+	testBox2->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
 	testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
 	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
 	boxRender2->LoadMesh("cube");
