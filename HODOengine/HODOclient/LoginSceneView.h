@@ -19,7 +19,7 @@ private:
 
 private:
 	HDData::Scene* _scene;
-	HDData::GameObject* _networkManager;
 
+	NetworkManager& _networkManager;
 	LobbyManager& _lobbyManager;
 };
