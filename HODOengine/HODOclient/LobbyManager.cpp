@@ -14,12 +14,12 @@ LobbyManager* LobbyManager::_instance = nullptr;
 
 LobbyManager::LobbyManager()
 {
-
+	API::CreateStaticComponent(this);
 }
 
 void LobbyManager::Start()
 {
-
+	int a = 0;
 }
 
 void LobbyManager::Login(std::string id, std::string password)

@@ -31,9 +31,9 @@ void LoginSceneView::LoginView()
 	/// main canvas
 	
 	// 임시 동작을 위한 큐브맵 나중에 지워야 함
-	auto skybox = API::CreateObject(_scene);
-	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+	//auto skybox = API::CreateObject(_scene);
+	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	//skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
 
 	// 여기서부터 로비 UI
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainCanvas");
@@ -93,7 +93,7 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* newIDtextbox = API::CreateTextInputBox(_scene, "newIDtextbox", joinCanvas);
 	newIDtextbox->GetTransform()->SetLocalPosition(0.f, -200.f, 0.f);
-	auto newIDtext = newIDtextbox->GetComponent<HDData::TextUI>();
+	auto newIDtext = newIDtextbox->GetComponent<HDData::TextInputBoxUI>();
 	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
 	newIDLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
@@ -101,7 +101,7 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* newPasswordTextbox = API::CreateTextInputBox(_scene, "newPasswordTextbox", joinCanvas);
 	newPasswordTextbox->GetTransform()->SetLocalPosition(0.f, -100.f, 0.f);
-	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextUI>();
+	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>();
 	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
 	newPasswordLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
@@ -109,7 +109,7 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinCanvas);
 	newNicknameTextbox->GetTransform()->SetLocalPosition(0.f, 0.f, 0.f);
-	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextUI>();
+	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>();
 	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
 	newNicknameLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
@@ -122,9 +122,9 @@ void LoginSceneView::LoginView()
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
+			if (!newIDtext->GetCurrentText().empty() && !newPWtext->GetCurrentText().empty() && !newNNtext->GetCurrentText().empty())
 			{
-				LobbyManager::Instance().MakeNewAccount(newIDtext->GetText(), newPWtext->GetText(), newNNtext->GetText());
+				LobbyManager::Instance().MakeNewAccount(newIDtext->GetCurrentText(), newPWtext->GetCurrentText(), newNNtext->GetCurrentText());
 			}
 		}
 	);
@@ -134,7 +134,7 @@ void LoginSceneView::LoginView()
 	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("exitJoin.png");
 	exitJoinBtn->GetTransform()->SetLocalPosition(150.f, 100.f, 0.f);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[this]()
+		[=]()
 		{
 			LobbyManager::Instance().ExitJoin();
 		}

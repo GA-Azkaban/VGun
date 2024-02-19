@@ -22,6 +22,16 @@ namespace HDEngine
 		return newObject;
 	}
 
+	void ObjectSystem::CreateStaticComponent(HDData::Component* component)
+	{
+		for (auto& one : _staticComponentList)
+		{
+			if (one == component) return;
+		}
+
+		_staticComponentList.push_back(component);
+	}
+
 	GameObject* ObjectSystem::CreateObject(Scene* scene, std::string objectName, GameObject* parent)
 	{
 		GameObject* newObject = new GameObject(objectName);
@@ -88,6 +98,16 @@ namespace HDEngine
 			_staticObjectList.clear();
 		}
 
+		if (!_staticComponentList.empty())
+		{
+			for (const auto& staticComp : _staticComponentList)
+			{
+				staticComp->Start();
+				_runningStaticComponentList.push_back(staticComp);
+			}
+			_staticComponentList.clear();
+		}
+
 		// Call the update function of all static objects
 		for (const auto& staticObj : _runningStaticObjectList)
 		{
@@ -95,6 +115,11 @@ namespace HDEngine
 			{
 				comp->Update();
 			}
+		}
+
+		for (const auto& staticComp : _runningStaticComponentList)
+		{
+			staticComp->Update();
 		}
 
 		// Call the update function of all gameobjects
@@ -114,6 +139,11 @@ namespace HDEngine
 			}
 		}
 
+		for (const auto& staticComp : _runningStaticComponentList)
+		{
+			staticComp->LateUpdate();
+		}
+
 		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
 		if (currentScene == nullptr)
 			return;
@@ -129,6 +159,11 @@ namespace HDEngine
 			{
 				comp->FixedUpdate();
 			}
+		}
+
+		for (const auto& staticComp : _runningStaticComponentList)
+		{
+			staticComp->FixedUpdate();
 		}
 
 		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
