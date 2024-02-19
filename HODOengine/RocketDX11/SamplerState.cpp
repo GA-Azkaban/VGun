@@ -55,6 +55,7 @@ namespace RocketCore::Graphics
 	{
 		_linearSampler.Reset();
 		_pointSampler.Reset();
+		_shadowSampler.Reset();
 	}
 
 	void SamplerState::SetSamplers(ID3D11DeviceContext* deviceContext)
