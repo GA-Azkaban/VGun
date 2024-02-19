@@ -13,7 +13,8 @@ namespace RocketCore::Graphics
 		_size(),
 		_width(),
 		_height(),
-		_isActive(true)
+		_isActive(true),
+		_sortOrder(0)
 	{
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
@@ -79,7 +80,13 @@ namespace RocketCore::Graphics
 				spriteBatch,
 				wstr.c_str(),
 				DirectX::XMFLOAT2(_xLocation, _yLocation),
-				_color);
+				_color,
+				0.0f,
+				{0.0f,0.0f},
+				1,
+				DirectX::DX11::SpriteEffects_None,
+				_sortOrder
+			);
 		}
 	}
 
@@ -122,6 +129,11 @@ namespace RocketCore::Graphics
 	bool TextRenderer::GetActive()
 	{
 		return _isActive;
+	}
+
+	void TextRenderer::SetSortOrder(float order)
+	{
+		_sortOrder = order;
 	}
 
 }
