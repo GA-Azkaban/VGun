@@ -34,17 +34,23 @@ namespace RocketCore::Graphics
 			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
 			m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
 
+			if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+			{
+				m_currentAnimation->isEnd = true;
+				return;
+			}			
+
+			if (m_currentAnimation->isLoop == true)
+			{
+				if (m_currentAnimation->isEnd == true)
+				{
+					m_currentAnimation->isEnd = false;
+				}
+			}
+
 			if (!m_currentAnimation->isEnd)
 			{
 				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
-			}
-
-			if (m_currentAnimation->isLoop == false)
-			{
-				if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.5f)
-				{
-					m_currentAnimation->isEnd = true;
-				}
 			}
 		}
 	}
@@ -57,7 +63,7 @@ namespace RocketCore::Graphics
 		// 이거는 바깥쪽에서 한번만 하도록 한다면..?
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
-		
+
 		XMMATRIX invWorld = XMMatrixTranspose(m_world);
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
@@ -298,7 +304,7 @@ namespace RocketCore::Graphics
 	{
 		ID3D11ShaderResourceView* normalTex = ResourceManager::Instance().GetTexture(fileName);
 		m_material->SetNormalMap(normalTex);
-		if(normalTex != nullptr)
+		if (normalTex != nullptr)
 			m_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 	}
 
@@ -308,6 +314,11 @@ namespace RocketCore::Graphics
 		//	return m_node->rootNodeInvTransform * m_world;
 
 		return m_world;
+	}
+
+	bool SkinningMeshObject::IsAnimationEnd()
+	{
+		return m_currentAnimation->isEnd;
 	}
 
 }

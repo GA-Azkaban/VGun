@@ -38,6 +38,8 @@ namespace RocketCore::Graphics
 
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);
+
+		bool IsAnimationEnd();
 	
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();

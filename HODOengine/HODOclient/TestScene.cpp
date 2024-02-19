@@ -42,7 +42,7 @@ TestScene::TestScene()
 	testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
 	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
 	boxRender2->LoadMesh("cube");
-// 
+ 
 // 	auto testBox2 = API::CreateObject(_scene);
 // 	testBox2->GetComponent<HDData::Transform>()->SetPosition(-1.f, 0.f, 0.f);
 // 	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
