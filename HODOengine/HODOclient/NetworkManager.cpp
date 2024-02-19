@@ -5,17 +5,17 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
-NetworkManager& NetworkManager::Instance()
-{
-	if (_instance == nullptr)
-	{
-		_instance = new NetworkManager;
-	}
-
-	return *_instance;
-}
-
-NetworkManager* NetworkManager::_instance = nullptr;
+//NetworkManager& NetworkManager::Instance()
+//{
+//	if (_instance == nullptr)
+//	{
+//		_instance = new NetworkManager;
+//	}
+//
+//	return *_instance;
+//}
+//
+//NetworkManager* NetworkManager::_instance = nullptr;
 
 NetworkManager::NetworkManager()
 {

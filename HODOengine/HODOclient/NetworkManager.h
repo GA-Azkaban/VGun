@@ -7,10 +7,10 @@
 class NetworkManager : public HDData::Script
 {
 public:
-	static NetworkManager& Instance();
-
-private:
-	static NetworkManager* _instance;
+//	static NetworkManager& Instance();
+//
+//private:
+//	static NetworkManager* _instance;
 	NetworkManager();
 	~NetworkManager() = default;
 
