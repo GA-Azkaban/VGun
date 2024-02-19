@@ -24,6 +24,10 @@ void LoginSceneView::Initialize()
 
 void LoginSceneView::LoginView()
 {
+	auto skybox = API::CreateObject(_scene);
+	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+
 	/// main canvas
 
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainCanvas");
