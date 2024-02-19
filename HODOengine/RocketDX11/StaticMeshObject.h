@@ -31,6 +31,9 @@ namespace RocketCore::Graphics
 		void Render();
 
 	public:		
+		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
+		DirectX::XMMATRIX GetWorldTM();
+		bool IsActive() { return m_isActive; }
 		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
 
 	private:

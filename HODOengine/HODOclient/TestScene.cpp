@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -27,12 +27,21 @@ TestScene::TestScene()
 
 	auto skybox = API::CreateObject(_scene);
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+	//skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+	//skyboxComp->LoadCubeMapTexture("skyboxmap.png");
 
-// 	auto testBox1 = API::CreateObject(_scene);
-// 	testBox1->GetComponent<HDData::Transform>()->SetPosition(1.f, 0.f, 0.f);
-// 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-// 	boxRender1->LoadMesh("Box01.fbx");
+ 	auto testBox1 = API::CreateObject(_scene);
+ 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
+ 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+ 	boxRender1->LoadMesh("cube");
+ 	//boxRender1->LoadMesh("Box01.fbx");
+	//boxRender1->LoadDiffuseMap("Default.png");
+	auto testBox2 = API::CreateObject(_scene);
+	testBox2->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
+	testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
+	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
+	boxRender2->LoadMesh("cube");
 // 
 // 	auto testBox2 = API::CreateObject(_scene);
 // 	testBox2->GetComponent<HDData::Transform>()->SetPosition(-1.f, 0.f, 0.f);
@@ -87,10 +96,10 @@ TestScene::TestScene()
 	//centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
 	//centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
 
-	auto playerMove = playerTest->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
-	playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
+	//auto playerMove = playerTest->AddComponent<PlayerMove>();
+	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
+	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
 	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
@@ -103,8 +112,8 @@ TestScene::TestScene()
 	playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
 	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
 
-	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
-	playerMove->SetHeadCam(headCam);
+	//auto headCam = playerTestHead->AddComponent<HDData::Camera>();
+	//playerMove->SetHeadCam(headCam);
 
 	auto sphereTest = API::CreateObject(_scene, "sphereTest");
 	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);

@@ -11,6 +11,8 @@ private:
 	LobbyManager();
 	~LobbyManager() = default;
 
+	HDData::GameObject* _this;
+
 public:
 	void Start() override;
 
@@ -19,6 +21,7 @@ public:
 	void Login(std::string, std::string);
 	void Join();
 	void ExitJoin();
+	void MakeNewAccount(std::string, std::string, std::string);
 
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);
@@ -35,24 +38,4 @@ private:
 	HDData::GameObject* _settingButton;
 	HDData::GameObject* _quitButton;
 	HDData::GameObject* _logoImage;
-
-	///////////////////////////////////
-
-	// 게임 설정
-	HDData::GameObject* _gameSettingCanvas;
-
-	HDData::GameObject* _quitSettingButton;
-	HDData::GameObject* _saveSettingButton;
-	HDData::GameObject* _clearSettingButton;
-
-	HDData::GameObject* _monitorSettingButton;
-	HDData::GameObject* _monitorAspectRatio;
-
-	HDData::GameObject* _inputSettingButton;
-	HDData::GameObject* _walkFrontSetBox;
-
-	HDData::GameObject* _soundSettingButton;
-	HDData::GameObject* _musicVolumeSlider;
-	HDData::GameObject* _fxVolumeSlider;
-
 };

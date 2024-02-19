@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 
+#include "dllExporter.h"
 #include "Component.h"
 #include "Transform.h"
 #include "MathHeader.h"
@@ -8,7 +9,7 @@
 
 namespace HDData
 {
-	class UIBase : public Component
+	class HODO_API UIBase : public Component
 	{
 	public:
 		UIBase();
@@ -30,6 +31,7 @@ namespace HDData
 		bool GetIsGrabbing();
 		bool IsIgnoreFocused();
 
+		void SetSortOrder(int orderNum);
 		void SetIsHovering(bool isHovering);
 		void SetIsClicked(bool isClicked);
 		void SetIsGrabbing(bool isGrabbing);

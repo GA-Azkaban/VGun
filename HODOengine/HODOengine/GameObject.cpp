@@ -22,6 +22,8 @@ namespace HDData
 
 	void GameObject::FlushEnable()
 	{
+		_selfActive = true;
+
 		for (auto& component : _components)
 		{
 			component->OnEnable();
@@ -35,6 +37,8 @@ namespace HDData
 
 	void GameObject::FlushDisable()
 	{
+		_selfActive = false;
+
 		for (auto& component : _components)
 		{
 			component->OnDisable();

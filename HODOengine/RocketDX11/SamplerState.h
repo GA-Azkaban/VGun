@@ -18,5 +18,6 @@ namespace RocketCore::Graphics
 	private:
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> _linearSampler;
 		Microsoft::WRL::ComPtr<ID3D11SamplerState> _pointSampler;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _shadowSampler;
 	};
 }

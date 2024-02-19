@@ -18,7 +18,7 @@ namespace HDData
 	public:
 		void Start() override;
 		void Update() override;
-		void OnClickEvent();
+		void OnClickEvent(); 
 	public:
 		void SetActive(bool active);
 		void SetScreenSpace();

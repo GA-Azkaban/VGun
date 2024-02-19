@@ -6,6 +6,7 @@
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
 #include "Cubemap.h"
+#include "LightAdapter.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -54,6 +55,11 @@ namespace RocketCore::Graphics
 	HDEngine::ISketchableImage* ObjectFactory::CreateImage()
 	{
 		return ObjectManager::Instance().CreateImage();
+	}
+
+	HDEngine::ILight* ObjectFactory::CreateLight()
+	{
+		return ObjectManager::Instance().CreateLight();
 	}
 
 	HDEngine::ILineRenderer* ObjectFactory::CreateLineRenderer()
