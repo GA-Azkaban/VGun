@@ -147,9 +147,9 @@ void LoginSceneView::LoginView()
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			if (!newIDtext->GetCurrentText().empty() && !newPWtext->GetCurrentText().empty() && !newNNtext->GetCurrentText().empty())
+			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
 			{
-				LobbyManager::Instance().MakeNewAccount(newIDtext->GetCurrentText(), newPWtext->GetCurrentText(), newNNtext->GetCurrentText());
+				LobbyManager::Instance().MakeNewAccount(newIDtext->GetText(), newPWtext->GetText(), newNNtext->GetText());
 			}
 		}
 	);
