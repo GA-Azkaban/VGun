@@ -1,5 +1,4 @@
 ﻿#include "LobbyManager.h"
-#include "NetworkManager.h"
 
 LobbyManager& LobbyManager::Instance()
 {
@@ -27,7 +26,6 @@ void LobbyManager::Login(std::string id, std::string password)
 {
 	std::string testid = id;
 	std::string testpw = password;
-	NetworkManager::Instance().SendLogin(id, password);
 }
 
 void LobbyManager::Join()
@@ -42,7 +40,7 @@ void LobbyManager::ExitJoin()
 
 void LobbyManager::MakeNewAccount(std::string id, std::string password, std::string nickname)
 {
-	NetworkManager::Instance().SendCreateAccount(id, password, nickname);
+
 }
 
 void LobbyManager::SetLobbyMainCanvas(HDData::GameObject* mainCanvas)
