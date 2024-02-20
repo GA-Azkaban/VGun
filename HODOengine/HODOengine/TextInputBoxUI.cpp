@@ -1,4 +1,4 @@
-﻿#include "TextInputBoxUI.h"
+#include "TextInputBoxUI.h"
 #include "InputSystem.h"
 #include "TimeSystem.h"
 #include "GameObject.h"
@@ -19,27 +19,9 @@ namespace HDData
 
 	void TextInputBoxUI::Start()
 	{
-		auto childs = this->GetGameObject()->GetChildGameObjects();
-
-		for (const auto& child : childs)
-		{
-			if (child->GetObjectName() == "back")
-			{
-				SetBackgroundImage(child->GetComponent<HDData::ImageUI>());
-			}
-			if (child->GetObjectName() == "cursor")
-			{
-				SetCursorImage(child->GetComponent<HDData::ImageUI>());
-			}
-			if (child->GetObjectName() == "text")
-			{
-				SetTextUI(child->GetComponent<HDData::TextUI>());
-			}
-		}
-
-		_textOriginPos = GetTextUI()->GetTransform()->GetPosition().x + 5;
-		GetBackgroundImage()->SetActive(true);
-		GetCursorImage()->SetActive(false);
+		_textOriginPos = _text->GetTransform()->GetPosition().x + 5;
+		_background->SetActive(true);
+		_cursor->SetActive(false);
 	}
 
 	void TextInputBoxUI::Update()
@@ -94,9 +76,34 @@ namespace HDData
 		}
 	}
 
+	void TextInputBoxUI::OnEnable()
+	{
+		
+	}
+
+	void TextInputBoxUI::OnDisable()
+	{
+
+	}
+
 	std::string TextInputBoxUI::GetCurrentText()
 	{
 		return newVal;
+	}
+
+	void TextInputBoxUI::SetBoxComp(ImageUI* comp)
+	{
+		_background = comp;
+	}
+
+	void TextInputBoxUI::SetCursorComp(ImageUI* comp)
+	{
+		_cursor = comp;
+	}
+
+	void TextInputBoxUI::SetTextComp(TextUI* comp)
+	{
+		_text = comp;
 	}
 
 }
