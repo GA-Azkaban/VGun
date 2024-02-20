@@ -31,6 +31,11 @@ namespace HDData
 		_skinnedMesh->PlayAnimation(fileName, isLoop);
 	}
 
+	bool SkinnedMeshRenderer::IsAnimationEnd()
+	{
+		return _skinnedMesh->IsAnimationEnd();
+	}
+
 	void SkinnedMeshRenderer::UpdateRenderData()
 	{
 		_skinnedMesh->SetWorldTM(GetTransform()->GetWorldTM());

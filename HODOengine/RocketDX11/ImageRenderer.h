@@ -43,6 +43,9 @@ namespace RocketCore::Graphics
 
 		virtual float GetHeight() override;
 
+		virtual void SetSortOrder(float order) override;
+		float GetSortOrder() const { return _sortOrder; }
+
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 
@@ -73,5 +76,7 @@ namespace RocketCore::Graphics
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
+
+		float _sortOrder;
 	};
 }

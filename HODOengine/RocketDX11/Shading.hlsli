@@ -71,7 +71,7 @@ inline void EvalDirectionalLight(SurfaceInfo surf, Light light, inout LightingIn
     li.distance = -1; // infinity
     li.attenuation = 1;
 
-    li.shadowFactor = 1 - ShadowFactor(surf.posW);
+    li.shadowFactor = ShadowFactor(surf.posW);
     CalcCommonLightInfo(surf, li);
 }
 

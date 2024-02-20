@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <DirectXMath.h>
 #include <vector>
@@ -42,7 +42,7 @@ struct Animation
 	float ticksPerSecond = 1.0f;
 	float accumulatedTime = 0.0f;
 	bool isLoop = true;
-	bool isEnd = false;		// flag for not loop animations
+	bool isEnd = false;
 	std::vector<NodeAnimation*> nodeAnimations;
 };
 

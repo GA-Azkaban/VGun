@@ -47,7 +47,7 @@ float ShadowFactor(float4 worldPos)
 	float3 projCoords = lightSpacePosition.xyz / lightSpacePosition.w;
 	float currentDepth = projCoords.z;
 	if (currentDepth > 1)
-		return 0.0f;
+		return 1.0f;
 	projCoords = projCoords * 0.5 + 0.5;
 	projCoords.y = 1 - projCoords.y;
 	//projCoords = (projCoords + 1) / 2.0; // change to [0 - 1]
@@ -61,8 +61,9 @@ float ShadowFactor(float4 worldPos)
 	{
 		for (int y = -1; y < 2; ++y)
 		{
-			float closestDepth = ShadowMap.Sample(LinearSampler, projCoords.xy + float2(x, y) * texelSize).r;
-			shadow += currentDepth - bias > closestDepth ? 1.0 : 0.0;
+			//float closestDepth = ShadowMap.Sample(LinearSampler, projCoords.xy + float2(x, y) * texelSize).r;
+			//shadow += currentDepth - bias > closestDepth ? 1.0 : 0.0;
+			shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler, projCoords.xy + float2(x, y) * texelSize, currentDepth - bias).r;
 		}
 	}
 

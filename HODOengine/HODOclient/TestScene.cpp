@@ -42,7 +42,7 @@ TestScene::TestScene()
 	testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
 	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
 	boxRender2->LoadMesh("cube");
-// 
+ 
 // 	auto testBox2 = API::CreateObject(_scene);
 // 	testBox2->GetComponent<HDData::Transform>()->SetPosition(-1.f, 0.f, 0.f);
 // 	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
@@ -71,14 +71,14 @@ TestScene::TestScene()
 
 	//// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 0.f, 0.f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 3.f, 0.f, 0.f });
 	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
 	playerTest->AddComponent<Player>();
 
 	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 
 	auto playerPosText = API::CreateTextbox(_scene);
-	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
+	playerPosText->GetTransform()->SetPosition(Vector3(100.0f, 40.0f, 50.0f));
 	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
 
 	auto aimText = API::CreateTextbox(_scene);

@@ -47,7 +47,7 @@ namespace HDData
 		_sketchable->SetActive(false);
 	}
 
-	int UIBase::GetSortOrder() const
+	float UIBase::GetSortOrder() const
 	{
 		return _sortOrder;
 	}
@@ -72,9 +72,10 @@ namespace HDData
 		return _ignoreFocus;
 	}
 
-	void UIBase::SetSortOrder(int orderNum)
+	void UIBase::SetSortOrder(float orderNum)
 	{
 		_sortOrder = orderNum;
+		_sketchable->SetSortOrder(orderNum);
 	}
 
 	void UIBase::SetIsHovering(bool isHovering)

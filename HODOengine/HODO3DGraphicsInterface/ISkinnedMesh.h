@@ -12,5 +12,6 @@ namespace HDEngine
 		virtual void LoadNormalMap(const std::string& fileName) = 0;
 		virtual void LoadDiffuseMap(const std::string& fileName) = 0;
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) = 0;
+		virtual bool IsAnimationEnd() = 0;
 	};
 }
