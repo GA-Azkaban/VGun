@@ -1,9 +1,12 @@
 ﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
+#include "NetworkManager.h"
 
 LoginSceneView::LoginSceneView()
-	: _lobbyManager(LobbyManager::Instance())
+	: _lobbyManager(LobbyManager::Instance()),
+	_networkManager(NetworkManager::Instance())
 {
+
 }
 
 LoginSceneView::~LoginSceneView()

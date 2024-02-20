@@ -2,6 +2,7 @@
 #include "../HODOengine/HODO_API.h"
 
 class LobbyManager;
+class NetworkManager;
 
 class LoginSceneView
 {
@@ -19,5 +20,6 @@ private:
 private:
 	HDData::Scene* _scene;
 
+	NetworkManager& _networkManager;
 	LobbyManager& _lobbyManager;
 };

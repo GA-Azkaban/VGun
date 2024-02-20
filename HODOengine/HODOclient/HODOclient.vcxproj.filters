@@ -34,6 +34,27 @@
     <ClCompile Include="SliderSoundScript.cpp">
       <Filter>02_Client\TestScene</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSession.cpp">
+      <Filter>03_Manager\NetworkManager\Session</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPacketHandler.cpp">
+      <Filter>03_Manager\NetworkManager\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Enum.pb.cc">
+      <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol.pb.cc">
+      <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="Struct.pb.cc">
+      <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -77,6 +98,27 @@
     </ClInclude>
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSession.h">
+      <Filter>03_Manager\NetworkManager\Session</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPacketHandler.h">
+      <Filter>03_Manager\NetworkManager\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Enum.pb.h">
+      <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Protocol.pb.h">
+      <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.pb.h">
+      <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +171,18 @@
     </Filter>
     <Filter Include="03_Manager\GameManager">
       <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\NetworkManager">
+      <UniqueIdentifier>{49331eb4-6624-44c8-8dbe-a70bf1f62bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\NetworkManager\Session">
+      <UniqueIdentifier>{9785f7b4-7fb4-4677-b160-716acc503c6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\NetworkManager\Packet">
+      <UniqueIdentifier>{7e70bca8-733d-4383-b03f-4d2f0e0b452f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\NetworkManager\Packet\ProtoBuf">
+      <UniqueIdentifier>{6da89b60-4315-4ffa-9721-927b51c6e4ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
