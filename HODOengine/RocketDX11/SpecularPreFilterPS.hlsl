@@ -32,7 +32,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 		float NdotL = saturate(dot(N, L));
 		if (NdotL > 0.0)
 		{
-			prefilteredColor += CubeMap.Sample(LinearSampler, L).rgb * NdotL;
+			prefilteredColor += CubeMap.Sample(LinearWrapSampler, L).rgb * NdotL;
 			totalWeight += NdotL;
 		}
 	}

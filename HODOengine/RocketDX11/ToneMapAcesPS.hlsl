@@ -61,7 +61,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 
 	//return outColor;
 	
-	float3 color = src.Sample(PointSampler, input.uv).rgb;
+	float3 color = src.Sample(PointClampSampler, input.uv).rgb;
 	//color *= 0.6;
 	//float a = 2.51f;
 	//float b = 0.03f;

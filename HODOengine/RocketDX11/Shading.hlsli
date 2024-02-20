@@ -33,7 +33,7 @@ struct LightingInfo
 
 inline float3 CalcNormalFromNormMap(Texture2D normalMap, float2 uv, SurfaceInfo surf)
 {
-    float3 normalMapVal = normalMap.Sample(LinearSampler, uv).xyz;
+    float3 normalMapVal = normalMap.Sample(LinearWrapSampler, uv).xyz;
     normalMapVal = normalize((normalMapVal * 2) - 1.0);
     float3 N = (normalMapVal.x * surf.T) +
         (normalMapVal.y * surf.B) +
@@ -48,11 +48,11 @@ inline float3 CalcNormalFromBumpMap(Texture2D bumpMap, float2 uv, SurfaceInfo su
     bumpMap.GetDimensions(bumpTextureSize[0], bumpTextureSize[1]);
     float2 pixelSize = 1.0 / bumpTextureSize;
 
-    float mid = bumpMap.Sample(PointSampler, uv) * 2.0 - 1.0;
-    float left = bumpMap.Sample(PointSampler, uv + float2(-pixelSize.x, 0)) * 2.0 - 1.0;
-    float right = bumpMap.Sample(PointSampler, uv + float2(pixelSize.x, 0)) * 2.0 - 1.0;
-    float top = bumpMap.Sample(PointSampler, uv + float2(0, -pixelSize.y)) * 2.0 - 1.0;
-    float bottom = bumpMap.Sample(PointSampler, uv + float2(0, pixelSize.y)) * 2.0 - 1.0;
+    float mid = bumpMap.Sample(PointClampSampler, uv) * 2.0 - 1.0;
+    float left = bumpMap.Sample(PointClampSampler, uv + float2(-pixelSize.x, 0)) * 2.0 - 1.0;
+    float right = bumpMap.Sample(PointClampSampler, uv + float2(pixelSize.x, 0)) * 2.0 - 1.0;
+    float top = bumpMap.Sample(PointClampSampler, uv + float2(0, -pixelSize.y)) * 2.0 - 1.0;
+    float bottom = bumpMap.Sample(PointClampSampler, uv + float2(0, pixelSize.y)) * 2.0 - 1.0;
     float3 p1 = ((bottom - mid) - (top - mid)) * normalize(surf.B);
     float3 p2 = ((left - mid) - (right - mid)) * normalize(surf.T);
     return normalize(N - (p1 + p1));
