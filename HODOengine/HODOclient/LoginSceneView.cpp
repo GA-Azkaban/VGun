@@ -140,7 +140,7 @@ void LoginSceneView::LoginView()
 		}
 	);
 
-	joinCanvas->OnDisable();
+	joinCanvas->SetSelfActive(false);
 }
 
 void LoginSceneView::MainMenu()

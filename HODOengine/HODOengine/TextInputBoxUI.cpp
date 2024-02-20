@@ -19,24 +19,6 @@ namespace HDData
 
 	void TextInputBoxUI::Start()
 	{
-		auto childs = this->GetGameObject()->GetChildGameObjects();
-
-		for (const auto& child : childs)
-		{
-			if (child->GetObjectName() == "back")
-			{
-				_background = child->GetComponent<HDData::ImageUI>();
-			}
-			if (child->GetObjectName() == "cursor")
-			{
-				_cursor = child->GetComponent<HDData::ImageUI>();
-			}
-			if (child->GetObjectName() == "text")
-			{
-				_text = child->GetComponent<HDData::TextUI>();
-			}
-		}
-
 		_textOriginPos = _text->GetTransform()->GetPosition().x + 5;
 		_background->SetActive(true);
 		_cursor->SetActive(false);
@@ -94,9 +76,34 @@ namespace HDData
 		}
 	}
 
+	void TextInputBoxUI::OnEnable()
+	{
+		
+	}
+
+	void TextInputBoxUI::OnDisable()
+	{
+
+	}
+
 	std::string TextInputBoxUI::GetCurrentText()
 	{
 		return newVal;
+	}
+
+	void TextInputBoxUI::SetBoxComp(ImageUI* comp)
+	{
+		_background = comp;
+	}
+
+	void TextInputBoxUI::SetCursorComp(ImageUI* comp)
+	{
+		_cursor = comp;
+	}
+
+	void TextInputBoxUI::SetTextComp(TextUI* comp)
+	{
+		_text = comp;
 	}
 
 }

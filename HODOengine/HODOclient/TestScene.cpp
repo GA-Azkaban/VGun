@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -145,15 +145,14 @@ TestScene::TestScene()
 	//button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	//button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
 
-	//auto slider = API::CreateSlider(_scene, 50, "slider");
-	//slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
-	//slider->AddComponent<HDData::AudioSource>();
-	//
-	//auto toggle = API::CreateToggle(_scene);
-	//
-	//toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
-	//auto textInputBox = API::CreateTextInputBox(_scene);
-	//textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
+	auto slider = API::CreateSlider(_scene, 50, "slider");
+	slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
+
+	auto toggle = API::CreateToggle(_scene);
+	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
+
+	auto textInputBox = API::CreateTextInputBox(_scene);
+	textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
 
 	API::LoadScene(_scene);
 
