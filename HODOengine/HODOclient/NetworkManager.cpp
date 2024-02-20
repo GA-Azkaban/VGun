@@ -33,12 +33,12 @@ void NetworkManager::Start()
 		1
 	);
 
-	_isConnect = _service->Start();
+	_service->Start();
 }
 
 void NetworkManager::Update()
 {
-
+	_service->GetIocpCore()->Dispatch(0);
 }
 
 void NetworkManager::SendLogin(std::string id, std::string password)
