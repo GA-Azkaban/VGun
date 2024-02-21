@@ -44,7 +44,7 @@ float4 main(VertexToPixel input) : SV_TARGET
     float depth = DepthTex.Sample(LinearBorderSampler, input.uv).r;
     float3 viewSpacePosition = CalculateViewSpaceFromDepth(depth, input.uv);
     float3 normal = NormalTex.Sample(LinearBorderSampler, input.uv).rgb;
-    normal = normalize(normal * 2.0f - 1.0f);
+    //normal = normalize(normal * 2.0f - 1.0f);
 
     float2 noiseScale = windowSize / 4.0f;
     float3 randDir = Noise.Sample(PointClampSampler, input.uv * noiseScale).rgb;

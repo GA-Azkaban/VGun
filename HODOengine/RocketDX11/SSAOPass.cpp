@@ -43,7 +43,7 @@ namespace RocketCore::Graphics
 		_pixelShader->SetFloat4Array("kernel", &_kernel[0], 64);
 		_pixelShader->SetFloat4("cemeraPosition", XMFLOAT4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f));
 		_pixelShader->SetFloat("radius", 0.5f);
-		_pixelShader->SetFloat("power", 1.0f);
+		_pixelShader->SetFloat("power", 0.5f);
 		_pixelShader->SetFloat2("windowSize", _windowSize);
 
 		_pixelShader->SetShaderResourceView("DepthTex", _deferredBuffers->GetDepthSRV());
