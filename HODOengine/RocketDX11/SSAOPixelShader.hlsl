@@ -2,11 +2,13 @@
 
 cbuffer externalData : register(b0)
 {
-    float4x4 inverseView;
-    float4x4 inverseProj;
+    float4x4 view;
+    float4x4 projection;
+    float4x4 inverseProjection;
     float4 kernel[64];
     float4 cameraPosition;
     float radius;
+    float power;
     float2 windowSize;
 }
 
@@ -20,7 +22,7 @@ Texture2D DepthTex : register(t0);
 Texture2D NormalTex : register(t1);
 Texture2D Noise     : register(t2);
 
-float3 CalculateWorldFromDepth(float depth, float2 texCoord)
+float3 CalculateViewSpaceFromDepth(float depth, float2 texCoord)
 {
     // clip space between [-1, 1]
     // flip y so that +ve y is upwards
@@ -30,66 +32,44 @@ float3 CalculateWorldFromDepth(float depth, float2 texCoord)
     // NOTE: depth is not linearized
     // Also in range [0, 1] due to DirectX Convention
     float4 clipSpace = float4(clipXY, depth, 1);
-    float4 viewSpace = mul(inverseProj, clipSpace);
-
-    // perspective divide
+   
+    float4 viewSpace = mul(clipSpace, inverseProjection);
     viewSpace /= viewSpace.w;
 
-    float4 worldSpace = mul(inverseView, viewSpace);
-    return worldSpace.xyz;
+    return viewSpace.xyz;
 }
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-    float depth = DepthTex.Sample(PointSampler, input.uv).r;
-    if (depth >= 1)
-        return float4(1.0f, 1.0f, 1.0f, 1.0f);
-
-    float3 posW = CalculateWorldFromDepth(depth, input.uv);
-    float3 normal = NormalTex.Sample(PointSampler, input.uv).rgb;
+    float depth = DepthTex.Sample(LinearBorderSampler, input.uv).r;
+    float3 viewSpacePosition = CalculateViewSpaceFromDepth(depth, input.uv);
+    float3 normal = NormalTex.Sample(LinearBorderSampler, input.uv).rgb;
     normal = normalize(normal * 2.0f - 1.0f);
-    float centerDepth = distance(posW, cameraPosition.xyz);
-    float2 noiseScale = windowSize / 4.0f;
-    float3 randDir = Noise.Sample(PointSampler, input.uv * noiseScale).rgb;
+    float3 viewSpaceNormal = normalize(mul(normal, (float3x3)view));
 
-    float3 tangent = normalize(randDir - normal * dot(randDir, normal));
-    float3 bitangent = cross(normal, tangent);
-    float3x3 tbn = transpose(float3x3(tangent, bitangent, normal));
+    float2 noiseScale = windowSize / 4.0f;
+    float3 randDir = Noise.Sample(PointClampSampler, input.uv * noiseScale).rgb;
+    randDir = normalize(2 * randDir - 1);
+
+    float3 tangent = normalize(randDir - viewSpaceNormal * dot(randDir, viewSpaceNormal));
+    float3 bitangent = cross(viewSpaceNormal, tangent);
+    float3x3 tbn = float3x3(tangent, bitangent, viewSpaceNormal);
 
     float occlusion = 0.0f;
     for (int i = 0; i < 64; ++i)
     {
-        // find out a desired world position to sample
-        float3 kernelPosW = mul(tbn, kernel[i].rgb);
-        float3 samplePosW = posW + kernelPosW * radius;
-        float sampleDepth = distance(samplePosW, cameraPosition.xyz);
+        float3 sampleDir = mul(kernel[i].xyz, transpose(tbn));
+        float3 samplePos = viewSpacePosition + sampleDir * radius;
 
-        // project it to the clip space so we know where can sample from the depth buffer
-        //float4x4 viewProj = mul(inverseProj, inverseView);
-        float4x4 viewProj = mul(inverseView, inverseProj);
-        float4 samplePosClip = mul(viewProj, float4(samplePosW, 1.0f));
-        samplePosClip /= samplePosClip.w;
+        float4 offset = mul(float4(samplePos, 1.0f), projection);
+        offset.xy = ((offset.xy / offset.w) * float2(1.0f, -1.0f)) * 0.5f + 0.5f;
+        float sampleDepth = DepthTex.Sample(PointClampSampler, offset.xy);
+        sampleDepth = CalculateViewSpaceFromDepth(sampleDepth, offset.xy).z;
 
-        // invert y and put to [0 - 1]
-        float2 sampleUV = float2(samplePosClip.x, -samplePosClip.y) * 0.5f + 0.5f;
-
-        // reject samples outside of the range
-        if (sampleUV.x < 0 || sampleUV.x > 1 || sampleUV.y < 0 || sampleUV.y > 1)
-        {
-            occlusion += 0.0f;
-            continue;
-        }
-
-        // sample our scene for actual depth
-        float depthFromTex = DepthTex.Sample(PointSampler, sampleUV.xy).r;
-        float3 scenePos = CalculateWorldFromDepth(depthFromTex, sampleUV.xy);
-        float sceneDepth = distance(scenePos, cameraPosition.xyz);
-
-        float depthDiff = abs(sceneDepth - centerDepth);
-        float rangeCheck = smoothstep(0.0f, 1.0f, radius / depthDiff);
-        occlusion += step(sceneDepth, sampleDepth) * rangeCheck;
+        float rangeCheck = smoothstep(0.0f, 1.0f, radius / abs(viewSpacePosition.z - sampleDepth));
+        occlusion += step(sampleDepth, samplePos.z - 0.01) * rangeCheck;
     }
     occlusion /= 64.0f;
     float factor = 1 - occlusion;
-    return float4(factor.rrr, 1.0f);
+    return pow(abs(factor), power);
 }

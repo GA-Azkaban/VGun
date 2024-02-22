@@ -32,16 +32,18 @@ namespace RocketCore::Graphics
 		_deferredBuffers->ClearSSAORenderTarget();
 
 		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		XMMATRIX view = XMMatrixInverse(nullptr, Camera::GetMainCamera()->GetViewMatrix());
-		XMMATRIX proj = XMMatrixInverse(nullptr, Camera::GetMainCamera()->GetProjectionMatrix());
-
+		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+		
 		_vertexShader->SetShader();
 
-		_pixelShader->SetMatrix4x4("inverseView", view);
-		_pixelShader->SetMatrix4x4("inverseProj", proj);
+		_pixelShader->SetMatrix4x4("view", XMMatrixTranspose(view));
+		_pixelShader->SetMatrix4x4("projection", XMMatrixTranspose(proj));
+		_pixelShader->SetMatrix4x4("inverseProjection", XMMatrixInverse(nullptr, proj));
 		_pixelShader->SetFloat4Array("kernel", &_kernel[0], 64);
 		_pixelShader->SetFloat4("cemeraPosition", XMFLOAT4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f));
-		_pixelShader->SetFloat("radius", 0.1f);
+		_pixelShader->SetFloat("radius", 0.5f);
+		_pixelShader->SetFloat("power", 0.1f);
 		_pixelShader->SetFloat2("windowSize", _windowSize);
 
 		_pixelShader->SetShaderResourceView("DepthTex", _deferredBuffers->GetDepthSRV());

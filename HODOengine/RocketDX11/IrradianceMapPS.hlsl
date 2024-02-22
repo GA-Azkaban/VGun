@@ -29,7 +29,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 			float3 tangentSample = float3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
 			// tangent space to world
 			float3 sampleVec = tangentSample.x * right + tangentSample.y * up + tangentSample.z * normal;
-			irradiance += CubeMap.Sample(LinearSampler, sampleVec).rgb * cos(theta) * sin(theta);
+			irradiance += CubeMap.Sample(LinearWrapSampler, sampleVec).rgb * cos(theta) * sin(theta);
 			nrSamples++;
 		}
 	}

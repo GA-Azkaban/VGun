@@ -10,6 +10,6 @@ struct VertexToPixel
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	float4 diffuse = Texture.SampleLevel(LinearSampler, input.uv, 0.0);
+	float4 diffuse = Texture.SampleLevel(LinearWrapSampler, input.uv, 0.0);
 	return float4(diffuse.rgb, 1.0f);
 }

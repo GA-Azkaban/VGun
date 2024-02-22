@@ -16,7 +16,7 @@ float CalcLuminance(float3 color)
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-    float3 color = src.Sample(PointSampler, input.uv).rgb;
+    float3 color = src.Sample(PointClampSampler, input.uv).rgb;
     float luminance = CalcLuminance(color);
     float reinhard = luminance / (luminance + 1);
     if (luminance > 1e-6)
