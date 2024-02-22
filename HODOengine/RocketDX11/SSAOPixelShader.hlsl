@@ -2,9 +2,9 @@
 
 cbuffer externalData : register(b0)
 {
+    float4x4 view;
     float4x4 projection;
     float4x4 inverseProjection;
-    float4x4 inverseView;
     float4 kernel[64];
     float4 cameraPosition;
     float radius;
@@ -44,20 +44,21 @@ float4 main(VertexToPixel input) : SV_TARGET
     float depth = DepthTex.Sample(LinearBorderSampler, input.uv).r;
     float3 viewSpacePosition = CalculateViewSpaceFromDepth(depth, input.uv);
     float3 normal = NormalTex.Sample(LinearBorderSampler, input.uv).rgb;
-    //normal = normalize(normal * 2.0f - 1.0f);
+    normal = normalize(normal * 2.0f - 1.0f);
+    float3 viewSpaceNormal = normalize(mul(normal, (float3x3)view));
 
     float2 noiseScale = windowSize / 4.0f;
     float3 randDir = Noise.Sample(PointClampSampler, input.uv * noiseScale).rgb;
     randDir = normalize(2 * randDir - 1);
 
-    float3 tangent = normalize(randDir - normal * dot(randDir, normal));
-    float3 bitangent = cross(normal, tangent);
-    float3x3 tbn = float3x3(tangent, bitangent, normal);
+    float3 tangent = normalize(randDir - viewSpaceNormal * dot(randDir, viewSpaceNormal));
+    float3 bitangent = cross(viewSpaceNormal, tangent);
+    float3x3 tbn = float3x3(tangent, bitangent, viewSpaceNormal);
 
     float occlusion = 0.0f;
     for (int i = 0; i < 64; ++i)
     {
-        float3 sampleDir = mul(kernel[i].xyz, tbn);
+        float3 sampleDir = mul(kernel[i].xyz, transpose(tbn));
         float3 samplePos = viewSpacePosition + sampleDir * radius;
 
         float4 offset = mul(float4(samplePos, 1.0f), projection);
