@@ -7,6 +7,7 @@
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "DebugObject.h"
 #include "Cubemap.h"
 #include "LightAdapter.h"
 #include "TextRenderer.h"
@@ -49,6 +50,14 @@ namespace RocketCore::Graphics
 	{
 		SkinningMeshObject* temp = new SkinningMeshObject();
 		_skinningMeshObjectList.emplace_back(temp);
+
+		return temp;
+	}
+
+	RocketCore::Graphics::DebugObject* ObjectManager::CreateDebugObject()
+	{
+		DebugObject* temp = new DebugObject();
+		_debugObjectList.emplace_back(temp);
 
 		return temp;
 	}

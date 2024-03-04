@@ -1,12 +1,12 @@
 ﻿#pragma once
 #include "dllExporter.h"
 #include "DynamicCollider.h"
+#include "..\\HODO3DGraphicsInterface\\IDebugObject.h"
 
 namespace HDData
 {
 	class HODO_API DynamicCapsuleCollider : public DynamicCollider
 	{
-
 	public:
 		DynamicCapsuleCollider();
 
@@ -16,19 +16,18 @@ namespace HDData
 		virtual float GetDepth() const override;
 
 	public:
-		float GetRadius() const;
-		float GetHalfHeight() const;
-		void SetCapsuleInfo(float radius, float halfHeight);
-
-		void SetRadius(float rad);
-		void SetHalfHeight(float val);
-
+		virtual void Update() override;
 		virtual void DrawDebug() override;
 
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
+
+		void SetColor(Vector4& color);
+		void SetFillModeSolid();
+		void SetFillModeWireframe();
+
 	private:
-		float _radius;
-		float _halfHeight;
-		HDEngine::CylinderPrimitive* _cylinderDebugStruct;
+		HDEngine::IDebugObject* _capsuleObject;
 	};
 }
 

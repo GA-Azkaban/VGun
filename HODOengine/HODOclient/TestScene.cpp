@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -116,8 +116,9 @@ TestScene::TestScene()
 	//playerMove->SetHeadCam(headCam);
 
 	auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
-	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+	sphereTest->GetComponent<HDData::Transform>()->SetPosition(5.f, 3.f, 0.f);
+	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicCapsuleCollider>();
 
 	//textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	//auto textTest = API::CreateTextbox(_scene);

@@ -1,4 +1,4 @@
-#include "Player.h"
+﻿#include "Player.h"
 
 void Player::Start()
 {
@@ -11,7 +11,15 @@ void Player::Start()
 
 void Player::Update()
 {
-	
+	// Animation Test용 임시코드
+	if (API::GetKeyDown(DIK_1))
+	{
+		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation("A_TP_CH_Breathing.fbx", true);
+	}
+	else if (API::GetKeyDown(DIK_2))
+	{
+		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
+	}
 }
 
 void Player::LateUpdate()
