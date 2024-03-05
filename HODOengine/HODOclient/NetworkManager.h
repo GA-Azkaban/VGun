@@ -23,6 +23,10 @@ public:
 	void SendCreateAccount(std::string id, std::string password, std::string nickname);
 	
 public:
+	void RecvFail(int32 errorCode);
+	void RecvLogin(int32 uid, std::string id);
+
+public:
 	bool IsConnected();
 
 private:

@@ -1,6 +1,12 @@
 ﻿#include "pch.h"
 #include "ServerPacketHandler.h"
 
+#include "../HODOengine/ObjectSystem.h"
+#include "../HODOengine/GameObject.h"
+#include "../HODOengine/Component.h"
+
+#include "NetworkManager.h"
+
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
 /*
@@ -51,6 +57,8 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
 			break;
 	}
 
+	NetworkManager::Instance().RecvFail(pkt.errorcode());
+
 	return true;
 }
 
@@ -58,6 +66,7 @@ bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK
 {
 	std::cout << "로그인 성공! " << "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
 
+	NetworkManager::Instance().RecvLogin(pkt.uid(), pkt.nickname());
 
 	return true;
 }

@@ -5,6 +5,8 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
+#include "GameManager.h"
+
 NetworkManager& NetworkManager::Instance()
 {
 	if (_instance == nullptr)
@@ -60,6 +62,58 @@ void NetworkManager::SendCreateAccount(std::string id, std::string password, std
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvFail(int32 errorCode)
+{
+	// Todo
+}
+
+void NetworkManager::RecvLogin(int32 uid, std::string nickName)
+{
+	{
+		{
+			{
+				{
+					{
+						{
+							{
+								{
+									{
+										{
+											{
+												{
+													{
+														{
+															{
+																{
+																	{
+																		{
+																			{
+																				{
+																					{
+																						{}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 bool NetworkManager::IsConnected()

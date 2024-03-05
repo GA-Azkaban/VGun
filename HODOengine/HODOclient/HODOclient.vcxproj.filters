@@ -43,9 +43,6 @@
     <ClCompile Include="ServerPacketHandler.cpp">
       <Filter>03_Manager\NetworkManager\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>03_Manager\NetworkManager</Filter>
-    </ClCompile>
     <ClCompile Include="Enum.pb.cc">
       <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
     </ClCompile>
@@ -54,6 +51,9 @@
     </ClCompile>
     <ClCompile Include="Struct.pb.cc">
       <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>03_Manager\NetworkManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -102,9 +102,6 @@
     <ClInclude Include="NetworkManager.h">
       <Filter>03_Manager\NetworkManager</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>03_Manager\NetworkManager</Filter>
-    </ClInclude>
     <ClInclude Include="ServerSession.h">
       <Filter>03_Manager\NetworkManager\Session</Filter>
     </ClInclude>
@@ -119,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="Struct.pb.h">
       <Filter>03_Manager\NetworkManager\Packet\ProtoBuf</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>03_Manager\NetworkManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
