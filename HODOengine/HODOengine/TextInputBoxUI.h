@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Component.h"
 
 namespace HDData
@@ -12,7 +12,6 @@ namespace HDData
 		TextInputBoxUI();
 		void Start() override;
 		void Update() override;
-		void OnEnable() override;
 		void OnDisable() override;
 
 		std::string GetCurrentText();
@@ -21,6 +20,8 @@ namespace HDData
 		void SetBoxComp(ImageUI* comp);
 		void SetCursorComp(ImageUI* comp);
 		void SetTextComp(TextUI* comp);
+
+		void SetSortOrder(float ord);
 
 	private:
 		ImageUI* _background;

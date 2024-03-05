@@ -1,4 +1,4 @@
-#include "TextInputBoxUI.h"
+﻿#include "TextInputBoxUI.h"
 #include "InputSystem.h"
 #include "TimeSystem.h"
 #include "GameObject.h"
@@ -26,9 +26,9 @@ namespace HDData
 
 	void TextInputBoxUI::Update()
 	{
-		if (GetBackgroundImage()->GetIsClicked())
+		if (_background->GetIsClicked())
 		{
-			GetCursorImage()->SetActive(true);
+			_cursor->SetActive(true);
 			_inputReady = true;
 		}
 
@@ -40,7 +40,7 @@ namespace HDData
 			{
 				_blankTime = 0;
 				_isCursorOn = !_isCursorOn;
-				GetCursorImage()->SetActive(_isCursorOn);
+				_cursor->SetActive(_isCursorOn);
 			}
 
 			for (int i = 0; i < 0x37; ++i)
@@ -55,35 +55,30 @@ namespace HDData
 							i != DIK_RSHIFT)
 						{
 							newVal += HDEngine::InputSystem::Instance().GetInputText(i);
-							GetTextUI()->SetText(newVal);
-							GetCursorImage()->GetTransform()->SetPosition(_textOriginPos + GetTextUI()->_sketchable->GetWidth() / 2, GetTextUI()->GetTop() + GetTextUI()->_sketchable->GetHeight() / 2, 0.f);
+							_text->SetText(newVal);
+							_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth() / 2, _text->GetTop() + _text->_sketchable->GetHeight() / 2, 0.f);
 						}
 					}
 					if (i == DIK_BACKSPACE && newVal.size() > 0)
 					{
 						newVal.pop_back();
-						GetTextUI()->SetText(newVal);
-						GetCursorImage()->GetTransform()->SetPosition(_textOriginPos + GetTextUI()->_sketchable->GetWidth() / 2 - 5, GetTextUI()->GetTop() + GetTextUI()->_sketchable->GetHeight() / 2, 0.f);
+						_text->SetText(newVal);
+						_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth() / 2 - 5, _text->GetTop() + _text->_sketchable->GetHeight() / 2, 0.f);
 					}
 				}
 			}
 
-			if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT) && !GetBackgroundImage()->GetIsClicked())
+			if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT) && !_background->GetIsClicked())
 			{
-				GetCursorImage()->SetActive(false);
+				_cursor->SetActive(false);
 				_inputReady = false;
 			}
 		}
 	}
 
-	void TextInputBoxUI::OnEnable()
-	{
-		
-	}
-
 	void TextInputBoxUI::OnDisable()
 	{
-
+		_text->SetText("");
 	}
 
 	std::string TextInputBoxUI::GetCurrentText()
@@ -104,6 +99,13 @@ namespace HDData
 	void TextInputBoxUI::SetTextComp(TextUI* comp)
 	{
 		_text = comp;
+	}
+
+	void TextInputBoxUI::SetSortOrder(float ord)
+	{
+		_background->SetSortOrder(ord);
+		_cursor->SetSortOrder(ord);
+		_text->SetSortOrder(ord);
 	}
 
 }
