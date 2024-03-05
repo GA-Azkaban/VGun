@@ -116,7 +116,8 @@ TestScene::TestScene()
 	//playerMove->SetHeadCam(headCam);
 
 	auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	sphereTest->GetComponent<HDData::Transform>()->SetPosition(5.f, 3.f, 0.f);
+	sphereTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 5.f, 0.f);
+	sphereTest->GetComponent<HDData::Transform>()->SetScale(0.5f, 0.5f, 0.5f);
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
 	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicCapsuleCollider>();
 

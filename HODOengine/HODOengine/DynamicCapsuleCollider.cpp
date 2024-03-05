@@ -3,61 +3,56 @@
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
+	: _radius(1.0f), _halfHeight(2.0f)
 {
-	_capsuleObject = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateDebugObject();
-	_capsuleObject->LoadMesh("capsule");
+	_capsuleObject = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCapsulePrimitive();
+	_debugStruct = _capsuleObject;
 }
 
 float HDData::DynamicCapsuleCollider::GetWidth() const
 {
-	//return (_radius + _halfHeight) * 2 * _scaleOffset.y * GetGameObject()->GetTransform()->GetScale().y;
-	return 1.0f * 2 * GetGameObject()->GetTransform()->GetScale().y;
+	return (_radius + _halfHeight) * 2 * _scaleOffset.y * GetGameObject()->GetTransform()->GetScale().y;
 }
 
 float HDData::DynamicCapsuleCollider::GetHeight() const
 {
-	//return (_radius + _halfHeight) * 2 * _scaleOffset.x * GetGameObject()->GetTransform()->GetScale().x;
-	return 4.0f * GetGameObject()->GetTransform()->GetScale().x;
+	return (_radius + _halfHeight) * 2 * _scaleOffset.x * GetGameObject()->GetTransform()->GetScale().x;
 }
 
 float HDData::DynamicCapsuleCollider::GetDepth() const
 {
-	return 1.0f * 2 * GetGameObject()->GetTransform()->GetScale().z;
-}
-
-void HDData::DynamicCapsuleCollider::Update()
-{
-	_capsuleObject->SetWorldTM(GetGameObject()->GetTransform()->GetWorldTM());
+	return (_radius + _halfHeight) * 2 * _scaleOffset.z * GetGameObject()->GetTransform()->GetScale().z;
 }
 
 void HDData::DynamicCapsuleCollider::DrawDebug()
 {
-	//Matrix colWorld = Matrix::Identity;
-	//colWorld *= GetTransformMatrix();
-	//colWorld *= GetTransform()->GetWorldTM();
-	//_debugStruct->worldTM = colWorld;
-	//_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
-	//
-	//_capsuleDebugStruct->height = _halfHeight * 2;
-	//_capsuleDebugStruct->diameter = _radius * 2;
+	Matrix colWorld = Matrix::Identity;
+	colWorld *= GetTransformMatrix();
+	colWorld *= GetTransform()->GetWorldTM();
+	_debugStruct->worldTM = colWorld;
+	_debugStruct->color = { 0.0f, 1.0f, 0.0f, 1.0f };
+
+	_capsuleObject->height = _halfHeight * 2;
+	_capsuleObject->diameter = _radius * 2;
 }
 
-void HDData::DynamicCapsuleCollider::OnEnable()
+float HDData::DynamicCapsuleCollider::GetRadius() const
 {
-	_capsuleObject->SetActive(true);
+	return _radius;
 }
 
-void HDData::DynamicCapsuleCollider::OnDisable()
+float HDData::DynamicCapsuleCollider::GetHalfHeight() const
 {
-	_capsuleObject->SetActive(false);
+	return _halfHeight;
 }
 
-void HDData::DynamicCapsuleCollider::SetFillModeSolid()
+void HDData::DynamicCapsuleCollider::SetRadius(float val)
 {
-	_capsuleObject->SetFillModeSolid();
+	_radius = val;
 }
 
-void HDData::DynamicCapsuleCollider::SetFillModeWireframe()
+void HDData::DynamicCapsuleCollider::SetHalfHeight(float val)
 {
-	_capsuleObject->SetFillModeWireframe();
+	_halfHeight = val;
 }
+

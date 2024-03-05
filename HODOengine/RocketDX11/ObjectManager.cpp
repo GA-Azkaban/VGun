@@ -7,7 +7,6 @@
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
-#include "DebugObject.h"
 #include "Cubemap.h"
 #include "LightAdapter.h"
 #include "TextRenderer.h"
@@ -50,14 +49,6 @@ namespace RocketCore::Graphics
 	{
 		SkinningMeshObject* temp = new SkinningMeshObject();
 		_skinningMeshObjectList.emplace_back(temp);
-
-		return temp;
-	}
-
-	RocketCore::Graphics::DebugObject* ObjectManager::CreateDebugObject()
-	{
-		DebugObject* temp = new DebugObject();
-		_debugObjectList.emplace_back(temp);
 
 		return temp;
 	}
@@ -114,6 +105,14 @@ namespace RocketCore::Graphics
 		cylinder->isWire = true;
 		_cylinderPrimitiveList.emplace_back(cylinder);
 		return cylinder;
+	}
+
+	HDEngine::CapsulePrimitive* ObjectManager::CreateCapsulePrimitive()
+	{
+		HDEngine::CapsulePrimitive* capsule = new HDEngine::CapsulePrimitive();
+		capsule->isWire = true;
+		_capsulePrimitiveList.emplace_back(capsule);
+		return capsule;
 	}
 
 	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()

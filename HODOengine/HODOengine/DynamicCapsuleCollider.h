@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "dllExporter.h"
 #include "DynamicCollider.h"
-#include "..\\HODO3DGraphicsInterface\\IDebugObject.h"
 
 namespace HDData
 {
@@ -15,19 +14,20 @@ namespace HDData
 		virtual float GetHeight() const override;
 		virtual float GetDepth() const override;
 
-	public:
-		virtual void Update() override;
 		virtual void DrawDebug() override;
 
-		virtual void OnEnable() override;
-		virtual void OnDisable() override;
+	public:
+		float GetRadius() const;
+		float GetHalfHeight() const;
 
-		void SetColor(Vector4& color);
-		void SetFillModeSolid();
-		void SetFillModeWireframe();
+	public:
+		void SetRadius(float val);
+		void SetHalfHeight(float val);
 
 	private:
-		HDEngine::IDebugObject* _capsuleObject;
+		float _radius;
+		float _halfHeight;
+		HDEngine::CapsulePrimitive* _capsuleObject;
 	};
 }
 

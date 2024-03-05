@@ -168,9 +168,6 @@
     <ClCompile Include="ShadowMapPass.cpp">
       <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
     </ClCompile>
-    <ClCompile Include="DebugObject.cpp">
-      <Filter>Object\DebugObject</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -310,9 +307,6 @@
     </ClInclude>
     <ClInclude Include="SpritePass.h">
       <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugObject.h">
-      <Filter>Object\DebugObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -507,9 +501,6 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\ShadowMap">
       <UniqueIdentifier>{86ff2d08-049d-45ef-9067-ebaf27727218}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\DebugObject">
-      <UniqueIdentifier>{1598f9a7-1398-4f25-87c9-d7fd50039369}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

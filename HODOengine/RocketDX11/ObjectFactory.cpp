@@ -5,7 +5,6 @@
 #include "Camera.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
-#include "DebugObject.h"
 #include "Cubemap.h"
 #include "LightAdapter.h"
 #include "CubeMesh.h"
@@ -42,11 +41,6 @@ namespace RocketCore::Graphics
 	HDEngine::ISkinnedMesh* ObjectFactory::CreateSkinnedMeshObject()
 	{
 		return ObjectManager::Instance().CreateSkinningMeshObject();
-	}
-
-	HDEngine::IDebugObject* ObjectFactory::CreateDebugObject()
-	{
-		return ObjectManager::Instance().CreateDebugObject();
 	}
 
 	HDEngine::ICubeMap* ObjectFactory::CreateCubeMap()
@@ -87,6 +81,11 @@ namespace RocketCore::Graphics
 	HDEngine::CylinderPrimitive* ObjectFactory::CreateCylinderPrimitive()
 	{
 		return ObjectManager::Instance().CreateCylinderPrimitive();
+	}
+
+	HDEngine::CapsulePrimitive* ObjectFactory::CreateCapsulePrimitive()
+	{
+		return ObjectManager::Instance().CreateCapsulePrimitive();
 	}
 
 }

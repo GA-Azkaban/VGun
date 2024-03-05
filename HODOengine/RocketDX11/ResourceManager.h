@@ -119,6 +119,7 @@ namespace RocketCore::Graphics
 		DirectX::DX11::GeometricPrimitive* GetCubePrimitive();
 		DirectX::DX11::GeometricPrimitive* GetSpherePrimitive();
 		DirectX::DX11::GeometricPrimitive* GetCylinderPrimitive();
+		DirectX::DX11::GeometricPrimitive* GetCapsulePrimitive();
 
 	private:
 		void LoadShaders();
@@ -146,8 +147,8 @@ namespace RocketCore::Graphics
 		// primitive models
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cubePrimitive;
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _spherePrimitive;
-		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _capsulePrimitive;
 		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _cylinderPrimitive;
+		std::unique_ptr<DirectX::DX11::GeometricPrimitive> _capsulePrimitive;
 
 		// 기본 폰트 들고있음
 		DirectX::SpriteFont* _defaultFont;

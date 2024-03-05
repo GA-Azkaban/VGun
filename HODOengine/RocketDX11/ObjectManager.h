@@ -9,6 +9,7 @@ namespace HDEngine
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
+	struct CapsulePrimitive;
 }
 
 namespace RocketCore::Graphics
@@ -17,7 +18,6 @@ namespace RocketCore::Graphics
 	class HelperObject;
 	class StaticMeshObject;
 	class SkinningMeshObject;
-	class DebugObject;
 	class Cubemap;
 	class LightAdapter;
 	class TextRenderer;
@@ -34,20 +34,19 @@ namespace RocketCore::Graphics
 		std::vector<HelperObject*>& GetHelperObjList();
 		std::vector<StaticMeshObject*>& GetStaticMeshObjList();
 		std::vector<SkinningMeshObject*>& GetSkinningMeshObjList();
-		std::vector<DebugObject*>& GetDebugMeshList() { return _debugObjectList; }
 		std::vector<TextRenderer*>& GetTextList();
 		std::vector<ImageRenderer*>& GetImageList();
 		LineRenderer* GetLineRenderer();
 		std::vector<HDEngine::CubePrimitive*>& GetCubePrimitiveList() { return _cubePrimitiveList; }
 		std::vector<HDEngine::SpherePrimitive*>& GetSpherePrimitiveList() { return _spherePrimitiveList; }
 		std::vector<HDEngine::CylinderPrimitive*>& GetCylinderPrimitiveList() { return _cylinderPrimitiveList; }
+		std::vector<HDEngine::CapsulePrimitive*>& GetCapsulePrimitiveList() { return _capsulePrimitiveList; }
 
 	public:
 		Camera* CreateCamera();
 		HelperObject* CreateHelperObject();
 		StaticMeshObject* CreateStaticMeshObject();
 		SkinningMeshObject* CreateSkinningMeshObject();
-		DebugObject* CreateDebugObject();
 		Cubemap* CreateCubeMap();
 		LightAdapter* CreateLight();
 		TextRenderer* CreateText();
@@ -56,18 +55,19 @@ namespace RocketCore::Graphics
 		HDEngine::CubePrimitive* CreateCubePrimitive();
 		HDEngine::SpherePrimitive* CreateSpherePrimitive();
 		HDEngine::CylinderPrimitive* CreateCylinderPrimitive();
+		HDEngine::CapsulePrimitive* CreateCapsulePrimitive();
 
 	private:
 		std::vector<Camera*> _cameraList;
 		std::vector<HelperObject*> _helperObjectList;
 		std::vector<StaticMeshObject*> _staticMeshObjectList;
 		std::vector<SkinningMeshObject*> _skinningMeshObjectList;
-		std::vector<DebugObject*> _debugObjectList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<ImageRenderer*> _ImageList;
 		LineRenderer* _lineRenderer;
 		std::vector<HDEngine::CubePrimitive*> _cubePrimitiveList;
 		std::vector<HDEngine::SpherePrimitive*> _spherePrimitiveList;
 		std::vector<HDEngine::CylinderPrimitive*> _cylinderPrimitiveList;
+		std::vector<HDEngine::CapsulePrimitive*> _capsulePrimitiveList;
 	};
 }

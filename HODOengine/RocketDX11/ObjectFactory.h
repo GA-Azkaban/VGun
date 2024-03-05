@@ -9,7 +9,6 @@ namespace RocketCore::Graphics
 		virtual HDEngine::ICamera* CreateCamera() override;
 		virtual HDEngine::IStaticMesh* CreateStaticMeshObject() override;
 		virtual HDEngine::ISkinnedMesh* CreateSkinnedMeshObject() override;
-		virtual HDEngine::IDebugObject* CreateDebugObject() override;
 		virtual HDEngine::ICubeMap* CreateCubeMap() override;
 		virtual HDEngine::ISketchableText* CreateText() override;
 		virtual HDEngine::ISketchableImage* CreateImage() override;
@@ -18,6 +17,7 @@ namespace RocketCore::Graphics
 		virtual HDEngine::CubePrimitive* CreateCubePrimitive() override;
 		virtual HDEngine::SpherePrimitive* CreateSpherePrimitive() override;
 		virtual HDEngine::CylinderPrimitive* CreateCylinderPrimitive() override;
+		virtual HDEngine::CapsulePrimitive* CreateCapsulePrimitive() override;
 	};
 }
 
