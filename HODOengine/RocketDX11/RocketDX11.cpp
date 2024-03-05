@@ -174,9 +174,9 @@ namespace RocketCore::Graphics
 
 		/// DEBUG Obejct
 		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
-		grid->SetMesh("grid");
+		grid->LoadMesh("grid");
 		HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
-		axis->SetMesh("axis");
+		axis->LoadMesh("axis");
 
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());

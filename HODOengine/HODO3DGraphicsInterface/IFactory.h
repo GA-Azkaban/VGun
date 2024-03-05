@@ -18,6 +18,7 @@ namespace HDEngine
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
+	struct CapsulePrimitive;
 
 	class IFactory
 	{
@@ -33,6 +34,7 @@ namespace HDEngine
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() = 0;
+		virtual CapsulePrimitive* CreateCapsulePrimitive() = 0;
 	};
 
 	/// dllexport 하는 오브젝트팩토리를 반환하는 팩토리 함수.

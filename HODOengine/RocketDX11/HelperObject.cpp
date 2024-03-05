@@ -81,7 +81,7 @@ namespace RocketCore::Graphics
 		// 보통 헬퍼 오브젝트는 지정된 색깔이 있어서 일단 지금은 색깔 바꾸는 것은 구현 안 한다.
 	}
 
-	void HelperObject::SetMesh(const std::string& meshName)
+	void HelperObject::LoadMesh(const std::string& meshName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(meshName);
 	}
