@@ -9,7 +9,6 @@ namespace HDData
 	{
 	public:
 		SkinnedMeshRenderer();
-		~SkinnedMeshRenderer();
 
 		void LoadMesh(const std::string& fileName);
 		void LoadNormalMap(const std::string& fileName);
@@ -18,7 +17,7 @@ namespace HDData
 		bool IsAnimationEnd();
 
 	protected:
-		virtual void Update() override;
+		virtual void UpdateRenderData() override;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
 
