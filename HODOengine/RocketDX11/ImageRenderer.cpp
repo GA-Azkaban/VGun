@@ -15,6 +15,7 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_imageWidth(),
 	_imageHeight(),
 	_active(true),
+	_receiveTMInfoFlag(false),
 	_sortOrder()
 {
 	_color = DirectX::Colors::White;

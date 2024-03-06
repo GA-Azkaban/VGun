@@ -14,7 +14,7 @@ using namespace DirectX;
 namespace RocketCore::Graphics
 {
 	SkinningMeshObject::SkinningMeshObject()
-		: m_material(nullptr), m_isActive(true),
+		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
 		m_blendFlag(false)
 	{
@@ -32,34 +32,28 @@ namespace RocketCore::Graphics
 	{
 		if (m_currentAnimation != nullptr)
 		{
-			/*if (m_blendFlag)
-			{
+			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+			m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
 
+			if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+			{
+				m_currentAnimation->isEnd = true;
+				return;
 			}
-			else*/
+
+			if (m_currentAnimation->isLoop == true)
 			{
-				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-				m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
-
-				if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+				if (m_currentAnimation->isEnd == true)
 				{
-					m_currentAnimation->isEnd = true;
-					return;
-				}
-
-				if (m_currentAnimation->isLoop == true)
-				{
-					if (m_currentAnimation->isEnd == true)
-					{
-						m_currentAnimation->isEnd = false;
-					}
-				}
-
-				if (!m_currentAnimation->isEnd)
-				{
-					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+					m_currentAnimation->isEnd = false;
 				}
 			}
+
+			if (!m_currentAnimation->isEnd)
+			{
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+			}
+
 		}
 	}
 
@@ -68,72 +62,77 @@ namespace RocketCore::Graphics
 		if (!m_isActive)
 			return;
 
-		// 이거는 바깥쪽에서 한번만 하도록 한다면..?
-		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
-
-		XMMATRIX invWorld = XMMatrixTranspose(m_world);
-
-		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = m_world * view * proj;
-		XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
-
-		VertexShader* vertexShader = m_material->GetVertexShader();
-		PixelShader* pixelShader = m_material->GetPixelShader();
-
-		vertexShader->SetMatrix4x4("world", invWorld);
-		vertexShader->SetMatrix4x4("worldViewProj", invWVP);
-		vertexShader->SetMatrix4x4Array("boneTransforms", &m_boneTransform[0], m_boneTransform.size());
-
-		vertexShader->CopyAllBufferData();
-		vertexShader->SetShader();
-
-		if (m_material->GetAlbedoMap())
+		if (m_receiveTMInfoFlag)
 		{
-			pixelShader->SetInt("useAlbedo", 1);
-			pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
-		}
-		else
-		{
-			pixelShader->SetInt("useAlbedo", 0);
+			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
+
+			XMMATRIX invWorld = XMMatrixTranspose(m_world);
+
+			XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+			XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+			XMMATRIX worldViewProj = m_world * view * proj;
+			XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
+
+			VertexShader* vertexShader = m_material->GetVertexShader();
+			PixelShader* pixelShader = m_material->GetPixelShader();
+
+			vertexShader->SetMatrix4x4("world", invWorld);
+			vertexShader->SetMatrix4x4("worldViewProj", invWVP);
+			vertexShader->SetMatrix4x4Array("boneTransforms", &m_boneTransform[0], m_boneTransform.size());
+
+			vertexShader->CopyAllBufferData();
+			vertexShader->SetShader();
+
+			if (m_material->GetAlbedoMap())
+			{
+				pixelShader->SetInt("useAlbedo", 1);
+				pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
+			}
+			else
+			{
+				pixelShader->SetInt("useAlbedo", 0);
+			}
+
+			if (m_material->GetNormalMap())
+			{
+				pixelShader->SetInt("useNormalMap", 1);
+				pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMap());
+			}
+			else
+			{
+				pixelShader->SetInt("useNormalMap", 0);
+			}
+
+			if (m_material->GetOcclusionRoughnessMetalMap())
+			{
+				pixelShader->SetInt("useOccMetalRough", 1);
+				pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMap());
+			}
+			else
+			{
+				pixelShader->SetInt("useOccMetalRough", 0);
+				pixelShader->SetInt("gMetallic", m_material->GetMetallic());
+				pixelShader->SetInt("gRoughness", m_material->GetRoughness());
+			}
+
+			pixelShader->CopyAllBufferData();
+			pixelShader->SetShader();
+
+			for (UINT i = 0; i < m_meshes.size(); ++i)
+			{
+				m_meshes[i]->BindBuffers();
+				m_meshes[i]->Draw();
+			}
 		}
 
-		if (m_material->GetNormalMap())
-		{
-			pixelShader->SetInt("useNormalMap", 1);
-			pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMap());
-		}
-		else
-		{
-			pixelShader->SetInt("useNormalMap", 0);
-		}
-
-		if (m_material->GetOcclusionRoughnessMetalMap())
-		{
-			pixelShader->SetInt("useOccMetalRough", 1);
-			pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMap());
-		}
-		else
-		{
-			pixelShader->SetInt("useOccMetalRough", 0);
-			pixelShader->SetInt("gMetallic", m_material->GetMetallic());
-			pixelShader->SetInt("gRoughness", m_material->GetRoughness());
-		}
-
-		pixelShader->CopyAllBufferData();
-		pixelShader->SetShader();
-
-		for (UINT i = 0; i < m_meshes.size(); ++i)
-		{
-			m_meshes[i]->BindBuffers();
-			m_meshes[i]->Draw();
-		}
+		m_receiveTMInfoFlag = false;
 	}
 
 	void SkinningMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
 		m_world = worldTM;
+		m_receiveTMInfoFlag = true;
 	}
 
 	void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)

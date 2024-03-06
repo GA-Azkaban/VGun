@@ -11,7 +11,7 @@ using namespace DirectX;
 namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
-		: m_material(nullptr), m_isActive(true),
+		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("VertexShader.cso"), ResourceManager::Instance().GetPixelShader("PixelShader.cso"));
@@ -26,6 +26,7 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::SetWorldTM(const Matrix& worldTM)
 	{
 		m_world = worldTM;
+		m_receiveTMInfoFlag = true;
 	}
 
 	void StaticMeshObject::SetActive(bool isActive)
@@ -56,74 +57,79 @@ namespace RocketCore::Graphics
 		if (!m_isActive)
 			return;
 
-		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
-
-		XMMATRIX world = XMMatrixTranspose(m_world);
-
-		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj;
-		if (m_node != nullptr)
-			worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
-		else
-			worldViewProj = m_world * view * proj;
-		XMMATRIX wvp = XMMatrixTranspose(worldViewProj);
-
-		VertexShader* vertexShader = m_material->GetVertexShader();
-		PixelShader* pixelShader = m_material->GetPixelShader();
-
-		vertexShader->SetMatrix4x4("world", world);
-		vertexShader->SetMatrix4x4("worldViewProj", wvp);
-
-		vertexShader->CopyAllBufferData();
-		vertexShader->SetShader();
-
-		if (m_material->GetAlbedoMap())
+		if (m_receiveTMInfoFlag)
 		{
-			pixelShader->SetInt("useAlbedo", 1);
-			pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
-		}
-		else
-		{
-			pixelShader->SetInt("useAlbedo", 0);
+			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
+
+			XMMATRIX world = XMMatrixTranspose(m_world);
+
+			XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+			XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+			XMMATRIX worldViewProj;
+			if (m_node != nullptr)
+				worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
+			else
+				worldViewProj = m_world * view * proj;
+			XMMATRIX wvp = XMMatrixTranspose(worldViewProj);
+
+			VertexShader* vertexShader = m_material->GetVertexShader();
+			PixelShader* pixelShader = m_material->GetPixelShader();
+
+			vertexShader->SetMatrix4x4("world", world);
+			vertexShader->SetMatrix4x4("worldViewProj", wvp);
+
+			vertexShader->CopyAllBufferData();
+			vertexShader->SetShader();
+
+			if (m_material->GetAlbedoMap())
+			{
+				pixelShader->SetInt("useAlbedo", 1);
+				pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
+			}
+			else
+			{
+				pixelShader->SetInt("useAlbedo", 0);
+			}
+
+			if (m_material->GetNormalMap())
+			{
+				pixelShader->SetInt("useNormalMap", 1);
+				pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMap());
+			}
+			else
+			{
+				pixelShader->SetInt("useNormalMap", 0);
+			}
+
+			if (m_material->GetOcclusionRoughnessMetalMap())
+			{
+				pixelShader->SetInt("useOccMetalRough", 1);
+				pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMap());
+			}
+			else
+			{
+				pixelShader->SetInt("useOccMetalRough", 0);
+				pixelShader->SetInt("gMetallic", m_material->GetMetallic());
+				pixelShader->SetInt("gRoughness", m_material->GetRoughness());
+			}
+
+			pixelShader->CopyAllBufferData();
+			pixelShader->SetShader();
+
+			for (UINT i = 0; i < m_meshes.size(); ++i)
+			{
+				m_meshes[i]->BindBuffers();
+				m_meshes[i]->Draw();
+			}
 		}
 
-		if (m_material->GetNormalMap())
-		{
-			pixelShader->SetInt("useNormalMap", 1);
-			pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMap());
-		}
-		else
-		{
-			pixelShader->SetInt("useNormalMap", 0);
-		}
-
-		if (m_material->GetOcclusionRoughnessMetalMap())
-		{
-			pixelShader->SetInt("useOccMetalRough", 1);
-			pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMap());
-		}
-		else
-		{
-			pixelShader->SetInt("useOccMetalRough", 0);
-			pixelShader->SetInt("gMetallic", m_material->GetMetallic());
-			pixelShader->SetInt("gRoughness", m_material->GetRoughness());
-		}
-
-		pixelShader->CopyAllBufferData();
-		pixelShader->SetShader();
-
-		for (UINT i = 0; i < m_meshes.size(); ++i)
-		{
-			m_meshes[i]->BindBuffers();
-			m_meshes[i]->Draw();
-		}
+		m_receiveTMInfoFlag = false;
 	}
 
 	DirectX::XMMATRIX StaticMeshObject::GetWorldTM()
 	{
-		if(m_node != nullptr)
+		if (m_node != nullptr)
 			return m_node->rootNodeInvTransform * m_world;
 
 		return m_world;
