@@ -10,19 +10,43 @@ namespace HDData
 		_transform = AddComponent<Transform>();
 	}
 
+	void GameObject::OnEnable()
+	{
+		HDEngine::ObjectSystem::Instance().AddOnEnableList(this);
+	}
+
+	void GameObject::OnDisable()
+	{
+		HDEngine::ObjectSystem::Instance().AddOnDisableList(this);
+	}
+
 	void GameObject::FlushEnable()
 	{
+		_selfActive = true;
+
 		for (auto& component : _components)
 		{
 			component->OnEnable();
+		}
+
+		for (auto& obj : _childGameObjects)
+		{
+			obj->FlushEnable();
 		}
 	}
 
 	void GameObject::FlushDisable()
 	{
+		_selfActive = false;
+
 		for (auto& component : _components)
 		{
 			component->OnDisable();
+		}
+
+		for (auto& obj : _childGameObjects)
+		{
+			obj->FlushDisable();
 		}
 	}
 
@@ -148,18 +172,15 @@ namespace HDData
 
 	void GameObject::SetSelfActive(bool active)
 	{
-		if (active)
-		{
-			HDEngine::ObjectSystem::Instance().AddOnEnableList(this);
-		}
-		else
-		{
-			HDEngine::ObjectSystem::Instance().AddOnDisableList(this);
-		}
-
 		_selfActive = active;
 
-		for (auto& child : GetChildGameObjects())
+		for (const auto& comp : GetAllComponents())
+		{
+			comp->SetActive(active);
+		}
+
+		// 자식 오브젝트도 모두 활성화/비활성화
+		for (auto child : _childGameObjects)
 		{
 			child->SetSelfActive(active);
 		}

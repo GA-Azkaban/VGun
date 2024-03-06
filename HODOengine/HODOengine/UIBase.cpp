@@ -12,11 +12,6 @@ namespace HDData
 
 	}
 
-	void UIBase::UpdateRenderData()
-	{
-		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
-	}
-
 	bool UIBase::CheckFocus()
 	{
 		if (_ignoreFocus)
@@ -45,6 +40,11 @@ namespace HDData
 	void UIBase::OnDisable()
 	{
 		_sketchable->SetActive(false);
+	}
+
+	void UIBase::Update()
+	{
+		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
 	float UIBase::GetSortOrder() const

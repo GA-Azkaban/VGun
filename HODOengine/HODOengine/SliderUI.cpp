@@ -22,6 +22,28 @@ namespace HDData
 
 	void SliderUI::Start()
 	{
+		auto childs = this->GetGameObject()->GetChildGameObjects();
+
+		for (const auto& child : childs)
+		{
+			if (child->GetObjectName() == "bar")
+			{
+				_background = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "fill")
+			{
+				_fill = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "handle")
+			{
+				_handle = child->GetComponent<HDData::ImageUI>();
+			}
+			if (child->GetObjectName() == "value")
+			{
+				_value = child->GetComponent<HDData::TextUI>();
+			}
+		}
+
 		_min = GetTransform()->GetPosition().x - (_background->GetImageWidth() / 2);
 		_max = GetTransform()->GetPosition().x + _background->GetImageWidth() / 2;
 
@@ -101,26 +123,6 @@ namespace HDData
 	float SliderUI::GetValueText()
 	{
 		return std::stof(_value->GetText());
-	}
-
-	void SliderUI::SetBackBarComp(ImageUI* comp)
-	{
-		_background = comp;
-	}
-
-	void SliderUI::SetFillBarComp(ImageUI* comp)
-	{
-		_fill = comp;
-	}
-
-	void SliderUI::SetHandleComp(ImageUI* comp)
-	{
-		_handle = comp;
-	}
-
-	void SliderUI::SetValueComp(TextUI* comp)
-	{
-		_value = comp;
 	}
 
 }

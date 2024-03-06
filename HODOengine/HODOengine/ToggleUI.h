@@ -19,15 +19,10 @@ namespace HDData
 		void Start() override;
 		void Update() override;
 		void OnClickEvent(); 
-
 	public:
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
-
-	public:
-		void SetOnComp(ImageUI* comp);
-		void SetOffComp(ImageUI* comp);
 
 	private:
 		ImageUI* _toggleOn;

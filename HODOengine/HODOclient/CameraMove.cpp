@@ -10,8 +10,7 @@ void CameraMove::Update()
 {
 	//float deltaTime = rocket.GetDeltaTime();
 	float deltaTime = API::GetDeltaTime();
-	moveSpeed = 0.01f;
-	rotateSpeed = 0.01f;
+	moveSpeed = 5.0f;
 
 	if (API::GetKeyPressing(DIK_LSHIFT))
 	{

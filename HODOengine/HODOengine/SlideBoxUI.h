@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <vector>
 #include <memory>
 #include <string>
@@ -33,11 +33,6 @@ namespace HDData
 		// 화살표 이미지
 		void SetLeftArrowImage(const char* fileName);
 		void SetRightArrowImage(const char* fileName);
-
-		// 자식 객체 설정
-		void SetLeftComp(ImageUI* comp);
-		void SetRightComp(ImageUI* comp);
-		void SetValueComp(TextUI* comp);
 
 	private:
 		std::vector<std::string> _values;

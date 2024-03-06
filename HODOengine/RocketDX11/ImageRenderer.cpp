@@ -1,4 +1,4 @@
-#include <locale>
+﻿#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 

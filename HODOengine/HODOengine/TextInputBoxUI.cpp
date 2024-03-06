@@ -19,16 +19,34 @@ namespace HDData
 
 	void TextInputBoxUI::Start()
 	{
-		_textOriginPos = _text->GetTransform()->GetPosition().x + 5;
-		_background->SetActive(true);
-		_cursor->SetActive(false);
+		auto childs = this->GetGameObject()->GetChildGameObjects();
+
+		for (const auto& child : childs)
+		{
+			if (child->GetObjectName() == "back")
+			{
+				SetBackgroundImage(child->GetComponent<HDData::ImageUI>());
+			}
+			if (child->GetObjectName() == "cursor")
+			{
+				SetCursorImage(child->GetComponent<HDData::ImageUI>());
+			}
+			if (child->GetObjectName() == "text")
+			{
+				SetTextUI(child->GetComponent<HDData::TextUI>());
+			}
+		}
+
+		_textOriginPos = GetTextUI()->GetTransform()->GetPosition().x + 5;
+		GetBackgroundImage()->SetActive(true);
+		GetCursorImage()->SetActive(false);
 	}
 
 	void TextInputBoxUI::Update()
 	{
-		if (_background->GetIsClicked())
+		if (GetBackgroundImage()->GetIsClicked())
 		{
-			_cursor->SetActive(true);
+			GetCursorImage()->SetActive(true);
 			_inputReady = true;
 		}
 
@@ -40,7 +58,7 @@ namespace HDData
 			{
 				_blankTime = 0;
 				_isCursorOn = !_isCursorOn;
-				_cursor->SetActive(_isCursorOn);
+				GetCursorImage()->SetActive(_isCursorOn);
 			}
 
 			for (int i = 0; i < 0x37; ++i)
@@ -55,57 +73,30 @@ namespace HDData
 							i != DIK_RSHIFT)
 						{
 							newVal += HDEngine::InputSystem::Instance().GetInputText(i);
-							_text->SetText(newVal);
-							_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth() / 2, _text->GetTop() + _text->_sketchable->GetHeight() / 2, 0.f);
+							GetTextUI()->SetText(newVal);
+							GetCursorImage()->GetTransform()->SetPosition(_textOriginPos + GetTextUI()->_sketchable->GetWidth() / 2, GetTextUI()->GetTop() + GetTextUI()->_sketchable->GetHeight() / 2, 0.f);
 						}
 					}
 					if (i == DIK_BACKSPACE && newVal.size() > 0)
 					{
 						newVal.pop_back();
-						_text->SetText(newVal);
-						_cursor->GetTransform()->SetPosition(_textOriginPos + _text->_sketchable->GetWidth() / 2 - 5, _text->GetTop() + _text->_sketchable->GetHeight() / 2, 0.f);
+						GetTextUI()->SetText(newVal);
+						GetCursorImage()->GetTransform()->SetPosition(_textOriginPos + GetTextUI()->_sketchable->GetWidth() / 2 - 5, GetTextUI()->GetTop() + GetTextUI()->_sketchable->GetHeight() / 2, 0.f);
 					}
 				}
 			}
 
-			if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT) && !_background->GetIsClicked())
+			if (HDEngine::InputSystem::Instance().GetMouseDown(MOUSE_LEFT) && !GetBackgroundImage()->GetIsClicked())
 			{
-				_cursor->SetActive(false);
+				GetCursorImage()->SetActive(false);
 				_inputReady = false;
 			}
 		}
 	}
 
-	void TextInputBoxUI::OnDisable()
-	{
-		_text->SetText("");
-	}
-
 	std::string TextInputBoxUI::GetCurrentText()
 	{
 		return newVal;
-	}
-
-	void TextInputBoxUI::SetBoxComp(ImageUI* comp)
-	{
-		_background = comp;
-	}
-
-	void TextInputBoxUI::SetCursorComp(ImageUI* comp)
-	{
-		_cursor = comp;
-	}
-
-	void TextInputBoxUI::SetTextComp(TextUI* comp)
-	{
-		_text = comp;
-	}
-
-	void TextInputBoxUI::SetSortOrder(float ord)
-	{
-		_background->SetSortOrder(ord);
-		_cursor->SetSortOrder(ord);
-		_text->SetSortOrder(ord);
 	}
 
 }

@@ -9,7 +9,11 @@ namespace HDData
 		: _staticMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
 	{
 		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
-		LoadDiffuseMap("Default.png");
+	}
+
+	MeshRenderer::~MeshRenderer()
+	{
+		_staticMesh = nullptr;
 	}
 
 	void MeshRenderer::LoadMesh(const std::string& fileName)
@@ -27,7 +31,7 @@ namespace HDData
 		_staticMesh->LoadDiffuseMap(fileName);
 	}
 
-	void MeshRenderer::UpdateRenderData()
+	void MeshRenderer::Update()
 	{
 		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());
 	}
