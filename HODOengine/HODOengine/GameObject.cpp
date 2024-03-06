@@ -1,4 +1,4 @@
-﻿#include "GameObject.h"
+#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
 
@@ -55,6 +55,9 @@ namespace HDData
 		if (!_selfActive)
 			return;
 
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
+
 		for (auto& component : _components)
 		{
 			if (!component->_isStarted)
@@ -70,6 +73,9 @@ namespace HDData
 		if (!_selfActive)
 			return;
 
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
+
 		for (auto& component : _components)
 		{
 			component->Update();
@@ -80,6 +86,9 @@ namespace HDData
 	{
 		if (!_selfActive)
 			return;
+
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -92,6 +101,9 @@ namespace HDData
 		if (!_selfActive)
 			return;
 
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
+
 		for (auto& component : _components)
 		{
 			component->FixedUpdate();
@@ -102,6 +114,9 @@ namespace HDData
 	{
 		if (!_selfActive)
 			return;
+
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -114,6 +129,9 @@ namespace HDData
 		if (!_selfActive)
 			return;
 
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
+
 		for (auto& component : _components)
 		{
 			component->OnCollisionEnter();
@@ -125,6 +143,9 @@ namespace HDData
 		if (!_selfActive)
 			return;
 
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
+
 		for (auto& component : _components)
 		{
 			component->OnCollisionStay();
@@ -135,6 +156,9 @@ namespace HDData
 	{
 		if (!_selfActive)
 			return;
+
+		if (GetParentGameObject())
+			if (!GetParentGameObject()->GetSelfActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -179,11 +203,7 @@ namespace HDData
 			comp->SetActive(active);
 		}
 
-		// 자식 오브젝트도 모두 활성화/비활성화
-		for (auto child : _childGameObjects)
-		{
-			child->SetSelfActive(active);
-		}
+		_selfActive = active;
 	}
 
 	bool GameObject::GetSelfActive()

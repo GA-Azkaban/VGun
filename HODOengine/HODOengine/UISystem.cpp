@@ -65,6 +65,7 @@ namespace HDEngine
 					_focusedUI->SetIsClicked(true);
 					_focusedUI->SetIsGrabbing(true);
 					_focusedUI->OnClickEvent();
+					auto one = _focusedUI->GetSortOrder();
 					break;
 				}
 

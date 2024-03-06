@@ -66,5 +66,10 @@ void HDData::ToggleUI::OnClickEvent()
 
 }
 
+void HDData::ToggleUI::SetSortOrder(float ord)
+{
+	_toggleOff->SetSortOrder(ord);
+	_toggleOn->SetSortOrder(ord);
+}
 
 

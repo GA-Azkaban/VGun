@@ -7,7 +7,7 @@ namespace HDData
 {
 	UIBase::UIBase()
 		:_sketchable(NULL),
-		_sortOrder(100)
+		_sortOrder(0.f)
 	{
 
 	}

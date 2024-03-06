@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Component.h"
 
 namespace HDEngine
@@ -19,10 +19,17 @@ namespace HDData
 		void Start() override;
 		void Update() override;
 		void OnClickEvent(); 
+		void SetSortOrder(float ord);
+
 	public:
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
+
+	public:
+		void SetOnComp(ImageUI* comp);
+		void SetOffComp(ImageUI* comp);
+
 
 	private:
 		ImageUI* _toggleOn;

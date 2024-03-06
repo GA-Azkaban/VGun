@@ -1,4 +1,4 @@
-﻿#include "LoginSceneView.h"
+#include "LoginSceneView.h"
 #include "LobbyManager.h"
 
 LoginSceneView::LoginSceneView()
@@ -165,7 +165,7 @@ void LoginSceneView::LoginView()
 		}
 	);
 
-	joinCanvas->OnDisable();
+	joinCanvas->SetSelfActive(false);
 }
 
 void LoginSceneView::MainMenu()

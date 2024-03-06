@@ -19,6 +19,7 @@ namespace HDEngine
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
 
 		// visual debugger 세팅, 로컬에 연결
+
 		_pvd = PxCreatePvd(*_foundation);
 		physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
 		_pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
