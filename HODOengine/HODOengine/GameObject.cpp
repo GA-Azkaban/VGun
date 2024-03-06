@@ -1,4 +1,4 @@
-#include "GameObject.h"
+﻿#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
 
@@ -28,11 +28,6 @@ namespace HDData
 		{
 			component->OnEnable();
 		}
-
-		for (auto& obj : _childGameObjects)
-		{
-			obj->FlushEnable();
-		}
 	}
 
 	void GameObject::FlushDisable()
@@ -42,11 +37,6 @@ namespace HDData
 		for (auto& component : _components)
 		{
 			component->OnDisable();
-		}
-
-		for (auto& obj : _childGameObjects)
-		{
-			obj->FlushDisable();
 		}
 	}
 

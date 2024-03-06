@@ -15,20 +15,6 @@ HDData::ToggleUI::ToggleUI()
 
 void HDData::ToggleUI::Start()
 {
-	auto& childs = this->GetGameObject()->GetChildGameObjects();
-
-	for (const auto& one : childs)
-	{
-		if (one->GetObjectName() == "toggleOn")
-		{
-			_toggleOn = one->GetComponent<HDData::ImageUI>();
-		}
-		if (one->GetObjectName() == "toggleOff")
-		{
-			_toggleOff = one->GetComponent<HDData::ImageUI>();
-		}
-	}
-
 	_toggleOn->SetActive(true);
 	_toggleOff->SetActive(false);
 }
@@ -59,6 +45,16 @@ void HDData::ToggleUI::SetWorldSpace()
 {
 	_toggleOn->SetWorldSpace();
 	_toggleOff->SetWorldSpace();
+}
+
+void HDData::ToggleUI::SetOnComp(ImageUI* comp)
+{
+	_toggleOn = comp;
+}
+
+void HDData::ToggleUI::SetOffComp(ImageUI* comp)
+{
+	_toggleOff = comp;
 }
 
 void HDData::ToggleUI::OnClickEvent()

@@ -86,15 +86,17 @@ namespace API
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-			obj->AddComponent<HDData::ToggleUI>();
+			auto toggle = obj->AddComponent<HDData::ToggleUI>();
 
 			auto toggleOn = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOn" , obj);
-			toggleOn->AddComponent<HDData::ImageUI>();
+			auto on = toggleOn->AddComponent<HDData::ImageUI>();
 			toggleOn->GetComponent<HDData::ImageUI>()->SetImage("Sound.png");
+			toggle->SetOnComp(on);
 
 			auto toggleOff = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOff" , obj);
-			toggleOff->AddComponent<HDData::ImageUI>();
+			auto off = toggleOff->AddComponent<HDData::ImageUI>();
 			toggleOff->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
+			toggle->SetOffComp(off);
 
 			return obj;
 		}
