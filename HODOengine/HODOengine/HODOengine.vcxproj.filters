@@ -106,9 +106,6 @@
     <ClCompile Include="SkinnedMeshRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass\SkinnedMeshRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="RendererBase.cpp">
-      <Filter>05_Component\Renderer\BaseClass</Filter>
-    </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass\MeshRenderer</Filter>
     </ClCompile>
