@@ -15,7 +15,7 @@ namespace RocketCore::Graphics
 {
 	SkinningMeshObject::SkinningMeshObject()
 		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
-		m_world{ XMMatrixIdentity() }, m_previousAnimation(nullptr), m_currentAnimation(nullptr),
+		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
 		m_blendFlag(false)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
@@ -33,41 +33,27 @@ namespace RocketCore::Graphics
 		if (m_currentAnimation != nullptr)
 		{
 			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-			if (m_blendFlag)
+			m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
+
+			if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
 			{
-				m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->blendDuration);
-				if (m_currentAnimation->accumulatedTime >= m_currentAnimation->blendDuration - 0.1f)
-				{
-					m_blendFlag = false;
-					m_currentAnimation->accumulatedTime = 0.0f;
-					return;
-				}
-		
-				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));				
+				m_currentAnimation->isEnd = true;
+				return;
 			}
-			else
+
+			if (m_currentAnimation->isLoop == true)
 			{
-				m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
-
-				if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+				if (m_currentAnimation->isEnd == true)
 				{
-					m_currentAnimation->isEnd = true;
-					return;
-				}
-
-				if (m_currentAnimation->isLoop == true)
-				{
-					if (m_currentAnimation->isEnd == true)
-					{
-						m_currentAnimation->isEnd = false;
-					}
-				}
-
-				if (!m_currentAnimation->isEnd)
-				{
-					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+					m_currentAnimation->isEnd = false;
 				}
 			}
+
+			if (!m_currentAnimation->isEnd)
+			{
+				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+			}
+
 		}
 	}
 
@@ -280,101 +266,6 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::UpdateBlendAnimation(float prevAnimationTime, float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
-	{
-		DirectX::XMMATRIX _nodeTransform = (node.nodeTransform);
-
-		NodeAnimation* prevAnim = nullptr;
-		for (UINT i = 0; i < m_previousAnimation->nodeAnimations.size(); ++i)
-		{
-			if (m_previousAnimation->nodeAnimations[i]->nodeName == node.name)
-			{
-				prevAnim = m_previousAnimation->nodeAnimations[i];
-				break;
-			}
-		}
-
-		NodeAnimation* currAnim = nullptr;
-		for (UINT i = 0; i < m_currentAnimation->nodeAnimations.size(); ++i)
-		{
-			if (m_currentAnimation->nodeAnimations[i]->nodeName == node.name)
-			{
-				currAnim = m_currentAnimation->nodeAnimations[i];
-				break;
-			}
-		}
-
-		if (prevAnim != nullptr && currAnim != nullptr)
-		{
-			// calculate interpolated position
-			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, prevAnim, currAnim);
-			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
-
-			// calculate interpolated rotation
-			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, prevAnim, currAnim);
-			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
-			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
-
-			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, prevAnim, currAnim);
-			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
-
-			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
-		}
-		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
-
-		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
-
-		// update values for children bones
-		for (Node child : node.children)
-		{
-			UpdateBlendAnimation(prevAnimationTime, animationTime, child, globalTransform, globalInvTransform);
-		}
-	}
-
-	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
-	{
-		UINT positionIndex = 0;
-		for (UINT i = 0; i < prevAnim->positionTimestamps.size() - 1; ++i)
-		{
-			if (prevAnimationTime < prevAnim->positionTimestamps[i + 1])
-			{
-				positionIndex = i;
-				break;
-			}
-		}
-
-		UINT nextPositionIndex = 0;
-		for (UINT i = 0; i < currentAnim->positionTimestamps.size() - 1; ++i)
-		{
-			if (currAnimationTime < currentAnim->positionTimestamps[i + 1])
-			{
-				positionIndex = i;
-				break;
-			}
-		}
-		float deltaTime = nodeAnim->positionTimestamps[nextPositionIndex] - nodeAnim->positionTimestamps[positionIndex];
-		float factor = (animationTime - nodeAnim->positionTimestamps[positionIndex]) / deltaTime;
-
-		DirectX::XMVECTOR start = XMLoadFloat3(&(nodeAnim->positions[positionIndex]));
-		DirectX::XMVECTOR end = XMLoadFloat3(&(nodeAnim->positions[nextPositionIndex]));
-		DirectX::XMVECTOR delta = end - start;
-
-		DirectX::XMFLOAT3 ret;
-		XMStoreFloat3(&ret, start + factor * delta);
-
-		return ret;
-	}
-
-	DirectX::XMFLOAT4 SkinningMeshObject::CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
-	{
-
-	}
-
-	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
-	{
-
-	}
-
 	void SkinningMeshObject::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
 		LoadMesh(fileName);
@@ -394,7 +285,6 @@ namespace RocketCore::Graphics
 			}
 		}
 		m_previousAnimation = m_currentAnimation;
-		m_previousAnimation->accumulatedTime = m_currentAnimation->accumulatedTime;
 		m_currentAnimation = animIter->second;
 		m_currentAnimation->isLoop = isLoop;
 		if (m_previousAnimation != m_currentAnimation)

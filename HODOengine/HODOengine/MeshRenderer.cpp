@@ -8,7 +8,7 @@ namespace HDData
 	MeshRenderer::MeshRenderer()
 		: _staticMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
 	{
-		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		//HDEngine::RenderSystem::Instance().PushRenderComponent(this);
 	}
 
 	MeshRenderer::~MeshRenderer()

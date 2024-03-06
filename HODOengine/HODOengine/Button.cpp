@@ -13,7 +13,7 @@ namespace HDData
 	Button::Button()
 		: _buttonUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
-		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
+		//HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable = _buttonUI;
 	}
 
