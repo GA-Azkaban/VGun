@@ -41,6 +41,7 @@ struct Animation
 	float duration = 0.0f;
 	float ticksPerSecond = 1.0f;
 	float accumulatedTime = 0.0f;
+	float blendingTime = 1.0f;
 	bool isLoop = true;
 	bool isEnd = false;
 	std::vector<NodeAnimation*> nodeAnimations;

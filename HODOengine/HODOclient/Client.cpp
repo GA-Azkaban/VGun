@@ -14,9 +14,9 @@ Client::~Client()
 
 void Client::Initialize()
 {
-	//TestScene test;
-	//test.Start();
+	TestScene test;
+	test.Start();
 
-	LoginSceneView login;
-	login.Initialize();
+	//LoginSceneView login;
+	//login.Initialize();
 }

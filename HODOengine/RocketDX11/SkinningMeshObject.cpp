@@ -15,7 +15,8 @@ namespace RocketCore::Graphics
 {
 	SkinningMeshObject::SkinningMeshObject()
 		: m_material(nullptr), m_isActive(true),
-		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr)
+		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
+		m_blendFlag(false)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -31,26 +32,33 @@ namespace RocketCore::Graphics
 	{
 		if (m_currentAnimation != nullptr)
 		{
-			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-			m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
-
-			if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+			/*if (m_blendFlag)
 			{
-				m_currentAnimation->isEnd = true;
-				return;
-			}			
 
-			if (m_currentAnimation->isLoop == true)
-			{
-				if (m_currentAnimation->isEnd == true)
-				{
-					m_currentAnimation->isEnd = false;
-				}
 			}
-
-			if (!m_currentAnimation->isEnd)
+			else*/
 			{
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+				m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
+
+				if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+				{
+					m_currentAnimation->isEnd = true;
+					return;
+				}
+
+				if (m_currentAnimation->isLoop == true)
+				{
+					if (m_currentAnimation->isEnd == true)
+					{
+						m_currentAnimation->isEnd = false;
+					}
+				}
+
+				if (!m_currentAnimation->isEnd)
+				{
+					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+				}
 			}
 		}
 	}
@@ -277,12 +285,17 @@ namespace RocketCore::Graphics
 				return;
 			}
 		}
+		m_previousAnimation = m_currentAnimation;
 		m_currentAnimation = animIter->second;
 		m_currentAnimation->isLoop = isLoop;
-		m_currentAnimation->accumulatedTime = 0.0f;
-		if (m_currentAnimation->isLoop == false)
+		if (m_previousAnimation != m_currentAnimation)
 		{
-			m_currentAnimation->isEnd = false;
+			m_currentAnimation->accumulatedTime = 0.0f;
+			if (m_currentAnimation->isLoop == false)
+			{
+				m_currentAnimation->isEnd = false;
+			}
+			m_blendFlag = true;
 		}
 	}
 
