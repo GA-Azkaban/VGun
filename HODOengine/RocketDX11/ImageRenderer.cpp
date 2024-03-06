@@ -1,4 +1,4 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
@@ -94,6 +94,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 {
 	if (!_active)
 		return;
+
 	if (_receiveTMInfoFlag)
 	{
 		spriteBatch->Draw(
@@ -108,6 +109,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			_sortOrder
 		);
 	}
+
 	_receiveTMInfoFlag = false;
 }
 
