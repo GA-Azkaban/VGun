@@ -25,7 +25,6 @@ namespace RocketCore::Graphics
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 
-#ifdef _DEBUG
 		Camera* cam = Camera::GetMainCamera();
 
 		for (auto e : ObjectManager::Instance().GetCubePrimitiveList())
@@ -68,6 +67,5 @@ namespace RocketCore::Graphics
 		{
 			helperObject->Render();
 		}
-#endif
 	}
 }

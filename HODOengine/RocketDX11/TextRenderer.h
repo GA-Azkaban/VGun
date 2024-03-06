@@ -74,6 +74,7 @@ namespace RocketCore::Graphics
 		float _height;
 
 		bool _isActive;
+		bool _receiveTMInfoFlag;
 
 		float _sortOrder;
 	};

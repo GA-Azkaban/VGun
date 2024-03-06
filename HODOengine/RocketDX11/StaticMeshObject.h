@@ -44,5 +44,6 @@ namespace RocketCore::Graphics
 		Node* m_node;
 		Material* m_material;
 		bool m_isActive;
+		bool m_receiveTMInfoFlag;
 	};
 }

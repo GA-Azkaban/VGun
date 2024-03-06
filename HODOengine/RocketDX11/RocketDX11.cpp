@@ -286,8 +286,10 @@ namespace RocketCore::Graphics
 		_GBufferPass->Render();
 		_SSAOPass->Render();
 		_deferredPass->Render();
+#ifdef _DEBUG
 		_debugMeshPass->Render();
 		RenderLine();
+#endif
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
@@ -295,7 +297,6 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_toneMapPass->Render();
 		_spritePass->Render();
-		//_spritePass->Render(_deviceContext.Get(), _depthStencilStateEnable.Get());
 
 		_deviceContext->RSSetViewports(1, &_viewport);
 		_blitPass->Render();

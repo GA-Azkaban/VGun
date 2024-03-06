@@ -61,6 +61,7 @@ namespace RocketCore::Graphics
 		float _scaleX;
 		float _scaleY;
 		bool _active;
+		bool _receiveTMInfoFlag;
 
 		// 원점 구하기
 		float _centerX;

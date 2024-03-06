@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <vector>
@@ -57,6 +57,8 @@ namespace RocketCore::Graphics
 		std::vector<Mesh*> m_meshes;
 		Material* m_material;
 		bool m_isActive;
+		bool m_receiveTMInfoFlag;
+		bool m_blendFlag;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 

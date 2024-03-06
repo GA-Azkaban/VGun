@@ -15,6 +15,7 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_imageWidth(),
 	_imageHeight(),
 	_active(true),
+	_receiveTMInfoFlag(false),
 	_sortOrder()
 {
 	_color = DirectX::Colors::White;
@@ -91,7 +92,10 @@ void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
-	if (_active)
+	if (!_active)
+		return;
+
+	if (_receiveTMInfoFlag)
 	{
 		spriteBatch->Draw(
 			_imagerSRV.Get(),
@@ -105,12 +109,15 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			_sortOrder
 		);
 	}
+
+	_receiveTMInfoFlag = false;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 {
 	_xlocation = worldTM._41;
 	_ylocation = worldTM._42;
+	_receiveTMInfoFlag = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpace()
