@@ -33,6 +33,12 @@ namespace HDData
 		void SetValueText(std::string val);
 		float GetValueText();
 
+		// 자식 객체 세팅
+		void SetBackBarComp(ImageUI* comp);
+		void SetFillBarComp(ImageUI* comp);
+		void SetHandleComp(ImageUI* comp);
+		void SetValueComp(TextUI* comp);
+
 	private:
 		ImageUI* _background;
 		ImageUI* _fill;

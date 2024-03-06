@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Component.h"
 #include "..\\HODO3DGraphicsInterface\\IRenderable.h"
 
@@ -8,6 +8,7 @@ namespace HDData
 	{
 	public:
 		virtual ~RendererBase() {};
+		virtual void UpdateRenderData() = 0;
 	};
 }
 

@@ -15,11 +15,15 @@ namespace HDData
 		UIBase();
 
 	public:
-		virtual void OnEnable() override;
-		virtual void OnDisable() override;
-		virtual void Update() override;
-
+		void UpdateRenderData();
 		bool CheckFocus();
+		virtual void OnUpdateTransform()
+		{
+			_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
+		}
+
+		void OnEnable() override;
+		void OnDisable() override;
 
 		float GetSortOrder() const;
 		bool GetIsHovering();

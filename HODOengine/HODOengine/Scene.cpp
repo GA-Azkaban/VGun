@@ -1,4 +1,5 @@
 ﻿#include <cassert>
+#include <algorithm>
 
 #include "Scene.h"
 #include "GameObject.h"
@@ -71,7 +72,6 @@ namespace HDData
 				}
 				GetRunningObjectList().push_back(gameObject);
 			}
-			_gameObjects.clear();
 		}
 
 		for (auto& gameObject : GetRunningObjectList())

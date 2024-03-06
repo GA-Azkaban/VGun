@@ -12,16 +12,16 @@ namespace HDData
 		TextInputBoxUI();
 		void Start() override;
 		void Update() override;
+		void OnDisable() override;
 
 		std::string GetCurrentText();
 
-		HDData::ImageUI* GetBackgroundImage() const { return _background; }
-		HDData::ImageUI* GetCursorImage() const { return _cursor; }
-		HDData::TextUI* GetTextUI() const { return _text; }
-	public:
-		void SetBackgroundImage(HDData::ImageUI* val) { _background = val; }
-		void SetCursorImage(HDData::ImageUI* val) { _cursor = val; }
-		void SetTextUI(HDData::TextUI* val) { _text = val; }
+		// 자식 객체 설정
+		void SetBoxComp(ImageUI* comp);
+		void SetCursorComp(ImageUI* comp);
+		void SetTextComp(TextUI* comp);
+
+		void SetSortOrder(float ord);
 
 	private:
 		ImageUI* _background;

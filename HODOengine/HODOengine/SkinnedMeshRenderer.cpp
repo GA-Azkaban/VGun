@@ -11,11 +11,6 @@ namespace HDData
 		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
 	}
 
-	SkinnedMeshRenderer::~SkinnedMeshRenderer()
-	{
-		_skinnedMesh = nullptr;
-	}
-
 	void SkinnedMeshRenderer::LoadMesh(const std::string& fileName)
 	{
 		_skinnedMesh->LoadMesh(fileName);
@@ -41,7 +36,7 @@ namespace HDData
 		return _skinnedMesh->IsAnimationEnd();
 	}
 
-	void SkinnedMeshRenderer::Update()
+	void SkinnedMeshRenderer::UpdateRenderData()
 	{
 		_skinnedMesh->SetWorldTM(GetTransform()->GetWorldTM());
 	}

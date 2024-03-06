@@ -30,12 +30,12 @@ void LobbyManager::Login(std::string id, std::string password)
 
 void LobbyManager::Join()
 {
-	_joinCanvas->OnEnable();
+	_joinCanvas->SetSelfActive(true);
 }
 
 void LobbyManager::ExitJoin()
 {
-	_joinCanvas->OnDisable();
+	_joinCanvas->SetSelfActive(false);
 }
 
 void LobbyManager::MakeNewAccount(std::string id, std::string password, std::string nickname)

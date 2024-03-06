@@ -37,8 +37,6 @@ namespace HDData
 		GameObject& operator=(const GameObject&) = delete;
 		GameObject& operator=(GameObject&&) = delete;
 
-		void OnEnable();
-		void OnDisable();
 		void FlushEnable();
 		void FlushDisable();
 		void Start();

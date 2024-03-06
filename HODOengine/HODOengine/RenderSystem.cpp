@@ -54,11 +54,6 @@ namespace HDEngine
 
 	void RenderSystem::DrawProcess()
 	{
-		for (auto collider : _colliderList)
-		{
-			collider->DrawDebug();
-		}
-
 		_dx11Renderer->Render();
 	}
 
@@ -68,16 +63,20 @@ namespace HDEngine
 		HDData::Camera* mainCam = currentScene->GetMainCamera();
 		mainCam->UpdateRenderData();
 
-		/*for (auto rendererBase : _rendererList)
+		for (auto rendererBase : _rendererList)
 		{
 			rendererBase->UpdateRenderData();
-		}*/
+		}
 
-		/*for (auto uiBase : _uiList)
+		for (auto uiBase : _uiList)
 		{
 			uiBase->UpdateRenderData();
-		}*/
+		}
 
+		for (auto collider : _colliderList)
+		{
+			collider->DrawDebug();
+		}
 	}
 
 	int RenderSystem::GetScreenWidth() const
