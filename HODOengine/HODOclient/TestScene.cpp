@@ -101,10 +101,11 @@ TestScene::TestScene()
 	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
 	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
+	//auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
 	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
-	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
+	//meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
+	//meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
@@ -115,11 +116,9 @@ TestScene::TestScene()
 	//auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	//playerMove->SetHeadCam(headCam);
 
-	auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	sphereTest->GetComponent<HDData::Transform>()->SetPosition(0.f, 5.f, 0.f);
-	sphereTest->GetComponent<HDData::Transform>()->SetScale(0.5f, 0.5f, 0.5f);
+	//auto sphereTest = API::CreateObject(_scene, "sphereTest");
+	//sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
 	//auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
-	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicCapsuleCollider>();
 
 	//textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	//auto textTest = API::CreateTextbox(_scene);
