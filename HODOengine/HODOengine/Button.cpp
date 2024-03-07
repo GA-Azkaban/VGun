@@ -1,4 +1,4 @@
-﻿#include "Button.h"
+#include "Button.h"
 #include "ImageUI.h"
 #include "TextUI.h"
 #include "GameObject.h"

@@ -32,28 +32,43 @@ namespace RocketCore::Graphics
 	{
 		if (m_currentAnimation != nullptr)
 		{
-			m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-			m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
-
-			if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+			if (m_blendFlag)
 			{
-				m_currentAnimation->isEnd = true;
-				return;
-			}
-
-			if (m_currentAnimation->isLoop == true)
-			{
-				if (m_currentAnimation->isEnd == true)
+				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+				
+				if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
 				{
-					m_currentAnimation->isEnd = false;
+					m_blendFlag = false;
+					m_currentAnimation->accumulatedTime = 0.0f;
+					return;
+				}
+
+				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+			}
+			else
+			{
+				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+				
+				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
+				{
+					m_currentAnimation->accumulatedTime = 0.0f;
+					m_currentAnimation->isEnd = true;
+					return;
+				}
+
+				if (m_currentAnimation->isLoop == true)
+				{
+					if (m_currentAnimation->isEnd == true)
+					{
+						m_currentAnimation->isEnd = false;
+					}
+				}
+
+				if (!m_currentAnimation->isEnd)
+				{
+					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
 				}
 			}
-
-			if (!m_currentAnimation->isEnd)
-			{
-				UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
-			}
-
 		}
 	}
 
@@ -266,6 +281,133 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
+	void SkinningMeshObject::UpdateBlendAnimation(float prevAnimationTime, float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
+	{
+		DirectX::XMMATRIX _nodeTransform = (node.nodeTransform);
+
+		NodeAnimation* prevAnim = nullptr;
+		for (UINT i = 0; i < m_previousAnimation->nodeAnimations.size(); ++i)
+		{
+			if (m_previousAnimation->nodeAnimations[i]->nodeName == node.name)
+			{
+				prevAnim = m_previousAnimation->nodeAnimations[i];
+				break;
+			}
+		}
+
+		NodeAnimation* currAnim = nullptr;
+		for (UINT i = 0; i < m_currentAnimation->nodeAnimations.size(); ++i)
+		{
+			if (m_currentAnimation->nodeAnimations[i]->nodeName == node.name)
+			{
+				currAnim = m_currentAnimation->nodeAnimations[i];
+				break;
+			}
+		}
+
+		if (prevAnim != nullptr && currAnim != nullptr)
+		{
+			// calculate interpolated position
+			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
+			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
+
+			// calculate interpolated rotation
+			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
+			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
+
+			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
+			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+		}
+		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+
+		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
+
+		// update values for children bones
+		for (Node child : node.children)
+		{
+			UpdateBlendAnimation(prevAnimationTime, animationTime, child, globalTransform, globalInvTransform);
+		}
+	}
+
+	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
+	{
+		UINT positionIndex = 0;
+		for (UINT i = 0; i < prevAnim->positionTimestamps.size() - 1; ++i)
+		{
+			if (prevAnimationTime < prevAnim->positionTimestamps[i + 1])
+			{
+				positionIndex = i;
+				break;
+			}
+		}
+
+		UINT nextPositionIndex = 0;
+
+		float factor = currAnimationTime / blendDuration;
+
+		DirectX::XMVECTOR start = XMLoadFloat3(&(prevAnim->positions[positionIndex]));
+		DirectX::XMVECTOR end = XMLoadFloat3(&(currentAnim->positions[nextPositionIndex]));
+		DirectX::XMVECTOR delta = end - start;
+
+		DirectX::XMFLOAT3 ret;
+		XMStoreFloat3(&ret, start + factor * delta);
+
+		return ret;
+	}
+
+	DirectX::XMFLOAT4 SkinningMeshObject::CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
+	{
+		UINT rotationIndex = 0;
+		for (UINT i = 0; i < prevAnim->rotationTimestamps.size() - 1; ++i)
+		{
+			if (prevAnimationTime < prevAnim->rotationTimestamps[i + 1])
+			{
+				rotationIndex = i;
+				break;
+			}
+		}
+		UINT nextRotationIndex = 0;
+
+		float factor = currAnimationTime / blendDuration;
+
+		DirectX::XMVECTOR start = XMLoadFloat4(&(prevAnim->rotations[rotationIndex]));
+		DirectX::XMVECTOR end = XMLoadFloat4(&(currentAnim->rotations[nextRotationIndex]));
+
+		DirectX::XMVECTOR q = XMQuaternionSlerp(start, end, factor);
+		DirectX::XMFLOAT4 ret;
+		XMStoreFloat4(&ret, q);
+
+		return ret;
+	}
+
+	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
+	{
+		UINT scaleIndex = 0;
+		for (UINT i = 0; i < prevAnim->scaleTimestamps.size() - 1; ++i)
+		{
+			if (prevAnimationTime < prevAnim->scaleTimestamps[i + 1])
+			{
+				scaleIndex = i;
+				break;
+			}
+		}
+		UINT nextScaleIndex = 0;
+
+		float factor = currAnimationTime / blendDuration;
+
+		DirectX::XMVECTOR start = XMLoadFloat3(&(prevAnim->scales[scaleIndex]));
+		DirectX::XMVECTOR end = XMLoadFloat3(&(currentAnim->scales[nextScaleIndex]));
+		DirectX::XMVECTOR delta = end - start;
+
+		DirectX::XMFLOAT3 ret;
+		XMStoreFloat3(&ret, start + factor * delta);
+
+		return ret;
+	}
+
 	void SkinningMeshObject::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
 		LoadMesh(fileName);
@@ -284,18 +426,27 @@ namespace RocketCore::Graphics
 				return;
 			}
 		}
+
+		if (m_currentAnimation == animIter->second)
+			return;
+
 		m_previousAnimation = m_currentAnimation;
 		m_currentAnimation = animIter->second;
 		m_currentAnimation->isLoop = isLoop;
-		if (m_previousAnimation != m_currentAnimation)
+
+		if (m_previousAnimation != nullptr)
 		{
-			m_currentAnimation->accumulatedTime = 0.0f;
-			if (m_currentAnimation->isLoop == false)
+			if (m_previousAnimation->uniqueAnimNum != m_currentAnimation->uniqueAnimNum)
 			{
-				m_currentAnimation->isEnd = false;
+				m_currentAnimation->accumulatedTime = 0.0f;
+				if (m_currentAnimation->isLoop == false)
+				{
+					m_currentAnimation->isEnd = false;
+				}
+				m_blendFlag = true;
 			}
-			m_blendFlag = true;
 		}
+
 	}
 
 	void SkinningMeshObject::LoadMesh(const std::string& fileName)
