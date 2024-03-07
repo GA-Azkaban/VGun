@@ -35,8 +35,7 @@ namespace RocketCore::Graphics
 			if (m_blendFlag)
 			{
 				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-				//m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->blendDuration);
-				//if (m_currentAnimation->accumulatedTime >= m_currentAnimation->blendDuration - 0.1f)
+				
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
 				{
 					m_blendFlag = false;
@@ -49,9 +48,7 @@ namespace RocketCore::Graphics
 			else
 			{
 				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-				//m_currentAnimation->accumulatedTime = fmod(m_currentAnimation->accumulatedTime, m_currentAnimation->duration);
-
-				//if (m_currentAnimation->accumulatedTime >= m_currentAnimation->duration - 0.1f)
+				
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 				{
 					m_currentAnimation->accumulatedTime = 0.0f;
