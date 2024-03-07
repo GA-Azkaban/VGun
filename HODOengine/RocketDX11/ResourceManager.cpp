@@ -1036,11 +1036,14 @@ namespace RocketCore::Graphics
 	{
 		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
 		// numChannels == numBones
+		static int animNum = 0;
 		UINT animCount = scene->mNumAnimations;
 		for (UINT i = 0; i < animCount; ++i)
 		{
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();
+			newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
+			newAnimation->uniqueAnimNum = animNum++;
 			newAnimation->duration = animation->mDuration;
 
 			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
@@ -1077,7 +1080,7 @@ namespace RocketCore::Graphics
 
 				newAnimation->nodeAnimations.push_back(newNodeAnim);
 			}
-			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
+			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(newAnimation->animName, newAnimation));
 		}
 	}
 

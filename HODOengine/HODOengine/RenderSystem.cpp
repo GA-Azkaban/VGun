@@ -90,7 +90,7 @@ namespace HDEngine
 		return _screenHeight;
 	}
 
-	void RenderSystem::PushRenderComponent(HDData::RendererBase* comp)
+	/*void RenderSystem::PushRenderComponent(HDData::RendererBase* comp)
 	{
 		_rendererList.emplace_back(comp);
 	}
@@ -98,7 +98,7 @@ namespace HDEngine
 	void RenderSystem::PushSketchComponent(HDData::UIBase* comp)
 	{
 		_uiList.emplace_back(comp);
-	}
+	}*/
 
 	void RenderSystem::PushCollider(HDData::Collider* col)
 	{

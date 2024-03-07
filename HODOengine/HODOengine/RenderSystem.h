@@ -60,8 +60,8 @@ namespace HDEngine
 		std::unique_ptr<I3DRenderer> _dx11Renderer;
 
 	public:
-		void PushRenderComponent(HDData::RendererBase* comp);
-		void PushSketchComponent(HDData::UIBase* comp);
+		//void PushRenderComponent(HDData::RendererBase* comp);
+		//void PushSketchComponent(HDData::UIBase* comp);
 		void PushCollider(HDData::Collider* col);
 
 	private:

@@ -145,6 +145,7 @@ namespace RocketCore::Graphics
 
 		/// Load resources
 		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
+		_resourceManager.LoadFBXFile("A_TP_CH_Sprint_F.fbx");
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.png");
 		_resourceManager.LoadCubeMapTextureFile("Malibu_Overlook_3k.png");

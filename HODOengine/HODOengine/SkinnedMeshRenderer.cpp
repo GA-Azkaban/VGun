@@ -8,7 +8,7 @@ namespace HDData
 	SkinnedMeshRenderer::SkinnedMeshRenderer()
 		: _skinnedMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSkinnedMeshObject())
 	{
-		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		//HDEngine::RenderSystem::Instance().PushRenderComponent(this);
 	}
 
 	SkinnedMeshRenderer::~SkinnedMeshRenderer()
