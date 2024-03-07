@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -62,6 +62,7 @@ namespace RocketCore::Graphics
 		std::string _str;
 		float _renderFloat;
 		int _renderInt;
+		bool _isActive;
 
 		DirectX::XMVECTOR _color;
 		float _xLocation;
@@ -73,9 +74,7 @@ namespace RocketCore::Graphics
 		float _width;
 		float _height;
 
-		bool _isActive;
 		bool _receiveTMInfoFlag;
-
 		float _sortOrder;
 	};
 }

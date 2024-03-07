@@ -92,6 +92,7 @@ namespace RocketCore::Graphics
 				DirectX::DX11::SpriteEffects_None,
 				_sortOrder
 			);
+
 		}
 		_receiveTMInfoFlag = false;
 	}
