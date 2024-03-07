@@ -42,11 +42,7 @@ namespace HDData
 
 	void GameObject::Start()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -60,11 +56,7 @@ namespace HDData
 
 	void GameObject::Update()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -74,11 +66,7 @@ namespace HDData
 
 	void GameObject::LateUpdate()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -88,11 +76,7 @@ namespace HDData
 
 	void GameObject::FixedUpdate()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -102,11 +86,7 @@ namespace HDData
 
 	void GameObject::OnDestroy()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -116,11 +96,7 @@ namespace HDData
 
 	void GameObject::OnCollisionEnter()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -130,11 +106,7 @@ namespace HDData
 
 	void GameObject::OnCollisionStay()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -144,11 +116,7 @@ namespace HDData
 
 	void GameObject::OnCollisionExit()
 	{
-		if (!_selfActive)
-			return;
-
-		if (GetParentGameObject())
-			if (!GetParentGameObject()->GetSelfActive()) return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -199,6 +167,25 @@ namespace HDData
 	bool GameObject::GetSelfActive()
 	{
 		return _selfActive;
+	}
+
+	bool GameObject::GetParentActive()
+	{
+		if (GetParentGameObject())
+		{
+			if (!GetParentGameObject()->GetSelfActive())
+			{
+				return false;
+			}
+			else
+			{
+				return GetParentGameObject()->GetParentActive();
+			}
+		}
+		else
+		{
+			return GetSelfActive();
+		}
 	}
 
 	std::string GameObject::GetObjectName()

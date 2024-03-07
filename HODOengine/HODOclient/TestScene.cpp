@@ -150,21 +150,39 @@ TestScene::TestScene()
 	//auto slider = API::CreateSlider(_scene, 50, "slider");
 	//slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
 
-	//auto canvas = API::CreateImageBox(_scene, "canvas");
-	//canvas->GetTransform()->SetPosition(1500.f, 200.f, 0.f);
+	auto canvas = API::CreateImageBox(_scene, "canvas");
+	canvas->GetTransform()->SetPosition(1500.f, 200.f, 0.f);
 
-	//auto img = API::CreateImageBox(_scene, "img", canvas);
-	//img->GetComponent<HDData::ImageUI>()->SetImage("Sound.png");
-	//img->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
+	auto img = API::CreateButton(_scene);
+	img->GetComponent<HDData::Button>()->SetImage("Sound.png");
+	img->GetTransform()->SetPosition({ 1500.f, 600.f, 0.0f });
+	img->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[]()
+		{
 
-	auto toggle = API::CreateToggle(_scene);
-	toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
+		}
+	);
+
+	//auto img2 = API::CreateImageBox(_scene, "img2", img);
+	//img2->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
+	//img2->GetTransform()->SetPosition({ 1500.f, 500.f, 0.0f });
+
+	//auto img3 = API::CreateImageBox(_scene, "img3", img2);
+	//img3->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
+	//img3->GetTransform()->SetPosition({ 1500.f, 600.f, 0.0f });
+
+	//auto img4 = API::CreateImageBox(_scene, "img4", img3);
+	//img4->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
+	//img4->GetTransform()->SetPosition({ 1500.f, 700.f, 0.0f });
+
+	//auto toggle = API::CreateToggle(_scene);
+	//toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
 	//toggle->GetComponent<HDData::ToggleUI>()->SetSortOrder(0.21f);
 
 	//auto textInputBox = API::CreateTextInputBox(_scene, "input", canvas);
 	//textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
 
-	//canvas->SetSelfActive(true);
+	canvas->SetSelfActive(true);
 
 	API::LoadScene(_scene);
 

@@ -50,7 +50,7 @@ namespace HDEngine
 	{
 		for (const auto& ui : _uiList)
 		{
-			if (!ui->GetGameObject()->GetSelfActive())
+			if (!ui->GetGameObject()->GetParentActive())
 			{
 				continue;
 			}

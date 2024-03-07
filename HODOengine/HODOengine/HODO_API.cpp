@@ -51,7 +51,14 @@ namespace API
 		HODO_API HDData::GameObject* CreateButton(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
-			obj->AddComponent<HDData::Button>();
+			auto btn = obj->AddComponent<HDData::Button>();
+
+			auto img = HDEngine::ObjectSystem::Instance().CreateObject(scene, "btn", obj);
+			auto i = img->AddComponent<HDData::ImageUI>();
+			btn->SetButtonComp(i);
+
+			btn->SetImage("Sound.png");
+
 			return obj;
 		}
 
@@ -90,13 +97,13 @@ namespace API
 
 			auto toggleOn = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOn" , obj);
 			auto on = toggleOn->AddComponent<HDData::ImageUI>();
-			toggleOn->GetComponent<HDData::ImageUI>()->SetImage("Sound.png");
 			toggle->SetOnComp(on);
+			on->SetImage("Sound.png");
 
 			auto toggleOff = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOff" , obj);
 			auto off = toggleOff->AddComponent<HDData::ImageUI>();
-			toggleOff->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
 			toggle->SetOffComp(off);
+			off->SetImage("Mute.png");
 
 			return obj;
 		}
@@ -134,21 +141,21 @@ namespace API
 			auto textInputBoxUI = obj->AddComponent<HDData::TextInputBoxUI>();
 
 			auto background = HDEngine::ObjectSystem::Instance().CreateObject(scene, "back", obj);
-			background->AddComponent<HDData::ImageUI>();
-			background->GetComponent<HDData::ImageUI>()->SetImage("back.png");
-			textInputBoxUI->SetBackgroundImage(background->GetComponent<HDData::ImageUI>());
+			auto back = background->AddComponent<HDData::ImageUI>();
+			back->SetImage("back.png");
+			textInputBoxUI->SetBackgroundImage(back);
 
 			auto cursor = HDEngine::ObjectSystem::Instance().CreateObject(scene, "cursor", obj);
-			cursor->AddComponent<HDData::ImageUI>();
-			cursor->GetComponent<HDData::ImageUI>()->SetImage("cursor.png");
-			cursor->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
-			textInputBoxUI->SetCursorImage(cursor->GetComponent<HDData::ImageUI>());
+			auto cur = cursor->AddComponent<HDData::ImageUI>();
+			cur->SetImage("cursor.png");
+			cur->SetIsIgnoreFocus(true);
+			textInputBoxUI->SetCursorImage(cur);
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateObject(scene, "text", obj);
-			valueText->AddComponent<HDData::TextUI>();
-			valueText->GetComponent<HDData::TextUI>()->SetText("");
-			valueText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
-			textInputBoxUI->SetTextUI(valueText->GetComponent<HDData::TextUI>());
+			auto txt = valueText->AddComponent<HDData::TextUI>();
+			txt->SetText("");
+			txt->SetColor(DirectX::Colors::Black);
+			textInputBoxUI->SetTextUI(txt);
 
 			return obj;
 		}
