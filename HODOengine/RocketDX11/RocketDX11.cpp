@@ -166,6 +166,7 @@ namespace RocketCore::Graphics
 		_SSAOPass = new SSAOPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer, _shadowMapPass);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
+		_outlinePass = 
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);

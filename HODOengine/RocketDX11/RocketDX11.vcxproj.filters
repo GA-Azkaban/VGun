@@ -502,6 +502,9 @@
     <Filter Include="Resource\Shader\HLSL\ShadowMap">
       <UniqueIdentifier>{86ff2d08-049d-45ef-9067-ebaf27727218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\OutlinePass">
+      <UniqueIdentifier>{154b15da-9c13-405c-8e04-537d5a386834}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sampler.hlsli">

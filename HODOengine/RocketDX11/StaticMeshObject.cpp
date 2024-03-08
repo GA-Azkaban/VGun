@@ -52,6 +52,23 @@ namespace RocketCore::Graphics
 		m_material->SetAlbedoMap(diffuseTex);
 	}
 
+	void StaticMeshObject::SetOutlineActive(bool isActive)
+	{
+		if (isActive)
+		{
+
+		}
+		else
+		{
+
+		}
+	}
+
+	void StaticMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
+	{
+
+	}
+
 	void StaticMeshObject::Render()
 	{
 		if (!m_isActive)

@@ -16,6 +16,8 @@ namespace HDData
 		void LoadDiffuseMap(const std::string& fileName);
 		void PlayAnimation(const std::string& fileName, bool isLoop = true);
 		bool IsAnimationEnd();
+		void SetOutlineActive(bool isActive);
+		void SetOutlineData(const Vector4& color = Vector4{ 1.0f, 0.54f, 0.0f, 1.0f }, bool depthCheck = true);
 
 	protected:
 		virtual void Update() override;

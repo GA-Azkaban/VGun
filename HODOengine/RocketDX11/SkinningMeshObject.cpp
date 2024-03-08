@@ -484,4 +484,13 @@ namespace RocketCore::Graphics
 		return m_currentAnimation->isEnd;
 	}
 
+	void SkinningMeshObject::SetOutlineActive(bool isActive)
+	{
+
+	}
+
+	void SkinningMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
+	{
+
+	}
 }

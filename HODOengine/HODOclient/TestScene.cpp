@@ -103,9 +103,9 @@ TestScene::TestScene()
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
-	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
-	//meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	//meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
+	meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
+	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
+	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
 
 
 	auto playerTestHead = API::CreateObject(_scene, "playerHead");
