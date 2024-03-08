@@ -20,3 +20,4 @@ using GameSessionRef = std::shared_ptr<class GameSession>;
 using PlayerRef = std::shared_ptr<class Player>;
 
 #include "ErrorCode.h"
+#include "Job.h"

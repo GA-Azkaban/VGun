@@ -11,6 +11,8 @@ void GameSession::OnConnected()
 
 void GameSession::OnDisconnected()
 {
+	_player = nullptr;
+
 	GSessionManager->Remove(static_pointer_cast<GameSession>(shared_from_this()));
 }
 
