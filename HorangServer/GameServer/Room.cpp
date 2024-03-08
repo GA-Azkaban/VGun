@@ -5,23 +5,70 @@
 
 Room GRoom;
 
-void Room::Enter(PlayerRef player)
+Room::Room()
 {
-	WRITE_LOCK;
-	_players[player->playerId] = player;
+	
 }
 
-void Room::Leave(PlayerRef player)
+void Room::Initialize()
 {
-	WRITE_LOCK;
-	_players.erase(player->playerId);
+	this->_players.clear();
+	this->_jobs.Clear();
+	this->_roomCode = "0000";
+}
+
+bool Room::Enter(PlayerRef player)
+{
+	//WRITE_LOCK;
+	if (_players.size() > 6)
+	{
+		// Todo 실패 패킷
+		return false;
+	}
+
+	_players[player->uid] = player;
+	player->_currentRoom = this->shared_from_this();
+
+	// Todo 성공 패킷
+
+	return true;
+}
+
+bool Room::Leave(PlayerRef player)
+{
+	//WRITE_LOCK;
+	_players.erase(player->uid);
+	player->_currentRoom = nullptr;
+
+	return true;
 }
 
 void Room::BroadCast(Horang::SendBufferRef sendBuffer)
 {
-	WRITE_LOCK;
-	for (auto& p : _players)
+	//WRITE_LOCK;
+	for (auto& [id, player] : _players)
 	{
-		p.second->ownerGameSession->Send(sendBuffer);
+		player->ownerGameSession->Send(sendBuffer);
+	}
+}
+
+void Room::PushJob(JobRef job)
+{
+	WRITE_LOCK;
+	
+	_jobs.Push(job);
+}
+
+void Room::FlushJob()
+{
+	WRITE_LOCK;
+	
+	while (true)
+	{
+		JobRef job = _jobs.Pop();
+		if (job == nullptr)
+			break;
+
+		job->Execute();
 	}
 }

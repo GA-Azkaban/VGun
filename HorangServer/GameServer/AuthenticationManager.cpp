@@ -1,44 +1,55 @@
 #include "pch.h"
-#include "ClientPacketHandler.h"
-#include "Player.h"
-#include "Room.h"
-#include "GameSession.h"
-#include "DBConnectionPool.h"
-#include "DBBind.h"
-#include "DBConnector.h"
 #include "AuthenticationManager.h"
 
-PacketHandlerFunc GPacketHandler[UINT16_MAX];
+#include "DBConnectionPool.h"
+#include "DBConnector.h"
 
-// 직접 만들기
-bool Handle_INVALID(Horang::PacketSessionRef& session, BYTE* buffer, int32 len)
+#include "ClientPacketHandler.h"
+#include "Player.h"
+#include "GameSession.h"
+
+AuthenticationManager GAuthentication;
+
+AuthenticationManager::AuthenticationManager()
 {
-	Horang::PacketHeader* header = reinterpret_cast<Horang::PacketHeader*>(buffer);
 
-	return false;
 }
 
-bool Handle_C_TEST(Horang::PacketSessionRef& session, Protocol::C_TEST& pkt)
+void AuthenticationManager::SignIn()
 {
-	Protocol::S_TEST patket;
-	patket.set_num(pkt.num() + 1);
 
-	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(patket);
-	// session->Send(sendBuffer);
-
-	return true;
 }
 
-bool Handle_C_MOVE(Horang::PacketSessionRef& session, Protocol::C_MOVE& pkt)
+void AuthenticationManager::SignUp()
 {
-	return true;
+
 }
 
-bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
+void AuthenticationManager::PushJob(JobRef job)
 {
-	/*
-	if (pkt.id().length() > 40 || pkt.password().length() > 80)
-		return false;
+	WRITE_LOCK;
+
+	_jobs.Push(job);
+}
+
+void AuthenticationManager::FlushJob()
+{
+	WRITE_LOCK;
+
+	while (true)
+	{
+		JobRef job = _jobs.Pop();
+		if (job == nullptr)
+			break;
+
+ 		job->Execute();
+	}
+}
+
+void SignInJob::Execute()
+{
+	if (_id.length() > 40 || _password.length() > 80)
+		return;
 
 	auto dbConn = GDBConnectionPool->Pop();
 
@@ -47,8 +58,8 @@ bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
 	WCHAR id[40] = L"";
 	WCHAR password[80] = L"";
 
-	signIn.In_Id(id, pkt.id());
-	signIn.In_Password(password, pkt.password());
+	signIn.In_Id(id, _id);
+	signIn.In_Password(password, _password);
 
 	int32 uid = 0;
 	WCHAR nickName[16] = L"";
@@ -62,13 +73,26 @@ bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
 	{
 		std::wcout << uid << " : " << nickName << std::endl;
 
+		GameSessionRef gameSession = static_pointer_cast<GameSession>(_session);
+
+		{
+			PlayerRef player = Horang::MakeShared<Player>();
+			player->uid = uid;
+			player->id = _id;
+			std::wstring wstr{ nickName };
+			player->nickname = std::string(wstr.begin(), wstr.end());
+			player->ownerGameSession = gameSession;
+
+			gameSession->_player = player;
+		}
+
 		// 성공 동작
 		Protocol::S_SIGNIN_OK packet;
 		packet.set_uid(uid);
 		packet.set_nickname(boost::locale::conv::utf_to_utf<char>(std::wstring(nickName)));
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
-		session->Send(sendBuffer);
+		_session->Send(sendBuffer);
 	}
 	else
 	{
@@ -79,24 +103,18 @@ bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
 		// Todo Log
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
-		session->Send(sendBuffer);
+		_session->Send(sendBuffer);
 	}
 
 	GDBConnectionPool->Push(dbConn);
-
-	*/
-	GAuthentication.PushJob(Horang::MakeShared<SignInJob>(session, pkt.id(), pkt.password()));
-
-	return true;
 }
 
-bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
+void SignUpJob::Execute()
 {
-	/*
-	if (pkt.id().length() > 40 ||
-		pkt.password().length() > 80 ||
-		pkt.nickname().length() > 16)
-		return false;
+	if (_id.length() > 40 ||
+		_password.length() > 80 ||
+		_nickname.length() > 16)
+		return;
 
 	auto dbConn = GDBConnectionPool->Pop();
 
@@ -106,9 +124,9 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 	WCHAR password[80] = L"";
 	WCHAR nickName[16] = L"";
 
-	signUp.In_Id(id, pkt.id());
-	signUp.In_Password(password, pkt.password());
-	signUp.In_NickName(nickName, pkt.nickname());
+	signUp.In_Id(id, _id);
+	signUp.In_Password(password, _password);
+	signUp.In_NickName(nickName, _nickname);
 
 	int32 result = 0;
 	signUp.Out_Result(result);
@@ -122,7 +140,7 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 			Protocol::S_SIGNUP_OK packet;
 
 			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
-			session->Send(sendBuffer);
+			_session->Send(sendBuffer);
 		}
 		else
 		{
@@ -132,7 +150,7 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 			packet.set_errorcode(result);
 
 			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
-			session->Send(sendBuffer);
+			_session->Send(sendBuffer);
 		}
 	}
 	else
@@ -142,14 +160,8 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 		packet.set_errorcode(ErrorCode::SIGNUP_FAIL);
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
-		session->Send(sendBuffer);
+		_session->Send(sendBuffer);
 	}
 
 	GDBConnectionPool->Push(dbConn);
-	*/
-
-	GAuthentication.PushJob(Horang::MakeShared<SignUpJob>(session, pkt.id(), pkt.password(),pkt.nickname()));
-
-	return true;
 }
-

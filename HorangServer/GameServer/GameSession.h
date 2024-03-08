@@ -19,5 +19,5 @@ public:
 	virtual void OnSend(int32 len) override;
 
 public:
-	Horang::Vector<PlayerRef> _players;
+	PlayerRef _player;
 };

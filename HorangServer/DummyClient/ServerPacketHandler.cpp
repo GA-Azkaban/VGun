@@ -56,7 +56,8 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
 
 bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK& pkt)
 {
-	std::cout << "로그인 성공! " << "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
+	std::cout << "로그인 성공! " << std::endl;
+		//<< "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
 
 
 	return true;

@@ -1,10 +1,20 @@
 #pragma once
+
+using RoomRef = std::shared_ptr<class Room>;
+
 class Player
 {
 public:
-	uint64 playerId = 0;
-	std::string name;
-	Protocol::PlayerType type = Protocol::PLAYER_TYPE_NONE;
-	GameSessionRef ownerGameSession; // cycle 문제 가능성
+	Player()
+		: uid(0), id(""), nickname(""), ownerGameSession(nullptr), _currentRoom(nullptr)
+	{}
+
+public:
+	int32 uid;
+	std::string id;
+	std::string nickname;
+
+	GameSessionRef ownerGameSession;
+	RoomRef _currentRoom;
 };
 
