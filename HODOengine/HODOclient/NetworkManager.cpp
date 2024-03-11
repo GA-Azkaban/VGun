@@ -71,49 +71,9 @@ void NetworkManager::RecvFail(int32 errorCode)
 
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 {
-	{
-		{
-			{
-				{
-					{
-						{
-							{
-								{
-									{
-										{
-											{
-												{
-													{
-														{
-															{
-																{
-																	{
-																		{
-																			{
-																				{
-																					{
-																						{}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	// remove pyramid
+
+
 }
 
 bool NetworkManager::IsConnected()
