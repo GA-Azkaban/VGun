@@ -67,6 +67,21 @@ void NetworkManager::SendCreateAccount(std::string id, std::string password, std
 void NetworkManager::RecvFail(int32 errorCode)
 {
 	// Todo
+	switch (errorCode)
+	{
+		case LOGIN_FAIL:
+
+		case ID_DUPLICATION:
+
+		case SIGNUP_FAIL:
+
+		case NICKNAME_DUPLICATION:
+
+		default:
+			std::cout << "Unknown Error Code" << std::endl;
+			break;
+	}
+
 }
 
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
