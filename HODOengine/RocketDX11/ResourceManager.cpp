@@ -61,7 +61,7 @@ namespace RocketCore::Graphics
 		_cubePrimitive = GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
 		_spherePrimitive = GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
 		_cylinderPrimitive = GeometricPrimitive::CreateCylinder(deviceContext, 2.0f, 1.0f, 8, false);
-		
+
 		// Create capsule debug mesh
 		float radius = 0.5f; // 캡슐의 반지름
 		float height = 1.0f; // 캡슐의 높이
@@ -552,6 +552,18 @@ namespace RocketCore::Graphics
 		if (debugPixelShader->LoadShaderFile(L"Resources/Shaders/DebugPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
 
+		VertexShader* outlineStaticMeshVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (outlineStaticMeshVS->LoadShaderFile(L"Resources/Shaders/OutlineStaticMeshVS.cso"))
+			_vertexShaders.insert(std::make_pair("OutlineStaticMeshVS.cso", outlineStaticMeshVS));
+
+		VertexShader* outlineSkinningMeshVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (outlineSkinningMeshVS->LoadShaderFile(L"Resources/Shaders/OutlineSkinningMeshVS.cso"))
+			_vertexShaders.insert(std::make_pair("OutlineSkinningMeshVS.cso", outlineSkinningMeshVS));
+
+		PixelShader* outlinePS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (outlinePS->LoadShaderFile(L"Resources/Shaders/OutlinePS.cso"))
+			_pixelShaders.insert(std::make_pair("OutlinePS.cso", outlinePS));
+
 		VertexShader* cubeMapVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (cubeMapVertexShader->LoadShaderFile(L"Resources/Shaders/CubeMapVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("CubeMapVertexShader.cso", cubeMapVertexShader));
@@ -723,6 +735,8 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
+		unitScaleFactor = 1.0f;
+		//unitScaleFactor = 100.0f;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
@@ -731,18 +745,26 @@ namespace RocketCore::Graphics
 			rightVec.x, rightVec.y, rightVec.z, 0.0f,
 			-upVec.x, -upVec.y, -upVec.z, 0.0f,
 			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);	*/
+			0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		aiMatrix4x4 mat(
-			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
-			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
-			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+			rightVec.x, upVec.x, forwardVec.x, 0.0f,
+			rightVec.y, upVec.y, forwardVec.y, 0.0f,
+			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		// create node hierarchy
+		/*aiMatrix4x4 mat(
+			0.01f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.01f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.01f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
+
+			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
+		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		//rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 
 		_loadedFileInfo[_fileName].node = rootNode;
 
@@ -894,20 +916,35 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
+		unitScaleFactor = 0.01f;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
 
-		aiMatrix4x4 mat(
+		/*aiMatrix4x4 mat(
 			rightVec.x, rightVec.y, rightVec.z, 0.0f,
 			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
 			-upVec.x, -upVec.y, -upVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
+
+		aiMatrix4x4 mat(
+			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
+			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
+			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		// create node hierarchy
+		/*aiMatrix4x4 mat(
+			0.01f,	0.0f,		0.0f,	0.0f,
+			0.0f,	0.0f,		-0.01f,	0.0f,
+			0.0f,	0.01f,		0.0f,	0.0f,
+			0.0f,	0.0f,		0.0f,	1.0f);*/
+
+			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
+		//rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
 		_loadedFileInfo[_fileName].node = rootNode;
@@ -1042,7 +1079,8 @@ namespace RocketCore::Graphics
 		{
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();
-			newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
+			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
+			newAnimation->animName = _fileName;
 			newAnimation->uniqueAnimNum = animNum++;
 			newAnimation->duration = animation->mDuration;
 

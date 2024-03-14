@@ -31,6 +31,16 @@ namespace HDData
 		_staticMesh->LoadDiffuseMap(fileName);
 	}
 
+	void MeshRenderer::SetOutlineActive(bool isActive)
+	{
+		_staticMesh->SetOutlineActive(isActive);
+	}
+
+	void MeshRenderer::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
+	{
+		_staticMesh->SetOutlineData(color, depthCheck);
+	}
+
 	void MeshRenderer::Update()
 	{
 		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());

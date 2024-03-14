@@ -18,6 +18,7 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
+	struct Outline;
 
 	class SkinningMeshObject : public HDEngine::ISkinnedMesh
 	{
@@ -39,7 +40,10 @@ namespace RocketCore::Graphics
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);
 
-		bool IsAnimationEnd();
+		virtual bool IsAnimationEnd() override;
+
+		virtual void SetOutlineActive(bool isActive) override;
+		virtual void SetOutlineData(const Vector4& color = Vector4{ 1.0f, 0.54f, 0.0f, 1.0f }, bool depthCheck = true) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();
@@ -47,7 +51,11 @@ namespace RocketCore::Graphics
 		bool IsActive() { return m_isActive; }
 		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
 
+		Outline* GetOutline() { return m_outline; }
+
 	private:
+		void LoadAnimation(const std::unordered_map<std::string, Animation*>& animation);
+
 		void UpdateAnimation(float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
@@ -68,7 +76,7 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
 		// Animation
-		std::unordered_map<std::string, Animation*> m_animations;
+		std::unordered_map<std::string, Animation> m_animations;
 		Animation* m_previousAnimation;
 		Animation* m_currentAnimation;
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
@@ -76,5 +84,7 @@ namespace RocketCore::Graphics
 
 		// Transform Matrix
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
+
+		Outline* m_outline;
 	};
 }
