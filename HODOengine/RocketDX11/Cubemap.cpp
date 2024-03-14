@@ -16,6 +16,7 @@ namespace RocketCore::Graphics
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("CubeMapVertexShader.cso"), ResourceManager::Instance().GetPixelShader("CubeMapPixelShader.cso"));
 		m_meshes = ResourceManager::Instance().GetMeshes("skybox");
+		//LoadCubeMapTexture("Day Sun Peak Clear.dds");
 	}
 
 	Cubemap::~Cubemap()
