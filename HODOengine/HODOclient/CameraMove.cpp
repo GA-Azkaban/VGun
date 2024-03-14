@@ -14,7 +14,7 @@ void CameraMove::Update()
 
 	if (API::GetKeyPressing(DIK_LSHIFT))
 	{
-		moveSpeed *= 5.0f;
+		moveSpeed *= 20.0f;
 	}
 
 	if (API::GetKeyPressing(DIK_W))

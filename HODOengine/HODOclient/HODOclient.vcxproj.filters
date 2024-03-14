@@ -34,6 +34,9 @@
     <ClCompile Include="SliderSoundScript.cpp">
       <Filter>02_Client\TestScene</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp">
+      <Filter>02_Client\TestScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -76,6 +79,9 @@
       <Filter>02_Client\TestScene\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="SliderSoundScript.h">
+      <Filter>02_Client\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitySceneLoaderTest.h">
       <Filter>02_Client\TestScene</Filter>
     </ClInclude>
   </ItemGroup>
