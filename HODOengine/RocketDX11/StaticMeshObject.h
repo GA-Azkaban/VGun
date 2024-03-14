@@ -13,6 +13,7 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
+	struct Outline;
 
 	class StaticMeshObject : public HDEngine::IStaticMesh
 	{
@@ -32,6 +33,9 @@ namespace RocketCore::Graphics
 	public:
 		void Render();
 
+	public:
+		Outline* GetOutline() { return m_outline; }
+
 	public:		
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();
@@ -47,5 +51,7 @@ namespace RocketCore::Graphics
 		Material* m_material;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
+
+		Outline* m_outline;
 	};
 }

@@ -6,13 +6,15 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
+#include "Outline.h"
+#include "OutlinePass.h"
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
-		m_world{ XMMatrixIdentity() }
+		m_world{ XMMatrixIdentity() }, m_outline(nullptr)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("VertexShader.cso"), ResourceManager::Instance().GetPixelShader("PixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -54,19 +56,23 @@ namespace RocketCore::Graphics
 
 	void StaticMeshObject::SetOutlineActive(bool isActive)
 	{
-		if (isActive)
+		if (!m_outline)
 		{
-
+			m_outline = new Outline();
+			SetOutlineData();
+			OutlinePass::staticMeshOutlines.push_back(this);
 		}
-		else
-		{
 
-		}
+		m_outline->isActive = isActive;
 	}
 
 	void StaticMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
 	{
+		if (!m_outline)
+			return;
 
+		m_outline->color = color;
+		m_outline->depthCheck = depthCheck;
 	}
 
 	void StaticMeshObject::Render()
@@ -79,22 +85,20 @@ namespace RocketCore::Graphics
 			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
 
-			XMMATRIX world = XMMatrixTranspose(m_world);
+			XMMATRIX world = m_world;
+
+			if (m_node != nullptr)
+				world = m_node->rootNodeInvTransform * m_world;
 
 			XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 			XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-			XMMATRIX worldViewProj;
-			if (m_node != nullptr)
-				worldViewProj = m_node->rootNodeInvTransform * m_world * view * proj;
-			else
-				worldViewProj = m_world * view * proj;
-			XMMATRIX wvp = XMMatrixTranspose(worldViewProj);
+			XMMATRIX worldViewProj = world * view * proj;
 
 			VertexShader* vertexShader = m_material->GetVertexShader();
 			PixelShader* pixelShader = m_material->GetPixelShader();
 
-			vertexShader->SetMatrix4x4("world", world);
-			vertexShader->SetMatrix4x4("worldViewProj", wvp);
+			vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
+			vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
 
 			vertexShader->CopyAllBufferData();
 			vertexShader->SetShader();

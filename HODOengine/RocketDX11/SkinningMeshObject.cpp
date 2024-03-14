@@ -6,6 +6,8 @@
 #include "PixelShader.h"
 #include "ResourceManager.h"
 #include "GraphicsStruct.h"
+#include "Outline.h"
+#include "OutlinePass.h"
 #include "MathHelper.h"
 #include "AssimpMathConverter.h"
 #include <cmath>
@@ -16,7 +18,7 @@ namespace RocketCore::Graphics
 	SkinningMeshObject::SkinningMeshObject()
 		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
-		m_blendFlag(false)
+		m_blendFlag(false), m_outline(nullptr)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -35,7 +37,7 @@ namespace RocketCore::Graphics
 			if (m_blendFlag)
 			{
 				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-				
+
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
 				{
 					m_blendFlag = false;
@@ -43,12 +45,12 @@ namespace RocketCore::Graphics
 					return;
 				}
 
-				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, *m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 			}
 			else
 			{
 				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-				
+
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 				{
 					m_currentAnimation->accumulatedTime = 0.0f;
@@ -66,7 +68,7 @@ namespace RocketCore::Graphics
 
 				if (!m_currentAnimation->isEnd)
 				{
-					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, m_node->rootNodeInvTransform * DirectX::XMMatrixInverse(nullptr, m_world));
+					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 				}
 			}
 		}
@@ -82,18 +84,17 @@ namespace RocketCore::Graphics
 			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
 
-			XMMATRIX invWorld = XMMatrixTranspose(m_world);
+			XMMATRIX world = m_node->rootNodeInvTransform * m_world;
 
 			XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 			XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-			XMMATRIX worldViewProj = m_world * view * proj;
-			XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
+			XMMATRIX worldViewProj = world * view * proj;
 
 			VertexShader* vertexShader = m_material->GetVertexShader();
 			PixelShader* pixelShader = m_material->GetPixelShader();
 
-			vertexShader->SetMatrix4x4("world", invWorld);
-			vertexShader->SetMatrix4x4("worldViewProj", invWVP);
+			vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
+			vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
 			vertexShader->SetMatrix4x4Array("boneTransforms", &m_boneTransform[0], m_boneTransform.size());
 
 			vertexShader->CopyAllBufferData();
@@ -411,7 +412,33 @@ namespace RocketCore::Graphics
 	void SkinningMeshObject::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
 		LoadMesh(fileName);
-		PlayAnimation(0, isLoop);
+		//PlayAnimation(0, isLoop);
+		auto animIter = m_animations.find(fileName);
+		if (animIter == m_animations.end())
+		{
+			m_currentAnimation = nullptr;
+			return;
+		}
+
+		if (m_currentAnimation == &(animIter->second))
+			return;
+
+		m_previousAnimation = m_currentAnimation;
+		m_currentAnimation = &(animIter->second);
+		m_currentAnimation->isLoop = isLoop;
+
+		if (m_previousAnimation != nullptr)
+		{
+			if (m_previousAnimation->uniqueAnimNum != m_currentAnimation->uniqueAnimNum)
+			{
+				m_currentAnimation->accumulatedTime = 0.0f;
+				if (m_currentAnimation->isLoop == false)
+				{
+					m_currentAnimation->isEnd = false;
+				}
+				m_blendFlag = true;
+			}
+		}
 	}
 
 	void SkinningMeshObject::PlayAnimation(UINT index, bool isLoop /*= true*/)
@@ -427,11 +454,11 @@ namespace RocketCore::Graphics
 			}
 		}
 
-		if (m_currentAnimation == animIter->second)
+		if (m_currentAnimation == &(animIter->second))
 			return;
 
 		m_previousAnimation = m_currentAnimation;
-		m_currentAnimation = animIter->second;
+		m_currentAnimation = &(animIter->second);
 		m_currentAnimation->isLoop = isLoop;
 
 		if (m_previousAnimation != nullptr)
@@ -454,7 +481,7 @@ namespace RocketCore::Graphics
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
 		// 일단은 메쉬를 세팅해주면 노드 정보와 애니메이션 정보도 불러와서 세팅해주기로 한다.
 		m_node = ResourceManager::Instance().GetNode(fileName);
-		m_animations = ResourceManager::Instance().GetAnimations(fileName);
+		LoadAnimation(ResourceManager::Instance().GetAnimations(fileName));
 	}
 
 	void SkinningMeshObject::LoadDiffuseMap(const std::string& fileName)
@@ -486,11 +513,33 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::SetOutlineActive(bool isActive)
 	{
+		if (!m_outline)
+		{
+			m_outline = new Outline();
+			SetOutlineData();
+			OutlinePass::skinningMeshOutlines.push_back(this);
+		}
 
+		m_outline->isActive = isActive;
 	}
 
 	void SkinningMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
 	{
+		if (!m_outline)
+			return;
 
+		m_outline->color = color;
+		m_outline->depthCheck = depthCheck;
 	}
+
+	void SkinningMeshObject::LoadAnimation(const std::unordered_map<std::string, Animation*>& animation)
+	{
+		for (auto& e : animation)
+		{
+			std::string animName = e.first;
+			Animation newAnim = *(e.second);
+			m_animations.insert(std::make_pair(animName, newAnim));
+		}
+	}
+
 }

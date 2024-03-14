@@ -1,9 +1,12 @@
-#pragma once
+﻿#pragma once
+#include <DirectXMath.h>
 
 namespace RocketCore::Graphics
 {
-	class Outline
+	struct Outline
 	{
-
+		bool isActive;
+		bool depthCheck;
+		DirectX::XMFLOAT4 color;
 	};
 }

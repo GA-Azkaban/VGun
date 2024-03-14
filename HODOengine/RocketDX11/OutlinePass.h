@@ -1,19 +1,37 @@
-#pragma once
+﻿#pragma once
+#include <d3d11_2.h>
+#include <wrl.h>
+#include <DirectXMath.h>
 #include <vector>
 
 namespace RocketCore::Graphics
 {
+	class DeferredBuffers;
 	class QuadBuffer;
-	class Outline;
+	class StaticMeshObject;
+	class SkinningMeshObject;
+	class VertexShader;
+	class PixelShader;
 
 	class OutlinePass
 	{
 	public:
-		OutlinePass(QuadBuffer* quadBuffer);
+		OutlinePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
 		~OutlinePass();
-		static std::vector<Outline*> outlinesList;
+
+		static std::vector<StaticMeshObject*> staticMeshOutlines;
+		static std::vector<SkinningMeshObject*> skinningMeshOutlines;
+
+		void Render();
 
 	private:
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthStencilState;
+		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;
+		VertexShader* _vertexShader;
+		PixelShader* _pixelShader;
+
+		DirectX::XMMATRIX _lineScale;
 	};
 }

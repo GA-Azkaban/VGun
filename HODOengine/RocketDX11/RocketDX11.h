@@ -34,6 +34,7 @@ namespace RocketCore::Graphics
 	class SSAOPass;
 	class DeferredPass;
 	class DebugMeshPass;
+	class OutlinePass;
 	class SkyboxPass;
 	class ToneMapPass;
 	class SpritePass;
@@ -87,6 +88,7 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11DepthStencilState> _depthStencilStateEnable;
 		ComPtr<ID3D11DepthStencilState> _depthStencilStateDisable;
 		ComPtr<ID3D11DepthStencilState> _cubemapDepthStencilState;
+		ComPtr<ID3D11DepthStencilState> _shadowmapDepthStencilState;
 
 	private:
 		DirectX::PrimitiveBatch<DirectX::VertexPositionColor>* _lineBatch;
@@ -105,6 +107,7 @@ namespace RocketCore::Graphics
 		SSAOPass* _SSAOPass;
 		DeferredPass* _deferredPass;
 		DebugMeshPass* _debugMeshPass;
+		OutlinePass* _outlinePass;
 		SkyboxPass* _skyboxPass;
 		ToneMapPass* _toneMapPass;
 		SpritePass* _spritePass;
