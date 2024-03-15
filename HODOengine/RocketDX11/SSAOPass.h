@@ -22,7 +22,7 @@ namespace RocketCore::Graphics
 		DeferredBuffers* _deferredBuffers;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
-		DirectX::XMFLOAT4 _kernel[64];
+		DirectX::XMFLOAT4 _ssaoSamples[64];
 		DirectX::XMFLOAT2 _windowSize;
 
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;

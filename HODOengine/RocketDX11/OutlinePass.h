@@ -26,7 +26,7 @@ namespace RocketCore::Graphics
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthStencilState;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthEnableState;
 		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;
 		VertexShader* _vertexShader;

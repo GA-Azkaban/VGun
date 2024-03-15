@@ -37,15 +37,15 @@ namespace RocketCore::Graphics
 		m_deviceContext->RSSetState(m_RS.Get());
 		m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = m_world * view * proj;
-		XMMATRIX invwvp = XMMatrixTranspose(worldViewProj);
-
 		VertexShader* vertexShader = m_material->GetVertexShader();
 		PixelShader* pixelShader = m_material->GetPixelShader();
 
-		vertexShader->SetMatrix4x4("worldViewProj", invwvp);
+		vertexShader->SetMatrix4x4("world", XMMatrixTranspose(m_world));
+		
+		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+
+		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();

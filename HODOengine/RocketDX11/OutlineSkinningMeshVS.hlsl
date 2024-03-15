@@ -1,14 +1,16 @@
 
-cbuffer externalData : register(b0)
-{
-	float4x4 worldViewProj;
-	float4 color;
-}
+#include "ConstantBuffer.hlsli"
 
-cbuffer skeleton
-{
-	float4x4 boneTransforms[96];
-};
+//cbuffer externalData : register(b0)
+//{
+//	float4x4 worldViewProj;
+//	float4 color;
+//}
+
+//cbuffer skeleton
+//{
+//	float4x4 boneTransforms[96];
+//};
 
 struct VertexShaderInput
 {
@@ -44,8 +46,9 @@ VertexToPixel main(VertexShaderInput input)
 		posL += _weights[i] * mul(float4(input.position, 1.0f), boneTransforms[input.boneIndices[i]]).xyz;
 	}
 
-	output.position = mul(float4(posL, 1.0f), worldViewProj);
-	output.color = color;
+	float4 pos = mul(float4(posL, 1.0f), world);
+	output.position = mul(pos, viewProjection);
+	output.color = outlineColor;
 
 	return output;
 }

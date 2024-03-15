@@ -19,47 +19,40 @@ TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
 
-	API::LoadSceneFromData("transformData.json");
+	//API::LoadSceneFromData("transformData.json");
 
-	//API::LoadScene(_scene);
-
-	//// API::LoadSceneFromData("ObjectInfo.json");
+	API::LoadScene(_scene);
 
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	auto skybox = API::CreateObject(_scene);
-	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+	//auto skybox = API::CreateObject(_scene);
+	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	//skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 	////skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
 	////skyboxComp->LoadCubeMapTexture("skyboxmap.png");
 
-	///*auto testBox1 = API::CreateObject(_scene);
-	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
-	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("cube");
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("cube");
 
-	//auto testBox2 = API::CreateObject(_scene);
-	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
-	//testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
-	//auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
-	//boxRender2->LoadMesh("cube");*/
+	auto testBox2 = API::CreateObject(_scene);
+	testBox2->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
+	testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
+	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
+	boxRender2->LoadMesh("cube");
 
 	//auto building1 = API::CreateObject(_scene);
 	//building1->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
 	//auto buildingRender1 = building1->AddComponent<HDData::MeshRenderer>();
 	//buildingRender1->LoadMesh("box_little2.fbx");
 	////buildingRender1->LoadMesh("SM_House_Large 1.fbx");
-	////buildingRender1->LoadMesh("SM_House_Large 1.fbx");
 
 	///*auto building2 = API::CreateObject(_scene);
 	//building2->GetComponent<HDData::Transform>()->SetPosition(5.0f, 5.0f, 0.0f);
 	//auto buildingRender2 = building2->AddComponent<HDData::MeshRenderer>();
 	//buildingRender2->LoadMesh("box_little2.fbx");*/
-
-	////auto camera = API::CreateObject(_scene);
-	////camera->AddComponent<MovableCamera>()->SetMainCamera();
-	////camera->GetTransform()->SetWorldPosition(Vector3{ 0.0f, 0.0f, -10.0f });
 
 	////auto gameObject = hodoEngine::CreateObject(_scene);
 	////auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
@@ -72,19 +65,18 @@ TestScene::TestScene()
 	////auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
 	////colli->Setflag(eColliderType::PLAYER);
 
-
 	//// floor as static plane
 	////auto groundFloor = API::CreateObject(_scene);
 	////groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	////auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
 	////// 플레이어 테스트
-	//auto playerTest = API::CreateObject(_scene, "player");
-	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 3.f, 0.f, 0.f });
-	//playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
-	//playerTest->AddComponent<Player>();
-	////auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
-	////meshComp->LoadMesh("A_TP_CH_Breathing_Ori.fbx");
+	auto playerTest = API::CreateObject(_scene, "player");
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 3.f, 0.5f, 0.f });
+	playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
+	playerTest->AddComponent<Player>();
+	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
+	//meshComp->LoadMesh("A_TP_CH_Breathing_Ori.fbx");
 
 	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 
@@ -107,16 +99,17 @@ TestScene::TestScene()
 	////centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
 	////centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
 
-	////auto playerMove = playerTest->AddComponent<PlayerMove>();
-	////playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	////playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
-	////playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
-	//auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
-	////meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
-	////meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
-	//meshComp->LoadMesh("little_man3.fbx");
-	//meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	//meshComp->PlayAnimation("little_man3.fbx", true);
+	//auto playerMove = playerTest->AddComponent<PlayerMove>();
+	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
+	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
+	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
+	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
+	//meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
+	meshComp->LoadMesh("little_man3.fbx");
+	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
+	meshComp->PlayAnimation("little_man3.fbx", true);
+	//meshComp->SetOutlineActive(true);
 
 	//auto playerTest2 = API::CreateObject(_scene, "player2");
 	//playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 13.f, 0.f, 0.f });
@@ -127,7 +120,6 @@ TestScene::TestScene()
 	//meshComp2->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
 	////meshComp2->LoadMesh("little_man3.fbx");
 	////meshComp2->PlayAnimation("little_man3.fbx", true);
-	//meshComp2->SetOutlineActive(true);
 
 	//auto playerTestHead = API::CreateObject(_scene, "playerHead");
 	//playerTestHead->SetParentObject(playerTest);

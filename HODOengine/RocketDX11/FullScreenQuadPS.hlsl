@@ -1,9 +1,6 @@
-#include "Sampler.hlsli"
-#include "Lighting.hlsli"
 #include "Shading.hlsli"
 #include "BRDF.hlsli"
 
-//Texture2D DepthTexture      : register(t0);
 Texture2D Position      : register(t0);
 Texture2D Diffuse       : register(t1);
 Texture2D Normal        : register(t2);
@@ -13,12 +10,12 @@ TextureCube EnvMap : register(t5);
 TextureCube PrefilteredSpecMap : register(t6);
 Texture2D BrdfLUT : register(t7);
 
-cbuffer externalData : register(b2)
-{
-	//float4x4 inverseView;
-	//float4x4 inverseProjection;
-	int useEnvMap;
-}
+//cbuffer externalData : register(b2)
+//{
+//	//float4x4 inverseView;
+//	//float4x4 inverseProjection;
+//	int useEnvMap;
+//}
 
 struct VertexToPixel
 {

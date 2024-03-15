@@ -90,15 +90,10 @@ namespace RocketCore::Graphics
 			if (m_node != nullptr)
 				world = m_node->rootNodeInvTransform * m_world;
 
-			XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-			XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-			XMMATRIX worldViewProj = world * view * proj;
-
 			VertexShader* vertexShader = m_material->GetVertexShader();
 			PixelShader* pixelShader = m_material->GetPixelShader();
 
 			vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
-			vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
 
 			vertexShader->CopyAllBufferData();
 			vertexShader->SetShader();
