@@ -6,6 +6,7 @@
 #include "DBConnectionPool.h"
 #include "DBBind.h"
 #include "DBConnector.h"
+#include "AuthenticationManager.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -35,6 +36,7 @@ bool Handle_C_MOVE(Horang::PacketSessionRef& session, Protocol::C_MOVE& pkt)
 
 bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
 {
+	/*
 	if (pkt.id().length() > 40 || pkt.password().length() > 80)
 		return false;
 
@@ -82,11 +84,15 @@ bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
 
 	GDBConnectionPool->Push(dbConn);
 
+	*/
+	GAuthentication.PushJob(Horang::MakeShared<SignInJob>(session, pkt.id(), pkt.password()));
+
 	return true;
 }
 
 bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 {
+	/*
 	if (pkt.id().length() > 40 ||
 		pkt.password().length() > 80 ||
 		pkt.nickname().length() > 16)
@@ -113,7 +119,7 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 	{
 		if (result == 1)
 		{
-			Protocol::S_SIGNIN_OK packet;
+			Protocol::S_SIGNUP_OK packet;
 
 			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
 			session->Send(sendBuffer);
@@ -140,6 +146,36 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 	}
 
 	GDBConnectionPool->Push(dbConn);
+	*/
+
+	GAuthentication.PushJob(Horang::MakeShared<SignUpJob>(session, pkt.id(), pkt.password(), pkt.nickname()));
+
+	return true;
+}
+
+bool Handle_C_ROOM_CREATE(Horang::PacketSessionRef& session, Protocol::C_ROOM_CREATE& pkt)
+{
+	return true;
+}
+
+bool Handle_C_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::C_ROOM_ENTER& pkt)
+{
+	// Todo RoomManager에서 방 유효한지 체크하는 job 넣어줘야함
+
+	if (pkt.roomcode() == "0000")
+	{
+		GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+		GRoom->PushJob(Horang::MakeShared<EnterJob>(GRoom, gameSession->_player));
+	}
+
+	return true;
+}
+
+bool Handle_C_ROOM_LEAVE(Horang::PacketSessionRef& session, Protocol::C_ROOM_LEAVE& pkt)
+{
+	// Todo
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	GRoom->PushJob(Horang::MakeShared<LeaveJob>(GRoom, gameSession->_player));
 
 	return true;
 }
