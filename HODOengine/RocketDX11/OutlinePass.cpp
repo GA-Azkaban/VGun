@@ -2,6 +2,7 @@
 #include "DeferredBuffers.h"
 #include "QuadBuffer.h"
 #include "ResourceManager.h"
+#include "ObjectManager.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Mesh.h"
@@ -44,7 +45,7 @@ namespace RocketCore::Graphics
 		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
 		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
 
-		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthStencilDesc, _depthStencilState.GetAddressOf());
+		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthStencilDesc, _depthEnableState.GetAddressOf());
 	}
 
 	OutlinePass::~OutlinePass()
@@ -57,7 +58,7 @@ namespace RocketCore::Graphics
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 
-		_deviceContext->OMSetDepthStencilState(_depthStencilState.Get(), 0);
+		_deviceContext->OMSetDepthStencilState(_depthEnableState.Get(), 0);
 
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		_deviceContext->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID));

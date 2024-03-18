@@ -67,6 +67,12 @@
     <FxCompile Include="OutlinePS.hlsl">
       <Filter>Resource\Shader\HLSL\Outline</Filter>
     </FxCompile>
+    <FxCompile Include="StaticMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinningMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -541,6 +547,12 @@
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
     <None Include="Shading.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="ConstantBuffer.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="CommonData.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
   </ItemGroup>

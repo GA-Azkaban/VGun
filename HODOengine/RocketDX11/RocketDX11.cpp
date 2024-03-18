@@ -171,8 +171,9 @@ namespace RocketCore::Graphics
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
-		_SSAOPass->CreateTexture(screenWidth, screenHeight);
+		//_SSAOPass->CreateTexture(screenWidth, screenHeight);
 		Cubemap::Instance()->_deferredBuffers = _deferredBuffers;
+		Cubemap::Instance()->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
 		/// DEBUG Obejct
 		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
@@ -294,7 +295,7 @@ namespace RocketCore::Graphics
 		_debugMeshPass->Render();
 		RenderLine();
 #endif
-		_outlinePass->Render();
+		//_outlinePass->Render();
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
@@ -318,19 +319,19 @@ namespace RocketCore::Graphics
 		enableDepthStencilDescription.DepthEnable = true;
 		enableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		enableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
-		enableDepthStencilDescription.StencilEnable = true;
-		enableDepthStencilDescription.StencilReadMask = 0xFF;
-		enableDepthStencilDescription.StencilWriteMask = 0xFF;
-		// Stencil operations if pixel is front-facing.
-		enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
-		enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-		// Stencil operations if pixel is back-facing.
-		enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+		enableDepthStencilDescription.StencilEnable = false;
+		//enableDepthStencilDescription.StencilReadMask = 0xFF;
+		//enableDepthStencilDescription.StencilWriteMask = 0xFF;
+		//// Stencil operations if pixel is front-facing.
+		//enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
+		//enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		//// Stencil operations if pixel is back-facing.
+		//enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 
 		// Create the depth stencil state for enabling Z buffering
 		_device->CreateDepthStencilState(&enableDepthStencilDescription, &_depthStencilStateEnable);

@@ -1,16 +1,17 @@
 #include "Sampler.hlsli"
+#include "ConstantBuffer.hlsli"
 
-cbuffer externalData : register(b0)
-{
-    float4x4 view;
-    float4x4 projection;
-    float4x4 inverseProjection;
-    float4 kernel[64];
-    float4 cameraPosition;
-    float radius;
-    float power;
-    float2 windowSize;
-}
+//cbuffer externalData : register(b0)
+//{
+//    float4x4 view;
+//    float4x4 projection;
+//    float4x4 inverseProjection;
+//    float4 kernel[64];
+//    float4 cameraPosition;
+//    float radius;
+//    float power;
+//    float2 windowSize;
+//}
 
 struct VertexToPixel
 {
@@ -47,8 +48,8 @@ float4 main(VertexToPixel input) : SV_TARGET
     normal = normalize(normal * 2.0f - 1.0f);
     float3 viewSpaceNormal = normalize(mul(normal, (float3x3)view));
 
-    float2 noiseScale = windowSize / 4.0f;
-    float3 randDir = Noise.Sample(PointClampSampler, input.uv * noiseScale).rgb;
+    //float2 noiseScale = windowSize / 4.0f;
+    float3 randDir = Noise.Sample(PointClampSampler, input.uv * ssaoNoiseScale).rgb;
     randDir = normalize(2 * randDir - 1);
 
     float3 tangent = normalize(randDir - viewSpaceNormal * dot(randDir, viewSpaceNormal));
@@ -58,18 +59,18 @@ float4 main(VertexToPixel input) : SV_TARGET
     float occlusion = 0.0f;
     for (int i = 0; i < 64; ++i)
     {
-        float3 sampleDir = mul(kernel[i].xyz, transpose(tbn));
-        float3 samplePos = viewSpacePosition + sampleDir * radius;
+        float3 sampleDir = mul(ssaoSamples[i].xyz, transpose(tbn));
+        float3 samplePos = viewSpacePosition + sampleDir * ssaoRadius;
 
         float4 offset = mul(float4(samplePos, 1.0f), projection);
         offset.xy = ((offset.xy / offset.w) * float2(1.0f, -1.0f)) * 0.5f + 0.5f;
         float sampleDepth = DepthTex.Sample(PointClampSampler, offset.xy);
         sampleDepth = CalculateViewSpaceFromDepth(sampleDepth, offset.xy).z;
 
-        float rangeCheck = smoothstep(0.0f, 1.0f, radius / abs(viewSpacePosition.z - sampleDepth));
+        float rangeCheck = smoothstep(0.0f, 1.0f, ssaoRadius / abs(viewSpacePosition.z - sampleDepth));
         occlusion += step(sampleDepth, samplePos.z - 0.01) * rangeCheck;
     }
     occlusion /= 64.0f;
     float factor = 1 - occlusion;
-    return pow(abs(factor), power);
+    return pow(abs(factor), ssaoPower);
 }

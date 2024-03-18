@@ -1,8 +1,10 @@
 
-cbuffer cbPerObject
-{
-	float4x4 worldViewProj;
-};
+#include "ConstantBuffer.hlsli"
+
+//cbuffer cbPerObject
+//{
+//	float4x4 worldViewProj;
+//};
 
 struct VertexShaderInput
 {
@@ -20,7 +22,8 @@ VertexToPixel main(VertexShaderInput input)
 {
 	VertexToPixel output;
 
-	output.position = mul(float4(input.position, 1.0f), worldViewProj);
+	float4 pos = mul(float4(input.position, 1.0f), world);
+	output.position = mul(pos, viewProjection);
 	output.color = input.color;
 
 	return output;

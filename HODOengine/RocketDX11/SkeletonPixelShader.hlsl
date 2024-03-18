@@ -1,15 +1,15 @@
 #include "Sampler.hlsli"
 #include "Shading.hlsli"
 
-cbuffer externalData : register(b0)
-{
-	float gMetallic;
-	float gRoughness;
-
-	int useAlbedo;
-	int useNormalMap;
-	int useOccMetalRough;
-}
+//cbuffer externalData : register(b0)
+//{
+//	float gMetallic;
+//	float gRoughness;
+//
+//	int useAlbedo;
+//	int useNormalMap;
+//	int useOccMetalRough;
+//}
 
 Texture2D Albedo : register(t0);
 Texture2D NormalMap : register(t1);

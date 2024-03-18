@@ -2,44 +2,23 @@
 #define LIGHTING_COMMON
 
 #include "Sampler.hlsli"
-
-#define MAX_LIGHTS 1
-#define DIRECTIONAL_LIGHT 0
-#define POINT_LIGHT 1
-#define SPOT_LIGHT 2
-
-#define LIGHT_DISABLED 0
-#define LIGHT_ENABLED 1
-#define LIGHT_ENABLED_W_SHADOWMAP 2
+#include "ConstantBuffer.hlsli"
 
 Texture2D ShadowMap : register(t8);
 
-struct Light
-{
-	//float4 position;
-	float4 direction;
-	float4 color;
+//cbuffer LightProperties : register(b0)
+//{
+//	float4 cameraPosition;
+//	float4 globalAmbient;
+//	Light lights[MAX_LIGHTS];
+//}
 
-	//float range;
-	//float spotAngle;
-
-	int lightType;
-	int status;
-};
-
-cbuffer LightProperties : register(b0)
-{
-	float4 cameraPosition;
-	float4 globalAmbient;
-	Light lights[MAX_LIGHTS];
-}
-
-cbuffer ShadowMapConstants : register(b1)
-{
-	float mapWidth;
-	float mapHeight;
-	float4x4 lightViewProjection;
-}
+//cbuffer ShadowMapConstants : register(b1)
+//{
+//	float mapWidth;
+//	float mapHeight;
+//	float4x4 lightViewProjection;
+//}
 
 float ShadowFactor(float4 worldPos)
 {
@@ -51,7 +30,7 @@ float ShadowFactor(float4 worldPos)
 	projCoords = projCoords * 0.5 + 0.5;
 	projCoords.y = 1 - projCoords.y;
 
-	float2 texelSize = float2(1, 1) / float2(mapWidth, mapHeight);
+	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
 
 	float shadow = 0;
 	float bias = 0.001f;

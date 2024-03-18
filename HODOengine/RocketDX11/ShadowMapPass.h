@@ -8,7 +8,6 @@ namespace RocketCore::Graphics
 	class DeferredBuffers;
 	class VertexShader;
 	class PixelShader;
-	class Light;
 
 	class ShadowMapPass
 	{
@@ -18,17 +17,10 @@ namespace RocketCore::Graphics
 
 		void Render();
 
-		DirectX::XMMATRIX GetLightView() { return _view; }
-		DirectX::XMMATRIX GetLightProj() { return _proj; }
-
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
 		DeferredBuffers* _deferredBuffers;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
-
-		DirectX::XMMATRIX _view;
-		DirectX::XMMATRIX _proj;
-		Light* _directionalLight;
 	};
 }

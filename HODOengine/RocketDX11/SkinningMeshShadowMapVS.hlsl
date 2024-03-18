@@ -1,16 +1,5 @@
 #include "ConstantBuffer.hlsli"
 
-//cbuffer externalData : register(b0)
-//{
-//	float4x4 world;
-//	float4x4 worldViewProj;
-//}
-
-//cbuffer skeleton
-//{
-//	float4x4 boneTransforms[96];
-//};
-
 struct VertexShaderInput
 {
 	float3 position		: POSITION;
@@ -24,10 +13,6 @@ struct VertexShaderInput
 struct VertexToPixel
 {
 	float4 position		: SV_POSITION;
-	float3 normal		: NORMAL;
-	float3 tangent		: TANGENT;
-	float3 worldPos		: POSITION;
-	float2 uv			: TEXCOORD;
 };
 
 VertexToPixel main(VertexShaderInput input)
@@ -51,11 +36,7 @@ VertexToPixel main(VertexShaderInput input)
 	}
 
 	float4 pos = mul(float4(posL, 1.0f), world);
-	output.position = mul(pos, viewProjection);
-	output.normal = mul(normalL, (float3x3)world);
-	output.tangent = mul(input.tangent, (float3x3)world);
-	output.worldPos = pos.xyz;
-	output.uv = input.uv;
-
+	output.position = mul(pos, lightViewProjection);
+	
 	return output;
 }

@@ -350,9 +350,9 @@ namespace RocketCore::Graphics
 				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 				XMMATRIX viewProj = viewMatrix * projMatrix;
-				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
 
-				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 				vs->CopyAllBufferData();
 				vs->SetShader();
 
@@ -539,6 +539,14 @@ namespace RocketCore::Graphics
 		PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
+
+		VertexShader* staticMeshShadowMapVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (staticMeshShadowMapVS->LoadShaderFile(L"Resources/Shaders/StaticMeshShadowMapVS.cso"))
+			_vertexShaders.insert(std::make_pair("StaticMeshShadowMapVS.cso", staticMeshShadowMapVS));
+
+		VertexShader* skinningMeshShadowMapVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (skinningMeshShadowMapVS->LoadShaderFile(L"Resources/Shaders/SkinningMeshShadowMapVS.cso"))
+			_vertexShaders.insert(std::make_pair("SkinningMeshShadowMapVS.cso", skinningMeshShadowMapVS));
 
 		PixelShader* shadowMapPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (shadowMapPS->LoadShaderFile(L"Resources/Shaders/ShadowMapPS.cso"))
@@ -1188,9 +1196,9 @@ namespace RocketCore::Graphics
 			XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 			XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 			XMMATRIX viewProj = viewMatrix * projMatrix;
-			XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
 
-			vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+			vs->SetMatrix4x4("world", XMMatrixIdentity());
+			vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 			vs->CopyAllBufferData();
 			vs->SetShader();
 
@@ -1262,7 +1270,7 @@ namespace RocketCore::Graphics
 		for (UINT i = 0; i < 6; ++i)
 		{
 			float roughness = (float)i / 5.0;
-			ps->SetFloat("roughness", roughness);
+			ps->SetFloat("gRoughness", roughness);
 			D3D11_VIEWPORT viewport
 			{
 				.TopLeftX = 0.0f,
@@ -1288,9 +1296,10 @@ namespace RocketCore::Graphics
 				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 				XMMATRIX viewProj = viewMatrix * projMatrix;
-				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
+				XMMATRIX transposeViewProj = (viewProj);
 
-				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 				vs->CopyAllBufferData();
 				vs->SetShader();
 

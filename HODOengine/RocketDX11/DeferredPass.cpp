@@ -36,11 +36,11 @@ namespace RocketCore::Graphics
 
 		_vertexShader->SetShader();
 
-		//XMMATRIX invView = XMMatrixInverse(0, Camera::GetMainCamera()->GetViewMatrix());
-		//_pixelShader->SetMatrix4x4Array("inverseView", &invView);
-		//
-		//XMMATRIX invProj = XMMatrixInverse(0, Camera::GetMainCamera()->GetProjectionMatrix());
-		//_pixelShader->SetMatrix4x4Array("inverseProjection", &invProj);
+		XMMATRIX invView = XMMatrixInverse(0, Camera::GetMainCamera()->GetViewMatrix());
+		_pixelShader->SetMatrix4x4Array("inverseView", &invView);
+		
+		XMMATRIX invProj = XMMatrixInverse(0, Camera::GetMainCamera()->GetProjectionMatrix());
+		_pixelShader->SetMatrix4x4Array("inverseProjection", &invProj);
 
 		//_pixelShader->SetShaderResourceView("DepthTexture", _deferredBuffers->GetDepthSRV());
 		_pixelShader->SetShaderResourceView("Position", _deferredBuffers->GetShaderResourceView(0));
@@ -61,20 +61,15 @@ namespace RocketCore::Graphics
 		{
 			_pixelShader->SetInt("useEnvMap", 0);
 		}
-
-		LightProperties& lp = LightManager::Instance().GetLightProperties();
 		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		lp.cameraPosition = XMFLOAT4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f);
+		_pixelShader->SetFloat4("cameraPosition", XMFLOAT4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f));
+		_pixelShader->SetFloat4("globalAmbient", LightManager::Instance().GetGlobalAmbient());
+		_pixelShader->SetLights("lights", &LightManager::Instance().GetLight(0));
 
-		_pixelShader->SetFloat4("cameraPosition", lp.cameraPosition);
-		_pixelShader->SetFloat4("globalAmbient", lp.globalAmbient);
-		_pixelShader->SetLights("lights", &lp.lights[0]);
-
-		_pixelShader->SetFloat("mapWidth", static_cast<float>(_deferredBuffers->GetScreenWidth()));
-		_pixelShader->SetFloat("mapHeight", static_cast<float>(_deferredBuffers->GetScreenHeight()));
-		XMMATRIX lightView = _shadowMapPass->GetLightView();
-		XMMATRIX lightProj = _shadowMapPass->GetLightProj();
-		_pixelShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightView * lightProj));
+		_pixelShader->SetFloat("screenWidth", static_cast<float>(_deferredBuffers->GetScreenWidth()));
+		_pixelShader->SetFloat("screenHeight", static_cast<float>(_deferredBuffers->GetScreenHeight()));
+		
+		_pixelShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(LightManager::Instance().GetLightViewProj()));
 
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();
