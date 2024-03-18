@@ -1,4 +1,6 @@
-﻿#include "LobbyManager.h"
+#include "types.h"
+#include "LobbyManager.h"
+
 
 LobbyManager& LobbyManager::Instance()
 {
