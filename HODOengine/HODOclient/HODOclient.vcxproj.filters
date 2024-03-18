@@ -34,6 +34,12 @@
     <ClCompile Include="SliderSoundScript.cpp">
       <Filter>02_Client\TestScene</Filter>
     </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPacketHandler.cpp">
+      <Filter>03_Manager\NetworkManager\ForNetwork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -77,6 +83,12 @@
     </ClInclude>
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\TestScene</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPacketHandler.h">
+      <Filter>03_Manager\NetworkManager\ForNetwork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +141,12 @@
     </Filter>
     <Filter Include="03_Manager\GameManager">
       <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\NetworkManager">
+      <UniqueIdentifier>{b860b656-0a0a-446d-a833-2696e12647d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\NetworkManager\ForNetwork">
+      <UniqueIdentifier>{c830e0d8-6554-4d6a-b281-f1361aac9528}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

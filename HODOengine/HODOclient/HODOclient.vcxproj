@@ -152,7 +152,7 @@
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ServerCore;$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,7 +176,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ServerCore;$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,7 +202,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)ServerCore;$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -228,9 +228,11 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LobbyManager.h" />
     <ClInclude Include="LoginSceneView.h" />
+    <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="SliderSoundScript.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
@@ -245,8 +247,10 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="LobbyManager.cpp" />
     <ClCompile Include="LoginSceneView.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
+    <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="SliderSoundScript.cpp" />
     <ClCompile Include="TestScene.cpp" />
   </ItemGroup>
