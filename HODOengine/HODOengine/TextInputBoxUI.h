@@ -10,12 +10,18 @@ namespace HDData
 	{
 	public:
 		TextInputBoxUI();
-
-	public:
 		void Start() override;
 		void Update() override;
 
 		std::string GetCurrentText();
+
+		HDData::ImageUI* GetBackgroundImage() const { return _background; }
+		HDData::ImageUI* GetCursorImage() const { return _cursor; }
+		HDData::TextUI* GetTextUI() const { return _text; }
+	public:
+		void SetBackgroundImage(HDData::ImageUI* val) { _background = val; }
+		void SetCursorImage(HDData::ImageUI* val) { _cursor = val; }
+		void SetTextUI(HDData::TextUI* val) { _text = val; }
 
 	private:
 		ImageUI* _background;

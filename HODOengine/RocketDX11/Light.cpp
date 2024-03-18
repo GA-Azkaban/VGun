@@ -1,6 +1,7 @@
 ﻿#include "Light.h"
 #include "Camera.h"
 #include <exception>
+using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
@@ -8,7 +9,7 @@ namespace RocketCore::Graphics
 	LightManager::LightManager()
 		: _numLights(0)
 	{
-
+		_lightProj = XMMatrixOrthographicLH(16, 12, 1, 50);
 	}
 
 	LightManager::~LightManager()
@@ -21,12 +22,12 @@ namespace RocketCore::Graphics
 		if (_numLights < MAX_LIGHTS)
 		{
 			Light light;
-			_lightProperties.lights[_numLights] = light;
-			return &_lightProperties.lights[_numLights++];
+			_lights[_numLights] = light;
+			return &_lights[_numLights++];
 		}
 		else
 		{
-			return &_lightProperties.lights[MAX_LIGHTS - 1];
+			return &_lights[MAX_LIGHTS - 1];
 		}
 	}
 
@@ -34,7 +35,7 @@ namespace RocketCore::Graphics
 	{
 		if (index < MAX_LIGHTS)
 		{
-			return _lightProperties.lights[index];
+			return _lights[index];
 		}
 		else
 		{
@@ -42,19 +43,46 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	LightProperties& LightManager::GetLightProperties()
+	DirectX::XMFLOAT4 LightManager::GetGlobalAmbient()
 	{
-		return _lightProperties;
-	}
-
-	void LightManager::SetCameraPosition(DirectX::XMFLOAT4 cameraPosition)
-	{
-		_lightProperties.cameraPosition = cameraPosition;
+		return _globalAmbient;
 	}
 
 	void LightManager::SetGlobalAmbient(DirectX::XMFLOAT4 color)
 	{
-		_lightProperties.globalAmbient = color;
+		_globalAmbient = color;
+	}
+
+	DirectX::XMMATRIX LightManager::GetLightView()
+	{
+		Light* dirLight = nullptr;
+		for (UINT i = 0; i < _numLights; ++i)
+		{
+			if (_lights[i].lightType == (int)LightType::DirectionalLight)
+			{
+				dirLight = &(_lights[i]);
+			}
+		}
+
+		if (dirLight != nullptr)
+		{
+			XMVECTOR lightDirection = XMLoadFloat4(&dirLight->direction);
+			// 일단 -10을 곱한다. 나중에 고쳐야 한다.
+			_lightView = XMMatrixLookAtLH(-10 * lightDirection, XMVECTOR{ 0, 0, 0, 1 }, XMVECTOR{ 0, 1, 0, 0 });
+			return _lightView;
+		}
+
+		return XMMatrixIdentity();
+	}
+
+	DirectX::XMMATRIX LightManager::GetLightProj()
+	{
+		return _lightProj;
+	}
+
+	DirectX::XMMATRIX LightManager::GetLightViewProj()
+	{
+		return GetLightView() * GetLightProj();
 	}
 
 }

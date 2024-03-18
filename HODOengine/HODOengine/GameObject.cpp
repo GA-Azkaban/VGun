@@ -28,11 +28,6 @@ namespace HDData
 		{
 			component->OnEnable();
 		}
-
-		for (auto& obj : _childGameObjects)
-		{
-			obj->FlushEnable();
-		}
 	}
 
 	void GameObject::FlushDisable()
@@ -43,17 +38,11 @@ namespace HDData
 		{
 			component->OnDisable();
 		}
-
-		for (auto& obj : _childGameObjects)
-		{
-			obj->FlushDisable();
-		}
 	}
 
 	void GameObject::Start()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -67,8 +56,7 @@ namespace HDData
 
 	void GameObject::Update()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -78,8 +66,7 @@ namespace HDData
 
 	void GameObject::LateUpdate()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -89,8 +76,7 @@ namespace HDData
 
 	void GameObject::FixedUpdate()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -100,8 +86,7 @@ namespace HDData
 
 	void GameObject::OnDestroy()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -111,8 +96,7 @@ namespace HDData
 
 	void GameObject::OnCollisionEnter()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -122,8 +106,7 @@ namespace HDData
 
 	void GameObject::OnCollisionStay()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -133,8 +116,7 @@ namespace HDData
 
 	void GameObject::OnCollisionExit()
 	{
-		if (!_selfActive)
-			return;
+		if (!GetParentActive()) return;
 
 		for (auto& component : _components)
 		{
@@ -179,16 +161,31 @@ namespace HDData
 			comp->SetActive(active);
 		}
 
-		// 자식 오브젝트도 모두 활성화/비활성화
-		for (auto child : _childGameObjects)
-		{
-			child->SetSelfActive(active);
-		}
+		_selfActive = active;
 	}
 
 	bool GameObject::GetSelfActive()
 	{
 		return _selfActive;
+	}
+
+	bool GameObject::GetParentActive()
+	{
+		if (GetParentGameObject())
+		{
+			if (!GetParentGameObject()->GetSelfActive())
+			{
+				return false;
+			}
+			else
+			{
+				return GetParentGameObject()->GetParentActive();
+			}
+		}
+		else
+		{
+			return GetSelfActive();
+		}
 	}
 
 	std::string GameObject::GetObjectName()

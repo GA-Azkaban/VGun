@@ -1,4 +1,4 @@
-﻿#include "Button.h"
+#include "Button.h"
 #include "ImageUI.h"
 #include "TextUI.h"
 #include "GameObject.h"
@@ -11,10 +11,8 @@
 namespace HDData
 {
 	Button::Button()
-		: _buttonUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
-		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-		_sketchable = _buttonUI;
+
 	}
 
 	void Button::Start()
@@ -24,7 +22,7 @@ namespace HDData
 
 	void Button::Update()
 	{
-		if (GetIsClicked())
+		if (_button->GetIsClicked())
 		{
 			CallClickEvent();
 		}
@@ -32,22 +30,12 @@ namespace HDData
 
 	void Button::SetActive(bool active)
 	{
-		_buttonUI->SetActive(active);
-	}
-
-	void Button::SetScreenSpace()
-	{
-
-	}
-
-	void Button::SetWorldSpace()
-	{
-
+		_button->SetActive(active);
 	}
 
 	void Button::SetImage(const char* fileName)
 	{
-		_buttonUI->SetImage(fileName);
+		_button->SetImage(fileName);
 	}
 
 	void Button::SetOnClickEvent(std::function<void()> event)

@@ -19,10 +19,6 @@ namespace RocketCore::Graphics
 		: _deferredBuffers(deferredBuffers), _deviceContext(ResourceManager::Instance().GetDeviceContext())
 	{
 		_pixelShader = ResourceManager::Instance().GetPixelShader("ShadowMapPS.cso");
-
-		_proj = XMMatrixOrthographicLH(16, 12, 1, 20);
-		//_proj = XMMatrixOrthographicOffCenterLH(-10, 10, -10, 10, 1, 7.5);
-		_directionalLight = &(LightManager::Instance().GetLightProperties().lights[0]);
 	}
 
 	ShadowMapPass::~ShadowMapPass()
@@ -38,11 +34,12 @@ namespace RocketCore::Graphics
 		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		_deviceContext->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SHADOWMAP));
 
-		_vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
-		XMVECTOR lightDir = XMLoadFloat4(&_directionalLight->direction);
-		//XMVECTOR lightDirNorm = XMVector4Normalize(lightDir);
-		//_view = XMMatrixLookAtLH(XMVECTOR{-10,11,0,0}, XMVECTOR{0, 0, 0, 1}, XMVECTOR{0, 1, 0, 0});
-		_view = XMMatrixLookAtLH(-10 * lightDir, XMVECTOR{0, 0, 0, 1}, XMVECTOR{0, 1, 0, 0});
+		_vertexShader = ResourceManager::Instance().GetVertexShader("StaticMeshShadowMapVS.cso");
+		
+		XMMATRIX lightView = LightManager::Instance().GetLightView();
+		XMMATRIX lightProj = LightManager::Instance().GetLightProj();
+
+		_vertexShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightView * lightProj));
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
@@ -50,10 +47,8 @@ namespace RocketCore::Graphics
 				continue;
 
 			XMMATRIX world = staticMeshObj->GetWorldTM();
-			XMMATRIX worldViewProj = world * _view * _proj;
 
 			_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
-			_vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
 
 			_vertexShader->CopyAllBufferData();
 			_vertexShader->SetShader();
@@ -67,17 +62,17 @@ namespace RocketCore::Graphics
 			}
 		}
 
-		_vertexShader = ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso");
+		_vertexShader = ResourceManager::Instance().GetVertexShader("SkinningMeshShadowMapVS.cso");
+		_vertexShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightView * lightProj));
+
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{
 			if (!skinningMeshObj->IsActive())
 				continue;
 
 			XMMATRIX world = skinningMeshObj->GetWorldTM();
-			XMMATRIX worldViewProj = world * _view * _proj;
 
 			_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
-			_vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
 			_vertexShader->SetMatrix4x4Array("boneTransforms", &skinningMeshObj->GetBoneTransform()[0], skinningMeshObj->GetBoneTransform().size());
 
 			_vertexShader->CopyAllBufferData();

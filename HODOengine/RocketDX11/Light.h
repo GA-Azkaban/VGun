@@ -33,14 +33,6 @@ namespace RocketCore::Graphics
 		int status = (int)LightStatus::Enabled;
 	};
 
-	//_declspec(align(16)) struct LightProperties
-	struct LightProperties
-	{
-		DirectX::XMFLOAT4 cameraPosition;
-		DirectX::XMFLOAT4 globalAmbient;
-		Light lights[MAX_LIGHTS];
-	};
-
 	class LightManager : public Singleton<LightManager>
 	{
 	public:
@@ -49,13 +41,23 @@ namespace RocketCore::Graphics
 
 		Light* AddLight();
 		Light& GetLight(unsigned int index);
-		LightProperties& GetLightProperties();
-		void SetCameraPosition(DirectX::XMFLOAT4 cameraPosition);
+		
+		DirectX::XMFLOAT4 GetGlobalAmbient();
 		void SetGlobalAmbient(DirectX::XMFLOAT4 color);
+
+		DirectX::XMMATRIX GetLightView();
+		DirectX::XMMATRIX GetLightProj();
+		DirectX::XMMATRIX GetLightViewProj();
 
 	private:
 		LightManager();
-		LightProperties _lightProperties;
+
+		DirectX::XMFLOAT4 _globalAmbient;
+
+		Light _lights[MAX_LIGHTS];
 		unsigned int _numLights;
+
+		DirectX::XMMATRIX _lightView;
+		DirectX::XMMATRIX _lightProj;
 	};
 }

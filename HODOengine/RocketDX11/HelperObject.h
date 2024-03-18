@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <wrl.h>
@@ -34,7 +34,7 @@ namespace RocketCore::Graphics
 		virtual void SetFillModeSolid() override;
 		virtual void SetFillModeWireframe() override;
 		virtual void SetColor(const Vector4& color) override;
-		virtual void SetMesh(const std::string& meshName) override;
+		virtual void LoadMesh(const std::string& meshName) override;
 
 	private:
 		ComPtr<ID3D11DeviceContext> m_deviceContext;

@@ -27,6 +27,7 @@ namespace HDEngine
 
 namespace RocketCore::Graphics
 {
+
 	HDEngine::ICamera* ObjectFactory::CreateCamera()
 	{
 		return ObjectManager::Instance().CreateCamera();
@@ -80,6 +81,11 @@ namespace RocketCore::Graphics
 	HDEngine::CylinderPrimitive* ObjectFactory::CreateCylinderPrimitive()
 	{
 		return ObjectManager::Instance().CreateCylinderPrimitive();
+	}
+
+	HDEngine::CapsulePrimitive* ObjectFactory::CreateCapsulePrimitive()
+	{
+		return ObjectManager::Instance().CreateCapsulePrimitive();
 	}
 
 }

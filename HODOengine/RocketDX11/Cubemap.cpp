@@ -52,13 +52,12 @@ namespace RocketCore::Graphics
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		XMMATRIX worldViewProj = scaleMatrix * cameraTranslate * view * proj;
-		XMMATRIX invWVP = XMMatrixTranspose(worldViewProj);
 
 		VertexShader* vertexShader = m_material->GetVertexShader();
 		PixelShader* pixelShader = m_material->GetPixelShader();
 
-		vertexShader->SetMatrix4x4("worldViewProj", invWVP);
+		vertexShader->SetMatrix4x4("world", XMMatrixTranspose(scaleMatrix * cameraTranslate));
+		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
 		vertexShader->CopyAllBufferData();
 		vertexShader->SetShader();

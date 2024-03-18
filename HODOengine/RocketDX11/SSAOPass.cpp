@@ -15,6 +15,7 @@ namespace RocketCore::Graphics
 	{
 		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
 		_pixelShader = ResourceManager::Instance().GetPixelShader("SSAOPixelShader.cso");
+		CreateTexture(_deferredBuffers->GetScreenWidth(), _deferredBuffers->GetScreenHeight());
 	}
 
 	SSAOPass::~SSAOPass()
@@ -30,19 +31,20 @@ namespace RocketCore::Graphics
 	{
 		_deferredBuffers->SetSSAORenderTarget();
 		_deferredBuffers->ClearSSAORenderTarget();
-
-		XMFLOAT3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		XMMATRIX view = XMMatrixInverse(nullptr, Camera::GetMainCamera()->GetViewMatrix());
-		XMMATRIX proj = XMMatrixInverse(nullptr, Camera::GetMainCamera()->GetProjectionMatrix());
-
+		
 		_vertexShader->SetShader();
+		
+		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
 
-		_pixelShader->SetMatrix4x4("inverseView", view);
-		_pixelShader->SetMatrix4x4("inverseProj", proj);
-		_pixelShader->SetFloat4Array("kernel", &_kernel[0], 64);
-		_pixelShader->SetFloat4("cemeraPosition", XMFLOAT4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f));
-		_pixelShader->SetFloat("radius", 0.1f);
-		_pixelShader->SetFloat2("windowSize", _windowSize);
+		_pixelShader->SetMatrix4x4("view", XMMatrixTranspose(view));
+		_pixelShader->SetMatrix4x4("projection", XMMatrixTranspose(proj));
+		_pixelShader->SetMatrix4x4("inverseProjection", XMMatrixInverse(nullptr, proj));
+
+		_pixelShader->SetFloat2("ssaoNoiseScale", XMFLOAT2(_windowSize.x / 4.0f, _windowSize.y / 4.0f));
+		_pixelShader->SetFloat4Array("ssaoSamples", &_ssaoSamples[0], 64);
+		_pixelShader->SetFloat("ssaoRadius", 0.5f);
+		_pixelShader->SetFloat("ssaoPower", 0.1f);
 
 		_pixelShader->SetShaderResourceView("DepthTex", _deferredBuffers->GetDepthSRV());
 		_pixelShader->SetShaderResourceView("NormalTex", _deferredBuffers->GetShaderResourceView(2));
@@ -82,7 +84,7 @@ namespace RocketCore::Graphics
 			sample = XMVector3Normalize(sample);
 			float scale = (float)i / 64.0;
 			XMVectorScale(sample, scale);
-			XMStoreFloat4(&_kernel[i], sample);
+			XMStoreFloat4(&_ssaoSamples[i], sample);
 		}
 
 		using namespace DirectX::PackedVector;

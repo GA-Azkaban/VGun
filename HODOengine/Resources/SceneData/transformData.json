@@ -1,0 +1,104 @@
+[
+{
+    "ID": -89274,
+    "ParentID": 0,
+    "Name": "house_new",
+    "MeshName": "house_new",
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -89206,
+    "ParentID": 0,
+    "Name": "box_new2",
+    "MeshName": "box_new2",
+    "Position": {
+        "x": -2.4000000953674318,
+        "y": 0.0,
+        "z": 2.390000104904175
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -89134,
+    "ParentID": 0,
+    "Name": "box_new",
+    "MeshName": "box_new",
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 5.119999885559082
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+}
+]

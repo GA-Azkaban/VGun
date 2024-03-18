@@ -8,7 +8,12 @@ namespace HDData
 	SkinnedMeshRenderer::SkinnedMeshRenderer()
 		: _skinnedMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSkinnedMeshObject())
 	{
-		HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		//HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+	}
+
+	SkinnedMeshRenderer::~SkinnedMeshRenderer()
+	{
+		_skinnedMesh = nullptr;
 	}
 
 	void SkinnedMeshRenderer::LoadMesh(const std::string& fileName)
@@ -31,7 +36,22 @@ namespace HDData
 		_skinnedMesh->PlayAnimation(fileName, isLoop);
 	}
 
-	void SkinnedMeshRenderer::UpdateRenderData()
+	bool SkinnedMeshRenderer::IsAnimationEnd()
+	{
+		return _skinnedMesh->IsAnimationEnd();
+	}
+
+	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
+	{
+		_skinnedMesh->SetOutlineActive(isActive);
+	}
+
+	void SkinnedMeshRenderer::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
+	{
+		_skinnedMesh->SetOutlineData(color, depthCheck);
+	}
+
+	void SkinnedMeshRenderer::Update()
 	{
 		_skinnedMesh->SetWorldTM(GetTransform()->GetWorldTM());
 	}

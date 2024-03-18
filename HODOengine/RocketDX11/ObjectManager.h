@@ -9,6 +9,7 @@ namespace HDEngine
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
+	struct CapsulePrimitive;
 }
 
 namespace RocketCore::Graphics
@@ -39,6 +40,7 @@ namespace RocketCore::Graphics
 		std::vector<HDEngine::CubePrimitive*>& GetCubePrimitiveList() { return _cubePrimitiveList; }
 		std::vector<HDEngine::SpherePrimitive*>& GetSpherePrimitiveList() { return _spherePrimitiveList; }
 		std::vector<HDEngine::CylinderPrimitive*>& GetCylinderPrimitiveList() { return _cylinderPrimitiveList; }
+		std::vector<HDEngine::CapsulePrimitive*>& GetCapsulePrimitiveList() { return _capsulePrimitiveList; }
 
 	public:
 		Camera* CreateCamera();
@@ -53,6 +55,7 @@ namespace RocketCore::Graphics
 		HDEngine::CubePrimitive* CreateCubePrimitive();
 		HDEngine::SpherePrimitive* CreateSpherePrimitive();
 		HDEngine::CylinderPrimitive* CreateCylinderPrimitive();
+		HDEngine::CapsulePrimitive* CreateCapsulePrimitive();
 
 	private:
 		std::vector<Camera*> _cameraList;
@@ -65,5 +68,6 @@ namespace RocketCore::Graphics
 		std::vector<HDEngine::CubePrimitive*> _cubePrimitiveList;
 		std::vector<HDEngine::SpherePrimitive*> _spherePrimitiveList;
 		std::vector<HDEngine::CylinderPrimitive*> _cylinderPrimitiveList;
+		std::vector<HDEngine::CapsulePrimitive*> _capsulePrimitiveList;
 	};
 }

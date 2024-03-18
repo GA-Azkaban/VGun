@@ -58,6 +58,21 @@
     <FxCompile Include="ShadowMapPS.hlsl">
       <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
     </FxCompile>
+    <FxCompile Include="OutlineStaticMeshVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="OutlineSkinningMeshVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="OutlinePS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinningMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -167,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="ShadowMapPass.cpp">
       <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClCompile>
+    <ClCompile Include="OutlinePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +302,6 @@
     <ClInclude Include="SkyboxPass.h">
       <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
     </ClInclude>
-    <ClInclude Include="SpritePass.h">
-      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
-    </ClInclude>
     <ClInclude Include="DebugMeshPass.h">
       <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
     </ClInclude>
@@ -307,6 +322,15 @@
     </ClInclude>
     <ClInclude Include="ShadowMapPass.h">
       <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePass.h">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
+    </ClInclude>
+    <ClInclude Include="OutlinePass.h">
+      <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
+    </ClInclude>
+    <ClInclude Include="Outline.h">
+      <Filter>Object\Outline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -502,6 +526,15 @@
     <Filter Include="Resource\Shader\HLSL\ShadowMap">
       <UniqueIdentifier>{86ff2d08-049d-45ef-9067-ebaf27727218}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\OutlinePass">
+      <UniqueIdentifier>{154b15da-9c13-405c-8e04-537d5a386834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Outline">
+      <UniqueIdentifier>{0af4814a-25e8-4cfa-b299-3c6fc2d2e519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Outline">
+      <UniqueIdentifier>{2bf82f61-3088-497f-a437-6285e0724c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sampler.hlsli">
@@ -514,6 +547,12 @@
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
     <None Include="Shading.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="ConstantBuffer.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="CommonData.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
   </ItemGroup>

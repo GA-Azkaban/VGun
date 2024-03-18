@@ -13,7 +13,9 @@ namespace RocketCore::Graphics
 		_size(),
 		_width(),
 		_height(),
-		_isActive(true)
+		_isActive(true),
+		_receiveTMInfoFlag(false),
+		_sortOrder(0)
 	{
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
@@ -50,6 +52,7 @@ namespace RocketCore::Graphics
 		_xLocation = worldTM._41;
 		_yLocation = worldTM._42;
 		_zLocation = worldTM._43;	// for Debugging text
+		_receiveTMInfoFlag = true;
 	}
 
 	void TextRenderer::SetActive(bool isActive)
@@ -70,7 +73,10 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 	{
-		if (_isActive)
+		if (!_isActive)
+			return;
+
+		if (_receiveTMInfoFlag)
 		{
 			MeasureTextSize();	//여기두면 안되는데
 
@@ -79,8 +85,16 @@ namespace RocketCore::Graphics
 				spriteBatch,
 				wstr.c_str(),
 				DirectX::XMFLOAT2(_xLocation, _yLocation),
-				_color);
+				_color,
+				0.0f,
+				{0.0f,0.0f},
+				1,
+				DirectX::DX11::SpriteEffects_None,
+				_sortOrder
+			);
+
 		}
+		_receiveTMInfoFlag = false;
 	}
 
 	void TextRenderer::SetFloatValue(const float value)
@@ -122,6 +136,11 @@ namespace RocketCore::Graphics
 	bool TextRenderer::GetActive()
 	{
 		return _isActive;
+	}
+
+	void TextRenderer::SetSortOrder(float order)
+	{
+		_sortOrder = order;
 	}
 
 }

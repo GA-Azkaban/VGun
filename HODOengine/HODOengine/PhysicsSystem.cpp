@@ -19,6 +19,7 @@ namespace HDEngine
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
 
 		// visual debugger 세팅, 로컬에 연결
+
 		_pvd = PxCreatePvd(*_foundation);
 		physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
 		_pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
@@ -246,7 +247,7 @@ namespace HDEngine
 			{
 				HDData::DynamicCapsuleCollider* capsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHeight() / 2.0f), *_material);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));

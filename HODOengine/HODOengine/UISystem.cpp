@@ -43,14 +43,14 @@ namespace HDEngine
 
 	bool UISystem::CompareSortOrder(const HDData::UIBase* left, const HDData::UIBase* right)
 	{
-		return (left->GetSortOrder() < right->GetSortOrder());
+		return (left->GetSortOrder() > right->GetSortOrder());	// 내림차순
 	}
 
 	void UISystem::CheckIsFocused()
 	{
 		for (const auto& ui : _uiList)
 		{
-			if (!ui->GetGameObject()->GetSelfActive())
+			if (!ui->GetGameObject()->GetParentActive())
 			{
 				continue;
 			}
@@ -65,7 +65,8 @@ namespace HDEngine
 					_focusedUI->SetIsClicked(true);
 					_focusedUI->SetIsGrabbing(true);
 					_focusedUI->OnClickEvent();
-					continue;
+					auto one = _focusedUI->GetSortOrder();
+					break;
 				}
 
 				ui->SetIsClicked(false);

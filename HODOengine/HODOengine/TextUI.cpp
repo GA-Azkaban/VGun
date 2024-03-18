@@ -8,7 +8,7 @@ namespace HDData
 	TextUI::TextUI()
 		: _textUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateText())
 	{
-		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
+		//HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable = _textUI;
 	}
 

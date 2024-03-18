@@ -1,9 +1,6 @@
-#include "Sampler.hlsli"
-#include "Lighting.hlsli"
 #include "Shading.hlsli"
 #include "BRDF.hlsli"
 
-//Texture2D DepthTexture      : register(t0);
 Texture2D Position      : register(t0);
 Texture2D Diffuse       : register(t1);
 Texture2D Normal        : register(t2);
@@ -12,13 +9,6 @@ Texture2D AO        : register(t4);
 TextureCube EnvMap : register(t5);
 TextureCube PrefilteredSpecMap : register(t6);
 Texture2D BrdfLUT : register(t7);
-
-cbuffer externalData : register(b2)
-{
-	//float4x4 inverseView;
-	//float4x4 inverseProjection;
-	int useEnvMap;
-}
 
 struct VertexToPixel
 {
@@ -47,13 +37,13 @@ struct VertexToPixel
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
-	//float depth = DepthTexture.Sample(PointSampler, input.uv).r;
+	//float depth = DepthTexture.Sample(PointClampSampler, input.uv).r;
 	//float3 posW = CalculateWorldFromDepth(depth, input.uv);
-	float3 posW = Position.Sample(PointSampler, input.uv).rgb;
-	float3 albedo = Diffuse.Sample(PointSampler, input.uv).rgb;
-	float3 normal = Normal.Sample(PointSampler, input.uv).rgb;
+	float3 posW = Position.Sample(PointClampSampler, input.uv).rgb;
+	float3 albedo = Diffuse.Sample(PointClampSampler, input.uv).rgb;
+	float3 normal = Normal.Sample(PointClampSampler, input.uv).rgb;
 	normal = normalize(normal * 2.0f - 1.0f);
-	float3 metalRough = MetalRough.Sample(PointSampler, input.uv).rgb;
+	float3 metalRough = MetalRough.Sample(PointClampSampler, input.uv).rgb;
 	float metallic = metalRough.r;
 	float roughness = metalRough.g;
 	float occlusion = metalRough.b;
@@ -101,17 +91,17 @@ float4 main(VertexToPixel input) : SV_TARGET
 		float3 kS = fresnelSchlickRoughness(saturate(surf.NdotV), F0, roughness);
 		float3 kD = 1.0 - kS;
 		kD *= 1.0 - metallic;
-		float3 irradiance = EnvMap.Sample(LinearSampler, surf.N).rgb;
+		float3 irradiance = EnvMap.Sample(LinearWrapSampler, surf.N).rgb;
 		float3 diffuse = irradiance * albedo;
 
 		float3 R = normalize(reflect(-surf.V, surf.N));
-		float3 prefilteredColor = PrefilteredSpecMap.SampleLevel(LinearSampler, R, roughness * 5.0).rgb;
-		float2 envBrdf = BrdfLUT.Sample(PointSampler, float2(saturate(surf.NdotV), roughness)).rg;
+		float3 prefilteredColor = PrefilteredSpecMap.SampleLevel(LinearWrapSampler, R, roughness * 5.0).rgb;
+		float2 envBrdf = BrdfLUT.Sample(PointClampSampler, float2(saturate(surf.NdotV), roughness)).rg;
 		float3 specular = prefilteredColor * (kS * envBrdf.x + envBrdf.y);
 		ambient = (kD * diffuse + specular);
 	}
 
-	float ao = AO.Sample(PointSampler, input.uv).r;
+	float ao = AO.Sample(PointClampSampler, input.uv).r;
 	ambient *= ao * occlusion;
 
 	float3 color = ambient + Lo;

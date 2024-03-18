@@ -7,14 +7,9 @@ namespace HDData
 {
 	UIBase::UIBase()
 		:_sketchable(NULL),
-		_sortOrder(100)
+		_sortOrder(0.f)
 	{
 
-	}
-
-	void UIBase::UpdateRenderData()
-	{
-		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
 	bool UIBase::CheckFocus()
@@ -47,7 +42,12 @@ namespace HDData
 		_sketchable->SetActive(false);
 	}
 
-	int UIBase::GetSortOrder() const
+	void UIBase::Update()
+	{
+		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
+	}
+
+	float UIBase::GetSortOrder() const
 	{
 		return _sortOrder;
 	}
@@ -72,9 +72,10 @@ namespace HDData
 		return _ignoreFocus;
 	}
 
-	void UIBase::SetSortOrder(int orderNum)
+	void UIBase::SetSortOrder(float orderNum)
 	{
 		_sortOrder = orderNum;
+		_sketchable->SetSortOrder(orderNum);
 	}
 
 	void UIBase::SetIsHovering(bool isHovering)

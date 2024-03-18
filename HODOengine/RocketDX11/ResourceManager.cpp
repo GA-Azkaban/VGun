@@ -61,6 +61,152 @@ namespace RocketCore::Graphics
 		_cubePrimitive = GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
 		_spherePrimitive = GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
 		_cylinderPrimitive = GeometricPrimitive::CreateCylinder(deviceContext, 2.0f, 1.0f, 8, false);
+
+		// Create capsule debug mesh
+		float radius = 0.5f; // 캡슐의 반지름
+		float height = 1.0f; // 캡슐의 높이
+		int stackCount = 5; // 수평 분할
+		int sliceCount = 20; // 수직 분할
+
+		DirectX::GeometricPrimitive::VertexCollection vertices;
+		DirectX::GeometricPrimitive::IndexCollection indices;
+
+		// 상단 반구 정점
+		vertices.push_back(DirectX::VertexPositionNormalTexture{
+		   DirectX::SimpleMath::Vector3{0.0f, radius + height * 0.5f, 0.0f},
+		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},DirectX::SimpleMath::Vector2{0.f,0.f} });
+
+		for (int i = 1; i <= stackCount; i++)
+		{
+			// 윗방향 벡터와의 각도
+			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
+
+			float xzsize = radius * sinf(upTheta);
+			float ysize = radius * cosf(upTheta);
+
+			for (int j = 0; j < sliceCount; j++)
+			{
+				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
+
+				float x = xzsize * sinf(zTheta);
+				float y = ysize + height * 0.5f;
+				float z = xzsize * cosf(zTheta);
+
+				vertices.push_back(DirectX::VertexPositionNormalTexture{
+				   DirectX::SimpleMath::Vector3{x, y, z},
+				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				   DirectX::SimpleMath::Vector2{0.f,0.f} }
+				);
+			}
+		}
+
+		size_t middleIdx = vertices.size();
+
+		// 하단 반구 정점
+		for (int i = stackCount; i >= 1; i--)
+		{
+			// 윗방향 벡터와의 각도
+			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
+
+			float xzsize = radius * sinf(upTheta);
+			float ysize = radius * cosf(upTheta);
+
+			for (int j = 0; j < sliceCount; j++)
+			{
+				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
+
+				float x = xzsize * sinf(zTheta);
+				float y = ysize + height * 0.5f;
+				float z = xzsize * cosf(zTheta);
+
+				vertices.push_back(DirectX::VertexPositionNormalTexture{
+				   DirectX::SimpleMath::Vector3(x, -y, z),
+				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				   DirectX::SimpleMath::Vector2{0.f,0.f} }
+				);
+			}
+		}
+
+		vertices.push_back(DirectX::VertexPositionNormalTexture{
+		   DirectX::SimpleMath::Vector3{0.0f, -(radius + height * 0.5f), 0.0f},
+		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				 DirectX::SimpleMath::Vector2{0.f,0.f} }
+		);
+
+		// 상단 반구 인덱스
+		for (int i = 0; i < sliceCount; i++) {
+			int a = 0;
+			int b = 1 + i;
+			int c = 1 + ((i + 1) % sliceCount);
+
+			indices.push_back(a);
+			indices.push_back(b);
+			indices.push_back(c);
+		}
+
+		for (int i = 1; i < stackCount; i++) {
+			for (int j = 0; j < sliceCount; j++) {
+				int a = 1 + (i - 1) * sliceCount + j;
+				int b = 1 + (i - 1) * sliceCount + ((j + 1) % sliceCount);
+				int c = 1 + i * sliceCount + j;
+				int d = 1 + i * sliceCount + ((j + 1) % sliceCount);
+
+				indices.push_back(a);
+				indices.push_back(c);
+				indices.push_back(d);
+
+				indices.push_back(a);
+				indices.push_back(d);
+				indices.push_back(b);
+			}
+		}
+
+		// 실린더 부분 인덱스
+		for (int i = 0; i < sliceCount; i++)
+		{
+			int a = middleIdx - sliceCount + i;
+			int b = middleIdx - sliceCount + ((i + 1) % sliceCount);
+			int c = middleIdx + i;
+			int d = middleIdx + ((i + 1) % sliceCount);
+
+			indices.push_back(a);
+			indices.push_back(c);
+			indices.push_back(d);
+
+			indices.push_back(a);
+			indices.push_back(d);
+			indices.push_back(b);
+		}
+
+		// 하단 반구 인덱스
+		for (int i = 1; i < stackCount; i++) {
+			for (int j = 0; j < sliceCount; j++) {
+				int a = middleIdx + (i - 1) * sliceCount + j;
+				int b = middleIdx + (i - 1) * sliceCount + ((j + 1) % sliceCount);
+				int c = middleIdx + i * sliceCount + j;
+				int d = middleIdx + i * sliceCount + ((j + 1) % sliceCount);
+
+				indices.push_back(a);
+				indices.push_back(c);
+				indices.push_back(d);
+
+				indices.push_back(a);
+				indices.push_back(d);
+				indices.push_back(b);
+			}
+		}
+
+		for (int i = 0; i < sliceCount; i++) {
+			int a = vertices.size() - 1;
+			int b = vertices.size() - 1 - sliceCount + i;
+			int c = vertices.size() - 1 - sliceCount + ((i + 1) % sliceCount);
+
+			indices.push_back(b);
+			indices.push_back(a);
+			indices.push_back(c);
+		}
+
+		_capsulePrimitive = GeometricPrimitive::CreateCustom(deviceContext, vertices, indices);
 	}
 
 	void ResourceManager::LoadFBXFile(std::string fileName)
@@ -80,7 +226,6 @@ namespace RocketCore::Graphics
 		Assimp::Importer importer;
 
 		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
-		//const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
@@ -205,9 +350,9 @@ namespace RocketCore::Graphics
 				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 				XMMATRIX viewProj = viewMatrix * projMatrix;
-				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
 
-				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 				vs->CopyAllBufferData();
 				vs->SetShader();
 
@@ -394,7 +539,15 @@ namespace RocketCore::Graphics
 		PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
-		
+
+		VertexShader* staticMeshShadowMapVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (staticMeshShadowMapVS->LoadShaderFile(L"Resources/Shaders/StaticMeshShadowMapVS.cso"))
+			_vertexShaders.insert(std::make_pair("StaticMeshShadowMapVS.cso", staticMeshShadowMapVS));
+
+		VertexShader* skinningMeshShadowMapVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (skinningMeshShadowMapVS->LoadShaderFile(L"Resources/Shaders/SkinningMeshShadowMapVS.cso"))
+			_vertexShaders.insert(std::make_pair("SkinningMeshShadowMapVS.cso", skinningMeshShadowMapVS));
+
 		PixelShader* shadowMapPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (shadowMapPS->LoadShaderFile(L"Resources/Shaders/ShadowMapPS.cso"))
 			_pixelShaders.insert(std::make_pair("ShadowMapPS.cso", shadowMapPS));
@@ -406,6 +559,18 @@ namespace RocketCore::Graphics
 		PixelShader* debugPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (debugPixelShader->LoadShaderFile(L"Resources/Shaders/DebugPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
+
+		VertexShader* outlineStaticMeshVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (outlineStaticMeshVS->LoadShaderFile(L"Resources/Shaders/OutlineStaticMeshVS.cso"))
+			_vertexShaders.insert(std::make_pair("OutlineStaticMeshVS.cso", outlineStaticMeshVS));
+
+		VertexShader* outlineSkinningMeshVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (outlineSkinningMeshVS->LoadShaderFile(L"Resources/Shaders/OutlineSkinningMeshVS.cso"))
+			_vertexShaders.insert(std::make_pair("OutlineSkinningMeshVS.cso", outlineSkinningMeshVS));
+
+		PixelShader* outlinePS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (outlinePS->LoadShaderFile(L"Resources/Shaders/OutlinePS.cso"))
+			_pixelShaders.insert(std::make_pair("OutlinePS.cso", outlinePS));
 
 		VertexShader* cubeMapVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (cubeMapVertexShader->LoadShaderFile(L"Resources/Shaders/CubeMapVertexShader.cso"))
@@ -442,11 +607,11 @@ namespace RocketCore::Graphics
 		PixelShader* SSAOPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (SSAOPixelShader->LoadShaderFile(L"Resources/Shaders/SSAOPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SSAOPixelShader.cso", SSAOPixelShader));
-		
+
 		PixelShader* toneMapReinhardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (toneMapReinhardPS->LoadShaderFile(L"Resources/Shaders/ToneMapReinhardPS.cso"))
 			_pixelShaders.insert(std::make_pair("ToneMapReinhardPS.cso", toneMapReinhardPS));
-		
+
 		PixelShader* toneMapAcesPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (toneMapAcesPS->LoadShaderFile(L"Resources/Shaders/ToneMapAcesPS.cso"))
 			_pixelShaders.insert(std::make_pair("ToneMapAcesPS.cso", toneMapAcesPS));
@@ -479,6 +644,7 @@ namespace RocketCore::Graphics
 
 		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size());
 		_loadedFileInfo["cube"].loadedMeshes.push_back(_cube);
+
 	}
 
 	void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
@@ -528,8 +694,11 @@ namespace RocketCore::Graphics
 			vertex.Normal.z = mesh->mNormals[i].z;
 
 			// process uv
-			vertex.UV.x = mesh->mTextureCoords[0][i].x;
-			vertex.UV.y = mesh->mTextureCoords[0][i].y;
+			if (mesh->HasTextureCoords(i))
+			{
+				vertex.UV.x = mesh->mTextureCoords[0][i].x;
+				vertex.UV.y = mesh->mTextureCoords[0][i].y;
+			}
 
 			vertices.push_back(vertex);
 		}
@@ -574,6 +743,8 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
+		unitScaleFactor = 1.0f;
+		//unitScaleFactor = 100.0f;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
@@ -582,18 +753,26 @@ namespace RocketCore::Graphics
 			rightVec.x, rightVec.y, rightVec.z, 0.0f,
 			-upVec.x, -upVec.y, -upVec.z, 0.0f,
 			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);	*/
+			0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		aiMatrix4x4 mat(
-			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
-			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
-			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+			rightVec.x, upVec.x, forwardVec.x, 0.0f,
+			rightVec.y, upVec.y, forwardVec.y, 0.0f,
+			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		// create node hierarchy
+		/*aiMatrix4x4 mat(
+			0.01f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.01f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.01f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
+
+			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
+		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		//rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 
 		_loadedFileInfo[_fileName].node = rootNode;
 
@@ -745,26 +924,35 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
+		unitScaleFactor = 0.01f;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
 
-		aiMatrix4x4 mat(
+		/*aiMatrix4x4 mat(
 			rightVec.x, rightVec.y, rightVec.z, 0.0f,
 			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
 			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);
+			0.0f, 0.0f, 0.0f, 1.0f);*/
 
-		/*aiMatrix4x4 mat(
+		aiMatrix4x4 mat(
 			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
 			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
+			0.0f, 0.0f, 0.0f, 1.0f);
+
+		/*aiMatrix4x4 mat(
+			0.01f,	0.0f,		0.0f,	0.0f,
+			0.0f,	0.0f,		-0.01f,	0.0f,
+			0.0f,	0.01f,		0.0f,	0.0f,
+			0.0f,	0.0f,		0.0f,	1.0f);*/
 
 			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
+		//rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
 		_loadedFileInfo[_fileName].node = rootNode;
@@ -893,11 +1081,15 @@ namespace RocketCore::Graphics
 	{
 		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
 		// numChannels == numBones
+		static int animNum = 0;
 		UINT animCount = scene->mNumAnimations;
 		for (UINT i = 0; i < animCount; ++i)
 		{
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();
+			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
+			newAnimation->animName = _fileName;
+			newAnimation->uniqueAnimNum = animNum++;
 			newAnimation->duration = animation->mDuration;
 
 			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
@@ -934,7 +1126,7 @@ namespace RocketCore::Graphics
 
 				newAnimation->nodeAnimations.push_back(newNodeAnim);
 			}
-			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
+			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(newAnimation->animName, newAnimation));
 		}
 	}
 
@@ -1004,9 +1196,9 @@ namespace RocketCore::Graphics
 			XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 			XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 			XMMATRIX viewProj = viewMatrix * projMatrix;
-			XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
 
-			vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+			vs->SetMatrix4x4("world", XMMatrixIdentity());
+			vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 			vs->CopyAllBufferData();
 			vs->SetShader();
 
@@ -1015,7 +1207,7 @@ namespace RocketCore::Graphics
 			ps->SetShader();
 
 			_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			
+
 			Mesh* mesh = GetMeshes("skybox")[0];
 			mesh->BindBuffers();
 			mesh->Draw();
@@ -1078,7 +1270,7 @@ namespace RocketCore::Graphics
 		for (UINT i = 0; i < 6; ++i)
 		{
 			float roughness = (float)i / 5.0;
-			ps->SetFloat("roughness", roughness);
+			ps->SetFloat("gRoughness", roughness);
 			D3D11_VIEWPORT viewport
 			{
 				.TopLeftX = 0.0f,
@@ -1104,9 +1296,10 @@ namespace RocketCore::Graphics
 				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 				XMMATRIX viewProj = viewMatrix * projMatrix;
-				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
+				XMMATRIX transposeViewProj = (viewProj);
 
-				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 				vs->CopyAllBufferData();
 				vs->SetShader();
 
@@ -1200,6 +1393,11 @@ namespace RocketCore::Graphics
 	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCylinderPrimitive()
 	{
 		return _cylinderPrimitive.get();
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCapsulePrimitive()
+	{
+		return _capsulePrimitive.get();
 	}
 
 }

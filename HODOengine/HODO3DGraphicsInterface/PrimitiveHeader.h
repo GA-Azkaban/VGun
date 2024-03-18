@@ -25,4 +25,10 @@ namespace HDEngine
 		float height;
 		float diameter;
 	};
+
+	struct CapsulePrimitive : public PrimitiveBase
+	{
+		float height;
+		float diameter;
+	};
 }

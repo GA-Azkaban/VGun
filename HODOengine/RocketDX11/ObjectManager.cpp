@@ -107,6 +107,14 @@ namespace RocketCore::Graphics
 		return cylinder;
 	}
 
+	HDEngine::CapsulePrimitive* ObjectManager::CreateCapsulePrimitive()
+	{
+		HDEngine::CapsulePrimitive* capsule = new HDEngine::CapsulePrimitive();
+		capsule->isWire = true;
+		_capsulePrimitiveList.emplace_back(capsule);
+		return capsule;
+	}
+
 	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()
 	{
 		TextRenderer* TextObject = new TextRenderer();

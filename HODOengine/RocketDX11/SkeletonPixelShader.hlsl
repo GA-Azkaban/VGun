@@ -1,16 +1,6 @@
 #include "Sampler.hlsli"
 #include "Shading.hlsli"
 
-cbuffer externalData : register(b0)
-{
-	float gMetallic;
-	float gRoughness;
-
-	int useAlbedo;
-	int useNormalMap;
-	int useOccMetalRough;
-}
-
 Texture2D Albedo : register(t0);
 Texture2D NormalMap : register(t1);
 Texture2D OcclusionRoughnessMetal : register(t2);
@@ -44,7 +34,7 @@ PSOutput main(VertexToPixel input)
 	// Read and unpack normal from map
 	if (useNormalMap)
 	{
-		float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
+		float3 normalFromMap = NormalMap.Sample(LinearWrapSampler, input.uv).xyz * 2 - 1;
 
 		// Transform from tangent to world space
 		float3 N = input.normal;
@@ -59,7 +49,7 @@ PSOutput main(VertexToPixel input)
 	float4 textureColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	if (useAlbedo)
 	{
-		textureColor = Albedo.Sample(LinearSampler, input.uv);
+		textureColor = Albedo.Sample(LinearWrapSampler, input.uv);
 	}
 
 	float occlusion = 1.0f;
@@ -69,13 +59,13 @@ PSOutput main(VertexToPixel input)
 
 	if (useOccMetalRough)
 	{
-		float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearSampler, input.uv).rgb;
+		float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearWrapSampler, input.uv).rgb;
 		occlusion = occRoughMetal.r;
 		roughness = occRoughMetal.g;
 		metallic = occRoughMetal.b;
 	}
 
-	//float4 emissive = Emissive.Sample(LinearSampler, input.uv);
+	//float4 emissive = Emissive.Sample(LinearWrapSampler, input.uv);
 
 	output.position = float4(input.worldPos, 1.0f);
 	output.diffuse = textureColor;

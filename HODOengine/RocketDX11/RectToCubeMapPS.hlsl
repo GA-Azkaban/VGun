@@ -20,5 +20,5 @@ float2 SampleSphericalMap(float3 v)
 float4 main(VertexToPixel input) : SV_TARGET
 {
 	float2 texCoord = SampleSphericalMap(normalize(input.uv));
-	return float4(CubeMap.Sample(LinearSampler, texCoord).rgb, 1.0f);
+	return float4(CubeMap.Sample(LinearWrapSampler, texCoord).rgb, 1.0f);
 }
