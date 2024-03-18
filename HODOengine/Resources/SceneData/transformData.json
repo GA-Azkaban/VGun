@@ -1,25 +1,26 @@
 [
 {
-    "ID": -27506,
+    "ID": -95548,
     "ParentID": 0,
-    "Name": "wooden_door",
-    "MeshName": "wooden_door",
+    "Name": "test",
+    "MeshName": "",
     "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
+        "x": 9.760181427001954,
+        "y": 3.294768810272217,
+        "z": 2.6086184978485109
     },
     "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
     },
     "Scale": {
         "x": 1.0,
         "y": 1.0,
         "z": 1.0
     },
+    "materials": [],
     "ColliderType": 0,
     "ColliderCenter": {
         "x": 0.0,
@@ -31,391 +32,18 @@
         "y": 0.0,
         "z": 0.0
     },
-    "SphereColliderRadius": 0.0
+    "SphereColliderRadius": 0.0,
+    "textureName": ""
 },
 {
-    "ID": -27492,
-    "ParentID": 0,
-    "Name": "watch_tower",
-    "MeshName": "watch_tower",
-    "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": -6.559999942779541
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27478,
-    "ParentID": 0,
-    "Name": "wall4",
-    "MeshName": "wall4",
-    "Position": {
-        "x": 14.369999885559082,
-        "y": 0.0,
-        "z": 7.019999980926514
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27464,
-    "ParentID": 0,
-    "Name": "wall3",
-    "MeshName": "wall3",
-    "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": -8.630000114440918
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27450,
-    "ParentID": 0,
-    "Name": "wall2",
-    "MeshName": "wall2",
-    "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": -10.130000114440918
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27436,
-    "ParentID": 0,
-    "Name": "wall1",
-    "MeshName": "wall1",
-    "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": -11.229999542236329
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27422,
-    "ParentID": 0,
-    "Name": "stone",
-    "MeshName": "stone",
-    "Position": {
-        "x": 2.8299999237060549,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27408,
-    "ParentID": 0,
-    "Name": "Standard_house",
-    "MeshName": "Standard_house",
-    "Position": {
-        "x": 14.90999984741211,
-        "y": 0.0,
-        "z": -7.880000114440918
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27394,
-    "ParentID": 0,
-    "Name": "Small_house",
-    "MeshName": "Small_house",
-    "Position": {
-        "x": 5.340000152587891,
-        "y": 0.0,
-        "z": 5.920000076293945
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27380,
-    "ParentID": 0,
-    "Name": "oak",
-    "MeshName": "oak",
-    "Position": {
-        "x": 6.059999942779541,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -4.725367699050142e-22
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27366,
-    "ParentID": 0,
-    "Name": "Large_house",
-    "MeshName": "Large_house",
-    "Position": {
-        "x": 12.869999885559082,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27352,
-    "ParentID": 0,
-    "Name": "cube",
-    "MeshName": "cube",
-    "Position": {
-        "x": -2.369999885559082,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "ColliderType": 0,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.0
-},
-{
-    "ID": -27312,
+    "ID": -54244,
     "ParentID": 0,
     "Name": "barrel",
     "MeshName": "barrel",
     "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 6.400000095367432
+        "x": 9.8100004196167,
+        "y": 2.9600000381469728,
+        "z": 2.8499999046325685
     },
     "Rotation": {
         "x": -6.123234262925839e-17,
@@ -428,6 +56,7 @@
         "y": 1.0,
         "z": 1.0
     },
+    "materials": [],
     "ColliderType": 0,
     "ColliderCenter": {
         "x": 0.0,
@@ -439,6 +68,7 @@
         "y": 0.0,
         "z": 0.0
     },
-    "SphereColliderRadius": 0.0
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_military_green"
 }
 ]
