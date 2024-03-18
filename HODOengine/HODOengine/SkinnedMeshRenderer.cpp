@@ -31,6 +31,11 @@ namespace HDData
 		_skinnedMesh->LoadDiffuseMap(fileName);
 	}
 
+	void SkinnedMeshRenderer::LoadARMMap(const std::string& fileName)
+	{
+        _skinnedMesh->LoadARMMap(fileName);
+    }
+
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
 		_skinnedMesh->PlayAnimation(fileName, isLoop);

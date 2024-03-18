@@ -34,8 +34,9 @@ namespace RocketCore::Graphics
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void LoadMesh(const std::string& fileName) override;
-		virtual void LoadNormalMap(const std::string& fileName);
-		virtual void LoadDiffuseMap(const std::string& fileName);
+		virtual void LoadNormalMap(const std::string& fileName) override;
+		virtual void LoadDiffuseMap(const std::string& fileName) override;
+		virtual void LoadARMMap(const std::string& fileName) override;
 
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);

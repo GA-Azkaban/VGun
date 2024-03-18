@@ -54,6 +54,12 @@ namespace RocketCore::Graphics
 		m_material->SetAlbedoMap(diffuseTex);
 	}
 
+	void StaticMeshObject::LoadARMMap(const std::string& fileName)
+	{
+        ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
+        m_material->SetOcclusionRoughnessMetalMap(armTex);
+    }
+
 	void StaticMeshObject::SetOutlineActive(bool isActive)
 	{
 		if (!m_outline)

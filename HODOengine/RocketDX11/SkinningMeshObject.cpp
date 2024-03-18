@@ -489,9 +489,13 @@ namespace RocketCore::Graphics
 	{
 		ID3D11ShaderResourceView* normalTex = ResourceManager::Instance().GetTexture(fileName);
 		m_material->SetNormalMap(normalTex);
-		if (normalTex != nullptr)
-			m_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 	}
+
+	void SkinningMeshObject::LoadARMMap(const std::string& fileName)
+	{
+        ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
+        m_material->SetOcclusionRoughnessMetalMap(armTex);
+    }
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
 	{

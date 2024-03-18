@@ -31,6 +31,11 @@ namespace HDData
 		_staticMesh->LoadDiffuseMap(fileName);
 	}
 
+	void MeshRenderer::LoadARMMap(const std::string& fileName)
+	{
+        _staticMesh->LoadARMMap(fileName);
+    }
+
 	void MeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_staticMesh->SetOutlineActive(isActive);

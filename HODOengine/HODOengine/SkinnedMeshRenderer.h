@@ -14,6 +14,7 @@ namespace HDData
 		void LoadMesh(const std::string& fileName);
 		void LoadNormalMap(const std::string& fileName);
 		void LoadDiffuseMap(const std::string& fileName);
+		void LoadARMMap(const std::string& fileName);
 		void PlayAnimation(const std::string& fileName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
