@@ -2,6 +2,14 @@
 
 class Room : public std::enable_shared_from_this<Room>
 {
+private:
+	struct PlayerData
+	{
+		PlayerRef player;
+		bool host = false;
+		int32 team = 0;
+	};
+
 public:
 	Room();
 
@@ -16,53 +24,62 @@ public:
 	void Update();
 
 public:
+	Protocol::RoomInfo GetRoomInfo();
+	void GetRoomInfo(Protocol::RoomInfo& roomInfo);
+	void GetRoomInfo(Protocol::RoomInfo* roomInfo);
+
+public:
 	void PushJob(JobRef job);
 	void FlushJob();
 
 private:
 	USE_LOCK;
 
-	Horang::String _roomCode;
+	int32 _roomID;
+	std::string _roomCode;
+	Protocol::eRoomState _state;
 
-	Horang::HashMap<int32, PlayerRef> _players;
+	Horang::HashMap<int32, PlayerData> _players;
 	JobQueue _jobs;
 };
 
-extern Room GRoom;
+extern RoomRef GRoom;
 
+/////////////////////////////
+// 
 /////////////////////////////
 
 class EnterJob : public IJob
 {
 public:
-	EnterJob(Room& room, PlayerRef player)
+	EnterJob(RoomRef room, PlayerRef player)
 		: _room(room), _player(player)
 	{}
 
 	virtual void Execute() override
 	{
-		_room.Enter(_player);
+		_room->Enter(_player);
 	}
 
 private:
-	Room& _room;
+	RoomRef _room;
 	PlayerRef _player;
 };
 
 class LeaveJob : public IJob
 {
 public:
-	LeaveJob(Room& room, PlayerRef player)
+	LeaveJob(RoomRef room, PlayerRef player)
 		: _room(room), _player(player)
 	{}
 
 	virtual void Execute() override
 	{
-		_room.Leave(_player);
+		_room->Leave(_player);
 	}
 
 private:
-	Room& _room;
+	RoomRef _room;
 	PlayerRef _player;
 
 };

@@ -148,8 +148,34 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 	GDBConnectionPool->Push(dbConn);
 	*/
 
-	GAuthentication.PushJob(Horang::MakeShared<SignUpJob>(session, pkt.id(), pkt.password(),pkt.nickname()));
+	GAuthentication.PushJob(Horang::MakeShared<SignUpJob>(session, pkt.id(), pkt.password(), pkt.nickname()));
 
 	return true;
 }
 
+bool Handle_C_ROOM_CREATE(Horang::PacketSessionRef& session, Protocol::C_ROOM_CREATE& pkt)
+{
+	return true;
+}
+
+bool Handle_C_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::C_ROOM_ENTER& pkt)
+{
+	// Todo RoomManager에서 방 유효한지 체크하는 job 넣어줘야함
+
+	if (pkt.roomcode() == "0000")
+	{
+		GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+		GRoom->PushJob(Horang::MakeShared<EnterJob>(GRoom, gameSession->_player));
+	}
+
+	return true;
+}
+
+bool Handle_C_ROOM_LEAVE(Horang::PacketSessionRef& session, Protocol::C_ROOM_LEAVE& pkt)
+{
+	// Todo
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	GRoom->PushJob(Horang::MakeShared<LeaveJob>(GRoom, gameSession->_player));
+
+	return true;
+}

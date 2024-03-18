@@ -31,24 +31,6 @@ public:
 		return ret;
 	}
 
-	void Clear()
-	{
-		WRITE_LOCK;
-		_jobs = decltype(_jobs)();
-	}
-
-	int32 Size() 
-	{
-		READ_LOCK;
-		return _jobs.size(); 
-	}
-	
-	bool Empty() 
-	{
-		READ_LOCK;
-		return _jobs.empty(); 
-	}
-
 private:
 	USE_LOCK;
 	Horang::Queue<JobRef> _jobs;

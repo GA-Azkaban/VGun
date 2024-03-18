@@ -42,7 +42,7 @@ void AuthenticationManager::FlushJob()
 		if (job == nullptr)
 			break;
 
- 		job->Execute();
+		job->Execute();
 	}
 }
 
@@ -98,7 +98,7 @@ void SignInJob::Execute()
 	{
 		// 실패 동작
 		Protocol::S_ERROR packet;
-		packet.set_errorcode(ErrorCode::SIGNIN_FAIL);
+		packet.set_errorcode(static_cast<int32>(ErrorCode::SIGNIN_FAIL));
 
 		// Todo Log
 
@@ -156,8 +156,7 @@ void SignUpJob::Execute()
 	else
 	{
 		Protocol::S_ERROR packet;
-
-		packet.set_errorcode(ErrorCode::SIGNUP_FAIL);
+		packet.set_errorcode(static_cast<int32>(ErrorCode::SIGNUP_FAIL));
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
 		_session->Send(sendBuffer);

@@ -1,7 +1,5 @@
 #pragma once
 
-using RoomRef = std::shared_ptr<class Room>;
-
 class Player
 {
 public:
