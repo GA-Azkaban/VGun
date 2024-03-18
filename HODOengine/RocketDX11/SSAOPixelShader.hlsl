@@ -1,18 +1,6 @@
 #include "Sampler.hlsli"
 #include "ConstantBuffer.hlsli"
 
-//cbuffer externalData : register(b0)
-//{
-//    float4x4 view;
-//    float4x4 projection;
-//    float4x4 inverseProjection;
-//    float4 kernel[64];
-//    float4 cameraPosition;
-//    float radius;
-//    float power;
-//    float2 windowSize;
-//}
-
 struct VertexToPixel
 {
     float4 position     : SV_POSITION; // vertex position
@@ -48,7 +36,6 @@ float4 main(VertexToPixel input) : SV_TARGET
     normal = normalize(normal * 2.0f - 1.0f);
     float3 viewSpaceNormal = normalize(mul(normal, (float3x3)view));
 
-    //float2 noiseScale = windowSize / 4.0f;
     float3 randDir = Noise.Sample(PointClampSampler, input.uv * ssaoNoiseScale).rgb;
     randDir = normalize(2 * randDir - 1);
 

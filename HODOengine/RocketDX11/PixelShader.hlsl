@@ -1,16 +1,6 @@
 #include "Sampler.hlsli"
 #include "ConstantBuffer.hlsli"
 
-//cbuffer externalData : register(b0)
-//{
-//	float gMetallic;
-//	float gRoughness;
-//
-//	int useAlbedo;
-//	int useNormalMap;
-//	int useOccMetalRough;
-//}
-
 Texture2D Albedo : register(t0);
 Texture2D NormalMap : register(t1);
 Texture2D OcclusionRoughnessMetal : register(t2);
