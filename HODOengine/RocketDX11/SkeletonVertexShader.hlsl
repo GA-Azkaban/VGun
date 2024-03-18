@@ -1,16 +1,5 @@
 #include "ConstantBuffer.hlsli"
 
-//cbuffer externalData : register(b0)
-//{
-//	float4x4 world;
-//	float4x4 worldViewProj;
-//}
-
-//cbuffer skeleton
-//{
-//	float4x4 boneTransforms[96];
-//};
-
 struct VertexShaderInput
 {
 	float3 position		: POSITION;

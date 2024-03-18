@@ -2,11 +2,6 @@
 #include "BRDF.hlsli"
 #include "ConstantBuffer.hlsli"
 
-//cbuffer externalData : register(b0)
-//{
-//	float roughness;
-//}
-
 struct VertexToPixel
 {
 	float4 position	: SV_POSITION;

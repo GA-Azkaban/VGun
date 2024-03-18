@@ -1,10 +1,4 @@
-
 #include "ConstantBuffer.hlsli"
-
-//cbuffer externalData : register(b0)
-//{
-//	float4x4 worldViewProj;
-//};
 
 struct VertexShaderInput
 {

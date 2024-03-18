@@ -1,10 +1,4 @@
-
 #include "ConstantBuffer.hlsli"
-
-//cbuffer cbPerObject
-//{
-//	float4x4 worldViewProj;
-//};
 
 struct VertexShaderInput
 {
