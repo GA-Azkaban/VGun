@@ -350,9 +350,9 @@ namespace RocketCore::Graphics
 				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 				XMMATRIX viewProj = viewMatrix * projMatrix;
-				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
 
-				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 				vs->CopyAllBufferData();
 				vs->SetShader();
 
@@ -1196,9 +1196,9 @@ namespace RocketCore::Graphics
 			XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 			XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 			XMMATRIX viewProj = viewMatrix * projMatrix;
-			XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
 
-			vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+			vs->SetMatrix4x4("world", XMMatrixIdentity());
+			vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 			vs->CopyAllBufferData();
 			vs->SetShader();
 
@@ -1296,9 +1296,10 @@ namespace RocketCore::Graphics
 				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
 				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
 				XMMATRIX viewProj = viewMatrix * projMatrix;
-				XMMATRIX transposeViewProj = XMMatrixTranspose(viewProj);
+				XMMATRIX transposeViewProj = (viewProj);
 
-				vs->SetMatrix4x4("worldViewProj", transposeViewProj);
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
 				vs->CopyAllBufferData();
 				vs->SetShader();
 

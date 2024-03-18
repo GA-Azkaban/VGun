@@ -36,7 +36,7 @@ VertexToPixel main(VertexShaderInput input)
 	}
 
 	float4 pos = mul(float4(posL, 1.0f), world);
-	output.position = mul(pos, viewProjection);
+	output.position = mul(pos, lightViewProjection);
 	
 	return output;
 }
