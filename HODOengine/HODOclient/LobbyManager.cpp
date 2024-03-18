@@ -1,5 +1,7 @@
-﻿#include "LobbyManager.h"
+﻿#include "types.h"
+#include "LobbyManager.h"
 #include "NetworkManager.h"
+
 
 LobbyManager& LobbyManager::Instance()
 {

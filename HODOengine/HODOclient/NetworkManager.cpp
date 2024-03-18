@@ -67,15 +67,20 @@ void NetworkManager::SendCreateAccount(std::string id, std::string password, std
 void NetworkManager::RecvFail(int32 errorCode)
 {
 	// Todo
+	// 로그인에 실패했을때 모든 처리를 여기서
 	switch (errorCode)
 	{
 		case LOGIN_FAIL:
 
+			break;
 		case ID_DUPLICATION:
-
-		case SIGNUP_FAIL:
+			break;
 
 		case NICKNAME_DUPLICATION:
+			break;
+
+		case SIGNUP_FAIL:
+			break;
 
 		default:
 			std::cout << "Unknown Error Code" << std::endl;
@@ -87,7 +92,7 @@ void NetworkManager::RecvFail(int32 errorCode)
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 {
 	// remove pyramid
-
+	// 로그인이 성공했을때 처리
 
 }
 
