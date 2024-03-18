@@ -186,17 +186,17 @@ int main()
 		}
 	);
 
+	GRoom = Horang::MakeShared<Room>();
+	GRoom->Initialize();
 	GThreadManager->Launch([=]()
 		{
 			while (true)
 			{
-				GRoom.FlushJob();
+				GRoom->FlushJob();
 				std::this_thread::yield();
 			}
 		}
 	);
-
-
 
 	GThreadManager->Join();
 

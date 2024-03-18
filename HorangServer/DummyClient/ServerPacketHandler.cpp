@@ -59,6 +59,14 @@ bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK
 	std::cout << "로그인 성공! " << std::endl;
 		//<< "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
 
+	{
+		Protocol::C_ROOM_ENTER packet;
+
+		packet.set_roomcode("0000");
+
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+		session->Send(sendBuffer);
+	}
 
 	return true;
 }
@@ -67,5 +75,48 @@ bool Handle_S_SIGNUP_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNUP_OK
 {
 	std::cout << "회원가입 성공!" << std::endl;
 
+	return true;
+}
+
+bool Handle_S_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::S_ROOM_ENTER& pkt)
+{
+
+	auto& roomInfo = pkt.roominfo();
+
+	roomInfo.users();
+
+	std::cout << "방 입장 성공!" << std::endl;
+	std::cout << "방 번호 : " << roomInfo.roomid() << std::endl;
+	std::cout << "방 코드 : " << roomInfo.roomcode() << std::endl;
+	std::cout << "방 상태 : " << roomInfo.state() << std::endl;
+
+	for (auto user : roomInfo.users())
+		std::cout << "유저 ID : " << user.id() << " 닉네임 : " << user.nickname() << std::endl;
+
+	return true;
+}
+
+bool Handle_S_ROOM_LEAVE(Horang::PacketSessionRef& session, Protocol::S_ROOM_LEAVE& pkt)
+{
+	return true;
+}
+
+bool Handle_S_ANOTHER_ENTER_ROOM(Horang::PacketSessionRef& session, Protocol::S_ANOTHER_ENTER_ROOM& pkt)
+{
+	auto& roomInfo = pkt.roominfo();
+
+	std::cout << "다른 유저가 방에 들어왔습니다." << std::endl;
+	std::cout << "방 번호 : " << roomInfo.roomid() << std::endl;
+	std::cout << "방 코드 : " << roomInfo.roomcode() << std::endl;
+	std::cout << "방 상태 : " << roomInfo.state() << std::endl;
+
+	for (auto user : roomInfo.users())
+		std::cout << "유저 ID : " << user.id() << " 닉네임 : " << user.nickname() << std::endl;
+
+	return true;
+}
+
+bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_ANOTHER_LEAVE_ROOM& pkt)
+{
 	return true;
 }

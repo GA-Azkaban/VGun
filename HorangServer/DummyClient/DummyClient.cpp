@@ -45,7 +45,7 @@ int main()
 	ServerPacketHandler::Init();
 
 
-	int count = 64*4;
+	int count = 64 * 4;
 
 	Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
 		Horang::NetAddress(L"127.0.0.1", 7777),
@@ -74,7 +74,9 @@ int main()
 	while (true)
 	{
 		int menu = 0;
-		std::cout << "1. Login\n2. Create Account\n Select : ";
+		std::cout << "1. Login" << std::endl;
+		std::cout << "2. Create Account" << std::endl;
+		std::cout << " Select : " << std::endl;
 		std::cin >> menu;
 
 		::system("cls");
@@ -113,7 +115,7 @@ int main()
 
 			std::cout << "Nickname : ";
 			std::cin >> nickname;
-			
+
 			{
 				Protocol::C_SIGNUP signUpPkt;
 
@@ -138,7 +140,7 @@ int main()
 
 		this_thread::sleep_for(1s);
 	}*/
-	
+
 
 	/*for (int32 i = 0; i < 4; i++)
 	{

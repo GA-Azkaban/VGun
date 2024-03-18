@@ -2,7 +2,7 @@
 #include "GameSession.h"
 #include "GameSessionManager.h"
 #include "ClientPacketHandler.h"
-
+#include "ErrorCode.h"
 
 void GameSession::OnConnected()
 {
@@ -28,4 +28,13 @@ void GameSession::OnRecvPacket(BYTE* buffer, int32 len)
 void GameSession::OnSend(int32 len)
 {
 	//cout << "OnSend Len : " << len << endl;
+}
+
+void GameSession::SendError(ErrorCode errorCode)
+{
+	Protocol::S_ERROR packet;
+	packet.set_errorcode(static_cast<int32>(errorCode));
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
+	this->Send(sendBuffer);
 }

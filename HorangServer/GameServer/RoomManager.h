@@ -7,20 +7,20 @@ class RoomManager
 public:
 	RoomManager();
 
-	void Push(RoomRef room);
-	RoomRef Pop();
-
-	RoomRef CreateRoom();
-	RoomRef GetRoom(Horang::String roomCode);
+	RoomRef GetRoom(std::string roomCode);
 
 	void LeaveRoom(PlayerRef player);
 
-	void Update();
+public:
+	void PushJob(JobRef job);
+	void FlushJob();
 
 private:
 	USE_LOCK;
-	Horang::HashMap<Horang::String, RoomRef> _rooms;
+	Horang::HashMap<std::string, RoomRef> _rooms;
 	Horang::Vector<RoomRef> _roomPool;
 };
 
 extern RoomManager GRoomManager;
+
+

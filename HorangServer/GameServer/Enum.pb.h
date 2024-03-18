@@ -83,6 +83,33 @@ inline bool PlayerType_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PlayerType>(
     PlayerType_descriptor(), name, value);
 }
+enum eRoomState : int {
+  ROOM_STATE_NONE = 0,
+  ROOM_STATE_LOBBY = 1,
+  ROOM_STATE_PLAY = 2,
+  ROOM_STATE_END = 3,
+  eRoomState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eRoomState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eRoomState_IsValid(int value);
+constexpr eRoomState eRoomState_MIN = ROOM_STATE_NONE;
+constexpr eRoomState eRoomState_MAX = ROOM_STATE_END;
+constexpr int eRoomState_ARRAYSIZE = eRoomState_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eRoomState_descriptor();
+template<typename T>
+inline const std::string& eRoomState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eRoomState>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eRoomState_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eRoomState_descriptor(), enum_t_value);
+}
+inline bool eRoomState_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eRoomState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eRoomState>(
+    eRoomState_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -109,6 +136,11 @@ template <> struct is_proto_enum< ::Protocol::PlayerType> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PlayerType>() {
   return ::Protocol::PlayerType_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eRoomState> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eRoomState>() {
+  return ::Protocol::eRoomState_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

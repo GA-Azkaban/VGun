@@ -19,5 +19,9 @@ public:
 	virtual void OnSend(int32 len) override;
 
 public:
+
+	void SendError(ErrorCode errorCode);
+
+public:
 	PlayerRef _player;
 };
