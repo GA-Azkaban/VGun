@@ -336,6 +336,7 @@ void ResourceManager::ProcessStaticMesh(aiMesh* mesh, const aiScene* scene)
 	aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 	aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
+	//unitScaleFactor = 100.0f;
 	upVec *= unitScaleFactor;
 	forwardVec *= unitScaleFactor;
 	rightVec *= unitScaleFactor;
