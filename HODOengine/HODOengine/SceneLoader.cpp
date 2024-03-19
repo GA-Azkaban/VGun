@@ -92,21 +92,18 @@ namespace HDEngine
 		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 		for (auto& info : _infoList)
 		{
-			std::string objName = info.meshName;
-
-			if (info.meshName == "Stair" ||
-				info.meshName == "Cube" ||
-				info.meshName == "Floor" ||
-				info.meshName == "Plane")
-			{
-				HDData::GameObject* object = currentScene->CreateObject(info.name);
-				_gameObjectMap.insert(std::make_pair(info.id, object));
-				continue;
-			}
-
 			HDData::GameObject* object = currentScene->CreateObject(info.name);
 
-			if (info.meshName != "")
+			std::string meshName = info.meshName;
+
+			if (meshName == "Plane" ||
+				meshName == "Cube")
+			{
+				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
+				meshRenderer->LoadMesh(meshName + ".fbx");
+				meshRenderer->LoadDiffuseMap(info.texture + ".png");
+			}
+			else if (info.meshName != "")
 			{
 				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 				meshRenderer->LoadMesh(info.meshName + ".fbx");
@@ -135,8 +132,6 @@ namespace HDEngine
 					break;
 			}
 			
-
-
 			_gameObjectMap.insert(std::make_pair(info.id, object));
 		}
 	}
