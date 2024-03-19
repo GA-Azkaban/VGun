@@ -1,5 +1,77 @@
 [
 {
+    "ID": -107692,
+    "ParentID": 0,
+    "Name": "Small_house",
+    "MeshName": "Small_house",
+    "Position": {
+        "x": -2.7799999713897707,
+        "y": 0.0,
+        "z": 2.5999999046325685
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden_1"
+},
+{
+    "ID": -105266,
+    "ParentID": 0,
+    "Name": "Oak",
+    "MeshName": "Oak",
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 2.430000066757202
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_woodensticks_2"
+},
+{
     "ID": -90222,
     "ParentID": 0,
     "Name": "watch_tower",
@@ -72,78 +144,6 @@
     "textureName": "M_ruins_wall"
 },
 {
-    "ID": -90008,
-    "ParentID": 0,
-    "Name": "oak",
-    "MeshName": "oak",
-    "Position": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 2.2899999618530275
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -4.725367699050142e-22
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "materials": [],
-    "ColliderType": 2,
-    "ColliderCenter": {
-        "x": 2.9802322387695315e-8,
-        "y": 0.6000000238418579,
-        "z": -0.00014954805374145508
-    },
-    "BoxColliderSize": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "SphereColliderRadius": 0.6000000238418579,
-    "textureName": "M_woodensticks_2"
-},
-{
-    "ID": -89572,
-    "ParentID": 0,
-    "Name": "cube",
-    "MeshName": "Cube",
-    "Position": {
-        "x": -1.3799999952316285,
-        "y": 0.49000000953674319,
-        "z": 0.0
-    },
-    "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
-    },
-    "Scale": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "materials": [],
-    "ColliderType": 1,
-    "ColliderCenter": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 1.0,
-        "y": 1.0,
-        "z": 1.0
-    },
-    "SphereColliderRadius": 0.0,
-    "textureName": "M_glass_dark"
-},
-{
     "ID": -88046,
     "ParentID": 0,
     "Name": "Ground",
@@ -178,5 +178,4 @@
     },
     "SphereColliderRadius": 0.0,
     "textureName": "M_military_green"
-}
-]
+}]
