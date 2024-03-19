@@ -152,12 +152,12 @@
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK;$(SolutionDir)ServerCore\;$(SolutionDir)Libraries\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;$(SolutionDir)ServerCore\;$(SolutionDir)Libraries\Include\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration);$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Libraries\Libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\;$(SolutionDir)Lib\$(Configuration)\;$(SolutionDir)Lib\$(Configuration)\Protobuf;$(SolutionDir)Lib\$(Configuration)\ServerCore;$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Build\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HODOengine.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -176,12 +176,12 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration);$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Libraries\Libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\;$(SolutionDir)Lib\$(Configuration)\;$(SolutionDir)Lib\$(Configuration)\Protobuf;$(SolutionDir)Lib\$(Configuration)\ServerCore;$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Build\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HODOengine.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -202,14 +202,14 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
       <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\DXTK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Build\$(Configuration);$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Libraries\Libs\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\;$(SolutionDir)Lib\$(Configuration)\;$(SolutionDir)Lib\$(Configuration)\Protobuf;$(SolutionDir)Lib\$(Configuration)\ServerCore;$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Build\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>HODOengine.lib;DirectXTK.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -229,10 +229,14 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LobbyManager.h" />
     <ClInclude Include="LoginSceneView.h" />
+    <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ServerPacketHandler.h" />
+    <ClInclude Include="ServerSession.h" />
     <ClInclude Include="SliderSoundScript.h" />
     <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="targetver.h" />
@@ -249,8 +253,13 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="LobbyManager.cpp" />
     <ClCompile Include="LoginSceneView.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
+    <ClCompile Include="Protocol.pb.cc" />
+    <ClCompile Include="ServerPacketHandler.cpp" />
+    <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="SliderSoundScript.cpp" />
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />

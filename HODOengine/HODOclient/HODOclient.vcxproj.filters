@@ -34,26 +34,26 @@
     <ClCompile Include="SliderSoundScript.cpp">
       <Filter>02_Client\TestScene</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkManager.cpp">
-      <Filter>03_Manager\NetworkManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerPacketHandler.cpp">
-      <Filter>03_Manager\NetworkManager\Protocol</Filter>
-    </ClCompile>
     <ClCompile Include="Enum.pb.cc">
-      <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
-    </ClCompile>
-    <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
     <ClCompile Include="Struct.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
+    <ClCompile Include="ServerSession.cpp">
+      <Filter>03_Manager\NetworkManager\Network</Filter>
+    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClCompile>
-    <ClCompile Include="ServerSession.cpp">
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPacketHandler.cpp">
       <Filter>03_Manager\NetworkManager\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Protocol.pb.cc">
+      <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,12 +99,6 @@
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\TestScene</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkManager.h">
-      <Filter>03_Manager\NetworkManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ServerPacketHandler.h">
-      <Filter>03_Manager\NetworkManager\Protocol</Filter>
-    </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClInclude>
@@ -118,6 +112,12 @@
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
+      <Filter>03_Manager\NetworkManager\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
   </ItemGroup>
