@@ -145,8 +145,8 @@ namespace RocketCore::Graphics
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		/// Load resources
-		_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
-		_resourceManager.LoadFBXFile("A_TP_CH_Sprint_F.fbx");
+		//_resourceManager.LoadFBXFile("A_TP_CH_Breathing.fbx");
+		//_resourceManager.LoadFBXFile("A_TP_CH_Sprint_F.fbx");
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
 
