@@ -44,7 +44,7 @@ namespace RocketCore::Graphics
 		_pixelShader->SetFloat2("ssaoNoiseScale", XMFLOAT2(_windowSize.x / 4.0f, _windowSize.y / 4.0f));
 		_pixelShader->SetFloat4Array("ssaoSamples", &_ssaoSamples[0], 64);
 		_pixelShader->SetFloat("ssaoRadius", 0.5f);
-		_pixelShader->SetFloat("ssaoPower", 0.1f);
+		_pixelShader->SetFloat("ssaoPower", 0.2f);
 
 		_pixelShader->SetShaderResourceView("DepthTex", _deferredBuffers->GetDepthSRV());
 		_pixelShader->SetShaderResourceView("NormalTex", _deferredBuffers->GetShaderResourceView(2));

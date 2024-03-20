@@ -16,7 +16,7 @@ namespace RocketCore::Graphics
 	class OutlinePass
 	{
 	public:
-		OutlinePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
+		OutlinePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer, QuadBuffer* stencilEnableBuffer);
 		~OutlinePass();
 
 		static std::vector<StaticMeshObject*> staticMeshOutlines;
@@ -27,11 +27,11 @@ namespace RocketCore::Graphics
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthEnableState;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> _depthDisableState;
 		DeferredBuffers* _deferredBuffers;
+		QuadBuffer* _stencilEnableBuffer;
 		QuadBuffer* _quadBuffer;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
-
-		DirectX::XMMATRIX _lineScale;
 	};
 }

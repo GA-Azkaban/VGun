@@ -24,6 +24,7 @@ namespace RocketCore::Graphics
 		delete _quadBuffer;
 		delete _vertexShader;
 		delete _pixelShader;
+		delete _shadowMapPass;
 	}
 
 	void DeferredPass::Render()

@@ -17,125 +17,120 @@ namespace RocketCore::Graphics
 	std::vector<StaticMeshObject*> OutlinePass::staticMeshOutlines;
 	std::vector<SkinningMeshObject*> OutlinePass::skinningMeshOutlines;
 
-	OutlinePass::OutlinePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer)
-		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer),
+	OutlinePass::OutlinePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer, QuadBuffer* stencilEnableBuffer)
+		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer), _stencilEnableBuffer(stencilEnableBuffer),
 		_deviceContext(ResourceManager::Instance().GetDeviceContext())
 	{
-		//_lineScale = XMMatrixScaling(1.05f, 1.01f, 1.05f);
-		_lineScale = XMMatrixScaling(0.95f, 0.95f, 0.95f);
-
-		_pixelShader = ResourceManager::Instance().GetPixelShader("OutlinePS.cso");
-
 		// Create depth stencil states
-		D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
-		ZeroMemory(&depthStencilDesc, sizeof(depthStencilDesc));
+		D3D11_DEPTH_STENCIL_DESC depthEnableDesc;
+		ZeroMemory(&depthEnableDesc, sizeof(depthEnableDesc));
 
-		depthStencilDesc.DepthEnable = true;
-		depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-		depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
-		depthStencilDesc.StencilEnable = true;
-		depthStencilDesc.StencilReadMask = 0xFF;
-		depthStencilDesc.StencilWriteMask = 0xFF;
-		depthStencilDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-		depthStencilDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthStencilDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+		depthEnableDesc.DepthEnable = true;
+		depthEnableDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		depthEnableDesc.DepthFunc = D3D11_COMPARISON_LESS;
+		depthEnableDesc.StencilEnable = true;
+		depthEnableDesc.StencilReadMask = 0xFF;
+		depthEnableDesc.StencilWriteMask = 0xFF;
+		depthEnableDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthEnableDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		depthEnableDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+		depthEnableDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		depthEnableDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthEnableDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		depthEnableDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthEnableDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 
-		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthStencilDesc, _depthEnableState.GetAddressOf());
+		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthEnableDesc, _depthEnableState.GetAddressOf());
+
+		D3D11_DEPTH_STENCIL_DESC depthDisableDesc;
+		ZeroMemory(&depthDisableDesc, sizeof(depthDisableDesc));
+
+		depthDisableDesc.DepthEnable = false;
+		depthDisableDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		depthDisableDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
+		depthDisableDesc.StencilEnable = true;
+		depthDisableDesc.StencilReadMask = 0xFF;
+		depthDisableDesc.StencilWriteMask = 0xFF;
+		depthDisableDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthDisableDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		depthDisableDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthDisableDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+		depthDisableDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		depthDisableDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		depthDisableDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		depthDisableDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+
+		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthDisableDesc, _depthDisableState.GetAddressOf());
 	}
 
 	OutlinePass::~OutlinePass()
 	{
 		_deferredBuffers = nullptr;
 		_quadBuffer = nullptr;
+		_stencilEnableBuffer = nullptr;
+		delete _deferredBuffers;
+		delete _quadBuffer;
+		delete _stencilEnableBuffer;
+
+		_deviceContext.Reset();
 	}
 
 	void OutlinePass::Render()
 	{
-		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
+		// 외곽선을 만드는 것은 두 단계로 나눠서 한다.
+		// 첫번째 단계는 스텐실버퍼에 1 이상의 값으로 기록된 부분에
+		// 색깔을 입혀 렌더타겟뷰에 그린다.
+		// 두번째 단계는 렌더타겟뷰를 셰이더리소스뷰로 가져와서
+		// 소벨 가장자리 검출 단계를 거쳐 외곽선부분만 딴다.
+		// 외곽선부분을 딴 곳에 외곽선 색깔을 입혀 최종적으로 출력한다.
+		
+		// 첫번째 단계
+		//_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
+		_stencilEnableBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
+		_stencilEnableBuffer->ClearRenderTargets();
 
-		_deviceContext->OMSetDepthStencilState(_depthEnableState.Get(), 0);
-
-		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		_deviceContext->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID));
+		
+		_deviceContext->OMSetDepthStencilState(_depthDisableState.Get(), 1);
 
-		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix(); 
+		//_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS_3Vertex.cso");
+		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
+		_pixelShader = ResourceManager::Instance().GetPixelShader("Outline_StencilColorPS.cso");
 
-		_vertexShader = ResourceManager::Instance().GetVertexShader("OutlineStaticMeshVS.cso");
-		for (auto staticMeshObj : staticMeshOutlines)
-		{
-			if (!staticMeshObj->IsActive())
-				continue;
+		_vertexShader->SetShader();
 
-			if (!staticMeshObj->GetOutline()->isActive)
-				continue;
+		_pixelShader->SetFloat4("outlineColor", XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		_pixelShader->CopyAllBufferData();
+		_pixelShader->SetShader();
 
-			XMMATRIX world = staticMeshObj->GetWorldTM();
-			XMVECTOR scale;
-			XMVECTOR rotate;
-			XMVECTOR translate;
-			XMMatrixDecompose(&scale, &rotate, &translate, world);
-			XMMATRIX scaleMatrix = XMMatrixScalingFromVector(scale);
-			XMMATRIX rotateMatrix = XMMatrixRotationQuaternion(rotate);
-			XMMATRIX translateMatrix = XMMatrixTranslationFromVector(translate);
-			XMMATRIX newScale = scaleMatrix * _lineScale;
-			XMMATRIX worldViewProj = newScale * rotateMatrix * translateMatrix * view * proj;
+		_deviceContext->Draw(4, 0);
 
-			_vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
-			_vertexShader->SetFloat4("color", staticMeshObj->GetOutline()->color);
+		_deviceContext->OMSetDepthStencilState(_depthDisableState.Get(), 2);
 
-			_vertexShader->CopyAllBufferData();
-			_vertexShader->SetShader();
+		//_vertexShader->SetShader();
 
-			_pixelShader->SetShader();
+		_pixelShader->SetFloat4("outlineColor", XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
+		_pixelShader->CopyAllBufferData();
+		_pixelShader->SetShader();
 
-			for (auto mesh : staticMeshObj->GetMeshes())
-			{
-				mesh->BindBuffers();
-				mesh->Draw();
-			}
-		}
+		_deviceContext->Draw(4, 0);
 
-		_vertexShader = ResourceManager::Instance().GetVertexShader("OutlineSkinningMeshVS.cso");
-		for (auto skinningMeshObj : skinningMeshOutlines)
-		{
-			if (!skinningMeshObj->IsActive())
-				continue;
+		// 두번째 단계
+		_quadBuffer->SetRenderTargets();
 
-			if (!skinningMeshObj->GetOutline()->isActive)
-				continue;
-			
-			XMMATRIX world = skinningMeshObj->GetWorldTM();
-			XMVECTOR scale;
-			XMVECTOR rotate;
-			XMVECTOR translate;
-			XMMatrixDecompose(&scale, &rotate, &translate, world);
-			XMMATRIX scaleMatrix = XMMatrixScalingFromVector(scale);
-			XMMATRIX rotateMatrix = XMMatrixRotationQuaternion(rotate);
-			XMMATRIX translateMatrix = XMMatrixTranslationFromVector(translate);
-			XMMATRIX newScale = scaleMatrix * _lineScale;
-			XMMATRIX worldViewProj = newScale * rotateMatrix * translateMatrix * view * proj;
+		_pixelShader = ResourceManager::Instance().GetPixelShader("Outline_SobelDetectionPS.cso");
 
-			_vertexShader->SetMatrix4x4("worldViewProj", XMMatrixTranspose(worldViewProj));
-			_vertexShader->SetFloat4("color", skinningMeshObj->GetOutline()->color);
-			_vertexShader->SetMatrix4x4Array("boneTransforms", &skinningMeshObj->GetBoneTransform()[0], skinningMeshObj->GetBoneTransform().size());
+		_pixelShader->SetFloat4("outlineColor", XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
+		_pixelShader->SetFloat("outlineThreshHold", 0.5f);
+		_pixelShader->SetFloat("outlineThickness", 2.0f);
+		_pixelShader->SetShaderResourceView("StencilColorTex", _stencilEnableBuffer->GetShaderResourceView());
+		_pixelShader->CopyAllBufferData();
+		_pixelShader->SetShader();
 
-			_vertexShader->CopyAllBufferData();
-			_vertexShader->SetShader();
+		_deviceContext->Draw(4, 0);
 
-			_pixelShader->SetShader();
-
-			for (auto mesh : skinningMeshObj->GetMeshes())
-			{
-				mesh->BindBuffers();
-				mesh->Draw();
-			}
-		}
+		_quadBuffer->FlushShaderResourceViews();
 	}
 
 }

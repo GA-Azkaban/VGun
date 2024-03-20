@@ -58,13 +58,7 @@
     <FxCompile Include="ShadowMapPS.hlsl">
       <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
     </FxCompile>
-    <FxCompile Include="OutlineStaticMeshVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Outline</Filter>
-    </FxCompile>
-    <FxCompile Include="OutlineSkinningMeshVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Outline</Filter>
-    </FxCompile>
-    <FxCompile Include="OutlinePS.hlsl">
+    <FxCompile Include="Outline_SobelDetectionPS.hlsl">
       <Filter>Resource\Shader\HLSL\Outline</Filter>
     </FxCompile>
     <FxCompile Include="StaticMeshShadowMapVS.hlsl">
@@ -72,6 +66,12 @@
     </FxCompile>
     <FxCompile Include="SkinningMeshShadowMapVS.hlsl">
       <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Outline_StencilColorPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="FullScreenQuadVS_3Vertex.hlsl">
+      <Filter>Resource\Shader\HLSL\Quad</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
