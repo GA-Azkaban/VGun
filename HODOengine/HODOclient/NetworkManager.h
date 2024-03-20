@@ -37,6 +37,7 @@ public:
 
 public:
 	bool IsConnected();
+	void SetConnect(bool isConnect);
 
 private:
 	Horang::ClientServiceRef _service;
