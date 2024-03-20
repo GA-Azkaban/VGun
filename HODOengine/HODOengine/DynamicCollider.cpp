@@ -94,3 +94,8 @@ bool HDData::DynamicCollider::GetIsCollided()
 {
 	return _isCollided;
 }
+
+void HDData::DynamicCollider::SetCollisionCallback(CollisionCallback callbackFunc, int index)
+{
+	AddCollisionCallback(&callbackFunc, index);
+}

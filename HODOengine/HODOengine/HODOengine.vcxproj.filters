@@ -136,6 +136,10 @@
     <ClCompile Include="TriggerBoxCollider.cpp">
       <Filter>05_Component\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="CollisionCallback.cpp">
+      <Filter>06_System\PhysicsSystem\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsCollision.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -303,6 +307,13 @@
     <ClInclude Include="TriggerBoxCollider.h">
       <Filter>05_Component\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionCallback.h">
+      <Filter>06_System\PhysicsSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsContactPoint.h">
+      <Filter>06_System\PhysicsSystem\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsCollision.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -453,6 +464,12 @@
     </Filter>
     <Filter Include="SceneLoader">
       <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Particle">
+      <UniqueIdentifier>{fb62dddf-5986-44d4-be78-53d54cb7b030}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06_System\PhysicsSystem\Collision">
+      <UniqueIdentifier>{6221b329-f24c-4117-8c8c-c731a255f117}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,8 @@
 ﻿#include "StaticCollider.h"
 
+#include "../include/physX/PxPhysics.h"
+#include "../include/physX/PxPhysicsAPI.h"
+
 HDData::StaticCollider::StaticCollider()
 	: _isCollided(false)
 {
@@ -23,4 +26,9 @@ bool HDData::StaticCollider::GetIsCollided()
 
 void HDData::StaticCollider::DrawDebug()
 {
+}
+
+void HDData::StaticCollider::SetPhysXRigid(physx::PxRigidStatic* rigid)
+{
+	_physXStatic = rigid;
 }

@@ -47,6 +47,7 @@ namespace HDData
 	public:
 		void Collide();
 		bool GetIsCollided();
+		void SetCollisionCallback(CollisionCallback callbackFunc, int index);
 
 	private:
 		bool _isJumping;

@@ -27,6 +27,7 @@
 #include "DynamicBoxCollider.h"
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
+#include "Particle.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
 #include "InputData.h"

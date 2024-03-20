@@ -60,6 +60,7 @@ namespace HDEngine
 		physx::PxScene* _pxScene;
 		physx::PxMaterial* _material;
 		physx::PxMaterial* _playerMaterial;
+		physx::PxMaterial* _planeMaterial;
 		physx::PxPvd* _pvd;
 
 	private:

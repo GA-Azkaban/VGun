@@ -9,6 +9,13 @@ HDData::DynamicBoxCollider::DynamicBoxCollider()
 	_debugStruct = _cubeDebugStruct;
 }
 
+HDData::DynamicBoxCollider::DynamicBoxCollider(float w, float h, float d)
+	: _width(w), _height(h), _depth(d)
+{
+	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_debugStruct = _cubeDebugStruct;
+}
+
 void HDData::DynamicBoxCollider::SetVolume(float w, float h, float d)
 {
 	_width = w;

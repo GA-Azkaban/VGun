@@ -74,6 +74,13 @@ private:
 public:
 	void SetHeadCam(HDData::Camera* cam);
 	void ToggleCam();
+
+	// collision callback functions
+public:
+	void OnCollisionEnter2(HDData::Collider* self, HDData::Collider* opponent);
+	void OnCollisionStay2(HDData::Collider* self, HDData::Collider* opponent);
+	void OnCollisionExit2(HDData::Collider* self, HDData::Collider* opponent);
+
 private:
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;

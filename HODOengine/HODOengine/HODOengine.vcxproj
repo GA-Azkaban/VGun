@@ -232,6 +232,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="CollisionCallback.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DLL_Loader.h" />
@@ -242,6 +243,8 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="DynamicSphereCollider.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="MathHeader.h" />
+    <ClInclude Include="PhysicsCollision.h" />
+    <ClInclude Include="PhysicsContactPoint.h" />
     <ClInclude Include="SlideBoxUI.h" />
     <ClInclude Include="SliderUI.h" />
     <ClInclude Include="SoundGroup.h" />
@@ -308,6 +311,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="CollisionCallback.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="DLL_Loader.cpp" />
@@ -340,6 +344,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ObjectSystem.cpp" />
+    <ClCompile Include="PhysicsCollision.cpp" />
     <ClCompile Include="RendererBase.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='TEST|Win32'">true</ExcludedFromBuild>

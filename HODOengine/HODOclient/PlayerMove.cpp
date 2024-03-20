@@ -17,6 +17,8 @@ void PlayerMove::Start()
 	_isJumping = true;
 
 	_playerCollider->LockPlayerRotation();
+
+	//_playerCollider->AddCollisionCallback(&OnCollisionEnter2, 0);
 }
 
 void PlayerMove::Update()
@@ -249,6 +251,21 @@ void PlayerMove::ToggleCam()
 		_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
 	}
+}
+
+void PlayerMove::OnCollisionEnter2(HDData::Collider* self, HDData::Collider* opponent)
+{
+
+}
+
+void PlayerMove::OnCollisionStay2(HDData::Collider* self, HDData::Collider* opponent)
+{
+
+}
+
+void PlayerMove::OnCollisionExit2(HDData::Collider* self, HDData::Collider* opponent)
+{
+
 }
 
 void PlayerMove::Jump()

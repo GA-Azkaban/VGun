@@ -10,11 +10,13 @@
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
 #include "TriggerBoxCollider.h"
+#include "CollisionCallback.h"
 
 #include <windows.h>
 
 namespace HDEngine
 {
+
 	void PhysicsSystem::Initialize()
 	{
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
@@ -32,8 +34,12 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.2f);
 		_playerMaterial = _physics->createMaterial(0.1f, 0.1f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.1f, 0.1f, 0.0f);
+
+		CollisionCallback* collisionCallback = new CollisionCallback();
+		_pxScene->setSimulationEventCallback(collisionCallback);
 	}
 
 	void PhysicsSystem::PreparePhysics()
@@ -58,7 +64,7 @@ namespace HDEngine
 			pos.y = temp.p.y;
 			pos.z = temp.p.z;
 
-			rot.x = -temp.q.x;
+			rot.x = temp.q.x;
 			rot.y = temp.q.y;
 			rot.z = temp.q.z;
 			rot.w = temp.q.w;
@@ -135,9 +141,10 @@ namespace HDEngine
 				Vector3 normal = planeCollider->GetNormalVector();
 				physx::PxPlane pxPlane(normal.x, normal.y, normal.z, planeCollider->GetDistance());
 
-				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
+				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_planeMaterial);
 				_pxScene->addActor(*planeRigid);
 				//planeCollider->SetPhysXRigid(planeRigid);
+				planeCollider->SetPhysXRigid(planeRigid);
 				planeRigid->userData = planeCollider;
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
@@ -176,7 +183,8 @@ namespace HDEngine
 
 				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
 				boxRigid->attachShape(*shape);
-
+				boxRigid->userData = box;
+				box->SetPhysXRigid(boxRigid);
 				_pxScene->addActor(*boxRigid);
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
@@ -211,6 +219,7 @@ namespace HDEngine
 
 				// switch material if player
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_playerMaterial);
+				//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -319,7 +328,7 @@ namespace HDEngine
 				boxRigid->attachShape(*shape);
 				_pxScene->addActor(*boxRigid);
 				boxRigid->userData = box;
-
+				box->SetPhysXRigid(boxRigid);
 				shape->release();
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
