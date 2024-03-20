@@ -1,13 +1,9 @@
 #include "Sampler.hlsli"
-
-cbuffer externalData : register(b0)
-{
-	bool useNormalMap;
-}
+#include "ConstantBuffer.hlsli"
 
 Texture2D Albedo : register(t0);
 Texture2D NormalMap : register(t1);
-//Texture2D OcclusionRoughnessMetal : register(t2);
+Texture2D OcclusionRoughnessMetal : register(t2);
 //Texture2D Emissive : register(t3);
 
 struct VertexToPixel
@@ -21,9 +17,10 @@ struct VertexToPixel
 
 struct PSOutput
 {
-	float4 diffuse : SV_TARGET0;
-	float4 normal : SV_TARGET1;
-	//float4 metalRoughOcclusion : SV_TARGET3;
+	float4 position : SV_TARGET0;
+	float4 diffuse : SV_TARGET1;
+	float4 normal : SV_TARGET2;
+	float4 metalRoughOcclusion : SV_TARGET3;
 	//float4 emissive : SV_TARGET4;
 };
 
@@ -37,7 +34,7 @@ PSOutput main(VertexToPixel input)
 	// Read and unpack normal from map
 	if (useNormalMap)
 	{
-		float3 normalFromMap = NormalMap.Sample(LinearSampler, input.uv).xyz * 2 - 1;
+		float3 normalFromMap = NormalMap.Sample(LinearWrapSampler, input.uv).xyz * 2 - 1;
 
 		// Transform from tangent to world space
 		float3 N = input.normal;
@@ -49,20 +46,31 @@ PSOutput main(VertexToPixel input)
 	}
 
 	// Sample the texture
-	float4 textureColor = Albedo.Sample(LinearSampler, input.uv);
+	float4 textureColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	if (useAlbedo)
+	{
+		textureColor = Albedo.Sample(LinearWrapSampler, input.uv);
+	}
 
-	//float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearSampler, input.uv).rgb;
-	//occlusion = occRoughMetal.r;
-	//roughness = occRoughMetal.g;
-	//metallic = occRoughMetal.b;
+	float occlusion = 1.0f;
 
-	//float4 emissive = Emissive.Sample(LinearSampler, input.uv);
+	float metallic = gMetallic;
+	float roughness = gRoughness;
 
+	if (useOccMetalRough)
+	{
+		float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearWrapSampler, input.uv).rgb;
+		occlusion = occRoughMetal.r;
+		roughness = occRoughMetal.g;
+		metallic = occRoughMetal.b;
+	}
+
+	//float4 emissive = Emissive.Sample(LinearWrapSampler, input.uv);
+
+	output.position = float4(input.worldPos, 1.0f);
 	output.diffuse = textureColor;
-	output.normal = float4(input.normal, 1.0f);
-	//output.metalRoughOcclusion.r = metallic;
-	//output.metalRoughOcclusion.g = roughness;
-	//output.metalRoughOcclusion.b = occlusion;
+	output.normal = float4(input.normal * 0.5f + 0.5f, 1.0f);
+	output.metalRoughOcclusion = float4(metallic, roughness, occlusion, 1.0f);
 	//output.emissive = emissive;
 
 	return output;

@@ -106,9 +106,6 @@
     <ClCompile Include="SkinnedMeshRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass\SkinnedMeshRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="RendererBase.cpp">
-      <Filter>05_Component\Renderer\BaseClass</Filter>
-    </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass\MeshRenderer</Filter>
     </ClCompile>
@@ -135,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="CubeMapRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>05_Component\Light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +303,9 @@
     <ClInclude Include="CubeMapRenderer.h">
       <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>05_Component\Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -453,6 +456,9 @@
     </Filter>
     <Filter Include="SceneLoader">
       <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Light">
+      <UniqueIdentifier>{d0a499d2-c1f9-42ad-89ab-50fbf3da20e5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

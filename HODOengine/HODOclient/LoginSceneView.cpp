@@ -1,4 +1,4 @@
-﻿#include "LoginSceneView.h"
+#include "LoginSceneView.h"
 #include "LobbyManager.h"
 
 LoginSceneView::LoginSceneView()
@@ -24,39 +24,61 @@ void LoginSceneView::Initialize()
 
 void LoginSceneView::LoginView()
 {
-	/// main canvas
+	auto skybox = API::CreateObject(_scene);
+	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
 
+	/// main canvas
+	
+	// 임시 동작을 위한 큐브맵 나중에 지워야 함
+	//auto skybox = API::CreateObject(_scene);
+	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	//skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+
+	// 여기서부터 로비 UI
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainCanvas");
 	mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("white.png");
+	mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
 	mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
 	_lobbyManager.SetLobbyMainCanvas(mainCanvas);
 
 	// id input box
 	HDData::GameObject* idTextbox = API::CreateTextInputBox(_scene, "idTextBox", mainCanvas);
+	auto id = idTextbox->GetComponent<HDData::TextInputBoxUI>();
 	idTextbox->GetTransform()->SetLocalPosition(0.f, -100.f, 0.f);
+	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.1f);
+	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.11f);
+	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.11f);
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", idTextbox);
 	idTextLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
-	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
+	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// password input box
 	HDData::GameObject* passwordTextbox = API::CreateTextInputBox(_scene, "passwordTextBox", mainCanvas);
+	auto pw = passwordTextbox->GetComponent<HDData::TextInputBoxUI>();
+	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.1f);
+	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.11f);
+	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.11f);
 	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", passwordTextbox);
 	passwordTextboxLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetText("PASSWORD");
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// login button
 	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", mainCanvas);
 	loginBtn->GetTransform()->SetPosition(870.f, 650.f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("login.png");
+	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.1f);
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[this, &idTextbox, &passwordTextbox]()
+		[id, pw]()
 		{
-			std::string id = idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
-			std::string password = passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
-			_lobbyManager.Login(id, password);
+			std::string ID = id->GetCurrentText();
+			std::string password = pw->GetCurrentText();
+			LobbyManager::Instance().Login(ID, password);
 		}
 	);
 
@@ -64,10 +86,11 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn", mainCanvas);
 	joinBtn->GetTransform()->SetPosition(1050.f, 650.f, 0.f);
 	joinBtn->GetComponent<HDData::Button>()->SetImage("join.png");
+	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.1f);
 	joinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[this, &idTextbox, &passwordTextbox]()
+		[]()
 		{
-			_lobbyManager.Join();
+			LobbyManager::Instance().Join();
 		}
 	);
 
@@ -75,71 +98,74 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas");
 	joinCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
+	joinCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.15f);
 	joinCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
-	//_lobbyManager.SetJoinCanvas(joinCanvas);
+	_lobbyManager.SetJoinCanvas(joinCanvas);
 
 	HDData::GameObject* newIDtextbox = API::CreateTextInputBox(_scene, "newIDtextbox", joinCanvas);
-	newIDtextbox->GetTransform()->SetPosition(0.f, -200.f, 0.f);
-	auto newIDtext = newIDtextbox->GetComponent<HDData::TextUI>();
+	newIDtextbox->GetTransform()->SetLocalPosition(0.f, -200.f, 0.f);
+	auto newIDtext = newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
+	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
+	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
+	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
 	newIDLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
 	newIDLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
+	newIDLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newPasswordTextbox = API::CreateTextInputBox(_scene, "newPasswordTextbox", joinCanvas);
-	newPasswordTextbox->GetTransform()->SetPosition(0.f, -100.f, 0.f);
-	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextUI>();
+	newPasswordTextbox->GetTransform()->SetLocalPosition(0.f, -100.f, 0.f);
+	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
+	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
+	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
+	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
 	newPasswordLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
-	//newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
+	newPasswordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinCanvas);
-	newNicknameTextbox->GetTransform()->SetPosition(0.f, 0.f, 0.f);
-	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextUI>();
+	newNicknameTextbox->GetTransform()->SetLocalPosition(0.f, 0.f, 0.f);
+	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
+	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
+	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
+	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
 	newNicknameLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
-
-	// error msg
-	HDData::GameObject* errorMsg = API::CreateImageBox(_scene, "errorImg", joinCanvas);
-	errorMsg->GetComponent<HDData::ImageUI>()->SetImage("errorMsg.png");
-	HDData::GameObject* exitErrorBtn = API::CreateButton(_scene, "exitErrorBtn", errorMsg);
-	exitErrorBtn->GetTransform()->SetPosition(960.f, 650.f, 0.f);
-
-	errorMsg->OnDisable();
-
-	exitErrorBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[&errorMsg]()
-		{
-			errorMsg->OnDisable();
-		}
-	);
+	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
+	newNicknameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinCanvas);
-	//makeAccountBtn->GetComponent<HDData::ImageUI>()->SetImage("addNewAccount.png");
+	
+	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
+	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
+	makeAccountBtn->GetTransform()->SetLocalPosition(-150.f, 100.f, 0.f);
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[&newIDtext, &newPWtext, &newNNtext, &errorMsg]()
+		[=]()
 		{
-			if (newIDtext->GetText().empty() || newPWtext->GetText().empty() || newNNtext->GetText().empty())
+			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
 			{
-				errorMsg->OnEnable();
+				LobbyManager::Instance().MakeNewAccount(newIDtext->GetText(), newPWtext->GetText(), newNNtext->GetText());
 			}
 		}
 	);
 
 	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinCanvas);
-	//exitJoinBtn->GetComponent<HDData::ImageUI>()->SetImage("exitJoin.png");
+	exitJoinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
+	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("exitJoin.png");
+	exitJoinBtn->GetTransform()->SetLocalPosition(150.f, 100.f, 0.f);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[this]()
+		[=]()
 		{
-			_lobbyManager.ExitJoin();
+			LobbyManager::Instance().ExitJoin();
 		}
 	);
 
-	mainCanvas->OnDisable();
-	joinCanvas->OnDisable();
+	joinCanvas->SetSelfActive(false);
 }
 
 void LoginSceneView::MainMenu()

@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="ColorPS.hlsl">
-      <Filter>Resource\Shader\HLSL\Color</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Color</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturePS.hlsl">
-      <Filter>Resource\Shader\HLSL\Texture</Filter>
-    </FxCompile>
-    <FxCompile Include="TextureVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Texture</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
     </FxCompile>
@@ -45,6 +33,45 @@
     </FxCompile>
     <FxCompile Include="BlitPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\Blit</Filter>
+    </FxCompile>
+    <FxCompile Include="IrradianceMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\IrradianceMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SpecularPreFilterPS.hlsl">
+      <Filter>Resource\Shader\HLSL\SpecularPreFilter</Filter>
+    </FxCompile>
+    <FxCompile Include="IntegrateBRDF.hlsl">
+      <Filter>Resource\Shader\HLSL\IntegrateBRDF</Filter>
+    </FxCompile>
+    <FxCompile Include="RectToCubeMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\RectToCubeMap</Filter>
+    </FxCompile>
+    <FxCompile Include="ToneMapReinhardPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ToneMapping</Filter>
+    </FxCompile>
+    <FxCompile Include="SSAOPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="ToneMapAcesPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ToneMapping</Filter>
+    </FxCompile>
+    <FxCompile Include="ShadowMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="OutlineStaticMeshVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="OutlineSkinningMeshVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="OutlinePS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinningMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +110,6 @@
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Object\TextObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Resource\Texture</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Resource\Shader\VertexShader</Filter>
@@ -144,6 +168,24 @@
     <ClCompile Include="Line.cpp">
       <Filter>Object\Line</Filter>
     </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Object\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightAdapter.cpp">
+      <Filter>Object\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="ToneMapPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ToneMapPass</Filter>
+    </ClCompile>
+    <ClCompile Include="SSAOPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\SSAOPass</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMapPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClCompile>
+    <ClCompile Include="OutlinePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -200,17 +242,11 @@
     <ClInclude Include="TextRenderer.h">
       <Filter>Object\TextObject</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Resource\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClInclude>
     <ClInclude Include="ShaderStruct.h">
       <Filter>Resource\Shader\ShaderStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="LightStruct.h">
-      <Filter>Object\Light</Filter>
     </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
       <Filter>GeometryGenerator</Filter>
@@ -266,14 +302,35 @@
     <ClInclude Include="SkyboxPass.h">
       <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
     </ClInclude>
-    <ClInclude Include="SpritePass.h">
-      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
-    </ClInclude>
     <ClInclude Include="DebugMeshPass.h">
       <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
     </ClInclude>
     <ClInclude Include="Line.h">
       <Filter>Object\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightAdapter.h">
+      <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="ToneMapPass.h">
+      <Filter>DeferredRendering\RenderPasses\ToneMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAOPass.h">
+      <Filter>DeferredRendering\RenderPasses\SSAOPass</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMapPass.h">
+      <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePass.h">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
+    </ClInclude>
+    <ClInclude Include="OutlinePass.h">
+      <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
+    </ClInclude>
+    <ClInclude Include="Outline.h">
+      <Filter>Object\Outline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -331,20 +388,11 @@
     <Filter Include="Resource\Resource3D\Primitive">
       <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Texture">
-      <UniqueIdentifier>{b426d68d-4899-470b-8822-54d1393565eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader">
       <UniqueIdentifier>{dcfc1891-19ba-4656-930a-c318b65099f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\HLSL">
       <UniqueIdentifier>{215b4f0b-7d91-4a0d-9303-f3dc430726f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Color">
-      <UniqueIdentifier>{68fef6da-5093-4b42-b063-173aaf7c8f7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Texture">
-      <UniqueIdentifier>{80cc8937-d3c0-4387-9237-e9b25aa161e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\Interface">
       <UniqueIdentifier>{7f875c8d-bce6-4837-919f-35ac117e4e09}</UniqueIdentifier>
@@ -451,12 +499,60 @@
     <Filter Include="Object\Line">
       <UniqueIdentifier>{fef4642c-22f2-447b-b01e-e62180ce51b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Shader\HLSL\IrradianceMap">
+      <UniqueIdentifier>{e56469f5-1ebe-4428-af53-7e3eeafcfaec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SpecularPreFilter">
+      <UniqueIdentifier>{e96f43f1-e783-4330-aaca-f7823fcd9b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\IntegrateBRDF">
+      <UniqueIdentifier>{d10a3675-3d80-48f9-a61c-d45124868211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\RectToCubeMap">
+      <UniqueIdentifier>{9588e615-68c0-401c-86d8-992554bcf5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ToneMapPass">
+      <UniqueIdentifier>{a1c4f2fd-9601-46a4-bfc6-bdb7477c43ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SSAO">
+      <UniqueIdentifier>{609197ae-927f-4bda-b671-7a4c68c7991b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ToneMapping">
+      <UniqueIdentifier>{1b00a9b2-7f5a-40f1-a1fb-05221e3907fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ShadowMapPass">
+      <UniqueIdentifier>{b2aef3ea-9f8d-43aa-aa30-ee77e710e2a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ShadowMap">
+      <UniqueIdentifier>{86ff2d08-049d-45ef-9067-ebaf27727218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\OutlinePass">
+      <UniqueIdentifier>{154b15da-9c13-405c-8e04-537d5a386834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Outline">
+      <UniqueIdentifier>{0af4814a-25e8-4cfa-b299-3c6fc2d2e519}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Outline">
+      <UniqueIdentifier>{2bf82f61-3088-497f-a437-6285e0724c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sampler.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
     <None Include="Lighting.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="BRDF.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="Shading.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="ConstantBuffer.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="CommonData.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
   </ItemGroup>

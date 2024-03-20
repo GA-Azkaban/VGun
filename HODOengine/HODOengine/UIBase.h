@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <vector>
 
+#include "dllExporter.h"
 #include "Component.h"
 #include "Transform.h"
 #include "MathHeader.h"
@@ -8,28 +9,25 @@
 
 namespace HDData
 {
-	class UIBase : public Component
+	class HODO_API UIBase : public Component
 	{
 	public:
 		UIBase();
 
 	public:
-		void UpdateRenderData();
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
+		virtual void Update() override;
+
 		bool CheckFocus();
-		virtual void OnUpdateTransform()
-		{
-			_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
-		}
 
-		void OnEnable() override;
-		void OnDisable() override;
-
-		int GetSortOrder() const;
+		float GetSortOrder() const;
 		bool GetIsHovering();
 		bool GetIsClicked();
 		bool GetIsGrabbing();
 		bool IsIgnoreFocused();
 
+		void SetSortOrder(float orderNum);
 		void SetIsHovering(bool isHovering);
 		void SetIsClicked(bool isClicked);
 		void SetIsGrabbing(bool isGrabbing);
@@ -45,7 +43,7 @@ namespace HDData
 		HDEngine::ISketchable* _sketchable;
 
 	private:
-		int		_sortOrder;
+		float	_sortOrder;
 		bool	_isHovering;
 		bool	_isClicked;
 		bool	_isGrabbing;

@@ -12,7 +12,10 @@ namespace RocketCore::Graphics
 		_zLocation(),
 		_size(),
 		_width(),
-		_height()
+		_height(),
+		_isActive(true),
+		_receiveTMInfoFlag(false),
+		_sortOrder(0)
 	{
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
@@ -49,11 +52,12 @@ namespace RocketCore::Graphics
 		_xLocation = worldTM._41;
 		_yLocation = worldTM._42;
 		_zLocation = worldTM._43;	// for Debugging text
+		_receiveTMInfoFlag = true;
 	}
 
 	void TextRenderer::SetActive(bool isActive)
 	{
-		isActive = isActive;
+		_isActive = isActive;
 	}
 
 	void TextRenderer::SetColor(DirectX::FXMVECTOR color)
@@ -69,14 +73,28 @@ namespace RocketCore::Graphics
 
 	void TextRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 	{
-		MeasureTextSize();	//여기두면 안되는데
+		if (!_isActive)
+			return;
 
-		std::wstring wstr(_str.begin(), _str.end());
-		_font->DrawString(
-			spriteBatch,
-			wstr.c_str(),
-			DirectX::XMFLOAT2(_xLocation, _yLocation),
-			_color);
+		if (_receiveTMInfoFlag)
+		{
+			MeasureTextSize();	//여기두면 안되는데
+
+			std::wstring wstr(_str.begin(), _str.end());
+			_font->DrawString(
+				spriteBatch,
+				wstr.c_str(),
+				DirectX::XMFLOAT2(_xLocation, _yLocation),
+				_color,
+				0.0f,
+				{0.0f,0.0f},
+				1,
+				DirectX::DX11::SpriteEffects_None,
+				_sortOrder
+			);
+
+		}
+		_receiveTMInfoFlag = false;
 	}
 
 	void TextRenderer::SetFloatValue(const float value)
@@ -113,6 +131,16 @@ namespace RocketCore::Graphics
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
 	{
 
+	}
+
+	bool TextRenderer::GetActive()
+	{
+		return _isActive;
+	}
+
+	void TextRenderer::SetSortOrder(float order)
+	{
+		_sortOrder = order;
 	}
 
 }

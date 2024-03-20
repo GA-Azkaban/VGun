@@ -1,4 +1,4 @@
-//***************************************************************************************
+﻿//***************************************************************************************
 // GeometryGenerator.h by Frank Luna (C) 2011 All Rights Reserved.
 //   
 // Defines a static class for procedurally generating the geometry of 
@@ -39,6 +39,8 @@ namespace RocketCore::Graphics
 		void CreateGrid(DebugMeshData& meshData);
 
 		void CreateAxis(DebugMeshData& meshData);
+
+		void CreateSkybox(MeshData& meshData);
 
 		///<summary>
 		/// Creates a box centered at the origin with the given dimensions.

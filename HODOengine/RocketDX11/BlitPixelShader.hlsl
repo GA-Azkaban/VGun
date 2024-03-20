@@ -11,5 +11,5 @@ Texture2D src   : register(t0);
 float4 main(VertexToPixel input) : SV_TARGET
 {
     float2 texCoord = input.uv;
-    return src.Sample(PointSampler, texCoord);
+    return src.Sample(PointClampSampler, texCoord);
 }

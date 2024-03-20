@@ -1,9 +1,4 @@
-
-cbuffer externalData : register(b0)
-{
-	float4x4 world;
-	float4x4 worldViewProj;
-}
+#include "ConstantBuffer.hlsli"
 
 struct VertexShaderInput
 {
@@ -26,10 +21,11 @@ VertexToPixel main(VertexShaderInput input)
 {
 	VertexToPixel output;
 
-	output.position = mul(float4(input.position, 1.0f), worldViewProj);
+	float4 pos = mul(float4(input.position, 1.0f), world);
+	output.position = mul(pos, viewProjection);
 	output.normal = mul(input.normal, (float3x3)world);
 	output.tangent = mul(input.tangent, (float3x3)world);
-	output.worldPos = mul(float4(input.position, 1.0f), world).xyz;
+	output.worldPos = pos.xyz;
 	output.uv = input.uv;
 
 	return output;

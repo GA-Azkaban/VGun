@@ -8,8 +8,8 @@
 
 namespace RocketCore::Graphics
 {
-	BlitPass::BlitPass(QuadBuffer* quadBuffer, ID3D11RenderTargetView* backBufferRTV)
-		: _quadBuffer(quadBuffer), _resourceManager(ResourceManager::Instance()),
+	BlitPass::BlitPass(QuadBuffer* toneMapBuffer, ID3D11RenderTargetView* backBufferRTV)
+		: _toneMapBuffer(toneMapBuffer), _resourceManager(ResourceManager::Instance()),
 		_backBufferRTV(backBufferRTV)
 	{
 		_vertexShader = _resourceManager.GetVertexShader("FullScreenQuadVS.cso");
@@ -18,7 +18,7 @@ namespace RocketCore::Graphics
 
 	BlitPass::~BlitPass()
 	{
-		delete _quadBuffer;
+		delete _toneMapBuffer;
 		delete _vertexShader;
 		delete _pixelShader;
 	}
@@ -33,12 +33,12 @@ namespace RocketCore::Graphics
 
 		_vertexShader->SetShader();
 
-		_pixelShader->SetShaderResourceView("src", _quadBuffer->GetShaderResourceView());
+		_pixelShader->SetShaderResourceView("src", _toneMapBuffer->GetShaderResourceView());
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();
 
 		_resourceManager.GetDeviceContext()->Draw(4, 0);
 
-		_quadBuffer->FlushShaderResourceViews();
+		_toneMapBuffer->FlushShaderResourceViews();
 	}
 }

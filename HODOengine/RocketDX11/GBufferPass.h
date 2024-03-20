@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <d3d11.h>
+#include <wrl.h>
 
 namespace RocketCore::Graphics
 {
@@ -13,6 +15,7 @@ namespace RocketCore::Graphics
 		void Render();
 
 	private:
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
 		DeferredBuffers* _deferredBuffers;
 	};
 }

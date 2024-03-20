@@ -6,6 +6,7 @@
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
 #include "Cubemap.h"
+#include "LightAdapter.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -26,6 +27,7 @@ namespace HDEngine
 
 namespace RocketCore::Graphics
 {
+
 	HDEngine::ICamera* ObjectFactory::CreateCamera()
 	{
 		return ObjectManager::Instance().CreateCamera();
@@ -56,6 +58,11 @@ namespace RocketCore::Graphics
 		return ObjectManager::Instance().CreateImage();
 	}
 
+	HDEngine::ILight* ObjectFactory::CreateLight()
+	{
+		return ObjectManager::Instance().CreateLight();
+	}
+
 	HDEngine::ILineRenderer* ObjectFactory::CreateLineRenderer()
 	{
 		return ObjectManager::Instance().CreateLineRenderer();
@@ -74,6 +81,11 @@ namespace RocketCore::Graphics
 	HDEngine::CylinderPrimitive* ObjectFactory::CreateCylinderPrimitive()
 	{
 		return ObjectManager::Instance().CreateCylinderPrimitive();
+	}
+
+	HDEngine::CapsulePrimitive* ObjectFactory::CreateCapsulePrimitive()
+	{
+		return ObjectManager::Instance().CreateCapsulePrimitive();
 	}
 
 }

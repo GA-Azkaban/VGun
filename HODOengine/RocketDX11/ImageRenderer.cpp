@@ -1,4 +1,4 @@
-#include <locale>
+﻿#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
@@ -14,7 +14,9 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_scaleY(1.0f),
 	_imageWidth(),
 	_imageHeight(),
-	_active(true)
+	_active(true),
+	_receiveTMInfoFlag(false),
+	_sortOrder()
 {
 	_color = DirectX::Colors::White;
 }
@@ -90,10 +92,11 @@ void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
 {
-	if (_active)
-	{
-		spriteBatch->Begin();
+	if (!_active)
+		return;
 
+	if (_receiveTMInfoFlag)
+	{
 		spriteBatch->Draw(
 			_imagerSRV.Get(),
 			DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
@@ -101,16 +104,20 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			_color,
 			0.0f,										//회전 각도
 			DirectX::XMFLOAT2(0.5f, 0.5f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
-			DirectX::XMFLOAT2(_scaleX, _scaleY));		// 이미지 스케일
-
-		spriteBatch->End();
+			DirectX::XMFLOAT2(_scaleX, _scaleY),		// 이미지 스케일
+			DirectX::DX11::SpriteEffects_None,
+			_sortOrder
+		);
 	}
+
+	_receiveTMInfoFlag = false;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 {
 	_xlocation = worldTM._41;
 	_ylocation = worldTM._42;
+	_receiveTMInfoFlag = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpace()
@@ -161,4 +168,9 @@ float RocketCore::Graphics::ImageRenderer::GetHeight()
 DirectX::FXMVECTOR RocketCore::Graphics::ImageRenderer::SetColor(DirectX::FXMVECTOR color)
 {
 	return _color = color;
+}
+
+void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
+{
+	_sortOrder = order;
 }

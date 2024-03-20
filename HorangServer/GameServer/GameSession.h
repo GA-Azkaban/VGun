@@ -19,5 +19,9 @@ public:
 	virtual void OnSend(int32 len) override;
 
 public:
-	Horang::Vector<PlayerRef> _players;
+
+	void SendError(ErrorCode errorCode);
+
+public:
+	PlayerRef _player;
 };

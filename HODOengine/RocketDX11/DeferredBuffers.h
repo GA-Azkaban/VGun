@@ -2,15 +2,17 @@
 #include <d3d11_2.h>
 #include <DirectXMath.h>
 #include <wrl.h>
+#include <string>
 
 namespace RocketCore::Graphics
 {
 	// Render Target Type
 	enum class BUFFERTYPE
 	{
+		BUFFER_POSITION,
 		BUFFER_DIFFUSE,
 		BUFFER_NORNAL,
-		//BUFFER_METALROUGHOCCLUSION,
+		BUFFER_METALROUGHOCCLUSION,
 
 		GBUFFER_COUNT,
 	};
@@ -23,10 +25,29 @@ namespace RocketCore::Graphics
 		void Initialize(UINT textureWidth, UINT textureHeight);
 
 		void SetRenderTargets();
+		// 임시
+		void SetSSAORenderTarget();
+		void SetShadowMapRenderTarget();
+
+		void SetEnvironmentMap(std::string fileName);
+		
+		UINT GetScreenWidth() { return m_textureWidth; }
+		UINT GetScreenHeight() { return m_textureHeight; }
 		ID3D11ShaderResourceView* GetShaderResourceView(UINT index);
 		ID3D11DepthStencilView* GetDepthStencilView();
 		ID3D11ShaderResourceView* GetDepthSRV();
+		ID3D11ShaderResourceView* GetEnvMap();
+		ID3D11ShaderResourceView* GetEnvPreFilterMap();
+		ID3D11ShaderResourceView* GetBRDFLut();
+		ID3D11ShaderResourceView* GetSSAOMap();
+		ID3D11ShaderResourceView* GetShadowMap();
+
 		void ClearRenderTargets(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
+		void ClearDepthStencil();
+		// 임시
+		void ClearSSAORenderTarget(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
+		void ClearShadowMapRenderTarget(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
+		
 		void FlushShaderResourceViews();
 
 	private:
@@ -44,5 +65,20 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _depthTexture;
 		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depthStencilView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _depthShaderResourceView;
+
+		// Env map
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envMap;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envPreFilter;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _brdfLUT; 
+		
+		// AO map
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _ssaoTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _ssaoRenderTargetView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _ssaoShaderResourceView;
+
+		// Shadow map
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _shadowMapTexture;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _shadowMapRenderTargetView;
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shadowMapShaderResourceView;
 	};
 }

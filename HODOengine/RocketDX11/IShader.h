@@ -15,12 +15,6 @@ namespace RocketCore::Graphics
 	class IShader
 	{
 	public:
-		IShader() {};
-		virtual void Initialize(ID3D11Device* device, const std::string& path) = 0;
-
-
-		/// 2024.01.15 김민정
-	public:
 		IShader(ID3D11Device* device, ID3D11DeviceContext* context);
 		virtual ~IShader();
 
@@ -44,6 +38,7 @@ namespace RocketCore::Graphics
 		void SetFloat3(std::string name, const DirectX::XMFLOAT3& data);
 		void SetFloat4(std::string name, const float data[4]);
 		void SetFloat4(std::string name, const DirectX::XMFLOAT4& data);
+		void SetFloat4Array(std::string name, const DirectX::XMFLOAT4* data, UINT size);
 		void SetMatrix4x4(std::string name, const float data[16]);
 		void SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4& data);
 		void SetMatrix4x4(std::string name, const DirectX::XMMATRIX& data);

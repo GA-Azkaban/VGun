@@ -81,6 +81,7 @@ namespace HDEngine
 			info.boxColliderSize.y = obj["BoxColliderSize"]["y"].GetFloat();
 			info.boxColliderSize.z = obj["BoxColliderSize"]["z"].GetFloat();
 			info.sphereColliderRadius = obj["SphereColliderRadius"].GetFloat();
+			info.texture = obj["textureName"].GetString();
 
 			_infoList.emplace_back(info);
 		}
@@ -93,10 +94,20 @@ namespace HDEngine
 		{
 			HDData::GameObject* object = currentScene->CreateObject(info.name);
 
-			if (info.meshName != "")
+			std::string meshName = info.meshName;
+
+			if (meshName == "Plane" ||
+				meshName == "Cube")
+			{
+				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
+				meshRenderer->LoadMesh(meshName + ".fbx");
+				meshRenderer->LoadDiffuseMap(info.texture + ".png");
+			}
+			else if (info.meshName != "")
 			{
 				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 				meshRenderer->LoadMesh(info.meshName + ".fbx");
+				meshRenderer->LoadDiffuseMap(info.texture + ".png");
 			}
 
 			switch (info.colliderType)
@@ -121,8 +132,6 @@ namespace HDEngine
 					break;
 			}
 			
-
-
 			_gameObjectMap.insert(std::make_pair(info.id, object));
 		}
 	}

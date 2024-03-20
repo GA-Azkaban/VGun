@@ -32,6 +32,7 @@ namespace HDEngine
 			Vector3 colliderCenter;
 			Vector3 boxColliderSize;
 			float sphereColliderRadius;
+			std::string texture;	
 		};
 
 	public:

@@ -9,7 +9,7 @@ namespace RocketCore::Graphics
 	{
 	public:
 		SkyboxPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
-
+		~SkyboxPass();
 		void Render();
 
 	private:

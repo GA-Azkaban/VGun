@@ -7,7 +7,7 @@ namespace RocketCore::Graphics
 	class SamplerState
 	{
 	public:
-		SamplerState();
+		SamplerState() = default;
 
 		void CreateSamplerStates(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 		void DestroySamplerStates();
@@ -16,7 +16,9 @@ namespace RocketCore::Graphics
 		void SetSamplers(ID3D11DeviceContext* deviceContext);
 
 	private:
-		Microsoft::WRL::ComPtr<ID3D11SamplerState> _linearSampler;
-		Microsoft::WRL::ComPtr<ID3D11SamplerState> _pointSampler;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _linearWrapSampler;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _linearBorderSampler;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _pointClampSampler;
+		Microsoft::WRL::ComPtr<ID3D11SamplerState> _comparisonSampler;
 	};
 }

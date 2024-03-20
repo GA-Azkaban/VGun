@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -39,8 +39,14 @@ namespace RocketCore::Graphics
 
 		virtual void SetActive(bool isActive) override;
 
+		virtual bool GetActive() override;
+
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
+
+
+		virtual void SetSortOrder(float order) override;
+		float GetSortOrder() const { return _sortOrder; }
 
 	private:
 		void MeasureTextSize();
@@ -56,6 +62,7 @@ namespace RocketCore::Graphics
 		std::string _str;
 		float _renderFloat;
 		int _renderInt;
+		bool _isActive;
 
 		DirectX::XMVECTOR _color;
 		float _xLocation;
@@ -66,5 +73,8 @@ namespace RocketCore::Graphics
 		DirectX::XMVECTOR _measureLong;
 		float _width;
 		float _height;
+
+		bool _receiveTMInfoFlag;
+		float _sortOrder;
 	};
 }

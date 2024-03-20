@@ -8,18 +8,26 @@
 namespace RocketCore::Graphics
 {
 
-	SpritePass::SpritePass(QuadBuffer* quadBuffer)
-		: _quadBuffer(quadBuffer)
+	SpritePass::SpritePass(QuadBuffer* toneMapBuffer)
+		: _toneMapBuffer(toneMapBuffer)
 	{
 		_spriteBatch = new DirectX::SpriteBatch(ResourceManager::Instance().GetDeviceContext());
 	}
 
+	SpritePass::~SpritePass()
+	{
+		delete _spriteBatch;
+		delete _toneMapBuffer;
+	}
+
 	void SpritePass::Render()
 	{
-		_quadBuffer->SetRenderTargets();
+		_toneMapBuffer->SetRenderTargets();
 
+		_spriteBatch->Begin(DirectX::DX11::SpriteSortMode_FrontToBack);
 		RenderImage();
 		RenderText();
+		_spriteBatch->End();
 	}
 
 	void SpritePass::RenderImage()
@@ -32,12 +40,10 @@ namespace RocketCore::Graphics
 
 	void SpritePass::RenderText()
 	{
-		_spriteBatch->Begin();
 		for (auto textRenderer : ObjectManager::Instance().GetTextList())
 		{
 			textRenderer->Render(_spriteBatch);
 		}
-		_spriteBatch->End();
 	}
 
 }
