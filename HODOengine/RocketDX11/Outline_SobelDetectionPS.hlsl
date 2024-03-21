@@ -11,8 +11,6 @@ struct VertexToPixel
 
 static float xFilter[9] = { -1, 0, 1, -2, 0, 2, -1, 0, 1 };
 static float yFilter[9] = { 1, 2, 1, 0, 0, 0, -1, -2, -1 };
-//static float xFilter[9] = { -1, -1, -1, 0, 0, 0, 1, 1, 1 };
-//static float yFilter[9] = { -1, 0, 1, -1, 0, 1, -1, 0, 1 };
 
 static float3 grayScale = float3(0.299, 0.587, 0.114);
 
@@ -36,10 +34,8 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float sy = 0.0f;
 	for (int i = 0; i < 9; ++i)
 	{
-		//sx += grid[i] * xFilter[i];
-		//sy += grid[i] * yFilter[i];
-		sx += grid[i];
-		sy += grid[i];
+		sx += grid[i] * xFilter[i];
+		sy += grid[i] * yFilter[i];
 	}
 
 	float dist = sqrt(sx * sx + sy * sy);
@@ -48,6 +44,5 @@ float4 main(VertexToPixel input) : SV_TARGET
 	float4 result = outlineColor;
 	result.a = result.a * edge;
 
-	//return result;
-	return float4(dist, dist, dist, 1.0f);
+	return result;
 }

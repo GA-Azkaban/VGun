@@ -13,7 +13,6 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
-	struct Outline;
 
 	class StaticMeshObject : public HDEngine::IStaticMesh
 	{
@@ -28,14 +27,9 @@ namespace RocketCore::Graphics
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
 		virtual void LoadARMMap(const std::string& fileName) override;
-		virtual void SetOutlineActive(bool isActive) override;
-		virtual void SetOutlineData(const Vector4& color = Vector4{1.0f, 0.54f, 0.0f, 1.0f}, bool depthCheck = true) override;
 
 	public:
 		void Render();
-
-	public:
-		Outline* GetOutline() { return m_outline; }
 
 	public:		
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
@@ -52,7 +46,5 @@ namespace RocketCore::Graphics
 		Material* m_material;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
-
-		Outline* m_outline;
 	};
 }

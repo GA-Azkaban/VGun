@@ -284,6 +284,7 @@ namespace RocketCore::Graphics
 		{
 			skinningMeshObj->Update(deltaTime);
 		}
+
 	}
 
 	void RocketDX11::Render()
@@ -296,11 +297,12 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_SSAOPass->Render();
 		_deferredPass->Render();
+		_outlinePass->Render();
+		
 #ifdef _DEBUG
 		_debugMeshPass->Render();
 		RenderLine();
 #endif
-		_outlinePass->Render();
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();

@@ -6,7 +6,6 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
-#include "Outline.h"
 #include "OutlinePass.h"
 using namespace DirectX;
 
@@ -14,7 +13,7 @@ namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
-		m_world{ XMMatrixIdentity() }, m_outline(nullptr)
+		m_world{ XMMatrixIdentity() }
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("VertexShader.cso"), ResourceManager::Instance().GetPixelShader("PixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -59,27 +58,6 @@ namespace RocketCore::Graphics
         ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
         m_material->SetOcclusionRoughnessMetalMap(armTex);
     }
-
-	void StaticMeshObject::SetOutlineActive(bool isActive)
-	{
-		if (!m_outline)
-		{
-			m_outline = new Outline();
-			SetOutlineData();
-			OutlinePass::staticMeshOutlines.push_back(this);
-		}
-
-		m_outline->isActive = isActive;
-	}
-
-	void StaticMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
-	{
-		if (!m_outline)
-			return;
-
-		m_outline->color = color;
-		m_outline->depthCheck = depthCheck;
-	}
 
 	void StaticMeshObject::Render()
 	{

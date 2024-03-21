@@ -567,6 +567,10 @@ namespace RocketCore::Graphics
 		PixelShader* outlineSobelDetectionPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (outlineSobelDetectionPS->LoadShaderFile(L"Resources/Shaders/Outline_SobelDetectionPS.cso"))
 			_pixelShaders.insert(std::make_pair("Outline_SobelDetectionPS.cso", outlineSobelDetectionPS));
+		
+		PixelShader* outlineFullScreenQuadPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (outlineFullScreenQuadPS->LoadShaderFile(L"Resources/Shaders/Outline_FullScreenQuadPS.cso"))
+			_pixelShaders.insert(std::make_pair("Outline_FullScreenQuadPS.cso", outlineFullScreenQuadPS));
 
 		VertexShader* cubeMapVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (cubeMapVertexShader->LoadShaderFile(L"Resources/Shaders/CubeMapVertexShader.cso"))
@@ -591,10 +595,6 @@ namespace RocketCore::Graphics
 		PixelShader* integrateBRDF = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (integrateBRDF->LoadShaderFile(L"Resources/Shaders/IntegrateBRDF.cso"))
 			_pixelShaders.insert(std::make_pair("IntegrateBRDF.cso", integrateBRDF));
-
-		VertexShader* fullScreenQuadVS_3Vertex = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (fullScreenQuadVS_3Vertex->LoadShaderFile(L"Resources/Shaders/FullScreenQuadVS_3Vertex.cso"))
-			_vertexShaders.insert(std::make_pair("FullScreenQuadVS_3Vertex.cso", fullScreenQuadVS_3Vertex));
 		
 		VertexShader* fullScreenQuadVS = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (fullScreenQuadVS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadVS.cso"))

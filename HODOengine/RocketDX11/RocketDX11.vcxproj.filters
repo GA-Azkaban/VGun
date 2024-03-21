@@ -70,8 +70,8 @@
     <FxCompile Include="Outline_StencilColorPS.hlsl">
       <Filter>Resource\Shader\HLSL\Outline</Filter>
     </FxCompile>
-    <FxCompile Include="FullScreenQuadVS_3Vertex.hlsl">
-      <Filter>Resource\Shader\HLSL\Quad</Filter>
+    <FxCompile Include="Outline_FullScreenQuadPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
@@ -329,9 +329,6 @@
     <ClInclude Include="OutlinePass.h">
       <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
     </ClInclude>
-    <ClInclude Include="Outline.h">
-      <Filter>Object\Outline</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">
@@ -528,9 +525,6 @@
     </Filter>
     <Filter Include="DeferredRendering\RenderPasses\OutlinePass">
       <UniqueIdentifier>{154b15da-9c13-405c-8e04-537d5a386834}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Outline">
-      <UniqueIdentifier>{0af4814a-25e8-4cfa-b299-3c6fc2d2e519}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\HLSL\Outline">
       <UniqueIdentifier>{2bf82f61-3088-497f-a437-6285e0724c94}</UniqueIdentifier>

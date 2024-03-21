@@ -8,59 +8,88 @@
 #include "Mesh.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
-#include "Outline.h"
 #include "Camera.h"
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
-	std::vector<StaticMeshObject*> OutlinePass::staticMeshOutlines;
-	std::vector<SkinningMeshObject*> OutlinePass::skinningMeshOutlines;
+	std::vector<SkinningMeshObject*> OutlinePass::outlineObjects;
 
 	OutlinePass::OutlinePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer, QuadBuffer* stencilEnableBuffer)
 		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer), _stencilEnableBuffer(stencilEnableBuffer),
 		_deviceContext(ResourceManager::Instance().GetDeviceContext())
 	{
 		// Create depth stencil states
-		D3D11_DEPTH_STENCIL_DESC depthEnableDesc;
-		ZeroMemory(&depthEnableDesc, sizeof(depthEnableDesc));
+		D3D11_DEPTH_STENCIL_DESC stencilColorDesc;
+		ZeroMemory(&stencilColorDesc, sizeof(stencilColorDesc));
 
-		depthEnableDesc.DepthEnable = true;
-		depthEnableDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-		depthEnableDesc.DepthFunc = D3D11_COMPARISON_LESS;
-		depthEnableDesc.StencilEnable = true;
-		depthEnableDesc.StencilReadMask = 0xFF;
-		depthEnableDesc.StencilWriteMask = 0xFF;
-		depthEnableDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthEnableDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		depthEnableDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
-		depthEnableDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-		depthEnableDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthEnableDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		depthEnableDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthEnableDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+		stencilColorDesc.DepthEnable = false;
+		stencilColorDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		stencilColorDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+		stencilColorDesc.StencilEnable = true;
+		stencilColorDesc.StencilReadMask = 0xFF;
+		stencilColorDesc.StencilWriteMask = 0xFF;
+		stencilColorDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		stencilColorDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		stencilColorDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		stencilColorDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+		stencilColorDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		stencilColorDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		stencilColorDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		stencilColorDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 
-		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthEnableDesc, _depthEnableState.GetAddressOf());
+		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&stencilColorDesc, _stencilColorState.GetAddressOf());
 
-		D3D11_DEPTH_STENCIL_DESC depthDisableDesc;
-		ZeroMemory(&depthDisableDesc, sizeof(depthDisableDesc));
+		D3D11_DEPTH_STENCIL_DESC sobelDetectionDesc;
+		ZeroMemory(&sobelDetectionDesc, sizeof(sobelDetectionDesc));
 
-		depthDisableDesc.DepthEnable = false;
-		depthDisableDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-		depthDisableDesc.DepthFunc = D3D11_COMPARISON_ALWAYS;
-		depthDisableDesc.StencilEnable = true;
-		depthDisableDesc.StencilReadMask = 0xFF;
-		depthDisableDesc.StencilWriteMask = 0xFF;
-		depthDisableDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthDisableDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		depthDisableDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthDisableDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
-		depthDisableDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		depthDisableDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-		depthDisableDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		depthDisableDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+		sobelDetectionDesc.DepthEnable = false;
+		sobelDetectionDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		sobelDetectionDesc.DepthFunc = D3D11_COMPARISON_NEVER;
+		sobelDetectionDesc.StencilEnable = true;
+		sobelDetectionDesc.StencilReadMask = 0xFF;
+		sobelDetectionDesc.StencilWriteMask = 0xFF;
+		sobelDetectionDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		sobelDetectionDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		sobelDetectionDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		sobelDetectionDesc.FrontFace.StencilFunc = D3D11_COMPARISON_LESS_EQUAL;
+		sobelDetectionDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		sobelDetectionDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		sobelDetectionDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		sobelDetectionDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 
-		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&depthDisableDesc, _depthDisableState.GetAddressOf());
+		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&sobelDetectionDesc, _sobelDetectionState.GetAddressOf());
+
+		D3D11_DEPTH_STENCIL_DESC stencilDisableDesc;
+		ZeroMemory(&stencilDisableDesc, sizeof(stencilDisableDesc));
+
+		stencilDisableDesc.DepthEnable = true;
+		stencilDisableDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		stencilDisableDesc.DepthFunc = D3D11_COMPARISON_LESS;
+		stencilDisableDesc.StencilEnable = false;
+
+		ResourceManager::Instance().GetDevice()->CreateDepthStencilState(&stencilDisableDesc, _stencilDisableState.GetAddressOf());
+
+		// Create blend states
+		D3D11_BLEND_DESC outlineBlendDesc;
+		outlineBlendDesc.AlphaToCoverageEnable = false;
+		outlineBlendDesc.IndependentBlendEnable = false;
+		outlineBlendDesc.RenderTarget[0].BlendEnable = true;
+		outlineBlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		outlineBlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		outlineBlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+		outlineBlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
+		outlineBlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
+		outlineBlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+		outlineBlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+		ResourceManager::Instance().GetDevice()->CreateBlendState(&outlineBlendDesc, _outlineBlendState.GetAddressOf());
+
+		stencilColors[0] = XMFLOAT4{ 1.0f, 0.0f, 0.0f, 1.0f };
+		stencilColors[1] = XMFLOAT4{ 0.0f, 1.0f, 0.0f, 1.0f };
+		stencilColors[2] = XMFLOAT4{ 0.0f, 0.0f, 1.0f, 1.0f };
+		stencilColors[3] = XMFLOAT4{ 1.0f, 1.0f, 0.0f, 1.0f };
+		stencilColors[4] = XMFLOAT4{ 1.0f, 0.0f, 1.0f, 1.0f };
 	}
 
 	OutlinePass::~OutlinePass()
@@ -83,47 +112,42 @@ namespace RocketCore::Graphics
 		// 두번째 단계는 렌더타겟뷰를 셰이더리소스뷰로 가져와서
 		// 소벨 가장자리 검출 단계를 거쳐 외곽선부분만 딴다.
 		// 외곽선부분을 딴 곳에 외곽선 색깔을 입혀 최종적으로 출력한다.
-		
-		// 첫번째 단계
-		//_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
-		_stencilEnableBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
-		_stencilEnableBuffer->ClearRenderTargets();
 
-		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		_deviceContext->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID));
-		
-		_deviceContext->OMSetDepthStencilState(_depthDisableState.Get(), 1);
+		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-		//_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS_3Vertex.cso");
+		// 첫번째 단계
+		_stencilEnableBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
+		_stencilEnableBuffer->ClearRenderTargets(XMVECTOR{ 0.0f, 0.0f, 0.0f, 1.0f });
+
 		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
+		_vertexShader->SetShader();
 		_pixelShader = ResourceManager::Instance().GetPixelShader("Outline_StencilColorPS.cso");
 
-		_vertexShader->SetShader();
+		for (UINT i = 0; i < outlineObjects.size(); ++i)
+		{
+			_deviceContext->OMSetDepthStencilState(_stencilColorState.Get(), i + 1);
 
-		_pixelShader->SetFloat4("outlineColor", XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
-		_pixelShader->CopyAllBufferData();
-		_pixelShader->SetShader();
+			_pixelShader->SetFloat4("outlineColor", stencilColors[i]);
+			_pixelShader->CopyAllBufferData();
+			_pixelShader->SetShader();
 
-		_deviceContext->Draw(4, 0);
-
-		_deviceContext->OMSetDepthStencilState(_depthDisableState.Get(), 2);
-
-		//_vertexShader->SetShader();
-
-		_pixelShader->SetFloat4("outlineColor", XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f));
-		_pixelShader->CopyAllBufferData();
-		_pixelShader->SetShader();
-
-		_deviceContext->Draw(4, 0);
+			_deviceContext->Draw(4, 0);
+		}
 
 		// 두번째 단계
-		_quadBuffer->SetRenderTargets();
+		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
+
+		_deviceContext->OMSetDepthStencilState(_sobelDetectionState.Get(), 1);
+		_deviceContext->OMSetBlendState(_outlineBlendState.Get(), nullptr, 0xffffffff);
 
 		_pixelShader = ResourceManager::Instance().GetPixelShader("Outline_SobelDetectionPS.cso");
 
 		_pixelShader->SetFloat4("outlineColor", XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f));
 		_pixelShader->SetFloat("outlineThreshHold", 0.5f);
-		_pixelShader->SetFloat("outlineThickness", 2.0f);
+		_pixelShader->SetFloat("outlineThickness", 1.25f);
+		_pixelShader->SetFloat("screenWidth", static_cast<float>(_deferredBuffers->GetScreenWidth()));
+		_pixelShader->SetFloat("screenHeight", static_cast<float>(_deferredBuffers->GetScreenHeight()));
 		_pixelShader->SetShaderResourceView("StencilColorTex", _stencilEnableBuffer->GetShaderResourceView());
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();
@@ -131,6 +155,9 @@ namespace RocketCore::Graphics
 		_deviceContext->Draw(4, 0);
 
 		_quadBuffer->FlushShaderResourceViews();
+
+		_deviceContext->OMSetBlendState(nullptr, nullptr, 0xffffffff);
+		_deviceContext->OMSetDepthStencilState(_stencilDisableState.Get(), 0);
 	}
 
 }

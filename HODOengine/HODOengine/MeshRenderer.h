@@ -15,8 +15,6 @@ namespace HDData
 		void LoadNormalMap(const std::string& fileName);
 		void LoadDiffuseMap(const std::string& fileName);
 		void LoadARMMap(const std::string& fileName);
-		void SetOutlineActive(bool isActive);
-		void SetOutlineData(const Vector4& color = Vector4{ 1.0f, 0.54f, 0.0f, 1.0f }, bool depthCheck = true);
 
 	protected:
 		virtual void Update() override;

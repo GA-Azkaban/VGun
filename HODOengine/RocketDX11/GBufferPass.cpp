@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "OutlinePass.h"
 #include "DeferredBuffers.h"
 using namespace DirectX;
 
@@ -58,11 +59,17 @@ namespace RocketCore::Graphics
 			staticMeshObj->Render();
 		}
 
-		std::vector<SkinningMeshObject*>& skinningMeshList = ObjectManager::Instance().GetSkinningMeshObjList();
-		for (UINT i = 0; i < skinningMeshList.size(); ++i)
+		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
+		{
+			if(skinningMeshObj->IsOutlineActive())
+				continue;
+			skinningMeshObj->Render();
+		}
+
+		for (UINT i = 0; i < OutlinePass::outlineObjects.size(); ++i)
 		{
 			_deviceContext->OMSetDepthStencilState(_stencilEnableState.Get(), i + 1);
-			skinningMeshList[i]->Render();
+			OutlinePass::outlineObjects[i]->Render();
 		}
 
 		ID3D11ShaderResourceView* nullSRV = nullptr;
