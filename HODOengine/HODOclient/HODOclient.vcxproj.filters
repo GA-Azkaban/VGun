@@ -55,6 +55,12 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp">
+      <Filter>99_unity,fsm</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMtestScript.cpp">
+      <Filter>99_unity,fsm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -120,6 +126,12 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
+    <ClInclude Include="UnitySceneLoaderTest.h">
+      <Filter>99_unity,fsm</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMtestScript.h">
+      <Filter>99_unity,fsm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -183,6 +195,9 @@
     </Filter>
     <Filter Include="03_Manager\NetworkManager\Network">
       <UniqueIdentifier>{456bbcca-cd0c-4578-9f4c-42c5856a56ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99_unity,fsm">
+      <UniqueIdentifier>{dc6d31e5-5ab0-4c61-a724-977f42b9a27b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

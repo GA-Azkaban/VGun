@@ -226,6 +226,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LobbyManager.h" />
     <ClInclude Include="LoginSceneView.h" />
@@ -251,6 +252,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Enum.pb.cc" />
+    <ClCompile Include="FSMtestScript.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="LobbyManager.cpp" />
     <ClCompile Include="LoginSceneView.cpp" />

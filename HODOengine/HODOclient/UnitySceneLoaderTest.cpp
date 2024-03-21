@@ -1,5 +1,6 @@
 ﻿#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
+#include "FSMtestScript.h"
 
 UnitySceneLoaderTest::UnitySceneLoaderTest()
 {
@@ -22,12 +23,46 @@ void UnitySceneLoaderTest::Start()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	//auto building = API::CreateObject(_scene);
-	//building->AddComponent<HDData::MeshRenderer>();
-	//auto comp = building->GetComponent<HDData::MeshRenderer>();
-	//comp->LoadMesh("meshModel.fbx");
+	auto player = API::CreateObject(_scene, "player");
+	auto meshComp = player->AddComponent<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadMesh("little_man3.fbx");
+	meshComp->LoadDiffuseMap("T_TP_CH_Camo_001_001_D.png");
+	//meshComp->PlayAnimation("rundd.fbx");
 
-	API::LoadSceneFromData("transformData.json");
+	auto aniComp = player->AddComponent<HDData::Animator>();
+	player->AddComponent<FSMtestScript>();
+
+	// animationController
+	auto aniCom = API::CreateAnimationController();
+	aniCom->CreateState("IDLE", "idle.fbx");
+	aniCom->CreateState("WALK", "run.fbx");
+
+	aniCom->CreateBoolParam("isWalk", false);
+
+	aniComp->SetAnimationController(aniCom);
+
+	aniCom->GetState("IDLE").MakeTransition("WALK").AddCondition("WALK", "isWalk", true);
+	aniCom->GetState("WALK").MakeTransition("IDLE").AddCondition("IDLE", "isWalk", false);
+
+	aniCom->SetEntryState("IDLE");
+
+	//AnimationController* anicon = new AnimationController;
+
+	//anicon->CreateState("1");
+	//anicon->CreateBoolParam("isWalk", false);
+	//anicon->CreateTriggerParam("isJump");
+
+	//anicon->GetState("IDLE")->MakeTransition("WALK").AddCondition("WALK", "isWalk", true);
+	//anicon->GetState("IDLE")->MakeTransition("DIE", "isDie", "Less", 0.5f);
+
+	//Animator animator;
+
+	//animator->SetBoolParam("isWalk", true);
+
+
+
+
+	//API::LoadSceneFromData("transformData.json");
 
 	API::LoadScene(_scene);
 }
