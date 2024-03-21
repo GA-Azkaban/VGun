@@ -101,6 +101,7 @@ namespace RocketCore::Graphics
 	private:
 		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;
+		QuadBuffer* _stencilEnableBuffer;
 		QuadBuffer* _toneMapBuffer;
 		ShadowMapPass* _shadowMapPass;
 		GBufferPass* _GBufferPass;
