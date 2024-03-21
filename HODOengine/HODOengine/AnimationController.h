@@ -38,6 +38,7 @@ namespace HDData
 			float valueF = 0.f;
 			int valueI = 0;
 			bool valueB = false;
+			bool valueT = false;
 		};
 
 	public:
@@ -46,7 +47,7 @@ namespace HDData
 		void AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value);
 		void AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value);
 		void AddCondition(std::string nextStateName, std::string conditionName, bool value);
-		void AddCondition(std::string nextStateName, std::string conditionName);
+		void AddTrigger(std::string nextStateName, std::string conditionName, bool value);
 
 		std::string stateName;
 		std::string motion;
@@ -95,7 +96,7 @@ namespace HDData
 		void SetFloatParam(std::string, float);
 		void SetIntParam(std::string, int);
 		void SetBoolParam(std::string, bool);
-		void SetTriggerParam(std::string);
+		void SetTriggerParam(std::string, bool);
 
 	private:
 

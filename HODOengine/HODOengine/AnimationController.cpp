@@ -59,7 +59,10 @@ namespace HDData
 					break;
 					case eConditionType::TRIGGER :
 					{
-
+						if (trans->valueT == _triggerParams[trans->conditionName])
+						{
+							changeState = &_allStates[trans->transState];
+						}
 					}
 					break;
 					default:
@@ -91,6 +94,7 @@ namespace HDData
 
 	HDData::State& AnimationController::GetState(std::string stateName)
 	{
+		this;
 		return _allStates[stateName];
 	}
 
@@ -159,9 +163,9 @@ namespace HDData
 		_boolParams.find(name)->second = val;
 	}
 
-	void AnimationController::SetTriggerParam(std::string name)
+	void AnimationController::SetTriggerParam(std::string name, bool val)
 	{
-		_triggerParams.find(name)->second = !_triggerParams.find(name)->second;
+		_triggerParams.find(name)->second = val;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -178,28 +182,28 @@ namespace HDData
 
 	void State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value)
 	{
-		auto vec = _transableStates[stateName];
+		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
-		Transition transition;
-		transition.transState = nextStateName;
-		transition.type = eConditionType::FLOAT;
-		transition.conditionName = conditionName;
-		transition.valueF = value;
+		Transition* transition = new Transition;
+		transition->transState = nextStateName;
+		transition->type = eConditionType::FLOAT;
+		transition->conditionName = conditionName;
+		transition->valueF = value;
 		
-		vec.push_back(&transition);
+		vec.push_back(transition);
 	}
 
 	void State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value)
 	{
-		auto vec = _transableStates[stateName];
+		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
-		Transition transition;
-		transition.transState = nextStateName;
-		transition.type = eConditionType::INT;
-		transition.conditionName = conditionName;
-		transition.valueI = value;
+		Transition* transition = new Transition;
+		transition->transState = nextStateName;
+		transition->type = eConditionType::INT;
+		transition->conditionName = conditionName;
+		transition->valueI = value;
 
-		vec.push_back(&transition);
+		vec.push_back(transition);
 	}
 
 	void State::AddCondition(std::string nextStateName, std::string conditionName, bool value)
@@ -216,16 +220,17 @@ namespace HDData
 		vec.push_back(transition);
 	}
 
-	void State::AddCondition(std::string nextStateName, std::string conditionName)
+	void State::AddTrigger(std::string nextStateName, std::string conditionName, bool value)
 	{
-		auto vec = _transableStates[stateName];
+		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
-		Transition transition;
-		transition.transState = nextStateName;
-		transition.type = eConditionType::TRIGGER;
-		transition.conditionName = conditionName;
+		Transition* transition = new Transition;
+		transition->transState = nextStateName;
+		transition->type = eConditionType::TRIGGER;
+		transition->conditionName = conditionName;
+		transition->valueT = value;
 
-		vec.push_back(&transition);
+		vec.push_back(transition);
 	}
 
 }

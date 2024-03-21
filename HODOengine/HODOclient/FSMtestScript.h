@@ -22,6 +22,7 @@ public:
 
 public:
 	HDData::Animator* _animator;
+	ePlayerState _currentState;
 
 };
 

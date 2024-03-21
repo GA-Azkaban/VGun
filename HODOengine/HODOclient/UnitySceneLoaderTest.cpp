@@ -36,13 +36,26 @@ void UnitySceneLoaderTest::Start()
 	auto aniCom = API::CreateAnimationController();
 	aniCom->CreateState("IDLE", "idle.fbx");
 	aniCom->CreateState("WALK", "run.fbx");
+	aniCom->CreateState("JUMP", "jump_real.fbx");
+	aniCom->CreateState("CRUNCH", "crunch.fbx");
 
 	aniCom->CreateBoolParam("isWalk", false);
+	aniCom->CreateTriggerParam("isJump");
+	aniCom->CreateTriggerParam("isCrunch");
 
 	aniComp->SetAnimationController(aniCom);
 
 	aniCom->GetState("IDLE").MakeTransition("WALK").AddCondition("WALK", "isWalk", true);
 	aniCom->GetState("WALK").MakeTransition("IDLE").AddCondition("IDLE", "isWalk", false);
+
+	aniCom->GetState("IDLE").MakeTransition("JUMP").AddTrigger("JUMP", "isJump", true);
+	aniCom->GetState("JUMP").MakeTransition("IDLE");
+
+	aniCom->GetState("WALK").MakeTransition("JUMP").AddTrigger("JUMP", "isJump", true);
+	aniCom->GetState("JUMP").MakeTransition("WALK");
+
+	aniCom->GetState("IDLE").MakeTransition("CRUNCH").AddTrigger("CRUNCH", "isCrunch", true);
+	aniCom->GetState("CRUNCH").MakeTransition("IDLE");
 
 	aniCom->SetEntryState("IDLE");
 

@@ -57,9 +57,9 @@ namespace HDData
 		_animationController->SetBoolParam(name, val);
 	}
 
-	void Animator::SetTrigger(std::string name)
+	void Animator::SetTrigger(std::string name, bool val)
 	{
-		_animationController->SetTriggerParam(name);
+		_animationController->SetTriggerParam(name, val);
 	}
 
 }

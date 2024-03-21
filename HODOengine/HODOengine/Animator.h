@@ -27,7 +27,7 @@ namespace HDData
 		void SetFloat(std::string, float);
 		void SetInt(std::string, int);
 		void SetBool(std::string, bool);
-		void SetTrigger(std::string);
+		void SetTrigger(std::string, bool);
 	};
 }
 
