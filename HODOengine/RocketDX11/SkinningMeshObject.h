@@ -36,6 +36,10 @@ namespace RocketCore::Graphics
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
 		virtual void LoadARMMap(const std::string& fileName) override;
+		virtual void LoadRoughnessMap(const std::string& fileName) override;
+		virtual void LoadMetallicMap(const std::string& fileName) override;
+		virtual void SetRoughnessValue(float value) override;
+		virtual void SetMetallicValue(float value) override;
 
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);
@@ -44,9 +48,11 @@ namespace RocketCore::Graphics
 
 		virtual void SetOutlineActive(bool isActive) override;
 
+		virtual const Matrix& GetBoneTransformByNodeName(std::string nodeName) override;
+
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();
-		std::vector<DirectX::XMMATRIX>& GetBoneTransform() { return m_boneTransform; }
+		std::vector<DirectX::XMMATRIX>& GetBoneTransforms() { return m_boneTransform; }
 		bool IsActive() { return m_isActive; }
 		bool IsOutlineActive() { return m_isOutlineActive; };
 		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
@@ -79,6 +85,7 @@ namespace RocketCore::Graphics
 		Animation* m_previousAnimation;
 		Animation* m_currentAnimation;
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
+		std::unordered_map<std::string, DirectX::XMMATRIX> m_boneTransformMap;
 		Node* m_node;
 
 		// Transform Matrix

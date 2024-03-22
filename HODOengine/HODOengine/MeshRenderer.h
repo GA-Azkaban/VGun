@@ -15,6 +15,10 @@ namespace HDData
 		void LoadNormalMap(const std::string& fileName);
 		void LoadDiffuseMap(const std::string& fileName);
 		void LoadARMMap(const std::string& fileName);
+		void LoadRoughnessMap(const std::string& fileName);
+		void LoadMetallicMap(const std::string& fileName);
+		void SetRoughnessValue(float value);
+		void SetMetallicValue(float value);
 
 	protected:
 		virtual void Update() override;

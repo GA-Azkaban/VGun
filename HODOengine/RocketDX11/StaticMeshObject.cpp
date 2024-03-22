@@ -59,6 +59,28 @@ namespace RocketCore::Graphics
         m_material->SetOcclusionRoughnessMetalMap(armTex);
     }
 
+	void StaticMeshObject::LoadRoughnessMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* roughnessTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(roughnessTex);
+	}
+
+	void StaticMeshObject::LoadMetallicMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* metallicTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(metallicTex);
+	}
+
+	void StaticMeshObject::SetRoughnessValue(float value)
+	{
+		m_material->SetRoughness(value);
+	}
+
+	void StaticMeshObject::SetMetallicValue(float value)
+	{
+		m_material->SetMetallic(value);
+	}
+
 	void StaticMeshObject::Render()
 	{
 		if (!m_isActive)
@@ -110,8 +132,8 @@ namespace RocketCore::Graphics
 			else
 			{
 				pixelShader->SetInt("useOccMetalRough", 0);
-				pixelShader->SetInt("gMetallic", m_material->GetMetallic());
-				pixelShader->SetInt("gRoughness", m_material->GetRoughness());
+				pixelShader->SetFloat("gMetallic", m_material->GetMetallic());
+				pixelShader->SetFloat("gRoughness", m_material->GetRoughness());
 			}
 
 			pixelShader->CopyAllBufferData();

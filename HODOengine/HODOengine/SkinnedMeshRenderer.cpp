@@ -36,6 +36,26 @@ namespace HDData
         _skinnedMesh->LoadARMMap(fileName);
     }
 
+	void SkinnedMeshRenderer::LoadRoughnessMap(const std::string& fileName)
+	{
+		_skinnedMesh->LoadRoughnessMap(fileName);
+	}
+
+	void SkinnedMeshRenderer::LoadMetallicMap(const std::string& fileName)
+	{
+		_skinnedMesh->LoadMetallicMap(fileName);
+	}
+
+	void SkinnedMeshRenderer::SetRoughnessValue(float value)
+	{
+		_skinnedMesh->SetRoughnessValue(value);
+	}
+
+	void SkinnedMeshRenderer::SetMetallicValue(float value)
+	{
+		_skinnedMesh->SetMetallicValue(value);
+	}
+
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
 		_skinnedMesh->PlayAnimation(fileName, isLoop);
@@ -49,6 +69,11 @@ namespace HDData
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_skinnedMesh->SetOutlineActive(isActive);
+	}
+
+	const Matrix& SkinnedMeshRenderer::GetBoneTransformByNodeName(std::string nodeName)
+	{
+		return _skinnedMesh->GetBoneTransformByNodeName(nodeName);
 	}
 
 	void SkinnedMeshRenderer::Update()

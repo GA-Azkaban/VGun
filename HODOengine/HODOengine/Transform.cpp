@@ -118,6 +118,17 @@ namespace HDData
 		return Vector3::Transform(Vector3(1.0f, 0.0f, 0.0f), rotMatrix);
 	}
 
+	void Transform::SetWorldTM(const Matrix& worldTM)
+	{
+		DirectX::XMVECTOR scale;
+		DirectX::XMVECTOR rotate;
+		DirectX::XMVECTOR translate;
+		DirectX::XMMatrixDecompose(&scale, &rotate, &translate, worldTM);
+		SetPosition(translate.m128_f32[0], translate.m128_f32[1], translate.m128_f32[2]);
+		SetRotation(rotate.m128_f32[0], rotate.m128_f32[1], rotate.m128_f32[2], rotate.m128_f32[3]);
+		SetScale(scale.m128_f32[0], scale.m128_f32[1], scale.m128_f32[2]);
+	}
+
 	void Transform::SetPosition(const Vector3& position)
 	{
 		SetPosition(position.x, position.y, position.z);

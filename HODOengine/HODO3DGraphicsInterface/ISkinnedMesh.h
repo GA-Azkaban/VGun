@@ -15,5 +15,10 @@ namespace HDEngine
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) = 0;
 		virtual bool IsAnimationEnd() = 0;
 		virtual void SetOutlineActive(bool isActive) = 0;
+		virtual const Matrix& GetBoneTransformByNodeName(std::string nodeName) = 0;
+		virtual void LoadRoughnessMap(const std::string& fileName) = 0;
+		virtual void LoadMetallicMap(const std::string& fileName) = 0;
+		virtual void SetRoughnessValue(float value) = 0;
+		virtual void SetMetallicValue(float value) = 0;
 	};
 }

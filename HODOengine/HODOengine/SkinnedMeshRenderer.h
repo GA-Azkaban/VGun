@@ -15,9 +15,14 @@ namespace HDData
 		void LoadNormalMap(const std::string& fileName);
 		void LoadDiffuseMap(const std::string& fileName);
 		void LoadARMMap(const std::string& fileName);
+		void LoadRoughnessMap(const std::string& fileName);
+		void LoadMetallicMap(const std::string& fileName);
+		void SetRoughnessValue(float value);
+		void SetMetallicValue(float value);
 		void PlayAnimation(const std::string& fileName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
+		const Matrix& GetBoneTransformByNodeName(std::string nodeName);
 
 	protected:
 		virtual void Update() override;

@@ -645,6 +645,11 @@ namespace RocketCore::Graphics
 		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size());
 		_loadedFileInfo["cube"].loadedMeshes.push_back(_cube);
 
+		GeometryGenerator::MeshData sphere;
+		_geometryGen->CreateSphere(2, 30, 30, sphere);
+
+		Mesh* _sphere = new Mesh(&sphere.Vertices[0], sphere.Vertices.size(), &sphere.Indices[0], sphere.Indices.size());
+		_loadedFileInfo["sphere"].loadedMeshes.push_back(_sphere);
 	}
 
 	void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)

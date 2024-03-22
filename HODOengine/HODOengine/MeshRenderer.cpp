@@ -8,7 +8,7 @@ namespace HDData
 	MeshRenderer::MeshRenderer()
 		: _staticMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
 	{
-		//HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		
 	}
 
 	MeshRenderer::~MeshRenderer()
@@ -35,6 +35,26 @@ namespace HDData
 	{
         _staticMesh->LoadARMMap(fileName);
     }
+
+	void MeshRenderer::LoadRoughnessMap(const std::string& fileName)
+	{
+		_staticMesh->LoadRoughnessMap(fileName);
+	}
+
+	void MeshRenderer::LoadMetallicMap(const std::string& fileName)
+	{
+		_staticMesh->LoadMetallicMap(fileName);
+	}
+
+	void MeshRenderer::SetRoughnessValue(float value)
+	{
+		_staticMesh->SetRoughnessValue(value);
+	}
+
+	void MeshRenderer::SetMetallicValue(float value)
+	{
+		_staticMesh->SetMetallicValue(value);
+	}
 
 	void MeshRenderer::Update()
 	{

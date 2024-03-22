@@ -59,9 +59,9 @@ namespace RocketCore::Graphics
 					return;
 				}
 
-				if (m_currentAnimation->isLoop == true)
+				if (m_currentAnimation->isEnd == true)
 				{
-					if (m_currentAnimation->isEnd == true)
+					if (m_currentAnimation->isLoop == true)
 					{
 						m_currentAnimation->isEnd = false;
 					}
@@ -180,6 +180,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
 		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
+		m_boneTransformMap[node.name] = m_boneTransform[node.bone.id];
 
 		// update values for children bones
 		for (Node child : node.children)
@@ -494,9 +495,31 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::LoadARMMap(const std::string& fileName)
 	{
-        ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
-        m_material->SetOcclusionRoughnessMetalMap(armTex);
-    }
+		ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(armTex);
+	}
+
+	void SkinningMeshObject::LoadRoughnessMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* roughnessTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(roughnessTex);
+	}
+
+	void SkinningMeshObject::LoadMetallicMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* metallicTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(metallicTex);
+	}
+
+	void SkinningMeshObject::SetRoughnessValue(float value)
+	{
+		m_material->SetRoughness(value);
+	}
+
+	void SkinningMeshObject::SetMetallicValue(float value)
+	{
+		m_material->SetMetallic(value);
+	}
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
 	{
@@ -533,6 +556,16 @@ namespace RocketCore::Graphics
 			Animation newAnim = *(e.second);
 			m_animations.insert(std::make_pair(animName, newAnim));
 		}
+	}
+
+	const Matrix& SkinningMeshObject::GetBoneTransformByNodeName(std::string nodeName)
+	{
+		Matrix result;
+		auto iter = m_boneTransformMap.find(nodeName);
+		if (iter != m_boneTransformMap.end())
+			XMStoreFloat4x4(&result, iter->second);
+
+		return result;
 	}
 
 }

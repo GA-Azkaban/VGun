@@ -27,6 +27,10 @@ namespace RocketCore::Graphics
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadDiffuseMap(const std::string& fileName) override;
 		virtual void LoadARMMap(const std::string& fileName) override;
+		virtual void LoadRoughnessMap(const std::string& fileName) override;
+		virtual void LoadMetallicMap(const std::string& fileName) override;
+		virtual void SetRoughnessValue(float value) override;
+		virtual void SetMetallicValue(float value) override;
 
 	public:
 		void Render();

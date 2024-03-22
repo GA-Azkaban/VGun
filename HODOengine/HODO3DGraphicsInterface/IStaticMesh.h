@@ -12,5 +12,9 @@ namespace HDEngine
 		virtual void LoadNormalMap(const std::string& fileName) = 0;
 		virtual void LoadDiffuseMap(const std::string& fileName) = 0;
 		virtual void LoadARMMap(const std::string& fileName) = 0;
+		virtual void LoadRoughnessMap(const std::string& fileName) = 0;
+		virtual void LoadMetallicMap(const std::string& fileName) = 0;
+		virtual void SetRoughnessValue(float value) = 0;
+		virtual void SetMetallicValue(float value) = 0;
 	};
 }
