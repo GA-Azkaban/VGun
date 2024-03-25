@@ -1,5 +1,6 @@
 ﻿#include "Types.h"
 #include "LobbyManager.h"
+#include "NetworkManager.h"
 
 
 LobbyManager& LobbyManager::Instance()
@@ -42,7 +43,29 @@ void LobbyManager::ExitJoin()
 
 void LobbyManager::MakeNewAccount(std::string id, std::string password, std::string nickname)
 {
+	NetworkManager::Instance().SendCreateAccount(id, password,nickname);
+}
 
+void LobbyManager::LoginFAIL(int errorCode)
+{
+	switch (errorCode)
+	{
+		case LOGIN_FAIL:
+
+			break;
+		case ID_DUPLICATION:
+			break;
+
+		case NICKNAME_DUPLICATION:
+			break;
+
+		case SIGNUP_FAIL:
+			break;
+
+		default:
+			std::cout << "Unknown Error Code" << std::endl;
+			break;
+	}
 }
 
 void LobbyManager::SetLobbyMainCanvas(HDData::GameObject* mainCanvas)
@@ -54,3 +77,4 @@ void LobbyManager::SetJoinCanvas(HDData::GameObject* joinCanvas)
 {
 	_joinCanvas = joinCanvas;
 }
+

@@ -1,4 +1,4 @@
-#include "LoginSceneView.h"
+﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 
 LoginSceneView::LoginSceneView()
@@ -139,8 +139,19 @@ void LoginSceneView::LoginView()
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
+	// login sucess canvas
+	HDData::GameObject* loginSucess = API::CreateImageBox(_scene, "sucessImg");
+	loginSucess->GetComponent<HDData::ImageUI>()->SetImage("Login_Sucess.png");
+	loginSucess->GetComponent<HDData::ImageUI>()->SetSortOrder(0.22f);
+	loginSucess->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+
+	// login fail canvas
+	HDData::GameObject* loginFail = API::CreateImageBox(_scene, "failImg");
+	loginFail->GetComponent<HDData::ImageUI>()->SetImage("Login_Fail_temp.png");
+	loginFail->GetComponent<HDData::ImageUI>()->SetSortOrder(0.22f);
+	loginFail->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+
 	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinCanvas);
-	
 	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
 	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
 	makeAccountBtn->GetTransform()->SetLocalPosition(-150.f, 100.f, 0.f);

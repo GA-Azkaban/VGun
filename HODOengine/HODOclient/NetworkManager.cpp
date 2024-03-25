@@ -6,6 +6,7 @@
 #include "ServerSession.h"
 
 #include "GameManager.h"
+#include "LobbyManager.h"
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -68,31 +69,14 @@ void NetworkManager::RecvFail(int32 errorCode)
 {
 	// Todo
 	// 로그인에 실패했을때 모든 처리를 여기서
-	switch (errorCode)
-	{
-		case LOGIN_FAIL:
-
-			break;
-		case ID_DUPLICATION:
-			break;
-
-		case NICKNAME_DUPLICATION:
-			break;
-
-		case SIGNUP_FAIL:
-			break;
-
-		default:
-			std::cout << "Unknown Error Code" << std::endl;
-			break;
-	}
-
+	LobbyManager::Instance().LoginFAIL(errorCode);
 }
 
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 {
 	// remove pyramid
 	// 로그인이 성공했을때 처리
+
 
 }
 

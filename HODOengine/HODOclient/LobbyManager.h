@@ -1,6 +1,14 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 
+enum errorNum
+{
+	LOGIN_FAIL = 1001,
+	ID_DUPLICATION = 1002,
+	NICKNAME_DUPLICATION = 1003,
+	SIGNUP_FAIL = 1004,
+};
+
 class LobbyManager : public HDData::Script
 {
 public:
@@ -22,6 +30,8 @@ public:
 	void Join();
 	void ExitJoin();
 	void MakeNewAccount(std::string, std::string, std::string);
+
+	void LoginFAIL(int errorCode);
 
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);

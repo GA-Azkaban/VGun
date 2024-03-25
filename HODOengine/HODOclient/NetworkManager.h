@@ -4,15 +4,6 @@
 #include "Enum.pb.h"
 #include "Struct.pb.h"
 
-enum errorNum
-{
-	LOGIN_FAIL = 1001,
-	ID_DUPLICATION = 1002,
-	NICKNAME_DUPLICATION = 1003,
-	SIGNUP_FAIL = 1004,
-};
-
-
 class NetworkManager : public HDData::Script
 {
 public:
