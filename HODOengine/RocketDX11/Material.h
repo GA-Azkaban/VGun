@@ -4,6 +4,7 @@
 #include "PixelShader.h"
 #include <string>
 #include <vector>
+#include <DirectXMath.h>
 using namespace Microsoft::WRL;
 
 class VertexShader;
@@ -23,6 +24,7 @@ namespace RocketCore::Graphics
 		ID3D11ShaderResourceView* GetOcclusionRoughnessMetalMap();
 		float GetMetallic();
 		float GetRoughness();
+		DirectX::XMFLOAT4 GetAlbedoColor();
 		VertexShader* GetVertexShader();
 		PixelShader* GetPixelShader();
 
@@ -35,6 +37,8 @@ namespace RocketCore::Graphics
 		void SetOcclusionRoughnessMetalMap(ID3D11ShaderResourceView* occlusionRoughMetal) { m_occlusionRoughnessMetal = occlusionRoughMetal; }
 		void SetMetallic(float v);
 		void SetRoughness(float v);
+		void SetAlbedoColor(DirectX::XMFLOAT4 color);
+		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255);
 
 	private:
 		VertexShader* m_vertexShader;
@@ -47,6 +51,8 @@ namespace RocketCore::Graphics
 
 		float m_metallic;
 		float m_roughness;
+
+		DirectX::XMFLOAT4 m_albedoColor;
 	};
 }
 

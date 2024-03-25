@@ -55,7 +55,7 @@ namespace RocketCore::Graphics
 
 	RocketCore::Graphics::Cubemap* ObjectManager::CreateCubeMap()
 	{
-		Cubemap* temp = Cubemap::Instance();
+		Cubemap* temp = &(Cubemap::Instance());
 		return temp;
 	}
 

@@ -26,9 +26,9 @@ namespace HDData
 		_skinnedMesh->LoadNormalMap(fileName);
 	}
 
-	void SkinnedMeshRenderer::LoadDiffuseMap(const std::string& fileName)
+	void SkinnedMeshRenderer::LoadAlbedoMap(const std::string& fileName)
 	{
-		_skinnedMesh->LoadDiffuseMap(fileName);
+		_skinnedMesh->LoadAlbedoMap(fileName);
 	}
 
 	void SkinnedMeshRenderer::LoadARMMap(const std::string& fileName)
@@ -54,6 +54,16 @@ namespace HDData
 	void SkinnedMeshRenderer::SetMetallicValue(float value)
 	{
 		_skinnedMesh->SetMetallicValue(value);
+	}
+
+	void SkinnedMeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /*= 255*/)
+	{
+		_skinnedMesh->SetAlbedoColor(r, g, b, a);
+	}
+
+	void SkinnedMeshRenderer::SetAlbedoColor(Vector4 color)
+	{
+		_skinnedMesh->SetAlbedoColor(color);
 	}
 
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)

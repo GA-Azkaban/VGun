@@ -6,7 +6,7 @@ namespace RocketCore::Graphics
 		: m_vertexShader(vertexShader), m_pixelShader(pixelShader),
 		m_materialAlbedo(0), m_materialNormal(0), m_occlusionRoughnessMetal(0),
 		m_materialMetallic(0), m_materialRoughness(0),
-		m_metallic(0.1f), m_roughness(0.4f)
+		m_metallic(0.1f), m_roughness(0.4f), m_albedoColor(DirectX::XMFLOAT4{1.0f, 1.0f, 1.0f, 1.0f})
 	{
 
 	}
@@ -56,6 +56,11 @@ namespace RocketCore::Graphics
 		return m_roughness;
 	}
 
+	DirectX::XMFLOAT4 Material::GetAlbedoColor()
+	{
+		return m_albedoColor;
+	}
+
 	VertexShader* Material::GetVertexShader()
 	{
 		return m_vertexShader;
@@ -74,6 +79,24 @@ namespace RocketCore::Graphics
 	void Material::SetRoughness(float v)
 	{
 		m_roughness = v;
+	}
+
+	void Material::SetAlbedoColor(DirectX::XMFLOAT4 color)
+	{
+		m_albedoColor = color;
+	}
+
+	void Material::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a)
+	{
+		float rVal = static_cast<float>(r) / 255.0f;
+		float gVal = static_cast<float>(g) / 255.0f;
+		float bVal = static_cast<float>(b) / 255.0f;
+		float aVal = static_cast<float>(a) / 255.0f;
+
+		m_albedoColor.x = rVal;
+		m_albedoColor.y = gVal;
+		m_albedoColor.z = bVal;
+		m_albedoColor.w = aVal;
 	}
 
 }

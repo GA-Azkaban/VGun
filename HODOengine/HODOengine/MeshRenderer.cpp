@@ -26,9 +26,9 @@ namespace HDData
 		_staticMesh->LoadNormalMap(fileName);
 	}
 
-	void MeshRenderer::LoadDiffuseMap(const std::string& fileName)
+	void MeshRenderer::LoadAlbedoMap(const std::string& fileName)
 	{
-		_staticMesh->LoadDiffuseMap(fileName);
+		_staticMesh->LoadAlbedoMap(fileName);
 	}
 
 	void MeshRenderer::LoadARMMap(const std::string& fileName)
@@ -54,6 +54,16 @@ namespace HDData
 	void MeshRenderer::SetMetallicValue(float value)
 	{
 		_staticMesh->SetMetallicValue(value);
+	}
+
+	void MeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /*= 255*/)
+	{
+		_staticMesh->SetAlbedoColor(r, g, b, a);
+	}
+
+	void MeshRenderer::SetAlbedoColor(Vector4 color)
+	{
+		_staticMesh->SetAlbedoColor(color);
 	}
 
 	void MeshRenderer::Update()

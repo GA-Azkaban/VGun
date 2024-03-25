@@ -100,10 +100,12 @@ namespace RocketCore::Graphics
 			{
 				pixelShader->SetInt("useAlbedo", 1);
 				pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
+				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
 			}
 			else
 			{
 				pixelShader->SetInt("useAlbedo", 0);
+				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
 			}
 
 			if (m_material->GetNormalMap())
@@ -481,10 +483,10 @@ namespace RocketCore::Graphics
 		LoadAnimation(ResourceManager::Instance().GetAnimations(fileName));
 	}
 
-	void SkinningMeshObject::LoadDiffuseMap(const std::string& fileName)
+	void SkinningMeshObject::LoadAlbedoMap(const std::string& fileName)
 	{
-		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetAlbedoMap(diffuseTex);
+		ID3D11ShaderResourceView* albedoTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetAlbedoMap(albedoTex);
 	}
 
 	void SkinningMeshObject::LoadNormalMap(const std::string& fileName)
@@ -519,6 +521,16 @@ namespace RocketCore::Graphics
 	void SkinningMeshObject::SetMetallicValue(float value)
 	{
 		m_material->SetMetallic(value);
+	}
+
+	void SkinningMeshObject::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /* = 255 */)
+	{
+		m_material->SetAlbedoColor(r, g, b, a);
+	}
+
+	void SkinningMeshObject::SetAlbedoColor(Vector4 color)
+	{
+		m_material->SetAlbedoColor(color);
 	}
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
