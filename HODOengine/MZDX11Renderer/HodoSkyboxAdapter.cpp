@@ -1,4 +1,4 @@
-#include "HodoSkyboxAdapter.h"
+﻿#include "HodoSkyboxAdapter.h"
 
 namespace hodoGIAdapter
 {
@@ -14,7 +14,7 @@ namespace hodoGIAdapter
 		_skybox.release();
 	}
 
-	void SkyboxAdapter::SetCubeMapTexture(const std::string& fileName)
+	void SkyboxAdapter::LoadCubeMapTexture(const std::string& fileName)
 	{
 		_skybox->SetCubeMapTexture(fileName);
 	}

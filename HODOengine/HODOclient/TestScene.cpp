@@ -65,10 +65,10 @@ TestScene::TestScene()
 	////auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
 	////colli->Setflag(eColliderType::PLAYER);
 
-	//// floor as static plane
-	////auto groundFloor = API::CreateObject(_scene);
-	////groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	////auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
+	// floor as static plane
+	auto groundFloor = API::CreateObject(_scene);
+	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
 	////// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
@@ -78,7 +78,7 @@ TestScene::TestScene()
 	//auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
 	//meshComp->LoadMesh("A_TP_CH_Breathing_Ori.fbx");
 
-	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
+	auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 
 	//auto playerPosText = API::CreateTextbox(_scene);
 	//playerPosText->GetTransform()->SetPosition(Vector3(100.0f, 40.0f, 50.0f));
