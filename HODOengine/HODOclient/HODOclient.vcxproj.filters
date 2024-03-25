@@ -55,6 +55,10 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp" />
+    <ClCompile Include="Weapon.cpp">
+      <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -120,6 +124,7 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
+    <ClInclude Include="UnitySceneLoaderTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

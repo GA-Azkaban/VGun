@@ -26,6 +26,7 @@ namespace HDData
 		Vector3 GetForward() const;				// world 기준
 		Vector3 GetUp() const;					// world 기준
 		Vector3 GetRight() const;				// world 기준
+		void SetWorldTM(const Matrix& worldTM);
 		void SetPosition(const Vector3& position);
 		void SetPosition(float x, float y, float z);
 		void SetRotation(const Quaternion& rotation);

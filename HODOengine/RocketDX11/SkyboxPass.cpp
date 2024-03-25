@@ -22,6 +22,6 @@ namespace RocketCore::Graphics
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 
-		Cubemap::Instance()->Render();
+		Cubemap::Instance().Render();
 	}
 }

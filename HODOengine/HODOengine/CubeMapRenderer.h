@@ -11,6 +11,7 @@ namespace HDData
 		CubeMapRenderer();
 
 		void LoadCubeMapTexture(const std::string& fileName);
+		void SetEnvLightIntensity();
 
 	protected:
 		virtual void OnEnable() override;

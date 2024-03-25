@@ -1,4 +1,4 @@
-#include "Mesh.h"
+﻿#include "Mesh.h"
 #include "ResourceManager.h"
 using namespace DirectX;
 
@@ -60,13 +60,14 @@ namespace RocketCore::Graphics
 		CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum);
 	}
 
-	Mesh::Mesh(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum)
+	Mesh::Mesh(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, bool tangentCalculated)
 		: m_device(0), m_deviceContext(0), m_singleVertexSize(0)
 	{
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
 		// Calcultate the tangents before copying to buffer
-		CalculateTangents(vertexArray, vertexNum, indexArray, indicesNum);
+		if(!tangentCalculated)
+			CalculateTangents(vertexArray, vertexNum, indexArray, indicesNum);
 		CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum);
 	}
 
