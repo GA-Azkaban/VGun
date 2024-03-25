@@ -18,7 +18,6 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
-	struct Outline;
 
 	class SkinningMeshObject : public HDEngine::ISkinnedMesh
 	{
@@ -34,8 +33,9 @@ namespace RocketCore::Graphics
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void LoadMesh(const std::string& fileName) override;
-		virtual void LoadNormalMap(const std::string& fileName);
-		virtual void LoadDiffuseMap(const std::string& fileName);
+		virtual void LoadNormalMap(const std::string& fileName) override;
+		virtual void LoadDiffuseMap(const std::string& fileName) override;
+		virtual void LoadARMMap(const std::string& fileName) override;
 
 		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
 		void PlayAnimation(UINT index, bool isLoop = true);
@@ -43,15 +43,13 @@ namespace RocketCore::Graphics
 		virtual bool IsAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
-		virtual void SetOutlineData(const Vector4& color = Vector4{ 1.0f, 0.54f, 0.0f, 1.0f }, bool depthCheck = true) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();
 		std::vector<DirectX::XMMATRIX>& GetBoneTransform() { return m_boneTransform; }
 		bool IsActive() { return m_isActive; }
+		bool IsOutlineActive() { return m_isOutlineActive; };
 		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
-
-		Outline* GetOutline() { return m_outline; }
 
 	private:
 		void LoadAnimation(const std::unordered_map<std::string, Animation*>& animation);
@@ -72,6 +70,7 @@ namespace RocketCore::Graphics
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
 		bool m_blendFlag;
+		bool m_isOutlineActive;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
@@ -84,7 +83,5 @@ namespace RocketCore::Graphics
 
 		// Transform Matrix
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
-
-		Outline* m_outline;
 	};
 }

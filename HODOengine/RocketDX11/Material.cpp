@@ -12,6 +12,8 @@ namespace RocketCore::Graphics
 
 	Material::~Material()
 	{
+		m_vertexShader = nullptr;
+		m_pixelShader = nullptr;
 		delete m_vertexShader;
 		delete m_pixelShader;
 		m_materialAlbedo.Reset();

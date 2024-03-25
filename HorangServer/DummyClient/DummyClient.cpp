@@ -45,7 +45,7 @@ int main()
 	ServerPacketHandler::Init();
 
 
-	int count = 64*4;
+	int count = 64 * 4;
 
 	Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
 		Horang::NetAddress(L"127.0.0.1", 7777),
@@ -71,27 +71,66 @@ int main()
 
 	std::this_thread::sleep_for(1s);
 
+	while (true)
 	{
-		Protocol::C_SIGNUP signUpPkt;
+		int menu = 0;
+		std::cout << "1. Login" << std::endl;
+		std::cout << "2. Create Account" << std::endl;
+		std::cout << " Select : " << std::endl;
+		std::cin >> menu;
 
-		signUpPkt.set_id(u8"test1");
-		signUpPkt.set_password(u8"test1");
-		signUpPkt.set_nickname(u8"test1");
+		::system("cls");
+		if (menu == 1)
+		{
+			std::string id;
+			std::string password;
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signUpPkt);
-		service->BroadCast(sendBuffer);
+			std::cout << "ID : ";
+			std::cin >> id;
+
+			std::cout << "Password : ";
+			std::cin >> password;
+
+			{
+				Protocol::C_SIGNIN signInPkt;
+
+				signInPkt.set_id(id);
+				signInPkt.set_password(password);
+
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signInPkt);
+				service->BroadCast(sendBuffer);
+			}
+		}
+		else if (menu == 2)
+		{
+			std::string id;
+			std::string password;
+			std::string nickname;
+
+			std::cout << "ID : ";
+			std::cin >> id;
+
+			std::cout << "Password : ";
+			std::cin >> password;
+
+			std::cout << "Nickname : ";
+			std::cin >> nickname;
+
+			{
+				Protocol::C_SIGNUP signUpPkt;
+
+				signUpPkt.set_id(id);
+				signUpPkt.set_password(password);
+				signUpPkt.set_nickname(nickname);
+
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signUpPkt);
+				service->BroadCast(sendBuffer);
+			}
+		}
+		::system("pause");
+		::system("cls");
+
 	}
-
-	{
-		Protocol::C_SIGNIN signInPkt;
-
-		signInPkt.set_id(u8"test1");
-		signInPkt.set_password(u8"test1");
-
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signInPkt);
-		service->BroadCast(sendBuffer);
-	}
-
 	/*Protocol::C_CHAT chatPkt;
 	chatPkt.set_msg(u8"Hello World");
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
@@ -101,7 +140,7 @@ int main()
 
 		this_thread::sleep_for(1s);
 	}*/
-	
+
 
 	/*for (int32 i = 0; i < 4; i++)
 	{

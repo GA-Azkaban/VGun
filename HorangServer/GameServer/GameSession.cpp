@@ -2,7 +2,7 @@
 #include "GameSession.h"
 #include "GameSessionManager.h"
 #include "ClientPacketHandler.h"
-
+#include "ErrorCode.h"
 
 void GameSession::OnConnected()
 {
@@ -11,6 +11,8 @@ void GameSession::OnConnected()
 
 void GameSession::OnDisconnected()
 {
+	_player = nullptr;
+
 	GSessionManager->Remove(static_pointer_cast<GameSession>(shared_from_this()));
 }
 
@@ -26,4 +28,13 @@ void GameSession::OnRecvPacket(BYTE* buffer, int32 len)
 void GameSession::OnSend(int32 len)
 {
 	//cout << "OnSend Len : " << len << endl;
+}
+
+void GameSession::SendError(ErrorCode errorCode)
+{
+	Protocol::S_ERROR packet;
+	packet.set_errorcode(static_cast<int32>(errorCode));
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
+	this->Send(sendBuffer);
 }

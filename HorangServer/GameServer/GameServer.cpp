@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <iostream>
 
 #include "ThreadManager.h"
@@ -14,7 +14,10 @@
 #include "DBConnectionPool.h"
 #include "DBBind.h"
 #include "DBConnectionRef.h"
+#include "Room.h"
+#include "AuthenticationManager.h"
 
+#include <codecvt>
 int main()
 {
 
@@ -161,7 +164,7 @@ int main()
 
 	ASSERT_CRASH(service->Start());
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < std::thread::hardware_concurrency(); i++)
 	{
 		GThreadManager->Launch([=]()
 			{
@@ -172,6 +175,28 @@ int main()
 			}
 		);
 	}
+
+	GThreadManager->Launch([=]()
+		{
+			while (true)
+			{
+				GAuthentication.FlushJob();
+				std::this_thread::yield();
+			}
+		}
+	);
+
+	GRoom = Horang::MakeShared<Room>();
+	GRoom->Initialize();
+	GThreadManager->Launch([=]()
+		{
+			while (true)
+			{
+				GRoom->FlushJob();
+				std::this_thread::yield();
+			}
+		}
+	);
 
 	GThreadManager->Join();
 

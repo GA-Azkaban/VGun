@@ -47,6 +47,10 @@ cbuffer ShadowData : register(b4)
 
 cbuffer MaterialData : register(b5)
 {
+	float4 outlineColor;
+	float outlineThreshHold;
+	float outlineThickness;
+
 	float gMetallic;
 	float gRoughness;
 	
@@ -54,8 +58,6 @@ cbuffer MaterialData : register(b5)
 	int useNormalMap;
 	int useOccMetalRough;
 	int useEnvMap;
-
-	float4 outlineColor;
 }
 
 cbuffer PostProcessData : register(b6)
