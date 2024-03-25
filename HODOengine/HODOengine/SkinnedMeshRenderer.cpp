@@ -31,6 +31,11 @@ namespace HDData
 		_skinnedMesh->LoadDiffuseMap(fileName);
 	}
 
+	void SkinnedMeshRenderer::LoadARMMap(const std::string& fileName)
+	{
+        _skinnedMesh->LoadARMMap(fileName);
+    }
+
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
 	{
 		_skinnedMesh->PlayAnimation(fileName, isLoop);
@@ -44,11 +49,6 @@ namespace HDData
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_skinnedMesh->SetOutlineActive(isActive);
-	}
-
-	void SkinnedMeshRenderer::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
-	{
-		_skinnedMesh->SetOutlineData(color, depthCheck);
 	}
 
 	void SkinnedMeshRenderer::Update()

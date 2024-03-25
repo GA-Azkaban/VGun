@@ -24,6 +24,7 @@ namespace RocketCore::Graphics
 	ShadowMapPass::~ShadowMapPass()
 	{
 		delete _deferredBuffers;
+		_deviceContext.Reset();
 	}
 
 	void ShadowMapPass::Render()

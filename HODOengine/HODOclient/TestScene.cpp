@@ -107,18 +107,19 @@ TestScene::TestScene()
 	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
 	//meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
 	//meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
-	meshComp->LoadMesh("little_man3.fbx");
+	meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
 	meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	meshComp->PlayAnimation("little_man3.fbx", true);
-	//meshComp->SetOutlineActive(true);
+	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
+	meshComp->SetOutlineActive(true);
 
-	//auto playerTest2 = API::CreateObject(_scene, "player2");
-	//playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 13.f, 0.f, 0.f });
-	//playerTest2->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
-	//auto meshComp2 = playerTest2->AddComponent<HDData::SkinnedMeshRenderer>();
-	//meshComp2->LoadMesh("A_TP_CH_Sprint_F.fbx");
-	//meshComp2->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
-	//meshComp2->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
+	auto playerTest2 = API::CreateObject(_scene, "player2");
+	playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.f, 0.5f, 0.f });
+	playerTest2->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
+	auto meshComp2 = playerTest2->AddComponent<HDData::SkinnedMeshRenderer>();
+	meshComp2->LoadMesh("A_TP_CH_Sprint_F.fbx");
+	meshComp2->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
+	meshComp2->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
+	meshComp2->SetOutlineActive(true);
 	////meshComp2->LoadMesh("little_man3.fbx");
 	////meshComp2->PlayAnimation("little_man3.fbx", true);
 

@@ -5,12 +5,13 @@
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "ResourceManager.h"
+#include "ObjectManager.h"
 #include "GraphicsStruct.h"
-#include "Outline.h"
 #include "OutlinePass.h"
 #include "MathHelper.h"
 #include "AssimpMathConverter.h"
 #include <cmath>
+#include <algorithm>
 using namespace DirectX;
 
 namespace RocketCore::Graphics
@@ -18,7 +19,7 @@ namespace RocketCore::Graphics
 	SkinningMeshObject::SkinningMeshObject()
 		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
-		m_blendFlag(false), m_outline(nullptr)
+		m_blendFlag(false), m_isOutlineActive(false)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -489,9 +490,13 @@ namespace RocketCore::Graphics
 	{
 		ID3D11ShaderResourceView* normalTex = ResourceManager::Instance().GetTexture(fileName);
 		m_material->SetNormalMap(normalTex);
-		if (normalTex != nullptr)
-			m_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 	}
+
+	void SkinningMeshObject::LoadARMMap(const std::string& fileName)
+	{
+        ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
+        m_material->SetOcclusionRoughnessMetalMap(armTex);
+    }
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
 	{
@@ -508,23 +513,16 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::SetOutlineActive(bool isActive)
 	{
-		if (!m_outline)
+		if (isActive)
 		{
-			m_outline = new Outline();
-			SetOutlineData();
-			OutlinePass::skinningMeshOutlines.push_back(this);
+			OutlinePass::outlineObjects.push_back(this);
+			m_isOutlineActive = true;
 		}
-
-		m_outline->isActive = isActive;
-	}
-
-	void SkinningMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
-	{
-		if (!m_outline)
-			return;
-
-		m_outline->color = color;
-		m_outline->depthCheck = depthCheck;
+		else
+		{
+			std::erase_if(OutlinePass::outlineObjects, [&](SkinningMeshObject* obj) { return obj == this; });
+			m_isOutlineActive = false;
+		}
 	}
 
 	void SkinningMeshObject::LoadAnimation(const std::unordered_map<std::string, Animation*>& animation)

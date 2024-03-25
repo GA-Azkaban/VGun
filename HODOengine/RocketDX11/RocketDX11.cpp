@@ -156,9 +156,11 @@ namespace RocketCore::Graphics
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
+		_stencilEnableBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
 		_toneMapBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
 		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+		_stencilEnableBuffer->Initialize(_screenWidth, _screenHeight);
 		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
 
 		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
@@ -166,12 +168,12 @@ namespace RocketCore::Graphics
 		_SSAOPass = new SSAOPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer, _shadowMapPass);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
-		_outlinePass = new OutlinePass(_deferredBuffers, _quadBuffer);
+		_outlinePass = new OutlinePass(_deferredBuffers, _quadBuffer, _stencilEnableBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
-		//_SSAOPass->CreateTexture(screenWidth, screenHeight);
+
 		Cubemap::Instance()->_deferredBuffers = _deferredBuffers;
 		Cubemap::Instance()->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
@@ -222,6 +224,8 @@ namespace RocketCore::Graphics
 
 		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+		_stencilEnableBuffer->Initialize(_screenWidth, _screenHeight);
+		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
 		_SSAOPass->CreateTexture(_screenWidth, _screenHeight);
 
 		// set the viewport transform
@@ -280,6 +284,7 @@ namespace RocketCore::Graphics
 		{
 			skinningMeshObj->Update(deltaTime);
 		}
+
 	}
 
 	void RocketDX11::Render()
@@ -289,13 +294,15 @@ namespace RocketCore::Graphics
 
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_GBufferPass->Render();
+		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_SSAOPass->Render();
 		_deferredPass->Render();
+		_outlinePass->Render();
+		
 #ifdef _DEBUG
 		_debugMeshPass->Render();
 		RenderLine();
 #endif
-		//_outlinePass->Render();
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
