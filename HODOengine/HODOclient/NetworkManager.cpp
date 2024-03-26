@@ -23,6 +23,7 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
+	Start();
 }
 
 void NetworkManager::Start()
@@ -30,7 +31,7 @@ void NetworkManager::Start()
 	ServerPacketHandler::Init();
 
 	_service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"127.0.0.1", 7777),
+		Horang::NetAddress(L"172.16.1.13", 7777),
 		Horang::MakeShared<Horang::IocpCore>(),
 		Horang::MakeShared<ServerSession>,
 		1
@@ -76,8 +77,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 {
 	// remove pyramid
 	// 로그인이 성공했을때 처리
-
-
+	LobbyManager::Instance().LoginSucess(uid, nickName);
 }
 
 bool NetworkManager::IsConnected()

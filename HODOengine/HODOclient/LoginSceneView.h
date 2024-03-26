@@ -13,8 +13,6 @@ public:
 
 private:
 	void LoginView();
-	void MainMenu();
-	void Lobby();
 
 private:
 	HDData::Scene* _scene;

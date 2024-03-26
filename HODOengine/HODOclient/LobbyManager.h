@@ -33,15 +33,33 @@ public:
 
 	void LoginFAIL(int errorCode);
 
+	void LoginSucess(int uid,std::string nickname);
+
+
+	void showOff(HDData::GameObject*);
+
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);
 	void SetJoinCanvas(HDData::GameObject* joinCanvas);
+
+	void SetidDupl(HDData::GameObject*);
+	void SetnameDule(HDData::GameObject*);
+	void SetSignupFail(HDData::GameObject*);
+	void SetSucessCanvas(HDData::GameObject* sucessCanvas);
+	void SetFailCanvas(HDData::GameObject* failCanvas);
 
 private:
 	// 메인 화면
 	HDData::GameObject* _mainCanvas;
 	// 회원가입
 	HDData::GameObject* _joinCanvas;
+	// 가입 성공 || 실패
+	HDData::GameObject* _loginSucessCanvas;
+	HDData::GameObject* _loginFailCanvas;
+
+	HDData::GameObject* _iddupl;
+	HDData::GameObject* _namedupl;
+	HDData::GameObject* _signupFail;
 
 	// 게임 로비
 	HDData::GameObject* _startButton;
