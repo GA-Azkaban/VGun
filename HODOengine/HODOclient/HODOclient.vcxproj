@@ -229,6 +229,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LobbyManager.h" />
     <ClInclude Include="LoginSceneView.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MenuManager.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
@@ -254,6 +256,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="LobbyManager.cpp" />
     <ClCompile Include="LoginSceneView.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MenuManager.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Player.cpp" />
