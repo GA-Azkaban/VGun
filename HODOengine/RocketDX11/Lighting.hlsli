@@ -33,7 +33,7 @@ float ShadowFactor(float4 worldPos)
 	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
 
 	float shadow = 0;
-	float bias = 0.001f;
+	float bias = 0.0001f;
 	for (int x = -1; x < 2; ++x)
 	{
 		for (int y = -1; y < 2; ++y)

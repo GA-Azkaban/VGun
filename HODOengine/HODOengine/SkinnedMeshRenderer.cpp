@@ -81,7 +81,7 @@ namespace HDData
 		_skinnedMesh->SetOutlineActive(isActive);
 	}
 
-	const Matrix& SkinnedMeshRenderer::GetBoneTransformByNodeName(std::string nodeName)
+	Matrix SkinnedMeshRenderer::GetBoneTransformByNodeName(std::string nodeName)
 	{
 		return _skinnedMesh->GetBoneTransformByNodeName(nodeName);
 	}

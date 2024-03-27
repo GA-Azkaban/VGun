@@ -1,4 +1,4 @@
-﻿#include "SkinningMeshObject.h"
+#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -55,16 +55,16 @@ namespace RocketCore::Graphics
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 				{
 					m_currentAnimation->isEnd = true;
+					if (m_currentAnimation->isLoop == true)
+					{
+						m_currentAnimation->accumulatedTime = 0.0f;
+					}
 					return;
 				}
 
 				if (m_currentAnimation->isEnd == true)
 				{
-					if (m_currentAnimation->isLoop == true)
-					{
-						m_currentAnimation->accumulatedTime = 0.0f;
-						m_currentAnimation->isEnd = false;
-					}
+					m_currentAnimation->isEnd = false;
 				}
 
 				if (!m_currentAnimation->isEnd)
@@ -182,7 +182,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
 		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
-		m_boneTransformMap[node.name] = m_boneTransform[node.bone.id];
+		m_boneTransformMap[node.name] = globalTransform;
 
 		// update values for children bones
 		for (Node child : node.children)
@@ -334,7 +334,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
-		UINT positionIndex = 0;
+		UINT positionIndex = prevAnim->positionTimestamps.size() - 1;
 		for (UINT i = 0; i < prevAnim->positionTimestamps.size() - 1; ++i)
 		{
 			if (prevAnimationTime < prevAnim->positionTimestamps[i + 1])
@@ -360,7 +360,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMFLOAT4 SkinningMeshObject::CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
-		UINT rotationIndex = 0;
+		UINT rotationIndex = prevAnim->rotationTimestamps.size() - 1;
 		for (UINT i = 0; i < prevAnim->rotationTimestamps.size() - 1; ++i)
 		{
 			if (prevAnimationTime < prevAnim->rotationTimestamps[i + 1])
@@ -385,7 +385,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
-		UINT scaleIndex = 0;
+		UINT scaleIndex = prevAnim->scaleTimestamps.size() - 1;
 		for (UINT i = 0; i < prevAnim->scaleTimestamps.size() - 1; ++i)
 		{
 			if (prevAnimationTime < prevAnim->scaleTimestamps[i + 1])
@@ -420,7 +420,13 @@ namespace RocketCore::Graphics
 		}
 
 		if (m_currentAnimation == &(animIter->second))
-			return;
+		{
+			if (m_currentAnimation->isLoop)
+				return;
+
+			if (!m_currentAnimation->isEnd)
+				return;
+		}
 
 		m_previousAnimation = m_currentAnimation;
 		m_currentAnimation = &(animIter->second);
@@ -428,15 +434,13 @@ namespace RocketCore::Graphics
 
 		if (m_previousAnimation != nullptr)
 		{
-			if (m_previousAnimation->uniqueAnimNum != m_currentAnimation->uniqueAnimNum)
+			m_currentAnimation->accumulatedTime = 0.0f;
+			if (m_currentAnimation->isLoop == false)
 			{
-				m_currentAnimation->accumulatedTime = 0.0f;
-				if (m_currentAnimation->isLoop == false)
-				{
-					m_currentAnimation->isEnd = false;
-				}
-				m_blendFlag = true;
+				m_currentAnimation->isEnd = false;
 			}
+			m_blendFlag = true;
+
 		}
 	}
 
@@ -462,15 +466,12 @@ namespace RocketCore::Graphics
 
 		if (m_previousAnimation != nullptr)
 		{
-			if (m_previousAnimation->uniqueAnimNum != m_currentAnimation->uniqueAnimNum)
+			m_currentAnimation->accumulatedTime = 0.0f;
+			if (m_currentAnimation->isLoop == false)
 			{
-				m_currentAnimation->accumulatedTime = 0.0f;
-				if (m_currentAnimation->isLoop == false)
-				{
-					m_currentAnimation->isEnd = false;
-				}
-				m_blendFlag = true;
+				m_currentAnimation->isEnd = false;
 			}
+			m_blendFlag = true;
 		}
 
 	}
@@ -570,7 +571,7 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	const Matrix& SkinningMeshObject::GetBoneTransformByNodeName(std::string nodeName)
+	Matrix SkinningMeshObject::GetBoneTransformByNodeName(std::string nodeName)
 	{
 		Matrix result;
 		auto iter = m_boneTransformMap.find(nodeName);
