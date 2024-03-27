@@ -225,7 +225,7 @@ namespace RocketCore::Graphics
 
 		Assimp::Importer importer;
 
-		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_GenUVCoords );
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
@@ -636,15 +636,20 @@ namespace RocketCore::Graphics
 		GeometryGenerator::MeshData skybox;
 		_geometryGen->CreateSkybox(skybox);
 
-		Mesh* _skybox = new Mesh(&skybox.Vertices[0], skybox.Vertices.size(), &skybox.Indices[0], skybox.Indices.size());
+		Mesh* _skybox = new Mesh(&skybox.Vertices[0], skybox.Vertices.size(), &skybox.Indices[0], skybox.Indices.size(), true);
 		_loadedFileInfo["skybox"].loadedMeshes.push_back(_skybox);
 
 		GeometryGenerator::MeshData cube;
 		_geometryGen->CreateBox(10, 2, 10, cube);
 
-		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size());
+		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size(), true);
 		_loadedFileInfo["cube"].loadedMeshes.push_back(_cube);
 
+		GeometryGenerator::MeshData sphere;
+		_geometryGen->CreateSphere(2, 30, 30, sphere);
+
+		Mesh* _sphere = new Mesh(&sphere.Vertices[0], sphere.Vertices.size(), &sphere.Indices[0], sphere.Indices.size(), true);
+		_loadedFileInfo["sphere"].loadedMeshes.push_back(_sphere);
 	}
 
 	void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)

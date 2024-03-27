@@ -74,7 +74,7 @@ namespace RocketCore::Graphics
 			XMMATRIX world = skinningMeshObj->GetWorldTM();
 
 			_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
-			_vertexShader->SetMatrix4x4Array("boneTransforms", &skinningMeshObj->GetBoneTransform()[0], skinningMeshObj->GetBoneTransform().size());
+			_vertexShader->SetMatrix4x4Array("boneTransforms", &skinningMeshObj->GetBoneTransforms()[0], skinningMeshObj->GetBoneTransforms().size());
 
 			_vertexShader->CopyAllBufferData();
 			_vertexShader->SetShader();

@@ -126,12 +126,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="UnitySceneLoaderTest.h">
-      <Filter>99_unity,fsm</Filter>
-    </ClInclude>
-    <ClInclude Include="FSMtestScript.h">
-      <Filter>99_unity,fsm</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

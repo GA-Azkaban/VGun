@@ -20,6 +20,7 @@ using Microsoft::WRL::ComPtr;
 namespace RocketCore::Graphics
 {
 	class Mesh;
+	class Material;
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
@@ -30,6 +31,7 @@ namespace RocketCore::Graphics
 	struct FileInfo
 	{
 		std::vector<Mesh*> loadedMeshes;
+		std::vector<Material*> loadedMaterials;
 		Node* node;
 		std::unordered_map<std::string, Animation*> loadedAnimation;	// <animName, animationInfo>
 	};
