@@ -39,6 +39,8 @@ namespace RocketCore::Graphics
 		friend Singleton;
 		~LightManager();
 
+		void Initialize(float screenWidth, float screenHeight);
+
 		Light* AddLight();
 		Light& GetLight(unsigned int index);
 		

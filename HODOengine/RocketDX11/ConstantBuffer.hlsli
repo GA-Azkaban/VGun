@@ -47,6 +47,8 @@ cbuffer ShadowData : register(b4)
 
 cbuffer MaterialData : register(b5)
 {
+	float4 albedoColor;
+
 	float4 outlineColor;
 	float outlineThreshHold;
 	float outlineThickness;
@@ -60,7 +62,12 @@ cbuffer MaterialData : register(b5)
 	int useEnvMap;
 }
 
-cbuffer PostProcessData : register(b6)
+cbuffer EnvironmentData : register(b6)
+{
+	float envLightIntensity;
+}
+
+cbuffer PostProcessData : register(b7)
 {
 	float4 ssaoSamples[64];
 	float2 ssaoNoiseScale;

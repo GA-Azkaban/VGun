@@ -20,6 +20,10 @@ void Player::Update()
 	{
 		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
 	}
+	else if (API::GetKeyDown(DIK_3))
+	{
+		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation("jump_real.fbx", false);
+	}
 }
 
 void Player::LateUpdate()

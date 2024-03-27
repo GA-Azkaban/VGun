@@ -152,6 +152,7 @@ namespace RocketCore::Graphics
 
 		CreateDepthStencilStates();
 		
+		LightManager::Instance().Initialize(_screenWidth, _screenHeight);
 		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
@@ -174,14 +175,15 @@ namespace RocketCore::Graphics
 		_spritePass = new SpritePass(_toneMapBuffer);
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
 
-		Cubemap::Instance()->_deferredBuffers = _deferredBuffers;
-		Cubemap::Instance()->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
+		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear.dds");
+		Cubemap::Instance().SetEnvLightIntensity(0.8f);
 
 		/// DEBUG Obejct
-		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
-		grid->LoadMesh("grid");
-		HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
-		axis->LoadMesh("axis");
+		//HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
+		//grid->LoadMesh("grid");
+		//HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
+		//axis->LoadMesh("axis");
 
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
