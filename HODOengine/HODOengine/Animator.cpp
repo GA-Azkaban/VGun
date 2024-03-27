@@ -21,11 +21,7 @@ namespace HDData
 
 		_animationController->Start();
 
-		if (_animationController->IsStateChange())
-		{
-			GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion);
-		}
-
+		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
 	}
 
 	void Animator::Update()
@@ -36,6 +32,19 @@ namespace HDData
 
 		if (_animationController->IsStateChange())
 		{
+			if (_animationController->GetCurrentState()->GetIsLoop())
+			{
+				GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
+			}
+			else
+			{
+				GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, false);
+			}
+		}
+
+		if (!(_animationController->GetCurrentState()->GetIsLoop()) && GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->IsAnimationEnd())
+		{
+			_animationController->SetCurrentState(_animationController->GetPrevStateName());
 			GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
 		}
 	}

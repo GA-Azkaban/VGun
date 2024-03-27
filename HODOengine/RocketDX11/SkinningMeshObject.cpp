@@ -54,7 +54,6 @@ namespace RocketCore::Graphics
 
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 				{
-					m_currentAnimation->accumulatedTime = 0.0f;
 					m_currentAnimation->isEnd = true;
 					return;
 				}
@@ -63,6 +62,7 @@ namespace RocketCore::Graphics
 				{
 					if (m_currentAnimation->isLoop == true)
 					{
+						m_currentAnimation->accumulatedTime = 0.0f;
 						m_currentAnimation->isEnd = false;
 					}
 				}

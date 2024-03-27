@@ -25,9 +25,9 @@ void UnitySceneLoaderTest::Start()
 
 	auto player = API::CreateObject(_scene, "player");
 	auto meshComp = player->AddComponent<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMesh("little_man3.fbx");
-	meshComp->LoadDiffuseMap("T_TP_CH_Camo_001_001_D.png");
-	meshComp->PlayAnimation("idle.fbx");
+	meshComp->LoadMesh("idle.fbx");
+	meshComp->LoadAlbedoMap("T_TP_CH_Camo_001_001_D.png");
+	//meshComp->PlayAnimation("idle.fbx");
 
 	auto aniComp = player->AddComponent<HDData::Animator>();
 	player->AddComponent<FSMtestScript>();
@@ -59,7 +59,7 @@ void UnitySceneLoaderTest::Start()
 
 	aniCom->SetEntryState("IDLE");
 
-	API::LoadSceneFromData("transformData.json");
+	//API::LoadSceneFromData("transformData.json");
 
 	API::LoadScene(_scene);
 }

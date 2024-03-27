@@ -142,9 +142,6 @@
     <ClCompile Include="AnimationController.cpp">
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>05_Component\Animation</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -320,9 +317,6 @@
     </ClInclude>
     <ClInclude Include="AnimationController.h">
       <Filter>05_Component\Animation\AnimationController</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>05_Component\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

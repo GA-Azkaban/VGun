@@ -64,7 +64,6 @@ namespace HDData
 						if (_triggerParams[trans->conditionName] == true)
 						{
 							changeState = _allStates[trans->transState];
-							_triggerNow = trans->conditionName;
 							_triggerParams[trans->conditionName] = false;
 						}
 					}
@@ -89,7 +88,7 @@ namespace HDData
 
 	State* AnimationController::CreateState(std::string stateName, std::string fbxName)
 	{
-		State* state = new State(stateName);
+		State* state = new State(this, stateName);
 		state->stateName = stateName;
 		state->motion = fbxName;
 
@@ -194,6 +193,16 @@ namespace HDData
 		return *this;
 	}
 
+	bool State::GetIsLoop()
+	{
+		return _isLoop;
+	}
+
+	void State::SetIsLoop(bool isLoop)
+	{
+		_isLoop = isLoop;
+	}
+
 	void State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value)
 	{
 		std::vector<Transition*>& vec = _transableStates[nextStateName];
@@ -236,6 +245,8 @@ namespace HDData
 
 	void State::AddTrigger(std::string nextStateName, std::string conditionName, bool value)
 	{
+		anicom->GetAllStates().find(nextStateName)->second->SetIsLoop(false);
+
 		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
 		Transition* transition = new Transition;

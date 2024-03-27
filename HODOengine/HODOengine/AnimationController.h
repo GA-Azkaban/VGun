@@ -26,7 +26,7 @@ namespace HDData
 
 	public:
 		State() = default;
-		State(std::string stateName) : stateName(stateName) {};
+		State(AnimationController* con, std::string stateName) : anicom(con), stateName(stateName), _isLoop(true) {};
 		~State() = default;
 
 		struct Transition
@@ -44,18 +44,26 @@ namespace HDData
 	public:
 		State& MakeTransition(std::string nextStateName);
 
+		bool GetIsLoop();
+		void SetIsLoop(bool isLoop);
 		void AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value);
 		void AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value);
 		void AddCondition(std::string nextStateName, std::string conditionName, bool value);
 		void AddTrigger(std::string nextStateName, std::string conditionName, bool value);
 
+
+		AnimationController* anicom;
+
 		std::string stateName;
 		std::string motion;
+		bool _isLoop;
 		std::unordered_map<std::string, std::vector<Transition*>> _transableStates;
 	};
 
 	class HODO_API AnimationController
 	{
+		friend class State;
+
 	public:
 		AnimationController();
 		~AnimationController();
