@@ -28,12 +28,12 @@ float ShadowFactor(float4 worldPos)
 	if (currentDepth > 1)
 		return 1.0f;
 	projCoords = projCoords * 0.5 + 0.5;
-	projCoords.y = 1 - projCoords.y;
+	projCoords.y = 1.0 - projCoords.y;
 
 	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
 
 	float shadow = 0;
-	float bias = 0.001f;
+	float bias = 0.0001f;
 	for (int x = -1; x < 2; ++x)
 	{
 		for (int y = -1; y < 2; ++y)

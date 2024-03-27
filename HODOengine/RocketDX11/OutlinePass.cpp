@@ -87,7 +87,7 @@ namespace RocketCore::Graphics
 
 		stencilColors[0] = XMFLOAT4{ 1.0f, 0.0f, 0.0f, 1.0f };
 		stencilColors[1] = XMFLOAT4{ 0.0f, 1.0f, 0.0f, 1.0f };
-		stencilColors[2] = XMFLOAT4{ 0.0f, 0.0f, 1.0f, 1.0f };
+		stencilColors[2] = XMFLOAT4{ 0.0f, 0.5f, 1.0f, 1.0f };
 		stencilColors[3] = XMFLOAT4{ 1.0f, 1.0f, 0.0f, 1.0f };
 		stencilColors[4] = XMFLOAT4{ 1.0f, 0.0f, 1.0f, 1.0f };
 	}

@@ -4,6 +4,7 @@
 #include "PixelShader.h"
 #include <string>
 #include <vector>
+#include <DirectXMath.h>
 using namespace Microsoft::WRL;
 
 class VertexShader;
@@ -18,9 +19,12 @@ namespace RocketCore::Graphics
 		~Material();
 		ID3D11ShaderResourceView* GetAlbedoMap();
 		ID3D11ShaderResourceView* GetNormalMap();
+		ID3D11ShaderResourceView* GetRoughnessMap();
+		ID3D11ShaderResourceView* GetMetallicMap();
 		ID3D11ShaderResourceView* GetOcclusionRoughnessMetalMap();
 		float GetMetallic();
 		float GetRoughness();
+		DirectX::XMFLOAT4 GetAlbedoColor();
 		VertexShader* GetVertexShader();
 		PixelShader* GetPixelShader();
 
@@ -28,19 +32,27 @@ namespace RocketCore::Graphics
 		void SetPixelShader(PixelShader* pixelShader) { m_pixelShader = pixelShader; };
 		void SetAlbedoMap(ID3D11ShaderResourceView* albedoTex) { m_materialAlbedo = albedoTex; }
 		void SetNormalMap(ID3D11ShaderResourceView* normalTex) { m_materialNormal = normalTex; }
+		void SetRoughnessMap(ID3D11ShaderResourceView* roughnessTex) { m_materialRoughness = roughnessTex; }
+		void SetMetallicMap(ID3D11ShaderResourceView* metallicTex) { m_materialMetallic = metallicTex; }
 		void SetOcclusionRoughnessMetalMap(ID3D11ShaderResourceView* occlusionRoughMetal) { m_occlusionRoughnessMetal = occlusionRoughMetal; }
-		void SetMetallic(float n);
-		void SetRoughness(float n);
+		void SetMetallic(float v);
+		void SetRoughness(float v);
+		void SetAlbedoColor(DirectX::XMFLOAT4 color);
+		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255);
 
 	private:
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
 		ComPtr<ID3D11ShaderResourceView> m_materialAlbedo;
 		ComPtr<ID3D11ShaderResourceView> m_materialNormal;
+		ComPtr<ID3D11ShaderResourceView> m_materialMetallic;
+		ComPtr<ID3D11ShaderResourceView> m_materialRoughness;
 		ComPtr<ID3D11ShaderResourceView> m_occlusionRoughnessMetal;
 
 		float m_metallic;
 		float m_roughness;
+
+		DirectX::XMFLOAT4 m_albedoColor;
 	};
 }
 

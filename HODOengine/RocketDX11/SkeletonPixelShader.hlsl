@@ -68,7 +68,7 @@ PSOutput main(VertexToPixel input)
 	//float4 emissive = Emissive.Sample(LinearWrapSampler, input.uv);
 
 	output.position = float4(input.worldPos, 1.0f);
-	output.diffuse = textureColor;
+	output.diffuse = textureColor * albedoColor;
 	//output.diffuse = pow(float4(textureColor.rgb, 0), 2.2f);
 	//output.normal = float4(input.normal, 1.0f);
 	output.normal = float4(input.normal * 0.5f + 0.5f, 1.0f);

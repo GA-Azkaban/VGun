@@ -14,7 +14,7 @@ namespace RocketCore::Graphics
 	{
 	public:
 		~Cubemap();
-		static Cubemap* Instance();
+		static Cubemap& Instance();
 		friend class SkyboxPass;
 
 		void Update(float deltaTime);
@@ -22,21 +22,24 @@ namespace RocketCore::Graphics
 
 		virtual void LoadCubeMapTexture(const std::string& fileName) override;
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; }
+		virtual void SetEnvLightIntensity(float value) override { m_envLightIntensity = value; }
 
 		void LoadMesh(const std::string& meshName);
 		void LoadVertexShader(const std::string& fileName);
 		void LoadPixelShader(const std::string& fileName);
+
+		float GetEnvLightIntensity() { return m_envLightIntensity; }
 
 	public:
 		DeferredBuffers* _deferredBuffers;
 
 	private:
 		Cubemap();
-		static Cubemap* instance;
 		std::vector<Mesh*> m_meshes;
 		Material* m_material;
 		bool m_isActive;
 		float m_size;
+		float m_envLightIntensity;
 	};
 }
 

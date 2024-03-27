@@ -9,10 +9,9 @@ using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
-	Cubemap* Cubemap::instance;
-
+	
 	Cubemap::Cubemap()
-		: m_material(nullptr), m_isActive(true), m_size(50.0f)
+		: m_material(nullptr), m_isActive(true), m_size(50.0f), m_envLightIntensity(1.0f)
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("CubeMapVertexShader.cso"), ResourceManager::Instance().GetPixelShader("CubeMapPixelShader.cso"));
 		m_meshes = ResourceManager::Instance().GetMeshes("skybox");
@@ -23,12 +22,9 @@ namespace RocketCore::Graphics
 		delete m_material;
 	}
 
-	Cubemap* Cubemap::Instance()
+	Cubemap& Cubemap::Instance()
 	{
-		if (!instance)
-		{
-			instance = new Cubemap();
-		}
+		static Cubemap instance;
 		return instance;
 	}
 

@@ -54,17 +54,17 @@ namespace RocketCore::Graphics
 
 				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 				{
-					m_currentAnimation->accumulatedTime = 0.0f;
 					m_currentAnimation->isEnd = true;
+					if (m_currentAnimation->isLoop == true)
+					{
+						m_currentAnimation->accumulatedTime = 0.0f;
+					}
 					return;
 				}
 
-				if (m_currentAnimation->isLoop == true)
+				if (m_currentAnimation->isEnd == true)
 				{
-					if (m_currentAnimation->isEnd == true)
-					{
-						m_currentAnimation->isEnd = false;
-					}
+					m_currentAnimation->isEnd = false;
 				}
 
 				if (!m_currentAnimation->isEnd)
@@ -100,10 +100,12 @@ namespace RocketCore::Graphics
 			{
 				pixelShader->SetInt("useAlbedo", 1);
 				pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
+				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
 			}
 			else
 			{
 				pixelShader->SetInt("useAlbedo", 0);
+				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
 			}
 
 			if (m_material->GetNormalMap())
@@ -180,6 +182,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
 		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
+		m_boneTransformMap[node.name] = globalTransform;
 
 		// update values for children bones
 		for (Node child : node.children)
@@ -331,7 +334,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
-		UINT positionIndex = 0;
+		UINT positionIndex = prevAnim->positionTimestamps.size() - 1;
 		for (UINT i = 0; i < prevAnim->positionTimestamps.size() - 1; ++i)
 		{
 			if (prevAnimationTime < prevAnim->positionTimestamps[i + 1])
@@ -357,7 +360,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMFLOAT4 SkinningMeshObject::CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
-		UINT rotationIndex = 0;
+		UINT rotationIndex = prevAnim->rotationTimestamps.size() - 1;
 		for (UINT i = 0; i < prevAnim->rotationTimestamps.size() - 1; ++i)
 		{
 			if (prevAnimationTime < prevAnim->rotationTimestamps[i + 1])
@@ -382,7 +385,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
-		UINT scaleIndex = 0;
+		UINT scaleIndex = prevAnim->scaleTimestamps.size() - 1;
 		for (UINT i = 0; i < prevAnim->scaleTimestamps.size() - 1; ++i)
 		{
 			if (prevAnimationTime < prevAnim->scaleTimestamps[i + 1])
@@ -417,7 +420,13 @@ namespace RocketCore::Graphics
 		}
 
 		if (m_currentAnimation == &(animIter->second))
-			return;
+		{
+			if (m_currentAnimation->isLoop)
+				return;
+
+			if (!m_currentAnimation->isEnd)
+				return;
+		}
 
 		m_previousAnimation = m_currentAnimation;
 		m_currentAnimation = &(animIter->second);
@@ -425,15 +434,13 @@ namespace RocketCore::Graphics
 
 		if (m_previousAnimation != nullptr)
 		{
-			if (m_previousAnimation->uniqueAnimNum != m_currentAnimation->uniqueAnimNum)
+			m_currentAnimation->accumulatedTime = 0.0f;
+			if (m_currentAnimation->isLoop == false)
 			{
-				m_currentAnimation->accumulatedTime = 0.0f;
-				if (m_currentAnimation->isLoop == false)
-				{
-					m_currentAnimation->isEnd = false;
-				}
-				m_blendFlag = true;
+				m_currentAnimation->isEnd = false;
 			}
+			m_blendFlag = true;
+
 		}
 	}
 
@@ -459,15 +466,12 @@ namespace RocketCore::Graphics
 
 		if (m_previousAnimation != nullptr)
 		{
-			if (m_previousAnimation->uniqueAnimNum != m_currentAnimation->uniqueAnimNum)
+			m_currentAnimation->accumulatedTime = 0.0f;
+			if (m_currentAnimation->isLoop == false)
 			{
-				m_currentAnimation->accumulatedTime = 0.0f;
-				if (m_currentAnimation->isLoop == false)
-				{
-					m_currentAnimation->isEnd = false;
-				}
-				m_blendFlag = true;
+				m_currentAnimation->isEnd = false;
 			}
+			m_blendFlag = true;
 		}
 
 	}
@@ -480,10 +484,10 @@ namespace RocketCore::Graphics
 		LoadAnimation(ResourceManager::Instance().GetAnimations(fileName));
 	}
 
-	void SkinningMeshObject::LoadDiffuseMap(const std::string& fileName)
+	void SkinningMeshObject::LoadAlbedoMap(const std::string& fileName)
 	{
-		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetAlbedoMap(diffuseTex);
+		ID3D11ShaderResourceView* albedoTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetAlbedoMap(albedoTex);
 	}
 
 	void SkinningMeshObject::LoadNormalMap(const std::string& fileName)
@@ -494,9 +498,41 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::LoadARMMap(const std::string& fileName)
 	{
-        ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
-        m_material->SetOcclusionRoughnessMetalMap(armTex);
-    }
+		ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(armTex);
+	}
+
+	void SkinningMeshObject::LoadRoughnessMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* roughnessTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(roughnessTex);
+	}
+
+	void SkinningMeshObject::LoadMetallicMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* metallicTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(metallicTex);
+	}
+
+	void SkinningMeshObject::SetRoughnessValue(float value)
+	{
+		m_material->SetRoughness(value);
+	}
+
+	void SkinningMeshObject::SetMetallicValue(float value)
+	{
+		m_material->SetMetallic(value);
+	}
+
+	void SkinningMeshObject::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /* = 255 */)
+	{
+		m_material->SetAlbedoColor(r, g, b, a);
+	}
+
+	void SkinningMeshObject::SetAlbedoColor(Vector4 color)
+	{
+		m_material->SetAlbedoColor(color);
+	}
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
 	{
@@ -533,6 +569,16 @@ namespace RocketCore::Graphics
 			Animation newAnim = *(e.second);
 			m_animations.insert(std::make_pair(animName, newAnim));
 		}
+	}
+
+	Matrix SkinningMeshObject::GetBoneTransformByNodeName(std::string nodeName)
+	{
+		Matrix result;
+		auto iter = m_boneTransformMap.find(nodeName);
+		if (iter != m_boneTransformMap.end())
+			XMStoreFloat4x4(&result, iter->second);
+
+		return result;
 	}
 
 }

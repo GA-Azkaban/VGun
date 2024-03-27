@@ -39,7 +39,6 @@ struct NodeAnimation
 struct Animation
 {
 	std::string animName = "";
-	int uniqueAnimNum = 0;
 	float duration = 0.0f;
 	float ticksPerSecond = 1.0f;
 	float accumulatedTime = 0.0f;

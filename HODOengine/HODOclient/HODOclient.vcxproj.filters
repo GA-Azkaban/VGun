@@ -62,6 +62,10 @@
     <ClCompile Include="MenuManager.cpp">
       <Filter>03_Manager\MenuManager</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp" />
+    <ClCompile Include="Weapon.cpp">
+      <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -126,13 +130,6 @@
     </ClInclude>
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitySceneLoaderTest.h" />
-    <ClInclude Include="MainMenu.h">
-      <Filter>04_SceneView\MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="MenuManager.h">
-      <Filter>03_Manager\MenuManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
