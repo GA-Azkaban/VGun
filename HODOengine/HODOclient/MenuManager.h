@@ -23,6 +23,10 @@ public:
 
 
 public:
+	// canvas
 	HDData::GameObject* _mainMenuCanvas;
+
+	// btn
+	HDData::GameObject* _preferences;	// 환경설정 버튼
 };
 
