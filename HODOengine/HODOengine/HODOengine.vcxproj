@@ -243,6 +243,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="DynamicSphereCollider.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="MathHeader.h" />
+    <ClInclude Include="ParticleSphereCollider.h" />
     <ClInclude Include="PhysicsCollision.h" />
     <ClInclude Include="PhysicsContactPoint.h" />
     <ClInclude Include="SlideBoxUI.h" />
@@ -344,6 +345,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="ObjectSystem.cpp" />
+    <ClCompile Include="ParticleSphereCollider.cpp" />
     <ClCompile Include="PhysicsCollision.cpp" />
     <ClCompile Include="RendererBase.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

@@ -2,6 +2,8 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
+	: _particleIndex(0),
+	_shootCooldown(0.0f)
 {
 
 }
@@ -19,6 +21,8 @@ void PlayerMove::Start()
 	_playerCollider->LockPlayerRotation();
 
 	//_playerCollider->AddCollisionCallback(&OnCollisionEnter2, 0);
+
+	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 }
 
 void PlayerMove::Update()
@@ -32,9 +36,27 @@ void PlayerMove::Update()
 		CheckIsOnGround();
 	}
 
+	// 단발
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
 		ShootGun();
+	}
+
+	// 발사 쿨타임 및 파티클 수명관리
+	if (_shootCooldown >= 0.0f)
+	{
+		_shootCooldown -= _deltaTime;
+	}
+
+	for (int i = 0; i < 16; ++i)
+	{
+		_hitParticles[i]->CheckTimer(_deltaTime);
+	}
+
+	// 연발
+	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
+	{
+		ShootGunDdabal();
 	}
 
 	// 마우스에 따른 플레이어 회전 체크
@@ -218,6 +240,46 @@ void PlayerMove::ShootGun()
 	}
 }
 
+void PlayerMove::ShootGunDdabal()
+{
+	// 총기 반동
+	std::uniform_real_distribution<float> distrHorizontal(-1.0f, 1.0f);
+	float randomRecoilH = distrHorizontal(_gen);
+	_headCam->GetTransform()->Rotate(0.0f, randomRecoilH, 0.0f);
+	std::uniform_real_distribution<float> distrVertical(0.5f, 1.0f);
+	float randomRecoilV = distrVertical(_gen);
+	_headCam->GetTransform()->Rotate(-randomRecoilV, 0.0f, 0.0f);
+	_headCam->EnableCameraShake();
+
+	// 총 쏴서
+	HDData::Collider* hitCollider = nullptr;
+
+	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 2.0f;
+	Vector3 hitPoint = { 1.0f, 1.0f, 1.0f };
+
+	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
+	_playerAudio->PlayOnce("shoot");
+
+	// 맞은 데에 빨간 점 나오게 하기
+	if (hitCollider != nullptr)
+	{
+		_playerAudio->PlayOnce("hit");
+		SpawnParticle(hitPoint);
+	}
+
+	// 맞은 애가 dynamic이면 힘 가해주기
+	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
+
+	if (hitDynamic != nullptr)
+	{
+		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
+		hitDynamic->AddForce(forceDirection, 5.0f);
+		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
+	} 
+
+	_shootCooldown = 0.1f;
+}
+
 void PlayerMove::UpdatePlayerPositionDebug()
 {
 	Vector3 pos = GetTransform()->GetPosition();
@@ -250,6 +312,7 @@ void PlayerMove::ToggleCam()
 		_isHeadCam = true;
 		_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
+		ShowCursor(FALSE);
 	}
 }
 
@@ -266,6 +329,26 @@ void PlayerMove::OnCollisionStay2(HDData::Collider* self, HDData::Collider* oppo
 void PlayerMove::OnCollisionExit2(HDData::Collider* self, HDData::Collider* opponent)
 {
 
+}
+
+void PlayerMove::SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec)
+{
+	_hitParticles = particleVec;
+}
+
+void PlayerMove::SpawnParticle(Vector3 position)
+{
+	_hitParticles[_particleIndex]->SetGlobalPosition(position);
+	_hitParticles[_particleIndex]->SetTimerActive();
+
+	if (_particleIndex < 15)
+	{
+		++_particleIndex;
+	}
+	else
+	{
+		_particleIndex = 0;
+	}
 }
 
 void PlayerMove::Jump()

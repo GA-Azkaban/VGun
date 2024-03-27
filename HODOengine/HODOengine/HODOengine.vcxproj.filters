@@ -140,6 +140,7 @@
       <Filter>06_System\PhysicsSystem\Collision</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsCollision.cpp" />
+    <ClCompile Include="ParticleSphereCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -314,6 +315,7 @@
       <Filter>06_System\PhysicsSystem\Collision</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsCollision.h" />
+    <ClInclude Include="ParticleSphereCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">

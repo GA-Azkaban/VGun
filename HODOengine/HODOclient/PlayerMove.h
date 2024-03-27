@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
+#include <random>
 
 /// <summary>
 /// 플레이어 움직임과 관련된 스크립트
@@ -48,6 +49,7 @@ private:
 
 private:
 	void ShootGun();
+	void ShootGunDdabal();
 
 private:
 	void UpdatePlayerPositionDebug();
@@ -81,6 +83,10 @@ public:
 	void OnCollisionStay2(HDData::Collider* self, HDData::Collider* opponent);
 	void OnCollisionExit2(HDData::Collider* self, HDData::Collider* opponent);
 
+public:
+	void SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec);
+	void SpawnParticle(Vector3 position);
+
 private:
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;
@@ -89,4 +95,15 @@ private:
 	HDData::TextUI* _playerInfoText;
 	HDData::TextUI* _aimText;
 	HDData::TextUI* _hitText;
+	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
+	int _particleIndex;
+	float _shootCooldown;
+
+private:
+	// random Recoil
+	std::random_device _rd;
+	std::mt19937 _gen = std::mt19937(_rd());
+
+private:
+	HDData::AudioSource* _playerAudio = nullptr;
 };

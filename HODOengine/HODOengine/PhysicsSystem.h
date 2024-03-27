@@ -45,6 +45,7 @@ namespace HDEngine
 		void CreateDynamicCapsuleCollider(HDData::GameObject* object);
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
 		void CreateTriggerBoxCollider(HDData::GameObject* object);
+		void CreateParticleSphereCollider(HDData::GameObject* object);
 
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
@@ -65,6 +66,7 @@ namespace HDEngine
 
 	private:
 		std::vector<physx::PxRigidDynamic*> _rigidDynamics;
+		std::vector<physx::PxRigidStatic*> _movingStatics;
 		int _directionX;
 		int _directionZ;
 	};

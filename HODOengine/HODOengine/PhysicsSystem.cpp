@@ -71,6 +71,22 @@ namespace HDEngine
 
 			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
 		}
+
+		for (auto& rigid : _movingStatics)
+		{
+			temp = rigid->getGlobalPose();
+
+			pos.x = temp.p.x;
+			pos.y = temp.p.y;
+			pos.z = temp.p.z;
+
+			rot.x = temp.q.x;
+			rot.y = temp.q.y;
+			rot.z = temp.q.z;
+			rot.w = temp.q.w;
+
+			static_cast<HDData::StaticCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+		}
 	}
 
 	void PhysicsSystem::Finalize()
@@ -125,6 +141,7 @@ namespace HDEngine
 			CreateDynamicCapsuleCollider(object);
 			CreateDynamicSphereCollider(object);
 			CreateTriggerBoxCollider(object);
+			CreateParticleSphereCollider(object);
 		}
 	}
 
@@ -332,6 +349,34 @@ namespace HDEngine
 				shape->release();
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
+			}
+		}
+	}
+
+	void PhysicsSystem::CreateParticleSphereCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::ParticleSphereCollider>();
+
+		if (isCorrectType)
+		{
+			auto colliderVector = object->GetComponents<HDData::ParticleSphereCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::ParticleSphereCollider* particle = dynamic_cast<HDData::ParticleSphereCollider*>(collider);
+
+				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(particle->GetRadius()), *_material);
+				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				physx::PxRigidStatic* sphereRigid = _physics->createRigidStatic(localTransform);
+				sphereRigid->attachShape(*shape);
+
+				_pxScene->addActor(*sphereRigid);
+				_movingStatics.push_back(sphereRigid);
+				particle->SetPhysXRigid(sphereRigid);
+				sphereRigid->userData = particle;
+				shape->release();
 			}
 		}
 	}

@@ -104,7 +104,7 @@ TestScene::TestScene()
 	auto t = playerTestHead->AddComponent<HDData::MeshRenderer>();
 	t->LoadMesh("4QCharacter_tpose.fbx");
 	t->LoadDiffuseMap("TT_checker_2048x2048_UV_GRID_BaseColor.png");
-	auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>(0.5f, 0.5f, 0.5f);
+	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.5f);
 
 	auto headCam = playerTestHead->AddComponent<HDData::Camera>();
 	playerMove->SetHeadCam(headCam);
@@ -112,6 +112,21 @@ TestScene::TestScene()
 	auto sphereTest = API::CreateObject(_scene, "sphereTest");
 	sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
 	auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
+
+	std::vector<HDData::ParticleSphereCollider*> particleContainer;
+	particleContainer.reserve(16);
+	for (int i = 0; i < 16; ++i)
+	{
+		auto particleTest = API::CreateObject(_scene, "particleTest");
+		particleTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 5.f, 0.f);
+		auto particleCollider = particleTest->AddComponent<HDData::ParticleSphereCollider>();
+		particleContainer.push_back(particleCollider);
+	}
+	playerMove->SetHitParticle(particleContainer);
+
+	HDData::AudioSource* playerSound = playerTest->AddComponent<HDData::AudioSource>();
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
 
 	//textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
 	//auto textTest = API::CreateTextbox(_scene);

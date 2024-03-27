@@ -16,6 +16,7 @@ namespace HDData
 
 	public:
 		void UpdateToPhysics() override;
+		void UpdateFromPhysics(Vector3 pos, Quaternion quat);
 		virtual void DrawDebug() override;
 
 		void SetPhysXRigid(physx::PxRigidStatic* rigid);
@@ -23,6 +24,9 @@ namespace HDData
 	public:
 		void Collided();
 		bool GetIsCollided();
+
+	public:
+		void SetGlobalPosition(Vector3 pos);
 
 	private:
 		bool _isCollided;

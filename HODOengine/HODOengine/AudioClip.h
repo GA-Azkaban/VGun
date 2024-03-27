@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "SoundGroup.h"
 #include <string>
 #include "../include/FMOD/fmod.hpp"

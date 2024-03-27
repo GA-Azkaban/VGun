@@ -9,6 +9,13 @@ HDData::DynamicSphereCollider::DynamicSphereCollider()
 	_debugStruct = _sphereDebugStruct;
 }
 
+HDData::DynamicSphereCollider::DynamicSphereCollider(float rad)
+	: _radius(rad)
+{
+	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
+	_debugStruct = _sphereDebugStruct;
+}
+
 float HDData::DynamicSphereCollider::GetWidth() const
 {
 	return _radius * 2 * _scaleOffset.x * GetGameObject()->GetTransform()->GetScale().x;
