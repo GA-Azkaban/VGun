@@ -25,4 +25,8 @@ void FSMtestScript::Update()
 	{
 		_animator->SetTrigger("isJump");
 	}
+	if (API::GetKeyDown(DIK_B))
+	{
+		_animator->SetTrigger("isCrunch");
+	}
 }
