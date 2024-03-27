@@ -440,7 +440,6 @@ namespace RocketCore::Graphics
 				m_currentAnimation->isEnd = false;
 			}
 			m_blendFlag = true;
-
 		}
 	}
 

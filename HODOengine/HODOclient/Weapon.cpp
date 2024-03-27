@@ -3,7 +3,7 @@
 void Weapon::Update()
 {
 	auto skmRenderer = GetGameObject()->GetParentGameObject()->GetComponent<HDData::SkinnedMeshRenderer>();
-	Matrix tm = skmRenderer->GetBoneTransformByNodeName("ik_hand_r");
-	//Matrix tm = skmRenderer->GetBoneTransformByNodeName("root");
+	Matrix tm = skmRenderer->GetBoneTransformByNodeName("hand_r");
+	//Matrix tm = skmRenderer->GetBoneTransformByNodeName("pelvis");
 	GetGameObject()->GetTransform()->SetLocalTM(tm);
 }

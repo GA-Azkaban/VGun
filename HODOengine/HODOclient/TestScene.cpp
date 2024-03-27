@@ -121,7 +121,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
 	playerTest->AddComponent<Player>();
 
 	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
@@ -194,7 +194,7 @@ TestScene::TestScene()
 	auto weaponTest = API::CreateObject(_scene, "weapon", playerTest);
 	weaponTest->AddComponent<Weapon>();
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	weaponComp->LoadMesh("A_TP_CH_Breathing.fbx");
+	weaponComp->LoadMesh("A_TP_CH_Sprint_F.fbx");
 	weaponComp->LoadAlbedoMap("T_WEP_Camo_001_D.png");
 	weaponComp->LoadNormalMap("T_WEP_Camo_N.png");
 

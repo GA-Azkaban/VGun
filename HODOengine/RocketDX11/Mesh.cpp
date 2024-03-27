@@ -66,8 +66,8 @@ namespace RocketCore::Graphics
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
 		// Calcultate the tangents before copying to buffer
-		if(!tangentCalculated)
-			CalculateTangents(vertexArray, vertexNum, indexArray, indicesNum);
+		//if(!tangentCalculated)
+		//	CalculateTangents(vertexArray, vertexNum, indexArray, indicesNum);
 		CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum);
 	}
 
@@ -77,7 +77,7 @@ namespace RocketCore::Graphics
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
 		// Calcultate the tangents before copying to buffer
-		CalculateTangents(vertexArray, vertexNum, indexArray, indicesNum);
+		//CalculateTangents(vertexArray, vertexNum, indexArray, indicesNum);
 		CreateBuffers(vertexArray, vertexNum, indexArray, indicesNum);
 	}
 

@@ -225,7 +225,7 @@ namespace RocketCore::Graphics
 
 		Assimp::Importer importer;
 
-		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_GenUVCoords );
+		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
@@ -705,6 +705,10 @@ namespace RocketCore::Graphics
 				vertex.UV.y = mesh->mTextureCoords[0][i].y;
 			}
 
+			vertex.Tangent.x = mesh->mTangents[i].x;
+			vertex.Tangent.y = mesh->mTangents[i].y;
+			vertex.Tangent.z = mesh->mTangents[i].z;
+
 			vertices.push_back(vertex);
 		}
 
@@ -814,6 +818,10 @@ namespace RocketCore::Graphics
 			// process uv
 			vertex.UV.x = mesh->mTextureCoords[0][i].x;
 			vertex.UV.y = mesh->mTextureCoords[0][i].y;
+
+			vertex.Tangent.x = mesh->mTangents[i].x;
+			vertex.Tangent.y = mesh->mTangents[i].y;
+			vertex.Tangent.z = mesh->mTangents[i].z;
 
 			vertex.BoneIndices = DirectX::XMUINT4{ 0, 0, 0, 0 };
 			vertex.Weights = DirectX::XMFLOAT4{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -1094,7 +1102,6 @@ namespace RocketCore::Graphics
 			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
 			newAnimation->animName = _fileName;
 			newAnimation->duration = animation->mDuration;
-			newAnimation->blendDuration = newAnimation->duration / 20.0f;
 
 			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
 			{
