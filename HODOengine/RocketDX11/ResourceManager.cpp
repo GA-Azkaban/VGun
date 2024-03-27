@@ -232,8 +232,6 @@ namespace RocketCore::Graphics
 			MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 		}
 
-
-
 		ProcessNode(_scene->mRootNode, _scene);
 		LoadAnimation(_scene);
 	}

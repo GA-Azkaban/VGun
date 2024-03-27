@@ -1,4 +1,8 @@
 ﻿#include "AnimationController.h"
+#include <algorithm>
+
+
+
 
 namespace HDData
 {
@@ -20,48 +24,48 @@ namespace HDData
 
 	void AnimationController::Update()
 	{
-		// 현재 state를 가져온다
-		// 갈 수 있는 state에 대한 transition 조건들을 가져온다
-		
-		State* changeState = _currentState;
+		_isStateChange = false;
 
+		State* changeState = _currentState;
 		auto transable = _currentState->_transableStates;
-		// transition 조건들이 일치하는지 여부를 확인한다
-		for (auto& one : transable)
+
+		for (auto& [name, state] : transable)
 		{
-			for (auto& trans : one.second)
+			for (auto& trans : state)
 			{
 				switch (trans->type)
 				{
-					case eConditionType::FLOAT :
+					case eConditionType::FLOAT:
 					{
 						if (trans->valueF == _floatParams[trans->conditionName])
 						{
-							changeState = &_allStates[trans->transState];
+							changeState = _allStates[trans->transState];
 						}
 					}
 					break;
-					case eConditionType::INT :
+					case eConditionType::INT:
 					{
 						if (trans->valueI == _intParams[trans->conditionName])
 						{
-							changeState = &_allStates[trans->transState];
+							changeState = _allStates[trans->transState];
 						}
 					}
 					break;
-					case eConditionType::BOOL :
+					case eConditionType::BOOL:
 					{
 						if (trans->valueB == _boolParams[trans->conditionName])
 						{
-							changeState = &_allStates[trans->transState];
+							changeState = _allStates[trans->transState];
 						}
 					}
 					break;
-					case eConditionType::TRIGGER :
+					case eConditionType::TRIGGER:
 					{
-						if (trans->valueT == _triggerParams[trans->conditionName])
+						if (_triggerParams[trans->conditionName] == true)
 						{
-							changeState = &_allStates[trans->transState];
+							changeState = _allStates[trans->transState];
+							_triggerNow = trans->conditionName;
+							_triggerParams[trans->conditionName] = false;
 						}
 					}
 					break;
@@ -78,7 +82,9 @@ namespace HDData
 		{
 			_prevState = _currentState;
 			_currentState = changeState;
+			_isStateChange = true;
 		}
+
 	}
 
 	State* AnimationController::CreateState(std::string stateName, std::string fbxName)
@@ -87,31 +93,35 @@ namespace HDData
 		state->stateName = stateName;
 		state->motion = fbxName;
 
-		_allStates.insert({stateName, *state});
+		_allStates.insert({ stateName, state });
 
 		return state;
 	}
 
 	HDData::State& AnimationController::GetState(std::string stateName)
 	{
-		this;
-		return _allStates[stateName];
+		return *_allStates[stateName];
 	}
 
-	std::unordered_map<std::string, HDData::State> AnimationController::GetAllStates()
+	std::unordered_map<std::string, HDData::State*> AnimationController::GetAllStates()
 	{
 		return _allStates;
 	}
 
 	void AnimationController::SetEntryState(std::string state)
 	{
-		_entryState = &_allStates[state];
+		_entryState = _allStates[state];
+	}
+
+	bool AnimationController::IsStateChange()
+	{
+		return _isStateChange;
 	}
 
 	HDData::State* AnimationController::GetCurrentState()
 	{
 		return _currentState;
-	}
+ 	}
 
 	HDData::State* AnimationController::GetPrevState()
 	{
@@ -128,9 +138,15 @@ namespace HDData
 		return _prevState->stateName;
 	}
 
+	void AnimationController::SetCurrentState(std::string stateName)
+	{
+		_prevState = _currentState;
+		_currentState = _allStates[stateName];
+	}
+
 	void AnimationController::CreateFloatParam(std::string paramName, float defaultValue)
 	{
-		_floatParams.insert({paramName, defaultValue});
+		_floatParams.insert({ paramName, defaultValue });
 	}
 
 	void AnimationController::CreateIntParam(std::string paramName, int defaultValue)
@@ -163,20 +179,18 @@ namespace HDData
 		_boolParams.find(name)->second = val;
 	}
 
-	void AnimationController::SetTriggerParam(std::string name, bool val)
+	void AnimationController::SetTriggerParam(std::string name)
 	{
-		_triggerParams.find(name)->second = val;
+		_triggerParams.find(name)->second = true;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//State class
 	//////////////////////////////////////////////////////////////////////////
-	
+
 	State& State::MakeTransition(std::string nextStateName)
 	{
-		this;
 		_transableStates[nextStateName];
-
 		return *this;
 	}
 
@@ -189,7 +203,7 @@ namespace HDData
 		transition->type = eConditionType::FLOAT;
 		transition->conditionName = conditionName;
 		transition->valueF = value;
-		
+
 		vec.push_back(transition);
 	}
 

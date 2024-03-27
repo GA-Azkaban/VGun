@@ -9,9 +9,17 @@ public:
 	enum class ePlayerState
 	{
 		IDLE,
+		AIM_IDLE,
+		SHOOT_IDLE,
 		WALK,
+		AIM_WALK,
+		SHOOT_WALK,
+		RUN,
 		JUMP,
-		SIT,
+		AIM_JUMP,
+		CRUNCH,
+		AIM_CRUNCH,
+		SHOOT_CRUNCH,
 
 		LAST
 	};

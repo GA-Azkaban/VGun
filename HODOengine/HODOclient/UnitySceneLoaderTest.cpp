@@ -27,7 +27,7 @@ void UnitySceneLoaderTest::Start()
 	auto meshComp = player->AddComponent<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMesh("little_man3.fbx");
 	meshComp->LoadDiffuseMap("T_TP_CH_Camo_001_001_D.png");
-	//meshComp->PlayAnimation("rundd.fbx");
+	meshComp->PlayAnimation("idle.fbx");
 
 	auto aniComp = player->AddComponent<HDData::Animator>();
 	player->AddComponent<FSMtestScript>();
@@ -35,9 +35,9 @@ void UnitySceneLoaderTest::Start()
 	// animationController
 	auto aniCom = API::CreateAnimationController();
 	aniCom->CreateState("IDLE", "idle.fbx");
-	aniCom->CreateState("WALK", "run.fbx");
+	aniCom->CreateState("WALK", "gun_walk.fbx");
 	aniCom->CreateState("JUMP", "jump_real.fbx");
-	aniCom->CreateState("CRUNCH", "crunch.fbx");
+	aniCom->CreateState("CRUNCH", "crunch_aim.fbx");
 
 	aniCom->CreateBoolParam("isWalk", false);
 	aniCom->CreateTriggerParam("isJump");
@@ -59,23 +59,7 @@ void UnitySceneLoaderTest::Start()
 
 	aniCom->SetEntryState("IDLE");
 
-	//AnimationController* anicon = new AnimationController;
-
-	//anicon->CreateState("1");
-	//anicon->CreateBoolParam("isWalk", false);
-	//anicon->CreateTriggerParam("isJump");
-
-	//anicon->GetState("IDLE")->MakeTransition("WALK").AddCondition("WALK", "isWalk", true);
-	//anicon->GetState("IDLE")->MakeTransition("DIE", "isDie", "Less", 0.5f);
-
-	//Animator animator;
-
-	//animator->SetBoolParam("isWalk", true);
-
-
-
-
-	//API::LoadSceneFromData("transformData.json");
+	API::LoadSceneFromData("transformData.json");
 
 	API::LoadScene(_scene);
 }

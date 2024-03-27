@@ -1,13 +1,806 @@
 [
+
 {
-    "ID": -107692,
+    "ID": -14270,
     "ParentID": 0,
-    "Name": "Small_house",
-    "MeshName": "Small_house",
+    "Name": "cover_wall_09",
+    "MeshName": "cover_wall_09",
     "Position": {
-        "x": -2.7799999713897707,
+        "x": 3.5160000324249269,
         "y": 0.0,
-        "z": 2.5999999046325685
+        "z": -19.700000762939454
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -14264,
+    "ParentID": 0,
+    "Name": "wall_military (10)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -0.5066299438476563,
+        "y": 2.246133327484131,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -14258,
+    "ParentID": 0,
+    "Name": "wall2 (22)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -6.284999847412109,
+        "y": 2.7375648021698,
+        "z": 5.869999885559082
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.649999976158142,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -14252,
+    "ParentID": 0,
+    "Name": "hesco_bastion (12)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 9.670000076293946,
+      "y": 1.3669999837875367,
+      "z": -11.97599983215332
+    },
+    "Rotation": {
+      "x": -6.563669557929904e-17,
+      "y": 0.9972043037414551,
+      "z": 5.64856427847392e-17,
+      "w": 0.07472384721040726
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14246,
+    "ParentID": 0,
+    "Name": "wall2 (14)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -16.6299991607666,
+        "y": 2.7375648021698,
+        "z": 9.956999778747559
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.4000003337860108,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -14240,
+    "ParentID": 0,
+    "Name": "wall_military (13)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": 15.460000038146973,
+        "y": 2.2461330890655519,
+        "z": 15.8100004196167
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 0.7600002288818359,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -14234,
+    "ParentID": 0,
+    "Name": "wall2 (19)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -13.899999618530274,
+        "y": 2.7375648021698,
+        "z": 5.869999885559082
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -14228,
+    "ParentID": 0,
+    "Name": "wall2 (5)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -16.6299991607666,
+        "y": 0.0,
+        "z": 6.281000137329102
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -14222,
+    "ParentID": 0,
+    "Name": "military_tent_02 (1)",
+    "MeshName": "military_tent_02",
+    "Position": {
+        "x": -12.819999694824219,
+        "y": 2.2249999046325685,
+        "z": 10.4399995803833
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_military_green"
+},
+{
+    "ID": -14216,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (6)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 3.4709999561309816,
+        "y": 2.7309999465942385,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.399999976158142,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -14210,
+    "ParentID": 0,
+    "Name": "box_wooden_01 (2)",
+    "MeshName": "box_wooden_01",
+    "Position": {
+      "x": 2.4100000858306886,
+      "y": 0.01464480347931385,
+      "z": -21.086000442504884
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.2000000476837159,
+      "y": 1.2000000476837159,
+      "z": 1.2000000476837159
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14204,
+    "ParentID": 0,
+    "Name": "cover_wall_03",
+    "MeshName": "cover_wall_03",
+    "Position": {
+        "x": -30.1299991607666,
+        "y": 0.0,
+        "z": 1.25
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -14198,
+    "ParentID": 0,
+    "Name": "box_wooden_02 (3)",
+    "MeshName": "box_wooden_02",
+    "Position": {
+      "x": 11.043999671936036,
+      "y": 0.014096081256866455,
+      "z": 1.9019999504089356
+    },
+    "Rotation": {
+      "x": 3.2925557221276448e-19,
+      "y": 0.7044128775596619,
+      "z": 8.659503693400411e-17,
+      "w": -0.7097904682159424
+    },
+    "Scale": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -14192,
+    "ParentID": 0,
+    "Name": "hesco_bastion (10)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -23.53499984741211,
+      "y": 4.0920000076293949,
+      "z": 12.781000137329102
+    },
+    "Rotation": {
+      "x": -6.462195010848839e-17,
+      "y": 0.9983753561973572,
+      "z": 5.764379490398694e-17,
+      "w": 0.05698089301586151
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14186,
+    "ParentID": 0,
+    "Name": "wall_military (3)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -4.283632278442383,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+  {
+    "ID": -14180,
+    "ParentID": 0,
+    "Name": "box_wooden_02 (1)",
+    "MeshName": "box_wooden_02",
+    "Position": {
+      "x": -7.173999786376953,
+      "y": 0.014096081256866455,
+      "z": 1.9019999504089356
+    },
+    "Rotation": {
+      "x": 3.2925557221276448e-19,
+      "y": 0.7044128775596619,
+      "z": 8.659503693400411e-17,
+      "w": -0.7097904682159424
+    },
+    "Scale": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14172,
+    "ParentID": 0,
+    "Name": "cover_wall_09",
+    "MeshName": "cover_wall_09",
+    "Position": {
+        "x": 12.451000213623047,
+        "y": 2.7309999465942385,
+        "z": 3.4830000400543215
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -14166,
+    "ParentID": 0,
+    "Name": "humvee_miliotary",
+    "MeshName": "humvee_miliotary",
+    "Position": {
+        "x": -30.579999923706056,
+        "y": 0.047425270080566409,
+        "z": -1.3200000524520875
+    },
+    "Rotation": {
+        "x": -4.804249777584714e-17,
+        "y": 0.9806022047996521,
+        "z": 7.204667696465006e-17,
+        "w": -0.19600865244865418
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_truck_base"
+},
+{
+    "ID": -14160,
+    "ParentID": 0,
+    "Name": "humvee_miliotary (3)",
+    "MeshName": "humvee_miliotary",
+    "Position": {
+        "x": -0.1599999964237213,
+        "y": 0.04742717742919922,
+        "z": -10.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.9549762606620789,
+        "z": 0.0,
+        "w": 0.29668232798576357
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_truck_base"
+},
+{
+    "ID": -14154,
+    "ParentID": 0,
+    "Name": "fence_military_02 (5)",
+    "MeshName": "fence_military_02",
+    "Position": {
+        "x": -32.040000915527347,
+        "y": 2.8329999446868898,
+        "z": 14.069999694824219
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 0.949999988079071,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.002"
+},
+  {
+    "ID": -14148,
+    "ParentID": 0,
+    "Name": "hesco_bastion",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -12.34000015258789,
+      "y": 0.0,
+      "z": -19.149999618530275
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14142,
+    "ParentID": 0,
+    "Name": "humvee_miliotary (2)",
+    "MeshName": "humvee_miliotary",
+    "Position": {
+        "x": 16.530000686645509,
+        "y": 0.04742717742919922,
+        "z": -0.4699999988079071
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7984089255332947,
+        "z": 0.0,
+        "w": 0.6021156907081604
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_truck_base"
+},
+{
+    "ID": -14136,
+    "ParentID": 0,
+    "Name": "building_ruin_04",
+    "MeshName": "building_ruin_04",
+    "Position": {
+        "x": -16.677000045776368,
+        "y": 0.0,
+        "z": -22.190000534057618
     },
     "Rotation": {
         "x": -6.123234262925839e-17,
@@ -33,23 +826,23 @@
         "z": 0.0
     },
     "SphereColliderRadius": 0.0,
-    "textureName": "M_wooden_1"
+    "textureName": "M_sandstone"
 },
 {
-    "ID": -105266,
+    "ID": -14130,
     "ParentID": 0,
-    "Name": "Oak",
-    "MeshName": "Oak",
+    "Name": "building_ruin_04 (1)",
+    "MeshName": "building_ruin_04",
     "Position": {
-        "x": 0.0,
+        "x": -1.0,
         "y": 0.0,
-        "z": 2.430000066757202
+        "z": -3.5999999046325685
     },
     "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
     },
     "Scale": {
         "x": 1.0,
@@ -69,23 +862,59 @@
         "z": 0.0
     },
     "SphereColliderRadius": 0.0,
-    "textureName": "M_woodensticks_2"
+    "textureName": "M_sandstone"
 },
 {
-    "ID": -90222,
+    "ID": -14124,
     "ParentID": 0,
-    "Name": "watch_tower",
-    "MeshName": "watch_tower",
+    "Name": "wall2 (12)",
+    "MeshName": "wall2",
     "Position": {
-        "x": -2.8499999046325685,
-        "y": 0.0,
-        "z": -2.2799999713897707
+        "x": -24.239999771118165,
+        "y": 2.1700000762939455,
+        "z": 14.003999710083008
     },
     "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 0.6000000238418579,
+        "y": 1.2999999523162842,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -14118,
+    "ParentID": 0,
+    "Name": "wall2",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -30.1299991607666,
+        "y": 0.0,
+        "z": -17.440000534057618
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
     },
     "Scale": {
         "x": 1.0,
@@ -93,61 +922,97 @@
         "z": 1.0
     },
     "materials": [],
-    "ColliderType": 1,
+    "ColliderType": 0,
     "ColliderCenter": {
-        "x": 5.960464477539063e-8,
-        "y": 3.6167571544647219,
-        "z": 0.0
-    },
-    "BoxColliderSize": {
-        "x": 2.08013916015625,
-        "y": 7.23351526260376,
-        "z": 2.08013916015625
-    },
-    "SphereColliderRadius": 0.0,
-    "textureName": "M_wooden_1"
-},
-{
-    "ID": -90112,
-    "ParentID": 0,
-    "Name": "Standard_house",
-    "MeshName": "Standard_house",
-    "Position": {
-        "x": 2.9000000953674318,
+        "x": 0.0,
         "y": 0.0,
         "z": 0.0
     },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -14112,
+    "ParentID": 0,
+    "Name": "wall2 (6)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -22.579999923706056,
+        "y": 0.0,
+        "z": 6.281000137329102
+    },
     "Rotation": {
-        "x": -6.123234262925839e-17,
-        "y": 1.0,
-        "z": 6.123234262925839e-17,
-        "w": -3.7493993930529858e-33
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
     },
     "Scale": {
-        "x": 1.0,
-        "y": 1.0,
+        "x": 1.3000001907348633,
+        "y": 3.0,
         "z": 1.0
     },
     "materials": [],
-    "ColliderType": 1,
+    "ColliderType": 0,
     "ColliderCenter": {
-        "x": 0.0032390356063842775,
-        "y": 1.7225409746170045,
-        "z": 0.11855590343475342
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "BoxColliderSize": {
-        "x": 3.5164804458618166,
-        "y": 3.445081949234009,
-        "z": 5.624882698059082
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "SphereColliderRadius": 0.0,
-    "textureName": "M_ruins_wall"
+    "textureName": "M_sand_color_02"
 },
-{
-    "ID": -88046,
+  {
+    "ID": -14106,
     "ParentID": 0,
-    "Name": "Ground",
-    "MeshName": "Plane",
+    "Name": "hesco_bastion (11)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 8.1899995803833,
+      "y": 0.0,
+      "z": -11.925999641418457
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14100,
+    "ParentID": 0,
+    "Name": "wall1",
+    "MeshName": "wall1",
     "Position": {
         "x": 0.0,
         "y": 0.0,
@@ -165,17 +1030,3977 @@
         "z": 1.0
     },
     "materials": [],
-    "ColliderType": 1,
+    "ColliderType": 0,
     "ColliderCenter": {
         "x": 0.0,
         "y": 0.0,
         "z": 0.0
     },
     "BoxColliderSize": {
-        "x": 10.0,
-        "y": 2.220446049250313e-16,
-        "z": 10.0
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "Lit"
+},
+{
+    "ID": -14094,
+    "ParentID": 0,
+    "Name": "wall_military (8)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": 6.952369689941406,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -14088,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (4)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 15.324999809265137,
+        "y": 0.0,
+        "z": 8.420000076293946
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 2.0,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -14082,
+    "ParentID": 0,
+    "Name": "wall_military (9)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": 10.506366729736329,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 0.8999999761581421,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -14076,
+    "ParentID": 0,
+    "Name": "wall_military (11)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": 3.236368179321289,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -14070,
+    "ParentID": 0,
+    "Name": "fence_military_02",
+    "MeshName": "fence_military_02",
+    "Position": {
+        "x": -39.768001556396487,
+        "y": 2.8329999446868898,
+        "z": 14.069999694824219
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.002"
+},
+{
+    "ID": -14062,
+    "ParentID": 0,
+    "Name": "building_town_03 (1)",
+    "MeshName": "building_town_03",
+    "Position": {
+        "x": 12.520000457763672,
+        "y": -0.0000019073486328125,
+        "z": -8.34000015258789
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+  {
+    "ID": -14056,
+    "ParentID": 0,
+    "Name": "hesco_bastion (18)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 4.289999961853027,
+      "y": 0.0,
+      "z": -5.03000020980835
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14050,
+    "ParentID": 0,
+    "Name": "wall2 (1)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -28.242000579833986,
+        "y": 0.0,
+        "z": -20.243999481201173
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 0.6000000238418579,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -14044,
+    "ParentID": 0,
+    "Name": "hesco_bastion (8)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -23.53499984741211,
+      "y": 2.750999927520752,
+      "z": 13.109000205993653
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -14038,
+    "ParentID": 0,
+    "Name": "gate_military_01 (1)",
+    "MeshName": "gate_military_01",
+    "Position": {
+        "x": -37.52363204956055,
+        "y": 2.805999994277954,
+        "z": 18.04199981689453
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.6000005006790162,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.003"
+},
+{
+    "ID": -14032,
+    "ParentID": 0,
+    "Name": "building_town_04",
+    "MeshName": "building_town_04",
+    "Position": {
+        "x": 7.519999980926514,
+        "y": 0.0,
+        "z": -21.709999084472658
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -14026,
+    "ParentID": 0,
+    "Name": "barrier_military (2)",
+    "MeshName": "barrier_military",
+    "Position": {
+        "x": -8.39900016784668,
+        "y": 2.4119999408721926,
+        "z": 22.610002517700197
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metal_dark"
+},
+{
+    "ID": -14018,
+    "ParentID": 0,
+    "Name": "building_town_03",
+    "MeshName": "building_town_03",
+    "Position": {
+        "x": -33.709999084472659,
+        "y": 0.0,
+        "z": 10.989999771118164
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+  {
+    "ID": -14012,
+    "ParentID": 0,
+    "Name": "hesco_bastion (13)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 2.5429999828338625,
+      "y": 4.0920000076293949,
+      "z": 3.736999988555908
+    },
+    "Rotation": {
+      "x": -6.462195010848839e-17,
+      "y": 0.9983753561973572,
+      "z": 5.764379490398694e-17,
+      "w": 0.05698089301586151
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -14006,
+    "ParentID": 0,
+    "Name": "hesco_bastion (16)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -6.869999885559082,
+      "y": 1.4149999618530274,
+      "z": -13.529999732971192
+    },
+    "Rotation": {
+      "x": -5.67741766172875e-17,
+      "y": 0.9975237250328064,
+      "z": 6.538730393333675e-17,
+      "w": -0.07033132016658783
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -14000,
+    "ParentID": 0,
+    "Name": "hesco_bastion (3)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -12.34000015258789,
+      "y": 0.0,
+      "z": -16.360000610351564
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13994,
+    "ParentID": 0,
+    "Name": "wall_military (5)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -31.81063461303711,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+  {
+    "ID": -13988,
+    "ParentID": 0,
+    "Name": "hesco_bastion (5)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -23.170000076293947,
+      "y": 0.0,
+      "z": 1.7580000162124634
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -13982,
+    "ParentID": 0,
+    "Name": "hesco_bastion (12)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 2.5430002212524416,
+      "y": 2.750999927520752,
+      "z": 3.549999952316284
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13976,
+    "ParentID": 0,
+    "Name": "wall_military (6)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -20.58563232421875,
+        "y": 2.246133327484131,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -13970,
+    "ParentID": 0,
+    "Name": "cover_wall_05",
+    "MeshName": "cover_wall_05",
+    "Position": {
+        "x": -24.780000686645509,
+        "y": 0.011783719062805176,
+        "z": -2.443000078201294
+    },
+    "Rotation": {
+        "x": -8.238200093347962e-17,
+        "y": 0.4548054337501526,
+        "z": -2.6684226175501259e-17,
+        "w": 0.8905909061431885
+    },
+    "Scale": {
+        "x": 1.4000000953674317,
+        "y": 1.399999976158142,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13964,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (3)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": -29.920000076293947,
+        "y": 2.7160000801086427,
+        "z": 11.850000381469727
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 0.7000001072883606,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13958,
+    "ParentID": 0,
+    "Name": "hesco_bastion (9)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 8.561999320983887,
+      "y": 0.0,
+      "z": 1.7719999551773072
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -13952,
+    "ParentID": 0,
+    "Name": "box_wooden_02 (2)",
+    "MeshName": "box_wooden_02",
+    "Position": {
+      "x": -9.656000137329102,
+      "y": 1.3450000286102296,
+      "z": 2.0190000534057619
+    },
+    "Rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "w": 1.0
+    },
+    "Scale": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13946,
+    "ParentID": 0,
+    "Name": "wall_military (12)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": 13.619999885559082,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 0.7599999904632568,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -13940,
+    "ParentID": 0,
+    "Name": "fence_military_02 (4)",
+    "MeshName": "fence_military_02",
+    "Position": {
+        "x": -35.849998474121097,
+        "y": 2.8329999446868898,
+        "z": 14.069999694824219
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.002"
+},
+{
+    "ID": -13934,
+    "ParentID": 0,
+    "Name": "wall2 (13)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -19.575000762939454,
+        "y": 2.7375648021698,
+        "z": 5.869999885559082
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0499999523162842,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13928,
+    "ParentID": 0,
+    "Name": "Small_house",
+    "MeshName": "Small_house",
+    "Position": {
+        "x": -28.450000762939454,
+        "y": 0.0,
+        "z": -14.760000228881836
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13922,
+    "ParentID": 0,
+    "Name": "wall_military",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -28.094633102416993,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+  {
+    "ID": -13916,
+    "ParentID": 0,
+    "Name": "hesco_bastion (10)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 9.670000076293946,
+      "y": 0.0,
+      "z": -11.97599983215332
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13910,
+    "ParentID": 0,
+    "Name": "building_ruin_02",
+    "MeshName": "building_ruin_02",
+    "Position": {
+        "x": -8.178763389587403,
+        "y": 0.0,
+        "z": -22.554166793823243
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13904,
+    "ParentID": 0,
+    "Name": "Large_house (2)",
+    "MeshName": "Large_house",
+    "Position": {
+        "x": -13.760000228881836,
+        "y": 0.0,
+        "z": -3.9600000381469728
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13898,
+    "ParentID": 0,
+    "Name": "wall2 (23)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -6.284999847412109,
+        "y": 2.2039999961853029,
+        "z": 5.869999885559082
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.649999976158142,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13892,
+    "ParentID": 0,
+    "Name": "hesco_bastion (8)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 9.979999542236329,
+      "y": 0.0,
+      "z": 1.7719999551773072
+    },
+    "Rotation": {
+      "x": -6.209781839545018e-17,
+      "y": 0.9998987317085266,
+      "z": 6.035446577132322e-17,
+      "w": 0.014235466718673706
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -13886,
+    "ParentID": 0,
+    "Name": "hesco_bastion (9)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -23.53499984741211,
+      "y": 2.750999927520752,
+      "z": 11.70300006866455
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13880,
+    "ParentID": 0,
+    "Name": "fence_military_02 (2)",
+    "MeshName": "fence_military_02",
+    "Position": {
+        "x": -47.439998626708987,
+        "y": 2.8329999446868898,
+        "z": 15.010000228881836
+    },
+    "Rotation": {
+        "x": -4.451290817591602e-17,
+        "y": 0.9700109958648682,
+        "z": 7.427929037748989e-17,
+        "w": -0.24306108057498933
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.002"
+},
+{
+    "ID": -13874,
+    "ParentID": 0,
+    "Name": "wooden_door",
+    "MeshName": "wooden_door",
+    "Position": {
+        "x": -16.589134216308595,
+        "y": 1.7239999771118165,
+        "z": 0.46700000762939455
+    },
+    "Rotation": {
+        "x": -8.322830596179488e-17,
+        "y": 0.874880313873291,
+        "z": 2.3913776619657005e-17,
+        "w": 0.48433923721313479
+    },
+    "Scale": {
+        "x": 2.500000476837158,
+        "y": 2.0,
+        "z": 2.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+},
+{
+    "ID": -13868,
+    "ParentID": 0,
+    "Name": "building_town_03",
+    "MeshName": "building_town_03",
+    "Position": {
+        "x": -23.540000915527345,
+        "y": 0.0,
+        "z": -22.190000534057618
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13862,
+    "ParentID": 0,
+    "Name": "wall2 (21)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -13.696000099182129,
+        "y": 2.2039999961853029,
+        "z": 5.869999885559082
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13856,
+    "ParentID": 0,
+    "Name": "wall2 (7)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -22.579999923706056,
+        "y": 0.0,
+        "z": 10.350000381469727
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13850,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (1)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 7.230000019073486,
+        "y": 0.0,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.7999999523162842,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13844,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (8)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 15.324999809265137,
+        "y": 2.7309999465942385,
+        "z": 8.420000076293946
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 2.0,
+        "y": 1.5,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13838,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (1)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": -26.270999908447267,
+        "y": 2.737565040588379,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13832,
+    "ParentID": 0,
+    "Name": "wooden_door (1)",
+    "MeshName": "wooden_door",
+    "Position": {
+        "x": -15.743297576904297,
+        "y": 1.7239999771118165,
+        "z": -1.3859195709228516
+    },
+    "Rotation": {
+        "x": -8.199354368293492e-17,
+        "y": 0.8969765901565552,
+        "z": 2.7854526269224959e-17,
+        "w": 0.4420781135559082
+    },
+    "Scale": {
+        "x": 2.499999523162842,
+        "y": 2.0,
+        "z": 2.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+},
+  {
+    "ID": -13826,
+    "ParentID": 0,
+    "Name": "hesco_bastion (1)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -12.34000015258789,
+      "y": 0.0,
+      "z": -17.739999771118165
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13820,
+    "ParentID": 0,
+    "Name": "wall_military (4)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -35.55363464355469,
+        "y": 2.246133327484131,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+  {
+    "ID": -13814,
+    "ParentID": 0,
+    "Name": "hesco_bastion (4)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -12.34000015258789,
+      "y": 1.3760000467300416,
+      "z": -17.694000244140626
+    },
+    "Rotation": {
+      "x": -6.26785322726869e-17,
+      "y": 0.9997143149375916,
+      "z": 5.975130552098425e-17,
+      "w": 0.02390247955918312
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13808,
+    "ParentID": 0,
+    "Name": "wall_military (1)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -24.351633071899415,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+  {
+    "ID": -13802,
+    "ParentID": 0,
+    "Name": "hesco_bastion (17)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 2.9000000953674318,
+      "y": 0.0,
+      "z": -5.03000020980835
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13796,
+    "ParentID": 0,
+    "Name": "wall2 (2)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -30.1299991607666,
+        "y": 0.0,
+        "z": -11.12600040435791
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13790,
+    "ParentID": 0,
+    "Name": "military_tent_02",
+    "MeshName": "military_tent_02",
+    "Position": {
+        "x": -5.809999942779541,
+        "y": 2.2249999046325685,
+        "z": 10.4399995803833
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
     },
     "SphereColliderRadius": 0.0,
     "textureName": "M_military_green"
+},
+{
+    "ID": -13784,
+    "ParentID": 0,
+    "Name": "wall2 (10)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -22.574697494506837,
+        "y": 2.7375648021698,
+        "z": 9.838457107543946
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.4000003337860108,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13778,
+    "ParentID": 0,
+    "Name": "hesco_bastion (7)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -9.656000137329102,
+      "y": 0.0,
+      "z": 1.7719999551773072
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13772,
+    "ParentID": 0,
+    "Name": "hesco_bastion (2)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+        "x": -12.34000015258789,
+        "y": 1.3600000143051148,
+        "z": -19.149999618530275
+    },
+    "Rotation": {
+        "x": -6.544304267173303e-17,
+        "y": 0.9974541664123535,
+        "z": 5.670989475752478e-17,
+        "w": 0.07131156325340271
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_color_palette.003"
+},
+{
+    "ID": -13766,
+    "ParentID": 0,
+    "Name": "cover_wall_07",
+    "MeshName": "cover_wall_07",
+    "Position": {
+        "x": -30.1299991607666,
+        "y": 0.0,
+        "z": -5.769999980926514
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000000715255738,
+        "y": 1.2999999523162842,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13760,
+    "ParentID": 0,
+    "Name": "wall2 (3)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -26.349000930786134,
+        "y": 0.0,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.2999999523162842,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13754,
+    "ParentID": 0,
+    "Name": "barrier_military (1)",
+    "MeshName": "barrier_military",
+    "Position": {
+        "x": -12.449999809265137,
+        "y": 2.4119999408721926,
+        "z": 22.610002517700197
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metal_dark"
+},
+{
+    "ID": -13748,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (2)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 12.364999771118164,
+        "y": 0.0,
+        "z": 6.302000045776367
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13742,
+    "ParentID": 0,
+    "Name": "box_wooden_01 (1)",
+    "MeshName": "box_wooden_01",
+    "Position": {
+      "x": -4.035999774932861,
+      "y": 0.01464480347931385,
+      "z": -20.844999313354493
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "box_wooden_01"
+  },
+{
+    "ID": -13736,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (4)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": -13.899999618530274,
+        "y": 2.737565040588379,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13730,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": -1.7979999780654908,
+        "y": 0.0,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13724,
+    "ParentID": 0,
+    "Name": "barrier_military (4)",
+    "MeshName": "barrier_military",
+    "Position": {
+        "x": 11.270000457763672,
+        "y": 0.0,
+        "z": -13.5600004196167
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metal_dark"
+},
+{
+    "ID": -13718,
+    "ParentID": 0,
+    "Name": "Large_house",
+    "MeshName": "Large_house",
+    "Position": {
+        "x": -19.920000076293947,
+        "y": 0.0,
+        "z": -13.489999771118164
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13712,
+    "ParentID": 0,
+    "Name": "barrier_military (3)",
+    "MeshName": "barrier_military",
+    "Position": {
+        "x": 11.270000457763672,
+        "y": 0.0,
+        "z": -17.559999465942384
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metal_dark"
+},
+{
+    "ID": -13706,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (5)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": -2.9739999771118166,
+        "y": 2.7309999465942385,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.7000000476837159,
+        "y": 1.5,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13700,
+    "ParentID": 0,
+    "Name": "fence_military_02 (3)",
+    "MeshName": "fence_military_02",
+    "Position": {
+        "x": -50.47999954223633,
+        "y": 2.8329999446868898,
+        "z": 17.479999542236329
+    },
+    "Rotation": {
+        "x": -2.947403341204048e-17,
+        "y": 0.9055613875389099,
+        "z": 8.1425469125458e-17,
+        "w": -0.42421525716781618
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.002"
+},
+  {
+    "ID": -13694,
+    "ParentID": 0,
+    "Name": "hesco_bastion (15)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -6.869999885559082,
+      "y": 0.0,
+      "z": -13.529999732971192
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -13688,
+    "ParentID": 0,
+    "Name": "box_wooden_01 (3)",
+    "MeshName": "box_wooden_01",
+    "Position": {
+      "x": 15.850000381469727,
+      "y": 0.01464480347931385,
+      "z": -4.619999885559082
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.2000000476837159,
+      "y": 1.2000000476837159,
+      "z": 1.2000000476837159
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13682,
+    "ParentID": 0,
+    "Name": "wall2 (17)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -19.575000762939454,
+        "y": 2.7375648021698,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0499999523162842,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13676,
+    "ParentID": 0,
+    "Name": "hesco_bastion (11)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 2.5429999828338625,
+      "y": 2.750999927520752,
+      "z": 4.956000328063965
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+  {
+    "ID": -13670,
+    "ParentID": 0,
+    "Name": "hesco_bastion (19)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 3.115000009536743,
+      "y": 1.4620000123977662,
+      "z": -5.03000020980835
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13664,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (7)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 12.390000343322754,
+        "y": 2.7309999465942385,
+        "z": 10.394000053405762
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 1.5,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13658,
+    "ParentID": 0,
+    "Name": "hesco_bastion (13)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": 6.775000095367432,
+      "y": 0.0,
+      "z": -12.335000038146973
+    },
+    "Rotation": {
+      "x": -6.262056345535919e-17,
+      "y": 0.9997369647026062,
+      "z": 5.981192131627214e-17,
+      "w": 0.022934485226869584
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13652,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (2)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": -29.937000274658204,
+        "y": 2.7160000801086427,
+        "z": 6.331999778747559
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000004291534424,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13646,
+    "ParentID": 0,
+    "Name": "humvee_miliotary (1)",
+    "MeshName": "humvee_miliotary",
+    "Position": {
+        "x": -22.8799991607666,
+        "y": 0.04742717742919922,
+        "z": -6.0
+    },
+    "Rotation": {
+        "x": -7.882060458463462e-17,
+        "y": 0.9364583492279053,
+        "z": 3.5862574275914128e-17,
+        "w": 0.35077881813049319
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_truck_base"
+},
+{
+    "ID": -13640,
+    "ParentID": 0,
+    "Name": "building_town_01 (1)",
+    "MeshName": "building_town_01",
+    "Position": {
+        "x": -0.9800000190734863,
+        "y": 0.000010835360626515467,
+        "z": -17.739999771118165
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13634,
+    "ParentID": 0,
+    "Name": "wall2 (8)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -16.6299991607666,
+        "y": 0.0,
+        "z": 10.350000381469727
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13628,
+    "ParentID": 0,
+    "Name": "box_wooden_02 (4)",
+    "MeshName": "box_wooden_02",
+    "Position": {
+      "x": 8.561999320983887,
+      "y": 1.3450000286102296,
+      "z": 2.0190000534057619
+    },
+    "Rotation": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0,
+      "w": 1.0
+    },
+    "Scale": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.5
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13622,
+    "ParentID": 0,
+    "Name": "LowPoly_Wall_01 (3)",
+    "MeshName": "LowPoly_Wall_01",
+    "Position": {
+        "x": 12.37399959564209,
+        "y": 0.0,
+        "z": 10.399999618530274
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.3000001907348633,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13616,
+    "ParentID": 0,
+    "Name": "barrier_military (5)",
+    "MeshName": "barrier_military",
+    "Position": {
+        "x": 15.979999542236329,
+        "y": 2.4119999408721926,
+        "z": 19.739999771118165
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.100000262260437,
+        "y": 1.100000023841858,
+        "z": 1.100000262260437
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metal_dark"
+},
+{
+    "ID": -13610,
+    "ParentID": 0,
+    "Name": "wall_military (7)",
+    "MeshName": "wall_military",
+    "Position": {
+        "x": -16.842634201049806,
+        "y": 2.2461330890655519,
+        "z": 22.270280838012697
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.159999966621399,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_rough_02"
+},
+{
+    "ID": -13604,
+    "ParentID": 0,
+    "Name": "wall4 (1)",
+    "MeshName": "wall4",
+    "Position": {
+        "x": -11.9399995803833,
+        "y": 0.0,
+        "z": -21.06999969482422
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_ground_sandy"
+},
+{
+    "ID": -13598,
+    "ParentID": 0,
+    "Name": "wall2 (25)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -1.6100000143051148,
+        "y": 2.0339999198913576,
+        "z": 10.045000076293946
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.4000003337860108,
+        "y": 1.5,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+  {
+    "ID": -13592,
+    "ParentID": 0,
+    "Name": "hesco_bastion (6)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -8.23799991607666,
+      "y": 0.0,
+      "z": 1.7719999551773072
+    },
+    "Rotation": {
+      "x": -6.209781839545018e-17,
+      "y": 0.9998987317085266,
+      "z": 6.035446577132322e-17,
+      "w": 0.014235466718673706
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": -13586,
+    "ParentID": 0,
+    "Name": "fence_military_02 (1)",
+    "MeshName": "fence_military_02",
+    "Position": {
+        "x": -43.715999603271487,
+        "y": 2.8329999446868898,
+        "z": 14.069999694824219
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.002"
+},
+{
+    "ID": -13580,
+    "ParentID": 0,
+    "Name": "building_town_01 (2)",
+    "MeshName": "building_town_01",
+    "Position": {
+        "x": -8.289999961853028,
+        "y": 0.000010728836059570313,
+        "z": -10.5
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13574,
+    "ParentID": 0,
+    "Name": "building_town_04 (1)",
+    "MeshName": "building_town_04",
+    "Position": {
+        "x": 18.40999984741211,
+        "y": 0.0,
+        "z": 6.170000076293945
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.7071068286895752,
+        "z": 0.0,
+        "w": 0.7071068286895752
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": -13568,
+    "ParentID": 0,
+    "Name": "wall2 (9)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -7.590000152587891,
+        "y": 0.0,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.2999999523162842,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13562,
+    "ParentID": 0,
+    "Name": "wall2 (4)",
+    "MeshName": "wall2",
+    "Position": {
+        "x": -13.010000228881836,
+        "y": 0.0,
+        "z": 2.630000114440918
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.2999999523162842,
+        "y": 3.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_02"
+},
+{
+    "ID": -13556,
+    "ParentID": 0,
+    "Name": "gate_military_01",
+    "MeshName": "gate_military_01",
+    "Position": {
+        "x": -37.52363204956055,
+        "y": 0.0,
+        "z": -34.11000061035156
+    },
+    "Rotation": {
+        "x": -6.123234262925839e-17,
+        "y": 1.0,
+        "z": 6.123234262925839e-17,
+        "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_metallic_shiny.003"
+},
+  {
+    "ID": -13550,
+    "ParentID": 0,
+    "Name": "hesco_bastion (14)",
+    "MeshName": "hesco_bastion",
+    "Position": {
+      "x": -6.869999885559082,
+      "y": 0.0,
+      "z": -14.909998893737793
+    },
+    "Rotation": {
+      "x": -6.123234262925839e-17,
+      "y": 1.0,
+      "z": 6.123234262925839e-17,
+      "w": -3.7493993930529858e-33
+    },
+    "Scale": {
+      "x": 1.0,
+      "y": 1.0,
+      "z": 1.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "BoxColliderSize": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_wooden"
+  },
+{
+    "ID": 35362,
+    "ParentID": 0,
+    "Name": "2FPlane (8)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": 5.529999732971191,
+        "y": 2.7425646781921388,
+        "z": 8.239999771118164
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.399999976158142,
+        "y": 1.0,
+        "z": 0.5
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35384,
+    "ParentID": 0,
+    "Name": "2FPlane (2)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -29.739999771118165,
+        "y": 2.7425646781921388,
+        "z": 17.95800018310547
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 0.800000011920929,
+        "y": 1.0,
+        "z": 0.8500000238418579
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35450,
+    "ParentID": 0,
+    "Name": "2FPlane (9)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": 5.529999732971191,
+        "y": 2.4600000381469728,
+        "z": 12.460000038146973
+    },
+    "Rotation": {
+        "x": 0.055478911846876147,
+        "y": -0.7049270272254944,
+        "z": -0.055478911846876147,
+        "w": 0.7049270272254944
+    },
+    "Scale": {
+        "x": 0.3500000238418579,
+        "y": 1.0,
+        "z": 1.399999976158142
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35488,
+    "ParentID": 0,
+    "Name": "2FPlane (10)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -13.0,
+        "y": 2.194000005722046,
+        "z": 26.200000762939454
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 5.199999809265137,
+        "y": 0.5600000023841858,
+        "z": 0.800000011920929
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_scopes"
+},
+{
+    "ID": 35566,
+    "ParentID": 0,
+    "Name": "Stair",
+    "MeshName": "Stair",
+    "Position": {
+        "x": -19.609697341918947,
+        "y": 1.149999976158142,
+        "z": 8.25
+    },
+    "Rotation": {
+        "x": -0.087155781686306,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9961947202682495
+    },
+    "Scale": {
+        "x": 0.5600000023841858,
+        "y": 0.559999942779541,
+        "z": 1.2000000476837159
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35576,
+    "ParentID": 0,
+    "Name": "2FPlane (3)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -24.073999404907228,
+        "y": 2.4700000286102297,
+        "z": 18.1200008392334
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -0.07845902442932129,
+        "w": 0.9969173669815064
+    },
+    "Scale": {
+        "x": 0.3400000333786011,
+        "y": 1.0,
+        "z": 0.8149999976158142
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35590,
+    "ParentID": 0,
+    "Name": "2FPlane (11)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -9.079999923706055,
+        "y": 2.194000005722046,
+        "z": 10.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.5,
+        "y": 1.0,
+        "z": 0.8999999761581421
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35616,
+    "ParentID": 0,
+    "Name": "2FPlane (4)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -19.604000091552736,
+        "y": 2.194000005722046,
+        "z": 18.15999984741211
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 0.5600000023841858,
+        "y": 0.5600000023841858,
+        "z": 0.800000011920929
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35638,
+    "ParentID": 0,
+    "Name": "Stair (1)",
+    "MeshName": "Stair",
+    "Position": {
+        "x": 13.859999656677246,
+        "y": 1.0859999656677247,
+        "z": 8.279999732971192
+    },
+    "Rotation": {
+        "x": -0.09237061440944672,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.9957246780395508
+    },
+    "Scale": {
+        "x": 0.27000001072883608,
+        "y": 0.559999942779541,
+        "z": 1.2000000476837159
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35666,
+    "ParentID": 0,
+    "Name": "2FPlane (5)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -0.7900000214576721,
+        "y": 2.194000005722046,
+        "z": 18.15999984741211
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 3.200000047683716,
+        "y": 0.5600000023841858,
+        "z": 0.800000011920929
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35702,
+    "ParentID": 0,
+    "Name": "2FPlane",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -17.669696807861329,
+        "y": 2.7425646781921388,
+        "z": 4.238457679748535
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 2.5,
+        "y": 1.0,
+        "z": 0.30000001192092898
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35798,
+    "ParentID": 0,
+    "Name": "2FPlane (1)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -26.28169822692871,
+        "y": 2.7425646781921388,
+        "z": 9.770000457763672
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 0.7699999809265137,
+        "y": 1.0,
+        "z": 0.8500000238418579
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35828,
+    "ParentID": 0,
+    "Name": "Plane",
+    "MeshName": "Plane",
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sand_color_01"
+},
+{
+    "ID": 35874,
+    "ParentID": 0,
+    "Name": "2FPlane (6)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -35.650001525878909,
+        "y": 2.7425646781921388,
+        "z": 17.95800018310547
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 0.4000000059604645,
+        "y": 1.0,
+        "z": 0.8500000238418579
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35908,
+    "ParentID": 0,
+    "Name": "2FPlane (12)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -42.459999084472659,
+        "y": 2.7230000495910646,
+        "z": 23.691999435424806
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 2.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_scopes"
+},
+{
+    "ID": 35922,
+    "ParentID": 0,
+    "Name": "2FPlane (10)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -17.669696807861329,
+        "y": 2.7425646781921388,
+        "z": 4.238457679748535
+    },
+    "Rotation": {
+        "x": 1.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 2.5,
+        "y": 1.0,
+        "z": 0.30000001192092898
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 35992,
+    "ParentID": 0,
+    "Name": "2FPlane (7)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": 2.5399999618530275,
+        "y": 2.7425646781921388,
+        "z": 4.245999813079834
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 2.0,
+        "y": 1.0,
+        "z": 0.30000001192092898
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_sandstone"
+},
+{
+    "ID": 36014,
+    "ParentID": 0,
+    "Name": "2FPlane (13)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": -52.2599983215332,
+        "y": 2.7230000495910646,
+        "z": 23.691999435424806
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 2.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_scopes"
+},
+{
+    "ID": 36040,
+    "ParentID": 0,
+    "Name": "2FPlane (14)",
+    "MeshName": "Plane",
+    "Position": {
+        "x": 20.360000610351564,
+        "y": 2.194000005722046,
+        "z": 23.691999435424806
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 2.0
+    },
+    "materials": [],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0,
+    "textureName": "M_scopes"
 }]

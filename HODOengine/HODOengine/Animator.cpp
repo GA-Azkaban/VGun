@@ -20,7 +20,12 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Start();
-		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion);
+
+		if (_animationController->IsStateChange())
+		{
+			GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion);
+		}
+
 	}
 
 	void Animator::Update()
@@ -28,18 +33,26 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Update();
-		_current = _animationController->GetCurrentStateName();
-		_prev = _animationController->GetPrevStateName();
 
-		if (_current != _prev)
+		if (_animationController->IsStateChange())
 		{
-			GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion);
+			GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
 		}
 	}
 
 	void Animator::SetAnimationController(AnimationController* controller)
 	{
 		_animationController = controller;
+	}
+
+	std::string Animator::GetCurrentState()
+	{
+		return _animationController->GetCurrentStateName();
+	}
+
+	void Animator::SetCurrentState(std::string stateName)
+	{
+		_animationController->SetCurrentState(stateName);
 	}
 
 	void Animator::SetFloat(std::string name, float val)
@@ -57,9 +70,9 @@ namespace HDData
 		_animationController->SetBoolParam(name, val);
 	}
 
-	void Animator::SetTrigger(std::string name, bool val)
+	void Animator::SetTrigger(std::string name)
 	{
-		_animationController->SetTriggerParam(name, val);
+		_animationController->SetTriggerParam(name);
 	}
 
 }

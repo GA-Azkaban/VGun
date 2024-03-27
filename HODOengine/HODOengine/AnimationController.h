@@ -67,17 +67,19 @@ namespace HDData
 	public:
 		State* CreateState(std::string stateName, std::string fbxName);
 		State& GetState(std::string stateName);
-		std::unordered_map<std::string, State> GetAllStates();
+		std::unordered_map<std::string, State*> GetAllStates();
 		
 		void SetEntryState(std::string state);
 		
+		bool IsStateChange();
 		State* GetCurrentState();
 		State* GetPrevState();
 		std::string GetCurrentStateName();
 		std::string GetPrevStateName();
+		void SetCurrentState(std::string stateName);
 
 	private:
-		std::unordered_map<std::string, State> _allStates;
+		std::unordered_map<std::string, State*> _allStates;
 
 		State* _entryState;
 		State* _exitState;
@@ -85,9 +87,11 @@ namespace HDData
 
 		State* _currentState;
 		State* _prevState;
+		bool _isStateChange;
 
 		// 파라미터
 	public:
+		std::string _triggerNow;
 		void CreateFloatParam(std::string paramName, float defaultValue);
 		void CreateIntParam(std::string paramName, int defaultValue);
 		void CreateBoolParam(std::string boolParam, bool defaultValue);
@@ -96,10 +100,9 @@ namespace HDData
 		void SetFloatParam(std::string, float);
 		void SetIntParam(std::string, int);
 		void SetBoolParam(std::string, bool);
-		void SetTriggerParam(std::string, bool);
+		void SetTriggerParam(std::string);
 
 	private:
-
 		std::unordered_map<std::string, float> _floatParams;
 		std::unordered_map<std::string, int> _intParams;
 		std::unordered_map<std::string, bool> _boolParams;
