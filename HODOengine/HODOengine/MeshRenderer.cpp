@@ -8,7 +8,7 @@ namespace HDData
 	MeshRenderer::MeshRenderer()
 		: _staticMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateStaticMeshObject())
 	{
-		//HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		
 	}
 
 	MeshRenderer::~MeshRenderer()
@@ -26,15 +26,45 @@ namespace HDData
 		_staticMesh->LoadNormalMap(fileName);
 	}
 
-	void MeshRenderer::LoadDiffuseMap(const std::string& fileName)
+	void MeshRenderer::LoadAlbedoMap(const std::string& fileName)
 	{
-		_staticMesh->LoadDiffuseMap(fileName);
+		_staticMesh->LoadAlbedoMap(fileName);
 	}
 
 	void MeshRenderer::LoadARMMap(const std::string& fileName)
 	{
         _staticMesh->LoadARMMap(fileName);
     }
+
+	void MeshRenderer::LoadRoughnessMap(const std::string& fileName)
+	{
+		_staticMesh->LoadRoughnessMap(fileName);
+	}
+
+	void MeshRenderer::LoadMetallicMap(const std::string& fileName)
+	{
+		_staticMesh->LoadMetallicMap(fileName);
+	}
+
+	void MeshRenderer::SetRoughnessValue(float value)
+	{
+		_staticMesh->SetRoughnessValue(value);
+	}
+
+	void MeshRenderer::SetMetallicValue(float value)
+	{
+		_staticMesh->SetMetallicValue(value);
+	}
+
+	void MeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /*= 255*/)
+	{
+		_staticMesh->SetAlbedoColor(r, g, b, a);
+	}
+
+	void MeshRenderer::SetAlbedoColor(Vector4 color)
+	{
+		_staticMesh->SetAlbedoColor(color);
+	}
 
 	void MeshRenderer::Update()
 	{
