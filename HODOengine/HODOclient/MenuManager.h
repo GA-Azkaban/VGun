@@ -27,6 +27,7 @@ public:
 	HDData::GameObject* _mainMenuCanvas;
 
 	// btn
-	HDData::GameObject* _preferences;	// 환경설정 버튼
+	HDData::GameObject* _playBtn;
+	HDData::GameObject* _preferencesBtn;	// 환경설정 버튼
 };
 

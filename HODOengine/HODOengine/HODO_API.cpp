@@ -57,7 +57,7 @@ namespace API
 			auto i = img->AddComponent<HDData::ImageUI>();
 			btn->SetButtonComp(i);
 
-			btn->SetImage("Sound.png");
+			btn->SetImage("defaultImg.png");
 
 			return obj;
 		}

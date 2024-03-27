@@ -272,7 +272,6 @@ namespace RocketCore::Graphics
 			// Present as fast as possible.
 			_swapChain->Present(0, 0);
 		}
-
 		return;
 	}
 
