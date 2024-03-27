@@ -1086,7 +1086,6 @@ namespace RocketCore::Graphics
 	{
 		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
 		// numChannels == numBones
-		static int animNum = 0;
 		UINT animCount = scene->mNumAnimations;
 		for (UINT i = 0; i < animCount; ++i)
 		{
@@ -1094,8 +1093,8 @@ namespace RocketCore::Graphics
 			Animation* newAnimation = new Animation();
 			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
 			newAnimation->animName = _fileName;
-			newAnimation->uniqueAnimNum = animNum++;
 			newAnimation->duration = animation->mDuration;
+			newAnimation->blendDuration = newAnimation->duration / 20.0f;
 
 			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
 			{

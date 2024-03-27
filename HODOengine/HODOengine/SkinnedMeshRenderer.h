@@ -24,7 +24,7 @@ namespace HDData
 		void PlayAnimation(const std::string& fileName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
-		const Matrix& GetBoneTransformByNodeName(std::string nodeName);
+		Matrix GetBoneTransformByNodeName(std::string nodeName);
 
 	protected:
 		virtual void Update() override;
