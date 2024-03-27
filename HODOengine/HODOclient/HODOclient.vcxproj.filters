@@ -66,6 +66,9 @@
     <ClCompile Include="Weapon.cpp">
       <Filter>02_Client\TestScene\Weapon</Filter>
     </ClCompile>
+    <ClCompile Include="FSMtestScript.cpp">
+      <Filter>99_unity,fsm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">

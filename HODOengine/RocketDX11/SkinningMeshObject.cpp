@@ -1,4 +1,4 @@
-﻿#include "SkinningMeshObject.h"
+#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"

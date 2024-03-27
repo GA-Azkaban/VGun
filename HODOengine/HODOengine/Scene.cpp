@@ -33,7 +33,7 @@ namespace HDData
 
 	Scene::~Scene()
 	{
-		
+
 	}
 
 	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
@@ -65,15 +65,19 @@ namespace HDData
 	{
 		if (!_gameObjects.empty())
 		{
-			for (auto& gameObject : _gameObjects)
+			for (auto it = _gameObjects.begin(); it != _gameObjects.end(); )
 			{
-				if (gameObject->IsActive())
+				if ((*it)->IsActive() && (*it)->GetParentActive())
 				{
-					gameObject->Start();
+					(*it)->Start();
+					_runningObjects.push_back(*it);
+					it = _gameObjects.erase(it);
 				}
-				GetRunningObjectList().push_back(gameObject);
+				else
+				{
+					++it;
+				}
 			}
-			_gameObjects.clear();
 		}
 
 		for (auto& gameObject : GetRunningObjectList())

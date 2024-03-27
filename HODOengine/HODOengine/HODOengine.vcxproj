@@ -226,6 +226,8 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioClip.h" />
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="AudioSource.h" />
@@ -305,6 +307,8 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="SceneLoader.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />

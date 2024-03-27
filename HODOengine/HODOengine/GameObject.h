@@ -116,6 +116,5 @@ namespace HDData
 		GameObject* _parentGameObject;
 		Transform* _transform;
 		bool _selfActive;
-
 	};
 }
