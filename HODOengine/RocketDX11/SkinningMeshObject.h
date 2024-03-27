@@ -50,7 +50,7 @@ namespace RocketCore::Graphics
 
 		virtual void SetOutlineActive(bool isActive) override;
 
-		virtual const Matrix& GetBoneTransformByNodeName(std::string nodeName) override;
+		virtual Matrix GetBoneTransformByNodeName(std::string nodeName) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();
