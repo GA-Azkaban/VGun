@@ -193,4 +193,14 @@ namespace HDData
 		return _objectName;
 	}
 
+	void GameObject::FadeOut()
+	{
+		// 매번 검은색 이미지를 만들고 호출해야하나?
+	}
+
+	void GameObject::FadeIn()
+	{
+
+	}
+
 }

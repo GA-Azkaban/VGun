@@ -48,6 +48,8 @@ namespace RocketCore::Graphics
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
+		void FadeIn();
+		void FadeOut();
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);

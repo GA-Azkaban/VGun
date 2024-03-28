@@ -20,6 +20,7 @@ void LoginSceneView::Initialize()
 	LoginView();
 
 	API::LoadScene(_scene);
+	API::LoadScene(menu);
 }
 
 void LoginSceneView::LoginView()
@@ -239,6 +240,9 @@ void LoginSceneView::LoginView()
 			LobbyManager::Instance().ExitJoin();
 		}
 	);
+
+
+	//joinCanvas->FadeOut();
 
 	joinCanvas->SetSelfActive(false);
 }

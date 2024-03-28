@@ -174,3 +174,13 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 {
 	_sortOrder = order;
 }
+
+void RocketCore::Graphics::ImageRenderer::FadeIn()
+{
+
+}
+
+void RocketCore::Graphics::ImageRenderer::FadeOut()
+{
+
+}

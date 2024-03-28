@@ -29,5 +29,6 @@ public:
 	// btn
 	HDData::GameObject* _playBtn;
 	HDData::GameObject* _preferencesBtn;	// 환경설정 버튼
+	HDData::GameObject* _exitbtn;
 };
 
