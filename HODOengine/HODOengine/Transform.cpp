@@ -4,7 +4,7 @@
 namespace HDData
 {
 	Transform::Transform()
-		:_position(0.0f, 0.0f, 0.0f), _rotation(0.0f, 0.0f, 0.0f, 1.0f), _scale(Vector3::One)
+		: _transform(new HDCommon::Transform())
 	{
 
 	}
@@ -15,12 +15,12 @@ namespace HDData
 		// 내 로컬 포지션에 부모의 월드 트랜스폼을 반영해 내 월드 포지션을 구한다.
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _position;
+			return _transform->_position;
 		}
 
 		Matrix parentMatrix = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM();
 
-		return Vector3::Transform(_position, parentMatrix);
+		return Vector3::Transform(_transform->_position, parentMatrix);
 
 		// 		Vector3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
 		// 		Quaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
@@ -33,24 +33,24 @@ namespace HDData
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _rotation;
+			return _transform->_rotation;
 		}
 
 		Quaternion parentQuat = GetGameObject()->GetParentGameObject()->GetTransform()->GetRotation();
 
-		return Quaternion::Concatenate(_rotation, parentQuat);
+		return Quaternion::Concatenate(_transform->_rotation, parentQuat);
 	}
 
 	Vector3 Transform::GetScale() const
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _scale;
+			return _transform->_scale;
 		}
 
 		Vector3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetScale();
 		Vector3 result = { 1.f, 1.f, 1.f };
-		result *= _scale;
+		result *= _transform->_scale;
 		result *= parentScale;
 
 		return result;
@@ -58,17 +58,17 @@ namespace HDData
 
 	Vector3 Transform::GetLocalPosition() const
 	{
-		return _position;
+		return _transform->_position;
 	}
 
 	Quaternion Transform::GetLocalRotation() const
 	{
-		return _rotation;
+		return _transform->_rotation;
 	}
 
 	Vector3 Transform::GetLocalScale() const
 	{
-		return _scale;
+		return _transform->_scale;
 	}
 
 	Matrix Transform::GetWorldTM() const
@@ -87,9 +87,9 @@ namespace HDData
 	Matrix Transform::GetLocalTM() const
 	{
 		Matrix result;
-		result *= Matrix::CreateScale(_scale);
-		result *= Matrix::CreateFromQuaternion(_rotation);
-		result *= Matrix::CreateTranslation(_position);
+		result *= Matrix::CreateScale(_transform->_scale);
+		result *= Matrix::CreateFromQuaternion(_transform->_rotation);
+		result *= Matrix::CreateTranslation(_transform->_position);
 
 		return result;
 	}
@@ -155,7 +155,7 @@ namespace HDData
 			result = Vector3::Transform(result, parent->GetTransform()->GetWorldTM().Invert());
 		}
 
-		_position = result;
+		_transform->_position = result;
 
 		// 		else
 // 		{
@@ -195,7 +195,7 @@ namespace HDData
 			result = Quaternion::Concatenate(result, parentRot);
 		}
 
-		_rotation = result;
+		_transform->_rotation = result;
 	}
 
 	void Transform::SetScale(const Vector3& scale)
@@ -218,7 +218,7 @@ namespace HDData
 			result *= inverseScale;
 		}
 
-		_scale = result;
+		_transform->_scale = result;
 
 		// 		else
 		// 		{
@@ -231,7 +231,7 @@ namespace HDData
 
 	void Transform::SetLocalPosition(const Vector3& position)
 	{
-		_position = position;
+		_transform->_position = position;
 	}
 
 	void Transform::SetLocalPosition(float x, float y, float z)
@@ -242,41 +242,41 @@ namespace HDData
 
 	void Transform::SetLocalRotation(const Quaternion& rotation)
 	{
-		_rotation = rotation;
+		_transform->_rotation = rotation;
 	}
 
 	void Transform::SetLocalRotation(float x, float y, float z, float w)
 	{
-		_rotation.x = x;
-		_rotation.y = y;
-		_rotation.z = z;
-		_rotation.w = w;
+		_transform->_rotation.x = x;
+		_transform->_rotation.y = y;
+		_transform->_rotation.z = z;
+		_transform->_rotation.w = w;
 	}
 
 	void Transform::SetLocalScale(const Vector3& scale)
 	{
-		_scale = scale;
+		_transform->_scale = scale;
 	}
 
 	void Transform::SetLocalScale(float x, float y, float z)
 	{
-		_scale.x = x;
-		_scale.y = y;
-		_scale.z = z;
+		_transform->_scale.x = x;
+		_transform->_scale.y = y;
+		_transform->_scale.z = z;
 	}
 
 	void Transform::Translate(const Vector3& position)
 	{
-		_position.x += position.x;
-		_position.y += position.y;
-		_position.z += position.z;
+		_transform->_position.x += position.x;
+		_transform->_position.y += position.y;
+		_transform->_position.z += position.z;
 	}
 
 	void Transform::Translate(float x, float y, float z)
 	{
-		_position.x += x;
-		_position.y += y;
-		_position.z += z;
+		_transform->_position.x += x;
+		_transform->_position.y += y;
+		_transform->_position.z += z;
 	}
 
 	void Transform::Rotate(float angleX, float angleY, float angleZ)
@@ -287,7 +287,7 @@ namespace HDData
 
 		Quaternion rotQuat = Quaternion::CreateFromYawPitchRoll({ x,y,z });
 
-		_rotation = Quaternion::Concatenate(_rotation, rotQuat);
+		_transform->_rotation = Quaternion::Concatenate(_transform->_rotation, rotQuat);
 		// 
 		// 		float radianX = HDMath::ToRadian(angleX);
 		// 		float radianY = HDMath::ToRadian(angleY);
@@ -326,7 +326,7 @@ namespace HDData
 
 	void Transform::Rotate(const Quaternion& quaternion)
 	{
-		_rotation = Quaternion::Concatenate(_rotation, quaternion);
+		_transform->_rotation = Quaternion::Concatenate(_transform->_rotation, quaternion);
 	}
 
 }

@@ -2,6 +2,7 @@
 #include "RenderSystem.h"
 #include "GraphicsObjFactory.h"
 #include "Transform.h"
+#include "GameObject.h"
 
 namespace HDData
 {
@@ -81,14 +82,14 @@ namespace HDData
 		_skinnedMesh->SetOutlineActive(isActive);
 	}
 
-	Matrix SkinnedMeshRenderer::GetBoneTransformByNodeName(std::string nodeName)
-	{
-		return _skinnedMesh->GetBoneTransformByNodeName(nodeName);
-	}
-
 	void SkinnedMeshRenderer::Update()
 	{
 		_skinnedMesh->SetWorldTM(GetTransform()->GetWorldTM());
+		// 여기에서 노드 오브젝트 갱신
+		// 렌더러의 오브젝트에서 타고 올라가서 가장 위에 있는 부모 오브젝트를 가져온다. 트랜스폼 갱신
+		// 재귀함수로 부모 오브젝트 밑에 있는 자식 오브젝트들의 트랜스폼 갱신
+		//UpdateArmatureNodeTransform(_skinnedMesh->GetNode(), GetGameObject()->GetParentGameObject()->GetChildGameObjectByName("Armature"));
+		Node* node = _skinnedMesh->GetNode();
 	}
 
 	void SkinnedMeshRenderer::OnEnable()
@@ -99,6 +100,15 @@ namespace HDData
 	void SkinnedMeshRenderer::OnDisable()
 	{
 		_skinnedMesh->SetActive(false);
+	}
+
+	void SkinnedMeshRenderer::UpdateArmatureNodeTransform(Node* node, GameObject* parentObject)
+	{
+		//for (auto& child : parentObject->GetChildGameObjects())
+		//{
+		//	child->GetTransform()->SetLocalTM(node->nodeTransform);
+		//	UpdateArmatureNodeTransform(node->children)
+		//}
 	}
 
 }

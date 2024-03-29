@@ -5,7 +5,8 @@
 #include <wrl.h>
 #include <vector>
 #include "Animation.h"
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 
 using Microsoft::WRL::ComPtr;
 

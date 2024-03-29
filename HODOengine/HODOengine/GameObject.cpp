@@ -1,6 +1,11 @@
 ﻿#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
+#include "SceneSystem.h"
+#include "HDResourceManager.h"
+#include "DynamicBoxCollider.h"
+#include "StaticBoxCollider.h"
+#include "SkinnedMeshRenderer.h"
 
 namespace HDData
 {
@@ -24,9 +29,9 @@ namespace HDData
 	{
 		_selfActive = true;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnEnable();
+			_componentsIndexed[i]->OnEnable();
 		}
 	}
 
@@ -34,9 +39,9 @@ namespace HDData
 	{
 		_selfActive = false;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnDisable();
+			_componentsIndexed[i]->OnDisable();
 		}
 	}
 
@@ -44,12 +49,12 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			if (!component->_isStarted)
+			if (!_componentsIndexed[i]->_isStarted)
 			{
-				component->Start();
-				component->_isStarted = true;
+				_componentsIndexed[i]->Start();
+				_componentsIndexed[i]->_isStarted = true;
 			}
 		}
 	}
@@ -58,9 +63,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->Update();
+			_componentsIndexed[i]->Update();
 		}
 	}
 
@@ -68,9 +73,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->LateUpdate();
+			_componentsIndexed[i]->LateUpdate();
 		}
 	}
 
@@ -78,9 +83,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->FixedUpdate();
+			_componentsIndexed[i]->FixedUpdate();
 		}
 	}
 
@@ -88,9 +93,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnDestroy();
+			_componentsIndexed[i]->OnDestroy();
 		}
 	}
 
@@ -98,9 +103,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnCollisionEnter();
+			_componentsIndexed[i]->OnCollisionEnter();
 		}
 	}
 
@@ -108,9 +113,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnCollisionStay();
+			_componentsIndexed[i]->OnCollisionStay();
 		}
 	}
 
@@ -118,20 +123,27 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnCollisionExit();
+			_componentsIndexed[i]->OnCollisionExit();
 		}
 	}
 
-	const std::unordered_set<Component*>& GameObject::GetAllComponents() const
+	const std::vector<Component*>& GameObject::GetAllComponents() const
 	{
-		return _components;
+		return _componentsIndexed;
 	}
 
-	const std::unordered_set<GameObject*>& GameObject::GetChildGameObjects() const
+	const std::vector<GameObject*>& GameObject::GetChildGameObjects() const
 	{
-		return _childGameObjects;
+		return _childGameObjectsIndexed;
+	}
+
+	GameObject* GameObject::GetChildGameObjectByName(const std::string& objectName)
+	{
+		GameObject* ret = nullptr;
+		FindGameObjectByNameInChildren(_parentGameObject, objectName, ret);
+		return ret;
 	}
 
 	void GameObject::SetParentObject(GameObject* parentObject)
@@ -141,14 +153,20 @@ namespace HDData
 		{
 			if (_parentGameObject != nullptr)
 			{
-				std::erase_if(_parentGameObject->_childGameObjects, [this](GameObject* obj) {return obj == this; });
+				for(auto iter = _parentGameObject->_childGameObjectsIndexed.begin(); iter != _parentGameObject->_childGameObjectsIndexed.end(); ++iter)
+				{
+					if (*iter == this)
+					{
+						_parentGameObject->_childGameObjectsIndexed.erase(iter);
+					}
+				}
 				_parentGameObject = nullptr;
 			}
 		}
-		else
+		else // Set parent
 		{
 			_parentGameObject = parentObject;
-			_parentGameObject->_childGameObjects.insert(this);
+			_parentGameObject->_childGameObjectsIndexed.push_back(this);
 		}
 	}
 
@@ -191,6 +209,66 @@ namespace HDData
 	std::string GameObject::GetObjectName()
 	{
 		return _objectName;
+	}
+
+	void GameObject::LoadNodeHierarchyFromFile(std::string fileName)
+	{
+		Node* rootNode = HDEngine::ResourceManager::Instance().GetNode(fileName);
+		if (HDEngine::ResourceManager::Instance().GetNode(fileName) == nullptr)
+			return;
+
+		Node armature;
+		FindNodeByName(rootNode, armature, "Armature");
+		if (armature.name == "Armature")
+		{
+			ProcessNode(&armature, this);
+		}
+
+
+		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);
+		rendererObject->AddComponent<SkinnedMeshRenderer>();
+	}
+
+	void GameObject::FindNodeByName(Node* node, Node& outNode, std::string nodeName)
+	{		
+		if (node->name == nodeName)
+		{
+			outNode = *node;
+			return;
+		}
+
+		for (int i = 0; i < node->children.size(); ++i)
+		{
+			FindNodeByName(&(node->children[i]), outNode, nodeName);
+		}
+	}
+
+	void GameObject::ProcessNode(Node* node, GameObject* parentObject)
+	{
+		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), node->name, parentObject);
+		newObject->AddComponent<StaticBoxCollider>();
+		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
+		for (int i = 0; i < node->children.size(); ++i)
+		{
+			ProcessNode(&(node->children[i]), newObject);
+		}
+	}
+
+	void GameObject::FindGameObjectByNameInChildren(GameObject* parentObject, const std::string& name, GameObject* outGameObject)
+	{
+		for (auto& child : parentObject->GetChildGameObjects())
+		{
+			if (child->GetObjectName() == name)
+			{
+				outGameObject = child;
+				return;
+			}
+			else
+			{
+				FindGameObjectByNameInChildren(child, name, outGameObject);
+				return;
+			}
+		}
 	}
 
 }

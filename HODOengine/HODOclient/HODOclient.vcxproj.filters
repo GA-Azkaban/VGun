@@ -56,9 +56,6 @@
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
-    <ClCompile Include="Weapon.cpp">
-      <Filter>02_Client\TestScene\Weapon</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">

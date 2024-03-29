@@ -7,6 +7,7 @@
 
 namespace HDEngine
 {
+	class IResourceManager;
 	class ICamera;
 	class IStaticMesh;
 	class ISkinnedMesh;
@@ -23,6 +24,7 @@ namespace HDEngine
 	class IFactory
 	{
 	public:
+		virtual IResourceManager* CreateResourceManager() = 0;
 		virtual ICamera* CreateCamera() = 0;
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;

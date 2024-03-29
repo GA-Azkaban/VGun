@@ -780,11 +780,12 @@ namespace RocketCore::Graphics
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		//rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
+		ReadNodeHierarchy(*rootNode, scene->mRootNode);
 
 		_loadedFileInfo[_fileName].node = rootNode;
-
+		
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
@@ -960,7 +961,7 @@ namespace RocketCore::Graphics
 			0.0f,	0.01f,		0.0f,	0.0f,
 			0.0f,	0.0f,		0.0f,	1.0f);*/
 
-			// create node hierarchy
+		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
@@ -1059,14 +1060,27 @@ namespace RocketCore::Graphics
 		return texture;
 	}
 
+	void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node)
+	{
+		nodeOutput.name = node->mName.C_Str();
+		nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
+		
+		for (int i = 0; i < node->mNumChildren; ++i)
+		{
+			Node child;
+			ReadNodeHierarchy(child, node->mChildren[i]);
+			nodeOutput.children.push_back(child);
+		}
+	}
+
 	void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo)
 	{
 		if (boneInfo.find(node->mName.C_Str()) != boneInfo.end())
 		{
 			nodeOutput.name = node->mName.C_Str();
-			nodeOutput.nodeTransform = AIMatrix4x4ToXMMatrix(node->mTransformation);
+			nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
 			//nodeOutput.nodeTransform = XMMatrixTranspose(nodeOutput.nodeTransform);
-
+			
 			Bone bone;
 			bone.id = boneInfo[nodeOutput.name].first;
 			bone.offset = boneInfo[nodeOutput.name].second;

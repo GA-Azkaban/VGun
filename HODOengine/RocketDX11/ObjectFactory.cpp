@@ -28,6 +28,11 @@ namespace HDEngine
 namespace RocketCore::Graphics
 {
 
+	HDEngine::IResourceManager* ObjectFactory::CreateResourceManager()
+	{
+		return &(ResourceManager::Instance());
+	}
+
 	HDEngine::ICamera* ObjectFactory::CreateCamera()
 	{
 		return ObjectManager::Instance().CreateCamera();

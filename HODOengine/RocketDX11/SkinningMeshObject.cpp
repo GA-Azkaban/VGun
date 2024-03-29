@@ -46,7 +46,7 @@ namespace RocketCore::Graphics
 					return;
 				}
 
-				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, *m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
+				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 			}
 			else
 			{
@@ -69,7 +69,7 @@ namespace RocketCore::Graphics
 
 				if (!m_currentAnimation->isEnd)
 				{
-					UpdateAnimation(m_currentAnimation->accumulatedTime, *m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
+					UpdateAnimation(m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 				}
 			}
 		}
@@ -85,7 +85,7 @@ namespace RocketCore::Graphics
 			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
 
-			XMMATRIX world = m_node->rootNodeInvTransform * m_world;
+			XMMATRIX world = m_node.rootNodeInvTransform * m_world;
 
 			VertexShader* vertexShader = m_material->GetVertexShader();
 			PixelShader* pixelShader = m_material->GetPixelShader();
@@ -149,14 +149,14 @@ namespace RocketCore::Graphics
 		m_receiveTMInfoFlag = true;
 	}
 
-	void SkinningMeshObject::UpdateAnimation(float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
+	void SkinningMeshObject::UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
 	{
-		DirectX::XMMATRIX _nodeTransform = (node.nodeTransform);
+		DirectX::XMMATRIX _nodeTransform = node->nodeTransformOffset;
 
 		NodeAnimation* nodeAnim = nullptr;
 		for (UINT i = 0; i < m_currentAnimation->nodeAnimations.size(); ++i)
 		{
-			if (m_currentAnimation->nodeAnimations[i]->nodeName == node.name)
+			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
 				nodeAnim = m_currentAnimation->nodeAnimations[i];
 				break;
@@ -181,13 +181,14 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
-		m_boneTransformMap[node.name] = globalTransform;
+		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		//node->nodeTransform = _nodeTransform;
+		//m_nodeTransformMap[node->name] = node->nodeTransform;
 
 		// update values for children bones
-		for (Node child : node.children)
+		for (Node& child : node->children)
 		{
-			UpdateAnimation(animationTime, child, globalTransform, globalInvTransform);
+			UpdateAnimation(animationTime, &child, globalTransform, globalInvTransform);
 		}
 	}
 
@@ -281,14 +282,14 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::UpdateBlendAnimation(float prevAnimationTime, float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
+	void SkinningMeshObject::UpdateBlendAnimation(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
 	{
-		DirectX::XMMATRIX _nodeTransform = (node.nodeTransform);
+		DirectX::XMMATRIX _nodeTransform = (node->nodeTransformOffset);
 
 		NodeAnimation* prevAnim = nullptr;
 		for (UINT i = 0; i < m_previousAnimation->nodeAnimations.size(); ++i)
 		{
-			if (m_previousAnimation->nodeAnimations[i]->nodeName == node.name)
+			if (m_previousAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
 				prevAnim = m_previousAnimation->nodeAnimations[i];
 				break;
@@ -298,7 +299,7 @@ namespace RocketCore::Graphics
 		NodeAnimation* currAnim = nullptr;
 		for (UINT i = 0; i < m_currentAnimation->nodeAnimations.size(); ++i)
 		{
-			if (m_currentAnimation->nodeAnimations[i]->nodeName == node.name)
+			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
 				currAnim = m_currentAnimation->nodeAnimations[i];
 				break;
@@ -323,12 +324,13 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		m_boneTransform[node.bone.id] = globalInvTransform * globalTransform * node.bone.offset;
+		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		//node->nodeTransform = _nodeTransform;
 
 		// update values for children bones
-		for (Node child : node.children)
+		for (Node& child : node->children)
 		{
-			UpdateBlendAnimation(prevAnimationTime, animationTime, child, globalTransform, globalInvTransform);
+			UpdateBlendAnimation(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform);
 		}
 	}
 
@@ -479,7 +481,7 @@ namespace RocketCore::Graphics
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
 		// 일단은 메쉬를 세팅해주면 노드 정보와 애니메이션 정보도 불러와서 세팅해주기로 한다.
-		m_node = ResourceManager::Instance().GetNode(fileName);
+		m_node = *(ResourceManager::Instance().GetNode(fileName));
 		LoadAnimation(ResourceManager::Instance().GetAnimations(fileName));
 	}
 
@@ -535,10 +537,7 @@ namespace RocketCore::Graphics
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
 	{
-		if (m_node != nullptr)
-			return m_node->rootNodeInvTransform * m_world;
-
-		return m_world;
+		return m_node.rootNodeInvTransform * m_world;
 	}
 
 	bool SkinningMeshObject::IsAnimationEnd()
@@ -570,14 +569,9 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	Matrix SkinningMeshObject::GetBoneTransformByNodeName(std::string nodeName)
+	Node* SkinningMeshObject::GetNode()
 	{
-		Matrix result;
-		auto iter = m_boneTransformMap.find(nodeName);
-		if (iter != m_boneTransformMap.end())
-			XMStoreFloat4x4(&result, iter->second);
-
-		return result;
+		return &m_node;
 	}
 
 }

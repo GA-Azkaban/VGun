@@ -136,6 +136,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>05_Component\Light</Filter>
     </ClCompile>
+    <ClCompile Include="HDResourceManager.cpp">
+      <Filter>ResourceManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -306,6 +309,9 @@
     <ClInclude Include="Light.h">
       <Filter>05_Component\Light</Filter>
     </ClInclude>
+    <ClInclude Include="HDResourceManager.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -459,6 +465,9 @@
     </Filter>
     <Filter Include="05_Component\Light">
       <UniqueIdentifier>{d0a499d2-c1f9-42ad-89ab-50fbf3da20e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{475f0fa1-7b8c-462e-a128-70af26042451}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
+#include "../HODO3DGraphicsInterface/ISkinnedMesh.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 
 namespace HDData
 {
@@ -24,12 +25,14 @@ namespace HDData
 		void PlayAnimation(const std::string& fileName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
-		Matrix GetBoneTransformByNodeName(std::string nodeName);
 
 	protected:
 		virtual void Update() override;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
+
+	private:
+		void UpdateArmatureNodeTransform(Node* node, GameObject* parentObject);
 
 	private:
 		HDEngine::ISkinnedMesh* _skinnedMesh;

@@ -14,7 +14,7 @@ namespace HDEngine
 {
 	class UISystem : public Singleton<UISystem>
 	{
-		friend UISystem;
+		friend Singleton;
 
 	public:
 		UISystem() = default;

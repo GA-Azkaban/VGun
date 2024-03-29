@@ -5,6 +5,7 @@
 #include "dllExporter.h"
 //#include "Component.h"
 #include "Transform.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 
 /// <summary>
 /// 게임 오브젝트는 게임 씬에 배치될 수 있는 가장 기본적인 단위의 객체입니다.
@@ -20,7 +21,6 @@ namespace HDData
 {
 	class Component;
 	class Transform;
-
 
 	template <class ComponentType>
 	concept ComponentConcept = std::is_base_of<Component, ComponentType>::value;
@@ -55,50 +55,71 @@ namespace HDData
 		ComponentType* AddComponent() {
 			ComponentType* component = new ComponentType();
 			component->_gameObject = this;
-			_components.emplace(component);
+			_componentsIndexed.push_back(component);
 			return component;
 		}
 
 		template <ComponentConcept ComponentType>
 		ComponentType* GetComponent() const {
-			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+			for (int i = 0; i < _componentsIndexed.size(); ++i)
 			{
-				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
+				ComponentType* castedPointer = dynamic_cast<ComponentType*>(_componentsIndexed[i]);
 				if (castedPointer)
 					return castedPointer;
 			}
 			return nullptr;
 		}
 
+		template <ComponentConcept ComponentType>
+		ComponentType* GetComponentInChildren() const {
+			ComponentType* comp = GetComponent<ComponentType>();
+			if (comp != nullptr)
+			{
+				return comp;
+			}
+
+			for (int i = 0; i < _childGameObjectsIndexed.size(); ++i)
+			{
+				ComponentType* findComp = _childGameObjectsIndexed[i]->GetComponentInChildren<ComponentType>();
+				if (findComp != nullptr)
+				{
+					return findComp;
+				}
+			}
+
+			return nullptr;
+		}
+
 		template<ComponentConcept ComponentType>
 		std::vector<ComponentType*> GetComponents() const {
 			std::vector<ComponentType*> ret;
-			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+			for (int i = 0; i < _componentsIndexed.size(); ++i)
 			{
-				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
+				ComponentType* castedPointer = dynamic_cast<ComponentType*>(_componentsIndexed[i]);
 				if (castedPointer)
 					ret.push_back(castedPointer);
 			}
 			return ret;
 		}
 
-		const std::unordered_set<Component*>& GetAllComponents() const;
-		const std::unordered_set<GameObject*>& GetChildGameObjects() const;
+		const std::vector<Component*>& GetAllComponents() const;
+		const std::vector<GameObject*>& GetChildGameObjects() const;
 		
 		template<ComponentConcept ComponentType>
 		void DeleteComponent()
 		{
-			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+			for (auto iter = _componentsIndexed.begin(); iter != _componentsIndexed.end(); ++iter)
 			{
 				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
 				if (castedPointer != nullptr)
 				{
-					_components.erase(iter);
+					_componentsIndexed.erase(iter);
 				}
 			}
 		}
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
+		GameObject* GetChildGameObjectByName(const std::string& objectName);
 		Transform* GetTransform() const { return _transform; }
 		bool IsActive() { return _selfActive; }
 
@@ -108,10 +129,21 @@ namespace HDData
 		bool GetParentActive();
 		std::string GetObjectName();
 
+		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
+		void LoadNodeHierarchyFromFile(std::string fileName);
+		
 	private:
-		std::unordered_set<Component*> _components;
+		void FindGameObjectByNameInChildren(GameObject* parentObject, const std::string& name, GameObject* outGameObject);
+		void FindNodeByName(Node* node, Node& outNode, std::string nodeName);
+		void ProcessNode(Node* node, GameObject* parentObject);
 
-		std::unordered_set<GameObject*> _childGameObjects;
+	private:
+		//std::unordered_set<Component*> _components;
+		std::vector<Component*> _componentsIndexed;
+
+		//std::unordered_set<GameObject*> _childGameObjects;
+		std::vector<GameObject*> _childGameObjectsIndexed;
+
 		std::string _objectName;
 		GameObject* _parentGameObject;
 		Transform* _transform;
