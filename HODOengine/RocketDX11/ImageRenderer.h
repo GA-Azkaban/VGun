@@ -48,8 +48,9 @@ namespace RocketCore::Graphics
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-		void FadeIn();
-		void FadeOut();
+		// fade effect
+		void FadeIn() override;
+		void FadeOut() override;
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
@@ -73,6 +74,12 @@ namespace RocketCore::Graphics
 		// 이미지 정보
 		float _imageWidth;
 		float _imageHeight;
+
+		// fade effect
+		float _fadeAlpha = 1.0f;
+		bool _fadingIn = false;
+		bool _fadingOut = false;
+
 
 		ID3D11Device* _device;
 		ID3D11DeviceContext* _deviceContext;

@@ -97,6 +97,12 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 
 	if (_receiveTMInfoFlag)
 	{
+		if (_fadingIn || _fadingOut)
+		{
+			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,0.5f };
+		}
+
+
 		spriteBatch->Draw(
 			_imagerSRV.Get(),
 			DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
@@ -111,6 +117,24 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	}
 
 	_receiveTMInfoFlag = false;
+
+	if (_fadingIn)
+	{
+		_fadeAlpha -= 0.01f;
+		if (_fadeAlpha <= 0.0f)
+		{
+			_fadingIn = false;
+		}
+	}
+
+	if (_fadingOut)
+	{
+		_fadeAlpha -= 0.01f;
+		if (_fadeAlpha >= 1.0f)
+		{
+			_fadingOut = false;
+		}
+	}
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
@@ -135,8 +159,7 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 	_device = device;
 	_deviceContext = deviceContext;
 }
-
-
+ 
 void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 {
 	_scaleX = x;
@@ -177,10 +200,14 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 
 void RocketCore::Graphics::ImageRenderer::FadeIn()
 {
-
+	_fadeAlpha = 1.0f;
+	_fadingIn = true;
+	_fadingOut = false;
 }
 
 void RocketCore::Graphics::ImageRenderer::FadeOut()
 {
-
+	_fadeAlpha = 0.0f;
+	_fadingIn = false;
+	_fadingOut = true;
 }

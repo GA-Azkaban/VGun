@@ -16,5 +16,8 @@ namespace HDEngine
 		virtual float GetWidth() override = 0;
 		virtual float GetHeight() override = 0;
 		virtual void ChangeScale(float x, float y) = 0;
+		virtual void FadeIn() = 0;
+		virtual void FadeOut() = 0;
+
 	};
 }
