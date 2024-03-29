@@ -96,6 +96,49 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 
 }
 
+void NetworkManager::RecvCreateAccount()
+{
+	// 회원가입 성공 처리
+}
+
+void NetworkManager::SendRoomEnter(std::string roomCode)
+{
+	Protocol::C_ROOM_ENTER packet;
+	packet.set_roomcode(roomCode);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::SendRoomLeave()
+{
+	Protocol::C_ROOM_LEAVE packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
+{
+	// Todo RoomInfo 설정
+	
+}
+
+void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
+{
+	// Todo 
+}
+
+void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
+{
+
+}
+
+void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
+{
+
+}
+
 bool NetworkManager::IsConnected()
 {
 	return _isConnect;
