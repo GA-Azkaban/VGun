@@ -26,7 +26,7 @@ namespace HDData
 
 	public:
 		State() = default;
-		State(AnimationController* con, std::string stateName) : anicom(con), stateName(stateName), _isLoop(true) {};
+		State(std::string stateName, AnimationController* con) : _stateName(stateName), _isLoop(true), controller(con) {};
 		~State() = default;
 
 		struct Transition
@@ -39,6 +39,9 @@ namespace HDData
 			int valueI = 0;
 			bool valueB = false;
 			bool valueT = false;
+
+			bool _hasTransitionMotion = false;
+			std::string _transitionFBX;
 		};
 
 	public:
@@ -46,18 +49,19 @@ namespace HDData
 
 		bool GetIsLoop();
 		void SetIsLoop(bool isLoop);
-		void AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value);
-		void AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value);
-		void AddCondition(std::string nextStateName, std::string conditionName, bool value);
-		void AddTrigger(std::string nextStateName, std::string conditionName, bool value);
+		State& AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value);
+		State& AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value);
+		State& AddCondition(std::string nextStateName, std::string conditionName, bool value);
+		State& AddCondition(std::string nextStateName, std::string conditionName, bool value, std::string engageMotion);
+		State& AddTrigger(std::string nextStateName, std::string conditionName, bool value);
 
+		AnimationController* controller;
 
-		AnimationController* anicom;
-
-		std::string stateName;
-		std::string motion;
+		std::string _stateName;
 		bool _isLoop;
+
 		std::unordered_map<std::string, std::vector<Transition*>> _transableStates;
+		std::string _motion;
 	};
 
 	class HODO_API AnimationController
@@ -73,7 +77,7 @@ namespace HDData
 		void Update();
 
 	public:
-		State* CreateState(std::string stateName, std::string fbxName);
+		State* CreateState(std::string stateName, std::string FBX);
 		State& GetState(std::string stateName);
 		std::unordered_map<std::string, State*> GetAllStates();
 		
@@ -85,6 +89,8 @@ namespace HDData
 		std::string GetCurrentStateName();
 		std::string GetPrevStateName();
 		void SetCurrentState(std::string stateName);
+		std::vector<std::string>& GetMotionBuffer();
+		bool _isStateChange;
 
 	private:
 		std::unordered_map<std::string, State*> _allStates;
@@ -93,9 +99,10 @@ namespace HDData
 		State* _exitState;
 		std::vector<State*> _anyState;
 
+		std::vector<std::string> _motionBuffer;
+
 		State* _currentState;
 		State* _prevState;
-		bool _isStateChange;
 
 		// 파라미터
 	public:
