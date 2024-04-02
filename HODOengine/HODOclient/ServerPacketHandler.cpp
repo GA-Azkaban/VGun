@@ -64,7 +64,7 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
  
 bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK& pkt)
 {
-	std::cout << "로그인 성공! " << "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
+	std::cout << "Login " << "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
 
 	NetworkManager::Instance().RecvLogin(pkt.uid(), pkt.nickname());
 
@@ -73,27 +73,45 @@ bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK
 
 bool Handle_S_SIGNUP_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNUP_OK& pkt)
 {
-	std::cout << "회원가입 성공!" << std::endl;
+	std::cout << "CreateAccount" << std::endl;
+
+	NetworkManager::Instance().RecvCreateAccount();
 
 	return true;
 }
 
 bool Handle_S_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::S_ROOM_ENTER& pkt)
 {
+	std::cout << "Room Enter" << std::endl;
+
+	NetworkManager::Instance().RecvRoomEnter(pkt.roominfo());
+
 	return true;
 }
 
 bool Handle_S_ROOM_LEAVE(Horang::PacketSessionRef& session, Protocol::S_ROOM_LEAVE& pkt)
 {
+	std::cout << "Room Leave" << std::endl;
+
+	NetworkManager::Instance().RecvRoomLeave(pkt.roominfo());
+
 	return true;
 }
 
 bool Handle_S_ANOTHER_ENTER_ROOM(Horang::PacketSessionRef& session, Protocol::S_ANOTHER_ENTER_ROOM& pkt)
 {
+	std::cout << "Another Enter" << std::endl;
+
+	NetworkManager::Instance().RecvAnotherPlayerEnter(pkt.roominfo());
+
 	return true;
 }
 
 bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_ANOTHER_LEAVE_ROOM& pkt)
 {
+	std::cout << "Another Leave" << std::endl;
+
+	NetworkManager::Instance().RecvAnotherPlayerLeave(pkt.roominfo());
+
 	return true;
 }

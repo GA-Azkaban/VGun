@@ -27,7 +27,7 @@ void UnitySceneLoaderTest::Start()
 	//auto comp = building->GetComponent<HDData::MeshRenderer>();
 	//comp->LoadMesh("meshModel.fbx");
 
-	API::LoadSceneFromData("transformData.json");
+	//API::LoadSceneFromData("transformData.json");
 
 	API::LoadScene(_scene);
 }
