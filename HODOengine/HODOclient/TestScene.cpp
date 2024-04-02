@@ -97,32 +97,11 @@ TestScene::TestScene()
 	//meshRenderer2->LoadMesh("SM_House_Large 1.fbx");
 	//meshRenderer2->SetAlbedoColor(223, 194, 152);
 
-	// PBR, IBL Test
-	//auto sphereTest = API::CreateObject(_scene);
-	//sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 0.0f, 0.0f);
-	//auto sphereRenderer = sphereTest->AddComponent<HDData::MeshRenderer>();
-	//sphereRenderer->LoadMesh("sphere");
-	//sphereRenderer->SetMetallicValue(0.2f);
-	//sphereRenderer->SetRoughnessValue(0.7f);
-	//
-	//auto sphereTest2 = API::CreateObject(_scene);
-	//sphereTest2->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 0.0f);
-	//auto sphereRenderer2 = sphereTest2->AddComponent<HDData::MeshRenderer>();
-	//sphereRenderer2->LoadMesh("sphere");
-	//sphereRenderer2->SetMetallicValue(0.5f);
-	//sphereRenderer2->SetRoughnessValue(0.5f);
-	//
-	//auto sphereTest3 = API::CreateObject(_scene);
-	//sphereTest3->GetComponent<HDData::Transform>()->SetPosition(5.0f, 0.0f, 0.0f);
-	//auto sphereRenderer3 = sphereTest3->AddComponent<HDData::MeshRenderer>();
-	//sphereRenderer3->LoadMesh("sphere");
-	//sphereRenderer3->SetMetallicValue(0.9f);
-	//sphereRenderer3->SetRoughnessValue(0.1f);
-
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
 	playerTest->AddComponent<Player>();
+	playerTest->LoadNodeFromFBXFile("SKM_TP_X_Breathing.fbx");
 
 	//auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
 
@@ -150,11 +129,11 @@ TestScene::TestScene()
 	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
 	//playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	
-	auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
+	//auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
+	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAlbedoMap("T_TP_CH_Basic_001_001_D.png");
-	meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
-	meshComp->SetOutlineActive(true);
+	meshComp->PlayAnimation("X_Breathing", true);
+	//meshComp->SetOutlineActive(true);
 
 	//auto playerTest2 = API::CreateObject(_scene, "player2");
 	//playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -9.f, 0.5f, 7.f });
@@ -164,37 +143,11 @@ TestScene::TestScene()
 	//meshComp2->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
 	//meshComp2->LoadAlbedoMap("T_TP_CH_Basic_001_001_D.png");
 	//meshComp2->SetOutlineActive(true);
-	//
-	//auto playerTest3 = API::CreateObject(_scene, "player3");
-	//playerTest3->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.f, 0.5f, 2.0f });
-	//playerTest3->GetComponent<HDData::Transform>()->Rotate(0.0f, 20.0f, 0.0f);
-	//auto meshComp3 = playerTest3->AddComponent<HDData::SkinnedMeshRenderer>();
-	//meshComp3->LoadMesh("SK_FP_CH_Default.fbx");
-	//meshComp3->PlayAnimation("A_TP_CH_Crouch_B.fbx", true);
-	//meshComp3->LoadAlbedoMap("T_TP_CH_Basic_004_001_D.png");
-	//meshComp3->SetOutlineActive(true);
-	//
-	//auto playerTest4 = API::CreateObject(_scene, "player4");
-	//playerTest4->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -6.0f, 0.5f, 8.f });
-	//auto meshComp4 = playerTest4->AddComponent<HDData::SkinnedMeshRenderer>();
-	//meshComp4->LoadMesh("SK_FP_CH_Default.fbx");
-	//meshComp4->PlayAnimation("A_TP_CH_Breathing.fbx", true);
-	//meshComp4->LoadAlbedoMap("T_TP_CH_Basic_005_001_D.png");
-	//meshComp4->SetOutlineActive(true);
-	//
-	//auto playerTest5 = API::CreateObject(_scene, "player5");
-	//playerTest5->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -10.0f, 0.5f, 4.f });
-	//playerTest5->GetComponent<HDData::Transform>()->Rotate(0.0f, -30.0f, 0.0f);
-	//auto meshComp5 = playerTest5->AddComponent<HDData::SkinnedMeshRenderer>();
-	//meshComp5->LoadMesh("SK_FP_CH_Default.fbx");
-	//meshComp5->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
-	//meshComp5->LoadAlbedoMap("T_TP_CH_Basic_004_001_D.png");
-	//meshComp5->SetOutlineActive(true);
-
-	auto weaponTest = API::CreateObject(_scene, "weapon", playerTest);
-	weaponTest->AddComponent<Weapon>();
+	auto hand = playerTest->GetGameObjectByNameInChildren("ik_hand_r");
+	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	weaponTest->GetComponent<HDData::Transform>()->Rotate(206.0f, 0.0f, 15.0f);
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	weaponComp->LoadMesh("A_TP_CH_Sprint_F.fbx");
+	weaponComp->LoadMesh("SM_AR3.fbx");
 	weaponComp->LoadAlbedoMap("T_WEP_Camo_001_D.png");
 	weaponComp->LoadNormalMap("T_WEP_Camo_N.png");
 

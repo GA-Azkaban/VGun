@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="AudioSource.cpp">
@@ -141,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="AnimationController.cpp">
       <Filter>05_Component\Animation\AnimationController</Filter>
+    </ClCompile>
+    <ClCompile Include="HDResourceManager.cpp">
+      <Filter>ResourceManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -318,6 +321,9 @@
     <ClInclude Include="AnimationController.h">
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClInclude>
+    <ClInclude Include="HDResourceManager.h">
+      <Filter>ResourceManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -480,6 +486,9 @@
     </Filter>
     <Filter Include="05_Component\Animation\AnimationController">
       <UniqueIdentifier>{aee8b258-77bb-4ff6-a3a7-ac3c24b27496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ResourceManager">
+      <UniqueIdentifier>{475f0fa1-7b8c-462e-a128-70af26042451}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

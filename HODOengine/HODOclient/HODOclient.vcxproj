@@ -271,7 +271,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
-    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />
