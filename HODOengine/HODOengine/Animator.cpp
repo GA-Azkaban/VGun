@@ -20,8 +20,8 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Start();
-
-		GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
+		_meshRenderer = GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>();
+		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
 	}
 
 	void Animator::Update()
@@ -30,22 +30,35 @@ namespace HDData
 
 		_animationController->Update();
 
-		if (_animationController->IsStateChange())
+		if (!_animationController->GetMotionBuffer().empty())
+		{
+			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_motion, false);
+			_animationController->GetMotionBuffer().pop_back();
+			_engageIng = true;
+		}
+
+		if (_engageIng && _meshRenderer->IsAnimationEnd())
+		{
+			_engageIng = false;
+			_animationController->_isStateChange = true;
+		}
+		
+		if(_animationController->IsStateChange() && !_engageIng)
 		{
 			if (_animationController->GetCurrentState()->GetIsLoop())
 			{
-				GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
+				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
 			}
 			else
 			{
-				GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, false);
+				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, false);
 			}
 		}
 
-		if (!(_animationController->GetCurrentState()->GetIsLoop()) && GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->IsAnimationEnd())
+		if (!(_animationController->GetCurrentState()->GetIsLoop()) && _meshRenderer->IsAnimationEnd())
 		{
 			_animationController->SetCurrentState(_animationController->GetPrevStateName());
-			GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>()->PlayAnimation(_animationController->GetCurrentState()->motion, true);
+			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
 		}
 	}
 

@@ -25,6 +25,8 @@ namespace HDData
 	void AnimationController::Update()
 	{
 		_isStateChange = false;
+		std::string engageAction = "";
+		bool isEngageAction = false;
 
 		State* changeState = _currentState;
 		auto transable = _currentState->_transableStates;
@@ -56,6 +58,11 @@ namespace HDData
 						if (trans->valueB == _boolParams[trans->conditionName])
 						{
 							changeState = _allStates[trans->transState];
+
+							if (trans->_hasTransitionMotion)
+							{
+								_motionBuffer.push_back(trans->_transitionFBX);
+							}
 						}
 					}
 					break;
@@ -76,21 +83,20 @@ namespace HDData
 				}
 			}
 		}
-
+		
 		if (changeState != _currentState)
 		{
 			_prevState = _currentState;
 			_currentState = changeState;
 			_isStateChange = true;
 		}
-
 	}
 
-	State* AnimationController::CreateState(std::string stateName, std::string fbxName)
+	State* AnimationController::CreateState(std::string stateName, std::string FBX)
 	{
-		State* state = new State(this, stateName);
-		state->stateName = stateName;
-		state->motion = fbxName;
+		State* state = new State(stateName, this);
+		state->_stateName = stateName;
+		state->_motion = FBX;
 
 		_allStates.insert({ stateName, state });
 
@@ -120,7 +126,7 @@ namespace HDData
 	HDData::State* AnimationController::GetCurrentState()
 	{
 		return _currentState;
- 	}
+	}
 
 	HDData::State* AnimationController::GetPrevState()
 	{
@@ -129,18 +135,23 @@ namespace HDData
 
 	std::string AnimationController::GetCurrentStateName()
 	{
-		return _currentState->stateName;
+		return _currentState->_stateName;
 	}
 
 	std::string AnimationController::GetPrevStateName()
 	{
-		return _prevState->stateName;
+		return _prevState->_stateName;
 	}
 
 	void AnimationController::SetCurrentState(std::string stateName)
 	{
 		_prevState = _currentState;
 		_currentState = _allStates[stateName];
+	}
+
+	std::vector<std::string>& AnimationController::GetMotionBuffer()
+	{
+		return _motionBuffer;
 	}
 
 	void AnimationController::CreateFloatParam(std::string paramName, float defaultValue)
@@ -203,7 +214,7 @@ namespace HDData
 		_isLoop = isLoop;
 	}
 
-	void State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value)
+	State& State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, float value)
 	{
 		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
@@ -214,9 +225,11 @@ namespace HDData
 		transition->valueF = value;
 
 		vec.push_back(transition);
+
+		return *this;
 	}
 
-	void State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value)
+	State& State::AddCondition(std::string nextStateName, std::string conditionName, std::string condition, int value)
 	{
 		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
@@ -227,9 +240,11 @@ namespace HDData
 		transition->valueI = value;
 
 		vec.push_back(transition);
+
+		return *this;
 	}
 
-	void State::AddCondition(std::string nextStateName, std::string conditionName, bool value)
+	State& State::AddCondition(std::string nextStateName, std::string conditionName, bool value)
 	{
 		this;
 		std::vector<Transition*>& vec = _transableStates[nextStateName];
@@ -241,11 +256,30 @@ namespace HDData
 		transition->valueB = value;
 
 		vec.push_back(transition);
+
+		return *this;
 	}
 
-	void State::AddTrigger(std::string nextStateName, std::string conditionName, bool value)
+	HDData::State& State::AddCondition(std::string nextStateName, std::string conditionName, bool value, std::string engageMotion)
 	{
-		anicom->GetAllStates().find(nextStateName)->second->SetIsLoop(false);
+		std::vector<Transition*>& vec = _transableStates[nextStateName];
+
+		Transition* transition = new Transition;
+		transition->transState = nextStateName;
+		transition->type = eConditionType::BOOL;
+		transition->conditionName = conditionName;
+		transition->valueB = value;
+		transition->_transitionFBX = engageMotion;
+		transition->_hasTransitionMotion = true;
+
+		vec.push_back(transition);
+
+		return *this;
+	}
+
+	State& State::AddTrigger(std::string nextStateName, std::string conditionName, bool value)
+	{
+		controller->GetAllStates().find(nextStateName)->second->SetIsLoop(false);
 
 		std::vector<Transition*>& vec = _transableStates[nextStateName];
 
@@ -256,6 +290,10 @@ namespace HDData
 		transition->valueT = value;
 
 		vec.push_back(transition);
+
+		return *this;
 	}
+
+
 
 }

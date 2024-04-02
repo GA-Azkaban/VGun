@@ -13,11 +13,11 @@ void FSMtestScript::Start()
 
 void FSMtestScript::Update()
 {
-	if (API::GetKeyPressing(DIK_I))
+	if (API::GetKeyPressing(DIK_W))
 	{
 		_animator->SetBool("isWalk", true);
 	}
-	if (API::GetKeyUp(DIK_I))
+	if (API::GetKeyUp(DIK_W))
 	{
 		_animator->SetBool("isWalk", false);
 	}
@@ -25,8 +25,37 @@ void FSMtestScript::Update()
 	{
 		_animator->SetTrigger("isJump");
 	}
-	if (API::GetKeyDown(DIK_B))
+	if (API::GetKeyDown(DIK_C))
 	{
-		_animator->SetTrigger("isCrunch");
+		if (_animator->GetCurrentState() == "IDLE" || _animator->GetCurrentState() == "IDLE_AIM" || _animator->GetCurrentState() == "CRUNCH_AIM")
+		{
+			_animator->SetBool("isCrunch", true);
+		}
+		else
+		{
+			_animator->SetBool("isCrunch", false);
+		}
+	}
+	if (API::GetKeyDown(DIK_F))
+	{
+		if (_animator->GetCurrentState() == "IDLE" || _animator->GetCurrentState() == "CRUNCH")
+		{
+			_animator->SetBool("isAim", true);
+		}
+		else
+		{
+			_animator->SetBool("isAim", false);
+		}
+	}
+	if (API::GetMouseHold(MOUSE_LEFT))
+	{
+		if (_animator->GetCurrentState() == "IDLE_AIM")
+		{
+			_animator->SetTrigger("isShoot");
+		}
+		else if (_animator->GetCurrentState() == "CRUNCH")
+		{
+			_animator->SetTrigger("isCrunchShoot");
+		}
 	}
 }
