@@ -25,13 +25,15 @@ namespace HDData
 		GameObject* dirLight = CreateObject("DirLight");
 		auto dirLightComp = dirLight->AddComponent<Light>();
 		dirLightComp->SetDirection(Vector4(-1, -1, 0, 0));
-		dirLightComp->SetColor(Vector4(3.0f, 3.0f, 3.0f, 1.0f));
+		//dirLightComp->SetColor(Vector4(3.0f, 3.0f, 3.0f, 1.0f));
+		//dirLightComp->SetColor(Vector4(2.91f, 2.776f, 2.516f, 1.0f));
+		dirLightComp->SetColor(Vector4(4.365f, 4.164f, 3.774f, 1.0f));
 		dirLightComp->SetLightType(Light::DirectionalLight);
 	}
 
 	Scene::~Scene()
 	{
-		
+
 	}
 
 	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
@@ -63,15 +65,19 @@ namespace HDData
 	{
 		if (!_gameObjects.empty())
 		{
-			for (auto& gameObject : _gameObjects)
+			for (auto it = _gameObjects.begin(); it != _gameObjects.end(); )
 			{
-				if (gameObject->IsActive())
+				if ((*it)->IsActive() && (*it)->GetParentActive())
 				{
-					gameObject->Start();
+					(*it)->Start();
+					_runningObjects.push_back(*it);
+					it = _gameObjects.erase(it);
 				}
-				GetRunningObjectList().push_back(gameObject);
+				else
+				{
+					++it;
+				}
 			}
-			_gameObjects.clear();
 		}
 
 		for (auto& gameObject : GetRunningObjectList())

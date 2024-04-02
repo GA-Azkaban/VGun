@@ -1,17 +1,17 @@
-#pragma once
-#include "../HODO3DGraphicsInterface/ISkybox.h"
+﻿#pragma once
+#include "../HODO3DGraphicsInterface/ICubeMap.h"
 #include "Skybox.h"
 #include <memory>
 
 namespace hodoGIAdapter 
 {
-	class SkyboxAdapter : public HDEngine::ISkybox
+	class SkyboxAdapter : public HDEngine::ICubeMap
 	{
 	public:
 		SkyboxAdapter(Skybox* skybox);
 		~SkyboxAdapter();
 
-		virtual void SetCubeMapTexture(const std::string& fileName) override;
+		virtual void LoadCubeMapTexture(const std::string& fileName) override;
 		virtual void SetActive(bool isActive) override;
 
 	private:

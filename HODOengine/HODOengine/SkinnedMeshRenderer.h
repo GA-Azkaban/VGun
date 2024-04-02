@@ -1,7 +1,8 @@
 ﻿#pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
+#include "../HODO3DGraphicsInterface/ISkinnedMesh.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 
 namespace HDData
 {
@@ -12,17 +13,28 @@ namespace HDData
 		~SkinnedMeshRenderer();
 
 		void LoadMesh(const std::string& fileName);
+		void LoadNode(const std::string& fileName);
 		void LoadNormalMap(const std::string& fileName);
-		void LoadDiffuseMap(const std::string& fileName);
-		void PlayAnimation(const std::string& fileName, bool isLoop = true);
+		void LoadAlbedoMap(const std::string& fileName);
+		void LoadARMMap(const std::string& fileName);
+		void LoadRoughnessMap(const std::string& fileName);
+		void LoadMetallicMap(const std::string& fileName);
+		void SetRoughnessValue(float value);
+		void SetMetallicValue(float value);
+		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255);
+		void SetAlbedoColor(Vector4 color);
+		void PlayAnimation(const std::string& animName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
-		void SetOutlineData(const Vector4& color = Vector4{ 1.0f, 0.54f, 0.0f, 1.0f }, bool depthCheck = true);
+		Node* GetNode();
 
 	protected:
 		virtual void Update() override;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
+
+	private:
+		void UpdateArmatureNodeTransform(Node* node, GameObject* parentObject);
 
 	private:
 		HDEngine::ISkinnedMesh* _skinnedMesh;

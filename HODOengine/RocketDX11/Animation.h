@@ -4,23 +4,6 @@
 #include <vector>
 #include <unordered_map>
 
-// structure containing bone information
-struct Bone
-{
-	int id = 0;	// position of the bone in final upload array
-	DirectX::XMMATRIX offset = DirectX::XMMatrixIdentity();
-};
-
-// structure to hold node hierarchy
-struct Node
-{
-	std::string name = "";
-	Bone bone;
-	DirectX::XMMATRIX nodeTransform = DirectX::XMMatrixIdentity();
-	DirectX::XMMATRIX rootNodeInvTransform = DirectX::XMMatrixIdentity();
-	std::vector<Node> children = {};
-};
-
 // structure containing each node's animation information in one animation
 struct NodeAnimation
 {
@@ -39,7 +22,6 @@ struct NodeAnimation
 struct Animation
 {
 	std::string animName = "";
-	int uniqueAnimNum = 0;
 	float duration = 0.0f;
 	float ticksPerSecond = 1.0f;
 	float accumulatedTime = 0.0f;

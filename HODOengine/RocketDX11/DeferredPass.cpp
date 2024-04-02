@@ -7,6 +7,7 @@
 #include "QuadBuffer.h"
 #include "Light.h"
 #include "ShadowMapPass.h"
+#include "Cubemap.h"
 using namespace DirectX;
 
 namespace RocketCore::Graphics
@@ -24,6 +25,7 @@ namespace RocketCore::Graphics
 		delete _quadBuffer;
 		delete _vertexShader;
 		delete _pixelShader;
+		delete _shadowMapPass;
 	}
 
 	void DeferredPass::Render()
@@ -69,6 +71,8 @@ namespace RocketCore::Graphics
 		_pixelShader->SetFloat("screenWidth", static_cast<float>(_deferredBuffers->GetScreenWidth()));
 		_pixelShader->SetFloat("screenHeight", static_cast<float>(_deferredBuffers->GetScreenHeight()));
 		
+		_pixelShader->SetFloat("envLightIntensity", Cubemap::Instance().GetEnvLightIntensity());
+
 		_pixelShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(LightManager::Instance().GetLightViewProj()));
 
 		_pixelShader->CopyAllBufferData();

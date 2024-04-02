@@ -55,6 +55,20 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp" />
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>04_SceneView\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuManager.cpp">
+      <Filter>03_Manager\MenuManager</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp" />
+    <ClCompile Include="Weapon.cpp">
+      <Filter>02_Client\TestScene\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMtestScript.cpp">
+      <Filter>99_unity,fsm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -183,6 +197,12 @@
     </Filter>
     <Filter Include="03_Manager\NetworkManager\Network">
       <UniqueIdentifier>{456bbcca-cd0c-4578-9f4c-42c5856a56ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\MainMenu">
+      <UniqueIdentifier>{238e91d1-d004-4082-a04b-b42823628fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\MenuManager">
+      <UniqueIdentifier>{76b2ac2e-a96f-4c9f-a9be-c4305db62ff6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

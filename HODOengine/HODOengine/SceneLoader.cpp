@@ -96,18 +96,23 @@ namespace HDEngine
 
 			std::string meshName = info.meshName;
 
+			if (meshName == "Stair")
+			{
+				info.meshName = "Plane";
+			}
+
 			if (meshName == "Plane" ||
 				meshName == "Cube")
 			{
 				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 				meshRenderer->LoadMesh(meshName + ".fbx");
-				meshRenderer->LoadDiffuseMap(info.texture + ".png");
+				meshRenderer->LoadAlbedoMap(info.texture + ".png");
 			}
 			else if (info.meshName != "")
 			{
 				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 				meshRenderer->LoadMesh(info.meshName + ".fbx");
-				meshRenderer->LoadDiffuseMap(info.texture + ".png");
+				meshRenderer->LoadAlbedoMap(info.texture + ".png");
 			}
 
 			switch (info.colliderType)

@@ -5,13 +5,16 @@ namespace RocketCore::Graphics
 	Material::Material(VertexShader* vertexShader, PixelShader* pixelShader)
 		: m_vertexShader(vertexShader), m_pixelShader(pixelShader),
 		m_materialAlbedo(0), m_materialNormal(0), m_occlusionRoughnessMetal(0),
-		m_metallic(0.0f), m_roughness(1.0f)
+		m_materialMetallic(0), m_materialRoughness(0),
+		m_metallic(0.1f), m_roughness(0.4f), m_albedoColor(DirectX::XMFLOAT4{1.0f, 1.0f, 1.0f, 1.0f})
 	{
 
 	}
 
 	Material::~Material()
 	{
+		m_vertexShader = nullptr;
+		m_pixelShader = nullptr;
 		delete m_vertexShader;
 		delete m_pixelShader;
 		m_materialAlbedo.Reset();
@@ -26,6 +29,16 @@ namespace RocketCore::Graphics
 	ID3D11ShaderResourceView* Material::GetNormalMap()
 	{
 		return m_materialNormal.Get();
+	}
+
+	ID3D11ShaderResourceView* Material::GetRoughnessMap()
+	{
+		return m_materialRoughness.Get();
+	}
+
+	ID3D11ShaderResourceView* Material::GetMetallicMap()
+	{
+		return m_materialMetallic.Get();
 	}
 
 	ID3D11ShaderResourceView* Material::GetOcclusionRoughnessMetalMap()
@@ -43,6 +56,11 @@ namespace RocketCore::Graphics
 		return m_roughness;
 	}
 
+	DirectX::XMFLOAT4 Material::GetAlbedoColor()
+	{
+		return m_albedoColor;
+	}
+
 	VertexShader* Material::GetVertexShader()
 	{
 		return m_vertexShader;
@@ -51,6 +69,34 @@ namespace RocketCore::Graphics
 	PixelShader* Material::GetPixelShader()
 	{
 		return m_pixelShader;
+	}
+
+	void Material::SetMetallic(float v)
+	{
+		m_metallic = v;
+	}
+
+	void Material::SetRoughness(float v)
+	{
+		m_roughness = v;
+	}
+
+	void Material::SetAlbedoColor(DirectX::XMFLOAT4 color)
+	{
+		m_albedoColor = color;
+	}
+
+	void Material::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a)
+	{
+		float rVal = static_cast<float>(r) / 255.0f;
+		float gVal = static_cast<float>(g) / 255.0f;
+		float bVal = static_cast<float>(b) / 255.0f;
+		float aVal = static_cast<float>(a) / 255.0f;
+
+		m_albedoColor.x = rVal;
+		m_albedoColor.y = gVal;
+		m_albedoColor.z = bVal;
+		m_albedoColor.w = aVal;
 	}
 
 }

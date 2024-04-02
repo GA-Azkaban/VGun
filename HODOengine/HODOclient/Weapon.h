@@ -1,4 +1,5 @@
-#pragma once
+﻿#pragma once
+#include "../HODOengine/HODO_API.h"
 
 enum class eWeaponType
 {
@@ -19,3 +20,8 @@ struct weaponData
 	int			reloadTime;
 };
 
+class Weapon : public HDData::Script
+{
+public:
+	void Update() override;
+};

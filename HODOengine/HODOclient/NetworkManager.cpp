@@ -6,6 +6,7 @@
 #include "ServerSession.h"
 
 #include "GameManager.h"
+#include "LobbyManager.h"
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -22,6 +23,7 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
+	Start();
 }
 
 void NetworkManager::Start()
@@ -29,7 +31,7 @@ void NetworkManager::Start()
 	ServerPacketHandler::Init();
 
 	_service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"127.0.0.1", 7777),
+		Horang::NetAddress(L"172.16.1.13", 7777),
 		Horang::MakeShared<Horang::IocpCore>(),
 		Horang::MakeShared<ServerSession>,
 		1
@@ -68,32 +70,14 @@ void NetworkManager::RecvFail(int32 errorCode)
 {
 	// Todo
 	// 로그인에 실패했을때 모든 처리를 여기서
-	switch (errorCode)
-	{
-		case LOGIN_FAIL:
-
-			break;
-		case ID_DUPLICATION:
-			break;
-
-		case NICKNAME_DUPLICATION:
-			break;
-
-		case SIGNUP_FAIL:
-			break;
-
-		default:
-			std::cout << "Unknown Error Code" << std::endl;
-			break;
-	}
-
+	LobbyManager::Instance().LoginFAIL(errorCode);
 }
 
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 {
 	// remove pyramid
 	// 로그인이 성공했을때 처리
-
+	LobbyManager::Instance().LoginSucess(uid, nickName);
 }
 
 void NetworkManager::RecvCreateAccount()

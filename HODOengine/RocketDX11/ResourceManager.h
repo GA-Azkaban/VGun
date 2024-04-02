@@ -15,11 +15,15 @@
 #include "Singleton.h"
 #include "Animation.h"
 
+#include "../HODO3DGraphicsInterface/IResourceManager.h"
+#include "../HODO3DGraphicsInterface/Node.h"
+
 using Microsoft::WRL::ComPtr;
 
 namespace RocketCore::Graphics
 {
 	class Mesh;
+	class Material;
 	class CubeMesh;
 	class VertexShader;
 	class PixelShader;
@@ -30,6 +34,7 @@ namespace RocketCore::Graphics
 	struct FileInfo
 	{
 		std::vector<Mesh*> loadedMeshes;
+		std::vector<Material*> loadedMaterials;
 		Node* node;
 		std::unordered_map<std::string, Animation*> loadedAnimation;	// <animName, animationInfo>
 	};
@@ -49,7 +54,7 @@ namespace RocketCore::Graphics
 		Texture brdfLUT;
 	};
 
-	class ResourceManager : public Singleton<ResourceManager>
+	class ResourceManager : public Singleton<ResourceManager>, public HDEngine::IResourceManager
 	{
 		friend Singleton;
 	private:
@@ -93,7 +98,7 @@ namespace RocketCore::Graphics
 		/// <param name="fileName">model file name include extension</param>
 		/// ex) model1.fbx
 		/// <returns></returns>
-		Node* GetNode(const std::string& fileName);
+		virtual Node* GetNode(const std::string& fileName);
 
 		/// <summary>
 		/// Get animation informations in model file.
@@ -133,8 +138,9 @@ namespace RocketCore::Graphics
 		void ProcessSkinningMesh(aiMesh* mesh, const aiScene* scene);
 		void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene);
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
+		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo);
-		void LoadAnimation(const aiScene* scene);
+		void LoadAnimation(const aiScene* scene, std::string animationName);
 
 		void GenerateEnvMap(Texture& envMapTexture, ID3D11ShaderResourceView* cubeMapSRV);
 		void GenerateEnvPreFilter(Texture& envPreFilterMap, ID3D11ShaderResourceView* cubeMapSRV);
@@ -162,6 +168,7 @@ namespace RocketCore::Graphics
 		std::unordered_map<std::string, EnvMapInfo> _loadedEnvMaps;
 
 		std::string _fileName;
+		std::string _fileInfoKeyName;
 
 		GeometryGenerator* _geometryGen;
 		SamplerState* _samplerState;

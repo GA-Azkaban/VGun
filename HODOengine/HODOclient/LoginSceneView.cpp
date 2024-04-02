@@ -1,4 +1,4 @@
-#include "LoginSceneView.h"
+﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 
 LoginSceneView::LoginSceneView()
@@ -94,7 +94,7 @@ void LoginSceneView::LoginView()
 		}
 	);
 
-	/// join canvas
+	// join canvas
 
 	HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas");
 	joinCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
@@ -109,6 +109,7 @@ void LoginSceneView::LoginView()
 	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
 	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
+	
 	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
 	newIDLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
@@ -121,6 +122,7 @@ void LoginSceneView::LoginView()
 	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
 	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
+	
 	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
 	newPasswordLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
@@ -133,6 +135,7 @@ void LoginSceneView::LoginView()
 	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
 	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
+	
 	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
 	newNicknameLabel->GetTransform()->SetLocalPosition(-200.f, 0.f, 0.f);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
@@ -140,17 +143,89 @@ void LoginSceneView::LoginView()
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinCanvas);
-	
 	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
 	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
 	makeAccountBtn->GetTransform()->SetLocalPosition(-150.f, 100.f, 0.f);
-	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent
+	(
 		[=]()
 		{
 			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
 			{
 				LobbyManager::Instance().MakeNewAccount(newIDtext->GetText(), newPWtext->GetText(), newNNtext->GetText());
 			}
+		}
+	);
+
+	// 이부분을 어떻게 처리하지
+	// login sucess canvas
+	HDData::GameObject* loginSucess = API::CreateButton(_scene, "sucessImg");
+	loginSucess->GetComponent<HDData::Button>()->SetImage("Login_Complete.png");
+	loginSucess->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	loginSucess->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	loginSucess->SetSelfActive(false);
+	_lobbyManager.SetSucessCanvas(loginSucess);
+	loginSucess->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			LobbyManager::Instance().showOff(loginSucess);
+			// load main menu scene
+		}
+	);
+
+	// login fail canvas
+	HDData::GameObject* loginFail = API::CreateButton(_scene, "failImg");
+	loginFail->GetComponent<HDData::Button>()->SetImage("Login_Fail.png");
+	loginFail->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	loginFail->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	loginFail->SetSelfActive(false);
+	_lobbyManager.SetFailCanvas(loginFail);
+	loginFail->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			LobbyManager::Instance().showOff(loginFail);
+		}
+	);
+
+	// id duplication
+	HDData::GameObject* idDupl = API::CreateButton(_scene, "idDupl");
+	idDupl->GetComponent<HDData::Button>()->SetImage("ID_Duplication.png");
+	idDupl->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	idDupl->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	idDupl->SetSelfActive(false);
+	_lobbyManager.SetidDupl(idDupl);
+	idDupl->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			LobbyManager::Instance().showOff(idDupl);
+		}
+	);
+
+	// name duplication
+	HDData::GameObject* nameDupl = API::CreateButton(_scene, "nameDupl");
+	nameDupl->GetComponent<HDData::Button>()->SetImage("name_Duplication.png");
+	nameDupl->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	nameDupl->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	nameDupl->SetSelfActive(false);
+	_lobbyManager.SetnameDule(nameDupl);
+	nameDupl->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			LobbyManager::Instance().showOff(nameDupl);
+		}
+	);
+
+	// signup fail
+	HDData::GameObject* signupFail = API::CreateButton(_scene, "signup");
+	signupFail->GetComponent<HDData::Button>()->SetImage("Signup_Fail.png");
+	signupFail->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	signupFail->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	signupFail->SetSelfActive(false);
+	_lobbyManager.SetSignupFail(signupFail);
+	signupFail->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			LobbyManager::Instance().showOff(nameDupl);
 		}
 	);
 
@@ -168,12 +243,3 @@ void LoginSceneView::LoginView()
 	joinCanvas->SetSelfActive(false);
 }
 
-void LoginSceneView::MainMenu()
-{
-
-}
-
-void LoginSceneView::Lobby()
-{
-
-}

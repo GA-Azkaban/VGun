@@ -6,7 +6,6 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Camera.h"
-#include "Outline.h"
 #include "OutlinePass.h"
 using namespace DirectX;
 
@@ -14,7 +13,7 @@ namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
-		m_world{ XMMatrixIdentity() }, m_outline(nullptr)
+		m_world{ XMMatrixIdentity() }
 	{
 		m_material = new Material(ResourceManager::Instance().GetVertexShader("VertexShader.cso"), ResourceManager::Instance().GetPixelShader("PixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -48,31 +47,48 @@ namespace RocketCore::Graphics
 		m_material->SetNormalMap(normalTex);
 	}
 
-	void StaticMeshObject::LoadDiffuseMap(const std::string& fileName)
+	void StaticMeshObject::LoadAlbedoMap(const std::string& fileName)
 	{
-		ID3D11ShaderResourceView* diffuseTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetAlbedoMap(diffuseTex);
+		ID3D11ShaderResourceView* albedoTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetAlbedoMap(albedoTex);
 	}
 
-	void StaticMeshObject::SetOutlineActive(bool isActive)
+	void StaticMeshObject::LoadARMMap(const std::string& fileName)
 	{
-		if (!m_outline)
-		{
-			m_outline = new Outline();
-			SetOutlineData();
-			OutlinePass::staticMeshOutlines.push_back(this);
-		}
+        ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
+        m_material->SetOcclusionRoughnessMetalMap(armTex);
+    }
 
-		m_outline->isActive = isActive;
+	void StaticMeshObject::LoadRoughnessMap(const std::string& fileName)
+	{
+		ID3D11ShaderResourceView* roughnessTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(roughnessTex);
 	}
 
-	void StaticMeshObject::SetOutlineData(const Vector4& color /* = Vector4 */, bool depthCheck /* = true */)
+	void StaticMeshObject::LoadMetallicMap(const std::string& fileName)
 	{
-		if (!m_outline)
-			return;
+		ID3D11ShaderResourceView* metallicTex = ResourceManager::Instance().GetTexture(fileName);
+		m_material->SetOcclusionRoughnessMetalMap(metallicTex);
+	}
 
-		m_outline->color = color;
-		m_outline->depthCheck = depthCheck;
+	void StaticMeshObject::SetRoughnessValue(float value)
+	{
+		m_material->SetRoughness(value);
+	}
+
+	void StaticMeshObject::SetMetallicValue(float value)
+	{
+		m_material->SetMetallic(value);
+	}
+
+	void StaticMeshObject::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /* = 255 */)
+	{
+		m_material->SetAlbedoColor(r, g, b, a);
+	}
+
+	void StaticMeshObject::SetAlbedoColor(Vector4 color)
+	{
+		m_material->SetAlbedoColor(color);
 	}
 
 	void StaticMeshObject::Render()
@@ -97,15 +113,18 @@ namespace RocketCore::Graphics
 
 			vertexShader->CopyAllBufferData();
 			vertexShader->SetShader();
-
+			for (UINT i = 0; i < m_meshes.size(); ++i)
+			{
 			if (m_material->GetAlbedoMap())
 			{
 				pixelShader->SetInt("useAlbedo", 1);
 				pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
+				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
 			}
 			else
 			{
 				pixelShader->SetInt("useAlbedo", 0);
+				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
 			}
 
 			if (m_material->GetNormalMap())
@@ -126,15 +145,15 @@ namespace RocketCore::Graphics
 			else
 			{
 				pixelShader->SetInt("useOccMetalRough", 0);
-				pixelShader->SetInt("gMetallic", m_material->GetMetallic());
-				pixelShader->SetInt("gRoughness", m_material->GetRoughness());
+				pixelShader->SetFloat("gMetallic", m_material->GetMetallic());
+				pixelShader->SetFloat("gRoughness", m_material->GetRoughness());
 			}
 
 			pixelShader->CopyAllBufferData();
 			pixelShader->SetShader();
 
-			for (UINT i = 0; i < m_meshes.size(); ++i)
-			{
+			//for (UINT i = 0; i < m_meshes.size(); ++i)
+			//{
 				m_meshes[i]->BindBuffers();
 				m_meshes[i]->Draw();
 			}
