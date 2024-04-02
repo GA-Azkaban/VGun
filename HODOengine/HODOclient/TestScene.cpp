@@ -36,173 +36,30 @@ TestScene::TestScene()
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
 	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("cube");
+	//boxRender1->LoadMesh("Plane.fbx");
+	//boxRender1->SetMetallicValue(0.0f);
 
-	//auto testBox2 = API::CreateObject(_scene);
-	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
-	//testBox2->GetComponent<HDData::Transform>()->Rotate(90.0f, 90.0f, 0.0f);
-	//auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
-	//boxRender2->LoadMesh("cube");
+	// 플레이어 테스트
+	auto playerTest = API::CreateObject(_scene, "player");
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
+	playerTest->AddComponent<Player>();
+	playerTest->LoadNodeFromFBXFile("SKM_TP_X_idle.fbx");
 
-	////auto building1 = API::CreateObject(_scene);
-	////building1->GetComponent<HDData::Transform>()->SetPosition(-5.0f, 5.0f, 0.0f);
-	////auto buildingRender1 = building1->AddComponent<HDData::MeshRenderer>();
-	////buildingRender1->LoadMesh("box_little2.fbx");
-	//////buildingRender1->LoadMesh("SM_House_Large 1.fbx");
+	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadAlbedoMap("TP_Red_B.png");
+	meshComp->PlayAnimation("X_idle", true);
+	meshComp->SetOutlineActive(true);
 
-	/////*auto building2 = API::CreateObject(_scene);
-	////building2->GetComponent<HDData::Transform>()->SetPosition(5.0f, 5.0f, 0.0f);
-	////auto buildingRender2 = building2->AddComponent<HDData::MeshRenderer>();
-	////buildingRender2->LoadMesh("box_little2.fbx");*/
-
-	//////auto gameObject = hodoEngine::CreateObject(_scene);
-	//////auto comp = gameObject->AddComponent<hodoEngine::DebugCube>();
-	////////auto test = comp->GetGameObject();
-	//////comp->Get()->SetFillModeWireframe();
-	//////comp->Get()->SetColor(HDMaths::HDFLOAT4{ 1.0f, 0.0f, 0.0f, 0.0f });
-
-	//////auto debugtest = API::CreateObject(_scene);
-	//////debugtest->GetComponent<HDData::Transform>()->SetWorldScale(Vector3{5.f, 5.f, 5.f});
-	//////auto colli = debugtest->AddComponent<HDData::StaticBoxCollider>();
-	//////colli->Setflag(eColliderType::PLAYER);
-
-	////// floor as static plane
-	//////auto groundFloor = API::CreateObject(_scene);
-	//////groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	//////auto groundColli = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
-
-	//////// 플레이어 테스트
-	//auto playerTest = API::CreateObject(_scene, "player");
-	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 3.f, 0.5f, 0.f });
-	//playerTest->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
-	//playerTest->AddComponent<Player>();
-	////auto meshComp = playerTest->AddComponent<HDData::MeshRenderer>();
-	////meshComp->LoadMesh("A_TP_CH_Breathing_Ori.fbx");
-
-	////auto playerColli = playerTest->AddComponent<HDData::DynamicBoxCollider>();
-
-	////auto playerPosText = API::CreateTextbox(_scene);
-	////playerPosText->GetTransform()->SetPosition(Vector3(100.0f, 40.0f, 50.0f));
-	////playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
-
-	////auto aimText = API::CreateTextbox(_scene);
-	////aimText->GetTransform()->SetPosition(Vector3(960.0f, 530.0f, 50.0f));
-	////aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 0.0f, 1.0f});
-	////aimText->GetComponent<HDData::TextUI>()->SetText("");
-
-	////auto hitText = API::CreateTextbox(_scene);
-	////hitText->GetTransform()->SetPosition(Vector3());
-	////hitText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{1.0f, 0.0f, 1.0f, 1.0f});
-	////hitText->GetComponent<HDData::TextUI>()->SetText("!!!!!");
-
-	//////auto centerText = API::CreateTextbox(_scene);
-	//////centerText->GetTransform()->SetPosition(Vector3(1000.0f,1000.0f,0.0f));
-	//////centerText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Crimson);
-	//////centerText->GetComponent<HDData::TextUI>()->SetText("check drawing text into center position");
-
-	////auto playerMove = playerTest->AddComponent<PlayerMove>();
-	////playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	////playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>(), hitText->GetComponent<HDData::TextUI>());
-	////playerTest->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
-	//auto meshComp = playerTest->AddComponent<HDData::SkinnedMeshRenderer>();
-	////meshComp->LoadMesh("A_TP_CH_Breathing.fbx");
-	////meshComp->PlayAnimation("A_TP_CH_Breathing.fbx", true);
-	//meshComp->LoadMesh("little_man3.fbx");
-	//meshComp->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	//meshComp->PlayAnimation("little_man3.fbx", true);
-	////meshComp->SetOutlineActive(true);
-
-	////auto playerTest2 = API::CreateObject(_scene, "player2");
-	////playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 13.f, 0.f, 0.f });
-	////playerTest2->GetComponent<HDData::Transform>()->Rotate(0.f, 0.f, 0.f);
-	////auto meshComp2 = playerTest2->AddComponent<HDData::SkinnedMeshRenderer>();
-	////meshComp2->LoadMesh("A_TP_CH_Sprint_F.fbx");
-	////meshComp2->PlayAnimation("A_TP_CH_Sprint_F.fbx", true);
-	////meshComp2->LoadDiffuseMap("T_TP_CH_Basic_001_001_D.png");
-	//////meshComp2->LoadMesh("little_man3.fbx");
-	//////meshComp2->PlayAnimation("little_man3.fbx", true);
-
-	////auto playerTestHead = API::CreateObject(_scene, "playerHead");
-	////playerTestHead->SetParentObject(playerTest);
-	////playerTestHead->GetComponent<HDData::Transform>()->SetLocalPosition(Vector3{ 0.f, 1.1f, 0.f });
-	//////auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicBoxCollider>();
-
-	//////auto headCam = playerTestHead->AddComponent<HDData::Camera>();
-	//////playerMove->SetHeadCam(headCam);
-
-	//////auto sphereTest = API::CreateObject(_scene, "sphereTest");
-	//////sphereTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 3.f, 0.f);
-	//////auto sphereCollider = sphereTest->AddComponent<HDData::DynamicSphereCollider>();
-
-	//////textTest->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	//////auto textTest = API::CreateTextbox(_scene);
-	//////textTest->GetComponent<HDData::TextUI>()->SetText("Seen yoon jae Ba bo");
-
-	//////HDData::GameObject* imageTest = API::CreateObject(_scene);
-	//////imageTest->GetTransform()->SetWorldPosition({ 50.0f,50.0f,50.0f });
-	//////imageComp->ChangeScale(0.5f, 0.5f);
-	//////HDData::ImageUI* imageComp = imageTest->AddComponent<HDData::ImageUI>();
-	//////imageComp->GetGameObject();
-	//////imageComp->SetColor(DirectX::Colors::AliceBlue);
-
-	//////auto UItest = API::CreateSlidebox(_scene);
-	//////UItest->GetTransform()->SetWorldPosition({1000.f, 100.f, 0.f});
-	//////auto sliderComp = UItest->GetComponent<HDData::SlideBoxUI>();
-	//////sliderComp->AddTextList("1");
-	//////sliderComp->AddTextList("2");
-	//////sliderComp->AddTextList("3");
-	//////sliderComp->AddTextList("4");
-
-	//////auto imageTest = API::CreateImageBox(_scene);
-	//////imageTest->GetTransform()->SetWorldPosition({ 1000.0f,1000.0f,50.0f });
-
-	//////auto button = API::CreateButton(_scene);
-	//////button->GetTransform()->SetPosition({ 50.0f,50.0f,50.0f });
-	//////button->GetComponent<HDData::Button>()->SetOnClickEvent([button]() {button->GetTransform()->Translate({ 1.0f,0.0f,0.0f }); });
-
-	//////auto slider = API::CreateSlider(_scene, 50, "slider");
-	//////slider->GetTransform()->SetPosition({ 500.0f,500.0f,0.0f });
-
-	//////auto canvas = API::CreateImageBox(_scene, "canvas");
-	//////canvas->GetTransform()->SetPosition(1500.f, 200.f, 0.f);
-
-	//////auto img = API::CreateButton(_scene);
-	//////img->GetComponent<HDData::Button>()->SetImage("Sound.png");
-	//////img->GetTransform()->SetPosition({ 1500.f, 600.f, 0.0f });
-	//////img->GetComponent<HDData::Button>()->SetOnClickEvent(
-	//////	[]()
-	//////	{
-	//////
-	//////	}
-	//////);
-
-	//////auto img2 = API::CreateImageBox(_scene, "img2", img);
-	//////img2->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
-	//////img2->GetTransform()->SetPosition({ 1500.f, 500.f, 0.0f });
-
-	//////auto img3 = API::CreateImageBox(_scene, "img3", img2);
-	//////img3->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
-	//////img3->GetTransform()->SetPosition({ 1500.f, 600.f, 0.0f });
-
-	//////auto img4 = API::CreateImageBox(_scene, "img4", img3);
-	//////img4->GetComponent<HDData::ImageUI>()->SetImage("Mute.png");
-	//////img4->GetTransform()->SetPosition({ 1500.f, 700.f, 0.0f });
-
-	//////auto toggle = API::CreateToggle(_scene);
-	//////toggle->GetTransform()->SetPosition({ 1500.f, 200.f, 0.0f });
-	//////toggle->GetComponent<HDData::ToggleUI>()->SetSortOrder(0.21f);
-
-	//////auto textInputBox = API::CreateTextInputBox(_scene, "input", canvas);
-	//////textInputBox->GetTransform()->SetPosition({ 1500.f, 500.f, 0 });
-
-	//////canvas->SetSelfActive(true);
+	auto hand = playerTest->GetGameObjectByNameInChildren("ik_hand_r");
+	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-16.0f, -10.0f, 3.0f);
+	weaponTest->GetComponent<HDData::Transform>()->Rotate(200.0f, 270.0f, 95.0f);
+	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	weaponComp->LoadMesh("SM_AR1.fbx");
+	weaponComp->LoadAlbedoMap("T_WEP_Camo_001_D.png");
+	weaponComp->LoadNormalMap("T_WEP_Camo_N.png");
 
 	API::LoadScene(_scene);
-
-	//// 디버그 모드를 시작하는 함수
-	//API::DebugModeOn(eColliderType::PLAYER);
-
-	NetworkManager::Instance();
 }
 
 TestScene::~TestScene()
