@@ -1,4 +1,4 @@
-#include "UnitySceneLoaderTest.h"
+﻿#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
 #include "FSMtestScript.h"
 
@@ -32,7 +32,7 @@ void UnitySceneLoaderTest::Start()
 	//API::LoadSceneFromData("transformData.json");
 
 	// animationController
-	auto aniCom = API::CreateAnimationController();
+	/*auto aniCom = API::CreateAnimationController();
 	aniCom->CreateState("IDLE", "idle.fbx");
 	aniCom->CreateState("WALK", "gun_walk.fbx");
 	aniCom->CreateState("JUMP", "jump_real.fbx");
@@ -56,7 +56,7 @@ void UnitySceneLoaderTest::Start()
 	aniCom->GetState("IDLE").MakeTransition("CRUNCH").AddTrigger("CRUNCH", "isCrunch", true);
 	aniCom->GetState("CRUNCH").MakeTransition("IDLE");
 
-	aniCom->SetEntryState("IDLE");
+	aniCom->SetEntryState("IDLE");*/
 
 	//API::LoadSceneFromData("transformData.json");
 
