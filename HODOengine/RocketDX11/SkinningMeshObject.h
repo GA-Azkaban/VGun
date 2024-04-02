@@ -34,6 +34,7 @@ namespace RocketCore::Graphics
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void LoadMesh(const std::string& fileName) override;
+		virtual void LoadNode(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadAlbedoMap(const std::string& fileName) override;
 		virtual void LoadARMMap(const std::string& fileName) override;
@@ -45,8 +46,7 @@ namespace RocketCore::Graphics
 		virtual void SetAlbedoColor(Vector4 color) override;
 		virtual Node* GetNode() override;
 
-		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
-		void PlayAnimation(UINT index, bool isLoop = true);
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
 
 		virtual bool IsAnimationEnd() override;
 

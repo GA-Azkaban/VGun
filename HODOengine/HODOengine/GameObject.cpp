@@ -6,6 +6,7 @@
 #include "DynamicBoxCollider.h"
 #include "StaticBoxCollider.h"
 #include "SkinnedMeshRenderer.h"
+#include "MeshRenderer.h"
 
 namespace HDData
 {
@@ -139,11 +140,19 @@ namespace HDData
 		return _childGameObjectsIndexed;
 	}
 
-	GameObject* GameObject::GetChildGameObjectByName(const std::string& objectName)
+	GameObject* GameObject::GetGameObjectByNameInChildren(const std::string& objectName)
 	{
-		GameObject* ret = nullptr;
-		FindGameObjectByNameInChildren(_parentGameObject, objectName, ret);
-		return ret;
+		if (_objectName == objectName)
+			return this;
+
+		for (int i = 0; i < _childGameObjectsIndexed.size(); ++i)
+		{		
+			GameObject* founded = _childGameObjectsIndexed[i]->GetGameObjectByNameInChildren(objectName);
+			if (founded != nullptr)
+				return founded;
+		}
+		
+		return nullptr;
 	}
 
 	void GameObject::SetParentObject(GameObject* parentObject)
@@ -153,7 +162,7 @@ namespace HDData
 		{
 			if (_parentGameObject != nullptr)
 			{
-				for(auto iter = _parentGameObject->_childGameObjectsIndexed.begin(); iter != _parentGameObject->_childGameObjectsIndexed.end(); ++iter)
+				for (auto iter = _parentGameObject->_childGameObjectsIndexed.begin(); iter != _parentGameObject->_childGameObjectsIndexed.end(); ++iter)
 				{
 					if (*iter == this)
 					{
@@ -211,63 +220,64 @@ namespace HDData
 		return _objectName;
 	}
 
-	void GameObject::LoadNodeHierarchyFromFile(std::string fileName)
+	void GameObject::LoadNodeFromFBXFile(std::string fileName)
 	{
-		Node* rootNode = HDEngine::ResourceManager::Instance().GetNode(fileName);
-		if (HDEngine::ResourceManager::Instance().GetNode(fileName) == nullptr)
+		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);
+		auto rendererComp = rendererObject->AddComponent<SkinnedMeshRenderer>();
+		rendererComp->LoadNode(fileName);
+		rendererComp->LoadMesh(fileName);
+		Node* rendererNode = rendererComp->GetNode();
+		if (!rendererNode)
 			return;
 
-		Node armature;
-		FindNodeByName(rootNode, armature, "Armature");
-		if (armature.name == "Armature")
+		Node* armature = FindNodeByName(rendererNode, "Armature");
+		if (armature != nullptr)
 		{
-			ProcessNode(&armature, this);
+			ProcessNode(armature, this);
 		}
-
-
-		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);
-		rendererObject->AddComponent<SkinnedMeshRenderer>();
+		else
+		{
+			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "Armature", this);
+			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
+			Node* root = FindNodeByName(rendererNode, "root");
+			if (root != nullptr)
+			{
+				ProcessNode(root, newObject);
+			}
+		}
+		// 그래픽스엔진의 SkinningObject의 LoadMesh에서 호출되는 LoadNode는 없애야 한다.
+		// 가져온 노드정보의 트랜스폼을 게임 오브젝트가 가진 트랜스폼과 연결시켜야 한다.
 	}
 
-	void GameObject::FindNodeByName(Node* node, Node& outNode, std::string nodeName)
-	{		
+	Node* GameObject::FindNodeByName(Node* node, std::string nodeName)
+	{
 		if (node->name == nodeName)
 		{
-			outNode = *node;
-			return;
+			return node;
 		}
 
 		for (int i = 0; i < node->children.size(); ++i)
 		{
-			FindNodeByName(&(node->children[i]), outNode, nodeName);
+			Node* findNode = FindNodeByName(&(node->children[i]), nodeName);
+			if (findNode)
+				return findNode;
 		}
+
+		return nullptr;
 	}
 
 	void GameObject::ProcessNode(Node* node, GameObject* parentObject)
 	{
 		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), node->name, parentObject);
-		newObject->AddComponent<StaticBoxCollider>();
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
+		node->nodeTransform = newObject->GetTransform()->_transform;
+		//auto r = newObject->AddComponent<MeshRenderer>();
+		//r->LoadMesh("A_TP_CH_Breathing.fbx");
+		//r->LoadAlbedoMap("T_TP_CH_Basic_005_001_D.png");
+		newObject->AddComponent<StaticBoxCollider>();
 		for (int i = 0; i < node->children.size(); ++i)
 		{
 			ProcessNode(&(node->children[i]), newObject);
-		}
-	}
-
-	void GameObject::FindGameObjectByNameInChildren(GameObject* parentObject, const std::string& name, GameObject* outGameObject)
-	{
-		for (auto& child : parentObject->GetChildGameObjects())
-		{
-			if (child->GetObjectName() == name)
-			{
-				outGameObject = child;
-				return;
-			}
-			else
-			{
-				FindGameObjectByNameInChildren(child, name, outGameObject);
-				return;
-			}
 		}
 	}
 

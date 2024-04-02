@@ -236,8 +236,9 @@ namespace HDData
 
 	void Transform::SetLocalPosition(float x, float y, float z)
 	{
-		const Vector3 pos { x, y, z };
-		SetLocalPosition(pos);
+		_transform->_position.x = x;
+		_transform->_position.y = y;
+		_transform->_position.z = z;
 	}
 
 	void Transform::SetLocalRotation(const Quaternion& rotation)

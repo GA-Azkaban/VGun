@@ -20,7 +20,7 @@ struct Node
 {
 	std::string name = "";
 	Bone bone;
-	HDCommon::Transform* nodeTransform;
+	HDCommon::Transform* nodeTransform = nullptr;
 	//Matrix nodeTransform = DirectX::XMMatrixIdentity();
 	Matrix nodeTransformOffset = DirectX::XMMatrixIdentity();
 	Matrix rootNodeInvTransform = DirectX::XMMatrixIdentity();

@@ -119,7 +119,7 @@ namespace HDData
 		}
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
-		GameObject* GetChildGameObjectByName(const std::string& objectName);
+		GameObject* GetGameObjectByNameInChildren(const std::string& objectName);
 		Transform* GetTransform() const { return _transform; }
 		bool IsActive() { return _selfActive; }
 
@@ -130,11 +130,10 @@ namespace HDData
 		std::string GetObjectName();
 
 		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
-		void LoadNodeHierarchyFromFile(std::string fileName);
+		void LoadNodeFromFBXFile(std::string fileName);
 		
 	private:
-		void FindGameObjectByNameInChildren(GameObject* parentObject, const std::string& name, GameObject* outGameObject);
-		void FindNodeByName(Node* node, Node& outNode, std::string nodeName);
+		Node* FindNodeByName(Node* node, std::string nodeName);
 		void ProcessNode(Node* node, GameObject* parentObject);
 
 	private:

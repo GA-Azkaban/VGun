@@ -140,7 +140,7 @@ namespace RocketCore::Graphics
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo);
-		void LoadAnimation(const aiScene* scene);
+		void LoadAnimation(const aiScene* scene, std::string animationName);
 
 		void GenerateEnvMap(Texture& envMapTexture, ID3D11ShaderResourceView* cubeMapSRV);
 		void GenerateEnvPreFilter(Texture& envPreFilterMap, ID3D11ShaderResourceView* cubeMapSRV);
@@ -168,6 +168,7 @@ namespace RocketCore::Graphics
 		std::unordered_map<std::string, EnvMapInfo> _loadedEnvMaps;
 
 		std::string _fileName;
+		std::string _fileInfoKeyName;
 
 		GeometryGenerator* _geometryGen;
 		SamplerState* _samplerState;

@@ -12,6 +12,7 @@
 #include "AssimpMathConverter.h"
 #include <cmath>
 #include <algorithm>
+#include "../HODOCommon/HDTransform.h"
 using namespace DirectX;
 
 namespace RocketCore::Graphics
@@ -178,12 +179,16 @@ namespace RocketCore::Graphics
 			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
+			{
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
+			}			
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
 		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
-		//node->nodeTransform = _nodeTransform;
-		//m_nodeTransformMap[node->name] = node->nodeTransform;
 
 		// update values for children bones
 		for (Node& child : node->children)
@@ -321,6 +326,12 @@ namespace RocketCore::Graphics
 			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
+			{
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
+			}
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
@@ -410,11 +421,9 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
 	{
-		LoadMesh(fileName);
-		//PlayAnimation(0, isLoop);
-		auto animIter = m_animations.find(fileName);
+		auto animIter = m_animations.find(animName);
 		if (animIter == m_animations.end())
 		{
 			m_currentAnimation = nullptr;
@@ -444,43 +453,14 @@ namespace RocketCore::Graphics
 			m_blendFlag = true;
 		}
 	}
-
-	void SkinningMeshObject::PlayAnimation(UINT index, bool isLoop /*= true*/)
-	{
-		auto animIter = m_animations.begin();
-		for (UINT i = 0; i < index; ++i)
-		{
-			++animIter;
-			if (animIter == m_animations.end())
-			{
-				m_currentAnimation = nullptr;
-				return;
-			}
-		}
-
-		if (m_currentAnimation == &(animIter->second))
-			return;
-
-		m_previousAnimation = m_currentAnimation;
-		m_currentAnimation = &(animIter->second);
-		m_currentAnimation->isLoop = isLoop;
-
-		if (m_previousAnimation != nullptr)
-		{
-			m_currentAnimation->accumulatedTime = 0.0f;
-			if (m_currentAnimation->isLoop == false)
-			{
-				m_currentAnimation->isEnd = false;
-			}
-			m_blendFlag = true;
-		}
-
-	}
-
+	
 	void SkinningMeshObject::LoadMesh(const std::string& fileName)
 	{
-		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
-		// 일단은 메쉬를 세팅해주면 노드 정보와 애니메이션 정보도 불러와서 세팅해주기로 한다.
+		m_meshes = ResourceManager::Instance().GetMeshes(fileName);		
+	}
+
+	void SkinningMeshObject::LoadNode(const std::string& fileName)
+	{
 		m_node = *(ResourceManager::Instance().GetNode(fileName));
 		LoadAnimation(ResourceManager::Instance().GetAnimations(fileName));
 	}

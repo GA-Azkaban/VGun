@@ -22,6 +22,11 @@ namespace HDData
 		_skinnedMesh->LoadMesh(fileName);
 	}
 
+	void SkinnedMeshRenderer::LoadNode(const std::string& fileName)
+	{
+		_skinnedMesh->LoadNode(fileName);
+	}
+
 	void SkinnedMeshRenderer::LoadNormalMap(const std::string& fileName)
 	{
 		_skinnedMesh->LoadNormalMap(fileName);
@@ -67,9 +72,9 @@ namespace HDData
 		_skinnedMesh->SetAlbedoColor(color);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimation(const std::string& fileName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
 	{
-		_skinnedMesh->PlayAnimation(fileName, isLoop);
+		_skinnedMesh->PlayAnimation(animName, isLoop);
 	}
 
 	bool SkinnedMeshRenderer::IsAnimationEnd()
@@ -80,6 +85,11 @@ namespace HDData
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_skinnedMesh->SetOutlineActive(isActive);
+	}
+
+	Node* SkinnedMeshRenderer::GetNode()
+	{
+		return _skinnedMesh->GetNode();
 	}
 
 	void SkinnedMeshRenderer::Update()

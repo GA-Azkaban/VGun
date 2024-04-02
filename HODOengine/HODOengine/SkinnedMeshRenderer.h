@@ -13,6 +13,7 @@ namespace HDData
 		~SkinnedMeshRenderer();
 
 		void LoadMesh(const std::string& fileName);
+		void LoadNode(const std::string& fileName);
 		void LoadNormalMap(const std::string& fileName);
 		void LoadAlbedoMap(const std::string& fileName);
 		void LoadARMMap(const std::string& fileName);
@@ -22,9 +23,10 @@ namespace HDData
 		void SetMetallicValue(float value);
 		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255);
 		void SetAlbedoColor(Vector4 color);
-		void PlayAnimation(const std::string& fileName, bool isLoop = true);
+		void PlayAnimation(const std::string& animName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
+		Node* GetNode();
 
 	protected:
 		virtual void Update() override;

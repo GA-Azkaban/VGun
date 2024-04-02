@@ -11,10 +11,10 @@
 
 namespace HDData
 {
-	class GameObject;
 	class HODO_API Transform : public Component
 	{
 	public:
+		friend class GameObject;
 		Transform();
 		Vector3 GetPosition() const;			// world 기준
 		Quaternion GetRotation() const;			// world 기준
