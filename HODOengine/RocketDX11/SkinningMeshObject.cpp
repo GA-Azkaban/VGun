@@ -1,4 +1,4 @@
-#include "SkinningMeshObject.h"
+﻿#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -18,7 +18,7 @@ using namespace DirectX;
 namespace RocketCore::Graphics
 {
 	SkinningMeshObject::SkinningMeshObject()
-		: m_material(nullptr), m_isActive(true), m_receiveTMInfoFlag(false),
+		: m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
 		m_blendFlag(false), m_isOutlineActive(false)
 	{
@@ -29,7 +29,7 @@ namespace RocketCore::Graphics
 
 	SkinningMeshObject::~SkinningMeshObject()
 	{
-		delete m_material;
+		
 	}
 
 	void SkinningMeshObject::Update(float deltaTime)

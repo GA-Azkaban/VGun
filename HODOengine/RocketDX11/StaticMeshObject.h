@@ -49,8 +49,9 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;
-		Node* m_node;
+		//std::vector<Material*> m_material;
 		Material* m_material;
+		Node* m_node;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
 	};
