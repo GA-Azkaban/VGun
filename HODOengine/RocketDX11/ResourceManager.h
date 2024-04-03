@@ -136,7 +136,7 @@ namespace RocketCore::Graphics
 		void ProcessMesh(aiMesh* mesh, const aiScene* scene);
 		void ProcessStaticMesh(aiMesh* mesh, const aiScene* scene);
 		void ProcessSkinningMesh(aiMesh* mesh, const aiScene* scene);
-		void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene);
+		void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene, Material* outMaterial);
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo);

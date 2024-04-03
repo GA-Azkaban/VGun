@@ -1,6 +1,7 @@
 ﻿#include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "Mesh.h"
+#include "Material.h"
 #include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
@@ -900,18 +901,10 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
-		//unitScaleFactor = 0.0001f;
-		//unitScaleFactor = 100.0f;
 		unitScaleFactor = 1.0f / unitScaleFactor;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
-
-		/*aiMatrix4x4 mat(
-			rightVec.x, rightVec.y, rightVec.z, 0.0f,
-			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		aiMatrix4x4 mat(
 			rightVec.x, upVec.x, forwardVec.x, 0.0f,
@@ -919,18 +912,10 @@ namespace RocketCore::Graphics
 			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		/*aiMatrix4x4 mat(
-			0.01f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.01f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.01f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
-
-			// create node hierarchy
+		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
-		//rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode);
 
 		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
@@ -938,9 +923,11 @@ namespace RocketCore::Graphics
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+			Material* newMaterial = new Material(GetVertexShader("VertexShader.cso"), GetPixelShader("PixelShader.cso"));
 			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
 			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
+				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
+				_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 			}
 		}
 	}
@@ -1092,29 +1079,15 @@ namespace RocketCore::Graphics
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
 
-		/*aiMatrix4x4 mat(
-			rightVec.x, rightVec.y, rightVec.z, 0.0f,
-			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
-
 		aiMatrix4x4 mat(
 			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
 			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		/*aiMatrix4x4 mat(
-			0.01f,	0.0f,		0.0f,	0.0f,
-			0.0f,	0.0f,		-0.01f,	0.0f,
-			0.0f,	0.01f,		0.0f,	0.0f,
-			0.0f,	0.0f,		0.0f,	1.0f);*/
-
-			// create node hierarchy
+		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
-		//rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
@@ -1122,20 +1095,27 @@ namespace RocketCore::Graphics
 
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
 		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
-
+		
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
+			Material* newMaterial = new Material(GetVertexShader("SkeletonVertexShader.cso"), GetPixelShader("SkeletonPixelShader.cso"));
+			for (UINT i = 0; i <= 21; ++i)
 			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
+				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
+				_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 			}
 		}
 	}
 
-	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
+	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene, Material* outMaterial)
 	{
 		UINT textureCount = material->GetTextureCount(type);
+		// 우선 첫번째 것만 가져오자.
+		if (textureCount > 0)
+		{
+			textureCount = 1;
+		}
 		for (UINT i = 0; i < textureCount; ++i)
 		{
 			aiString str;
@@ -1155,6 +1135,71 @@ namespace RocketCore::Graphics
 				else
 				{
 					LoadTextureFile(fileName);
+					switch (type)
+					{
+						case aiTextureType_NONE:
+							break;
+						case aiTextureType_DIFFUSE:
+						{
+							ID3D11ShaderResourceView* albedoTex = GetTexture(fileName);
+							outMaterial->SetAlbedoMap(albedoTex);
+							break;
+						}
+						case aiTextureType_SPECULAR:
+							break;
+						case aiTextureType_AMBIENT:
+							break;
+						case aiTextureType_EMISSIVE:
+							break;
+						case aiTextureType_HEIGHT:
+							break;
+						case aiTextureType_NORMALS:
+						{
+							ID3D11ShaderResourceView* normalTex = GetTexture(fileName);
+							outMaterial->SetNormalMap(normalTex);
+							break;
+						}
+						case aiTextureType_SHININESS:
+							break;
+						case aiTextureType_OPACITY:
+							break;
+						case aiTextureType_DISPLACEMENT:
+							break;
+						case aiTextureType_LIGHTMAP:
+							break;
+						case aiTextureType_REFLECTION:
+							break;
+						case aiTextureType_BASE_COLOR:
+							break;
+						case aiTextureType_NORMAL_CAMERA:
+							break;
+						case aiTextureType_EMISSION_COLOR:
+							break;
+						case aiTextureType_METALNESS:
+						{
+							ID3D11ShaderResourceView* metallicTex = GetTexture(fileName);
+							outMaterial->SetMetallicMap(metallicTex);
+							break;
+						}
+						case aiTextureType_DIFFUSE_ROUGHNESS:
+						{
+							ID3D11ShaderResourceView* roughnessTex = GetTexture(fileName);
+							outMaterial->SetRoughnessMap(roughnessTex);
+							break;
+						}
+						case aiTextureType_AMBIENT_OCCLUSION:
+							break;
+						case aiTextureType_SHEEN:
+							break;
+						case aiTextureType_CLEARCOAT:
+							break;
+						case aiTextureType_TRANSMISSION:
+							break;
+						case aiTextureType_UNKNOWN:
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
