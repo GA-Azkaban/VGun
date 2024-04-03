@@ -143,4 +143,14 @@ namespace RocketCore::Graphics
 		_sortOrder = order;
 	}
 
+	void TextRenderer::FadeIn()
+	{
+
+	}
+
+	void TextRenderer::FadeOut()
+	{
+
+	}
+
 }

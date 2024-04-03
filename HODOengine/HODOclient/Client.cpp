@@ -22,8 +22,8 @@ void Client::Initialize()
 	//LoginSceneView login;
 	//login.Initialize();
 
-	MainMenuScene menu;
-	menu.Initalize();
+	MainMenuScene menuScene;
+	menuScene.Initalize();
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();

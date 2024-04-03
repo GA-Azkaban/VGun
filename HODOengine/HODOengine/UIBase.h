@@ -38,6 +38,9 @@ namespace HDData
 		float GetTop();
 		float GetBottom();
 
+		void FadeIn();
+		void FadeOut();
+
 		virtual void OnClickEvent() {};
 
 		HDEngine::ISketchable* _sketchable;

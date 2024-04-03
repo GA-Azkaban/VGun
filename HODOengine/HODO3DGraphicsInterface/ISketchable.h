@@ -13,5 +13,8 @@ namespace HDEngine
 
 		virtual float GetWidth() = 0;
 		virtual float GetHeight() = 0;
+	
+		virtual void FadeIn() = 0;
+		virtual void FadeOut() = 0;
 	};
 }

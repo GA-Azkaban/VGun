@@ -277,5 +277,5 @@ namespace HDData
 			ProcessNode(&(node->children[i]), newObject);
 		}
 	}
-
+	
 }

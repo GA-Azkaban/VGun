@@ -34,6 +34,7 @@ void MainMenuScene::MainMenu()
 	temp->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
 	temp->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
+
 	HDData::GameObject* temp2 = API::CreateButton(_scene, "tempBtn",mainmenuCanvas);
 	temp2->GetTransform()->SetPosition(200.f, 240.f, 0.f);
 	//temp2->GetComponent<HDData::Button>()->SetImage("test.jpg");
@@ -43,6 +44,13 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn", mainmenuCanvas);
 	preferencesBtn->GetTransform()->SetPosition(0.f, 500.f, 0.f);
 	//preferencesBtn->GetComponent<HDData::Button>()->SetImage("abcd.jpg");
+	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.1f);
+	preferencesBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[preferencesBtn]()
+		{
+			preferencesBtn->GetComponent<HDData::Button>()->FadeOut();
+		}
+	);
 
 }
 

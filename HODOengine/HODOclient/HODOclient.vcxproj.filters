@@ -130,10 +130,12 @@
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
     <ClInclude Include="FSMtestScript.h" />
-    <ClInclude Include="MenuManager.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MainMenu.h">
       <Filter>04_SceneView\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuManager.h">
+      <Filter>03_Manager\MenuManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -122,4 +122,14 @@ namespace HDData
 			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
 	}
 
+	void UIBase::FadeIn()
+	{
+		_sketchable->FadeIn();
+	}
+
+	void UIBase::FadeOut()
+	{
+		_sketchable->FadeOut();
+	}
+
 }
