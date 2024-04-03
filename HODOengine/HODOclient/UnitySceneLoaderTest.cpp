@@ -1,4 +1,4 @@
-#include "UnitySceneLoaderTest.h"
+﻿#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
 #include "FSMtestScript.h"
 
@@ -19,15 +19,12 @@ void UnitySceneLoaderTest::Start()
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	//auto skybox = API::CreateObject(_scene);
-	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	//skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
-
-	//auto playerFP = API::CreateObject(_scene, "playerFP");
-	//auto meshCompFP = playerFP->AddComponent<HDData::SkinnedMeshRenderer>();
-	//meshCompFP->LoadMesh("SKM_FP_X_idle.fbx");
-	//meshCompFP->LoadAlbedoMap("//Character//FP_Green_A.png");
-	//meshCompFP->PlayAnimation("//Character_FP//SKM_FP_X_idle.fbx");
+	auto playerFP = API::CreateObject(_scene, "playerFP");
+	playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
+	
+	auto meshCompFP = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	meshCompFP->LoadAlbedoMap("FP_Yellow_A.png");
+	meshCompFP->PlayAnimation("X_idle", true);
 
 	//auto playerTP = API::CreateObject(_scene, "playerTP");
 	//playerTP->GetTransform()->Translate(5.f, 0.f, 0.f);
