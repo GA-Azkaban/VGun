@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include "RocketDX11.h"
 #include "CubeMesh.h"
@@ -149,9 +149,11 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadTextureFile("Character/TP_Red_B.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_D.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_N.png");
+		_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
+		_resourceManager.LoadFBXFile("FP/SKM_FP_X_idle.fbx");
 		_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");
 
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");

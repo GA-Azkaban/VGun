@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Types.h"
 
 namespace Horang
@@ -64,7 +64,6 @@ namespace Horang
 		{
 			_lock.WriteUnLock(_name);
 		}
-
 
 	private:
 		Lock& _lock;

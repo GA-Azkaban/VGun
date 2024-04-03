@@ -21,7 +21,7 @@ namespace RocketCore::Graphics
 
 	StaticMeshObject::~StaticMeshObject()
 	{
-		delete m_material;
+		
 	}
 
 	void StaticMeshObject::SetWorldTM(const Matrix& worldTM)

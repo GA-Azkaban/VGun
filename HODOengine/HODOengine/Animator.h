@@ -2,6 +2,7 @@
 #include "dllExporter.h"
 #include "Component.h"
 #include "AnimationController.h"
+#include "SkinnedMeshRenderer.h"
 
 
 namespace HDData
@@ -20,7 +21,8 @@ namespace HDData
 	private:
 		// 컨트롤러에 대한 포인터
 		AnimationController* _animationController;
-
+		SkinnedMeshRenderer* _meshRenderer;
+		bool _engageIng;
 	public:
 		std::string GetCurrentState();
 		void SetCurrentState(std::string stateName);
