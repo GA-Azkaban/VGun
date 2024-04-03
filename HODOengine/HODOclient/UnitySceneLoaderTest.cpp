@@ -1,4 +1,4 @@
-﻿#include "UnitySceneLoaderTest.h"
+#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
 #include "FSMtestScript.h"
 

@@ -72,9 +72,9 @@ namespace RocketCore::Graphics
 	public:
 		void Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
-		void LoadFBXFile(std::string fileName);
-		void LoadTextureFile(std::string fileName);
-		void LoadCubeMapTextureFile(std::string fileName);
+		void LoadFBXFile(std::string path);
+		void LoadTextureFile(std::string path);
+		void LoadCubeMapTextureFile(std::string path);
 
 		/// <summary>
 	/// Get meshes informations in model file.

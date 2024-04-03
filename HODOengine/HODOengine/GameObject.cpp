@@ -271,10 +271,7 @@ namespace HDData
 		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), node->name, parentObject);
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
 		node->nodeTransform = newObject->GetTransform()->_transform;
-		//auto r = newObject->AddComponent<MeshRenderer>();
-		//r->LoadMesh("A_TP_CH_Breathing.fbx");
-		//r->LoadAlbedoMap("T_TP_CH_Basic_005_001_D.png");
-		newObject->AddComponent<StaticBoxCollider>();
+		
 		for (int i = 0; i < node->children.size(); ++i)
 		{
 			ProcessNode(&(node->children[i]), newObject);

@@ -14,15 +14,15 @@ void Player::Update()
 	// Animation Test용 임시코드
 	if (API::GetKeyDown(DIK_1))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("X_Breathing", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("X_idle", true);
 	}
 	else if (API::GetKeyDown(DIK_2))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("X_SprintF", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("X_run", true);
 	}
 	else if (API::GetKeyDown(DIK_3))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("X_Jump", false);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("X_jump", false);
 	}
 }
 

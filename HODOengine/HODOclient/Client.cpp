@@ -16,15 +16,15 @@ Client::~Client()
 
 void Client::Initialize()
 {
-	//TestScene test;
-	//test.Start();
+	TestScene test;
+	test.Start();
 
-	LoginSceneView login;
-	login.Initialize();
+	//LoginSceneView login;
+	//login.Initialize();
 
-	//MainMenuScene menu;
-	//menu.Initalize();
+	MainMenuScene menu;
+	menu.Initalize();
 
-	UnitySceneLoaderTest unity;
-	unity.Start();
+	//UnitySceneLoaderTest unity;
+	//unity.Start();
 }
