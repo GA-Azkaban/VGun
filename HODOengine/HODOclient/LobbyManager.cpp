@@ -103,6 +103,11 @@ void LobbyManager::SetLobbyMainCanvas(HDData::GameObject* mainCanvas)
 	_mainCanvas = mainCanvas;
 }
 
+void LobbyManager::SetFadeCanvas(HDData::GameObject* fadeCanvas)
+{
+	_fadeCanvas = fadeCanvas;
+}
+
 void LobbyManager::SetJoinCanvas(HDData::GameObject* joinCanvas)
 {
 	_joinCanvas = joinCanvas;

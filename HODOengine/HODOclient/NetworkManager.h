@@ -35,6 +35,8 @@ public:
 	void RecvRoomEnter(Protocol::RoomInfo roomInfo);
 	void RecvRoomLeave(Protocol::RoomInfo roomInfo);
 
+	void SetRoom();
+
 public:
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);
 	void RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo);

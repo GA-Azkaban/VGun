@@ -112,7 +112,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	{
 		if (_fadeAlpha >= 0.0f)
 		{
-			_fadeAlpha -= 0.002f;
+			_fadeAlpha -= 0.001f;
 			if (_fadeAlpha < 0.0f)
 			{
 				_fadeAlpha = 0.0f;
@@ -121,6 +121,9 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
 		}
 	}
+
+	if (!_fadeOut && _fadeAlpha <= 0.0f)
+		return;
 
 
 	if (_receiveTMInfoFlag)
@@ -211,7 +214,7 @@ void RocketCore::Graphics::ImageRenderer::FadeIn()
 	}
 	if (_fadeOut)
 	{
-		_fadeOut = false;
+		_fadeOut = false; 
 	}
 }
 

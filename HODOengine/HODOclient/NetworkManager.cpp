@@ -7,6 +7,7 @@
 
 #include "GameManager.h"
 #include "LobbyManager.h"
+#include "MenuManager.h"
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -105,12 +106,18 @@ void NetworkManager::SendRoomLeave()
 void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
 	// Todo RoomInfo 설정
-	
+	MenuManager::Instance().RoomEneter(roomInfo);
 }
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
 	// Todo 
+	MenuManager::Instance().RoomExit();
+}
+
+void NetworkManager::SetRoom()
+{
+
 }
 
 void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
