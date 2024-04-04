@@ -44,7 +44,7 @@ bool Room::Enter(PlayerRef player)
 
 	// 방장이 없을 때
 	if (_players.size() == 1)
-		_players[player->uid].host = true;
+		_players[player->uid].data.set_host(true);
 
 	// 접속한 사람에게 방 정보 보내주기
 	{
@@ -74,27 +74,28 @@ bool Room::Leave(PlayerRef player)
 	WRITE_LOCK;
 
 	// Todo 1명만 남았을때 방 삭제
-	if (_players.size() == 1)
+	if (this->_players.size() == 1)
 	{
-		_players.clear();
+		this->_players.clear();
+		this->_state = Protocol::eRoomState::ROOM_STATE_LOBBY;
 		return true;
 	}
 
 	// 방장이 나갔을때
-	if (_players[player->uid].host == true)
+	if (this->_players[player->uid].data.host() == true)
 	{
-		_players[player->uid].host = false;
-		for (auto& [uid, playerData] : _players)
+		this->_players[player->uid].data.set_host(false);
+		for (auto& [uid, player] : this->_players)
 		{
-			if (playerData.host == false)
+			if (player.data.host() == false)
 			{
-				playerData.host = true;
+				player.data.set_host(true);
 				break;
 			}
 		}
 	}
 
-	_players.erase(player->uid);
+	this->_players.erase(player->uid);
 	player->_currentRoom = nullptr;
 
 	// 나간거 다른 사람에게 알려주기
@@ -119,6 +120,92 @@ void Room::BroadCast(Horang::SendBufferRef sendBuffer)
 	}
 }
 
+void Room::ClientUpdate(PlayerRef player, Protocol::C_PLAY_UPDATE& pkt)
+{
+	WRITE_LOCK;
+
+	if (player == nullptr)
+		return;
+
+	// 방 상태가 게임중이 아닐때
+	if (this->_state != Protocol::eRoomState::ROOM_STATE_PLAY)
+		return;
+
+	// 플레이어가 방에 존재하지 않을때
+	if (_players.find(player->uid) == _players.end())
+		return;
+
+	// player의 정보 업데이트
+	_players[player->uid].data.CopyFrom(pkt.playerdata());
+}
+
+void Room::GameStart()
+{
+	WRITE_LOCK;
+
+	if (_players.size() < 2)
+		return;
+
+	this->_state = Protocol::eRoomState::ROOM_STATE_PLAY;
+	_gameTime = ::GetTickCount64();
+
+	// Todo 시작지점 설정
+	// Todo 플레이어 위치 설정
+	// Todo 플레이어 상태 설정
+	// Todo 플레이어 정보 보내주기
+	// Todo 게임 시작 정보 보내주기
+
+
+	// Todo 게임 시작
+	JobRef job = Horang::MakeShared<UpdateJob>(this->shared_from_this());
+	this->PushJob(job);
+}
+
+void Room::Update()
+{
+	WRITE_LOCK;
+
+	if (this->_state != Protocol::eRoomState::ROOM_STATE_PLAY)
+		return;
+
+	// 사람이 없을 때
+	if (_players.size() == 0)
+	{
+		this->Initialize();
+		return;
+	}
+
+	// 현재 시간과 비교해 16ms (60fps) 이상 지났을 때만 업데이트
+	auto currentTime = ::GetTickCount64();
+
+	// 16ms 이상 지났을 때만 업데이트
+	if (currentTime - _gameTime < 16)
+	{
+		JobRef job = Horang::MakeShared<UpdateJob>(this->shared_from_this());
+		this->PushJob(job);
+		return;
+	}
+
+	_gameTime = currentTime;
+
+	// 이때 방에 존재하는 player들에게 player 정보를 보내줘야함
+	{
+		Protocol::S_PLAY_UPDATE packet;
+		this->SetUpdatePacket(packet);
+
+
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(packet);
+		this->BroadCast(sendBuffer);
+	}
+
+
+	// 다시 Update Job 만들어서 대기열에 넣기
+	{
+		JobRef job = Horang::MakeShared<UpdateJob>(this->shared_from_this());
+		this->PushJob(job);
+	}
+}
+
 Protocol::RoomInfo Room::GetRoomInfo()
 {
 	Protocol::RoomInfo roomInfo;
@@ -132,13 +219,10 @@ void Room::GetRoomInfo(Protocol::RoomInfo& roomInfo)
 	roomInfo.set_roomcode(_roomCode);
 	roomInfo.set_state(_state);
 
-	for (auto& [uid, playerData] : _players)
+	for (auto& [uid, player] : _players)
 	{
 		auto userInfo = roomInfo.add_users();
-		userInfo->set_id(playerData.player->id);
-		userInfo->set_nickname(playerData.player->nickname);
-		userInfo->set_host(playerData.host);
-		userInfo->set_team(playerData.team);
+		player.player->GetUserInfo(userInfo);
 	}
 }
 
@@ -147,17 +231,29 @@ void Room::GetRoomInfo(Protocol::RoomInfo* roomInfo)
 	this->GetRoomInfo(*roomInfo);
 }
 
+void Room::SetUpdatePacket(Protocol::S_PLAY_UPDATE& packet)
+{
+	this->GetRoomInfo(packet.mutable_roominfo());
+	for (auto& [uid, playerData] : _players)
+	{
+		auto player = packet.add_playerdata();
+		player->CopyFrom(playerData.data);
+	}
+}
+
+void Room::GetPlayerData(Protocol::PlayerData& playerData, int32 uid)
+{
+	playerData.CopyFrom(_players[uid].data);
+}
+
 void Room::PushJob(JobRef job)
 {
 	WRITE_LOCK;
-
 	_jobs.Push(job);
 }
 
 void Room::FlushJob()
 {
-	WRITE_LOCK;
-
 	while (true)
 	{
 		JobRef job = _jobs.Pop();

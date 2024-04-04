@@ -156,7 +156,7 @@ int main()
 	ClientPacketHandler::Init();
 
 	Horang::ServerServiceRef service = Horang::MakeShared<Horang::ServerService>(
-		Horang::NetAddress(L"127.0.0.1", 7777),
+		Horang::NetAddress(L"172.16.1.13", 7777),
 		Horang::MakeShared<Horang::IocpCore>(),
 		Horang::MakeShared<GameSession>, // TODO : SessionManager 등
 		1

@@ -165,7 +165,7 @@ bool Handle_C_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::C_ROOM_ENT
 	if (pkt.roomcode() == "0000")
 	{
 		GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-		GRoom->PushJob(Horang::MakeShared<EnterJob>(GRoom, gameSession->_player));
+		GRoom->PushJob(Horang::MakeShared<EnterJob>(GRoom, static_pointer_cast<GameSession>(session)->_player));
 	}
 
 	return true;
@@ -175,7 +175,21 @@ bool Handle_C_ROOM_LEAVE(Horang::PacketSessionRef& session, Protocol::C_ROOM_LEA
 {
 	// Todo
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-	GRoom->PushJob(Horang::MakeShared<LeaveJob>(GRoom, gameSession->_player));
+	GRoom->PushJob(Horang::MakeShared<LeaveJob>(GRoom, static_pointer_cast<GameSession>(session)->_player));
+
+	return true;
+}
+
+bool Handle_C_ROOM_START(Horang::PacketSessionRef& session, Protocol::C_ROOM_START& pkt)
+{
+	GRoom->PushJob(Horang::MakeShared<GameStartJob>(GRoom, static_pointer_cast<GameSession>(session)->_player));
+
+	return true;
+}
+
+bool Handle_C_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::C_PLAY_UPDATE& pkt)
+{
+	GRoom->PushJob(Horang::MakeShared<ClientUpdateJob>(GRoom, static_pointer_cast<GameSession>(session)->_player, pkt));
 
 	return true;
 }
