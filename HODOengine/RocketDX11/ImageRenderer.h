@@ -76,8 +76,7 @@ namespace RocketCore::Graphics
 		float _imageHeight;
 
 		// 페이드 인 & 아웃
-		bool _fadeIn = false;
-		bool _fadeOut = false;
+		bool _fadeMode = true;
 		float _fadeAlpha = 1.0f;
 
 		ID3D11Device* _device;

@@ -46,26 +46,34 @@ void MainMenuScene::MainMenu()
 
 	// play->RoomEnter sequence
 	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn",mainmenuCanvas);
-	playBtn->GetTransform()->SetPosition(115.f, 240.f, 0.6f);
 	playBtn->GetComponent<HDData::Button>()->SetImage("play_btn.png");
+	playBtn->GetTransform()->SetPosition(115.f, 240.f, 0.6f);
+	playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	HDData::GameObject* roomEnterBtn = API::CreateButton(_scene, "roomEnter", playBtn);
 	roomEnterBtn->GetTransform()->SetPosition(350.f, 190.f,0.6f);
-	roomEnterBtn->GetComponent<HDData::Button>()->SetImage("play_btn.png");
+	roomEnterBtn->GetComponent<HDData::Button>()->SetImage("arrowLeft.png");
 	roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomEnter", playBtn);
 	roomMakeBtn->GetTransform()->SetPosition(350.f, 290.f, 0.6f);
-	roomMakeBtn->GetComponent<HDData::Button>()->SetImage("play_btn.png");
+	roomMakeBtn->GetComponent<HDData::Button>()->SetImage("arrowRight.png");
 	roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
 
 	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[roomEnterBtn, roomMakeBtn]()
+		[=]()
 		{
 			roomEnterBtn->GetComponent<HDData::Button>()->FadeIn();
-			roomMakeBtn->GetComponent<HDData::Button>()->FadeIn();
+			roomMakeBtn->GetComponent<HDData::Button>()->FadeIn(); 
 		}
+	);
 
+	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
+			roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
+		}
 	);
 
 	// setting & option
@@ -74,7 +82,7 @@ void MainMenuScene::MainMenu()
 	preferencesBtn->GetComponent<HDData::Button>()->SetImage("setting_btn.png");
 	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	preferencesBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[preferencesBtn]()
+		[=]()
 		{
 			preferencesBtn->GetComponent<HDData::Button>()->FadeOut();
 		}
