@@ -17,6 +17,11 @@
 /// 2023.11.01 김민정
 /// </summary>
 
+namespace HDEngine
+{
+	class ObjectSystem;
+}
+
 namespace HDData
 {
 	class Component;
@@ -28,10 +33,10 @@ namespace HDData
 	class HODO_API GameObject
 	{
 	public:
+		friend HDEngine::ObjectSystem;
 		friend Component::Component();
-		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
+		// GameObject의 생성과 초기화 작업은 Scene에서 CreateObject()를 호출할 때 할 것임.
 		~GameObject() = default;
-		GameObject(std::string name = "");
 		GameObject(const GameObject&) = delete;
 		GameObject(GameObject&&) = delete;
 		GameObject& operator=(const GameObject&) = delete;
@@ -104,7 +109,7 @@ namespace HDData
 
 		const std::vector<Component*>& GetAllComponents() const;
 		const std::vector<GameObject*>& GetChildGameObjects() const;
-		
+
 		template<ComponentConcept ComponentType>
 		void DeleteComponent()
 		{
@@ -130,8 +135,11 @@ namespace HDData
 		std::string GetObjectName();
 
 		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
-		void LoadNodeFromFBXFile(std::string fileName);
-		
+		void LoadFBXFile(std::string fileName);
+
+	private:
+		GameObject(std::string name = "");
+
 	private:
 		Node* FindNodeByName(Node* node, std::string nodeName);
 		void ProcessNode(Node* node, GameObject* parentObject);

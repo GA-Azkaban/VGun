@@ -2,6 +2,7 @@
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
+#include "HDMaterial.h"
 
 namespace HDData
 {
@@ -21,49 +22,49 @@ namespace HDData
 		_staticMesh->LoadMesh(fileName);
 	}
 
-	void MeshRenderer::LoadNormalMap(const std::string& fileName)
+	void MeshRenderer::LoadMaterial(HDData::Material* material, unsigned int element /*= 0*/)
 	{
-		_staticMesh->LoadNormalMap(fileName);
+		_staticMesh->LoadMaterial(material->_material, element);
 	}
 
-	void MeshRenderer::LoadAlbedoMap(const std::string& fileName)
+	void MeshRenderer::LoadNormalMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		_staticMesh->LoadAlbedoMap(fileName);
+		_staticMesh->LoadNormalMap(fileName, element);
 	}
 
-	void MeshRenderer::LoadARMMap(const std::string& fileName)
+	void MeshRenderer::LoadAlbedoMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-        _staticMesh->LoadARMMap(fileName);
+		_staticMesh->LoadAlbedoMap(fileName, element);
+	}
+
+	void MeshRenderer::LoadARMMap(const std::string& fileName, unsigned int element /* = 0 */)
+	{
+        _staticMesh->LoadARMMap(fileName, element);
     }
 
-	void MeshRenderer::LoadRoughnessMap(const std::string& fileName)
+	void MeshRenderer::LoadRoughnessMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		_staticMesh->LoadRoughnessMap(fileName);
+		_staticMesh->LoadRoughnessMap(fileName, element);
 	}
 
-	void MeshRenderer::LoadMetallicMap(const std::string& fileName)
+	void MeshRenderer::LoadMetallicMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		_staticMesh->LoadMetallicMap(fileName);
+		_staticMesh->LoadMetallicMap(fileName, element);
 	}
 
-	void MeshRenderer::SetRoughnessValue(float value)
+	void MeshRenderer::SetRoughnessValue(float value, unsigned int element /* = 0 */)
 	{
-		_staticMesh->SetRoughnessValue(value);
+		_staticMesh->SetRoughnessValue(value, element);
 	}
 
-	void MeshRenderer::SetMetallicValue(float value)
+	void MeshRenderer::SetMetallicValue(float value, unsigned int element /* = 0 */)
 	{
-		_staticMesh->SetMetallicValue(value);
+		_staticMesh->SetMetallicValue(value, element);
 	}
 
-	void MeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /*= 255*/)
+	void MeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element /* = 0 */)
 	{
-		_staticMesh->SetAlbedoColor(r, g, b, a);
-	}
-
-	void MeshRenderer::SetAlbedoColor(Vector4 color)
-	{
-		_staticMesh->SetAlbedoColor(color);
+		_staticMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
 	void MeshRenderer::Update()

@@ -53,12 +53,14 @@ cbuffer MaterialData : register(b5)
 	float outlineThreshHold;
 	float outlineThickness;
 
-	float gMetallic;
-	float gRoughness;
+	float metallicValue;
+	float roughnessValue;
 	
 	int useAlbedo;
 	int useNormalMap;
 	int useOccMetalRough;
+	int useRoughnessMap;
+	int useMetallicMap;
 	int useEnvMap;
 }
 

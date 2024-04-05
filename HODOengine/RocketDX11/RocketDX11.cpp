@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include "RocketDX11.h"
 #include "CubeMesh.h"
@@ -147,12 +147,18 @@ namespace RocketCore::Graphics
 		/// Load resources
 		// FBX파일보다 Texture 파일들이 먼저 로드되어야 한다.
 		_resourceManager.LoadTextureFile("Character/TP_Red_B.png");
+		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_039_D.png");
+		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_R.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_D.png");
+		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_R.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_N.png");
+		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_001_D.png");
+		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_N.png");
+		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_R.png");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
-		_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");
+		_resourceManager.LoadFBXFile("SM/Weapons/SM_AR_01.fbx");
 
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");

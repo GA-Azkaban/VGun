@@ -11,6 +11,9 @@
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "LineRenderer.h"
+#include "Material.h"
+#include <unordered_map>
+#include <string>
 
 namespace HDEngine
 {
@@ -27,11 +30,6 @@ namespace HDEngine
 
 namespace RocketCore::Graphics
 {
-
-	HDEngine::IResourceManager* ObjectFactory::CreateResourceManager()
-	{
-		return &(ResourceManager::Instance());
-	}
 
 	HDEngine::ICamera* ObjectFactory::CreateCamera()
 	{
@@ -71,6 +69,11 @@ namespace RocketCore::Graphics
 	HDEngine::ILineRenderer* ObjectFactory::CreateLineRenderer()
 	{
 		return ObjectManager::Instance().CreateLineRenderer();
+	}
+
+	HDEngine::IMaterial* ObjectFactory::CreateMaterial(const HDEngine::MaterialDesc& desc)
+	{				
+		return ObjectManager::Instance().CreateMaterial(desc);
 	}
 
 	HDEngine::CubePrimitive* ObjectFactory::CreateCubePrimitive()

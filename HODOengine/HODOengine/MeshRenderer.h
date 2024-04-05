@@ -1,10 +1,13 @@
 ﻿#pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IMaterial.h"
 
 namespace HDData
 {
+	class Material;
+
 	class HODO_API MeshRenderer : public RendererBase
 	{
 	public:
@@ -12,15 +15,15 @@ namespace HDData
 		~MeshRenderer();
 
 		void LoadMesh(const std::string& fileName);
-		void LoadNormalMap(const std::string& fileName);
-		void LoadAlbedoMap(const std::string& fileName);
-		void LoadARMMap(const std::string& fileName);
-		void LoadRoughnessMap(const std::string& fileName);
-		void LoadMetallicMap(const std::string& fileName);
-		void SetRoughnessValue(float value);
-		void SetMetallicValue(float value);
-		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255);
-		void SetAlbedoColor(Vector4 color);
+		void LoadMaterial(HDData::Material* material, unsigned int element = 0);
+		void LoadAlbedoMap(const std::string& fileName, unsigned int element = 0);
+		void LoadNormalMap(const std::string& fileName, unsigned int element = 0);
+		void LoadARMMap(const std::string& fileName, unsigned int element = 0);
+		void LoadRoughnessMap(const std::string& fileName, unsigned int element = 0);
+		void LoadMetallicMap(const std::string& fileName, unsigned int element = 0);
+		void SetRoughnessValue(float value, unsigned int element = 0);
+		void SetMetallicValue(float value, unsigned int element = 0);
+		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
 
 	protected:
 		virtual void Update() override;

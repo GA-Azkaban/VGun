@@ -4,7 +4,8 @@
 Texture2D Albedo : register(t0);
 Texture2D NormalMap : register(t1);
 Texture2D OcclusionRoughnessMetal : register(t2);
-//Texture2D Emissive : register(t3);
+Texture2D Roughness : register(t3);
+Texture2D Metallic : register(t4);
 
 struct VertexToPixel
 {
@@ -20,8 +21,7 @@ struct PSOutput
 	float4 position : SV_TARGET0;
 	float4 diffuse : SV_TARGET1;
 	float4 normal : SV_TARGET2;
-	float4 metalRoughOcclusion : SV_TARGET3;
-	//float4 emissive : SV_TARGET4;
+	float4 occlusionRoughMetal : SV_TARGET3;
 };
 
 PSOutput main(VertexToPixel input)
@@ -54,8 +54,8 @@ PSOutput main(VertexToPixel input)
 
 	float occlusion = 1.0f;
 
-	float metallic = gMetallic;
-	float roughness = gRoughness;
+	float metallic = metallicValue;
+	float roughness = roughnessValue;
 
 	if (useOccMetalRough)
 	{
@@ -65,15 +65,22 @@ PSOutput main(VertexToPixel input)
 		metallic = occRoughMetal.b;
 	}
 
-	//float4 emissive = Emissive.Sample(LinearWrapSampler, input.uv);
+	if (useRoughnessMap)
+	{
+		roughness = Roughness.Sample(LinearWrapSampler, input.uv).r;
+	}
+
+	if (useMetallicMap)
+	{
+		metallic = Metallic.Sample(LinearWrapSampler, input.uv).r;
+	}
 
 	output.position = float4(input.worldPos, 1.0f);
 	output.diffuse = textureColor * albedoColor;
 	//output.diffuse = pow(float4(textureColor.rgb, 0), 2.2f);
 	//output.normal = float4(input.normal, 1.0f);
 	output.normal = float4(input.normal * 0.5f + 0.5f, 1.0f);
-	output.metalRoughOcclusion = float4(metallic, roughness, occlusion, 1.0f);
-	//output.emissive = emissive;
+	output.occlusionRoughMetal = float4(occlusion, roughness, metallic, 1.0f);
 
 	return output;
 }

@@ -13,6 +13,8 @@
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
 #include "SamplerState.h"
+#include "ObjectManager.h"
+#include "../HODO3DGraphicsInterface/IMaterial.h"
 
 #define MODELS_DIRECTORY_NAME "Resources/Models/"
 #define TEXTURES_DIRECTORY_NAME "Resources/Textures/"
@@ -60,156 +62,6 @@ namespace RocketCore::Graphics
 		CreateRasterizerStates();
 		CreateSamplerStates();
 		CreatePrimitiveMeshes();
-
-		_cubePrimitive = GeometricPrimitive::CreateCube(deviceContext, 1.0f, false);
-		_spherePrimitive = GeometricPrimitive::CreateSphere(deviceContext, 1.0f, 8, false, false);
-		_cylinderPrimitive = GeometricPrimitive::CreateCylinder(deviceContext, 2.0f, 1.0f, 8, false);
-
-		// Create capsule debug mesh
-		float radius = 0.5f; // 캡슐의 반지름
-		float height = 1.0f; // 캡슐의 높이
-		int stackCount = 5; // 수평 분할
-		int sliceCount = 20; // 수직 분할
-
-		DirectX::GeometricPrimitive::VertexCollection vertices;
-		DirectX::GeometricPrimitive::IndexCollection indices;
-
-		// 상단 반구 정점
-		vertices.push_back(DirectX::VertexPositionNormalTexture{
-		   DirectX::SimpleMath::Vector3{0.0f, radius + height * 0.5f, 0.0f},
-		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},DirectX::SimpleMath::Vector2{0.f,0.f} });
-
-		for (int i = 1; i <= stackCount; i++)
-		{
-			// 윗방향 벡터와의 각도
-			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
-
-			float xzsize = radius * sinf(upTheta);
-			float ysize = radius * cosf(upTheta);
-
-			for (int j = 0; j < sliceCount; j++)
-			{
-				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
-
-				float x = xzsize * sinf(zTheta);
-				float y = ysize + height * 0.5f;
-				float z = xzsize * cosf(zTheta);
-
-				vertices.push_back(DirectX::VertexPositionNormalTexture{
-				   DirectX::SimpleMath::Vector3{x, y, z},
-				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
-				   DirectX::SimpleMath::Vector2{0.f,0.f} }
-				);
-			}
-		}
-
-		size_t middleIdx = vertices.size();
-
-		// 하단 반구 정점
-		for (int i = stackCount; i >= 1; i--)
-		{
-			// 윗방향 벡터와의 각도
-			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
-
-			float xzsize = radius * sinf(upTheta);
-			float ysize = radius * cosf(upTheta);
-
-			for (int j = 0; j < sliceCount; j++)
-			{
-				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
-
-				float x = xzsize * sinf(zTheta);
-				float y = ysize + height * 0.5f;
-				float z = xzsize * cosf(zTheta);
-
-				vertices.push_back(DirectX::VertexPositionNormalTexture{
-				   DirectX::SimpleMath::Vector3(x, -y, z),
-				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
-				   DirectX::SimpleMath::Vector2{0.f,0.f} }
-				);
-			}
-		}
-
-		vertices.push_back(DirectX::VertexPositionNormalTexture{
-		   DirectX::SimpleMath::Vector3{0.0f, -(radius + height * 0.5f), 0.0f},
-		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
-				 DirectX::SimpleMath::Vector2{0.f,0.f} }
-		);
-
-		// 상단 반구 인덱스
-		for (int i = 0; i < sliceCount; i++) {
-			int a = 0;
-			int b = 1 + i;
-			int c = 1 + ((i + 1) % sliceCount);
-
-			indices.push_back(a);
-			indices.push_back(b);
-			indices.push_back(c);
-		}
-
-		for (int i = 1; i < stackCount; i++) {
-			for (int j = 0; j < sliceCount; j++) {
-				int a = 1 + (i - 1) * sliceCount + j;
-				int b = 1 + (i - 1) * sliceCount + ((j + 1) % sliceCount);
-				int c = 1 + i * sliceCount + j;
-				int d = 1 + i * sliceCount + ((j + 1) % sliceCount);
-
-				indices.push_back(a);
-				indices.push_back(c);
-				indices.push_back(d);
-
-				indices.push_back(a);
-				indices.push_back(d);
-				indices.push_back(b);
-			}
-		}
-
-		// 실린더 부분 인덱스
-		for (int i = 0; i < sliceCount; i++)
-		{
-			int a = middleIdx - sliceCount + i;
-			int b = middleIdx - sliceCount + ((i + 1) % sliceCount);
-			int c = middleIdx + i;
-			int d = middleIdx + ((i + 1) % sliceCount);
-
-			indices.push_back(a);
-			indices.push_back(c);
-			indices.push_back(d);
-
-			indices.push_back(a);
-			indices.push_back(d);
-			indices.push_back(b);
-		}
-
-		// 하단 반구 인덱스
-		for (int i = 1; i < stackCount; i++) {
-			for (int j = 0; j < sliceCount; j++) {
-				int a = middleIdx + (i - 1) * sliceCount + j;
-				int b = middleIdx + (i - 1) * sliceCount + ((j + 1) % sliceCount);
-				int c = middleIdx + i * sliceCount + j;
-				int d = middleIdx + i * sliceCount + ((j + 1) % sliceCount);
-
-				indices.push_back(a);
-				indices.push_back(c);
-				indices.push_back(d);
-
-				indices.push_back(a);
-				indices.push_back(d);
-				indices.push_back(b);
-			}
-		}
-
-		for (int i = 0; i < sliceCount; i++) {
-			int a = vertices.size() - 1;
-			int b = vertices.size() - 1 - sliceCount + i;
-			int c = vertices.size() - 1 - sliceCount + ((i + 1) % sliceCount);
-
-			indices.push_back(b);
-			indices.push_back(a);
-			indices.push_back(c);
-		}
-
-		_capsulePrimitive = GeometricPrimitive::CreateCustom(deviceContext, vertices, indices);
 	}
 
 	void ResourceManager::LoadFBXFile(std::string path)
@@ -228,35 +80,44 @@ namespace RocketCore::Graphics
 			_fileName = path;
 		}
 
-		// SKM_TP_X_Breathing.fbx 나 SKM_Player_Breathing.fbx 이나 SKM_Robin.fbx 같은 파일명일 때
-		UINT firstBarIndex = _fileName.find_first_of("_");
-		UINT lastBarIndex = _fileName.find_last_of("_");
+		// 확장자를 잘라낸다.
 		UINT dotIndex = _fileName.find_last_of(".");
+		_fileName = _fileName.substr(0, dotIndex);
 
-		std::string animName = "";
-		if (firstBarIndex != std::string::npos)
+		// SKM_TP_X_Breathing.fbx 나 SKM_Player_Breathing.fbx 이나 
+		// SM_watch_tower.fbx 같은 파일명일 때
+		// 우선 SM인지 SKM인지 구분한다.
+		// SM이나 SKM이 없는 파일명이면 에러를 반환한다.
+		UINT firstBarIndex = _fileName.find_first_of("_");
+		if (firstBarIndex == std::string::npos)
 		{
-			if (lastBarIndex != firstBarIndex)	// SKM_TP_X_Breathing, SKM_Player_Breathing
-			{
-				// 첫번째 언더바부터 . 까지 자르기
-				std::string meshNameAndAnimName = _fileName.substr(firstBarIndex + 1, dotIndex - firstBarIndex - 1);
-				// TP_X_Breathing 이나 Player_Breathing 형태로 나옴
-				// 이 형태에서 첫번째 언더바를 기준으로 왼쪽 것이 파일명, 오른쪽 것이 애니메이션명
-				UINT firstBarIndex2 = meshNameAndAnimName.find_first_of("_");
-				if (firstBarIndex2 != std::string::npos) // SKM_TP_X_Breathing
-				{
-					_fileInfoKeyName = meshNameAndAnimName.substr(0, firstBarIndex2);
-					animName = meshNameAndAnimName.substr(firstBarIndex2 + 1, meshNameAndAnimName.length() - firstBarIndex2);
-				}
-			}
-			else // SKM_Robin
-			{
-				_fileInfoKeyName = _fileName.substr(firstBarIndex + 1, _fileName.length() - firstBarIndex);
-			}
+			MessageBox(NULL, L"Model file name error.", L"Error!", MB_ICONERROR | MB_OK);
 		}
-		else // 언더바 없는 파일명
+		std::string meshType = _fileName.substr(0, firstBarIndex);
+		_fileName = _fileName.substr(firstBarIndex + 1, _fileName.length() - firstBarIndex);
+		std::string animName = "";
+		if (meshType == "SM")
 		{
 			_fileInfoKeyName = _fileName;
+		}
+		else if (meshType == "SKM")
+		{
+			// TP_X_Breathing 이나 Player_Breathing 형태로 나옴
+			// 이 형태에서 첫번째 언더바를 기준으로 왼쪽 것이 파일명, 오른쪽 것이 애니메이션명
+			UINT firstBarIndex2 = _fileName.find_first_of("_");
+			if (firstBarIndex2 != std::string::npos)
+			{
+				_fileInfoKeyName = _fileName.substr(0, firstBarIndex2);
+				animName = _fileName.substr(firstBarIndex2 + 1, _fileName.length() - firstBarIndex2);
+			}
+			else // 언더바 없는 파일명
+			{
+				_fileInfoKeyName = _fileName;
+			}
+		}
+		else
+		{
+			MessageBox(NULL, L"Model file name error.", L"Error!", MB_ICONERROR | MB_OK);
 		}
 
 		std::string filePath = std::string(MODELS_DIRECTORY_NAME) + path;
@@ -280,7 +141,7 @@ namespace RocketCore::Graphics
 
 	void ResourceManager::LoadTextureFile(std::string path)
 	{
-		// 경로를 제외한 파일 이름만 들고 있는다.
+		// 경로를 제외한 파일 이름만 들고 있는다. 확장자는 포함해서 들고 있는다.
 		std::string fileName = path;
 		UINT slashIndex = fileName.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
@@ -308,11 +169,22 @@ namespace RocketCore::Graphics
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 		}
 
-		_loadedTextures.insert(std::make_pair(fileName, srv));
+		_loadedTextureFiles.insert(std::make_pair(fileName, srv));
 	}
 
 	void ResourceManager::LoadCubeMapTextureFile(std::string fileName)
 	{
+		UINT slashIndex = fileName.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
+		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+		}
+		else
+		{
+			fileName = fileName;
+		}
+
 		EnvMapInfo envMapInfo;
 
 		ID3D11ShaderResourceView* skyboxTexture;
@@ -477,143 +349,82 @@ namespace RocketCore::Graphics
 
 	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
 	{
-		std::string name = fileName;
+		std::string name = GetFileInfoKey(fileName);
 
-		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
-		UINT slashIndex = name.find_last_of("/\\");
-		if (slashIndex != std::string::npos)
+		// 엔진에 저장되어 있지 않다면 빈 벡터 반환
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
 		{
-			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
-			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+			std::vector<Mesh*> ret;
+			return ret;
 		}
+		return iter->second.loadedMeshes;
+	}
 
-		// SKM_TP_X_Breathing.fbx 이나 SM_Plane.fbx 과 같은 fileName으로 들어오는 경우
-		UINT firstBarIndex = name.find_first_of("_");
-		UINT lastBarIndex = name.find_last_of("_");
-		if (firstBarIndex != std::string::npos)
-		{
-			if (lastBarIndex != firstBarIndex) // 언더바 여러 개
-			{
-				// 첫번째 언더바와 두번째 언더바 사이가 fileInfo로 저장된 map의 key값이다.
-				// 우선 첫번째 언더바와 마지막 언더바 사이만 남겨준다.
-				name = name.substr(firstBarIndex + 1, lastBarIndex - firstBarIndex - 1);
-				//TP_X 와 같은 형태로 남는다. 거기서 언더바부터 또 자른다.
-				UINT firstBarIndex2 = name.find_first_of("_");
-				if (firstBarIndex2 != std::string::npos)
-				{
-					name = name.substr(0, firstBarIndex2);
-				}
-			}
-			else
-			{
-				name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
-			}
-		}
+	std::vector<Material*>& ResourceManager::GetMaterials(const std::string& fileName)
+	{
+		std::string name = GetFileInfoKey(fileName);
 
-		// 엔진에 저장되어 있지 않다면 파일 로드
-		if (_loadedFileInfo.find(name) == _loadedFileInfo.end())
+		// 엔진에 저장되어 있지 않다면 빈 벡터 반환
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
 		{
-			// 파일을 로드하지만 경로를 안 넣었다면 리소스 로드가 안 될 것이다.
-			LoadFBXFile(fileName);
+			std::vector<Material*> ret;
+			return ret;
 		}
-		return _loadedFileInfo[name].loadedMeshes;
+		return iter->second.loadedMaterials;
 	}
 
 	ID3D11ShaderResourceView* ResourceManager::GetTexture(const std::string& fileName)
 	{
-		if (_loadedTextures.find(fileName) == _loadedTextures.end())
+		auto iter = _loadedTextureFiles.find(fileName);
+		if (iter == _loadedTextureFiles.end())
 		{
-			LoadTextureFile(fileName);
+			return nullptr;
 		}
-		return _loadedTextures[fileName];
+		return iter->second;
 	}
 
 	Node* ResourceManager::GetNode(const std::string& fileName)
 	{
-		std::string name = fileName;
+		std::string name = GetFileInfoKey(fileName);
 
-		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
-		UINT slashIndex = name.find_last_of("/\\");
-		if (slashIndex != std::string::npos)
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
 		{
-			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
-			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+			return nullptr;
 		}
-
-		// SKM_TP_X_Breathing.fbx 이나 SM_Plane.fbx 과 같은 fileName으로 들어오는 경우
-		UINT firstBarIndex = name.find_first_of("_");
-		UINT lastBarIndex = name.find_last_of("_");
-		if (firstBarIndex != std::string::npos)
-		{
-			if (lastBarIndex != firstBarIndex) // 언더바 여러 개
-			{
-				// 첫번째 언더바와 두번째 언더바 사이가 fileInfo로 저장된 map의 key값이다.
-				// 우선 첫번째 언더바와 마지막 언더바 사이만 남겨준다.
-				name = name.substr(firstBarIndex + 1, lastBarIndex - firstBarIndex - 1);
-				//TP_X 와 같은 형태로 남는다. 거기서 언더바부터 또 자른다.
-				UINT firstBarIndex2 = name.find_first_of("_");
-				if (firstBarIndex2 != std::string::npos)
-				{
-					name = name.substr(0, firstBarIndex2);
-				}
-			}
-			else
-			{
-				name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
-			}
-		}
-
-		// 엔진에 저장되어 있지 않다면 로드
-		if (_loadedFileInfo.find(name) == _loadedFileInfo.end())
-		{
-			// 파일을 로드하지만 경로를 안 넣었다면 리소스 로드가 안 될 것이다.
-			LoadFBXFile(fileName);
-		}
-		return _loadedFileInfo[name].node;
+		return iter->second.node;
 	}
 
 	std::unordered_map<std::string, Animation*>& ResourceManager::GetAnimations(const std::string& fileName)
 	{
-		std::string name = fileName;
+		std::string name = GetFileInfoKey(fileName);
 
-		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
-		UINT slashIndex = name.find_last_of("/\\");
-		if (slashIndex != std::string::npos)
+		// 엔진에 저장되어 있지 않다면 빈 맵 반환
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
 		{
-			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
-			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+			std::unordered_map<std::string, Animation*> ret;
+			return ret;
+		}
+		return iter->second.loadedAnimation;
+	}
+
+	Material* ResourceManager::GetLoadedMaterial(const std::string& materialName)
+	{
+		auto iter = _loadedMaterials.find(materialName);
+		if (iter == _loadedMaterials.end())
+		{
+			return nullptr;
 		}
 
-		// SKM_TP_X_Breathing.fbx 이나 SM_Plane.fbx 과 같은 fileName으로 들어오는 경우
-		UINT firstBarIndex = name.find_first_of("_");
-		UINT lastBarIndex = name.find_last_of("_");
-		if (firstBarIndex != std::string::npos)
-		{
-			if (lastBarIndex != firstBarIndex) // 언더바 여러 개
-			{
-				// 첫번째 언더바와 두번째 언더바 사이가 fileInfo로 저장된 map의 key값이다.
-				// 우선 첫번째 언더바와 마지막 언더바 사이만 남겨준다.
-				name = name.substr(firstBarIndex + 1, lastBarIndex - firstBarIndex - 1);
-				//TP_X 와 같은 형태로 남는다. 거기서 언더바부터 또 자른다.
-				UINT firstBarIndex2 = name.find_first_of("_");
-				if (firstBarIndex2 != std::string::npos)
-				{
-					name = name.substr(0, firstBarIndex2);
-				}
-			}
-			else
-			{
-				name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
-			}
-		}
+		return iter->second;
+	}
 
-		// 엔진에 저장되어 있지 않다면 로드
-		if (_loadedFileInfo.find(name) == _loadedFileInfo.end())
-		{
-			// 파일을 로드하지만 경로를 안 넣었다면 리소스 로드가 안 될 것이다.
-			LoadFBXFile(fileName);
-		}
-		return _loadedFileInfo[name].loadedAnimation;
+	std::unordered_map<std::string, Material*>& ResourceManager::GetLoadedMaterials()
+	{
+		return _loadedMaterials;
 	}
 
 	void ResourceManager::CreateRasterizerStates()
@@ -772,33 +583,207 @@ namespace RocketCore::Graphics
 
 	void ResourceManager::CreatePrimitiveMeshes()
 	{
+		// 그리드 메쉬
 		GeometryGenerator::DebugMeshData gridMesh;
 		_geometryGen->CreateGrid(gridMesh);
-		GeometryGenerator::DebugMeshData axisMesh;
-		_geometryGen->CreateAxis(axisMesh);
 
 		Mesh* _gridMesh = new Mesh(&gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size());
 		_loadedFileInfo["grid"].loadedMeshes.push_back(_gridMesh);
+
+		// 축 메쉬
+		GeometryGenerator::DebugMeshData axisMesh;
+		_geometryGen->CreateAxis(axisMesh);
+
 		Mesh* _axisMesh = new Mesh(&axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
 		_loadedFileInfo["axis"].loadedMeshes.push_back(_axisMesh);
 
+		// 큐브맵 메쉬
 		GeometryGenerator::MeshData skybox;
 		_geometryGen->CreateSkybox(skybox);
 
 		Mesh* _skybox = new Mesh(&skybox.Vertices[0], skybox.Vertices.size(), &skybox.Indices[0], skybox.Indices.size(), true);
 		_loadedFileInfo["skybox"].loadedMeshes.push_back(_skybox);
+		HDEngine::MaterialDesc skyboxDesc;
+		skyboxDesc.materialName = "skybox";
+		Material* _skyboxMat = ObjectManager::Instance().CreateMaterial(skyboxDesc);
+		_skyboxMat->SetVertexShader(GetVertexShader("CubeMapVertexShader.cso"));
+		_skyboxMat->SetPixelShader(GetPixelShader("CubeMapPixelShader.cso"));
+		_loadedFileInfo["skybox"].loadedMaterials.push_back(_skyboxMat);
 
+		// 큐브 모양 메쉬
 		GeometryGenerator::MeshData cube;
 		_geometryGen->CreateBox(10, 2, 10, cube);
 
 		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size(), true);
-		_loadedFileInfo["cube"].loadedMeshes.push_back(_cube);
+		_loadedFileInfo["primitiveCube"].loadedMeshes.push_back(_cube);
+		HDEngine::MaterialDesc cubeDesc;
+		skyboxDesc.materialName = "cubeMaterial";
+		Material* _cubeMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_cubeMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_cubeMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveCube"].loadedMaterials.push_back(_cubeMaterial);
 
+		// 구체 모양 메쉬
 		GeometryGenerator::MeshData sphere;
 		_geometryGen->CreateSphere(2, 30, 30, sphere);
 
 		Mesh* _sphere = new Mesh(&sphere.Vertices[0], sphere.Vertices.size(), &sphere.Indices[0], sphere.Indices.size(), true);
-		_loadedFileInfo["sphere"].loadedMeshes.push_back(_sphere);
+		_loadedFileInfo["primitiveSphere"].loadedMeshes.push_back(_sphere);
+		Material* _sphereMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_sphereMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_sphereMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
+
+		// 디버그 메쉬
+		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);
+		_spherePrimitive = GeometricPrimitive::CreateSphere(_deviceContext.Get(), 1.0f, 8, false, false);
+		_cylinderPrimitive = GeometricPrimitive::CreateCylinder(_deviceContext.Get(), 2.0f, 1.0f, 8, false);
+
+		// Create capsule debug mesh
+		float radius = 0.5f; // 캡슐의 반지름
+		float height = 1.0f; // 캡슐의 높이
+		int stackCount = 5; // 수평 분할
+		int sliceCount = 20; // 수직 분할
+
+		DirectX::GeometricPrimitive::VertexCollection vertices;
+		DirectX::GeometricPrimitive::IndexCollection indices;
+
+		// 상단 반구 정점
+		vertices.push_back(DirectX::VertexPositionNormalTexture{
+		   DirectX::SimpleMath::Vector3{0.0f, radius + height * 0.5f, 0.0f},
+		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},DirectX::SimpleMath::Vector2{0.f,0.f} });
+
+		for (int i = 1; i <= stackCount; i++)
+		{
+			// 윗방향 벡터와의 각도
+			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
+
+			float xzsize = radius * sinf(upTheta);
+			float ysize = radius * cosf(upTheta);
+
+			for (int j = 0; j < sliceCount; j++)
+			{
+				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
+
+				float x = xzsize * sinf(zTheta);
+				float y = ysize + height * 0.5f;
+				float z = xzsize * cosf(zTheta);
+
+				vertices.push_back(DirectX::VertexPositionNormalTexture{
+				   DirectX::SimpleMath::Vector3{x, y, z},
+				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				   DirectX::SimpleMath::Vector2{0.f,0.f} }
+				);
+			}
+		}
+
+		size_t middleIdx = vertices.size();
+
+		// 하단 반구 정점
+		for (int i = stackCount; i >= 1; i--)
+		{
+			// 윗방향 벡터와의 각도
+			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
+
+			float xzsize = radius * sinf(upTheta);
+			float ysize = radius * cosf(upTheta);
+
+			for (int j = 0; j < sliceCount; j++)
+			{
+				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
+
+				float x = xzsize * sinf(zTheta);
+				float y = ysize + height * 0.5f;
+				float z = xzsize * cosf(zTheta);
+
+				vertices.push_back(DirectX::VertexPositionNormalTexture{
+				   DirectX::SimpleMath::Vector3(x, -y, z),
+				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				   DirectX::SimpleMath::Vector2{0.f,0.f} }
+				);
+			}
+		}
+
+		vertices.push_back(DirectX::VertexPositionNormalTexture{
+		   DirectX::SimpleMath::Vector3{0.0f, -(radius + height * 0.5f), 0.0f},
+		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				 DirectX::SimpleMath::Vector2{0.f,0.f} }
+		);
+
+		// 상단 반구 인덱스
+		for (int i = 0; i < sliceCount; i++) {
+			int a = 0;
+			int b = 1 + i;
+			int c = 1 + ((i + 1) % sliceCount);
+
+			indices.push_back(a);
+			indices.push_back(b);
+			indices.push_back(c);
+		}
+
+		for (int i = 1; i < stackCount; i++) {
+			for (int j = 0; j < sliceCount; j++) {
+				int a = 1 + (i - 1) * sliceCount + j;
+				int b = 1 + (i - 1) * sliceCount + ((j + 1) % sliceCount);
+				int c = 1 + i * sliceCount + j;
+				int d = 1 + i * sliceCount + ((j + 1) % sliceCount);
+
+				indices.push_back(a);
+				indices.push_back(c);
+				indices.push_back(d);
+
+				indices.push_back(a);
+				indices.push_back(d);
+				indices.push_back(b);
+			}
+		}
+
+		// 실린더 부분 인덱스
+		for (int i = 0; i < sliceCount; i++)
+		{
+			int a = middleIdx - sliceCount + i;
+			int b = middleIdx - sliceCount + ((i + 1) % sliceCount);
+			int c = middleIdx + i;
+			int d = middleIdx + ((i + 1) % sliceCount);
+
+			indices.push_back(a);
+			indices.push_back(c);
+			indices.push_back(d);
+
+			indices.push_back(a);
+			indices.push_back(d);
+			indices.push_back(b);
+		}
+
+		// 하단 반구 인덱스
+		for (int i = 1; i < stackCount; i++) {
+			for (int j = 0; j < sliceCount; j++) {
+				int a = middleIdx + (i - 1) * sliceCount + j;
+				int b = middleIdx + (i - 1) * sliceCount + ((j + 1) % sliceCount);
+				int c = middleIdx + i * sliceCount + j;
+				int d = middleIdx + i * sliceCount + ((j + 1) % sliceCount);
+
+				indices.push_back(a);
+				indices.push_back(c);
+				indices.push_back(d);
+
+				indices.push_back(a);
+				indices.push_back(d);
+				indices.push_back(b);
+			}
+		}
+
+		for (int i = 0; i < sliceCount; i++) {
+			int a = vertices.size() - 1;
+			int b = vertices.size() - 1 - sliceCount + i;
+			int c = vertices.size() - 1 - sliceCount + ((i + 1) % sliceCount);
+
+			indices.push_back(b);
+			indices.push_back(a);
+			indices.push_back(c);
+		}
+
+		_capsulePrimitive = GeometricPrimitive::CreateCustom(_deviceContext.Get(), vertices, indices);
 	}
 
 	void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
@@ -923,12 +908,14 @@ namespace RocketCore::Graphics
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			Material* newMaterial = new Material(GetVertexShader("VertexShader.cso"), GetPixelShader("PixelShader.cso"));
+			HDEngine::MaterialDesc desc;
+			desc.materialName = mesh->mName.C_Str();
+			Material* newMaterial = ObjectManager::Instance().CreateMaterial(desc);
 			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
 			{
 				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
-				_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 			}
+			_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 		}
 	}
 
@@ -1092,19 +1079,25 @@ namespace RocketCore::Graphics
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
 		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
-
+		
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
 		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
-		
+
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			Material* newMaterial = new Material(GetVertexShader("SkeletonVertexShader.cso"), GetPixelShader("SkeletonPixelShader.cso"));
+			HDEngine::MaterialDesc desc;
+			desc.materialName = mesh->mName.C_Str();
+			Material* newMaterial = ObjectManager::Instance().CreateMaterial(desc);
+			newMaterial->SetVertexShader(GetVertexShader("SkeletonVertexShader.cso"));
+			newMaterial->SetPixelShader(GetPixelShader("SkeletonPixelShader.cso"));
 			for (UINT i = 0; i <= 21; ++i)
 			{
 				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
-				_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 			}
+			std::string matName = mesh->mName.C_Str();
+			newMaterial->SetMaterialName(matName);
+			_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 		}
 	}
 
@@ -1123,14 +1116,14 @@ namespace RocketCore::Graphics
 			std::string s = std::string(str.C_Str());
 			std::string fileName = s.substr(s.find_last_of("/\\") + 1, s.length() - s.find_last_of("/\\"));
 			// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-			auto iter = _loadedTextures.find(fileName);
-			if (iter == _loadedTextures.end())
+			auto iter = _loadedTextureFiles.find(fileName);
+			if (iter == _loadedTextureFiles.end())
 			{
 				const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
 				if (embeddedTexture != nullptr)
 				{
 					ID3D11ShaderResourceView* texture = LoadEmbeddedTexture(embeddedTexture);
-					_loadedTextures.insert(std::make_pair(fileName, texture));
+					_loadedTextureFiles.insert(std::make_pair(fileName, texture));
 				}
 				else
 				{
@@ -1142,7 +1135,7 @@ namespace RocketCore::Graphics
 						case aiTextureType_DIFFUSE:
 						{
 							ID3D11ShaderResourceView* albedoTex = GetTexture(fileName);
-							outMaterial->SetAlbedoMap(albedoTex);
+							outMaterial->SetAlbedoMap(albedoTex, fileName);
 							break;
 						}
 						case aiTextureType_SPECULAR:
@@ -1156,7 +1149,7 @@ namespace RocketCore::Graphics
 						case aiTextureType_NORMALS:
 						{
 							ID3D11ShaderResourceView* normalTex = GetTexture(fileName);
-							outMaterial->SetNormalMap(normalTex);
+							outMaterial->SetNormalMap(normalTex, fileName);
 							break;
 						}
 						case aiTextureType_SHININESS:
@@ -1178,13 +1171,13 @@ namespace RocketCore::Graphics
 						case aiTextureType_METALNESS:
 						{
 							ID3D11ShaderResourceView* metallicTex = GetTexture(fileName);
-							outMaterial->SetMetallicMap(metallicTex);
+							outMaterial->SetMetallicMap(metallicTex, fileName);
 							break;
 						}
 						case aiTextureType_DIFFUSE_ROUGHNESS:
 						{
 							ID3D11ShaderResourceView* roughnessTex = GetTexture(fileName);
-							outMaterial->SetRoughnessMap(roughnessTex);
+							outMaterial->SetRoughnessMap(roughnessTex, fileName);
 							break;
 						}
 						case aiTextureType_AMBIENT_OCCLUSION:
@@ -1273,12 +1266,10 @@ namespace RocketCore::Graphics
 		{
 			nodeOutput.name = node->mName.C_Str();
 			nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
-			//nodeOutput.nodeTransform = XMMatrixTranspose(nodeOutput.nodeTransform);
 
 			Bone bone;
 			bone.id = boneInfo[nodeOutput.name].first;
 			bone.offset = boneInfo[nodeOutput.name].second;
-			//bone.offset = XMMatrixTranspose(bone.offset);
 
 			nodeOutput.bone = bone;
 
@@ -1497,7 +1488,7 @@ namespace RocketCore::Graphics
 		for (UINT i = 0; i < 6; ++i)
 		{
 			float roughness = (float)i / 5.0;
-			ps->SetFloat("gRoughness", roughness);
+			ps->SetFloat("roughnessValue", roughness);
 			D3D11_VIEWPORT viewport
 			{
 				.TopLeftX = 0.0f,
@@ -1625,6 +1616,44 @@ namespace RocketCore::Graphics
 	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCapsulePrimitive()
 	{
 		return _capsulePrimitive.get();
+	}
+
+	std::string ResourceManager::GetFileInfoKey(std::string fileName)
+	{
+		std::string name = fileName;
+
+		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
+		UINT slashIndex = name.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
+		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+		}
+
+		// 확장자를 자른다.
+		UINT dotIndex = name.find_last_of(".");
+		if (dotIndex != std::string::npos)
+		{
+			// SKM_TP_X_Breathing 이나 SM_Plane 과 같은 형태로 남긴다.
+			name = name.substr(0, dotIndex);
+		}
+
+		UINT firstBarIndex = name.find_first_of("_");
+		if (firstBarIndex == std::string::npos)
+		{
+			return name;
+		}
+
+		std::string meshType = name.substr(0, firstBarIndex);
+		name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
+		if (meshType == "SM")
+		{
+			return name;
+		}
+		
+		UINT firstBarIndex2 = name.find_first_of("_");
+		name = name.substr(0, firstBarIndex2);
+		return name;
 	}
 
 }

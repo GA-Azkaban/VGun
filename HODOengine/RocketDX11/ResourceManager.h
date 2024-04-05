@@ -74,15 +74,23 @@ namespace RocketCore::Graphics
 
 		void LoadFBXFile(std::string path);
 		void LoadTextureFile(std::string path);
-		void LoadCubeMapTextureFile(std::string path);
+		void LoadCubeMapTextureFile(std::string fileName);
 
 		/// <summary>
-	/// Get meshes informations in model file.
-	/// </summary>
-	/// <param name="fileName">model file name included extension</param>
-	/// ex) model1.fbx
-	/// <returns></returns>
+		/// Get meshes informations in model file.
+		/// </summary>
+		/// <param name="fileName">model file name included extension</param>
+		/// ex) model1.fbx
+		/// <returns></returns>
 		std::vector<Mesh*>& GetMeshes(const std::string& fileName);
+
+		/// <summary>
+		/// Get materials informations in model file.
+		/// </summary>
+		/// <param name="fileName">model file name included extension</param>
+		/// ex) model1.fbx
+		/// <returns></returns>
+		std::vector<Material*>& GetMaterials(const std::string& fileName);
 
 		/// <summary>
 		/// A method for get TEXTURE
@@ -107,6 +115,14 @@ namespace RocketCore::Graphics
 		/// ex)model1.fbx
 		/// <returns>animation name and animation infos of all animations in model file</returns>
 		std::unordered_map<std::string, Animation*>& GetAnimations(const std::string& fileName);
+		
+		/// <summary>
+		/// Get loaded material.
+		/// </summary>
+		/// <param name="materialName">material's name</param>
+		/// <returns>pointer of material's interface class</returns>
+		Material* GetLoadedMaterial(const std::string& materialName);
+		std::unordered_map<std::string, Material*>& GetLoadedMaterials();
 
 		VertexShader* GetVertexShader(const std::string& name);
 		PixelShader* GetPixelShader(const std::string& name);
@@ -146,6 +162,8 @@ namespace RocketCore::Graphics
 		void GenerateEnvPreFilter(Texture& envPreFilterMap, ID3D11ShaderResourceView* cubeMapSRV);
 		void GenerateBrdfLUT(Texture& brdfLUT);
 
+		std::string GetFileInfoKey(std::string fileName);
+
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;
@@ -164,7 +182,8 @@ namespace RocketCore::Graphics
 		std::vector<ID3D11RasterizerState*> _rasterizerStates;
 
 		std::unordered_map<std::string, FileInfo> _loadedFileInfo; //<fileName, infos>
-		std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextures;	//<fileName, texture>
+		std::unordered_map<std::string, Material*> _loadedMaterials; //<materialName, materialInfo>
+		std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextureFiles;	//<fileName, texture>
 		std::unordered_map<std::string, EnvMapInfo> _loadedEnvMaps;
 
 		std::string _fileName;

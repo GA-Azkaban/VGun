@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include <string>
 /// <summary>
 /// 팩토리 객체는 카메라, 메쉬, 라이트와 같은 렌더링에 필요한 객체들을 생성한다.
 /// 2023.11.10 김민정
@@ -7,7 +7,6 @@
 
 namespace HDEngine
 {
-	class IResourceManager;
 	class ICamera;
 	class IStaticMesh;
 	class ISkinnedMesh;
@@ -16,6 +15,8 @@ namespace HDEngine
 	class ISketchableImage;
 	class ILight;
 	class ILineRenderer;
+	class IMaterial;
+	struct MaterialDesc;
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
@@ -24,7 +25,6 @@ namespace HDEngine
 	class IFactory
 	{
 	public:
-		virtual IResourceManager* CreateResourceManager() = 0;
 		virtual ICamera* CreateCamera() = 0;
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
@@ -33,6 +33,7 @@ namespace HDEngine
 		virtual ISketchableImage* CreateImage() = 0;
 		virtual ILight* CreateLight() = 0;
 		virtual ILineRenderer* CreateLineRenderer() = 0;
+		virtual IMaterial* CreateMaterial(const MaterialDesc& desc) = 0;
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() = 0;

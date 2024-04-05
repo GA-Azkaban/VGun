@@ -257,9 +257,15 @@ namespace API
 			HDData::AnimationController* aniCon = new HDData::AnimationController();
 			return aniCon;
 		}
+
+		HODO_API HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc)
+		{
+			return HDEngine::MaterialManager::Instance().CreateMaterial(desc);
+		}
+
+		HODO_API HDData::Material* GetMaterial(const std::string materialName)
+		{
+			return HDEngine::MaterialManager::Instance().GetMaterial(materialName);
+		}
 	}
-
-
-
-
 }

@@ -2,9 +2,9 @@
 #include "BRDF.hlsli"
 
 Texture2D Position      : register(t0);
-Texture2D Diffuse       : register(t1);
+Texture2D Albedo       : register(t1);
 Texture2D Normal        : register(t2);
-Texture2D MetalRough    : register(t3);
+Texture2D OcclusionRoughnessMetal    : register(t3);
 Texture2D AO        : register(t4);
 TextureCube EnvMap : register(t5);
 TextureCube PrefilteredSpecMap : register(t6);
@@ -40,14 +40,13 @@ float4 main(VertexToPixel input) : SV_TARGET
 	//float depth = DepthTexture.Sample(PointClampSampler, input.uv).r;
 	//float3 posW = CalculateWorldFromDepth(depth, input.uv);
 	float3 posW = Position.Sample(PointClampSampler, input.uv).rgb;
-	float3 albedo = Diffuse.Sample(PointClampSampler, input.uv).rgb;
+	float3 albedo = Albedo.Sample(PointClampSampler, input.uv).rgb;
 	float3 normal = Normal.Sample(PointClampSampler, input.uv).rgb;
 	normal = normalize(normal * 2.0f - 1.0f);
-	float3 metalRough = MetalRough.Sample(PointClampSampler, input.uv).rgb;
-	float metallic = metalRough.r;
+	float3 metalRough = OcclusionRoughnessMetal.Sample(PointClampSampler, input.uv).rgb;
+	float occlusion = metalRough.r;
 	float roughness = metalRough.g;
-	float occlusion = metalRough.b;
-	//float3 emissive = Emissive.Sample(PointSampler, input.uv).rgb;
+	float metallic = metalRough.b;
 
 	SurfaceInfo surf;
 	surf.posW = float4(posW, 1.0f);
