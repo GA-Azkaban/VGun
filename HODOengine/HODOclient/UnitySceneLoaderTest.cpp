@@ -20,7 +20,7 @@ void UnitySceneLoaderTest::Start()
 	mainCam->AddComponent<CameraMove>();
 
 	auto playerFP = API::CreateObject(_scene, "playerFP");
-	playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
+	playerFP->LoadFBXFile("SKM_FP_X_idle.fbx");
 	
 	auto meshCompFP = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshCompFP->LoadAlbedoMap("FP_Yellow_A.png");
