@@ -22,7 +22,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 	for (uint i = 0u; i < SAMPLE_COUNT; ++i)
 	{
 		float2 st = Hammersley(i, SAMPLE_COUNT);
-		float3 H = ImportanceSampleGGX(st, N, gRoughness);
+		float3 H = ImportanceSampleGGX(st, N, roughnessValue);
 		float3 L = normalize(2.0 * dot(V, H) * H - V);
 
 		float NdotL = saturate(dot(N, L));

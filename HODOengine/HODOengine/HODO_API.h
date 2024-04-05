@@ -42,6 +42,8 @@
 #include "UIBase.h"
 #include "Animator.h"
 #include "AnimationController.h"
+#include "HDMaterial.h"
+#include "MaterialManager.h"
 
 #include "ObjectSystem.h"
 
@@ -97,6 +99,10 @@ namespace API
 		
 		// animator controller 
 		HODO_API HDData::AnimationController* CreateAnimationController();
+
+		// Material
+		HODO_API HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc);
+		HODO_API HDData::Material* GetMaterial(const std::string materialName);
 	}
 }
 

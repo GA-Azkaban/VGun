@@ -10,17 +10,17 @@ using namespace DirectX;
 namespace RocketCore::Graphics
 {
 	HelperObject::HelperObject()
-		: m_material(nullptr), m_isActive(true),
-		m_world{ XMMatrixIdentity() }
+		: m_isActive(true), m_world{ XMMatrixIdentity() }
 	{
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
-		m_material = new Material(ResourceManager::Instance().GetVertexShader("DebugVertexShader.cso"), ResourceManager::Instance().GetPixelShader("DebugPixelShader.cso"));
 		m_RS = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::WIREFRAME);
+		m_vertexShader = ResourceManager::Instance().GetVertexShader("DebugVertexShader.cso");
+		m_pixelShader = ResourceManager::Instance().GetPixelShader("DebugPixelShader.cso");
 	}
 
 	HelperObject::~HelperObject()
 	{
-		delete m_material;
+		
 	}
 
 	void HelperObject::Update(float deltaTime)
@@ -37,21 +37,18 @@ namespace RocketCore::Graphics
 		m_deviceContext->RSSetState(m_RS.Get());
 		m_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		VertexShader* vertexShader = m_material->GetVertexShader();
-		PixelShader* pixelShader = m_material->GetPixelShader();
-
-		vertexShader->SetMatrix4x4("world", XMMatrixTranspose(m_world));
+		m_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(m_world));
 		
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
 
-		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
+		m_vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
-		vertexShader->CopyAllBufferData();
-		vertexShader->SetShader();
+		m_vertexShader->CopyAllBufferData();
+		m_vertexShader->SetShader();
 
-		pixelShader->CopyAllBufferData();
-		pixelShader->SetShader();
+		m_pixelShader->CopyAllBufferData();
+		m_pixelShader->SetShader();
 
 		for (UINT i = 0; i < m_meshes.size(); ++i)
 		{

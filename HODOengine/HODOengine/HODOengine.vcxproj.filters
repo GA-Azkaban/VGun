@@ -142,8 +142,11 @@
     <ClCompile Include="AnimationController.cpp">
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClCompile>
-    <ClCompile Include="HDResourceManager.cpp">
-      <Filter>ResourceManager</Filter>
+    <ClCompile Include="HDMaterial.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
+      <Filter>Material\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -321,8 +324,11 @@
     <ClInclude Include="AnimationController.h">
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClInclude>
-    <ClInclude Include="HDResourceManager.h">
-      <Filter>ResourceManager</Filter>
+    <ClInclude Include="HDMaterial.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>Material\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -487,8 +493,11 @@
     <Filter Include="05_Component\Animation\AnimationController">
       <UniqueIdentifier>{aee8b258-77bb-4ff6-a3a7-ac3c24b27496}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ResourceManager">
-      <UniqueIdentifier>{475f0fa1-7b8c-462e-a128-70af26042451}</UniqueIdentifier>
+    <Filter Include="Material">
+      <UniqueIdentifier>{a56b84f3-d710-470d-b6e5-e5f8202cb90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material\Manager">
+      <UniqueIdentifier>{26ace45d-b426-41d8-a28b-fe16775dda3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

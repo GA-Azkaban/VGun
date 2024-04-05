@@ -8,6 +8,8 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
+	class VertexShader;
+	class PixelShader;
 	class DeferredBuffers;
 
 	class Cubemap : public HDEngine::ICubeMap
@@ -25,8 +27,8 @@ namespace RocketCore::Graphics
 		virtual void SetEnvLightIntensity(float value) override { m_envLightIntensity = value; }
 
 		void LoadMesh(const std::string& meshName);
-		void LoadVertexShader(const std::string& fileName);
-		void LoadPixelShader(const std::string& fileName);
+		void SetVertexShader(const std::string& fileName);
+		void SetPixelShader(const std::string& fileName);
 
 		float GetEnvLightIntensity() { return m_envLightIntensity; }
 
@@ -35,8 +37,10 @@ namespace RocketCore::Graphics
 
 	private:
 		Cubemap();
-		std::vector<Mesh*> m_meshes;
+		Mesh* m_mesh;
 		Material* m_material;
+		VertexShader* m_vertexShader;
+		PixelShader* m_pixelShader;
 		bool m_isActive;
 		float m_size;
 		float m_envLightIntensity;

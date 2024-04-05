@@ -9,6 +9,8 @@
 
 #include "../HODO3DGraphicsInterface/ISkinnedMesh.h"
 #include "../HODO3DGraphicsInterface/Node.h"
+#include "../HODO3DGraphicsInterface/IMaterial.h"
+
 #include "MathHeader.h"
 
 /// <summary>
@@ -19,6 +21,8 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
+	class VertexShader;
+	class PixelShader;
 
 	class SkinningMeshObject : public HDEngine::ISkinnedMesh
 	{
@@ -35,24 +39,24 @@ namespace RocketCore::Graphics
 
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNode(const std::string& fileName) override;
-		virtual void LoadNormalMap(const std::string& fileName) override;
-		virtual void LoadAlbedoMap(const std::string& fileName) override;
-		virtual void LoadARMMap(const std::string& fileName) override;
-		virtual void LoadRoughnessMap(const std::string& fileName) override;
-		virtual void LoadMetallicMap(const std::string& fileName) override;
-		virtual void SetRoughnessValue(float value) override;
-		virtual void SetMetallicValue(float value) override;
-		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255) override;
-		virtual void SetAlbedoColor(Vector4 color) override;
+		virtual void LoadMaterial(HDEngine::IMaterial* material, unsigned int element = 0) override;
+		virtual void LoadAlbedoMap(const std::string& fileName, unsigned int element = 0) override;
+		virtual void LoadNormalMap(const std::string& fileName, unsigned int element = 0) override;
+		virtual void LoadARMMap(const std::string& fileName, unsigned int element = 0) override;
+		virtual void LoadRoughnessMap(const std::string& fileName, unsigned int element = 0) override;
+		virtual void LoadMetallicMap(const std::string& fileName, unsigned int element = 0) override;
+		virtual void SetRoughnessValue(float value, unsigned int element = 0) override;
+		virtual void SetMetallicValue(float value, unsigned int element = 0) override;
+		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual Node* GetNode() override;
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
-
 		virtual bool IsAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
+		std::vector<Material*>& GetMaterials() { return m_materials; }
 		DirectX::XMMATRIX GetWorldTM();
 		std::vector<DirectX::XMMATRIX>& GetBoneTransforms() { return m_boneTransform; }
 		bool IsActive() { return m_isActive; }
@@ -74,8 +78,7 @@ namespace RocketCore::Graphics
 
 	private:
 		std::vector<Mesh*> m_meshes;
-		//std::vector<Material*> m_material;
-		Material* m_material;
+		std::vector<Material*> m_materials;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
 		bool m_blendFlag;
@@ -94,5 +97,8 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
 
 		std::unordered_map<std::string, DirectX::XMMATRIX> m_nodeTransformMap;
+
+		VertexShader* m_vertexShader;
+		PixelShader* m_pixelShader;
 	};
 }

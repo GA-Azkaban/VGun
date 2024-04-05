@@ -16,7 +16,8 @@ using Microsoft::WRL::ComPtr;
 namespace RocketCore::Graphics
 {
 	class Mesh;
-	class Material;
+	class VertexShader;
+	class PixelShader;
 
 	class HelperObject : public HDEngine::IDebugObject
 	{
@@ -39,8 +40,10 @@ namespace RocketCore::Graphics
 	private:
 		ComPtr<ID3D11DeviceContext> m_deviceContext;
 		ComPtr<ID3D11RasterizerState> m_RS;
+
 		std::vector<Mesh*> m_meshes;
-		Material* m_material;
+		VertexShader* m_vertexShader;
+		PixelShader* m_pixelShader;
 		bool m_isActive;
 
 		DirectX::XMMATRIX m_world;

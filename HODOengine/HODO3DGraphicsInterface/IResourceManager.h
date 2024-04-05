@@ -10,8 +10,6 @@ namespace HDEngine
 	{
 	public:
 		virtual ~IResourceManager() {};
-		//virtual void LoadFBXFile(std::string fileName) const = 0;
-		//virtual IMaterial* CreateMaterial(MaterialDesc& materialDesc) const = 0;
 		virtual Node* GetNode(const std::string& fileName) = 0;
 	};
 }

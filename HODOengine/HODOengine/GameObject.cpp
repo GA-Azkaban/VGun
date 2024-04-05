@@ -2,7 +2,6 @@
 #include "Transform.h"
 #include "ObjectSystem.h"
 #include "SceneSystem.h"
-#include "HDResourceManager.h"
 #include "DynamicBoxCollider.h"
 #include "StaticBoxCollider.h"
 #include "SkinnedMeshRenderer.h"
@@ -220,7 +219,7 @@ namespace HDData
 		return _objectName;
 	}
 
-	void GameObject::LoadNodeFromFBXFile(std::string fileName)
+	void GameObject::LoadFBXFile(std::string fileName)
 	{
 		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);
 		auto rendererComp = rendererObject->AddComponent<SkinnedMeshRenderer>();

@@ -3,13 +3,14 @@
 #include "GraphicsObjFactory.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "HDMaterial.h"
 
 namespace HDData
 {
 	SkinnedMeshRenderer::SkinnedMeshRenderer()
 		: _skinnedMesh(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSkinnedMeshObject())
 	{
-		//HDEngine::RenderSystem::Instance().PushRenderComponent(this);
+		
 	}
 
 	SkinnedMeshRenderer::~SkinnedMeshRenderer()
@@ -27,49 +28,49 @@ namespace HDData
 		_skinnedMesh->LoadNode(fileName);
 	}
 
-	void SkinnedMeshRenderer::LoadNormalMap(const std::string& fileName)
+	void SkinnedMeshRenderer::LoadMaterial(HDData::Material* material, unsigned int element /*= 0*/)
 	{
-		_skinnedMesh->LoadNormalMap(fileName);
+		_skinnedMesh->LoadMaterial(material->_material, element);
 	}
 
-	void SkinnedMeshRenderer::LoadAlbedoMap(const std::string& fileName)
+	void SkinnedMeshRenderer::LoadNormalMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		_skinnedMesh->LoadAlbedoMap(fileName);
+		_skinnedMesh->LoadNormalMap(fileName, element);
 	}
 
-	void SkinnedMeshRenderer::LoadARMMap(const std::string& fileName)
+	void SkinnedMeshRenderer::LoadAlbedoMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-        _skinnedMesh->LoadARMMap(fileName);
+		_skinnedMesh->LoadAlbedoMap(fileName, element);
+	}
+
+	void SkinnedMeshRenderer::LoadARMMap(const std::string& fileName, unsigned int element /* = 0 */)
+	{
+        _skinnedMesh->LoadARMMap(fileName, element);
     }
 
-	void SkinnedMeshRenderer::LoadRoughnessMap(const std::string& fileName)
+	void SkinnedMeshRenderer::LoadRoughnessMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		_skinnedMesh->LoadRoughnessMap(fileName);
+		_skinnedMesh->LoadRoughnessMap(fileName, element);
 	}
 
-	void SkinnedMeshRenderer::LoadMetallicMap(const std::string& fileName)
+	void SkinnedMeshRenderer::LoadMetallicMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		_skinnedMesh->LoadMetallicMap(fileName);
+		_skinnedMesh->LoadMetallicMap(fileName, element);
 	}
 
-	void SkinnedMeshRenderer::SetRoughnessValue(float value)
+	void SkinnedMeshRenderer::SetRoughnessValue(float value, unsigned int element /* = 0 */)
 	{
-		_skinnedMesh->SetRoughnessValue(value);
+		_skinnedMesh->SetRoughnessValue(value, element);
 	}
 
-	void SkinnedMeshRenderer::SetMetallicValue(float value)
+	void SkinnedMeshRenderer::SetMetallicValue(float value, unsigned int element /* = 0 */)
 	{
-		_skinnedMesh->SetMetallicValue(value);
+		_skinnedMesh->SetMetallicValue(value, element);
 	}
 
-	void SkinnedMeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /*= 255*/)
+	void SkinnedMeshRenderer::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element /* = 0 */)
 	{
-		_skinnedMesh->SetAlbedoColor(r, g, b, a);
-	}
-
-	void SkinnedMeshRenderer::SetAlbedoColor(Vector4 color)
-	{
-		_skinnedMesh->SetAlbedoColor(color);
+		_skinnedMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
@@ -95,11 +96,6 @@ namespace HDData
 	void SkinnedMeshRenderer::Update()
 	{
 		_skinnedMesh->SetWorldTM(GetTransform()->GetWorldTM());
-		// 여기에서 노드 오브젝트 갱신
-		// 렌더러의 오브젝트에서 타고 올라가서 가장 위에 있는 부모 오브젝트를 가져온다. 트랜스폼 갱신
-		// 재귀함수로 부모 오브젝트 밑에 있는 자식 오브젝트들의 트랜스폼 갱신
-		//UpdateArmatureNodeTransform(_skinnedMesh->GetNode(), GetGameObject()->GetParentGameObject()->GetChildGameObjectByName("Armature"));
-		Node* node = _skinnedMesh->GetNode();
 	}
 
 	void SkinnedMeshRenderer::OnEnable()
@@ -110,15 +106,6 @@ namespace HDData
 	void SkinnedMeshRenderer::OnDisable()
 	{
 		_skinnedMesh->SetActive(false);
-	}
-
-	void SkinnedMeshRenderer::UpdateArmatureNodeTransform(Node* node, GameObject* parentObject)
-	{
-		//for (auto& child : parentObject->GetChildGameObjects())
-		//{
-		//	child->GetTransform()->SetLocalTM(node->nodeTransform);
-		//	UpdateArmatureNodeTransform(node->children)
-		//}
 	}
 
 }

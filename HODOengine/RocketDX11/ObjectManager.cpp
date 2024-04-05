@@ -13,6 +13,7 @@
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 #include "LineRenderer.h"
+#include "Material.h"
 
 namespace RocketCore::Graphics
 {
@@ -45,7 +46,7 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
-	RocketCore::Graphics::SkinningMeshObject* ObjectManager::CreateSkinningMeshObject()
+	SkinningMeshObject* ObjectManager::CreateSkinningMeshObject()
 	{
 		SkinningMeshObject* temp = new SkinningMeshObject();
 		_skinningMeshObjectList.emplace_back(temp);
@@ -53,19 +54,19 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
-	RocketCore::Graphics::Cubemap* ObjectManager::CreateCubeMap()
+	Cubemap* ObjectManager::CreateCubeMap()
 	{
 		Cubemap* temp = &(Cubemap::Instance());
 		return temp;
 	}
 
-	RocketCore::Graphics::LightAdapter* ObjectManager::CreateLight()
+	LightAdapter* ObjectManager::CreateLight()
 	{
 		LightAdapter* temp = new LightAdapter();
 		return temp;
 	}
 
-	RocketCore::Graphics::ImageRenderer* ObjectManager::CreateImage()
+	ImageRenderer* ObjectManager::CreateImage()
 	{
 		auto& resourceMgr = ResourceManager::Instance();
 
@@ -81,6 +82,37 @@ namespace RocketCore::Graphics
 	{
 		_lineRenderer = new LineRenderer();
 		return _lineRenderer;
+	}
+
+	RocketCore::Graphics::Material* ObjectManager::CreateMaterial(HDEngine::MaterialDesc desc)
+	{
+		std::unordered_map<std::string, Material*>& materialList = ResourceManager::Instance().GetLoadedMaterials();
+
+		std::string matName = desc.materialName;
+		if (matName == "")
+		{
+			matName = "NewMaterial";
+		}
+
+		// 이미 있는 이름이라면 뒤에 숫자를 붙혀준다.
+		if (materialList.find(matName) != materialList.end())
+		{
+			std::string tempName = matName;
+			for (UINT i = 1; ++i;)
+			{
+				matName = tempName + std::to_string(i);
+				if (materialList.find(matName) == materialList.end())
+				{
+					break;
+				}
+			}
+		}
+		desc.materialName = matName;
+
+		Material* newMaterial = new Material(desc);
+		materialList.insert(std::make_pair(matName, newMaterial));
+
+		return newMaterial;
 	}
 
 	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()
@@ -115,7 +147,7 @@ namespace RocketCore::Graphics
 		return capsule;
 	}
 
-	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()
+	TextRenderer* ObjectManager::CreateText()
 	{
 		TextRenderer* TextObject = new TextRenderer();
 		_textList.emplace_back(TextObject);

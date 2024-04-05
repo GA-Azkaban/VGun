@@ -22,14 +22,15 @@ namespace RocketCore::Graphics
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
 		m_blendFlag(false), m_isOutlineActive(false)
 	{
-		m_material = new Material(ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso"), ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso"));
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
+		m_vertexShader = ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso");
+		m_pixelShader = ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso");
 	}
 
 	SkinningMeshObject::~SkinningMeshObject()
 	{
-		
+
 	}
 
 	void SkinningMeshObject::Update(float deltaTime)
@@ -88,54 +89,73 @@ namespace RocketCore::Graphics
 
 			XMMATRIX world = m_node.rootNodeInvTransform * m_world;
 
-			VertexShader* vertexShader = m_material->GetVertexShader();
-			PixelShader* pixelShader = m_material->GetPixelShader();
+			m_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
+			m_vertexShader->SetMatrix4x4Array("boneTransforms", &m_boneTransform[0], m_boneTransform.size());
 
-			vertexShader->SetMatrix4x4("world", XMMatrixTranspose(world));
-			vertexShader->SetMatrix4x4Array("boneTransforms", &m_boneTransform[0], m_boneTransform.size());
-
-			vertexShader->CopyAllBufferData();
-			vertexShader->SetShader();
-
-			if (m_material->GetAlbedoMap())
-			{
-				pixelShader->SetInt("useAlbedo", 1);
-				pixelShader->SetShaderResourceView("Albedo", m_material->GetAlbedoMap());
-				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
-			}
-			else
-			{
-				pixelShader->SetInt("useAlbedo", 0);
-				pixelShader->SetFloat4("albedoColor", m_material->GetAlbedoColor());
-			}
-
-			if (m_material->GetNormalMap())
-			{
-				pixelShader->SetInt("useNormalMap", 1);
-				pixelShader->SetShaderResourceView("NormalMap", m_material->GetNormalMap());
-			}
-			else
-			{
-				pixelShader->SetInt("useNormalMap", 0);
-			}
-
-			if (m_material->GetOcclusionRoughnessMetalMap())
-			{
-				pixelShader->SetInt("useOccMetalRough", 1);
-				pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_material->GetOcclusionRoughnessMetalMap());
-			}
-			else
-			{
-				pixelShader->SetInt("useOccMetalRough", 0);
-				pixelShader->SetInt("gMetallic", m_material->GetMetallic());
-				pixelShader->SetInt("gRoughness", m_material->GetRoughness());
-			}
-
-			pixelShader->CopyAllBufferData();
-			pixelShader->SetShader();
+			m_vertexShader->CopyAllBufferData();
+			m_vertexShader->SetShader();
 
 			for (UINT i = 0; i < m_meshes.size(); ++i)
 			{
+				if (m_materials[i]->GetAlbedoMap())
+				{
+					m_pixelShader->SetInt("useAlbedo", 1);
+					m_pixelShader->SetShaderResourceView("Albedo", m_materials[i]->GetAlbedoMap());
+					m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColorFloat4());
+				}
+				else
+				{
+					m_pixelShader->SetInt("useAlbedo", 0);
+					m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColorFloat4());
+				}
+
+				if (m_materials[i]->GetNormalMap())
+				{
+					m_pixelShader->SetInt("useNormalMap", 1);
+					m_pixelShader->SetShaderResourceView("NormalMap", m_materials[i]->GetNormalMap());
+				}
+				else
+				{
+					m_pixelShader->SetInt("useNormalMap", 0);
+				}
+
+				if (m_materials[i]->GetOcclusionRoughnessMetalMap())
+				{
+					m_pixelShader->SetInt("useOccMetalRough", 1);
+					m_pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", m_materials[i]->GetOcclusionRoughnessMetalMap());
+				}
+				else
+				{
+					m_pixelShader->SetInt("useOccMetalRough", 0);
+					m_pixelShader->SetInt("metallicValue", m_materials[i]->GetMetallicValue());
+					m_pixelShader->SetInt("roughnessValue", m_materials[i]->GetRoughnessValue());
+				}
+
+				if (m_materials[i]->GetRoughnessMap())
+				{
+					m_pixelShader->SetInt("useRoughnessMap", 1);
+					m_pixelShader->SetShaderResourceView("Roughness", m_materials[i]->GetRoughnessMap());
+				}
+				else
+				{
+					m_pixelShader->SetInt("useRoughnessMap", 0);
+					m_pixelShader->SetFloat("roughnessValue", m_materials[i]->GetRoughnessValue());
+				}
+
+				if (m_materials[i]->GetMetallicMap())
+				{
+					m_pixelShader->SetInt("useMetallicMap", 1);
+					m_pixelShader->SetShaderResourceView("Metallic", m_materials[i]->GetRoughnessMap());
+				}
+				else
+				{
+					m_pixelShader->SetInt("useMetallicMap", 0);
+					m_pixelShader->SetFloat("metallicValue", m_materials[i]->GetRoughnessValue());
+				}
+
+				m_pixelShader->CopyAllBufferData();
+				m_pixelShader->SetShader();
+
 				m_meshes[i]->BindBuffers();
 				m_meshes[i]->Draw();
 			}
@@ -184,7 +204,7 @@ namespace RocketCore::Graphics
 				node->nodeTransform->_position = position;
 				node->nodeTransform->_rotation = rotation;
 				node->nodeTransform->_scale = scale;
-			}			
+			}
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
@@ -336,7 +356,6 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
 		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
-		//node->nodeTransform = _nodeTransform;
 
 		// update values for children bones
 		for (Node& child : node->children)
@@ -453,10 +472,11 @@ namespace RocketCore::Graphics
 			m_blendFlag = true;
 		}
 	}
-	
+
 	void SkinningMeshObject::LoadMesh(const std::string& fileName)
 	{
-		m_meshes = ResourceManager::Instance().GetMeshes(fileName);		
+		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 	}
 
 	void SkinningMeshObject::LoadNode(const std::string& fileName)
@@ -465,54 +485,92 @@ namespace RocketCore::Graphics
 		LoadAnimation(ResourceManager::Instance().GetAnimations(fileName));
 	}
 
-	void SkinningMeshObject::LoadAlbedoMap(const std::string& fileName)
+	void SkinningMeshObject::LoadMaterial(HDEngine::IMaterial* material, unsigned int element /*= 0*/)
 	{
-		ID3D11ShaderResourceView* albedoTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetAlbedoMap(albedoTex);
+		if (element >= m_materials.size())
+			return;
+		
+		Material* newMat = dynamic_cast<Material*>(material);
+		if (newMat != nullptr)
+		{
+			m_materials[element] = newMat;
+		}
 	}
 
-	void SkinningMeshObject::LoadNormalMap(const std::string& fileName)
+	void SkinningMeshObject::LoadAlbedoMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		ID3D11ShaderResourceView* normalTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetNormalMap(normalTex);
+		if (element >= m_materials.size())
+			return;
+
+		if (fileName == "")
+			return;
+
+		m_materials[element]->LoadAlbedoTexture(fileName);
 	}
 
-	void SkinningMeshObject::LoadARMMap(const std::string& fileName)
+	void SkinningMeshObject::LoadNormalMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		ID3D11ShaderResourceView* armTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetOcclusionRoughnessMetalMap(armTex);
+		if (element >= m_materials.size())
+			return;
+
+		if (fileName == "")
+			return;
+
+		m_materials[element]->LoadNormalTexture(fileName);
 	}
 
-	void SkinningMeshObject::LoadRoughnessMap(const std::string& fileName)
+	void SkinningMeshObject::LoadARMMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		ID3D11ShaderResourceView* roughnessTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetOcclusionRoughnessMetalMap(roughnessTex);
+		if (element >= m_materials.size())
+			return;
+
+		if (fileName == "")
+			return;
+
+		m_materials[element]->LoadARMTexture(fileName);
 	}
 
-	void SkinningMeshObject::LoadMetallicMap(const std::string& fileName)
+	void SkinningMeshObject::LoadRoughnessMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		ID3D11ShaderResourceView* metallicTex = ResourceManager::Instance().GetTexture(fileName);
-		m_material->SetOcclusionRoughnessMetalMap(metallicTex);
+		if (element >= m_materials.size())
+			return;
+
+		if (fileName == "")
+			return;
+
+		m_materials[element]->LoadRoughnessTexture(fileName);
 	}
 
-	void SkinningMeshObject::SetRoughnessValue(float value)
+	void SkinningMeshObject::LoadMetallicMap(const std::string& fileName, unsigned int element /* = 0 */)
 	{
-		m_material->SetRoughness(value);
+		if (element >= m_materials.size())
+			return;
+
+		if (fileName == "")
+			return;
+
+		m_materials[element]->LoadMetallicTexture(fileName);
 	}
 
-	void SkinningMeshObject::SetMetallicValue(float value)
+	void SkinningMeshObject::SetRoughnessValue(float value, unsigned int element /* = 0 */)
 	{
-		m_material->SetMetallic(value);
+		if (element >= m_materials.size())
+			return;
+		m_materials[element]->SetRoughnessValue(value);
 	}
 
-	void SkinningMeshObject::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a /* = 255 */)
+	void SkinningMeshObject::SetMetallicValue(float value, unsigned int element /* = 0 */)
 	{
-		m_material->SetAlbedoColor(r, g, b, a);
+		if (element >= m_materials.size())
+			return;
+		m_materials[element]->SetMetallicValue(value);
 	}
 
-	void SkinningMeshObject::SetAlbedoColor(Vector4 color)
+	void SkinningMeshObject::SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element /* = 0 */)
 	{
-		m_material->SetAlbedoColor(color);
+		if (element >= m_materials.size())
+			return;
+		m_materials[element]->SetColor(r, g, b, a);
 	}
 
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()

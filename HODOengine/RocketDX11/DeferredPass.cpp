@@ -46,9 +46,9 @@ namespace RocketCore::Graphics
 
 		//_pixelShader->SetShaderResourceView("DepthTexture", _deferredBuffers->GetDepthSRV());
 		_pixelShader->SetShaderResourceView("Position", _deferredBuffers->GetShaderResourceView(0));
-		_pixelShader->SetShaderResourceView("Diffuse", _deferredBuffers->GetShaderResourceView(1));
+		_pixelShader->SetShaderResourceView("Albedo", _deferredBuffers->GetShaderResourceView(1));
 		_pixelShader->SetShaderResourceView("Normal", _deferredBuffers->GetShaderResourceView(2));
-		_pixelShader->SetShaderResourceView("MetalRough", _deferredBuffers->GetShaderResourceView(3));
+		_pixelShader->SetShaderResourceView("OcclusionRoughnessMetal", _deferredBuffers->GetShaderResourceView(3));
 		_pixelShader->SetShaderResourceView("AO", _deferredBuffers->GetSSAOMap());
 		_pixelShader->SetShaderResourceView("ShadowMap", _deferredBuffers->GetShadowMap());
 

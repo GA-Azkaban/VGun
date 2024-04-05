@@ -243,9 +243,10 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="DynamicCollider.h" />
     <ClInclude Include="dllExporter.h" />
     <ClInclude Include="DynamicSphereCollider.h" />
-    <ClInclude Include="HDResourceManager.h" />
+    <ClInclude Include="HDMaterial.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="SlideBoxUI.h" />
     <ClInclude Include="SliderUI.h" />
@@ -333,13 +334,14 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="EventSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GraphicsObjFactory.cpp" />
-    <ClCompile Include="HDResourceManager.cpp" />
+    <ClCompile Include="HDMaterial.cpp" />
     <ClCompile Include="HODOengine.cpp" />
     <ClCompile Include="HODO_API.cpp" />
     <ClCompile Include="IDSystem.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MeshRenderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='TEST|Win32'">true</ExcludedFromBuild>
