@@ -27,15 +27,14 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	//auto testBox1 = API::CreateObject(_scene);
-	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
-	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("Plane.fbx");
-	//boxRender1->SetMetallicValue(0.0f);
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 0.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("SM_Plane.fbx");
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -0.0f, 0.5f, 0.0f });
 	playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고

@@ -19,7 +19,8 @@ namespace RocketCore::Graphics
 
 	void LightManager::Initialize(float screenWidth, float screenHeight)
 	{
-		_lightProj = XMMatrixOrthographicLH(screenWidth / 40.0f, screenHeight / 40.0f, 1, 50);
+		//_lightProj = XMMatrixOrthographicLH(screenWidth / 40.0f, screenHeight / 40.0f, 1, 1000);
+		_lightProj = XMMatrixOrthographicLH(screenWidth, screenHeight, 1, 100);
 	}
 
 	Light* LightManager::AddLight()
@@ -73,7 +74,7 @@ namespace RocketCore::Graphics
 		{
 			XMVECTOR lightDirection = XMLoadFloat4(&dirLight->direction);
 			// 일단 -10을 곱한다. 나중에 고쳐야 한다.
-			_lightView = XMMatrixLookAtLH(-10 * lightDirection, 10 * lightDirection, XMVECTOR{ 0, 1, 0, 0 });
+			_lightView = XMMatrixLookAtLH(-100 * lightDirection, 100 * lightDirection, XMVECTOR{ 0, 1, 0, 0 });
 			return _lightView;
 		}
 
