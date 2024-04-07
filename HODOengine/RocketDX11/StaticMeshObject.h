@@ -5,7 +5,8 @@
 #include <wrl.h>
 #include <vector>
 #include "Animation.h"
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -48,8 +49,9 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;
-		Node* m_node;
+		//std::vector<Material*> m_material;
 		Material* m_material;
+		Node* m_node;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
 	};

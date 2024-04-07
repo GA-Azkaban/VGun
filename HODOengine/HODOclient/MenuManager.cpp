@@ -28,3 +28,29 @@ void MenuManager::SetMainMenuCanvas(HDData::GameObject* mainCanvas)
 	_mainMenuCanvas = mainCanvas;
 }
 
+void MenuManager::RoomEneter(Protocol::RoomInfo)
+{
+	//NetworkManager::Instance().RecvRoomEnter();
+
+}
+
+void MenuManager::SetRoom()
+{
+
+}
+
+void MenuManager::RoomExit()
+{
+
+}
+
+void MenuManager::OtherPlayerEnter()
+{
+
+}
+
+void MenuManager::OtherPlayerExit()
+{
+
+}
+

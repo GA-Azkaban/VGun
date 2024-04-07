@@ -96,6 +96,11 @@ namespace HDEngine
 
 			std::string meshName = info.meshName;
 
+			if (meshName == "Stair")
+			{
+				info.meshName = "Plane";
+			}
+
 			if (meshName == "Plane" ||
 				meshName == "Cube")
 			{

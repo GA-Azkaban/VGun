@@ -1,11 +1,11 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 
-#define FILEPATH "Resources/"
+#define FILEPATH "Resources/UI/"
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
@@ -94,6 +94,36 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 {
 	if (!_active)
 		return;
+
+	if (_fadeMode)
+	{
+		if (_fadeAlpha <= 1.0f)
+		{
+			_fadeAlpha += 0.002f;
+			if (_fadeAlpha > 1.0f)
+			{
+				_fadeAlpha = 1.0f;
+			}
+			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
+		}
+	}
+	else
+	{
+		if (_fadeAlpha >= 0.0f)
+		{
+			_fadeAlpha -= 0.001f;
+			if (_fadeAlpha < 0.0f)
+			{
+				_fadeAlpha = 0.0f;
+			}
+			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
+		}
+	}
+
+	if (!_fadeMode && _fadeAlpha == 0.0f)
+	{
+		return;
+	}
 
 	if (_receiveTMInfoFlag)
 	{
@@ -200,14 +230,10 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 
 void RocketCore::Graphics::ImageRenderer::FadeIn()
 {
-	_fadeAlpha = 1.0f;
-	_fadingIn = true;
-	_fadingOut = false;
+	_fadeMode = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::FadeOut()
 {
-	_fadeAlpha = 0.0f;
-	_fadingIn = false;
-	_fadingOut = true;
+	_fadeMode = false;
 }

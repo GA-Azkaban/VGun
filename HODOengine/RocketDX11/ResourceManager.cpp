@@ -1,6 +1,7 @@
 ﻿#include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "Mesh.h"
+#include "Material.h"
 #include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
@@ -15,6 +16,7 @@
 
 #define MODELS_DIRECTORY_NAME "Resources/Models/"
 #define TEXTURES_DIRECTORY_NAME "Resources/Textures/"
+#define CUBEMAPS_DIRECTORY_NAME "Resources/Textures/Skybox/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;
@@ -42,6 +44,7 @@ namespace RocketCore::Graphics
 	};
 
 	ResourceManager::ResourceManager()
+		: _fileInfoKeyName("")
 	{
 
 	}
@@ -209,44 +212,85 @@ namespace RocketCore::Graphics
 		_capsulePrimitive = GeometricPrimitive::CreateCustom(deviceContext, vertices, indices);
 	}
 
-	void ResourceManager::LoadFBXFile(std::string fileName)
+	void ResourceManager::LoadFBXFile(std::string path)
 	{
-		UINT slashIndex = fileName.find_last_of("/\\");
+		// 로드하는 모든 FBX 파일들은 팀에서 정한 파일의 명명 규칙을 따라야 한다.
+		// 그 규칙에 맞는 파일들만 불러올 수 있도록 한다.
+		// Resources/Models/ 경로에 있는 폴더 경로를 통째로 넣어줘야 한다.
+		UINT slashIndex = path.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
-			_fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			_fileName = path.substr(slashIndex + 1, path.length() - slashIndex);
 		}
 		else
 		{
-			_fileName = fileName;
+			_fileName = path;
 		}
 
-		std::string path = std::string(MODELS_DIRECTORY_NAME) + fileName;
+		// SKM_TP_X_Breathing.fbx 나 SKM_Player_Breathing.fbx 이나 SKM_Robin.fbx 같은 파일명일 때
+		UINT firstBarIndex = _fileName.find_first_of("_");
+		UINT lastBarIndex = _fileName.find_last_of("_");
+		UINT dotIndex = _fileName.find_last_of(".");
+
+		std::string animName = "";
+		if (firstBarIndex != std::string::npos)
+		{
+			if (lastBarIndex != firstBarIndex)	// SKM_TP_X_Breathing, SKM_Player_Breathing
+			{
+				// 첫번째 언더바부터 . 까지 자르기
+				std::string meshNameAndAnimName = _fileName.substr(firstBarIndex + 1, dotIndex - firstBarIndex - 1);
+				// TP_X_Breathing 이나 Player_Breathing 형태로 나옴
+				// 이 형태에서 첫번째 언더바를 기준으로 왼쪽 것이 파일명, 오른쪽 것이 애니메이션명
+				UINT firstBarIndex2 = meshNameAndAnimName.find_first_of("_");
+				if (firstBarIndex2 != std::string::npos) // SKM_TP_X_Breathing
+				{
+					_fileInfoKeyName = meshNameAndAnimName.substr(0, firstBarIndex2);
+					animName = meshNameAndAnimName.substr(firstBarIndex2 + 1, meshNameAndAnimName.length() - firstBarIndex2);
+				}
+			}
+			else // SKM_Robin
+			{
+				_fileInfoKeyName = _fileName.substr(firstBarIndex + 1, _fileName.length() - firstBarIndex);
+			}
+		}
+		else // 언더바 없는 파일명
+		{
+			_fileInfoKeyName = _fileName;
+		}
+
+		std::string filePath = std::string(MODELS_DIRECTORY_NAME) + path;
 
 		Assimp::Importer importer;
 
-		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_GenUVCoords );
+		const aiScene* _scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace);
 
 		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
 		{
 			MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 		}
 
-		ProcessNode(_scene->mRootNode, _scene);
-		LoadAnimation(_scene);
+		// SKM_ 으로 시작하는 파일명으로 받아온 FBX 파일은 메시랑 노드 한번만 로드한다.
+		if (_loadedFileInfo.find(_fileInfoKeyName) == _loadedFileInfo.end())
+		{
+			ProcessNode(_scene->mRootNode, _scene);
+		}
+		LoadAnimation(_scene, animName);
 	}
 
-	void ResourceManager::LoadTextureFile(std::string fileName)
+	void ResourceManager::LoadTextureFile(std::string path)
 	{
-		ID3D11ShaderResourceView* srv;
-		/*UINT slashIndex = fileName.find_last_of("/\\");
+		// 경로를 제외한 파일 이름만 들고 있는다.
+		std::string fileName = path;
+		UINT slashIndex = fileName.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
 			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
-		}*/
-		std::string path = std::string(TEXTURES_DIRECTORY_NAME) + fileName;
+		}
+		ID3D11ShaderResourceView* srv;
+		std::string filePath = std::string(TEXTURES_DIRECTORY_NAME) + path;
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
-		std::wstring pathWS = std::wstring(path.begin(), path.end());
+		std::wstring pathWS = std::wstring(filePath.begin(), filePath.end());
 
 		HRESULT hr = S_FALSE;
 
@@ -272,7 +316,7 @@ namespace RocketCore::Graphics
 		EnvMapInfo envMapInfo;
 
 		ID3D11ShaderResourceView* skyboxTexture;
-		std::string path = std::string(TEXTURES_DIRECTORY_NAME) + fileName;
+		std::string path = std::string(CUBEMAPS_DIRECTORY_NAME) + fileName;
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
 		std::wstring pathWS = std::wstring(path.begin(), path.end());
 
@@ -433,11 +477,46 @@ namespace RocketCore::Graphics
 
 	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
 	{
-		if (_loadedFileInfo.find(fileName) == _loadedFileInfo.end())
+		std::string name = fileName;
+
+		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
+		UINT slashIndex = name.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
 		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+		}
+
+		// SKM_TP_X_Breathing.fbx 이나 SM_Plane.fbx 과 같은 fileName으로 들어오는 경우
+		UINT firstBarIndex = name.find_first_of("_");
+		UINT lastBarIndex = name.find_last_of("_");
+		if (firstBarIndex != std::string::npos)
+		{
+			if (lastBarIndex != firstBarIndex) // 언더바 여러 개
+			{
+				// 첫번째 언더바와 두번째 언더바 사이가 fileInfo로 저장된 map의 key값이다.
+				// 우선 첫번째 언더바와 마지막 언더바 사이만 남겨준다.
+				name = name.substr(firstBarIndex + 1, lastBarIndex - firstBarIndex - 1);
+				//TP_X 와 같은 형태로 남는다. 거기서 언더바부터 또 자른다.
+				UINT firstBarIndex2 = name.find_first_of("_");
+				if (firstBarIndex2 != std::string::npos)
+				{
+					name = name.substr(0, firstBarIndex2);
+				}
+			}
+			else
+			{
+				name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
+			}
+		}
+
+		// 엔진에 저장되어 있지 않다면 파일 로드
+		if (_loadedFileInfo.find(name) == _loadedFileInfo.end())
+		{
+			// 파일을 로드하지만 경로를 안 넣었다면 리소스 로드가 안 될 것이다.
 			LoadFBXFile(fileName);
 		}
-		return _loadedFileInfo[fileName].loadedMeshes;
+		return _loadedFileInfo[name].loadedMeshes;
 	}
 
 	ID3D11ShaderResourceView* ResourceManager::GetTexture(const std::string& fileName)
@@ -451,20 +530,90 @@ namespace RocketCore::Graphics
 
 	Node* ResourceManager::GetNode(const std::string& fileName)
 	{
-		if (_loadedFileInfo.find(fileName) == _loadedFileInfo.end())
+		std::string name = fileName;
+
+		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
+		UINT slashIndex = name.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
 		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+		}
+
+		// SKM_TP_X_Breathing.fbx 이나 SM_Plane.fbx 과 같은 fileName으로 들어오는 경우
+		UINT firstBarIndex = name.find_first_of("_");
+		UINT lastBarIndex = name.find_last_of("_");
+		if (firstBarIndex != std::string::npos)
+		{
+			if (lastBarIndex != firstBarIndex) // 언더바 여러 개
+			{
+				// 첫번째 언더바와 두번째 언더바 사이가 fileInfo로 저장된 map의 key값이다.
+				// 우선 첫번째 언더바와 마지막 언더바 사이만 남겨준다.
+				name = name.substr(firstBarIndex + 1, lastBarIndex - firstBarIndex - 1);
+				//TP_X 와 같은 형태로 남는다. 거기서 언더바부터 또 자른다.
+				UINT firstBarIndex2 = name.find_first_of("_");
+				if (firstBarIndex2 != std::string::npos)
+				{
+					name = name.substr(0, firstBarIndex2);
+				}
+			}
+			else
+			{
+				name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
+			}
+		}
+
+		// 엔진에 저장되어 있지 않다면 로드
+		if (_loadedFileInfo.find(name) == _loadedFileInfo.end())
+		{
+			// 파일을 로드하지만 경로를 안 넣었다면 리소스 로드가 안 될 것이다.
 			LoadFBXFile(fileName);
 		}
-		return _loadedFileInfo[fileName].node;
+		return _loadedFileInfo[name].node;
 	}
 
 	std::unordered_map<std::string, Animation*>& ResourceManager::GetAnimations(const std::string& fileName)
 	{
-		if (_loadedFileInfo.find(fileName) == _loadedFileInfo.end())
+		std::string name = fileName;
+
+		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
+		UINT slashIndex = name.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
 		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+		}
+
+		// SKM_TP_X_Breathing.fbx 이나 SM_Plane.fbx 과 같은 fileName으로 들어오는 경우
+		UINT firstBarIndex = name.find_first_of("_");
+		UINT lastBarIndex = name.find_last_of("_");
+		if (firstBarIndex != std::string::npos)
+		{
+			if (lastBarIndex != firstBarIndex) // 언더바 여러 개
+			{
+				// 첫번째 언더바와 두번째 언더바 사이가 fileInfo로 저장된 map의 key값이다.
+				// 우선 첫번째 언더바와 마지막 언더바 사이만 남겨준다.
+				name = name.substr(firstBarIndex + 1, lastBarIndex - firstBarIndex - 1);
+				//TP_X 와 같은 형태로 남는다. 거기서 언더바부터 또 자른다.
+				UINT firstBarIndex2 = name.find_first_of("_");
+				if (firstBarIndex2 != std::string::npos)
+				{
+					name = name.substr(0, firstBarIndex2);
+				}
+			}
+			else
+			{
+				name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
+			}
+		}
+
+		// 엔진에 저장되어 있지 않다면 로드
+		if (_loadedFileInfo.find(name) == _loadedFileInfo.end())
+		{
+			// 파일을 로드하지만 경로를 안 넣었다면 리소스 로드가 안 될 것이다.
 			LoadFBXFile(fileName);
 		}
-		return _loadedFileInfo[fileName].loadedAnimation;
+		return _loadedFileInfo[name].loadedAnimation;
 	}
 
 	void ResourceManager::CreateRasterizerStates()
@@ -567,7 +716,7 @@ namespace RocketCore::Graphics
 		PixelShader* outlineSobelDetectionPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (outlineSobelDetectionPS->LoadShaderFile(L"Resources/Shaders/Outline_SobelDetectionPS.cso"))
 			_pixelShaders.insert(std::make_pair("Outline_SobelDetectionPS.cso", outlineSobelDetectionPS));
-		
+
 		PixelShader* outlineFullScreenQuadPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (outlineFullScreenQuadPS->LoadShaderFile(L"Resources/Shaders/Outline_FullScreenQuadPS.cso"))
 			_pixelShaders.insert(std::make_pair("Outline_FullScreenQuadPS.cso", outlineFullScreenQuadPS));
@@ -595,7 +744,7 @@ namespace RocketCore::Graphics
 		PixelShader* integrateBRDF = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (integrateBRDF->LoadShaderFile(L"Resources/Shaders/IntegrateBRDF.cso"))
 			_pixelShaders.insert(std::make_pair("IntegrateBRDF.cso", integrateBRDF));
-		
+
 		VertexShader* fullScreenQuadVS = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (fullScreenQuadVS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadVS.cso"))
 			_vertexShaders.insert(std::make_pair("FullScreenQuadVS.cso", fullScreenQuadVS));
@@ -705,6 +854,10 @@ namespace RocketCore::Graphics
 				vertex.UV.y = mesh->mTextureCoords[0][i].y;
 			}
 
+			vertex.Tangent.x = mesh->mTangents[i].x;
+			vertex.Tangent.y = mesh->mTangents[i].y;
+			vertex.Tangent.z = mesh->mTangents[i].z;
+
 			vertices.push_back(vertex);
 		}
 
@@ -719,7 +872,7 @@ namespace RocketCore::Graphics
 		}
 
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
+		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
 
 		int upAxis = 0;
 		scene->mMetaData->Get<int>("UpAxis", upAxis);
@@ -748,17 +901,10 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
-		unitScaleFactor = 1.0f;
-		//unitScaleFactor = 100.0f;
+		unitScaleFactor = 1.0f / unitScaleFactor;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
-
-		/*aiMatrix4x4 mat(
-			rightVec.x, rightVec.y, rightVec.z, 0.0f,
-			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		aiMatrix4x4 mat(
 			rightVec.x, upVec.x, forwardVec.x, 0.0f,
@@ -766,27 +912,22 @@ namespace RocketCore::Graphics
 			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		/*aiMatrix4x4 mat(
-			0.01f, 0.0f, 0.0f, 0.0f,
-			0.0f, 0.01f, 0.0f, 0.0f,
-			0.0f, 0.0f, 0.01f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
-
-			// create node hierarchy
+		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
-		//rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
+		ReadNodeHierarchy(*rootNode, scene->mRootNode);
 
-		_loadedFileInfo[_fileName].node = rootNode;
+		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
 
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+			Material* newMaterial = new Material(GetVertexShader("VertexShader.cso"), GetPixelShader("PixelShader.cso"));
 			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
 			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
+				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
+				_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 			}
 		}
 	}
@@ -814,6 +955,10 @@ namespace RocketCore::Graphics
 			// process uv
 			vertex.UV.x = mesh->mTextureCoords[0][i].x;
 			vertex.UV.y = mesh->mTextureCoords[0][i].y;
+
+			vertex.Tangent.x = mesh->mTangents[i].x;
+			vertex.Tangent.y = mesh->mTangents[i].y;
+			vertex.Tangent.z = mesh->mTangents[i].z;
 
 			vertex.BoneIndices = DirectX::XMUINT4{ 0, 0, 0, 0 };
 			vertex.Weights = DirectX::XMFLOAT4{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -929,16 +1074,10 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
-		unitScaleFactor = 0.01f;
+		unitScaleFactor = 1.0f / unitScaleFactor;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
-
-		/*aiMatrix4x4 mat(
-			rightVec.x, rightVec.y, rightVec.z, 0.0f,
-			forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
-			-upVec.x, -upVec.y, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		aiMatrix4x4 mat(
 			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
@@ -946,38 +1085,37 @@ namespace RocketCore::Graphics
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		/*aiMatrix4x4 mat(
-			0.01f,	0.0f,		0.0f,	0.0f,
-			0.0f,	0.0f,		-0.01f,	0.0f,
-			0.0f,	0.01f,		0.0f,	0.0f,
-			0.0f,	0.0f,		0.0f,	1.0f);*/
-
-			// create node hierarchy
+		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
-		//DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
-		//rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
-		_loadedFileInfo[_fileName].node = rootNode;
+		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
 
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
-
+		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
+		
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
+			Material* newMaterial = new Material(GetVertexShader("SkeletonVertexShader.cso"), GetPixelShader("SkeletonPixelShader.cso"));
+			for (UINT i = 0; i <= 21; ++i)
 			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
+				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
+				_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 			}
 		}
 	}
 
-	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
+	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene, Material* outMaterial)
 	{
 		UINT textureCount = material->GetTextureCount(type);
+		// 우선 첫번째 것만 가져오자.
+		if (textureCount > 0)
+		{
+			textureCount = 1;
+		}
 		for (UINT i = 0; i < textureCount; ++i)
 		{
 			aiString str;
@@ -997,6 +1135,71 @@ namespace RocketCore::Graphics
 				else
 				{
 					LoadTextureFile(fileName);
+					switch (type)
+					{
+						case aiTextureType_NONE:
+							break;
+						case aiTextureType_DIFFUSE:
+						{
+							ID3D11ShaderResourceView* albedoTex = GetTexture(fileName);
+							outMaterial->SetAlbedoMap(albedoTex);
+							break;
+						}
+						case aiTextureType_SPECULAR:
+							break;
+						case aiTextureType_AMBIENT:
+							break;
+						case aiTextureType_EMISSIVE:
+							break;
+						case aiTextureType_HEIGHT:
+							break;
+						case aiTextureType_NORMALS:
+						{
+							ID3D11ShaderResourceView* normalTex = GetTexture(fileName);
+							outMaterial->SetNormalMap(normalTex);
+							break;
+						}
+						case aiTextureType_SHININESS:
+							break;
+						case aiTextureType_OPACITY:
+							break;
+						case aiTextureType_DISPLACEMENT:
+							break;
+						case aiTextureType_LIGHTMAP:
+							break;
+						case aiTextureType_REFLECTION:
+							break;
+						case aiTextureType_BASE_COLOR:
+							break;
+						case aiTextureType_NORMAL_CAMERA:
+							break;
+						case aiTextureType_EMISSION_COLOR:
+							break;
+						case aiTextureType_METALNESS:
+						{
+							ID3D11ShaderResourceView* metallicTex = GetTexture(fileName);
+							outMaterial->SetMetallicMap(metallicTex);
+							break;
+						}
+						case aiTextureType_DIFFUSE_ROUGHNESS:
+						{
+							ID3D11ShaderResourceView* roughnessTex = GetTexture(fileName);
+							outMaterial->SetRoughnessMap(roughnessTex);
+							break;
+						}
+						case aiTextureType_AMBIENT_OCCLUSION:
+							break;
+						case aiTextureType_SHEEN:
+							break;
+						case aiTextureType_CLEARCOAT:
+							break;
+						case aiTextureType_TRANSMISSION:
+							break;
+						case aiTextureType_UNKNOWN:
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
@@ -1051,12 +1254,25 @@ namespace RocketCore::Graphics
 		return texture;
 	}
 
+	void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node)
+	{
+		nodeOutput.name = node->mName.C_Str();
+		nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
+
+		for (int i = 0; i < node->mNumChildren; ++i)
+		{
+			Node child;
+			ReadNodeHierarchy(child, node->mChildren[i]);
+			nodeOutput.children.push_back(child);
+		}
+	}
+
 	void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo)
 	{
 		if (boneInfo.find(node->mName.C_Str()) != boneInfo.end())
 		{
 			nodeOutput.name = node->mName.C_Str();
-			nodeOutput.nodeTransform = AIMatrix4x4ToXMMatrix(node->mTransformation);
+			nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
 			//nodeOutput.nodeTransform = XMMatrixTranspose(nodeOutput.nodeTransform);
 
 			Bone bone;
@@ -1082,7 +1298,7 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void ResourceManager::LoadAnimation(const aiScene* scene)
+	void ResourceManager::LoadAnimation(const aiScene* scene, std::string animationName)
 	{
 		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
 		// numChannels == numBones
@@ -1092,9 +1308,16 @@ namespace RocketCore::Graphics
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();
 			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
-			newAnimation->animName = _fileName;
+			//newAnimation->animName = animationName;
+			if (animationName == "")
+			{
+				newAnimation->animName = animation->mName.C_Str();
+			}
+			else
+			{
+				newAnimation->animName = animationName;
+			}
 			newAnimation->duration = animation->mDuration;
-			newAnimation->blendDuration = newAnimation->duration / 20.0f;
 
 			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
 			{
@@ -1130,7 +1353,7 @@ namespace RocketCore::Graphics
 
 				newAnimation->nodeAnimations.push_back(newNodeAnim);
 			}
-			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(newAnimation->animName, newAnimation));
+			_loadedFileInfo[_fileInfoKeyName].loadedAnimation.insert(std::make_pair(newAnimation->animName, newAnimation));
 		}
 	}
 

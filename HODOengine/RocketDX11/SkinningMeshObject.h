@@ -7,7 +7,8 @@
 #include <wrl.h>
 #include "Animation.h"
 
-#include "..\\HODO3DGraphicsInterface\\ISkinnedMesh.h"
+#include "../HODO3DGraphicsInterface/ISkinnedMesh.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 #include "MathHeader.h"
 
 /// <summary>
@@ -33,6 +34,7 @@ namespace RocketCore::Graphics
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void LoadMesh(const std::string& fileName) override;
+		virtual void LoadNode(const std::string& fileName) override;
 		virtual void LoadNormalMap(const std::string& fileName) override;
 		virtual void LoadAlbedoMap(const std::string& fileName) override;
 		virtual void LoadARMMap(const std::string& fileName) override;
@@ -42,15 +44,13 @@ namespace RocketCore::Graphics
 		virtual void SetMetallicValue(float value) override;
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a = 255) override;
 		virtual void SetAlbedoColor(Vector4 color) override;
+		virtual Node* GetNode() override;
 
-		virtual void PlayAnimation(const std::string& fileName, bool isLoop = true) override;
-		void PlayAnimation(UINT index, bool isLoop = true);
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
 
 		virtual bool IsAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
-
-		virtual Matrix GetBoneTransformByNodeName(std::string nodeName) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		DirectX::XMMATRIX GetWorldTM();
@@ -62,18 +62,19 @@ namespace RocketCore::Graphics
 	private:
 		void LoadAnimation(const std::unordered_map<std::string, Animation*>& animation);
 
-		void UpdateAnimation(float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT3 CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim);
 
-		void UpdateBlendAnimation(float prevAnimationTime, float animationTime, const Node& node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateBlendAnimation(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT4 CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT3 CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 
 	private:
 		std::vector<Mesh*> m_meshes;
+		//std::vector<Material*> m_material;
 		Material* m_material;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
@@ -87,10 +88,11 @@ namespace RocketCore::Graphics
 		Animation* m_previousAnimation;
 		Animation* m_currentAnimation;
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
-		std::unordered_map<std::string, DirectX::XMMATRIX> m_boneTransformMap;
-		Node* m_node;
+		Node m_node;
 
 		// Transform Matrix
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
+
+		std::unordered_map<std::string, DirectX::XMMATRIX> m_nodeTransformMap;
 	};
 }

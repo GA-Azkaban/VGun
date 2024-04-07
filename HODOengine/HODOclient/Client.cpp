@@ -19,8 +19,8 @@ void Client::Initialize()
 	//TestScene test;
 	//test.Start();
 
-	LoginSceneView login;
-	login.Initialize();
+	//LoginSceneView login;
+	//login.Initialize();
 
 	MainMenuScene menu;
 	menu.Initalize();

@@ -40,6 +40,7 @@ public:
 
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);
+	void SetFadeCanvas(HDData::GameObject* fadeCanvas);
 	void SetJoinCanvas(HDData::GameObject* joinCanvas);
 
 	void SetidDupl(HDData::GameObject*);
@@ -51,6 +52,8 @@ public:
 private:
 	// 메인 화면
 	HDData::GameObject* _mainCanvas;
+	// fade in out
+	HDData::GameObject* _fadeCanvas;
 	// 회원가입
 	HDData::GameObject* _joinCanvas;
 	// 가입 성공 || 실패

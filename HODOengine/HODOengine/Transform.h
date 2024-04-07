@@ -2,6 +2,7 @@
 #include "dllExporter.h"
 #include "Component.h"
 #include "MathHeader.h"
+#include "../HODOCommon/HDTransform.h"
 
 /// <summary>
 /// Transform은 모든 GameObject가 공통적으로 가지고 있는 컴포넌트입니다.
@@ -10,10 +11,10 @@
 
 namespace HDData
 {
-	class GameObject;
 	class HODO_API Transform : public Component
 	{
 	public:
+		friend class GameObject;
 		Transform();
 		Vector3 GetPosition() const;			// world 기준
 		Quaternion GetRotation() const;			// world 기준
@@ -48,9 +49,7 @@ namespace HDData
 		void Rotate(const Quaternion& quaternion);
 
 	private:
-		Vector3 _position;	// Local position of gameobject
-		Quaternion _rotation;	// Local rotation of gameobject
-		Vector3 _scale;	// Local scale of gameobject
+		HDCommon::Transform* _transform;
 	};
 }
 

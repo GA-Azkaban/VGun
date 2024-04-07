@@ -1,6 +1,12 @@
 ﻿#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
+#include "SceneSystem.h"
+#include "HDResourceManager.h"
+#include "DynamicBoxCollider.h"
+#include "StaticBoxCollider.h"
+#include "SkinnedMeshRenderer.h"
+#include "MeshRenderer.h"
 
 namespace HDData
 {
@@ -24,9 +30,9 @@ namespace HDData
 	{
 		_selfActive = true;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnEnable();
+			_componentsIndexed[i]->OnEnable();
 		}
 	}
 
@@ -34,9 +40,9 @@ namespace HDData
 	{
 		_selfActive = false;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnDisable();
+			_componentsIndexed[i]->OnDisable();
 		}
 	}
 
@@ -44,12 +50,12 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			if (!component->_isStarted)
+			if (!_componentsIndexed[i]->_isStarted)
 			{
-				component->Start();
-				component->_isStarted = true;
+				_componentsIndexed[i]->Start();
+				_componentsIndexed[i]->_isStarted = true;
 			}
 		}
 	}
@@ -58,9 +64,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->Update();
+			_componentsIndexed[i]->Update();
 		}
 	}
 
@@ -68,9 +74,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->LateUpdate();
+			_componentsIndexed[i]->LateUpdate();
 		}
 	}
 
@@ -78,9 +84,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->FixedUpdate();
+			_componentsIndexed[i]->FixedUpdate();
 		}
 	}
 
@@ -88,9 +94,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnDestroy();
+			_componentsIndexed[i]->OnDestroy();
 		}
 	}
 
@@ -98,9 +104,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnCollisionEnter();
+			_componentsIndexed[i]->OnCollisionEnter();
 		}
 	}
 
@@ -108,9 +114,9 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnCollisionStay();
+			_componentsIndexed[i]->OnCollisionStay();
 		}
 	}
 
@@ -118,20 +124,35 @@ namespace HDData
 	{
 		if (!GetParentActive()) return;
 
-		for (auto& component : _components)
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			component->OnCollisionExit();
+			_componentsIndexed[i]->OnCollisionExit();
 		}
 	}
 
-	const std::unordered_set<Component*>& GameObject::GetAllComponents() const
+	const std::vector<Component*>& GameObject::GetAllComponents() const
 	{
-		return _components;
+		return _componentsIndexed;
 	}
 
-	const std::unordered_set<GameObject*>& GameObject::GetChildGameObjects() const
+	const std::vector<GameObject*>& GameObject::GetChildGameObjects() const
 	{
-		return _childGameObjects;
+		return _childGameObjectsIndexed;
+	}
+
+	GameObject* GameObject::GetGameObjectByNameInChildren(const std::string& objectName)
+	{
+		if (_objectName == objectName)
+			return this;
+
+		for (int i = 0; i < _childGameObjectsIndexed.size(); ++i)
+		{		
+			GameObject* founded = _childGameObjectsIndexed[i]->GetGameObjectByNameInChildren(objectName);
+			if (founded != nullptr)
+				return founded;
+		}
+		
+		return nullptr;
 	}
 
 	void GameObject::SetParentObject(GameObject* parentObject)
@@ -141,14 +162,20 @@ namespace HDData
 		{
 			if (_parentGameObject != nullptr)
 			{
-				std::erase_if(_parentGameObject->_childGameObjects, [this](GameObject* obj) {return obj == this; });
+				for (auto iter = _parentGameObject->_childGameObjectsIndexed.begin(); iter != _parentGameObject->_childGameObjectsIndexed.end(); ++iter)
+				{
+					if (*iter == this)
+					{
+						_parentGameObject->_childGameObjectsIndexed.erase(iter);
+					}
+				}
 				_parentGameObject = nullptr;
 			}
 		}
-		else
+		else // Set parent
 		{
 			_parentGameObject = parentObject;
-			_parentGameObject->_childGameObjects.insert(this);
+			_parentGameObject->_childGameObjectsIndexed.push_back(this);
 		}
 	}
 
@@ -193,4 +220,62 @@ namespace HDData
 		return _objectName;
 	}
 
+	void GameObject::LoadNodeFromFBXFile(std::string fileName)
+	{
+		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);
+		auto rendererComp = rendererObject->AddComponent<SkinnedMeshRenderer>();
+		rendererComp->LoadNode(fileName);
+		rendererComp->LoadMesh(fileName);
+		Node* rendererNode = rendererComp->GetNode();
+		if (!rendererNode)
+			return;
+
+		Node* armature = FindNodeByName(rendererNode, "Armature");
+		if (armature != nullptr)
+		{
+			ProcessNode(armature, this);
+		}
+		else
+		{
+			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "Armature", this);
+			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
+			Node* root = FindNodeByName(rendererNode, "root");
+			if (root != nullptr)
+			{
+				ProcessNode(root, newObject);
+			}
+		}
+		// 그래픽스엔진의 SkinningObject의 LoadMesh에서 호출되는 LoadNode는 없애야 한다.
+		// 가져온 노드정보의 트랜스폼을 게임 오브젝트가 가진 트랜스폼과 연결시켜야 한다.
+	}
+
+	Node* GameObject::FindNodeByName(Node* node, std::string nodeName)
+	{
+		if (node->name == nodeName)
+		{
+			return node;
+		}
+
+		for (int i = 0; i < node->children.size(); ++i)
+		{
+			Node* findNode = FindNodeByName(&(node->children[i]), nodeName);
+			if (findNode)
+				return findNode;
+		}
+
+		return nullptr;
+	}
+
+	void GameObject::ProcessNode(Node* node, GameObject* parentObject)
+	{
+		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), node->name, parentObject);
+		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
+		node->nodeTransform = newObject->GetTransform()->_transform;
+		
+		for (int i = 0; i < node->children.size(); ++i)
+		{
+			ProcessNode(&(node->children[i]), newObject);
+		}
+	}
+	
 }

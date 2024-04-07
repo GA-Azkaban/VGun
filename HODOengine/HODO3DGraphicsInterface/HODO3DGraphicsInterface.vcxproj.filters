@@ -59,6 +59,9 @@
     <Filter Include="Light">
       <UniqueIdentifier>{0cd91e06-de9d-4743-a4e7-368afe9cbf4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{b02baf03-ea33-4b33-8ca3-2c4eab4f9399}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -114,6 +117,9 @@
     </ClInclude>
     <ClInclude Include="ILight.h">
       <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

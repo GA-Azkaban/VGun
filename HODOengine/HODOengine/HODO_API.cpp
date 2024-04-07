@@ -86,7 +86,7 @@ namespace API
 			valueText->AddComponent<HDData::TextUI>();
 			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 			valueText->GetComponent<HDData::TextUI>()->SetText("default");
-			
+
 			return obj;
 		}
 
@@ -95,12 +95,12 @@ namespace API
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);
 			auto toggle = obj->AddComponent<HDData::ToggleUI>();
 
-			auto toggleOn = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOn" , obj);
+			auto toggleOn = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOn", obj);
 			auto on = toggleOn->AddComponent<HDData::ImageUI>();
 			toggle->SetOnComp(on);
 			on->SetImage("Sound.png");
 
-			auto toggleOff = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOff" , obj);
+			auto toggleOff = HDEngine::ObjectSystem::Instance().CreateObject(scene, "toggleOff", obj);
 			auto off = toggleOff->AddComponent<HDData::ImageUI>();
 			toggle->SetOffComp(off);
 			off->SetImage("Mute.png");
@@ -250,6 +250,12 @@ namespace API
 			HDData::Camera* prevCam = GetMainCamera();
 			HDEngine::SceneSystem::Instance().GetCurrentScene()->SetMainCamera(camera);
 			return prevCam;
+		}
+
+		HODO_API HDData::AnimationController* CreateAnimationController()
+		{
+			HDData::AnimationController* aniCon = new HDData::AnimationController();
+			return aniCon;
 		}
 	}
 

@@ -87,6 +87,20 @@ namespace HDEngine
 		// Call the start function of the static objects that the update function was first called
 		if (!_staticObjectList.empty())
 		{
+			for (auto staticobj = _staticObjectList.begin(); staticobj != _staticObjectList.end();)
+			{
+				if ((*staticobj)->IsActive())
+				{
+					(*staticobj)->Start();
+					_runningStaticObjectList.push_back(*staticobj);
+					staticobj = _staticObjectList.erase(staticobj);
+				}
+				else
+				{
+					++staticobj;
+				}
+			}
+
 			for (const auto& staticObj : _staticObjectList)
 			{
 				for (const auto& comp : staticObj->GetAllComponents())

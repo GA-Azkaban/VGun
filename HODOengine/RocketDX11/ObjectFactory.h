@@ -6,6 +6,7 @@ namespace RocketCore::Graphics
 	class ObjectFactory : public HDEngine::IFactory
 	{
 	public:
+		virtual HDEngine::IResourceManager* CreateResourceManager() override;
 		virtual HDEngine::ICamera* CreateCamera() override;
 		virtual HDEngine::IStaticMesh* CreateStaticMeshObject() override;
 		virtual HDEngine::ISkinnedMesh* CreateSkinnedMeshObject() override;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -44,6 +44,8 @@ namespace RocketCore::Graphics
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
 
+		virtual void FadeIn() override;
+		virtual void FadeOut() override;
 
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }
