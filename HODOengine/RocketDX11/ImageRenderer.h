@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <d3d11.h>
 #include <memory>
@@ -48,9 +48,10 @@ namespace RocketCore::Graphics
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
+		// fade
 		virtual void FadeIn() override;
-
 		virtual void FadeOut() override;
+		virtual bool GetFadeMode() override;
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);

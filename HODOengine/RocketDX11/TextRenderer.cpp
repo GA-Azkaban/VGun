@@ -153,4 +153,9 @@ namespace RocketCore::Graphics
 
 	}
 
+	bool TextRenderer::GetFadeMode()
+	{
+		return true;
+	}
+
 }

@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 
 MainMenuScene::MainMenuScene()
@@ -49,40 +49,56 @@ void MainMenuScene::MainMenu()
 	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
 	fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
-	HDData::GameObject* temp = API::CreateImageBox(_scene, "tempCanvas");
-	temp->GetComponent<HDData::ImageUI>()->SetImage("test.jpg");
-	temp->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
-	temp->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	HDData::GameObject* lobby = API::CreateImageBox(_scene, "tempCanvas");
+	lobby->GetComponent<HDData::ImageUI>()->SetImage("test.jpg");
+	lobby->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
+	lobby->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
 	// play->RoomEnter sequence
-	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn",mainmenuCanvas);
+	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainmenuCanvas);
 	playBtn->GetComponent<HDData::Button>()->SetImage("play_btn.png");
 	playBtn->GetTransform()->SetPosition(115.f, 240.f, 0.6f);
 	playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	HDData::GameObject* roomEnterBtn = API::CreateButton(_scene, "roomEnter", playBtn);
-	roomEnterBtn->GetTransform()->SetPosition(350.f, 190.f,0.6f);
-	roomEnterBtn->GetComponent<HDData::Button>()->SetImage("arrowLeft.png");
+	roomEnterBtn->GetTransform()->SetPosition(350.f, 190.f, 0.55f);
+	roomEnterBtn->GetComponent<HDData::Button>()->SetImage("login.png");
 	roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
 
-	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomEnter", playBtn);
+	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
 	roomMakeBtn->GetTransform()->SetPosition(350.f, 290.f, 0.6f);
-	roomMakeBtn->GetComponent<HDData::Button>()->SetImage("arrowRight.png");
+	roomMakeBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
+	roomMakeBtn->GetComponent<HDData::Button>()->SetSortOrder(0.56f);
 	roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
 
+	HDData::GameObject* setRoomCanvas = API::CreateImageBox(_scene, "lobbyCanvas", playBtn);
+	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
+	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetActive(false);
+	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.57f);
+	setRoomCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.f);
+
+	// event
 	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			roomEnterBtn->GetComponent<HDData::Button>()->FadeIn();
-			roomMakeBtn->GetComponent<HDData::Button>()->FadeIn(); 
+			if (!roomMakeBtn->GetComponent<HDData::Button>()->GetFadeMode() &&
+				!roomEnterBtn->GetComponent<HDData::Button>()->GetFadeMode())
+			{
+				roomEnterBtn->GetComponent<HDData::Button>()->FadeIn();
+				roomMakeBtn->GetComponent<HDData::Button>()->FadeIn();
+			}
+			else
+			{
+				roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
+				roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
+			}
 		}
 	);
 
-	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+	roomMakeBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
-			roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
+			setRoomCanvas->GetComponent<HDData::ImageUI>()->SetActive(true);
 		}
 	);
 

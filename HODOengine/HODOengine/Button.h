@@ -29,6 +29,7 @@ namespace HDData
 
 		void FadeIn();
 		void FadeOut();
+		bool GetFadeMode();
 
 	private:
 		ImageUI* _button;

@@ -1,4 +1,4 @@
-#include "Button.h"
+﻿#include "Button.h"
 #include "ImageUI.h"
 #include "TextUI.h"
 #include "GameObject.h"
@@ -61,6 +61,11 @@ namespace HDData
 	void Button::FadeOut()
 	{
 		_button->FadeOut();
+	}
+
+	bool Button::GetFadeMode()
+	{
+		return _button->GetFadeMode();
 	}
 
 }
