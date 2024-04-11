@@ -47,6 +47,7 @@ namespace RocketCore::Graphics
 		virtual void FadeIn() override;
 		virtual void FadeOut() override;
 		virtual bool GetFadeMode() override;
+		virtual bool SetFadeMode(bool isFade) override;
 
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }

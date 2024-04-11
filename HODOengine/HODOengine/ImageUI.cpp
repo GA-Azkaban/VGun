@@ -85,4 +85,10 @@ namespace HDData
 	{
 		return _imageUI->GetFadeMode();
 	}
+
+	bool ImageUI::SetFadeMode(bool SetFade)
+	{
+		return _imageUI->SetFadeMode(SetFade);
+	}
+
 }

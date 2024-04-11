@@ -250,9 +250,6 @@ void LoginSceneView::LoginView()
 		}
 	);
 
-
-	//joinCanvas->FadeOut();
-
 	joinCanvas->SetSelfActive(false);
 }
 

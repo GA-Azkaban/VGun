@@ -219,3 +219,9 @@ bool RocketCore::Graphics::ImageRenderer::GetFadeMode()
 {
 	return _fadeMode;
 }
+
+bool RocketCore::Graphics::ImageRenderer::SetFadeMode(bool SetFade)
+{
+	return _fadeMode = SetFade;
+}
+

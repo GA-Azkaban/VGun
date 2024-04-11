@@ -49,10 +49,10 @@ void MainMenuScene::MainMenu()
 	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
 	fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
-	HDData::GameObject* lobby = API::CreateImageBox(_scene, "tempCanvas");
-	lobby->GetComponent<HDData::ImageUI>()->SetImage("test.jpg");
-	lobby->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
-	lobby->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	//HDData::GameObject* lobby = API::CreateImageBox(_scene, "tempCanvas");
+	//lobby->GetComponent<HDData::ImageUI>()->SetImage("test.jpg");
+	//lobby->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
+	//lobby->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
 	// play->RoomEnter sequence
 	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainmenuCanvas);
@@ -63,34 +63,37 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* roomEnterBtn = API::CreateButton(_scene, "roomEnter", playBtn);
 	roomEnterBtn->GetTransform()->SetPosition(350.f, 190.f, 0.55f);
 	roomEnterBtn->GetComponent<HDData::Button>()->SetImage("login.png");
-	roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
+	roomEnterBtn->SetSelfActive(false);
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
 	roomMakeBtn->GetTransform()->SetPosition(350.f, 290.f, 0.6f);
 	roomMakeBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
 	roomMakeBtn->GetComponent<HDData::Button>()->SetSortOrder(0.56f);
-	roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
+	roomMakeBtn->SetSelfActive(false);
 
 	HDData::GameObject* setRoomCanvas = API::CreateImageBox(_scene, "lobbyCanvas", playBtn);
 	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
-	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetActive(false);
-	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.57f);
 	setRoomCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.f);
+	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.57f);
+	setRoomCanvas->SetSelfActive(false);
 
 	// event
 	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			if (!roomMakeBtn->GetComponent<HDData::Button>()->GetFadeMode() &&
-				!roomEnterBtn->GetComponent<HDData::Button>()->GetFadeMode())
+			if (!roomMakeBtn->GetSelfActive() && !roomEnterBtn->GetSelfActive())
 			{
-				roomEnterBtn->GetComponent<HDData::Button>()->FadeIn();
-				roomMakeBtn->GetComponent<HDData::Button>()->FadeIn();
+				roomMakeBtn->SetSelfActive(true);
+				roomEnterBtn->SetSelfActive(true);
 			}
 			else
 			{
-				roomEnterBtn->GetComponent<HDData::Button>()->FadeOut();
-				roomMakeBtn->GetComponent<HDData::Button>()->FadeOut();
+				roomMakeBtn->SetSelfActive(false);
+				roomEnterBtn->SetSelfActive(false);
+				if (setRoomCanvas->GetSelfActive())
+				{
+					setRoomCanvas->SetSelfActive(false);
+				}
 			}
 		}
 	);
@@ -98,14 +101,21 @@ void MainMenuScene::MainMenu()
 	roomMakeBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			setRoomCanvas->GetComponent<HDData::ImageUI>()->SetActive(true);
+			if (!setRoomCanvas->GetSelfActive())
+			{
+				setRoomCanvas->SetSelfActive(true);
+			}
+			else
+			{
+				setRoomCanvas->SetSelfActive(false);
+			}
 		}
 	);
 
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn", mainmenuCanvas);
 	preferencesBtn->GetTransform()->SetPosition(115.f, 500.f, 0.f);
-	preferencesBtn->GetComponent<HDData::Button>()->SetImage("setting_btn.png");
+	preferencesBtn->GetComponent<HDData::Button>()->SetImage("icon_group_cog.png");
 	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	preferencesBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()

@@ -46,12 +46,15 @@ namespace RocketCore::Graphics
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }
 
+
+
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 		// fade
 		virtual void FadeIn() override;
 		virtual void FadeOut() override;
 		virtual bool GetFadeMode() override;
+		virtual bool SetFadeMode(bool SetFade) override;
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);

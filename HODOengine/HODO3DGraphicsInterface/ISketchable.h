@@ -17,5 +17,6 @@ namespace HDEngine
 		virtual void FadeIn() = 0;
 		virtual void FadeOut() = 0;
 		virtual bool GetFadeMode() = 0;
+		virtual bool SetFadeMode(bool SetFade) = 0;
 	};
 }
