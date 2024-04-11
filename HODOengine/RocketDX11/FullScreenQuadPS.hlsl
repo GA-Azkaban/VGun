@@ -16,29 +16,21 @@ struct VertexToPixel
 	float2 uv           : TEXCOORD;
 };
 
-//float3 CalculateWorldFromDepth(float depth, float2 texCoord)
-//{
-//	// clip space between [-1, 1]
-//	// flip y so that +ve y is upwards
-//	float2 clipXY = texCoord * 2.0 - 1.0;
-//	clipXY.y = -clipXY.y;
-//
-//	// NOTE: depth is not linearized
-//	// Also in range [0, 1] due to DirectX Convention
-//	float4 clipSpace = float4(clipXY, depth, 1);
-//	float4 viewSpace = mul(inverseProjection, clipSpace);
-//
-//	// perspective divide
-//	viewSpace /= viewSpace.w;
-//
-//	float4 worldSpace = mul(inverseView, viewSpace);
-//	return worldSpace.xyz;
-//}
+float3 GetViewSpacePositionFromDepth(float2 texCoord, float depth)
+{
+	float4 clipSpaceLocation;
+	clipSpaceLocation.xy = texCoord * 2.0f - 1.0f;
+	clipSpaceLocation.y *= -1;
+	clipSpaceLocation.z = depth;
+	clipSpaceLocation.w = 1.0f;
+	float4 homogenousLocation = mul(clipSpaceLocation, inverseProjection);
+	return homogenousLocation.xyz / homogenousLocation.w;
+}
 
 float4 main(VertexToPixel input) : SV_TARGET
 {
 	//float depth = DepthTexture.Sample(PointClampSampler, input.uv).r;
-	//float3 posW = CalculateWorldFromDepth(depth, input.uv);
+	//float3 viewPosition = GetViewSpacePositionFromDepth(input.uv, depth);
 	float3 posW = Position.Sample(PointClampSampler, input.uv).rgb;
 	float3 albedo = Albedo.Sample(PointClampSampler, input.uv).rgb;
 	float3 normal = Normal.Sample(PointClampSampler, input.uv).rgb;

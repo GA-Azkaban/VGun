@@ -43,6 +43,7 @@ cbuffer LightData : register(b3)
 cbuffer ShadowData : register(b4)
 {
 	float4x4 lightViewProjection;
+	int shadowMapSize;
 }
 
 cbuffer MaterialData : register(b5)

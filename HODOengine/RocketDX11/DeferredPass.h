@@ -13,8 +13,9 @@ namespace RocketCore::Graphics
 	class DeferredPass
 	{
 	public:
-		DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer, ShadowMapPass* shadowMapPass);
+		DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
 		~DeferredPass();
+
 		void Render();
 
 	private:
@@ -23,7 +24,5 @@ namespace RocketCore::Graphics
 
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
-
-		ShadowMapPass* _shadowMapPass;
 	};
 }

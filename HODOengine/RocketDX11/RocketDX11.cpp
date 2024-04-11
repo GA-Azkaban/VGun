@@ -147,6 +147,8 @@ namespace RocketCore::Graphics
 		/// Load resources
 		// FBX파일보다 Texture 파일들이 먼저 로드되어야 한다.
 		_resourceManager.LoadTextureFile("Character/TP_Red_B.png");
+		_resourceManager.LoadTextureFile("Character/TP_Green_B.png");
+		_resourceManager.LoadTextureFile("Character/TP_Blue_B.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_039_D.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_R.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_D.png");
@@ -167,7 +169,6 @@ namespace RocketCore::Graphics
 
 		CreateDepthStencilStates();
 		
-		LightManager::Instance().Initialize(_screenWidth, _screenHeight);
 		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
@@ -182,7 +183,7 @@ namespace RocketCore::Graphics
 		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_SSAOPass = new SSAOPass(_deferredBuffers);
-		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer, _shadowMapPass);
+		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
 		_outlinePass = new OutlinePass(_deferredBuffers, _quadBuffer, _stencilEnableBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
@@ -295,6 +296,7 @@ namespace RocketCore::Graphics
 	void RocketDX11::Update(float deltaTime)
 	{
 		Camera::GetMainCamera()->UpdateViewMatrix();
+		LightManager::Instance().UpdateViewProj();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{

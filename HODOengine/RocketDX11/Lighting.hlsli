@@ -6,20 +6,6 @@
 
 Texture2D ShadowMap : register(t8);
 
-//cbuffer LightProperties : register(b0)
-//{
-//	float4 cameraPosition;
-//	float4 globalAmbient;
-//	Light lights[MAX_LIGHTS];
-//}
-
-//cbuffer ShadowMapConstants : register(b1)
-//{
-//	float mapWidth;
-//	float mapHeight;
-//	float4x4 lightViewProjection;
-//}
-
 float ShadowFactor(float4 worldPos)
 {
 	float4 lightSpacePosition = mul(worldPos, lightViewProjection);
@@ -30,19 +16,27 @@ float ShadowFactor(float4 worldPos)
 	projCoords = projCoords * 0.5 + 0.5;
 	projCoords.y = 1.0 - projCoords.y;
 
-	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
+	const float dx = 1.0f / screenWidth;
+	const float dy = 1.0f / screenHeight;
+
+	float2 offsets[9] =
+	{
+		float2(-dx, -dy), float2(0.0f, -dy), float2(dx, -dy),
+		float2(-dx, 0.0f), float2(0.0f, 0.0f), float2(dx, 0.0f),
+		float2(-dx, +dy), float2(0.0f, +dy), float2(dx, +dy)
+	};
 
 	float shadow = 0;
 	float bias = 0.0001f;
-	for (int x = -1; x < 2; ++x)
+	
+	[unroll]
+	for (int i = 0; i < 9; ++i)
 	{
-		for (int y = -1; y < 2; ++y)
-		{			
-			shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler, projCoords.xy + float2(x, y) * texelSize, currentDepth - bias).r;
-		}
+		shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler, 
+			projCoords.xy + offsets[i], currentDepth - bias).r;
 	}
 
-	shadow /= 9;
+	shadow /= 9.0f;
 	return shadow;
 }
 

@@ -12,8 +12,8 @@ using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
-	DeferredPass::DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer, ShadowMapPass* shadowMapPass)
-		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer), _shadowMapPass(shadowMapPass)
+	DeferredPass::DeferredPass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer)
+		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer)
 	{
 		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
 		_pixelShader = ResourceManager::Instance().GetPixelShader("FullScreenQuadPS.cso");
@@ -25,7 +25,6 @@ namespace RocketCore::Graphics
 		delete _quadBuffer;
 		delete _vertexShader;
 		delete _pixelShader;
-		delete _shadowMapPass;
 	}
 
 	void DeferredPass::Render()
@@ -70,6 +69,8 @@ namespace RocketCore::Graphics
 
 		_pixelShader->SetFloat("screenWidth", static_cast<float>(_deferredBuffers->GetScreenWidth()));
 		_pixelShader->SetFloat("screenHeight", static_cast<float>(_deferredBuffers->GetScreenHeight()));
+
+		_pixelShader->SetInt("shadowMapSize", static_cast<float>(ShadowMapPass::SHADOW_MAP_SIZE));
 		
 		_pixelShader->SetFloat("envLightIntensity", Cubemap::Instance().GetEnvLightIntensity());
 
