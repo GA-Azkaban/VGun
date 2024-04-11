@@ -17,6 +17,9 @@ namespace RocketCore::Graphics
 
 		void Render();
 
+	public:
+		static constexpr UINT SHADOW_MAP_SIZE = 2048;
+
 	private:
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
 		DeferredBuffers* _deferredBuffers;

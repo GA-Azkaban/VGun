@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <DirectXMath.h>
 #include "dllExporter.h"
 
@@ -14,7 +14,6 @@ namespace RocketCore::Graphics
 	public:
 		Camera();
 		~Camera();
-
 
 		virtual void SetPositionAndRotation(const Vector3& pos, const Quaternion& rot) override;
 
@@ -45,6 +44,8 @@ namespace RocketCore::Graphics
 		DirectX::XMVECTOR GetUp() const;
 		DirectX::XMVECTOR GetRight() const;
 
+		DirectX::BoundingFrustum GetFrustum();
+
 	private:
 		DirectX::XMFLOAT3 _position;				// 위치 (월드)
 		DirectX::XMFLOAT4 _rotation;				// 쿼터니언 (월드)
@@ -56,14 +57,15 @@ namespace RocketCore::Graphics
 		float _nearWindowHeight;		// frustum의 가까운 평면의 높이
 		float _farWindowHeight;			// frustum의 먼 평면의 높이
 
-		DirectX::XMFLOAT4X4 _worldMatrix;		// 카메라 worldTM
-		DirectX::XMFLOAT4X4 _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
-		DirectX::XMFLOAT4X4 _projectionMatrix;	// 카메라의 투영 행렬
+		DirectX::XMMATRIX _worldMatrix;		// 카메라 worldTM
+		DirectX::XMMATRIX _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
+		DirectX::XMMATRIX _projectionMatrix;	// 카메라의 투영 행렬
 
 	public:
 		static Camera* GetMainCamera();
 
 	private:
 		static Camera* _mainCamera;
+
 	};
 }

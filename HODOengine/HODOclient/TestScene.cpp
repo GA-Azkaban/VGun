@@ -27,15 +27,35 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	//auto testBox1 = API::CreateObject(_scene);
-	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -0.5f, 0.0f);
-	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("Plane.fbx");
-	//boxRender1->SetMetallicValue(0.0f);
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	//boxRender1->LoadMesh("SM_Plane.fbx");
+	boxRender1->LoadMesh("primitiveCube");
+
+	auto testBox2 = API::CreateObject(_scene);
+	testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
+	auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
+	boxRender2->LoadMesh("primitiveCube");
+
+	auto testBox3 = API::CreateObject(_scene);
+	testBox3->GetComponent<HDData::Transform>()->SetPosition(-50.0f, -1.0f, 0.0f);
+	auto boxRender3 = testBox3->AddComponent<HDData::MeshRenderer>();
+	boxRender3->LoadMesh("primitiveCube");
+
+	auto testBox4 = API::CreateObject(_scene);
+	testBox4->GetComponent<HDData::Transform>()->SetPosition(-80.0f, -1.0f, 20.0f);
+	auto boxRender4 = testBox4->AddComponent<HDData::MeshRenderer>();
+	boxRender4->LoadMesh("primitiveCube");
+
+	auto testBox5 = API::CreateObject(_scene);
+	testBox5->GetComponent<HDData::Transform>()->SetPosition(50.0f, -1.0f, -10.0f);
+	auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
+	boxRender5->LoadMesh("primitiveCube");
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -5.0f, 0.5f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
@@ -92,6 +112,75 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
+
+	//-----------------------------------------
+	auto playerTest2 = API::CreateObject(_scene, "player2");
+	playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -20.0f, 0.5f, 0.0f });
+	playerTest2->LoadFBXFile("SKM_TP_X_idle.fbx");
+
+	auto meshComp2 = playerTest2->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	HDEngine::MaterialDesc desc2;
+	desc2.materialName = "TP_Green";
+	desc2.albedo = "TP_Green_B.png";
+	HDData::Material* newMat2 = API::CreateMaterial(desc2);
+	meshComp2->LoadMaterial(newMat2, 0);
+	meshComp2->LoadMaterial(newMat2, 1);
+	meshComp2->LoadMaterial(newMat2, 2);
+	meshComp2->LoadMaterial(newMat2, 3);
+	meshComp2->LoadMaterial(newMat2, 4);
+	meshComp2->PlayAnimation("X_idle", true);
+	meshComp2->SetOutlineActive(true);
+
+	auto playerTest3 = API::CreateObject(_scene, "player3");
+	playerTest3->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -50.0f, 0.5f, 0.0f });
+	playerTest3->LoadFBXFile("SKM_TP_X_idle.fbx");
+
+	auto meshComp3 = playerTest3->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	HDEngine::MaterialDesc desc3;
+	desc3.materialName = "TP_Blue";
+	desc3.albedo = "TP_Blue_B.png";
+	HDData::Material* newMat3 = API::CreateMaterial(desc3);
+	meshComp3->LoadMaterial(newMat3, 0);
+	meshComp3->LoadMaterial(newMat3, 1);
+	meshComp3->LoadMaterial(newMat3, 2);
+	meshComp3->LoadMaterial(newMat3, 3);
+	meshComp3->LoadMaterial(newMat3, 4);
+	meshComp3->PlayAnimation("X_idle", true);
+	meshComp3->SetOutlineActive(true);
+
+	auto playerTest4 = API::CreateObject(_scene, "player4");
+	playerTest4->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -80.0f, 0.5f, 20.0f });
+	playerTest4->LoadFBXFile("SKM_TP_X_idle.fbx");
+
+	auto meshComp4 = playerTest4->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//HDEngine::MaterialDesc desc4;
+	//desc4.materialName = "TP_Blue";
+	//desc4.albedo = "TP_Blue_B.png";
+	//HDData::Material* newMat4 = API::CreateMaterial(desc4);
+	meshComp4->LoadMaterial(newMat2, 0);
+	meshComp4->LoadMaterial(newMat2, 1);
+	meshComp4->LoadMaterial(newMat2, 2);
+	meshComp4->LoadMaterial(newMat2, 3);
+	meshComp4->LoadMaterial(newMat2, 4);
+	meshComp4->PlayAnimation("X_idle", true);
+	meshComp4->SetOutlineActive(true);
+
+	auto playerTest5 = API::CreateObject(_scene, "player5");
+	playerTest5->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 50.0f, 0.5f, -10.0f });
+	playerTest5->LoadFBXFile("SKM_TP_X_idle.fbx");
+
+	auto meshComp5 = playerTest5->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//HDEngine::MaterialDesc desc5;
+	//desc5.materialName = "TP_Blue";
+	//desc5.albedo = "TP_Blue_B.png";
+	//HDData::Material* newMat5 = API::CreateMaterial(desc4);
+	meshComp5->LoadMaterial(newMat3, 0);
+	meshComp5->LoadMaterial(newMat3, 1);
+	meshComp5->LoadMaterial(newMat3, 2);
+	meshComp5->LoadMaterial(newMat3, 3);
+	meshComp5->LoadMaterial(newMat3, 4);
+	meshComp5->PlayAnimation("X_idle", true);
+	meshComp5->SetOutlineActive(true);
 
 	API::LoadScene(_scene);
 }

@@ -39,8 +39,9 @@ namespace RocketCore::Graphics
 		
 		XMMATRIX lightView = LightManager::Instance().GetLightView();
 		XMMATRIX lightProj = LightManager::Instance().GetLightProj();
+		XMMATRIX lightViewProj = lightView * lightProj;
 
-		_vertexShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightView * lightProj));
+		_vertexShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightViewProj));
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
@@ -64,7 +65,7 @@ namespace RocketCore::Graphics
 		}
 
 		_vertexShader = ResourceManager::Instance().GetVertexShader("SkinningMeshShadowMapVS.cso");
-		_vertexShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightView * lightProj));
+		_vertexShader->SetMatrix4x4("lightViewProjection", XMMatrixTranspose(lightViewProj));
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{

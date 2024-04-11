@@ -35,7 +35,7 @@ PSOutput main(VertexToPixel input)
 	if (useNormalMap)
 	{
 		float3 normalFromMap = NormalMap.Sample(LinearWrapSampler, input.uv).xyz * 2 - 1;
-
+		
 		// Transform from tangent to world space
 		float3 N = input.normal;
 		float3 T = normalize(input.tangent - N * dot(input.tangent, N));

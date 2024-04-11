@@ -31,8 +31,9 @@ namespace RocketCore::Graphics
 
 		void SetEnvironmentMap(std::string fileName);
 		
-		UINT GetScreenWidth() { return m_textureWidth; }
-		UINT GetScreenHeight() { return m_textureHeight; }
+		UINT GetScreenWidth() { return _textureWidth; }
+		UINT GetScreenHeight() { return _textureHeight; }
+		
 		ID3D11ShaderResourceView* GetShaderResourceView(UINT index);
 		ID3D11DepthStencilView* GetDepthStencilView();
 		ID3D11ShaderResourceView* GetDepthSRV();
@@ -51,8 +52,8 @@ namespace RocketCore::Graphics
 		void FlushShaderResourceViews();
 
 	private:
-		UINT m_textureWidth;
-		UINT m_textureHeight;
+		UINT _textureWidth;
+		UINT _textureHeight;
 
 		Microsoft::WRL::ComPtr<ID3D11Device> _device;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _deviceContext;
@@ -69,7 +70,7 @@ namespace RocketCore::Graphics
 		// Env map
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envMap;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _envPreFilter;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _brdfLUT; 
+		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _brdfLUT;
 		
 		// AO map
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _ssaoTexture;
@@ -80,5 +81,7 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _shadowMapTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _shadowMapRenderTargetView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shadowMapShaderResourceView;
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> _shadowMapDepthTexture;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _shadowMapDSV;
 	};
 }
