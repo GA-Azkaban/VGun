@@ -61,11 +61,13 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMMATRIX _projectionMatrix;	// 카메라의 투영 행렬
 
+		DirectX::BoundingSphere _boundingSphere; // 그림자 품질 높게 그릴 범위이다.
+
 	public:
 		static Camera* GetMainCamera();
 
 	private:
 		static Camera* _mainCamera;
-
+	
 	};
 }

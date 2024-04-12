@@ -30,7 +30,7 @@ namespace RocketCore::Graphics
 			}
 		}
 
-		static float const far_factor = 1.5f;
+		static float const far_factor = 3.5f;
 		static float const light_distance_factor = 1.0f;
 
 		BoundingFrustum frustum = Camera::GetMainCamera()->GetFrustum();
@@ -45,8 +45,8 @@ namespace RocketCore::Graphics
 		frustum_center /= static_cast<float>(corners.size());
 		Vector3 cameraPos = Camera::GetMainCamera()->GetPosition();
 		frustum_center /= 50.0f;
-		frustum_center.x += cameraPos.x * 0.5f;
-		frustum_center.z += cameraPos.z * 0.5f;
+		frustum_center.x += std::ceil(cameraPos.x);
+		frustum_center.z += std::ceil(cameraPos.z);
 
 		float radius = 0.0f;
 		for (Vector3 const& corner : corners)
@@ -55,7 +55,7 @@ namespace RocketCore::Graphics
 			radius = std::max(radius, distance);
 		}
 		radius = std::ceil(radius * 8.0f) / 8.0f;
-		radius /= 40.0f;
+		radius /= 50.0f;
 
 		Vector3 const max_extents(radius, radius, radius);
 		Vector3 const min_extents = -max_extents;

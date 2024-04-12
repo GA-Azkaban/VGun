@@ -16,27 +16,21 @@ float ShadowFactor(float4 worldPos)
 	projCoords = projCoords * 0.5 + 0.5;
 	projCoords.y = 1.0 - projCoords.y;
 
-	const float dx = 1.0f / screenWidth;
-	const float dy = 1.0f / screenHeight;
-
-	float2 offsets[9] =
-	{
-		float2(-dx, -dy), float2(0.0f, -dy), float2(dx, -dy),
-		float2(-dx, 0.0f), float2(0.0f, 0.0f), float2(dx, 0.0f),
-		float2(-dx, +dy), float2(0.0f, +dy), float2(dx, +dy)
-	};
+	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
 
 	float shadow = 0;
 	float bias = 0.0001f;
-	
-	[unroll]
-	for (int i = 0; i < 9; ++i)
+
+	for (int x = -1; x < 3; ++x)
 	{
-		shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler, 
-			projCoords.xy + offsets[i], currentDepth - bias).r;
+		for (int y = -1; y < 3; ++y)
+		{
+			shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler,
+				projCoords.xy + float2(x, y) * texelSize, currentDepth - bias).r;
+		}
 	}
 
-	shadow /= 9.0f;
+	shadow /= 16.0f;
 	return shadow;
 }
 

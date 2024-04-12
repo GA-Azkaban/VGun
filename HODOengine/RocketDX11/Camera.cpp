@@ -19,6 +19,8 @@ namespace RocketCore::Graphics
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		UpdateProjectionMatrix();
+		_boundingSphere.Center = _position;
+		_boundingSphere.Radius = 60.0f;
 	}
 
 	Camera::~Camera()
@@ -267,6 +269,7 @@ namespace RocketCore::Graphics
 	{
 		SetPosition(pos.x, pos.y, pos.z);
 		SetRotation(rot.x, rot.y, rot.z, rot.w);
+		_boundingSphere.Center = pos;
 	}
 
 	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)
