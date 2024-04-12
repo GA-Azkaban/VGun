@@ -55,6 +55,7 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -120,6 +121,7 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
+    <ClInclude Include="UnitySceneLoaderTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -189,5 +191,16 @@
     <ResourceCompile Include="HODOclient.rc">
       <Filter>00_default</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Common\Protobuf\bin\Enum.proto">
+      <Filter>03_Manager\NetworkManager\Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Protocol.proto">
+      <Filter>03_Manager\NetworkManager\Protocol</Filter>
+    </None>
+    <None Include="..\Common\Protobuf\bin\Struct.proto">
+      <Filter>03_Manager\NetworkManager\Protocol</Filter>
+    </None>
   </ItemGroup>
 </Project>
