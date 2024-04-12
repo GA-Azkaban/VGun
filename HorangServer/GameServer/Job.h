@@ -18,6 +18,9 @@ public:
 	{
 		WRITE_LOCK;
 		_jobs.push(job);
+
+		// Todo
+		std::cout << _jobs.size() << std::endl;
 	}
 
 	JobRef Pop()

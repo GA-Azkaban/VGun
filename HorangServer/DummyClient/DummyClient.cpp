@@ -48,7 +48,7 @@ int main()
 	int count = 64 * 4;
 
 	Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"127.0.0.1", 7777),
+		Horang::NetAddress(L"172.16.1.13", 7777),
 		Horang::MakeShared<Horang::IocpCore>(),
 		Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
 		1
@@ -76,7 +76,7 @@ int main()
 		int menu = 0;
 		std::cout << "1. Login" << std::endl;
 		std::cout << "2. Create Account" << std::endl;
-		std::cout << " Select : " << std::endl;
+		std::cout << " Select : ";
 		std::cin >> menu;
 
 		::system("cls");
@@ -99,6 +99,7 @@ int main()
 
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signInPkt);
 				service->BroadCast(sendBuffer);
+				break;
 			}
 		}
 		else if (menu == 2)
@@ -131,6 +132,33 @@ int main()
 		::system("cls");
 
 	}
+
+	while (true)
+	{
+		Protocol::C_PLAY_UPDATE packet;
+		auto playerData = packet.mutable_playerdata();
+		auto transform = playerData->mutable_transform();
+		Protocol::Vector3 pos;
+		pos.set_x(1);
+		pos.set_y(2);
+		pos.set_z(3);
+		Protocol::Quaternion rot;
+		rot.set_x(4);
+		rot.set_y(5);
+		rot.set_z(6);
+		rot.set_w(7);
+
+		transform->mutable_vector3()->CopyFrom(pos);
+		transform->mutable_quaternion()->CopyFrom(rot);
+
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+		service->BroadCast(sendBuffer);
+
+		::system("pause");
+	}
+
+
+
 	/*Protocol::C_CHAT chatPkt;
 	chatPkt.set_msg(u8"Hello World");
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);

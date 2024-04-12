@@ -8,6 +8,10 @@ public:
 	{}
 
 public:
+	void GetUserInfo(Protocol::UserInfo* userInfo);
+	void GetUserInfo(Protocol::UserInfo& userInfo);
+
+public:
 	int32 uid;
 	std::string id;
 	std::string nickname;

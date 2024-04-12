@@ -57,7 +57,7 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
 bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK& pkt)
 {
 	std::cout << "로그인 성공! " << std::endl;
-		//<< "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
+	//<< "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
 
 	{
 		Protocol::C_ROOM_ENTER packet;
@@ -113,10 +113,28 @@ bool Handle_S_ANOTHER_ENTER_ROOM(Horang::PacketSessionRef& session, Protocol::S_
 	for (auto user : roomInfo.users())
 		std::cout << "유저 ID : " << user.id() << " 닉네임 : " << user.nickname() << std::endl;
 
+
+	Protocol::C_ROOM_START packet;
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	session->Send(sendBuffer);
+
 	return true;
 }
 
 bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_ANOTHER_LEAVE_ROOM& pkt)
 {
+	return true;
+}
+
+bool Handle_S_ROOM_START(Horang::PacketSessionRef& session, Protocol::S_ROOM_START& pkt)
+{
+	return true;
+}
+
+bool Handle_S_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::S_PLAY_UPDATE& pkt)
+{
+	static int count = 0;
+
+	std::cout << count++ << std::endl;
 	return true;
 }
