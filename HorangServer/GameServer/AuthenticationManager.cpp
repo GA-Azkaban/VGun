@@ -29,7 +29,7 @@ void AuthenticationManager::PushJob(JobRef job)
 {
 	WRITE_LOCK;
 
-	_jobs.Push(job);
+	this->_jobs.Push(job);
 }
 
 void AuthenticationManager::FlushJob()

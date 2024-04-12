@@ -105,7 +105,7 @@ void NetworkManager::SendRoomLeave()
 void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
 	// Todo RoomInfo 설정
-	
+
 }
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
@@ -119,6 +119,35 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 }
 
 void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
+{
+
+}
+
+void NetworkManager::SendGameStart()
+{
+	Protocol::C_ROOM_START packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvGameStart()
+{
+	// Todo 게임 시작 수신
+}
+
+void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_UPDATE packet;
+
+	// Todo PlayerData 설정
+
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
 
 }

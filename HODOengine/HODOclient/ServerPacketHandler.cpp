@@ -61,7 +61,7 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
 
 	return true;
 }
- 
+
 bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK& pkt)
 {
 	std::cout << "Login " << "UID : " << pkt.uid() << " NickName : " << pkt.nickname() << std::endl;
@@ -112,6 +112,20 @@ bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_
 	std::cout << "Another Leave" << std::endl;
 
 	NetworkManager::Instance().RecvAnotherPlayerLeave(pkt.roominfo());
+
+	return true;
+}
+
+bool Handle_S_ROOM_START(Horang::PacketSessionRef& session, Protocol::S_ROOM_START& pkt)
+{
+	NetworkManager::Instance().RecvGameStart();
+
+	return true;
+}
+
+bool Handle_S_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::S_PLAY_UPDATE& pkt)
+{
+	NetworkManager::Instance().RecvPlayUpdate(pkt);
 
 	return true;
 }
