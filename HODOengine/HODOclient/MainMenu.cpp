@@ -33,12 +33,18 @@ void MainMenuScene::Initalize()
 
 void MainMenuScene::MainMenu()
 {
+
 	HDData::GameObject* mainmenuCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
-	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("white.png");
+	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
+	//mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("white.png");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
 	mainmenuCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	mainmenuCanvas->GetComponent < HDData::ImageUI>()->SetActive(false);
+	mainmenuCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
 	_menuManager.Instance().SetMainMenuCanvas(mainmenuCanvas);
+
+	HDData::GameObject* mainControlObject = API::CreateImageBox(_scene,"controlObject");
+	mainControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
+	mainControlObject->SetSelfActive(true);
 
 	// fade option canvas
 	// 페이드 아웃용 검은색 캔버스는 0.5f 1에 가까울수록 UI 낮을수록 배경
@@ -54,19 +60,19 @@ void MainMenuScene::MainMenu()
 	//lobby->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
 	//lobby->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
-	// play->RoomEnter sequence
-	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainmenuCanvas);
+	// play->RoomEnter & make sequence
+	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainControlObject);
 	playBtn->GetComponent<HDData::Button>()->SetImage("play_btn.png");
-	playBtn->GetTransform()->SetPosition(115.f, 240.f, 0.6f);
+	playBtn->GetTransform()->SetPosition(130.f, 240.f, 0.6f);
 	playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	HDData::GameObject* roomEnterBtn = API::CreateButton(_scene, "roomEnter", playBtn);
-	roomEnterBtn->GetTransform()->SetPosition(350.f, 190.f, 0.55f);
+	roomEnterBtn->GetTransform()->SetPosition(365.f, 190.f, 0.55f);
 	roomEnterBtn->GetComponent<HDData::Button>()->SetImage("login.png");
 	roomEnterBtn->SetSelfActive(false);
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
-	roomMakeBtn->GetTransform()->SetPosition(350.f, 290.f, 0.6f);
+	roomMakeBtn->GetTransform()->SetPosition(365.f, 290.f, 0.6f);
 	roomMakeBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
 	roomMakeBtn->GetComponent<HDData::Button>()->SetSortOrder(0.56f);
 	roomMakeBtn->SetSelfActive(false);
@@ -77,6 +83,26 @@ void MainMenuScene::MainMenu()
 	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.57f);
 	setRoomCanvas->SetSelfActive(false);
 
+	HDData::GameObject* roomListCanvas = API::CreateImageBox(_scene, "roomListCanvas", setRoomCanvas);
+	roomListCanvas->GetTransform()->SetPosition(960.0f, 900.0f, 0.0f);
+	roomListCanvas->GetComponent<HDData::ImageUI>()->SetImage("_shadow_gradient.png");
+
+	// Training room -> scene change
+	HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene,"trainingRoomBtn", mainControlObject);
+	trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
+	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("training_room.png");
+
+	// Exit button
+	HDData::GameObject* exitBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
+	exitBtn->GetTransform()->SetPosition(130.f, 560, 0.6f); // y += 160
+	exitBtn->GetComponent<HDData::Button>()->SetImage("exit_btn.png");
+
+	// setting & option
+	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
+	preferencesBtn->GetTransform()->SetPosition(1875.f, 30.f, 0.f);
+	preferencesBtn->GetComponent<HDData::Button>()->SetImage("icon_cog.png");
+	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	
 	// event
 	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
@@ -112,17 +138,24 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	// setting & option
-	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn", mainmenuCanvas);
-	preferencesBtn->GetTransform()->SetPosition(115.f, 500.f, 0.f);
-	preferencesBtn->GetComponent<HDData::Button>()->SetImage("icon_group_cog.png");
-	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	preferencesBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			preferencesBtn->GetComponent<HDData::Button>()->FadeOut();
+			if (mainControlObject->GetSelfActive())
+			{
+				mainControlObject->SetSelfActive(false);
+				//playBtn->SetSelfActive(false);
+				//trainingRoomBtn->SetSelfActive(false);
+				//exitBtn->SetSelfActive(false);
+			}
+			else
+			{
+				mainControlObject->SetSelfActive(true);
+				//playBtn->SetSelfActive(true);
+				//trainingRoomBtn->SetSelfActive(true);
+				//exitBtn->SetSelfActive(true);
+			}
 		}
 	);
-
 }
 
