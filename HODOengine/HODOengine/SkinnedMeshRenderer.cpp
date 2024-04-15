@@ -83,6 +83,11 @@ namespace HDData
 		return _skinnedMesh->IsAnimationEnd();
 	}
 
+	void SkinnedMeshRenderer::SeparateUpperAndLowerAnim(bool separateAnim)
+	{
+		_skinnedMesh->SeparateUpperAndLowerAnim(separateAnim);
+	}
+
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_skinnedMesh->SetOutlineActive(isActive);

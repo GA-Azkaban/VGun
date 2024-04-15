@@ -3,6 +3,7 @@
 #include <DirectXMath.h>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <wrl.h>
 #include "Animation.h"
@@ -52,6 +53,7 @@ namespace RocketCore::Graphics
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
 		virtual bool IsAnimationEnd() override;
+		virtual void SeparateUpperAndLowerAnim(bool separateAnim) override;
 
 		virtual void SetOutlineActive(bool isActive) override;
 
@@ -83,6 +85,7 @@ namespace RocketCore::Graphics
 		bool m_receiveTMInfoFlag;
 		bool m_blendFlag;
 		bool m_isOutlineActive;
+		bool m_separateUpperAndLowerAnim;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
@@ -100,5 +103,8 @@ namespace RocketCore::Graphics
 
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
+
+		// 우리 게임에 맞는 애니메이션 전용 하드 코딩.
+		std::unordered_set<std::string> _lowerAnimationNodes;
 	};
 }

@@ -25,6 +25,7 @@ namespace HDEngine
 		virtual void SetOutlineActive(bool isActive) = 0;
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) = 0;
 		virtual bool IsAnimationEnd() = 0;
+		virtual void SeparateUpperAndLowerAnim(bool separateAnim) = 0;
 		virtual Node* GetNode() = 0;
 	};
 }

@@ -20,12 +20,31 @@ namespace RocketCore::Graphics
 	SkinningMeshObject::SkinningMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
-		m_blendFlag(false), m_isOutlineActive(false)
+		m_blendFlag(false), m_isOutlineActive(false),
+		m_separateUpperAndLowerAnim(false)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
 		m_vertexShader = ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso");
 		m_pixelShader = ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso");
+
+		_lowerAnimationNodes.insert("root");
+		_lowerAnimationNodes.insert("ik_foot_root");
+		_lowerAnimationNodes.insert("ik_foot_l");
+		_lowerAnimationNodes.insert("ik_foot_r");
+		_lowerAnimationNodes.insert("pelvis");
+		_lowerAnimationNodes.insert("thigh_l");
+		_lowerAnimationNodes.insert("calf_l");
+		_lowerAnimationNodes.insert("calf_twist_01_l");
+		_lowerAnimationNodes.insert("foot_l");
+		_lowerAnimationNodes.insert("ball_l");
+		_lowerAnimationNodes.insert("thigh_twist_01_l");
+		_lowerAnimationNodes.insert("thigh_r");
+		_lowerAnimationNodes.insert("calf_r");
+		_lowerAnimationNodes.insert("calf_twist_01_r");
+		_lowerAnimationNodes.insert("foot_r");
+		_lowerAnimationNodes.insert("ball_r");
+		_lowerAnimationNodes.insert("thigh_twist_01_r");
 	}
 
 	SkinningMeshObject::~SkinningMeshObject()
@@ -179,8 +198,11 @@ namespace RocketCore::Graphics
 		{
 			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
-				nodeAnim = m_currentAnimation->nodeAnimations[i];
-				break;
+				if (_lowerAnimationNodes.find(node->name) == _lowerAnimationNodes.end())
+				{
+					nodeAnim = m_currentAnimation->nodeAnimations[i];
+					break;
+				}
 			}
 		}
 
@@ -316,8 +338,11 @@ namespace RocketCore::Graphics
 		{
 			if (m_previousAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
-				prevAnim = m_previousAnimation->nodeAnimations[i];
-				break;
+				if (_lowerAnimationNodes.find(node->name) == _lowerAnimationNodes.end())
+				{
+					prevAnim = m_previousAnimation->nodeAnimations[i];
+					break;
+				}
 			}
 		}
 
@@ -326,8 +351,11 @@ namespace RocketCore::Graphics
 		{
 			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
-				currAnim = m_currentAnimation->nodeAnimations[i];
-				break;
+				if (_lowerAnimationNodes.find(node->name) == _lowerAnimationNodes.end())
+				{
+					currAnim = m_currentAnimation->nodeAnimations[i];
+					break;
+				}
 			}
 		}
 
@@ -489,7 +517,7 @@ namespace RocketCore::Graphics
 	{
 		if (element >= m_materials.size())
 			return;
-		
+
 		Material* newMat = dynamic_cast<Material*>(material);
 		if (newMat != nullptr)
 		{
@@ -581,6 +609,11 @@ namespace RocketCore::Graphics
 	bool SkinningMeshObject::IsAnimationEnd()
 	{
 		return m_currentAnimation->isEnd;
+	}
+
+	void SkinningMeshObject::SeparateUpperAndLowerAnim(bool separateAnim)
+	{
+		m_separateUpperAndLowerAnim = separateAnim;
 	}
 
 	void SkinningMeshObject::SetOutlineActive(bool isActive)
