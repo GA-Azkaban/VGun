@@ -32,30 +32,18 @@ namespace RocketCore::Graphics
 
 		static float const far_factor = 3.5f;
 		static float const light_distance_factor = 1.0f;
-
-		BoundingFrustum frustum = Camera::GetMainCamera()->GetFrustum();
-		std::array<Vector3, BoundingFrustum::CORNER_COUNT> corners{};
-		frustum.GetCorners(corners.data());
+		static float const radius = 33.0f;
 
 		Vector3 frustum_center(0, 0, 0);
-		for (Vector3 const& corner : corners)
-		{
-			frustum_center = frustum_center + corner;
-		}
-		frustum_center /= static_cast<float>(corners.size());
+		
 		Vector3 cameraPos = Camera::GetMainCamera()->GetPosition();
-		frustum_center /= 50.0f;
+		Vector3 cameraForward = Camera::GetMainCamera()->GetForward();
+		
 		frustum_center.x += std::ceil(cameraPos.x);
 		frustum_center.z += std::ceil(cameraPos.z);
 
-		float radius = 0.0f;
-		for (Vector3 const& corner : corners)
-		{
-			float distance = Vector3::Distance(corner, frustum_center);
-			radius = std::max(radius, distance);
-		}
-		radius = std::ceil(radius * 8.0f) / 8.0f;
-		radius /= 50.0f;
+		frustum_center.x += cameraForward.x * radius;
+		frustum_center.z += cameraForward.z * radius;
 
 		Vector3 const max_extents(radius, radius, radius);
 		Vector3 const min_extents = -max_extents;
@@ -72,18 +60,7 @@ namespace RocketCore::Graphics
 		float f = max_extents.z * far_factor;
 
 		Matrix P = XMMatrixOrthographicOffCenterLH(l, r, b, t, n, f);
-		//Matrix VP = V * P;
-		//Vector3 shadow_origin(0, 0, 0);
-		//shadow_origin = Vector3::Transform(shadow_origin, VP);
-		//shadow_origin *= (1024 / 2.0f);
-		//
-		//Vector3 rounded_origin = XMVectorRound(shadow_origin);
-		//Vector3 rounded_offset = rounded_origin - shadow_origin;
-		//rounded_offset *= (2.0f / 1024);
-		//rounded_offset.z = 0.0f;
-		//P.m[3][0] += rounded_offset.x;
-		//P.m[3][1] += rounded_offset.y;
-
+		
 		_lightView = V;
 		_lightProj = P;
 	}
