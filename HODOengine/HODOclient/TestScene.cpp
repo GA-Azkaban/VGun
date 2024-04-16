@@ -75,7 +75,9 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
-	meshComp->PlayAnimation("X_idle", true);
+	//meshComp->PlayAnimation("X_idle", true);
+	meshComp->PlayAnimationUpper("X_idle", true);
+	meshComp->PlayAnimationLower("X_idle", true);
 	meshComp->SetOutlineActive(true);
 
 	// 오른손 노드의 오브젝트를 가져와서
