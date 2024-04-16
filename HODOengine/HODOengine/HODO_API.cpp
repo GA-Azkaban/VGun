@@ -274,5 +274,12 @@ namespace API
 		{
 			return HDEngine::MaterialManager::Instance().GetMaterial(materialName);
 		}
+
+		HODO_API void LoadSceneByName(std::string scene)
+		{
+			HDEngine::SceneSystem::Instance().LoadScene(scene);
+		}
 	}
+
+
 }

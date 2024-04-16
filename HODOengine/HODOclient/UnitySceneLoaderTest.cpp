@@ -14,10 +14,10 @@ UnitySceneLoaderTest::~UnitySceneLoaderTest()
 
 void UnitySceneLoaderTest::Start()
 {
-	_scene = API::CreateScene("Test");
+	_scene = API::CreateScene("B");
 
 	auto mainCam = API::GetMainCamera()->GetGameObject();
-	//mainCam->AddComponent<CameraMove>();
+	mainCam->AddComponent<CameraMove>();
 
 	//auto playerFP = API::CreateObject(_scene, "playerFP");
 	//playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
@@ -86,5 +86,5 @@ void UnitySceneLoaderTest::Start()
 
 	//API::LoadSceneFromData("transformData.json");
 
-	API::LoadScene(_scene);
+	//API::LoadScene(_scene);
 }

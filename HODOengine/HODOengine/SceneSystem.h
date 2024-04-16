@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <unordered_map>
 #include <string>
 #include "Singleton.h"
@@ -18,10 +18,14 @@ namespace HDEngine
 		SceneSystem();
 
 	public:
+		void UpdateNextScene();
+
+	public:
 
 		HDData::Scene* CreateScene(std::string sceneName = "");
 		void LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);
+		void LoadNextScene(std::string sceneName);
 
 		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();
@@ -29,6 +33,7 @@ namespace HDEngine
 	private:
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 		HDData::Scene* _currentScene;
+		HDData::Scene* _nextScene;
 	};
 
 }

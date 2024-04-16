@@ -45,6 +45,7 @@
 #include "HDMaterial.h"
 #include "MaterialManager.h"
 
+
 #include "ObjectSystem.h"
 
 namespace API
@@ -54,6 +55,7 @@ namespace API
 		// 씬을 생성, 로드
 		HODO_API HDData::Scene* CreateScene(std::string sceneName);
 		HODO_API void LoadScene(HDData::Scene* scene);
+		HODO_API void LoadSceneByName(std::string scene);
 
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName);
