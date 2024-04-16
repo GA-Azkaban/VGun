@@ -14,7 +14,7 @@ UnitySceneLoaderTest::~UnitySceneLoaderTest()
 
 void UnitySceneLoaderTest::Start()
 {
-	_scene = API::CreateScene("B");
+	_scene = API::CreateScene("Scene2");
 
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
