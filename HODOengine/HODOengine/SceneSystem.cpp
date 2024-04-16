@@ -7,9 +7,6 @@
 
 #include "IDSystem.h"
 
-
-// TODO) ���ӿ�����Ʈ ������ �ٲ�� ������� ������ �ʿ��� ��
-
 namespace HDEngine
 {
 
@@ -21,7 +18,6 @@ namespace HDEngine
 
 	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
-		// �̹� �ִ� �� �̸��̶�� �� ���� ��ȯ���ش�.
 		auto iter = _sceneList.find(sceneName);
 		if (iter != _sceneList.end())
 		{
@@ -41,7 +37,6 @@ namespace HDEngine
 
 	void SceneSystem::LoadScene(std::string sceneName)
 	{
-		// ���ο� ���� ã�´�
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{

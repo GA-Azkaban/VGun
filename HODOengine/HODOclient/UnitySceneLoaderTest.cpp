@@ -1,4 +1,4 @@
-#include "UnitySceneLoaderTest.h"
+﻿#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
 #include "FSMtestScript.h"
 
@@ -28,7 +28,7 @@ void UnitySceneLoaderTest::Start()
 
 	auto playerTP = API::CreateObject(_scene, "playerTP");
 	playerTP->GetTransform()->Translate(5.f, 0.f, 0.f);
-	playerTP->LoadNodeFromFBXFile("SKM_TP_X_idle.fbx");
+	playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
 
 	auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAlbedoMap("TP_Red_B.png");
