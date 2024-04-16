@@ -30,27 +30,31 @@ void MenuManager::SetMainMenuCanvas(HDData::GameObject* mainCanvas)
 
 void MenuManager::RoomEneter(Protocol::RoomInfo)
 {
-	//NetworkManager::Instance().RecvRoomEnter();
-
+	Protocol::RoomInfo temp;
+	NetworkManager::Instance().RecvRoomEnter(temp);
 }
 
 void MenuManager::SetRoom()
 {
-
+	Protocol::RoomInfo temp;
+	NetworkManager::Instance().SetRoom();
 }
 
 void MenuManager::RoomExit()
 {
-
+	Protocol::RoomInfo temp;
+	NetworkManager::Instance().RecvRoomLeave(temp);
 }
 
 void MenuManager::OtherPlayerEnter()
 {
-
+	Protocol::RoomInfo temp;
+	NetworkManager::Instance().RecvAnotherPlayerEnter(temp);
 }
 
 void MenuManager::OtherPlayerExit()
 {
-
+	Protocol::RoomInfo temp;
+	NetworkManager::Instance().RecvAnotherPlayerLeave(temp);
 }
 

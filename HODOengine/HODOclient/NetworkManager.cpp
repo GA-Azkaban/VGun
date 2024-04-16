@@ -106,18 +106,21 @@ void NetworkManager::SendRoomLeave()
 void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
 	// Todo RoomInfo 설정
-	MenuManager::Instance().RoomEneter(roomInfo);
+
 }
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
 	// Todo 
-	MenuManager::Instance().RoomExit();
+
 }
 
 void NetworkManager::SetRoom()
 {
+	Protocol::C_ROOM_CREATE packet;
 
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
 }
 
 void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
