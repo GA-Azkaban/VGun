@@ -21,6 +21,10 @@ public:
 
 		auto a = API::CreateButton(_scene);
 		a->GetTransform()->SetPosition(300.f, 150.f, 0.f);
+		a->GetComponent<HDData::Button>()->SetOnClickEvent([]()
+			{
+				API::LoadSceneByName("Scene2");
+			});
 	}
 
 private:

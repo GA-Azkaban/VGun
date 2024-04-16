@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -30,8 +30,8 @@ void Client::Initialize()
 	MainMenuScene menu;
 	menu.Initalize();
 
-	//UnitySceneLoaderTest unity;
-	//unity.Start();
+	UnitySceneLoaderTest unity;
+	unity.Start();
 
 	//A a;
 	//a.Initialize();
