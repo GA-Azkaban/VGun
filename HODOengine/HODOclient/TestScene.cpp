@@ -18,7 +18,7 @@ enum eColliderType
 
 TestScene::TestScene()
 {
-	_scene = API::CreateScene("Test");
+	_scene = API::CreateScene("Test Scene");
 
 	auto mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
@@ -181,6 +181,12 @@ TestScene::TestScene()
 	meshComp5->LoadMaterial(newMat3, 4);
 	meshComp5->PlayAnimation("X_idle", true);
 	meshComp5->SetOutlineActive(true);
+
+	auto btn = API::CreateButton(_scene);
+	btn->GetComponent<HDData::Button>()->SetOnClickEvent([]()
+		{
+			API::LoadSceneByName("B");
+		});
 
 	API::LoadScene(_scene);
 }

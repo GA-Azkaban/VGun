@@ -222,7 +222,9 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="A.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="B.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Enum.pb.h" />
