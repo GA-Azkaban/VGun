@@ -36,7 +36,6 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* mainmenuCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
-	//mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("white.png");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
 	mainmenuCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	mainmenuCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
@@ -100,17 +99,17 @@ void MainMenuScene::MainMenu()
 	privateCheck->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 	privateCheck->SetSelfActive(false);
 
-	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", setRoomCanvas);
-	roomSetBtn->GetTransform()->SetPosition(960.0f, 840.0f, 0.f);
-	roomSetBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
-	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
-
 	HDData::GameObject* roomPassWord = API::CreateTextInputBox(_scene, "roomPassWord", setRoomCanvas);
-	roomPassWord->GetTransform()->SetPosition(960.0f, 240.0f, 0.0f);
+	roomPassWord->GetTransform()->SetPosition(960.0f, 320.0f, 0.0f);
 	auto newRoomPassWord = roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
 	roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.6f);
 	roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.61f);
 	roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.61f);
+
+	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", setRoomCanvas);
+	roomSetBtn->GetTransform()->SetPosition(960.0f, 840.0f, 0.f);
+	roomSetBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
+	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	// find room
 	HDData::GameObject* roomListCanvas = API::CreateImageBox(_scene, "roomListCanvas", roomEnterBtn);
