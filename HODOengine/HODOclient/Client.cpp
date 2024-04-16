@@ -25,6 +25,6 @@ void Client::Initialize()
 	MainMenuScene menu;
 	menu.Initalize();
 
-	UnitySceneLoaderTest unity;
-	unity.Start();
+	//UnitySceneLoaderTest unity;
+	//unity.Start();
 }

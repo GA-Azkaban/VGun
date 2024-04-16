@@ -1,6 +1,5 @@
 ﻿#include "MainMenu.h"
 #include "MenuManager.h"
-#include "SoundSystem.h"
 
 MainMenuScene::MainMenuScene()
 	:_menuManager(MenuManager::Instance())
