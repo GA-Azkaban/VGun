@@ -105,7 +105,6 @@ void LoginSceneView::LoginView()
 	);
 
 	// join canvas
-
 	HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas");
 	joinCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
 	joinCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.15f);

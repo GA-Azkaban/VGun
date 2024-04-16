@@ -72,7 +72,7 @@ namespace RocketCore::Graphics
 
 		ImageRenderer* temp = new ImageRenderer();
 		temp->InitalizeImageRenderer(resourceMgr.GetDevice(), resourceMgr.GetDeviceContext());
-		temp->SetImage("abcd.jpg");
+		temp->SetImage("defaultImg.png");
 		_ImageList.emplace_back(temp);
 
 		return temp;
