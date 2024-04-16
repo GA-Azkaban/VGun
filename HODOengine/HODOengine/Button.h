@@ -26,9 +26,13 @@ namespace HDData
 
 		void SetButtonComp(ImageUI* comp) { _button = comp; }
 		void SetSortOrder(float ord) { _button->SetSortOrder(ord); }
+		void SetIgnoreFocus(bool isIgnore);
 
+		// FadeIn & out
 		void FadeIn();
 		void FadeOut();
+		bool GetFadeMode();
+		bool SetFadeMode(bool SetFade);
 
 	private:
 		ImageUI* _button;

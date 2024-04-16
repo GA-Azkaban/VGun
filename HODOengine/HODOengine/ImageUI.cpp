@@ -71,4 +71,24 @@ namespace HDData
 		_imageUI->ChangeScale(x, y);
 	}
 
+	void ImageUI::FadeIn()
+	{
+		return _imageUI->FadeIn();
+	}
+
+	void ImageUI::FadeOut()
+	{
+		return _imageUI->FadeOut();
+	}
+
+	bool ImageUI::GetFadeMode()
+	{
+		return _imageUI->GetFadeMode();
+	}
+
+	bool ImageUI::SetFadeMode(bool SetFade)
+	{
+		return _imageUI->SetFadeMode(SetFade);
+	}
+
 }

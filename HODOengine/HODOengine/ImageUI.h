@@ -27,6 +27,12 @@ namespace HDData
 
 		void ChangeScale(float x, float y);
 
+		// fade In & out
+		void FadeIn();
+		void FadeOut();
+		bool GetFadeMode();
+		bool SetFadeMode(bool SetFade);
+
 	private:
 		HDEngine::ISketchableImage* _imageUI;
 	};

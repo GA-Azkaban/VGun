@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Struct.pb.h"
 #include "../HODOengine/HODO_API.h"
 
 class MenuManager : public HDData::Script
@@ -18,8 +19,12 @@ public:
 public:
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 
+	void RoomEneter(Protocol::RoomInfo);
+	void SetRoom();
+	void RoomExit();
 
-
+	void OtherPlayerEnter();
+	void OtherPlayerExit();
 
 
 public:
@@ -29,5 +34,6 @@ public:
 	// btn
 	HDData::GameObject* _playBtn;
 	HDData::GameObject* _preferencesBtn;	// 환경설정 버튼
+	HDData::GameObject* _exitbtn;
 };
 

@@ -46,11 +46,15 @@ namespace RocketCore::Graphics
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }
 
+
+
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
+		// fade
 		virtual void FadeIn() override;
-
 		virtual void FadeOut() override;
+		virtual bool GetFadeMode() override;
+		virtual bool SetFadeMode(bool SetFade) override;
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
@@ -76,8 +80,7 @@ namespace RocketCore::Graphics
 		float _imageHeight;
 
 		// 페이드 인 & 아웃
-		bool _fadeIn = false;
-		bool _fadeOut = false;
+		bool _fadeMode = true;
 		float _fadeAlpha = 1.0f;
 
 		ID3D11Device* _device;

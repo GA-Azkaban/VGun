@@ -95,7 +95,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	if (!_active)
 		return;
 
-	if (_fadeIn)
+	if (_fadeMode)
 	{
 		if (_fadeAlpha <= 1.0f)
 		{
@@ -103,12 +103,11 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			if (_fadeAlpha > 1.0f)
 			{
 				_fadeAlpha = 1.0f;
-				_fadeIn = false;
 			}
 			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
 		}
 	}
-	else if (_fadeOut)
+	else
 	{
 		if (_fadeAlpha >= 0.0f)
 		{
@@ -116,12 +115,15 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			if (_fadeAlpha < 0.0f)
 			{
 				_fadeAlpha = 0.0f;
-				_fadeOut = false;
 			}
 			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
 		}
 	}
 
+	if (!_fadeMode && _fadeAlpha == 0.0f)
+	{
+		return;
+	}
 
 	if (_receiveTMInfoFlag)
 	{
@@ -205,24 +207,21 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 
 void RocketCore::Graphics::ImageRenderer::FadeIn()
 {
-	if (!_fadeIn)
-	{
-		_fadeIn = true;
-	}
-	if (_fadeOut)
-	{
-		_fadeOut = false;
-	}
+	_fadeMode = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::FadeOut()
 {
-	if (!_fadeOut)
-	{
-		_fadeOut = true;
-	}
-	if (_fadeIn)
-	{
-		_fadeIn = false;
-	}
+	_fadeMode = false;
 }
+
+bool RocketCore::Graphics::ImageRenderer::GetFadeMode()
+{
+	return _fadeMode;
+}
+
+bool RocketCore::Graphics::ImageRenderer::SetFadeMode(bool SetFade)
+{
+	return _fadeMode = SetFade;
+}
+

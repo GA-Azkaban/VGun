@@ -7,6 +7,7 @@
 
 #include "GameManager.h"
 #include "LobbyManager.h"
+#include "MenuManager.h"
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -111,6 +112,15 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
 	// Todo 
+
+}
+
+void NetworkManager::SetRoom()
+{
+	Protocol::C_ROOM_CREATE packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
 }
 
 void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)

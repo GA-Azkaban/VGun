@@ -20,6 +20,7 @@ void LoginSceneView::Initialize()
 	LoginView();
 
 	API::LoadScene(_scene);
+	//API::LoadScene(menu);
 }
 
 void LoginSceneView::LoginView()
@@ -42,6 +43,15 @@ void LoginSceneView::LoginView()
 	mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
 	_lobbyManager.SetLobbyMainCanvas(mainCanvas);
+
+	// fade option canvas
+	HDData::GameObject* fadeCanvas = API::CreateImageBox(_scene, "blackCanvas");
+	fadeCanvas->GetComponent<HDData::ImageUI>()->SetImage("black.png");
+	fadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
+	fadeCanvas->GetTransform()->SetPosition(960.0f, 540.f, 0.f);
+	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
+	fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	//_lobbyManager.SetFadeCanvas(fadeCanvas);
 
 	// id input box
 	HDData::GameObject* idTextbox = API::CreateTextInputBox(_scene, "idTextBox", mainCanvas);
@@ -173,7 +183,7 @@ void LoginSceneView::LoginView()
 		}
 	);
 
-	// login fail canvas
+	///login fail canvas
 	HDData::GameObject* loginFail = API::CreateButton(_scene, "failImg");
 	loginFail->GetComponent<HDData::Button>()->SetImage("Login_Fail.png");
 	loginFail->GetComponent<HDData::Button>()->SetSortOrder(0.3f);

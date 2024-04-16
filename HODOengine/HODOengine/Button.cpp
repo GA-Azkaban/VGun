@@ -53,6 +53,11 @@ namespace HDData
 		_onClickEvent();
 	}
 
+	void Button::SetIgnoreFocus(bool isIgnore)
+	{
+		_button->SetIsIgnoreFocus(isIgnore);
+	}
+
 	void Button::FadeIn()
 	{
 		_button->FadeIn();
@@ -61,6 +66,16 @@ namespace HDData
 	void Button::FadeOut()
 	{
 		_button->FadeOut();
+	}
+
+	bool Button::GetFadeMode()
+	{
+		return _button->GetFadeMode();
+	}
+
+	bool Button::SetFadeMode(bool SetFade)
+	{
+		return _button->SetFadeMode(SetFade);
 	}
 
 }
