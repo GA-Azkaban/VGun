@@ -368,8 +368,14 @@ class RoomInfo final :
   enum : int {
     kUsersFieldNumber = 4,
     kRoomCodeFieldNumber = 2,
+    kRoomNameFieldNumber = 5,
+    kPasswordFieldNumber = 6,
     kRoomIdFieldNumber = 1,
     kStateFieldNumber = 3,
+    kMaxUserCountFieldNumber = 7,
+    kCurrentCountFieldNumber = 8,
+    kIsPrivateFieldNumber = 9,
+    kIsTeamFieldNumber = 10,
   };
   // repeated .Protocol.UserInfo users = 4;
   int users_size() const;
@@ -403,6 +409,34 @@ class RoomInfo final :
   std::string* _internal_mutable_roomcode();
   public:
 
+  // string roomName = 5;
+  void clear_roomname();
+  const std::string& roomname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_roomname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_roomname();
+  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_roomname();
+  void set_allocated_roomname(std::string* roomname);
+  private:
+  const std::string& _internal_roomname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_roomname(const std::string& value);
+  std::string* _internal_mutable_roomname();
+  public:
+
+  // string password = 6;
+  void clear_password();
+  const std::string& password() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_password(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_password();
+  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_password();
+  void set_allocated_password(std::string* password);
+  private:
+  const std::string& _internal_password() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
+  std::string* _internal_mutable_password();
+  public:
+
   // int32 roomId = 1;
   void clear_roomid();
   ::PROTOBUF_NAMESPACE_ID::int32 roomid() const;
@@ -421,6 +455,42 @@ class RoomInfo final :
   void _internal_set_state(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // int32 maxUserCount = 7;
+  void clear_maxusercount();
+  ::PROTOBUF_NAMESPACE_ID::int32 maxusercount() const;
+  void set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_maxusercount() const;
+  void _internal_set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 currentCount = 8;
+  void clear_currentcount();
+  ::PROTOBUF_NAMESPACE_ID::int32 currentcount() const;
+  void set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_currentcount() const;
+  void _internal_set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // bool isPrivate = 9;
+  void clear_isprivate();
+  bool isprivate() const;
+  void set_isprivate(bool value);
+  private:
+  bool _internal_isprivate() const;
+  void _internal_set_isprivate(bool value);
+  public:
+
+  // bool isTeam = 10;
+  void clear_isteam();
+  bool isteam() const;
+  void set_isteam(bool value);
+  private:
+  bool _internal_isteam() const;
+  void _internal_set_isteam(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.RoomInfo)
  private:
   class _Internal;
@@ -430,8 +500,14 @@ class RoomInfo final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo > users_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr roomcode_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr roomname_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
   ::PROTOBUF_NAMESPACE_ID::int32 roomid_;
   ::PROTOBUF_NAMESPACE_ID::int32 state_;
+  ::PROTOBUF_NAMESPACE_ID::int32 maxusercount_;
+  ::PROTOBUF_NAMESPACE_ID::int32 currentcount_;
+  bool isprivate_;
+  bool isteam_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1519,6 +1595,176 @@ inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo >&
 RoomInfo::users() const {
   // @@protoc_insertion_point(field_list:Protocol.RoomInfo.users)
   return users_;
+}
+
+// string roomName = 5;
+inline void RoomInfo::clear_roomname() {
+  roomname_.ClearToEmpty();
+}
+inline const std::string& RoomInfo::roomname() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.roomName)
+  return _internal_roomname();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void RoomInfo::set_roomname(ArgT0&& arg0, ArgT... args) {
+ 
+ roomname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.roomName)
+}
+inline std::string* RoomInfo::mutable_roomname() {
+  // @@protoc_insertion_point(field_mutable:Protocol.RoomInfo.roomName)
+  return _internal_mutable_roomname();
+}
+inline const std::string& RoomInfo::_internal_roomname() const {
+  return roomname_.Get();
+}
+inline void RoomInfo::_internal_set_roomname(const std::string& value) {
+  
+  roomname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* RoomInfo::_internal_mutable_roomname() {
+  
+  return roomname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* RoomInfo::release_roomname() {
+  // @@protoc_insertion_point(field_release:Protocol.RoomInfo.roomName)
+  return roomname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void RoomInfo::set_allocated_roomname(std::string* roomname) {
+  if (roomname != nullptr) {
+    
+  } else {
+    
+  }
+  roomname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), roomname,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:Protocol.RoomInfo.roomName)
+}
+
+// string password = 6;
+inline void RoomInfo::clear_password() {
+  password_.ClearToEmpty();
+}
+inline const std::string& RoomInfo::password() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.password)
+  return _internal_password();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void RoomInfo::set_password(ArgT0&& arg0, ArgT... args) {
+ 
+ password_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.password)
+}
+inline std::string* RoomInfo::mutable_password() {
+  // @@protoc_insertion_point(field_mutable:Protocol.RoomInfo.password)
+  return _internal_mutable_password();
+}
+inline const std::string& RoomInfo::_internal_password() const {
+  return password_.Get();
+}
+inline void RoomInfo::_internal_set_password(const std::string& value) {
+  
+  password_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* RoomInfo::_internal_mutable_password() {
+  
+  return password_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* RoomInfo::release_password() {
+  // @@protoc_insertion_point(field_release:Protocol.RoomInfo.password)
+  return password_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void RoomInfo::set_allocated_password(std::string* password) {
+  if (password != nullptr) {
+    
+  } else {
+    
+  }
+  password_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), password,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:Protocol.RoomInfo.password)
+}
+
+// int32 maxUserCount = 7;
+inline void RoomInfo::clear_maxusercount() {
+  maxusercount_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_maxusercount() const {
+  return maxusercount_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::maxusercount() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.maxUserCount)
+  return _internal_maxusercount();
+}
+inline void RoomInfo::_internal_set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  maxusercount_ = value;
+}
+inline void RoomInfo::set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_maxusercount(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.maxUserCount)
+}
+
+// int32 currentCount = 8;
+inline void RoomInfo::clear_currentcount() {
+  currentcount_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_currentcount() const {
+  return currentcount_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::currentcount() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.currentCount)
+  return _internal_currentcount();
+}
+inline void RoomInfo::_internal_set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  currentcount_ = value;
+}
+inline void RoomInfo::set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_currentcount(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.currentCount)
+}
+
+// bool isPrivate = 9;
+inline void RoomInfo::clear_isprivate() {
+  isprivate_ = false;
+}
+inline bool RoomInfo::_internal_isprivate() const {
+  return isprivate_;
+}
+inline bool RoomInfo::isprivate() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.isPrivate)
+  return _internal_isprivate();
+}
+inline void RoomInfo::_internal_set_isprivate(bool value) {
+  
+  isprivate_ = value;
+}
+inline void RoomInfo::set_isprivate(bool value) {
+  _internal_set_isprivate(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.isPrivate)
+}
+
+// bool isTeam = 10;
+inline void RoomInfo::clear_isteam() {
+  isteam_ = false;
+}
+inline bool RoomInfo::_internal_isteam() const {
+  return isteam_;
+}
+inline bool RoomInfo::isteam() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.isTeam)
+  return _internal_isteam();
+}
+inline void RoomInfo::_internal_set_isteam(bool value) {
+  
+  isteam_ = value;
+}
+inline void RoomInfo::set_isteam(bool value) {
+  _internal_set_isteam(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.isTeam)
 }
 
 // -------------------------------------------------------------------
