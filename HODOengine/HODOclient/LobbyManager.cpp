@@ -1,4 +1,5 @@
-﻿#include "Types.h"
+﻿#include "pch.h"
+#include "Types.h"
 #include "LobbyManager.h"
 #include "NetworkManager.h"
 

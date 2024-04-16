@@ -1,8 +1,10 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "Types.h"
+
 #include "Enum.pb.h"
 #include "Struct.pb.h"
+#include "Protocol.pb.h"
 
 class NetworkManager : public HDData::Script
 {
