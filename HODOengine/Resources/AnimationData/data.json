@@ -1,0 +1,84 @@
+{
+  "Nodes": {
+    "Entry": {
+      "name": "Entry",
+      "FBX": ""
+    },
+    "Exit": {
+      "name": "Exit",
+      "FBX": ""
+    },
+    "IDLE": {
+      "name": "IDLE",
+      "FBX": "SKM_TP_X_idle.fbx"
+    },
+    "CROUCH": {
+      "name": "CROUCH",
+      "FBX": "SKM_TP_X_crouch.fbx"
+    },
+    "CROUCH_UP": {
+      "name": "CROUCH_UP",
+      "FBX": "SKM_TP_X_crouchUp.fbx"
+    },
+    "CROUCH_DOWN": {
+      "name": "CROUCH_DOWN",
+      "FBX": "SKM_TP_X_crouchDown.fbx"
+    },
+    "RUN": {
+      "name": "RUN",
+      "FBX": "SKM_TP_X_run.fbx"
+    }
+  },
+  "Params": {
+    "isCrouch": {
+      "paramName": "isCrouch",
+      "type": 2,
+      "value": false
+    },
+    "isRun": {
+      "paramName": "isRun",
+      "type": 2,
+      "value": false
+    }
+  },
+  "Links": {
+    "link": {
+      "start": "IDLE",
+      "end": "CROUCH",
+      "condition": "isCrouch",
+      "type": 2,
+      "value": "True",
+      "transitionAnimation": "CROUCH_DOWN"
+    },
+    "link": {
+      "start": "Entry",
+      "end": "IDLE",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "CROUCH",
+      "end": "IDLE",
+      "condition": "isCrouch",
+      "type": 2,
+      "value": "False",
+      "transitionAnimation": "CROUCH_UP"
+    },
+    "link": {
+      "start": "IDLE",
+      "end": "RUN",
+      "condition": "isRun",
+      "type": 2,
+      "value": "True",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "RUN",
+      "end": "IDLE",
+      "condition": "isRun",
+      "type": 2,
+      "value": "False",
+      "transitionAnimation": ""
+    }
+  },
+  "EntryNode": "IDLE"
+}

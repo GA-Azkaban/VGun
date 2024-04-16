@@ -9,6 +9,7 @@
 #include "PhysicsSystem.h"
 #include "RenderSystem.h"
 #include "SceneLoader.h"
+#include "AnimationLoader.h"
 
 namespace API
 {
@@ -238,6 +239,12 @@ namespace API
 		HODO_API void LoadSceneFromData(std::string fileName)
 		{
 			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName);
+		}
+
+		HODO_API void LoadAnimationFromData(HDData::GameObject* gameobject, std::string data)
+		{
+			auto animator = gameobject->AddComponent<HDData::Animator>();
+			animator->SetAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
 		}
 
 		HODO_API HDData::Camera* GetMainCamera()

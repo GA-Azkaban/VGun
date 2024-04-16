@@ -5,7 +5,7 @@
 namespace HDData
 {
 	Animator::Animator()
-		: _animationController(nullptr)
+		: _animationController(nullptr), _engageIng(false)
 	{
 
 	}
@@ -20,7 +20,7 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Start();
-		_meshRenderer = GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>();
+		_meshRenderer = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
 	}
 
