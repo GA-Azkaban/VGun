@@ -28,7 +28,7 @@ void MainMenuScene::Initalize()
 	// 화염 연기이펙트(후순위)
 	// 격발시 총구 이펙트
 	// 블룸효과(포스트프로세싱)
-
+	// setting
 }
 
 void MainMenuScene::MainMenu()
