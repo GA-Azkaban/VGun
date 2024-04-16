@@ -59,7 +59,7 @@ namespace HDData
 						{
 							changeState = _allStates[trans->transState];
 
-							if (trans->_hasTransitionMotion)
+							if (trans->_transitionFBX != "")
 							{
 								_motionBuffer.push_back(trans->_transitionFBX);
 							}

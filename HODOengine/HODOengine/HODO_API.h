@@ -58,6 +58,9 @@ namespace API
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName);
 
+		// 애니메이션 툴 데이터에서 FSM 로드
+		HODO_API void LoadAnimationFromData(HDData::GameObject* gameobject, std::string data);
+
 		// 각종 오브젝트 생성
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateStaticObject(std::string objectName = "", HDData::GameObject* parentObject = nullptr);

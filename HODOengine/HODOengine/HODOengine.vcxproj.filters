@@ -127,9 +127,6 @@
     <ClCompile Include="HODOengine.cpp">
       <Filter>01_EngineProcess</Filter>
     </ClCompile>
-    <ClCompile Include="SceneLoader.cpp">
-      <Filter>SceneLoader</Filter>
-    </ClCompile>
     <ClCompile Include="CubeMapRenderer.cpp">
       <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
     </ClCompile>
@@ -147,6 +144,12 @@
     </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
       <Filter>Material\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLoader.cpp">
+      <Filter>Tool\SceneLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationLoader.cpp">
+      <Filter>Tool\AnimationLoader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -309,9 +312,6 @@
     <ClInclude Include="TextInputBoxUI.h">
       <Filter>05_Component\UserInterface\TextInputBoxUI</Filter>
     </ClInclude>
-    <ClInclude Include="SceneLoader.h">
-      <Filter>SceneLoader</Filter>
-    </ClInclude>
     <ClInclude Include="CubeMapRenderer.h">
       <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
     </ClInclude>
@@ -329,6 +329,12 @@
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
       <Filter>Material\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLoader.h">
+      <Filter>Tool\SceneLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationLoader.h">
+      <Filter>Tool\AnimationLoader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -478,9 +484,6 @@
     <Filter Include="05_Component\UserInterface\TextInputBoxUI">
       <UniqueIdentifier>{66895885-218e-4ff5-9ec5-70f6065b64e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SceneLoader">
-      <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Light">
       <UniqueIdentifier>{d0a499d2-c1f9-42ad-89ab-50fbf3da20e5}</UniqueIdentifier>
     </Filter>
@@ -498,6 +501,15 @@
     </Filter>
     <Filter Include="Material\Manager">
       <UniqueIdentifier>{26ace45d-b426-41d8-a28b-fe16775dda3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool">
+      <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\SceneLoader">
+      <UniqueIdentifier>{5abae1ce-b5ca-4024-9a4c-e9989aafdfac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\AnimationLoader">
+      <UniqueIdentifier>{1739c00a-28cf-4249-802c-bd34c3152418}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
