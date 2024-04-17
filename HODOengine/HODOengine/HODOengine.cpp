@@ -19,6 +19,7 @@
 #include "SoundSystem.h"
 #include "UISystem.h"
 
+#include "MaterialLoader.h"
 #include "DLL_Loader.h"
 
 #ifdef _DEBUG
@@ -53,7 +54,8 @@ HODOengine::HODOengine()
 	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
 	_eventSystem(HDEngine::EventSystem::Instance()),
 	_soundSystem(HDEngine::SoundSystem::Instance()),
-	_uiSystem(HDEngine::UISystem::Instance())
+	_uiSystem(HDEngine::UISystem::Instance()),
+	_materialLoader(HDEngine::MaterialLoader::Instance())
 {
 	
 }
@@ -93,6 +95,7 @@ void HODOengine::Initialize()
 	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
 	_physicsSystem.Initialize();
 	_uiSystem.Initialize();
+	_materialLoader.LoadMaterialData("materialData.json");
 }
 
 void HODOengine::Loop()

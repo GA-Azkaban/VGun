@@ -247,6 +247,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="HDMaterial.h" />
     <ClInclude Include="InputData.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="MaterialLoader.h" />
     <ClInclude Include="MaterialManager.h" />
     <ClInclude Include="MathHeader.h" />
     <ClInclude Include="SlideBoxUI.h" />
@@ -343,6 +344,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="MaterialLoader.cpp" />
     <ClCompile Include="MaterialManager.cpp" />
     <ClCompile Include="MeshRenderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
