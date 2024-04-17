@@ -69,6 +69,7 @@ void LoginSceneView::LoginView()
 	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.11f);
 	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.11f);
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", idTextbox);
+
 	idTextLabel->GetTransform()->SetLocalPosition(-250.f, 0.f, 0.f);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
