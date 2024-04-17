@@ -30,7 +30,6 @@ namespace RocketCore::Graphics
 
 		virtual const std::string& GetMaterialName() const;
 		virtual const DirectX::XMINT4& GetColor() const;
-		virtual const DirectX::XMFLOAT4& GetColorFloat4() const;
 		virtual const std::string& GetAlbedoTextureName() const;
 		virtual const std::string& GetNormalTextureName() const;
 		virtual const std::string& GetARMTextureName() const;
@@ -38,6 +37,8 @@ namespace RocketCore::Graphics
 		virtual const std::string& GetRoughnessTextureName() const;
 		virtual float GetMetallicValue() const;
 		virtual float GetRoughnessValue() const;
+
+		const DirectX::XMFLOAT4& GetColorFloat4() const;
 
 		ID3D11ShaderResourceView* GetAlbedoMap();
 		ID3D11ShaderResourceView* GetNormalMap();

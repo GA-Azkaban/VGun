@@ -78,6 +78,16 @@ namespace HDData
 		_skinnedMesh->PlayAnimation(animName, isLoop);
 	}
 
+	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/)
+	{
+		_skinnedMesh->PlayAnimationUpper(animName, isLoop);
+	}
+
+	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/)
+	{
+		_skinnedMesh->PlayAnimationLower(animName, isLoop);
+	}
+
 	bool SkinnedMeshRenderer::IsAnimationEnd()
 	{
 		return _skinnedMesh->IsAnimationEnd();

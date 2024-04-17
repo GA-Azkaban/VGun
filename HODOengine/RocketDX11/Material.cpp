@@ -8,14 +8,8 @@ namespace RocketCore::Graphics
 
 	Material::Material(const HDEngine::MaterialDesc& materialDesc)
 		: _materialName(materialDesc.materialName),
-		_color{ materialDesc.color.x,
-				materialDesc.color.y,
-				materialDesc.color.z,
-				materialDesc.color.w },
-		_colorFloat4{ static_cast<float>(materialDesc.color.x) / 255.0f,
-					  static_cast<float>(materialDesc.color.y) / 255.0f,
-					  static_cast<float>(materialDesc.color.z) / 255.0f,
-					  static_cast<float>(materialDesc.color.w) / 255.0f },
+		_color{ 255, 255, 255, 255 },
+		_colorFloat4{ 1.0f, 1.0f, 1.0f, 1.0f },
 		_albedo(materialDesc.albedo),
 		_normalMap(materialDesc.normalMap),
 		_occlusionRoughMatel(materialDesc.occlusionRoughMatel),
@@ -28,6 +22,8 @@ namespace RocketCore::Graphics
 		_materialAlbedo(0), _materialNormal(0), _materialARM(0),
 		_materialMetallic(0), _materialRoughness(0)
 	{
+		SetColor(materialDesc.color.x, materialDesc.color.y,
+				materialDesc.color.z, materialDesc.color.w);
 		LoadAlbedoTexture(_albedo);
 		LoadNormalTexture(_normalMap);
 		LoadARMTexture(_occlusionRoughMatel);
@@ -81,6 +77,42 @@ namespace RocketCore::Graphics
 
 	void Material::SetColor(UINT r, UINT g, UINT b, UINT a)
 	{
+		if (r < 0)
+		{
+			r = 0;
+		}
+		if (r > 255)
+		{
+			r = 255;
+		}
+
+		if (g < 0)
+		{
+			g = 0;
+		}
+		if (g > 255)
+		{
+			g = 255;
+		}
+
+		if (b < 0)
+		{
+			b = 0;
+		}
+		if (b > 255)
+		{
+			b = 255;
+		}
+
+		if (a < 0)
+		{
+			a = 0;
+		}
+		if (a > 255)
+		{
+			a = 255;
+		}
+
 		_color.x = r;
 		_color.y = g;
 		_color.z = b;
@@ -172,11 +204,6 @@ namespace RocketCore::Graphics
 		return _color;
 	}
 
-	const DirectX::XMFLOAT4& Material::GetColorFloat4() const
-	{
-		return _colorFloat4;
-	}
-
 	const std::string& Material::GetAlbedoTextureName() const
 	{
 		return _albedo;
@@ -210,6 +237,11 @@ namespace RocketCore::Graphics
 	float Material::GetRoughnessValue() const
 	{
 		return _roughnessValue;
+	}
+
+	const DirectX::XMFLOAT4& Material::GetColorFloat4() const
+	{
+		return _colorFloat4;
 	}
 
 	ID3D11ShaderResourceView* Material::GetAlbedoMap()
