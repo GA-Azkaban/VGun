@@ -28,8 +28,7 @@ namespace HDData
 		void SetRoughnessValue(float value);
 
 		const std::string& GetMaterialName() const;
-		const DirectX::XMINT4& GetColor() const;
-		const DirectX::XMFLOAT4& GetColorFloat4() const;
+		const DirectX::XMFLOAT4& GetColor() const;
 		const std::string& GetAlbedoTextureName() const;
 		const std::string& GetNormalTextureName() const;
 		const std::string& GetARMTextureName() const;

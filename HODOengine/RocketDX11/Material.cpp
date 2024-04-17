@@ -8,14 +8,7 @@ namespace RocketCore::Graphics
 
 	Material::Material(const HDEngine::MaterialDesc& materialDesc)
 		: _materialName(materialDesc.materialName),
-		_color{ materialDesc.color.x,
-				materialDesc.color.y,
-				materialDesc.color.z,
-				materialDesc.color.w },
-		_colorFloat4{ static_cast<float>(materialDesc.color.x) / 255.0f,
-					  static_cast<float>(materialDesc.color.y) / 255.0f,
-					  static_cast<float>(materialDesc.color.z) / 255.0f,
-					  static_cast<float>(materialDesc.color.w) / 255.0f },
+		_color{ 1.0f, 1.0f, 1.0f, 1.0f },
 		_albedo(materialDesc.albedo),
 		_normalMap(materialDesc.normalMap),
 		_occlusionRoughMatel(materialDesc.occlusionRoughMatel),
@@ -28,6 +21,8 @@ namespace RocketCore::Graphics
 		_materialAlbedo(0), _materialNormal(0), _materialARM(0),
 		_materialMetallic(0), _materialRoughness(0)
 	{
+		SetColor(materialDesc.color.x, materialDesc.color.y,
+				materialDesc.color.z, materialDesc.color.w);
 		LoadAlbedoTexture(_albedo);
 		LoadNormalTexture(_normalMap);
 		LoadARMTexture(_occlusionRoughMatel);
@@ -79,17 +74,48 @@ namespace RocketCore::Graphics
 		_materialName = matName;
 	}
 
-	void Material::SetColor(UINT r, UINT g, UINT b, UINT a)
+	void Material::SetColor(float r, float g, float b, float a)
 	{
+		if (r < 0.0f)
+		{
+			r = 0.0f;
+		}
+		if (r > 1.0f)
+		{
+			r = 1.0f;
+		}
+
+		if (g < 0.0f)
+		{
+			g = 0.0f;
+		}
+		if (g > 1.0f)
+		{
+			g = 1.0f;
+		}
+
+		if (b < 0.0f)
+		{
+			b = 0.0f;
+		}
+		if (b > 1.0f)
+		{
+			b = 1.0f;
+		}
+
+		if (a < 0.0f)
+		{
+			a = 0.0f;
+		}
+		if (r > 1.0f)
+		{
+			r = 1.0f;
+		}
+
 		_color.x = r;
 		_color.y = g;
 		_color.z = b;
 		_color.w = a;
-
-		_colorFloat4.x = static_cast<float>(r) / 255.0f;
-		_colorFloat4.y = static_cast<float>(g) / 255.0f;
-		_colorFloat4.z = static_cast<float>(b) / 255.0f;
-		_colorFloat4.w = static_cast<float>(a) / 255.0f;
 	}
 
 	void Material::LoadAlbedoTexture(const std::string& fileName)
@@ -167,14 +193,9 @@ namespace RocketCore::Graphics
 		return _materialName;
 	}
 
-	const DirectX::XMINT4& Material::GetColor() const
+	const DirectX::XMFLOAT4& Material::GetColor() const
 	{
 		return _color;
-	}
-
-	const DirectX::XMFLOAT4& Material::GetColorFloat4() const
-	{
-		return _colorFloat4;
 	}
 
 	const std::string& Material::GetAlbedoTextureName() const
