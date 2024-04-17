@@ -161,6 +161,8 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouch.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_HG_shoot.fbx");
 		_resourceManager.LoadFBXFile("SM/Weapons/SM_AR_01.fbx");
 		_resourceManager.LoadFBXFile("SM/SM_Plane.fbx");
 
