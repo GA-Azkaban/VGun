@@ -8,7 +8,8 @@ namespace RocketCore::Graphics
 
 	Material::Material(const HDEngine::MaterialDesc& materialDesc)
 		: _materialName(materialDesc.materialName),
-		_color{ 1.0f, 1.0f, 1.0f, 1.0f },
+		_color{ 255, 255, 255, 255 },
+		_colorFloat4{ 1.0f, 1.0f, 1.0f, 1.0f },
 		_albedo(materialDesc.albedo),
 		_normalMap(materialDesc.normalMap),
 		_occlusionRoughMatel(materialDesc.occlusionRoughMatel),
@@ -74,48 +75,53 @@ namespace RocketCore::Graphics
 		_materialName = matName;
 	}
 
-	void Material::SetColor(float r, float g, float b, float a)
+	void Material::SetColor(UINT r, UINT g, UINT b, UINT a)
 	{
-		if (r < 0.0f)
+		if (r < 0)
 		{
-			r = 0.0f;
+			r = 0;
 		}
-		if (r > 1.0f)
+		if (r > 255)
 		{
-			r = 1.0f;
-		}
-
-		if (g < 0.0f)
-		{
-			g = 0.0f;
-		}
-		if (g > 1.0f)
-		{
-			g = 1.0f;
+			r = 255;
 		}
 
-		if (b < 0.0f)
+		if (g < 0)
 		{
-			b = 0.0f;
+			g = 0;
 		}
-		if (b > 1.0f)
+		if (g > 255)
 		{
-			b = 1.0f;
+			g = 255;
 		}
 
-		if (a < 0.0f)
+		if (b < 0)
 		{
-			a = 0.0f;
+			b = 0;
 		}
-		if (r > 1.0f)
+		if (b > 255)
 		{
-			r = 1.0f;
+			b = 255;
+		}
+
+		if (a < 0)
+		{
+			a = 0;
+		}
+		if (a > 255)
+		{
+			a = 255;
 		}
 
 		_color.x = r;
 		_color.y = g;
 		_color.z = b;
 		_color.w = a;
+
+		_colorFloat4.x = static_cast<float>(r) / 255.0f;
+		_colorFloat4.y = static_cast<float>(g) / 255.0f;
+		_colorFloat4.z = static_cast<float>(b) / 255.0f;
+		_colorFloat4.w = static_cast<float>(a) / 255.0f;
 	}
 
 	void Material::LoadAlbedoTexture(const std::string& fileName)
@@ -193,7 +199,7 @@ namespace RocketCore::Graphics
 		return _materialName;
 	}
 
-	const DirectX::XMFLOAT4& Material::GetColor() const
+	const DirectX::XMINT4& Material::GetColor() const
 	{
 		return _color;
 	}
@@ -231,6 +237,11 @@ namespace RocketCore::Graphics
 	float Material::GetRoughnessValue() const
 	{
 		return _roughnessValue;
+	}
+
+	const DirectX::XMFLOAT4& Material::GetColorFloat4() const
+	{
+		return _colorFloat4;
 	}
 
 	ID3D11ShaderResourceView* Material::GetAlbedoMap()

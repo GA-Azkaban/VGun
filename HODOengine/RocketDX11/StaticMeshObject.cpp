@@ -159,12 +159,12 @@ namespace RocketCore::Graphics
 				{
 					m_pixelShader->SetInt("useAlbedo", 1);
 					m_pixelShader->SetShaderResourceView("Albedo", m_materials[i]->GetAlbedoMap());
-					m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColor());
+					m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColorFloat4());
 				}
 				else
 				{
 					m_pixelShader->SetInt("useAlbedo", 0);
-					m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColor());
+					m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColorFloat4());
 				}
 
 				if (m_materials[i]->GetNormalMap())

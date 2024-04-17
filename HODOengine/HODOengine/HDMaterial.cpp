@@ -65,7 +65,7 @@ namespace HDData
 		return _material->GetMaterialName();
 	}
 
-	const DirectX::XMFLOAT4& Material::GetColor() const
+	const DirectX::XMINT4& Material::GetColor() const
 	{
 		return _material->GetColor();
 	}
