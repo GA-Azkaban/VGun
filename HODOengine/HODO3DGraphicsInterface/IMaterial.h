@@ -10,7 +10,7 @@ namespace HDEngine
 		IMaterial() {}
 		virtual ~IMaterial() {}
 		virtual void SetMaterialName(const std::string& materialName) = 0;
-		virtual void SetColor(UINT r, UINT g, UINT b, UINT a) = 0;
+		virtual void SetColor(float r, float g, float b, float a) = 0;
 		virtual void LoadAlbedoTexture(const std::string& fileName) = 0;
 		virtual void LoadNormalTexture(const std::string& fileName) = 0;
 		virtual void LoadARMTexture(const std::string& fileName) = 0;
@@ -20,8 +20,7 @@ namespace HDEngine
 		virtual void SetRoughnessValue(float value) = 0;
 
 		virtual const std::string& GetMaterialName() const = 0;
-		virtual const DirectX::XMINT4& GetColor() const = 0;
-		virtual const DirectX::XMFLOAT4& GetColorFloat4() const = 0;
+		virtual const DirectX::XMFLOAT4& GetColor() const = 0;
 		virtual const std::string& GetAlbedoTextureName() const = 0;
 		virtual const std::string& GetNormalTextureName() const = 0;
 		virtual const std::string& GetARMTextureName() const = 0;
@@ -34,7 +33,7 @@ namespace HDEngine
 	struct MaterialDesc
 	{
 		std::string materialName = "";
-		DirectX::XMINT4 color = { 255, 255, 255, 255 };
+		DirectX::XMFLOAT4 color = { 1.0f, 1.0f, 1.0f, 1.0f };
 		std::string albedo = "";
 		std::string normalMap = "";
 		std::string occlusionRoughMatel = "";

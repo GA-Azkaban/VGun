@@ -19,7 +19,7 @@ namespace RocketCore::Graphics
 		virtual ~Material();
 
 		virtual void SetMaterialName(const std::string& materialName);
-		virtual void SetColor(UINT r, UINT g, UINT b, UINT a);
+		virtual void SetColor(float r, float g, float b, float a);
 		virtual void LoadAlbedoTexture(const std::string& fileName);
 		virtual void LoadNormalTexture(const std::string& fileName);
 		virtual void LoadARMTexture(const std::string& fileName);
@@ -29,8 +29,7 @@ namespace RocketCore::Graphics
 		virtual void SetRoughnessValue(float value);
 
 		virtual const std::string& GetMaterialName() const;
-		virtual const DirectX::XMINT4& GetColor() const;
-		virtual const DirectX::XMFLOAT4& GetColorFloat4() const;
+		virtual const DirectX::XMFLOAT4& GetColor() const;
 		virtual const std::string& GetAlbedoTextureName() const;
 		virtual const std::string& GetNormalTextureName() const;
 		virtual const std::string& GetARMTextureName() const;
@@ -62,8 +61,7 @@ namespace RocketCore::Graphics
 
 	private:
 		std::string _materialName;
-		DirectX::XMINT4 _color;
-		DirectX::XMFLOAT4 _colorFloat4;
+		DirectX::XMFLOAT4 _color;
 		std::string _albedo;
 		std::string _normalMap;
 		std::string _occlusionRoughMatel;
