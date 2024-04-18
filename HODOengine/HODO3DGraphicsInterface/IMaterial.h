@@ -21,6 +21,7 @@ namespace HDEngine
 
 		virtual const std::string& GetMaterialName() const = 0;
 		virtual const DirectX::XMINT4& GetColor() const = 0;
+		virtual const DirectX::XMFLOAT4& GetColorFloat4() const = 0;
 		virtual const std::string& GetAlbedoTextureName() const = 0;
 		virtual const std::string& GetNormalTextureName() const = 0;
 		virtual const std::string& GetARMTextureName() const = 0;
