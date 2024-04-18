@@ -1,8 +1,7 @@
 [
-
 {
     "name": "M_engineer_military",
-    "mainTex": "M_engineer_albedo",
+    "mainTex": "M_engineer_albedo.png",
     "metalicTex": "M_engineer_metallic",
     "color": [
         255,
@@ -15,7 +14,7 @@
 },
 {
     "name": "M_engineer_military_02",
-    "mainTex": "M_engineer_albedo_02",
+    "mainTex": "M_engineer_albedo_02.png",
     "metalicTex": "M_engineer_metallic_02",
     "color": [
         255,
@@ -28,7 +27,7 @@
 },
 {
     "name": "M_engineer_military_03",
-    "mainTex": "M_engineer_albedo_03",
+    "mainTex": "M_engineer_albedo_03.png",
     "metalicTex": "M_engineer_metallic_03",
     "color": [
         255,
@@ -41,7 +40,7 @@
 },
 {
     "name": "M_general_military_01",
-    "mainTex": "M_general_military_albedo_01",
+    "mainTex": "M_general_military_albedo_01.png",
     "metalicTex": "M_general_military_metallic_01",
     "color": [
         255,
@@ -54,7 +53,7 @@
 },
 {
     "name": "M_general_military_02",
-    "mainTex": "M_general_military_albedo_02",
+    "mainTex": "M_general_military_albedo_02.png",
     "metalicTex": "M_general_military_metallic_02",
     "color": [
         255,
@@ -67,7 +66,7 @@
 },
 {
     "name": "M_general_military_03",
-    "mainTex": "M_general_military_albedo_03",
+    "mainTex": "M_general_military_albedo_03.png",
     "metalicTex": "M_general_military_metallic_03",
     "color": [
         255,
@@ -80,7 +79,7 @@
 },
 {
     "name": "M_resistance_fighter_military 1",
-    "mainTex": "M_resistance_fighter_albedo_02",
+    "mainTex": "M_resistance_fighter_albedo_02.png",
     "metalicTex": "M_resistance_fighter_metallic_02",
     "color": [
         255,
@@ -93,7 +92,7 @@
 },
 {
     "name": "M_resistance_fighter_military 2",
-    "mainTex": "M_resistance_fighter_albedo_03",
+    "mainTex": "M_resistance_fighter_albedo_03.png",
     "metalicTex": "M_resistance_fighter_metallic_03",
     "color": [
         255,
@@ -106,7 +105,7 @@
 },
 {
     "name": "M_resistance_fighter_military 3",
-    "mainTex": "M_resistance_fighter_albedo_04",
+    "mainTex": "M_resistance_fighter_albedo_04.png",
     "metalicTex": "M_resistance_fighter_metallic_04",
     "color": [
         255,
@@ -119,7 +118,7 @@
 },
 {
     "name": "M_resistance_fighter_military",
-    "mainTex": "M_resistance_fighter_albedo_01",
+    "mainTex": "M_resistance_fighter_albedo_01.png",
     "metalicTex": "M_resistance_fighter_metallic_01",
     "color": [
         255,
@@ -132,7 +131,7 @@
 },
 {
     "name": "M_soldier_military 1",
-    "mainTex": "M_soldier_military_albedo_02",
+    "mainTex": "M_soldier_military_albedo_02.png",
     "metalicTex": "M_soldier_military_metallic_02",
     "color": [
         255,
@@ -145,7 +144,7 @@
 },
 {
     "name": "M_soldier_military 2",
-    "mainTex": "M_soldier_military_albedo_03",
+    "mainTex": "M_soldier_military_albedo_03.png",
     "metalicTex": "M_soldier_military_metallic_03",
     "color": [
         255,
@@ -158,7 +157,7 @@
 },
 {
     "name": "M_soldier_military 3",
-    "mainTex": "M_soldier_military_albedo_04",
+    "mainTex": "M_soldier_military_albedo_04.png",
     "metalicTex": "M_soldier_military_metallic_04",
     "color": [
         226,
@@ -171,7 +170,7 @@
 },
 {
     "name": "M_soldier_military 4",
-    "mainTex": "M_soldier_military_albedo_05",
+    "mainTex": "M_soldier_military_albedo_05.png",
     "metalicTex": "M_soldier_military_metallic_04",
     "color": [
         226,
@@ -184,7 +183,7 @@
 },
 {
     "name": "M_soldier_military",
-    "mainTex": "M_soldier_military_albedo_01",
+    "mainTex": "M_soldier_military_albedo_01.png",
     "metalicTex": "M_soldier_military_metallic_01",
     "color": [
         255,
@@ -236,7 +235,7 @@
 },
 {
     "name": "M_chainlink 1",
-    "mainTex": "M_chainlink_transparent",
+    "mainTex": "M_chainlink_transparent.png",
     "metalicTex": "",
     "color": [
         195,
@@ -249,7 +248,7 @@
 },
 {
     "name": "M_chainlink",
-    "mainTex": "M_chainlink_transparent",
+    "mainTex": "M_chainlink_transparent.png",
     "metalicTex": "",
     "color": [
         195,
@@ -275,7 +274,7 @@
 },
 {
     "name": "M_color_palette",
-    "mainTex": "colorpalette_standard",
+    "mainTex": "colorpalette_standard.png",
     "metalicTex": "",
     "color": [
         255,
@@ -392,7 +391,7 @@
 },
 {
     "name": "M_explosives",
-    "mainTex": "M_explosives_albedo",
+    "mainTex": "M_explosives_albedo.png",
     "metalicTex": "M_explosives_metallic",
     "color": [
         255,
@@ -418,7 +417,7 @@
 },
 {
     "name": "M_grid_transparent",
-    "mainTex": "M_grid_transparent",
+    "mainTex": "red.png",
     "metalicTex": "",
     "color": [
         72,
@@ -444,7 +443,7 @@
 },
 {
     "name": "M_handguns",
-    "mainTex": "M_handguns_albedo",
+    "mainTex": "M_handguns_albedo.png",
     "metalicTex": "M_handguns_metallic",
     "color": [
         255,
@@ -470,7 +469,7 @@
 },
 {
     "name": "M_headwear",
-    "mainTex": "M_headwear_albedo",
+    "mainTex": "M_headwear_albedo.png",
     "metalicTex": "M_headwear_metallic",
     "color": [
         255,
@@ -613,7 +612,7 @@
 },
 {
     "name": "M_rifles_01",
-    "mainTex": "M_rifles_01_albedo",
+    "mainTex": "M_rifles_01_albedo.png",
     "metalicTex": "M_rifles_01_metallic",
     "color": [
         255,
@@ -626,7 +625,7 @@
 },
 {
     "name": "M_rifles_02",
-    "mainTex": "M_rifles_02_albedo",
+    "mainTex": "M_rifles_02_albedo.png",
     "metalicTex": "M_rifles_02_metallic",
     "color": [
         255,
@@ -691,7 +690,7 @@
 },
 {
     "name": "M_scopes",
-    "mainTex": "M_scopes_albedo",
+    "mainTex": "M_scopes_albedo.png",
     "metalicTex": "M_scopes_metallic",
     "color": [
         255,
@@ -704,7 +703,7 @@
 },
 {
     "name": "M_specialweapons",
-    "mainTex": "M_specialweapons_albedo",
+    "mainTex": "M_specialweapons_albedo.png",
     "metalicTex": "M_specialweapons_metallic",
     "color": [
         255,
@@ -898,6 +897,45 @@
     "metalic": 0.0
 },
 {
+    "name": "M_color_palette.003",
+    "mainTex": "colorpalette_standard.png",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_color_palette.001",
+    "mainTex": "colorpalette_standard.png",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "Explosive Props",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
+    "metalic": 0.0
+},
+{
     "name": "M_metal_dark",
     "mainTex": "",
     "metalicTex": "",
@@ -912,7 +950,7 @@
 },
 {
     "name": "M_color_palette.001",
-    "mainTex": "colorpalette_standard",
+    "mainTex": "colorpalette_standard.png",
     "metalicTex": "",
     "color": [
         255,
@@ -925,7 +963,7 @@
 },
 {
     "name": "M_color_palette.002",
-    "mainTex": "colorpalette_standard",
+    "mainTex": "colorpalette_standard.png",
     "metalicTex": "",
     "color": [
         255,
@@ -1054,6 +1092,97 @@
     "metalic": 0.0
 },
 {
+    "name": "ThirdPersonCharacterPropsMaterial.001",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "covers32low_default.002",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "covers32low_default.003",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "covers32low_default.004",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "covers32low_default.005",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "covers32low_default.006",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "covers32low_default.007",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
     "name": "Material.001",
     "mainTex": "",
     "metalicTex": "",
@@ -1064,6 +1193,19 @@
         255
     ],
     "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "Arms",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
     "metalic": 0.0
 },
 {
@@ -1107,7 +1249,7 @@
 },
 {
     "name": "M_color_palette.003",
-    "mainTex": "colorpalette_standard",
+    "mainTex": "colorpalette_standard.png",
     "metalicTex": "",
     "color": [
         255,
@@ -1259,5 +1401,83 @@
         255
     ],
     "roughness": 0.40000003576278689,
+    "metalic": 0.0
+},
+{
+    "name": "Lit",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "SimpleLit",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        128
+    ],
+    "roughness": 1.0,
+    "metalic": 0.0
+},
+{
+    "name": "Sprite-Lit-Default",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 1.0,
+    "metalic": 0.0
+},
+{
+    "name": "TerrainLit",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "roughness": 1.0,
+    "metalic": 0.0
+},
+{
+    "name": "VFXSpriteLit",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        0,
+        0,
+        0,
+        0
+    ],
+    "roughness": 1.0,
+    "metalic": 0.0
+},
+{
+    "name": "SpeedTree8_PBRLit",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
     "metalic": 0.0
 }]

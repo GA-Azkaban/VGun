@@ -176,6 +176,9 @@ namespace RocketCore::Graphics
 			_resourceManager.LoadFBXFile("SM/" + SMfiles[i]);
 		}
 
+		// load all static texture
+		_resourceManager.LoadTextureFile("StaticMesh/M_grid_transparent.png");
+
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
 
