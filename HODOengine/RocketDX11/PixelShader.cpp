@@ -10,7 +10,7 @@
 namespace RocketCore::Graphics
 {
 	PixelShader::PixelShader(ID3D11Device* device, ID3D11DeviceContext* context)
-		: IShader(device, context), shader(nullptr)
+		: IShader(device, context), _shader(nullptr)
 	{
 
 	}
@@ -59,7 +59,7 @@ namespace RocketCore::Graphics
 
 		// Create the shader from the blob
 		HRESULT result = device->CreatePixelShader(shaderBlob->GetBufferPointer(),
-			shaderBlob->GetBufferSize(), 0, &shader);
+			shaderBlob->GetBufferSize(), 0, &_shader);
 
 		return result == S_OK;
 	}
@@ -68,7 +68,7 @@ namespace RocketCore::Graphics
 	void PixelShader::SetShaderAndConstantBuffers()
 	{
 		// Set the shader
-		deviceContext->PSSetShader(shader, 0, 0);
+		deviceContext->PSSetShader(_shader, 0, 0);
 
 		// Set the constant buffers
 		for (unsigned int i = 0; i < constantBufferCount; ++i)
@@ -81,10 +81,10 @@ namespace RocketCore::Graphics
 	void PixelShader::CleanUp()
 	{
 		IShader::CleanUp();
-		if (shader)
+		if (_shader)
 		{
-			shader->Release();
-			shader = nullptr;
+			_shader->Release();
+			_shader = nullptr;
 		}
 	}
 }

@@ -164,10 +164,10 @@ namespace RocketCore::Graphics
 			hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
 		}
 
-		if (FAILED(hr))
+		/*if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
-		}
+		}*/
 
 		_loadedTextureFiles.insert(std::make_pair(fileName, srv));
 	}
@@ -291,10 +291,10 @@ namespace RocketCore::Graphics
 			_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
 		}
 
-		if (FAILED(hr))
+		/*if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
-		}
+		}*/
 
 		GenerateEnvMap(envMapInfo.envMapTexture, envMapInfo.cubeMapTexture.shaderResourceView.Get());
 		GenerateEnvPreFilter(envMapInfo.envPreFilterMapTexture, envMapInfo.cubeMapTexture.shaderResourceView.Get());
@@ -886,7 +886,8 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
-		unitScaleFactor = 1.0f / unitScaleFactor;
+		//unitScaleFactor = 1.0f / unitScaleFactor;
+		unitScaleFactor = 1.0f;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
@@ -896,6 +897,12 @@ namespace RocketCore::Graphics
 			rightVec.y, upVec.y, forwardVec.y, 0.0f,
 			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
+
+			/*aiMatrix4x4 mat(
+				rightVec.x, forwardVec.x, -upVec.x, 0.0f,
+				rightVec.y, forwardVec.y, -upVec.y, 0.0f,
+				rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f);*/
 
 		// create node hierarchy
 		Node* rootNode = new Node();
@@ -1239,10 +1246,10 @@ namespace RocketCore::Graphics
 		const size_t size = embeddedTexture->mWidth;
 
 		hr = CreateWICTextureFromMemory(_device.Get(), _deviceContext.Get(), reinterpret_cast<const unsigned char*>(embeddedTexture->pcData), size, nullptr, &texture);
-		if (FAILED(hr))
+		/*if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
-		}
+		}*/
 
 		return texture;
 	}

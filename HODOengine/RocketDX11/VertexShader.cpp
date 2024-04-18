@@ -9,7 +9,7 @@
 namespace RocketCore::Graphics
 {
 	VertexShader::VertexShader(ID3D11Device* device, ID3D11DeviceContext* context)
-		:IShader(device, context), shader(nullptr), inputLayout(nullptr)
+		:IShader(device, context), _shader(nullptr), _inputLayout(nullptr)
 	{
 
 	}
@@ -45,13 +45,13 @@ namespace RocketCore::Graphics
 
 		// Create the shader from the blob
 		HRESULT hr = device->CreateVertexShader(shaderBlob->GetBufferPointer(),
-			shaderBlob->GetBufferSize(), 0, &shader);
+			shaderBlob->GetBufferSize(), 0, &_shader);
 		if (hr != S_OK)
 		{
 			return false;
 		}
 
-		if (inputLayout != nullptr)
+		if (_inputLayout != nullptr)
 		{
 			return true;
 		}
@@ -132,7 +132,7 @@ namespace RocketCore::Graphics
 
 		// Try to create input layout
 		HR(device->CreateInputLayout(&inputLayoutDesc[0], inputLayoutDesc.size(),
-			shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &inputLayout));
+			shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), &_inputLayout));
 
 		// All done, clean up
 		refl->Release();
@@ -144,8 +144,8 @@ namespace RocketCore::Graphics
 	void VertexShader::SetShaderAndConstantBuffers()
 	{
 		// Set tha shader and input layout
-		deviceContext->IASetInputLayout(inputLayout);
-		deviceContext->VSSetShader(shader, 0, 0);
+		deviceContext->IASetInputLayout(_inputLayout);
+		deviceContext->VSSetShader(_shader, 0, 0);
 
 		// Set the constant buffers
 		for (unsigned int i = 0; i < constantBufferCount; ++i)
@@ -158,15 +158,15 @@ namespace RocketCore::Graphics
 	void VertexShader::CleanUp()
 	{
 		IShader::CleanUp();
-		if (shader)
+		if (_shader)
 		{
-			shader->Release();
-			shader = nullptr;
+			_shader->Release();
+			_shader = nullptr;
 		}
-		if (inputLayout)
+		if (_inputLayout)
 		{
-			inputLayout->Release();
-			inputLayout = nullptr;
+			_inputLayout->Release();
+			_inputLayout = nullptr;
 		}
 	}
 }
