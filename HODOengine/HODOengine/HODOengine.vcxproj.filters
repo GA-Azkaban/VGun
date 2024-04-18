@@ -151,6 +151,9 @@
     <ClCompile Include="AnimationLoader.cpp">
       <Filter>Tool\AnimationLoader</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialLoader.cpp">
+      <Filter>Tool\MaterialLoader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -336,6 +339,9 @@
     <ClInclude Include="AnimationLoader.h">
       <Filter>Tool\AnimationLoader</Filter>
     </ClInclude>
+    <ClInclude Include="MaterialLoader.h">
+      <Filter>Tool\MaterialLoader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -510,6 +516,9 @@
     </Filter>
     <Filter Include="Tool\AnimationLoader">
       <UniqueIdentifier>{1739c00a-28cf-4249-802c-bd34c3152418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\MaterialLoader">
+      <UniqueIdentifier>{756d0c09-65ff-4e46-92c3-4987e8bdc108}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

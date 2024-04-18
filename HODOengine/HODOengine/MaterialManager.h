@@ -13,8 +13,8 @@ namespace HDEngine
 {
 	class MaterialManager : public Singleton<MaterialManager>
 	{
-	public:
 		friend Singleton;
+	public:
 		HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc);
 		HDData::Material* GetMaterial(const std::string& name);
 

@@ -14,6 +14,7 @@
 #include "MeshRenderer.h"
 #include "StaticBoxCollider.h"
 #include "DynamicSphereCollider.h"
+#include "MaterialManager.h"
 
 using rapidjson::Document;
 using rapidjson::SizeType;
@@ -81,7 +82,15 @@ namespace HDEngine
 			info.boxColliderSize.y = obj["BoxColliderSize"]["y"].GetFloat();
 			info.boxColliderSize.z = obj["BoxColliderSize"]["z"].GetFloat();
 			info.sphereColliderRadius = obj["SphereColliderRadius"].GetFloat();
-			info.texture = obj["textureName"].GetString();
+
+			const Value& matArray = obj["materials"];
+			if (matArray.IsArray())
+			{
+				for (SizeType j = 0; j < matArray.Size(); ++j)
+				{
+					info.materials.push_back(matArray[j].GetString());
+				}
+			}
 
 			_infoList.emplace_back(info);
 		}
@@ -96,23 +105,23 @@ namespace HDEngine
 
 			std::string meshName = info.meshName;
 
-			if (meshName == "Stair")
-			{
-				info.meshName = "Plane";
-			}
-
+			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
+			
 			if (meshName == "Plane" ||
 				meshName == "Cube")
 			{
-				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
-				meshRenderer->LoadMesh(meshName + ".fbx");
-				meshRenderer->LoadAlbedoMap(info.texture + ".png");
+				info.meshName = "Cube";
+				meshRenderer->LoadMesh("primitiveCube");
+			}
+			else if (meshName == "Stair" ||
+					meshName == "2FPlane" )
+			{
+				info.meshName = "2F";
+				meshRenderer->LoadMesh("primitiveCube");
 			}
 			else if (info.meshName != "")
 			{
-				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
-				meshRenderer->LoadMesh(info.meshName + ".fbx");
-				meshRenderer->LoadAlbedoMap(info.texture + ".png");
+				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
 
 			switch (info.colliderType)
@@ -125,18 +134,25 @@ namespace HDEngine
 					col->SetHeight(info.boxColliderSize.y);
 					col->SetDepth(info.boxColliderSize.z);
 				}
-					break;
+				break;
 				case 2:	// sphere dynamic
 				{
 					auto col = object->AddComponent<HDData::DynamicSphereCollider>();
 					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
 					col->SetRadius(info.sphereColliderRadius);
 				}
-					break;
+				break;
 				default:
 					break;
 			}
-			
+
+			for (int m = 0; m < info.materials.size(); m++)
+			{
+				auto mat = HDEngine::MaterialManager::Instance().GetMaterial(info.materials[m]);
+				if (mat == NULL) continue;
+				meshRenderer->LoadMaterial(mat, m);
+			}
+
 			_gameObjectMap.insert(std::make_pair(info.id, object));
 		}
 	}
@@ -164,6 +180,16 @@ namespace HDEngine
 			object->GetTransform()->SetLocalPosition(info.position);
 			object->GetTransform()->SetLocalRotation(info.rotation);
 			object->GetTransform()->SetLocalScale(info.scale);
+			if (info.meshName == "Cube")
+			{
+				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
+				object->GetTransform()->Translate(info.position.x, -0.1, info.position.z);
+			}
+			else if (info.meshName == "2F")
+			{
+				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
+			}
+				
 		}
 	}
 }

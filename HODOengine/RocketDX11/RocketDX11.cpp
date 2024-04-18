@@ -1,4 +1,5 @@
-#include <cassert>
+﻿#include <cassert>
+#include <windows.h>
 
 #include "RocketDX11.h"
 #include "CubeMesh.h"
@@ -60,7 +61,7 @@ namespace RocketCore::Graphics
 	RocketDX11::RocketDX11()
 		: _hWnd(), _screenWidth(), _screenHeight(), _vSyncEnabled(),
 		_device(), _deviceContext(),
-		_featureLevel(),_m4xMsaaQuality(),
+		_featureLevel(), _m4xMsaaQuality(),
 		_swapChain(), _renderTargetView(), _viewport(),
 		_resourceManager(ResourceManager::Instance())
 	{
@@ -157,22 +158,29 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_001_D.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_N.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_R.png");
-		_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
+		//_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouch.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchDown.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchUp.fbx");
+		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
+		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
+		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouch.fbx");
+		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchDown.fbx");
+		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchUp.fbx");
 
-		_resourceManager.LoadFBXFile("FP/SKM_FP_X_idle.fbx");
-		_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");
+		//_resourceManager.LoadFBXFile("FP/SKM_FP_X_idle.fbx");
+		//_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");
+
+		// load all static mesh
+		const auto& SMfiles = GetEveryFileNamesInFolder("SM");
+		for (int i = 0; i < SMfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("SM/" + SMfiles[i]);
+		}
 
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
 
 		CreateDepthStencilStates();
-		
+
 		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
@@ -320,7 +328,7 @@ namespace RocketCore::Graphics
 		_SSAOPass->Render();
 		_deferredPass->Render();
 		_outlinePass->Render();
-		
+
 #ifdef _DEBUG
 		_debugMeshPass->Render();
 		RenderLine();
@@ -428,6 +436,28 @@ namespace RocketCore::Graphics
 	void RocketDX11::SetDepthStencilState(ID3D11DepthStencilState* dss)
 	{
 		_deviceContext->OMSetDepthStencilState(dss, 0);
+	}
+
+	std::vector<std::string>& RocketDX11::GetEveryFileNamesInFolder(const std::string filePath)
+	{
+		std::string searchPath = "Resources/Models/" + filePath + "/*.*";
+		WIN32_FIND_DATAA fileData;
+		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &fileData);
+		if (hFind != INVALID_HANDLE_VALUE)
+		{
+			do
+			{
+				if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				{
+					std::string name = fileData.cFileName;
+					if (name.find(filePath) == 0) _fileNames.push_back(fileData.cFileName);
+				}
+			} while (FindNextFileA(hFind, &fileData));
+			FindClose(hFind);
+		}
+
+
+		return _fileNames;
 	}
 
 }

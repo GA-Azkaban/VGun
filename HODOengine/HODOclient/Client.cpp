@@ -33,8 +33,8 @@ void Client::Initialize()
 	//A a;
 	//a.Initialize();
 
-	B b;
-	b.Initialize();
+	//B b;
+	//b.Initialize();
 
-	API::LoadSceneByName("B");
+	API::LoadSceneByName("Scene2");
 }
