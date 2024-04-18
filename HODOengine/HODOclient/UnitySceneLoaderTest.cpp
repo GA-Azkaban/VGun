@@ -84,7 +84,7 @@ void UnitySceneLoaderTest::Start()
 
 	controller->SetEntryState("IDLE");*/
 
-	//API::LoadSceneFromData("transformData.json");
+	//API::LoadSceneFromData("sceneData.json");
 
 	//API::LoadScene(_scene);
 }

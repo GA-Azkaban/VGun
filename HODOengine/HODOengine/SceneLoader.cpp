@@ -81,7 +81,8 @@ namespace HDEngine
 			info.boxColliderSize.y = obj["BoxColliderSize"]["y"].GetFloat();
 			info.boxColliderSize.z = obj["BoxColliderSize"]["z"].GetFloat();
 			info.sphereColliderRadius = obj["SphereColliderRadius"].GetFloat();
-			info.texture = obj["textureName"].GetString();
+
+			const Value& mat = obj["materials"].GetArray();
 
 			_infoList.emplace_back(info);
 		}
@@ -106,13 +107,13 @@ namespace HDEngine
 			{
 				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 				meshRenderer->LoadMesh(meshName + ".fbx");
-				meshRenderer->LoadAlbedoMap(info.texture + ".png");
+				//meshRenderer->LoadAlbedoMap(info.texture + ".png");
 			}
 			else if (info.meshName != "")
 			{
 				HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 				meshRenderer->LoadMesh(info.meshName + ".fbx");
-				meshRenderer->LoadAlbedoMap(info.texture + ".png");
+				//meshRenderer->LoadAlbedoMap(info.texture + ".png");
 			}
 
 			switch (info.colliderType)
