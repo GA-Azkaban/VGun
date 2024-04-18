@@ -1,0 +1,13 @@
+스태틱메쉬
+	SM_모델명.fbx 형식
+	ex) SM_watch_tower.fbx
+
+스키닝메쉬
+	SKM_모델명_애니메이션이름.fbx 형식
+	ex)SKM_Player_Idle.fbx
+
+형식에 따르지 않는 파일명은 엔진에서 읽을 수 없습니다.
+RocketDX11 프로젝트의 RocketDX11.cpp 내의 Initialize 함수에서
+로드해둔 파일만 클라이언트에서 사용가능합니다.
+클라이언트에서 사용할 fbx 파일이나 텍스처 파일들은 
+RocketDX11에서 먼저 로드해주세요.

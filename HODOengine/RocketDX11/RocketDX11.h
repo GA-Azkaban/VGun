@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <windows.h>
+#include <string>
+#include <vector>
 #include <d3d11_2.h>
 #include <dxgi1_3.h>
 #include <wrl.h>
@@ -113,5 +115,10 @@ namespace RocketCore::Graphics
 		ToneMapPass* _toneMapPass;
 		SpritePass* _spritePass;
 		BlitPass* _blitPass;
+
+	private:
+		// 파일 내의 모든 fbx를 로드하는 함수
+		std::vector<std::string>& GetEveryFileNamesInFolder(const std::string filePath);
+		std::vector<std::string> _fileNames;
 	};
 }
