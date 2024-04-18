@@ -186,6 +186,9 @@
     <ClCompile Include="OutlinePass.cpp">
       <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
     </ClCompile>
+    <ClCompile Include="GeometryShader.cpp">
+      <Filter>Resource\Shader\GeometryShader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="OutlinePass.h">
       <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryShader.h">
+      <Filter>Resource\Shader\GeometryShader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -528,6 +534,9 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\Outline">
       <UniqueIdentifier>{2bf82f61-3088-497f-a437-6285e0724c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\GeometryShader">
+      <UniqueIdentifier>{6d310d2e-db01-44ec-b709-fa1ed4567547}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

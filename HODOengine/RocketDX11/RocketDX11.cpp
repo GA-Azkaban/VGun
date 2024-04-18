@@ -1,4 +1,4 @@
-﻿#include <cassert>
+#include <cassert>
 #include <windows.h>
 
 #include "RocketDX11.h"
@@ -160,11 +160,12 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_R.png");
 		//_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
-		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
-		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
-		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouch.fbx");
-		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchDown.fbx");
-		//_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchUp.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouch.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchDown.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchUp.fbx");
+		_resourceManager.LoadFBXFile("TP/SKM_TP_HG_shoot.fbx");
 
 		//_resourceManager.LoadFBXFile("FP/SKM_FP_X_idle.fbx");
 		//_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");

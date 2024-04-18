@@ -32,7 +32,7 @@ namespace RocketCore::Graphics
 
 		static float const far_factor = 3.5f;
 		static float const light_distance_factor = 1.0f;
-		static float const radius = 33.0f;
+		static float const radius = 30.0f;
 
 		Vector3 frustum_center(0, 0, 0);
 		

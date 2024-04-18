@@ -21,16 +21,16 @@ float ShadowFactor(float4 worldPos)
 	float shadow = 0;
 	float bias = 0.0001f;
 
-	for (int x = -1; x < 3; ++x)
+	for (int x = -1; x < 2; ++x)
 	{
-		for (int y = -1; y < 3; ++y)
+		for (int y = -1; y < 2; ++y)
 		{
 			shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler,
 				projCoords.xy + float2(x, y) * texelSize, currentDepth - bias).r;
 		}
 	}
 
-	shadow /= 16.0f;
+	shadow /= 9.0f;
 	return shadow;
 }
 
