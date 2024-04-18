@@ -53,11 +53,6 @@ TestScene::TestScene()
 	auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
 	boxRender5->LoadMesh("primitiveCube");
 
-	auto buildingTest1 = API::CreateObject(_scene);
-	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
-	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	buildingRenderer1->LoadMesh("SM_building_ruin_01.fbx");
-
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
