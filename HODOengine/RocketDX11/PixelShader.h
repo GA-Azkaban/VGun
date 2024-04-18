@@ -10,7 +10,7 @@ namespace RocketCore::Graphics
 	public:
 		PixelShader(ID3D11Device* device, ID3D11DeviceContext* context);
 		virtual ~PixelShader();
-		ID3D11PixelShader* GetPixelShader() { return shader; }
+		ID3D11PixelShader* GetPixelShader() { return _shader; }
 
 		virtual void SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv) override;
 		virtual void SetSamplerState(std::string name, ID3D11SamplerState* samplerState) override;
@@ -24,6 +24,6 @@ namespace RocketCore::Graphics
 		virtual void CleanUp() override;
 
 	protected:
-		ID3D11PixelShader* shader;
+		ID3D11PixelShader* _shader;
 	};
 }
