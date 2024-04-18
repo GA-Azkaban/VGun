@@ -8,8 +8,8 @@
 #pragma comment(lib,"libprotobufd.lib")
 
 #else
-#pragma comment(lib,"Release\\ServerCore.lib")
-#pragma comment(lib,"Release\\libprotobuf.lib")
+#pragma comment(lib,"ServerCore.lib")
+#pragma comment(lib,"libprotobuf.lib")
 
 #endif
 

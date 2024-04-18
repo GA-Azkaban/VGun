@@ -27,8 +27,6 @@ namespace HDData
 		void SetMetallicValue(float value, unsigned int element = 0);
 		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
 		void PlayAnimation(const std::string& animName, bool isLoop = true);
-		void PlayAnimationUpper(const std::string& animName, bool isLoop = true);
-		void PlayAnimationLower(const std::string& animName, bool isLoop = true);
 		bool IsAnimationEnd();
 		void SetOutlineActive(bool isActive);
 		Node* GetNode();

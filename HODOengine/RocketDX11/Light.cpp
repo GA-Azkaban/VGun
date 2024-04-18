@@ -32,7 +32,7 @@ namespace RocketCore::Graphics
 
 		static float const far_factor = 3.5f;
 		static float const light_distance_factor = 1.0f;
-		static float const radius = 38.0f;
+		static float const radius = 33.0f;
 
 		Vector3 frustum_center(0, 0, 0);
 		
@@ -40,15 +40,14 @@ namespace RocketCore::Graphics
 		Vector3 cameraForward = Camera::GetMainCamera()->GetForward();
 		
 		frustum_center.x += std::ceil(cameraPos.x);
-		frustum_center.y += std::ceil(cameraPos.y);
 		frustum_center.z += std::ceil(cameraPos.z);
 
 		frustum_center.x += cameraForward.x * radius;
-		frustum_center.y += cameraForward.y * radius;
 		frustum_center.z += cameraForward.z * radius;
 
 		Vector3 const max_extents(radius, radius, radius);
 		Vector3 const min_extents = -max_extents;
+		Vector3 const cascade_extents = max_extents - min_extents;
 
 		Vector3 light_dir = XMVector3Normalize(XMLoadFloat4(&(dirLight->direction)));
 		Matrix V = XMMatrixLookAtLH(frustum_center, frustum_center + light_distance_factor * light_dir * radius, Vector3::Up);
