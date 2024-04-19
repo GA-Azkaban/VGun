@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <unordered_map>
 #include "Singleton.h"
 #include "AudioClip.h"
@@ -18,7 +18,7 @@ namespace HDEngine
 		friend Singleton;
 
 	private:
-		SoundSystem();
+		SoundSystem() = default;
 		~SoundSystem();
 
 	public:

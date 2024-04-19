@@ -1,5 +1,9 @@
 ﻿#include "MainMenu.h"
 #include "MenuManager.h"
+#include "NetworkManager.h"
+
+#include "../HODOengine/AudioSource.h"
+
 
 MainMenuScene::MainMenuScene()
 	:_menuManager(MenuManager::Instance())
@@ -33,6 +37,11 @@ void MainMenuScene::Initalize()
 
 void MainMenuScene::MainMenu()
 {
+	HDData::AudioSource* bgmPlayer = GetGameObject()->GetComponent<HDData::AudioSource>();
+	bgmPlayer->AddAudio("Sample_BGM", "Resources/Sound/BGM/Sample_BGM_mp3", HDData::SoundGroup::BackgroundMusic);
+
+
+
 	HDData::GameObject* mainmenuCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
@@ -72,6 +81,7 @@ void MainMenuScene::MainMenu()
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	roomListCanvas->SetSelfActive(false);
 	//MenuManager::Instance().SetRoomList(roomListCanvas);
+
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
 	roomMakeBtn->GetTransform()->SetPosition(365.f, 290.f, 0.6f);

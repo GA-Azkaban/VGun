@@ -11,6 +11,7 @@
 #include "SceneLoader.h"
 #include "AnimationLoader.h"
 
+
 namespace API
 {
 	extern "C"
@@ -134,6 +135,11 @@ namespace API
 			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 
 			return obj;
+		}
+
+		HODO_API HDData::AudioSource* CreateSoundPlayer(HDData::Scene* scene, std::string soundName, std::string soundPath, HDData::SoundGroup soundType)
+		{
+			auto obj = HDEngine::SoundSystem::Instance().CreateSound(soundPath, soundType);
 		}
 
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
@@ -279,7 +285,7 @@ namespace API
 		{
 			HDEngine::SceneSystem::Instance().LoadScene(scene);
 		}
+		
 	}
-
 
 }
