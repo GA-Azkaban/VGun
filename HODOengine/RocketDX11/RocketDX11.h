@@ -118,7 +118,8 @@ namespace RocketCore::Graphics
 
 	private:
 		// 파일 내의 모든 fbx를 로드하는 함수
-		std::vector<std::string>& GetEveryFileNamesInFolder(const std::string filePath);
+		std::vector<std::string>& GetEveryMeshFileNamesInFolder(const std::string filePath);
+		std::vector<std::string>& GetEveryTextureFileNamesInFolder(const std::string filePath);
 		std::vector<std::string> _fileNames;
 	};
 }

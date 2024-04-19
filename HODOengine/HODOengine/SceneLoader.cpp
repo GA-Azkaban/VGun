@@ -189,6 +189,8 @@ namespace HDEngine
 			{
 				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
 			}
+
+			object->GetTransform()->Rotate(0, info.rotation.y + 180, 0);
 				
 		}
 	}
