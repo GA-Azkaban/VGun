@@ -152,7 +152,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_GRAPHICS_EXPORT;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include;$(SolutionDir)Include\DXTK;$(SolutionDir)HODO3DGraphicInterface;$(SolutionDir)HODOCommon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include;$(SolutionDir)Include\DXTK;$(SolutionDir)HODO3DGraphicInterface;$(SolutionDir)HODOCommon;C:\Users\KOCCA34\Desktop\DirectXTK-main\Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,7 +171,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_GRAPHICS_EXPORT;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Include;$(SolutionDir)Include\DXTK;$(SolutionDir)HODO3DGraphicInterface;$(SolutionDir)HODOCommon;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Include;$(SolutionDir)Include\DXTK;$(SolutionDir)HODO3DGraphicInterface;$(SolutionDir)HODOCommon;C:\Users\KOCCA34\Desktop\DirectXTK-main\Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
