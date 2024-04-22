@@ -1,4 +1,4 @@
-#include "SkinningMeshObject.h"
+﻿#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -438,8 +438,21 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
-		
+		if (index == 0)
+		{
+			if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+			{
+				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+			}
+		}
+		else
+		{
+			if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+			{
+				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+			}
+		}
+
 		// update values for children bones
 		for (Node& child : node->children)
 		{
@@ -556,8 +569,11 @@ namespace RocketCore::Graphics
 		{
 			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
-				currAnim = m_currentAnimation->nodeAnimations[i];
-				break;
+				if (_lowerAnimationNodes.find(node->name) == _lowerAnimationNodes.end())
+				{
+					currAnim = m_currentAnimation->nodeAnimations[i];
+					break;
+				}
 			}
 		}
 
@@ -680,7 +696,20 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		if (index == 0)
+		{
+			if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+			{
+				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+			}
+		}
+		else
+		{
+			if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+			{
+				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+			}
+		}
 
 		// update values for children bones
 		for (Node& child : node->children)
@@ -926,7 +955,7 @@ namespace RocketCore::Graphics
 	{
 		if (element >= m_materials.size())
 			return;
-		
+
 		Material* newMat = dynamic_cast<Material*>(material);
 		if (newMat != nullptr)
 		{
