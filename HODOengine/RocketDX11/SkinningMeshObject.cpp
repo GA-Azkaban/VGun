@@ -1,4 +1,4 @@
-﻿#include "SkinningMeshObject.h"
+#include "SkinningMeshObject.h"
 #include "Camera.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -451,14 +451,25 @@ namespace RocketCore::Graphics
 
 		if (m_currentAnimation == &(animIter->second))
 		{
+			m_currentAnimation->isLoop = isLoop;
 			if (m_currentAnimation->isLoop)
+			{
 				return;
+			}
 
 			if (!m_currentAnimation->isEnd)
 				return;
 		}
 
-		m_previousAnimation = m_currentAnimation;
+		if (m_currentAnimation != nullptr)
+		{
+			m_savedPreviousAnimation = *m_currentAnimation;
+			m_previousAnimation = &m_savedPreviousAnimation;
+		}
+		else
+		{
+			m_previousAnimation = nullptr;
+		}
 		m_currentAnimation = &(animIter->second);
 		m_currentAnimation->isLoop = isLoop;
 
@@ -470,6 +481,100 @@ namespace RocketCore::Graphics
 				m_currentAnimation->isEnd = false;
 			}
 			m_blendFlag = true;
+		}
+	}
+
+	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/)
+	{
+		if (m_separateUpperAndLowerAnim == false)
+		{
+			m_separateUpperAndLowerAnim = true;
+		}
+
+		auto animIter = m_animations.find(animName);
+		if (animIter == m_animations.end())
+		{
+			m_currentUpperAnimation = nullptr;
+			return;
+		}
+
+		if (m_currentUpperAnimation == &(animIter->second))
+		{
+			m_currentUpperAnimation->isLoop = isLoop;
+			if (m_currentUpperAnimation->isLoop)
+				return;
+
+			if (!m_currentUpperAnimation->isEnd)
+				return;
+		}
+
+		if (m_currentUpperAnimation != nullptr)
+		{
+			m_savedUpperPreviousAnimation = *m_currentUpperAnimation;
+			m_previousUpperAnimation = &m_savedUpperPreviousAnimation;
+		}
+		else
+		{
+			m_previousUpperAnimation = nullptr;
+		}
+		m_currentAnimation = nullptr;
+		m_currentUpperAnimation = &(animIter->second);
+		m_currentUpperAnimation->isLoop = isLoop;
+		if (m_previousUpperAnimation != nullptr)
+		{
+			m_currentUpperAnimation->accumulatedTime = 0.0f;
+			if (m_currentUpperAnimation->isLoop == false)
+			{
+				m_currentUpperAnimation->isEnd = false;
+			}
+			m_blendFlagUpper = true;
+		}
+	}
+
+	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/)
+	{
+		if (m_separateUpperAndLowerAnim == false)
+		{
+			m_separateUpperAndLowerAnim = true;
+		}
+
+		auto animIter = m_animations.find(animName);
+		if (animIter == m_animations.end())
+		{
+			m_currentLowerAnimation = nullptr;
+			return;
+		}
+
+		if (m_currentLowerAnimation == &(animIter->second))
+		{
+			m_currentLowerAnimation->isLoop = isLoop;
+			if (m_currentLowerAnimation->isLoop)
+				return;
+
+			if (!m_currentLowerAnimation->isEnd)
+				return;
+		}
+
+		if (m_currentLowerAnimation != nullptr)
+		{
+			m_savedLowerPreviousAnimation = *m_currentLowerAnimation;
+			m_previousLowerAnimation = &m_savedLowerPreviousAnimation;
+		}
+		else
+		{
+			m_previousLowerAnimation = nullptr;
+		}
+		m_currentAnimation = nullptr;
+		m_currentLowerAnimation = &(animIter->second);
+		m_currentLowerAnimation->isLoop = isLoop;
+		if (m_previousLowerAnimation != nullptr)
+		{
+			m_currentLowerAnimation->accumulatedTime = 0.0f;
+			if (m_currentLowerAnimation->isLoop == false)
+			{
+				m_currentLowerAnimation->isEnd = false;
+			}
+			m_blendFlagLower = true;
 		}
 	}
 

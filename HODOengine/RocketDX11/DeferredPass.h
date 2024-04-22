@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <d3d11_2.h>
 #include <DirectXMath.h>
+#include <wrl.h>
 
 namespace RocketCore::Graphics
 {

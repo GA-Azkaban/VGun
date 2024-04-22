@@ -161,7 +161,10 @@ namespace RocketCore::Graphics
 		}
 		else
 		{
-			hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			//hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			hr = CreateWICTextureFromFileEx(_device.Get(), _deviceContext.Get(), 
+				pathWS.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 
+				0, 0, WIC_LOADER_IGNORE_SRGB, nullptr, &srv);
 		}
 
 		/*if (FAILED(hr))

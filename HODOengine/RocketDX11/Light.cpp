@@ -1,4 +1,4 @@
-﻿#include "Light.h"
+#include "Light.h"
 #include "Camera.h"
 #include "ShadowMapPass.h"
 #include <exception>
@@ -29,6 +29,8 @@ namespace RocketCore::Graphics
 				dirLight = &(_lights[i]);
 			}
 		}
+		Camera* mainCamera = Camera::GetMainCamera();
+		XMMATRIX invView = XMMatrixInverse(nullptr, mainCamera->GetViewMatrix());
 
 		static float const far_factor = 3.5f;
 		static float const light_distance_factor = 1.0f;

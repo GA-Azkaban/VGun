@@ -150,6 +150,7 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadTextureFile("Character/TP_Red_B.png");
 		_resourceManager.LoadTextureFile("Character/TP_Green_B.png");
 		_resourceManager.LoadTextureFile("Character/TP_Blue_B.png");
+		_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_039_D.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_R.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_D.png");
@@ -158,7 +159,8 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_001_D.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_N.png");
 		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_R.png");
-		//_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
+		_resourceManager.LoadTextureFile("StaticMesh/colorpalette_standard.png");
+		_resourceManager.LoadTextureFile("StaticMesh/M_grid_transparent.png");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
@@ -166,6 +168,9 @@ namespace RocketCore::Graphics
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchDown.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchUp.fbx");
 		_resourceManager.LoadFBXFile("TP/SKM_TP_HG_shoot.fbx");
+		_resourceManager.LoadFBXFile("SM/SM_Plane.fbx");
+		_resourceManager.LoadFBXFile("SM/SM_building_ruin_01.fbx");
+		_resourceManager.LoadFBXFile("SM/SM_hesco_bastion.fbx");
 
 		//_resourceManager.LoadFBXFile("FP/SKM_FP_X_idle.fbx");
 		//_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <vector>
@@ -88,10 +88,19 @@ namespace RocketCore::Graphics
 
 		// Animation
 		std::unordered_map<std::string, Animation> m_animations;
+		Animation m_savedPreviousAnimation;
 		Animation* m_previousAnimation;
 		Animation* m_currentAnimation;
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
 		Node m_node;
+
+		// upper, lower animation
+		Animation m_savedUpperPreviousAnimation; 
+		Animation m_savedLowerPreviousAnimation;
+		Animation* m_previousUpperAnimation;
+		Animation* m_previousLowerAnimation;
+		Animation* m_currentUpperAnimation;
+		Animation* m_currentLowerAnimation;
 
 		// Transform Matrix
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.

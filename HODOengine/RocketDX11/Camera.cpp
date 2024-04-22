@@ -12,15 +12,15 @@ namespace RocketCore::Graphics
 	Camera::Camera()
 		: _position(0.0f, 2.0f, -10.0f),
 		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
-		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f ), _fovY(70.0f),
+		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(70.0f),
 		_nearWindowHeight(), _farWindowHeight(),
 		_viewMatrix(), _projectionMatrix()
 	{
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		_nearWindowWidth = _nearWindowHeight * _aspect;
+		_farWindowWidth = _farWindowHeight * _aspect;
 		UpdateProjectionMatrix();
-		_boundingSphere.Center = _position;
-		_boundingSphere.Radius = 60.0f;
 	}
 
 	Camera::~Camera()
@@ -43,37 +43,8 @@ namespace RocketCore::Graphics
 		_rotation = { x,y,z,w };
 	}
 
-	/// 카메라의 세팅을 설정한다.
-	/// 들어온 값에 맞춰 여러 멤버들도 재설정해준다.
-	/// 지금은 XMMatrixPerspectiveFovLH 함수를 이용해서 투영행렬을 만든다.
-	/// 이 부분은 내가 직접 투영행렬을 만들어보고 싶다.
-	/// 
-	/// 23.04.20 강석원 인재원
-// 	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
-// 	{
-// 		_fovY = fovY;
-// 		_aspect = aspect;
-// 		_nearZ = nearZ;
-// 		_farZ = farZ;
-// 
-// 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
-// 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
-// 	}
-
-	/// ViewMatrix를 갱신해준다.
-	/// 교수님 코드에서는 잘못된 벡터가 되어있을 시 look을 기준으로 다시 점검해서 변경하는 듯 하다.
-	/// 나는 그냥 viewMatrix만 갱신해줬다.
-	/// 
-	/// 그리고 position은 음수로 줘야한다! 왜냐하면 카메라 기준으로 옮기는거니까!
-	/// 
-	/// 23.04.20 강석원 인재원
 	void Camera::UpdateViewMatrix()
 	{
-// 		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
-// 		XMVECTOR det = XMMatrixDeterminant(world);
-// 		XMStoreFloat4x4(&_viewMatrix, XMMatrixInverse(&det, world));
-// 
-// 		return;
 		XMFLOAT3 right = GetRight();
 		XMFLOAT3 up = GetUp();
 		XMFLOAT3 forward = GetForward();
@@ -197,6 +168,31 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
+	float Camera::GetFOVY() const
+	{
+		return _fovY;
+	}
+
+	float Camera::GetFOVZ() const
+	{
+		return _fovY * _aspect;
+	}
+
+	float Camera::GetAspect() const
+	{
+		return _aspect;
+	}
+
+	float Camera::GetNearZ() const
+	{
+		return _nearZ;
+	}
+
+	float Camera::GetFarZ() const
+	{
+		return _farZ;
+	}
+
 	void Camera::SetWorldTM(const Matrix& matrix)
 	{
 		_worldMatrix = matrix;
@@ -255,7 +251,6 @@ namespace RocketCore::Graphics
 		_farWindowHeight = height;
 		float farZ = _farWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetFarZ(farZ);
-
 	}
 
 	void Camera::UpdateProjectionMatrix()
@@ -277,19 +272,11 @@ namespace RocketCore::Graphics
 	{
 		SetPosition(pos.x, pos.y, pos.z);
 		SetRotation(rot.x, rot.y, rot.z, rot.w);
-		_boundingSphere.Center = pos;
 	}
 
 	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)
 	{
 		_viewMatrix = tm;
-	}
-
-	DirectX::BoundingFrustum Camera::GetFrustum()
-	{
-		DirectX::BoundingFrustum frustum(_projectionMatrix);
-		frustum.Transform(frustum, XMMatrixInverse(nullptr, _viewMatrix));
-		return frustum;
 	}
 
 }

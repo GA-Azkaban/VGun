@@ -152,7 +152,7 @@
       <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;$(SolutionDir)ServerCore\;$(SolutionDir)Libraries\Include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;$(SolutionDir)ServerCore\</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
