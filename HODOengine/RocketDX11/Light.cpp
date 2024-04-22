@@ -32,8 +32,19 @@ namespace RocketCore::Graphics
 		Camera* mainCamera = Camera::GetMainCamera();
 		XMMATRIX invView = XMMatrixInverse(nullptr, mainCamera->GetViewMatrix());
 
-		float fovZ = mainCamera->GetFOVZ();
+		BoundingFrustum frustum(mainCamera->GetProjectionMatrix());
+		frustum.Transform(frustum, invView);
+		std::array<Vector3, BoundingFrustum::CORNER_COUNT> corners{};
+		frustum.GetCorners(corners.data());
 		
+		Vector3 frustum_center(0, 0, 0);
+		for (Vector3 const& corner : corners)
+		{
+			frustum_center = frustum_center + corner;
+		}
+		frustum_center /= static_cast<float>(corners.size());
+
+
 	}
 
 	Light* LightManager::AddLight()

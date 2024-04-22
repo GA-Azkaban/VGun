@@ -58,7 +58,6 @@ namespace RocketCore::Graphics
 		float _farZ;					// frustum의 먼 평면까지의 거리
 		float _aspect;					// 가로 / 세로 비율
 		float _fovY;					// fov각도를 60분법으로 갖고있음. 수직각도
-		float _fovZ;					// 수평각도
 		float _nearWindowHeight;		// frustum의 가까운 평면의 높이
 		float _farWindowHeight;			// frustum의 먼 평면의 높이
 		float _nearWindowWidth;
