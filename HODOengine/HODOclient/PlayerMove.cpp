@@ -60,11 +60,10 @@ void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
 	_playerCamera = camera;
 }
 
-void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim, HDData::TextUI* hit)
+void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim)
 {
 	_playerInfoText = pos;
 	_aimText = aim;
-	_hitText = hit;
 }
 
 // 조이스틱 개념
@@ -218,9 +217,9 @@ void PlayerMove::ShootGun()
 
 void PlayerMove::UpdatePlayerPositionDebug()
 {
-	Vector3 pos = GetTransform()->GetPosition();
-	std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
-	_playerInfoText->SetText(posText);
+	//Vector3 pos = GetTransform()->GetPosition();
+	//std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
+	//_playerInfoText->SetText(posText);
 }
 
 void PlayerMove::SetHeadCam(HDData::Camera* cam)

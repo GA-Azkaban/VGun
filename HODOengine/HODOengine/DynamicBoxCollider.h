@@ -8,6 +8,7 @@ namespace HDData
 	{
 	public:
 		DynamicBoxCollider();
+		DynamicBoxCollider(float w, float h, float d, int colliderGroup);
 
 		void SetVolume(float w, float h, float d);
 		virtual float GetWidth() const override;
@@ -16,10 +17,13 @@ namespace HDData
 
 		virtual void DrawDebug() override;
 
+		int GetColGroup() const;
+
 	private:
 		float _width;
 		float _height;
 		float _depth;
+		int _colliderGroup;
 		HDEngine::CubePrimitive* _cubeDebugStruct;
 	};
 }

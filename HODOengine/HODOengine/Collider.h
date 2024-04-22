@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "dllExporter.h"
 #include "MathHeader.h"
+#include "PhysicsCollision.h"
 #include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
 
 ///
@@ -44,9 +45,32 @@ namespace HDData
 	public:
 		void Setflag(int flag);
 		int GetFlag();
+		void SetTrigger(bool isTrigger);
+		bool GetTrigger();
 
 	protected:
 		int _flag;
+		bool _isTrigger;
+		bool _isCollide;
+
+	// deal with the collision by callback function
+	public:
+		typedef void (*CollisionCallback)(Collider* self, Collider* opponent);
+		void OnCollision(Collider* opponent, int actionType);
+		void AddCollisionCallback(CollisionCallback* callbackFunc, int actionType);
+
+		// copy ver
+		void Collider_OnCollisionEnter(PhysicsCollision& collision);
+		void Collider_OnCollisionExit(PhysicsCollision& collision);
+		void Collider_OnTriggerEnter(Collider* col);
+		void Collider_OnTriggerExit(Collider* col);
+
+	// index 0 ~ 2 is OnCollision_[Enter / Stay / Exit]
+	private:
+		std::vector<CollisionCallback*> _callbackFunctionVec;
+
+		// copy ver
+		std::vector<PhysicsCollision*> _collisionStorage;
 	};
 }
 

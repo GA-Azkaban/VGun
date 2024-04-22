@@ -112,4 +112,56 @@ namespace HDData
 		return _flag;
 	}
 
+	void Collider::SetTrigger(bool isTrigger)
+	{
+		_isTrigger = isTrigger;
+	}
+
+	bool Collider::GetTrigger()
+	{
+		return _isTrigger;
+	}
+
+	void Collider::OnCollision(Collider* opponent, int actionType)
+	{
+		assert(actionType < 3, "action type index must be lower than 2");
+
+		(*_callbackFunctionVec[actionType])(this, opponent);
+	}
+
+	void Collider::AddCollisionCallback(CollisionCallback* callbackFunc, int actionType)
+	{
+		assert(actionType < 3, "action type index must be lower than 2");
+
+		_callbackFunctionVec[actionType] = callbackFunc;
+	}
+
+	void Collider::Collider_OnCollisionEnter(PhysicsCollision& collision)
+	{
+		std::string tRes = "Collider_OnCollisionEnter : ";
+		//PG_TRACE(tRes.append(this->_object->GetName()).c_str());
+
+		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
+		this->_isCollide = true;
+		_collisionStorage.push_back(&collision);
+	}
+
+	void Collider::Collider_OnCollisionExit(PhysicsCollision& collision)
+	{
+		std::string tRes = "Collider_OnCollisionExit : ";
+		//PG_TRACE(tRes.append(this->_object->GetName()).c_str());
+
+		this->_isCollide = false;
+		_collisionStorage.push_back(&collision);
+	}
+
+	void Collider::Collider_OnTriggerEnter(Collider* col)
+	{
+
+	}
+
+	void Collider::Collider_OnTriggerExit(Collider* col)
+	{
+
+	}
 }

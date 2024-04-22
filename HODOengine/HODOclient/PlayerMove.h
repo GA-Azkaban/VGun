@@ -16,7 +16,7 @@ public:
 
 public:
 	void SetPlayerCamera(HDData::Camera* camera);
-	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim, HDData::TextUI* hit);
+	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim);
 
 private:
 	bool _isMoveActive;

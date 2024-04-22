@@ -56,9 +56,9 @@ namespace HDData
 		void OnCollisionStay();
 		void OnCollisionExit();
 
-		template <ComponentConcept ComponentType>
-		ComponentType* AddComponent() {
-			ComponentType* component = new ComponentType();
+		template <ComponentConcept ComponentType, typename... Args>
+		ComponentType* AddComponent(Args&&... args) {
+			ComponentType* component = new ComponentType(std::forward<Args>(args)...);
 			component->_gameObject = this;
 			_componentsIndexed.push_back(component);
 			return component;
