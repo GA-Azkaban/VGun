@@ -19,13 +19,89 @@ namespace RocketCore::Graphics
 {
 	SkinningMeshObject::SkinningMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false),
-		m_world{ XMMatrixIdentity() }, m_currentAnimation(nullptr),
-		m_blendFlag(false), m_isOutlineActive(false)
+		m_world{ XMMatrixIdentity() }, m_separateUpperAndLowerAnim(false), m_isOutlineActive(false),
+		m_currentAnimation(nullptr), m_blendFlag(false),
+		m_currentUpperAnimation(nullptr), m_currentLowerAnimation(nullptr),
+		m_previousUpperAnimation(nullptr), m_previousLowerAnimation(nullptr),
+		m_blendFlagUpper(false), m_blendFlagLower(false)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
 		m_vertexShader = ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso");
 		m_pixelShader = ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso");
+
+		_upperAnimationNodes.insert("Armature");
+		_upperAnimationNodes.insert("root");
+		_upperAnimationNodes.insert("ik_hand_root");
+		_upperAnimationNodes.insert("ik_hand_gun");
+		_upperAnimationNodes.insert("ik_hand_l");
+		_upperAnimationNodes.insert("ik_hand_r");
+		_upperAnimationNodes.insert("pelvis");
+		_upperAnimationNodes.insert("spine_01");
+		_upperAnimationNodes.insert("spine_02");
+		_upperAnimationNodes.insert("spine_03");
+		_upperAnimationNodes.insert("clavicle_l");
+		_upperAnimationNodes.insert("upperarm_l");
+		_upperAnimationNodes.insert("lowerarm_l");
+		_upperAnimationNodes.insert("hand_l");
+		_upperAnimationNodes.insert("index_01_l");
+		_upperAnimationNodes.insert("index_02_l");
+		_upperAnimationNodes.insert("index_03_l");
+		_upperAnimationNodes.insert("middle_01_l");
+		_upperAnimationNodes.insert("middle_02_l");
+		_upperAnimationNodes.insert("middle_03_l");
+		_upperAnimationNodes.insert("pinky_01_l");
+		_upperAnimationNodes.insert("pinky_02_l");
+		_upperAnimationNodes.insert("pinky_03_l");
+		_upperAnimationNodes.insert("ring_01_l");
+		_upperAnimationNodes.insert("ring_02_l");
+		_upperAnimationNodes.insert("ring_03_l");
+		_upperAnimationNodes.insert("thumb_01_l");
+		_upperAnimationNodes.insert("thumb_02_l");
+		_upperAnimationNodes.insert("thumb_03_l");
+		_upperAnimationNodes.insert("lowerarm_twist_01_l");
+		_upperAnimationNodes.insert("upperarm_twist_01_l");
+		_upperAnimationNodes.insert("clavicle_r");
+		_upperAnimationNodes.insert("upperarm_r");
+		_upperAnimationNodes.insert("lowerarm_r");
+		_upperAnimationNodes.insert("hand_r");
+		_upperAnimationNodes.insert("index_01_r");
+		_upperAnimationNodes.insert("index_02_r");
+		_upperAnimationNodes.insert("index_03_r");
+		_upperAnimationNodes.insert("middle_01_r");
+		_upperAnimationNodes.insert("middle_02_r");
+		_upperAnimationNodes.insert("middle_03_r");
+		_upperAnimationNodes.insert("pinky_01_r");
+		_upperAnimationNodes.insert("pinky_02_r");
+		_upperAnimationNodes.insert("pinky_03_r");
+		_upperAnimationNodes.insert("ring_01_r");
+		_upperAnimationNodes.insert("ring_02_r");
+		_upperAnimationNodes.insert("ring_03_r");
+		_upperAnimationNodes.insert("thumb_01_r");
+		_upperAnimationNodes.insert("thumb_02_r");
+		_upperAnimationNodes.insert("thumb_03_r");
+		_upperAnimationNodes.insert("lowerarm_twist_01_r");
+		_upperAnimationNodes.insert("upperarm_twist_01_r");
+		_upperAnimationNodes.insert("neck_01");
+		_upperAnimationNodes.insert("head");
+
+		//_lowerAnimationNodes.insert("root");
+		_lowerAnimationNodes.insert("ik_foot_root");
+		_lowerAnimationNodes.insert("ik_foot_l");
+		_lowerAnimationNodes.insert("ik_foot_r");
+		//_lowerAnimationNodes.insert("pelvis");
+		_lowerAnimationNodes.insert("thigh_l");
+		_lowerAnimationNodes.insert("calf_l");
+		_lowerAnimationNodes.insert("calf_twist_01_l");
+		_lowerAnimationNodes.insert("foot_l");
+		_lowerAnimationNodes.insert("ball_l");
+		_lowerAnimationNodes.insert("thigh_twist_01_l");
+		_lowerAnimationNodes.insert("thigh_r");
+		_lowerAnimationNodes.insert("calf_r");
+		_lowerAnimationNodes.insert("calf_twist_01_r");
+		_lowerAnimationNodes.insert("foot_r");
+		_lowerAnimationNodes.insert("ball_r");
+		_lowerAnimationNodes.insert("thigh_twist_01_r");
 	}
 
 	SkinningMeshObject::~SkinningMeshObject()
@@ -35,43 +111,131 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::Update(float deltaTime)
 	{
-		if (m_currentAnimation != nullptr)
+		if (m_separateUpperAndLowerAnim)
 		{
-			if (m_blendFlag)
+			// upper animation
+			if (m_currentUpperAnimation != nullptr)
 			{
-				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-
-				if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
+				if (m_blendFlagUpper)
 				{
-					m_blendFlag = false;
-					m_currentAnimation->accumulatedTime = 0.0f;
-					return;
-				}
+					m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
 
-				UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
-			}
-			else
-			{
-				m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-
-				if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
-				{
-					m_currentAnimation->isEnd = true;
-					if (m_currentAnimation->isLoop == true)
+					if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->blendDuration)
 					{
-						m_currentAnimation->accumulatedTime = 0.0f;
+						m_blendFlagUpper = false;
+						m_currentUpperAnimation->accumulatedTime = 0.0f;
+						return;
 					}
-					return;
-				}
 
-				if (m_currentAnimation->isEnd == true)
-				{
-					m_currentAnimation->isEnd = false;
+					UpdateBlendAnimationSeparated(m_previousUpperAnimation->accumulatedTime, m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
 				}
-
-				if (!m_currentAnimation->isEnd)
+				else
 				{
-					UpdateAnimation(m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
+					m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
+
+					if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->duration)
+					{
+						m_currentUpperAnimation->isEnd = true;
+						if (m_currentUpperAnimation->isLoop == true)
+						{
+							m_currentUpperAnimation->accumulatedTime = 0.0f;
+						}
+						return;
+					}
+
+					if (m_currentUpperAnimation->isEnd == true)
+					{
+						m_currentUpperAnimation->isEnd = false;
+					}
+
+					if (!m_currentUpperAnimation->isEnd)
+					{
+						UpdateAnimationSeparated(m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
+					}
+				}
+			}
+			//lower animation
+			if (m_currentLowerAnimation != nullptr)
+			{
+				if (m_blendFlagLower)
+				{
+					m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
+
+					if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->blendDuration)
+					{
+						m_blendFlagLower = false;
+						m_currentLowerAnimation->accumulatedTime = 0.0f;
+						return;
+					}
+
+					UpdateBlendAnimationSeparated(m_previousLowerAnimation->accumulatedTime, m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
+				}
+				else
+				{
+					m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
+
+					if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->duration)
+					{
+						m_currentLowerAnimation->isEnd = true;
+						if (m_currentLowerAnimation->isLoop == true)
+						{
+							m_currentLowerAnimation->accumulatedTime = 0.0f;
+						}
+						return;
+					}
+
+					if (m_currentLowerAnimation->isEnd == true)
+					{
+						m_currentLowerAnimation->isEnd = false;
+					}
+
+					if (!m_currentLowerAnimation->isEnd)
+					{
+						UpdateAnimationSeparated(m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
+					}
+				}
+			}
+		}
+		else
+		{
+			if (m_currentAnimation != nullptr)
+			{
+				if (m_blendFlag)
+				{
+					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+
+					if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
+					{
+						m_blendFlag = false;
+						m_currentAnimation->accumulatedTime = 0.0f;
+						return;
+					}
+
+					UpdateBlendAnimation(m_previousAnimation->accumulatedTime, m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
+				}
+				else
+				{
+					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+
+					if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
+					{
+						m_currentAnimation->isEnd = true;
+						if (m_currentAnimation->isLoop == true)
+						{
+							m_currentAnimation->accumulatedTime = 0.0f;
+						}
+						return;
+					}
+
+					if (m_currentAnimation->isEnd == true)
+					{
+						m_currentAnimation->isEnd = false;
+					}
+
+					if (!m_currentAnimation->isEnd)
+					{
+						UpdateAnimation(m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
+					}
 				}
 			}
 		}
@@ -214,6 +378,72 @@ namespace RocketCore::Graphics
 		for (Node& child : node->children)
 		{
 			UpdateAnimation(animationTime, &child, globalTransform, globalInvTransform);
+		}
+	}
+
+	void SkinningMeshObject::UpdateAnimationSeparated(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index)
+	{
+		DirectX::XMMATRIX _nodeTransform = node->nodeTransformOffset;
+		NodeAnimation* nodeAnim = nullptr;
+		if (index == 0)
+		{
+			for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_currentUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+					{
+						nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (UINT i = 0; i < m_currentLowerAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+					{
+						nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
+						break;
+					}
+				}
+			}
+		}
+
+		if (nodeAnim != nullptr)
+		{
+			// calculate interpolated position
+			DirectX::XMFLOAT3 position = CalcInterpolatedPosition(animationTime, nodeAnim);
+			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
+
+			// calculate interpolated rotation
+			DirectX::XMFLOAT4 rotation = CalcInterpolatedRotation(animationTime, nodeAnim);
+			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
+
+			DirectX::XMFLOAT3 scale = CalcInterpolatedScaling(animationTime, nodeAnim);
+			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
+			{
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
+			}
+		}
+		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+
+		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		
+		// update values for children bones
+		for (Node& child : node->children)
+		{
+			UpdateAnimationSeparated(animationTime, &child, globalTransform, globalInvTransform, index);
 		}
 	}
 
@@ -364,6 +594,101 @@ namespace RocketCore::Graphics
 		}
 	}
 
+	void SkinningMeshObject::UpdateBlendAnimationSeparated(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index)
+	{
+		DirectX::XMMATRIX _nodeTransform = (node->nodeTransformOffset);
+		NodeAnimation* prevAnim = nullptr;
+		NodeAnimation* currAnim = nullptr;
+		float blendDuration = 0.0f;
+
+		if (index == 0)
+		{
+			for (UINT i = 0; i < m_previousUpperAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_previousUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+					{
+						prevAnim = m_previousUpperAnimation->nodeAnimations[i];
+						break;
+					}
+				}
+			}
+
+			for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_currentUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+					{
+						currAnim = m_currentUpperAnimation->nodeAnimations[i];
+						blendDuration = m_currentUpperAnimation->blendDuration;
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			for (UINT i = 0; i < m_previousLowerAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+					{
+						prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+						break;
+					}
+				}
+			}
+
+			for (UINT i = 0; i < m_currentLowerAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+					{
+						currAnim = m_currentLowerAnimation->nodeAnimations[i];
+						blendDuration = m_currentLowerAnimation->blendDuration;
+						break;
+					}
+				}
+			}
+		}
+
+		if (prevAnim != nullptr && currAnim != nullptr)
+		{
+			// calculate interpolated position
+			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
+			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
+
+			// calculate interpolated rotation
+			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
+			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
+
+			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
+			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
+			{
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
+			}
+		}
+		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+
+		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+
+		// update values for children bones
+		for (Node& child : node->children)
+		{
+			UpdateBlendAnimationSeparated(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform, index);
+		}
+	}
+
 	DirectX::XMFLOAT3 SkinningMeshObject::CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim)
 	{
 		UINT positionIndex = prevAnim->positionTimestamps.size() - 1;
@@ -442,6 +767,11 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
 	{
+		if (m_separateUpperAndLowerAnim == true)
+		{
+			m_separateUpperAndLowerAnim = false;
+		}
+
 		auto animIter = m_animations.find(animName);
 		if (animIter == m_animations.end())
 		{
@@ -471,6 +801,8 @@ namespace RocketCore::Graphics
 			m_previousAnimation = nullptr;
 		}
 		m_currentAnimation = &(animIter->second);
+		m_currentUpperAnimation = m_currentAnimation;
+		m_currentLowerAnimation = m_currentAnimation;
 		m_currentAnimation->isLoop = isLoop;
 
 		if (m_previousAnimation != nullptr)
