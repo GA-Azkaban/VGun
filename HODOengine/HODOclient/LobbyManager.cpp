@@ -130,14 +130,13 @@ void LobbyManager::Test()
 	auto camMove = API::CreateTween();
 	auto camRotate = API::CreateTween();
 
-	Vector3 dest = { 6.5f, 5.5f, -4.1f };
-	Vector3 rot = { 9.84, 2.85f, -4.46f };
+	float dest = { 10.7f};
 
 	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
 
-	camMove->GetData(&(mainCam->GetTransform()->GetPositionRef()))
+	camMove->GetData(&(mainCam->GetTransform()->GetPositionRef().x))
 		.DoMove(dest, 5)
-		.SetEase(HDData::INOUTQUART)
+		.SetEase(HDData::OUTQUINT)
 		.OnComplete([this]() 
 			{ 
 				Test2(); 

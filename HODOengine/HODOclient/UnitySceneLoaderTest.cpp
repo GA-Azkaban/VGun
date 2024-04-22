@@ -19,8 +19,7 @@ void UnitySceneLoaderTest::Start()
 
 	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
-	mainCam->GetTransform()->SetPosition(-42.f, 35.f, -39.f);
-	mainCam->GetTransform()->Rotate(35.f, 35.f, 0.f);
+	mainCam->GetTransform()->SetPosition(9.2, 1.8, -2.5);
 
 	//auto playerFP = API::CreateObject(_scene, "playerFP");
 	//playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
