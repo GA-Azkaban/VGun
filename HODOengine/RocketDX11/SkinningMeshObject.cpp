@@ -810,14 +810,25 @@ namespace RocketCore::Graphics
 
 		if (m_currentAnimation == &(animIter->second))
 		{
+			m_currentAnimation->isLoop = isLoop;
 			if (m_currentAnimation->isLoop)
+			{
 				return;
+			}
 
 			if (!m_currentAnimation->isEnd)
 				return;
 		}
 
-		m_previousAnimation = m_currentAnimation;
+		if (m_currentAnimation != nullptr)
+		{
+			m_savedPreviousAnimation = *m_currentAnimation;
+			m_previousAnimation = &m_savedPreviousAnimation;
+		}
+		else
+		{
+			m_previousAnimation = nullptr;
+		}
 		m_currentAnimation = &(animIter->second);
 		m_currentUpperAnimation = m_currentAnimation;
 		m_currentLowerAnimation = m_currentAnimation;
@@ -850,6 +861,7 @@ namespace RocketCore::Graphics
 
 		if (m_currentUpperAnimation == &(animIter->second))
 		{
+			m_currentUpperAnimation->isLoop = isLoop;
 			if (m_currentUpperAnimation->isLoop)
 				return;
 
@@ -857,7 +869,16 @@ namespace RocketCore::Graphics
 				return;
 		}
 
-		m_previousUpperAnimation = m_currentUpperAnimation;
+		if (m_currentUpperAnimation != nullptr)
+		{
+			m_savedUpperPreviousAnimation = *m_currentUpperAnimation;
+			m_previousUpperAnimation = &m_savedUpperPreviousAnimation;
+		}
+		else
+		{
+			m_previousUpperAnimation = nullptr;
+		}
+		m_currentAnimation = nullptr;
 		m_currentUpperAnimation = &(animIter->second);
 		m_currentUpperAnimation->isLoop = isLoop;
 		if (m_previousUpperAnimation != nullptr)
@@ -887,6 +908,7 @@ namespace RocketCore::Graphics
 
 		if (m_currentLowerAnimation == &(animIter->second))
 		{
+			m_currentLowerAnimation->isLoop = isLoop;
 			if (m_currentLowerAnimation->isLoop)
 				return;
 
@@ -894,7 +916,16 @@ namespace RocketCore::Graphics
 				return;
 		}
 
-		m_previousLowerAnimation = m_currentLowerAnimation;
+		if (m_currentLowerAnimation != nullptr)
+		{
+			m_savedLowerPreviousAnimation = *m_currentLowerAnimation;
+			m_previousLowerAnimation = &m_savedLowerPreviousAnimation;
+		}
+		else
+		{
+			m_previousLowerAnimation = nullptr;
+		}
+		m_currentAnimation = nullptr;
 		m_currentLowerAnimation = &(animIter->second);
 		m_currentLowerAnimation->isLoop = isLoop;
 		if (m_previousLowerAnimation != nullptr)

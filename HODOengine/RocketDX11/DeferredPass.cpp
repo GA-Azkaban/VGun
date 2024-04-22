@@ -80,7 +80,7 @@ namespace RocketCore::Graphics
 		_pixelShader->SetShader();
 
 		ResourceManager::Instance().GetDeviceContext()->Draw(4, 0);
-
+		
 		_deferredBuffers->FlushShaderResourceViews();
 	}
 
