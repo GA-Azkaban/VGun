@@ -2,6 +2,10 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
+	: _particleIndex(0),
+	_shootCooldown(0.0f),
+	_shootCount(0),
+	_sprayPattern()
 {
 
 }
@@ -17,6 +21,10 @@ void PlayerMove::Start()
 	_isJumping = true;
 
 	_playerCollider->LockPlayerRotation();
+
+	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
+
+	PresetSprayPattern();
 }
 
 void PlayerMove::Update()
@@ -30,9 +38,30 @@ void PlayerMove::Update()
 		CheckIsOnGround();
 	}
 
-	if (API::GetMouseDown(MOUSE_LEFT))
+	//if (API::GetMouseDown(MOUSE_LEFT))
+	//{
+	//	ShootGun();
+	//}
+
+	// 발사 쿨타임 및 파티클 수명관리
+	if (_shootCooldown >= 0.0f)
 	{
-		ShootGun();
+		_shootCooldown -= _deltaTime;
+	}
+
+	for (int i = 0; i < 30; ++i)
+	{
+		_hitParticles[i]->CheckTimer(_deltaTime);
+	}
+
+	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
+	{
+		ShootGunDdabal();
+	}
+
+	if (API::GetMouseUp(MOUSE_LEFT))
+	{
+		_shootCount = 0;
 	}
 
 	// 마우스에 따른 플레이어 회전 체크
@@ -66,11 +95,14 @@ void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim)
 	_aimText = aim;
 }
 
+void PlayerMove::SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec)
+{
+	_hitParticles = particleVec;
+}
+
 // 조이스틱 개념
 void PlayerMove::CheckMoveInfo()
 {
-	_prevDirection = _moveDirection;
-
 	_moveDirection = 5;
 
 	if (API::GetKeyPressing(DIK_I))
@@ -111,12 +143,12 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
-		_playerCollider->AdjustVelocity(2.0f);
+		//_playerCollider->AdjustVelocity(2.0f);
 		_moveSpeed = 6.0f;
 	}
 	if (API::GetKeyUp(DIK_LSHIFT))
 	{
-		_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
+		//_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
 		_moveSpeed = 3.0f;
 	}
 }
@@ -172,11 +204,6 @@ void PlayerMove::Move(int direction)
 	// 4 5 6
 	// 1 2 3
 
-	if (_prevDirection != _moveDirection)
-	{
-		//_playerCollider->Stop();
-	}
-
 	// PhysX로 오브젝트 옮겨주기
 	if (_moveDirection == 5)
 	{
@@ -215,11 +242,73 @@ void PlayerMove::ShootGun()
 	}
 }
 
+void PlayerMove::ShootGunDdabal()
+{
+	if (_shootCount >= 30)	// 장탄수를 임시로 30발로 제한
+	{
+		return;
+	}
+	++_shootCount;
+
+	// 총기 반동
+	ApplyRecoil();
+
+	// 총 쏴서
+	HDData::Collider* hitCollider = nullptr;
+
+	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 2.0f;
+	Vector3 hitPoint = { 314.0f, 314.0f, 314.0f };
+
+	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
+	_playerAudio->PlayOnce("shoot");
+
+	// 맞은 데에 빨간 점 나오게 하기
+	if (hitCollider != nullptr)
+	{
+		_playerAudio->PlayOnce("hit");
+		SpawnParticle(hitPoint);
+	}
+
+	// 맞은 애가 dynamic이면 힘 가해주기
+	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
+
+	if (hitDynamic != nullptr)
+	{
+		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
+		hitDynamic->AddForce(forceDirection, 5.0f);
+		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
+	}
+
+	_shootCooldown = 0.1f;
+}
+
+void PlayerMove::SpawnParticle(Vector3 position)
+{
+	_hitParticles[_particleIndex]->SetGlobalPosition(position);
+	_hitParticles[_particleIndex]->SetTimerActive();
+
+	if (_particleIndex < 29)
+	{
+		++_particleIndex;
+	}
+	else
+	{
+		_particleIndex = 0;
+	}
+}
+
+void PlayerMove::ApplyRecoil()
+{
+	// 고정된 값으로 spray 해주는 버전
+	_playerCollider->GetChildColliderVec()[0]->RotateY(_sprayPattern[_shootCount].first);
+	Pitch(_sprayPattern[_shootCount].second);
+}
+
 void PlayerMove::UpdatePlayerPositionDebug()
 {
-	//Vector3 pos = GetTransform()->GetPosition();
-	//std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
-	//_playerInfoText->SetText(posText);
+	Vector3 pos = GetTransform()->GetPosition();
+	std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
+	_playerInfoText->SetText(posText);
 }
 
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
@@ -227,6 +316,41 @@ void PlayerMove::SetHeadCam(HDData::Camera* cam)
 	_headCam = cam;
 	HDData::Transform* headCamTransform = _headCam->GetTransform();
 	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
+}
+
+void PlayerMove::PresetSprayPattern()
+{
+	float scale = 1.0f;
+	_sprayPattern[0] = std::make_pair(0.0f * scale, 0.0f * scale);
+	_sprayPattern[1] = std::make_pair(0.001f * scale, -0.3f * scale);
+	_sprayPattern[2] = std::make_pair(-0.001f * scale, -1.0f * scale);
+	_sprayPattern[3] = std::make_pair(0.001f * scale, -1.5f * scale);
+	_sprayPattern[4] = std::make_pair(0.001f * scale, -1.5f * scale);
+	_sprayPattern[5] = std::make_pair(-0.003f * scale, -1.7f * scale);
+	_sprayPattern[6] = std::make_pair(-0.002f * scale, -1.5f * scale);
+	_sprayPattern[7] = std::make_pair(-0.003f * scale, -1.0f * scale);
+	_sprayPattern[8] = std::make_pair(0.004f * scale, -1.0f * scale);
+	_sprayPattern[9] = std::make_pair(0.01f * scale, 0.5f * scale);
+	_sprayPattern[10] = std::make_pair(0.005f * scale, -0.3f * scale);
+	_sprayPattern[11] = std::make_pair(-0.003f * scale, -0.6f * scale);
+	_sprayPattern[12] = std::make_pair(0.004f * scale, -0.6f * scale);
+	_sprayPattern[13] = std::make_pair(0.008f * scale, 0.7f * scale);
+	_sprayPattern[14] = std::make_pair(0.001f * scale, -0.2f * scale);
+	_sprayPattern[15] = std::make_pair(-0.011f * scale, -0.1f * scale);
+	_sprayPattern[16] = std::make_pair(-0.003f * scale, -0.4f * scale);
+	_sprayPattern[17] = std::make_pair(-0.003f * scale, -0.6f * scale);
+	_sprayPattern[18] = std::make_pair(-0.006f * scale, 0.3f * scale);
+	_sprayPattern[19] = std::make_pair(-0.003f * scale, 0.7f * scale);
+	_sprayPattern[20] = std::make_pair(-0.005f * scale, -0.1f * scale);
+	_sprayPattern[21] = std::make_pair(0.004f * scale, 0.0f * scale);
+	_sprayPattern[22] = std::make_pair(0.001f * scale, -1.0f * scale);
+	_sprayPattern[23] = std::make_pair(0.001f * scale, -0.4f * scale);
+	_sprayPattern[24] = std::make_pair(-0.005f * scale, 0.1f * scale);
+	_sprayPattern[25] = std::make_pair(0.004f * scale, 0.0f * scale);
+	_sprayPattern[26] = std::make_pair(0.008f * scale, 0.6f * scale);
+	_sprayPattern[27] = std::make_pair(0.01f * scale, 1.3f * scale);
+	_sprayPattern[28] = std::make_pair(0.004f * scale, -0.4f * scale);
+	_sprayPattern[29] = std::make_pair(0.002f * scale, -0.2f * scale);
 }
 
 void PlayerMove::ToggleCam()
@@ -412,6 +536,7 @@ void PlayerMove::CameraControl()
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float rotationValue)
 {
+	/*
 	HDData::Transform* cameraTransform = _headCam->GetGameObject()->GetTransform();
 	Quaternion rot = cameraTransform->GetLocalRotation();
 	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
@@ -454,12 +579,43 @@ void PlayerMove::Pitch(float rotationValue)
 		Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), _pitchAngle);
 
 		cameraTransform->SetLocalRotation(rotToX);
-	}
-}
+	}*/
+	HDData::Transform* cameraTransform = _headCam->GetTransform();
 
-void PlayerMove::Yaw(float radian)
-{
-	// rotation along Z-direction. necessary?
+	float rotAngleX = DirectX::XMConvertToDegrees(cameraTransform->GetLocalRotation().ToEuler().x);
+	if (rotAngleX >= 79.0f)
+	{
+		if (rotationValue >= -0.0f)
+		{
+			return;
+		}
+	}
+	else if (rotAngleX <= -79.0f)
+	{
+		if (rotationValue <= 0.0f)
+		{
+			return;
+		}
+	}
+
+	HDData::Transform copy = *cameraTransform;
+	copy.Rotate(rotationValue, 0.0f, 0.0f);
+
+	float rotAnglePrediction = DirectX::XMConvertToDegrees(copy.GetLocalRotation().ToEuler().x);
+
+	if (rotAnglePrediction >= 79.0f)
+	{
+		cameraTransform->SetLocalRotationEuler(Vector3(80.0f, 0.0f, 0.0f));
+	}
+	else if (rotAnglePrediction <= -79.0f)
+	{
+		cameraTransform->SetLocalRotationEuler(Vector3(-80.0f, 0.0f, 0.0f));
+	}
+	else
+	{
+		cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
+	}
+
 }
 
 void PlayerMove::SwitchCamera()
@@ -494,10 +650,8 @@ void PlayerMove::CameraMove()
 	Vector2 mouseDelta = API::GetMouseDelta();
 
 	// RotateY
-	_playerCollider->Rotate(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
-
-	Vector3 temp = GetTransform()->GetRotation().ToEuler();
+	_playerCollider->RotateY(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
 
 	// Pitch in closed angle
-	Pitch(mouseDelta.y * 0.002f);
+	Pitch(mouseDelta.y * 0.1f);
 }

@@ -43,9 +43,13 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 
 	_physXRigid->setGlobalPose(playerPos);
 	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
+	for (auto& child : _childColliders)
+	{
+		child->Move(moveStep, speed);
+	}
 }
 
-void HDData::DynamicCollider::Rotate(float rotationAmount)
+void HDData::DynamicCollider::RotateY(float rotationAmount)
 {
 	//_physXRigid->addTorque(physx::PxVec3(rotQuat.x, rotQuat.y, rotQuat.z), physx::PxForceMode::eVELOCITY_CHANGE);
 	
@@ -53,6 +57,20 @@ void HDData::DynamicCollider::Rotate(float rotationAmount)
 
 	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
 	physx::PxQuat newRot = currentTransform.q * physx::PxQuat(physx::PxPi * rotationAmount, physx::PxVec3(0.0f, 1.0f, 0.0f));
+	_physXRigid->setGlobalPose(physx::PxTransform(currentTransform.p, newRot));
+
+	for (auto& child : _childColliders)
+	{
+		child->RotateY(rotationAmount);
+	}
+}
+
+void HDData::DynamicCollider::RotateOnAxis(float rotationAmount, Vector3 axis)
+{
+	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
+	physx::PxVec3 axisX(axis.x, axis.y, axis.z);
+	physx::PxQuat newRot = currentTransform.q * physx::PxQuat(physx::PxPi * rotationAmount, axisX);
+
 	_physXRigid->setGlobalPose(physx::PxTransform(currentTransform.p, newRot));
 }
 
@@ -116,4 +134,9 @@ physx::PxRigidDynamic* HDData::DynamicCollider::GetPhysXRigid() const
 HDData::DynamicCollider* HDData::DynamicCollider::GetParentCollider() const
 {
 	return _parentCollider;
+}
+
+std::vector<HDData::DynamicCollider*> HDData::DynamicCollider::GetChildColliderVec() const
+{
+	return _childColliders;
 }
