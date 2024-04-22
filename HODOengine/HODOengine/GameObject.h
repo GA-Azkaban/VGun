@@ -125,7 +125,7 @@ namespace HDData
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
 		GameObject* GetGameObjectByNameInChildren(const std::string& objectName);
-		Transform* GetTransform() const { return _transform; }
+		Transform* GetTransform() { return _transform; }
 		bool IsActive() { return _selfActive; }
 
 		void SetParentObject(GameObject* parentObject);

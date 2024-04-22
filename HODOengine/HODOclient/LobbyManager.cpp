@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "LobbyManager.h"
 #include "NetworkManager.h"
+#include "../HODOengine/TweenTimer.h"
 
 
 LobbyManager& LobbyManager::Instance()
@@ -122,4 +123,31 @@ void LobbyManager::SetSucessCanvas(HDData::GameObject* sucessCanvas)
 void LobbyManager::SetFailCanvas(HDData::GameObject* failCanvas)
 {
 	_loginFailCanvas = failCanvas;
+}
+
+void LobbyManager::Test()
+{
+	auto camMove = API::CreateTween();
+	auto camRotate = API::CreateTween();
+
+	Vector3 dest = { 6.5f, 5.5f, -4.1f };
+	Vector3 rot = { 9.84, 2.85f, -4.46f };
+
+	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
+
+	camMove->GetData(&(mainCam->GetTransform()->GetPositionRef()))
+		.DoMove(dest, 5)
+		.SetEase(HDData::INOUTQUART)
+		.OnComplete([this]() 
+			{ 
+				Test2(); 
+			});
+
+
+}
+
+void LobbyManager::Test2()
+{
+	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
+	mainCam->GetTransform()->SetPosition(8.8f, 1.73f, -2.6f);
 }

@@ -17,6 +17,7 @@ namespace HDData
 		friend class GameObject;
 		Transform();
 		Vector3 GetPosition() const;			// world 기준
+		Vector3& GetPositionRef();
 		Quaternion GetRotation() const;			// world 기준
 		Vector3 GetScale() const;				// world 기준
 		Vector3 GetLocalPosition() const;

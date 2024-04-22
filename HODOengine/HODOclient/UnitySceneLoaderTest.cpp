@@ -1,6 +1,7 @@
 ﻿#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
 #include "FSMtestScript.h"
+#include "LobbyManager.h"
 
 UnitySceneLoaderTest::UnitySceneLoaderTest()
 {
@@ -16,8 +17,10 @@ void UnitySceneLoaderTest::Start()
 {
 	_scene = API::CreateScene("Scene2");
 
-	auto mainCam = API::GetMainCamera()->GetGameObject();
+	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+	mainCam->GetTransform()->SetPosition(-42.f, 35.f, -39.f);
+	mainCam->GetTransform()->Rotate(35.f, 35.f, 0.f);
 
 	//auto playerFP = API::CreateObject(_scene, "playerFP");
 	//playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
@@ -27,11 +30,25 @@ void UnitySceneLoaderTest::Start()
 	//meshCompFP->PlayAnimation("X_idle", true);
 
 	auto playerTP = API::CreateObject(_scene, "playerTP");
-	playerTP->GetTransform()->Translate(5.f, 0.f, 0.f);
 	playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
+	playerTP->GetTransform()->Translate(10.f, 0.f, 0.f);
 
-	/*auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadAlbedoMap("TP_Red_B.png");*/
+	auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+
+	HDEngine::MaterialDesc desc;
+	desc.materialName = "TP_Red";
+	desc.albedo = "TP_Red_B.png";
+
+	HDData::Material* newMat = API::CreateMaterial(desc);
+
+	meshComp->LoadMaterial(newMat, 0);
+	meshComp->LoadMaterial(newMat, 1);
+	meshComp->LoadMaterial(newMat, 2);
+	meshComp->LoadMaterial(newMat, 3);
+	meshComp->LoadMaterial(newMat, 4);
+
+	meshComp->PlayAnimation("X_idle");
+
 	//playerTP->AddComponent<FSMtestScript>();
 	//API::LoadAnimationFromData(playerTP, "data.json");
 
@@ -71,6 +88,14 @@ void UnitySceneLoaderTest::Start()
 	controller->GetState("CRUNCH").MakeTransition("CRUNCH_SHOOT").AddTrigger("CRUNCH_SHOOT", "isCrunchShoot", true);
 	controller->GetState("CRUNCH_SHOOT").MakeTransition("CRUNCH");
 	controller->SetEntryState("IDLE");*/
+
+	auto btn = API::CreateButton(_scene);
+	btn->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
+
+		LobbyManager::Instance().Test();
+		
+		});
+
 
 	API::LoadSceneFromData("sceneData.json");
 
