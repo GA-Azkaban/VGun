@@ -310,6 +310,9 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="TimeSystem.h" />
     <ClInclude Include="ToggleUI.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Tween.h" />
+    <ClInclude Include="TweenSystem.h" />
+    <ClInclude Include="TweenTimer.h" />
     <ClInclude Include="TriggerBoxCollider.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="UISystem.h" />
@@ -380,6 +383,9 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="TimeSystem.cpp" />
     <ClCompile Include="ToggleUI.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Tween.cpp" />
+    <ClCompile Include="TweenSystem.cpp" />
+    <ClCompile Include="TweenTimer.cpp" />
     <ClCompile Include="TriggerBoxCollider.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="UISystem.cpp" />

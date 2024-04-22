@@ -44,6 +44,7 @@
 #include "AnimationController.h"
 #include "HDMaterial.h"
 #include "MaterialManager.h"
+#include "Tween.h"
 
 
 #include "ObjectSystem.h"
@@ -74,6 +75,7 @@ namespace API
 		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::Tween* CreateTween();
 
 		// 메인 카메라 조작을 위한 함수
 		HODO_API HDData::Camera* GetMainCamera();

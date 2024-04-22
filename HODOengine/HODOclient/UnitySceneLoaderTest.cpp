@@ -1,7 +1,7 @@
-﻿#include "UnitySceneLoaderTest.h"
+#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
 #include "FSMtestScript.h"
-#include "PlayerMove.h"
+#include "LobbyManager.h"
 
 UnitySceneLoaderTest::UnitySceneLoaderTest()
 {
@@ -17,8 +17,9 @@ void UnitySceneLoaderTest::Start()
 {
 	_scene = API::CreateScene("Scene2");
 
-	auto mainCam = API::GetMainCamera()->GetGameObject();
+	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+	mainCam->GetTransform()->SetPosition(9.2, 1.8, -2.5);
 
 	//auto playerFP = API::CreateObject(_scene, "playerFP");
 	//playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
@@ -30,6 +31,7 @@ void UnitySceneLoaderTest::Start()
 	auto playerTP = API::CreateObject(_scene, "playerTP");
 	playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
 	playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
+	playerTP->GetTransform()->Translate(10.f, 0.f, 0.f);
 
 	// 바닥
 	auto groundFloor = API::CreateObject(_scene, "ground");
@@ -168,6 +170,14 @@ void UnitySceneLoaderTest::Start()
 	controller->GetState("CRUNCH").MakeTransition("CRUNCH_SHOOT").AddTrigger("CRUNCH_SHOOT", "isCrunchShoot", true);
 	controller->GetState("CRUNCH_SHOOT").MakeTransition("CRUNCH");
 	controller->SetEntryState("IDLE");*/
+
+	auto btn = API::CreateButton(_scene);
+	btn->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
+
+		LobbyManager::Instance().Test();
+		
+		});
+
 
 	API::LoadSceneFromData("sceneData.json");
 

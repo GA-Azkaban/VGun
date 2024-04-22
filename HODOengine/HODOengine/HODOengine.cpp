@@ -18,6 +18,7 @@
 #include "EventSystem.h"
 #include "SoundSystem.h"
 #include "UISystem.h"
+#include "TweenSystem.h"
 
 #include "MaterialLoader.h"
 #include "DLL_Loader.h"
@@ -55,7 +56,8 @@ HODOengine::HODOengine()
 	_eventSystem(HDEngine::EventSystem::Instance()),
 	_soundSystem(HDEngine::SoundSystem::Instance()),
 	_uiSystem(HDEngine::UISystem::Instance()),
-	_materialLoader(HDEngine::MaterialLoader::Instance())
+	_materialLoader(HDEngine::MaterialLoader::Instance()),
+	_tweenSystem(HDEngine::TweenSystem::Instance())
 {
 	
 }
@@ -163,6 +165,7 @@ void HODOengine::Run()
 	_objectSystem.UpdateEnableList();
 	// refresh input for next frame
 	_inputSystem.Flush();
+	_tweenSystem.Update();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

@@ -29,6 +29,14 @@ namespace HDData
 		// 		return parentPosition + parentRotation * (parentScale * _position);
 	}
 
+	Vector3& Transform::GetPositionRef()
+	{
+		if (GetGameObject()->GetParentGameObject() == nullptr)
+		{
+			return _transform->_position;
+		}
+	}
+
 	Quaternion Transform::GetRotation() const
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)

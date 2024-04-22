@@ -11,6 +11,8 @@
 #include "SceneLoader.h"
 #include "AnimationLoader.h"
 
+#include "TweenSystem.h"
+
 namespace API
 {
 	extern "C"
@@ -278,6 +280,11 @@ namespace API
 		HODO_API void LoadSceneByName(std::string scene)
 		{
 			HDEngine::SceneSystem::Instance().LoadScene(scene);
+		}
+
+		HODO_API HDData::Tween* CreateTween()
+		{
+			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 	}
 

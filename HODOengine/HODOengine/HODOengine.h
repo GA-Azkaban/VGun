@@ -18,6 +18,7 @@ namespace HDEngine
 	class SoundSystem;
 	class UISystem;
 	class MaterialLoader;
+	class TweenSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -68,4 +69,5 @@ private:
 	HDEngine::SoundSystem&			_soundSystem;
 	HDEngine::UISystem&				_uiSystem;
 	HDEngine::MaterialLoader&		_materialLoader;
+	HDEngine::TweenSystem&			_tweenSystem;
 };

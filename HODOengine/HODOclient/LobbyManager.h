@@ -69,4 +69,10 @@ private:
 	HDData::GameObject* _settingButton;
 	HDData::GameObject* _quitButton;
 	HDData::GameObject* _logoImage;
+
+
+	/// test
+public:
+	void Test();
+	void Test2();
 };
