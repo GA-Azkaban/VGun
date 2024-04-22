@@ -129,8 +129,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="A.h" />
-    <ClInclude Include="B.h" />
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuManager.h" />

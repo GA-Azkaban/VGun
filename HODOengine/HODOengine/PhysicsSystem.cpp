@@ -9,17 +9,20 @@
 #include "DynamicBoxCollider.h"
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
+#include "TriggerBoxCollider.h"
+#include "CollisionCallback.h"
+#include "ParticleSphereCollider.h"
 
 #include <windows.h>
 
 namespace HDEngine
 {
+
 	void PhysicsSystem::Initialize()
 	{
 		_foundation = PxCreateFoundation(PX_PHYSICS_VERSION, _allocator, _errorCallback);
 
 		// visual debugger 세팅, 로컬에 연결
-
 		_pvd = PxCreatePvd(*_foundation);
 		physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
 		_pvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
@@ -32,13 +35,22 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.4f);
-		_playerMaterial = _physics->createMaterial(0.1f, 0.1f, 0.0f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.2f);
+		_playerMaterial = _physics->createMaterial(0.9f, 0.9f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.8f, 0.8f, 0.0f);
+
+		CollisionCallback* collisionCallback = new CollisionCallback();
+		_pxScene->setSimulationEventCallback(collisionCallback);
+
+		_pxScene->setVisualizationParameter(physx::PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f);
+		_pxScene->setVisualizationParameter(physx::PxVisualizationParameter::eJOINT_LIMITS, 1.0f);
 	}
 
 	void PhysicsSystem::PreparePhysics()
 	{
 		CreateRigidBodies();
+		CreateSphericalJoint();
+		AddActorsToScene();
 	}
 
 	void PhysicsSystem::Update()
@@ -58,12 +70,28 @@ namespace HDEngine
 			pos.y = temp.p.y;
 			pos.z = temp.p.z;
 
-			rot.x = -temp.q.x;
+			rot.x = temp.q.x;
 			rot.y = temp.q.y;
 			rot.z = temp.q.z;
 			rot.w = temp.q.w;
 
 			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+		}
+
+		for (auto& rigid : _movableStatics)
+		{
+			temp = rigid->getGlobalPose();
+
+			pos.x = temp.p.x;
+			pos.y = temp.p.y;
+			pos.z = temp.p.z;
+
+			rot.x = temp.q.x;
+			rot.y = temp.q.y;
+			rot.z = temp.q.z;
+			rot.w = temp.q.w;
+
+			static_cast<HDData::StaticCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
 		}
 	}
 
@@ -91,6 +119,10 @@ namespace HDEngine
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
+
+		// 1번을 몸톰, 2번을 다리, 팔, 머리
+		physx::PxSetGroupCollisionFlag(1, 2, false);
+
 		_pxScene = _physics->createScene(sceneDesc);
 
 		// Pvd에 정보 보내기
@@ -118,6 +150,8 @@ namespace HDEngine
 			CreateDynamicBoxCollider(object);
 			CreateDynamicCapsuleCollider(object);
 			CreateDynamicSphereCollider(object);
+			CreateTriggerBoxCollider(object);
+			CreateParticleSphereCollider(object);
 		}
 	}
 
@@ -134,9 +168,11 @@ namespace HDEngine
 				Vector3 normal = planeCollider->GetNormalVector();
 				physx::PxPlane pxPlane(normal.x, normal.y, normal.z, planeCollider->GetDistance());
 
-				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_material);
-				_pxScene->addActor(*planeRigid);
+				physx::PxRigidStatic* planeRigid = physx::PxCreatePlane(*_physics, pxPlane, *_planeMaterial);
+				//_pxScene->addActor(*planeRigid);
+				_rigidStatics.push_back(planeRigid);
 				//planeCollider->SetPhysXRigid(planeRigid);
+				planeCollider->SetPhysXRigid(planeRigid);
 				planeRigid->userData = planeCollider;
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
@@ -157,7 +193,7 @@ namespace HDEngine
 				Vector3 scale = object->GetTransform()->GetScale();
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
-				 
+
 				// TODO : 여기 작업하고 있었음.
 				Vector3 position = object->GetTransform()->GetPosition();
 
@@ -175,8 +211,10 @@ namespace HDEngine
 
 				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
 				boxRigid->attachShape(*shape);
-
-				_pxScene->addActor(*boxRigid);
+				boxRigid->userData = box;
+				box->SetPhysXRigid(boxRigid);
+				//_pxScene->addActor(*boxRigid);
+				_rigidStatics.push_back(boxRigid);
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
@@ -193,7 +231,8 @@ namespace HDEngine
 		physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
 		boxRigid->attachShape(*shape);
 
-		_pxScene->addActor(*boxRigid);
+		//_pxScene->addActor(*boxRigid);
+		_rigidStatics.push_back(boxRigid);
 		shape->release();
 	}
 
@@ -210,23 +249,28 @@ namespace HDEngine
 
 				// switch material if player
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_playerMaterial);
+				//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+
+				physx::PxFilterData playerFilterData;
+				playerFilterData.word0 = collider->GetColGroup();
+				shape->setSimulationFilterData(playerFilterData);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
-				boxRigid->setLinearDamping(0.5f);
-				boxRigid->setAngularDamping(0.2f);
-				boxRigid->attachShape(*shape);
-
-				// add only if player
-				if (object != nullptr)
+				boxRigid->setLinearDamping(0.9f);
+				boxRigid->setAngularDamping(0.9f);
+				physx::PxRigidBodyExt::updateMassAndInertia(*boxRigid, 0.9f);
+				//boxRigid->setMass(10.0f);
+				if (box->GetColGroup() != 0)
 				{
 					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-					//boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
 					boxRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
 				}
+				boxRigid->attachShape(*shape);
 
-				_pxScene->addActor(*boxRigid);
+				//_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
 				box->SetPhysXRigid(boxRigid);
 				boxRigid->userData = box;
@@ -247,14 +291,14 @@ namespace HDEngine
 			{
 				HDData::DynamicCapsuleCollider* capsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHeight() / 2.0f), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_material);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
-				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z),
+					physx::PxQuat(physx::PxPi / 2.0f, physx::PxVec3(0.0f, 0.0f, 1.0f)));
 				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(localTransform);
 				capsuleRigid->attachShape(*shape);
-
-				_pxScene->addActor(*capsuleRigid);
+				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
 				capsuleRigid->userData = capsule;
 				shape->release();
@@ -276,18 +320,144 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
 
+				if (collider->GetIsPlayer() == true)
+				{
+					physx::PxFilterData headFilterData;
+					headFilterData.word0 = 2;
+					shape->setSimulationFilterData(headFilterData);
+				}
+
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
 				sphereRigid->attachShape(*shape);
 
-				_pxScene->addActor(*sphereRigid);
+				//_pxScene->addActor(*sphereRigid);
 				_rigidDynamics.push_back(sphereRigid);
 				sphere->SetPhysXRigid(sphereRigid);
 				sphereRigid->userData = sphere;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
+		}
+	}
+
+	void PhysicsSystem::CreateTriggerBoxCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::TriggerBoxCollider>();
+
+		if (isCorrectType)
+		{
+			auto colliderVector = object->GetComponents<HDData::TriggerBoxCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::TriggerBoxCollider* box = dynamic_cast<HDData::TriggerBoxCollider*>(collider);
+				Vector3 scale = object->GetTransform()->GetScale();
+
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
+				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+				shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+
+				// TODO : 여기 작업하고 있었음.
+				Vector3 position = object->GetTransform()->GetPosition();
+
+				if (collider->GetPositionOffset() != Vector3::Zero)
+				{
+					position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				}
+
+				Quaternion rot = object->GetTransform()->GetRotation();
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				localTransform.q.x = rot.x;
+				localTransform.q.y = rot.y;
+				localTransform.q.z = rot.z;
+				localTransform.q.w = rot.w;
+
+				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
+				boxRigid->attachShape(*shape);
+				//_pxScene->addActor(*boxRigid);
+				_rigidStatics.push_back(boxRigid);
+				boxRigid->userData = box;
+				box->SetPhysXRigid(boxRigid);
+				shape->release();
+
+				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
+			}
+		}
+	}
+
+	void PhysicsSystem::CreateParticleSphereCollider(HDData::GameObject* object)
+	{
+		HDData::Collider* isCorrectType = object->GetComponent<HDData::ParticleSphereCollider>();
+
+		if (isCorrectType)
+		{
+			auto colliderVector = object->GetComponents<HDData::ParticleSphereCollider>();
+			for (auto& collider : colliderVector)
+			{
+				HDData::ParticleSphereCollider* particle = dynamic_cast<HDData::ParticleSphereCollider*>(collider);
+
+				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(particle->GetRadius()), *_material);
+				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
+				physx::PxRigidStatic* sphereRigid = _physics->createRigidStatic(localTransform);
+				sphereRigid->attachShape(*shape);
+
+				//_pxScene->addActor(*sphereRigid);
+				_movableStatics.push_back(sphereRigid);
+				particle->SetPhysXRigid(sphereRigid);
+				sphereRigid->userData = particle;
+				shape->release();
+			}
+		}
+	}
+
+	void PhysicsSystem::CreateSphericalJoint()
+	{
+		for (auto& dynamics : _rigidDynamics)
+		{
+			HDData::DynamicCollider* thisCol = static_cast<HDData::DynamicCollider*>(dynamics->userData);
+			HDData::DynamicCollider* parentCol = thisCol->GetParentCollider();
+			if (parentCol != nullptr)
+				//if (thisCol->GetGameObject()->GetObjectName() == "playerHead")
+			{
+				physx::PxTransform localTransform(physx::PxIdentity);
+				Vector3 localPose = thisCol->GetTransform()->GetLocalPosition();
+				localTransform.p = { localPose.x, localPose.y, localPose.z };
+
+				if (thisCol->GetGameObject()->GetObjectName() == "head")
+				{
+					physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
+						parentCol->GetPhysXRigid(), localTransform);
+					_joints.push_back(resultJoint);
+				}
+				else
+				{
+					physx::PxFixedJoint* resultJoint = physx::PxFixedJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
+						parentCol->GetPhysXRigid(), localTransform);
+					_joints.push_back(resultJoint);
+				}
+			}
+		}
+	}
+
+	void PhysicsSystem::AddActorsToScene()
+	{
+		for (auto& actors : _rigidDynamics)
+		{
+			_pxScene->addActor(*actors);
+		}
+
+		for (auto& actors : _rigidStatics)
+		{
+			_pxScene->addActor(*actors);
+		}
+
+		for (auto& actors : _movableStatics)
+		{
+			_pxScene->addActor(*actors);
 		}
 	}
 
@@ -339,7 +509,7 @@ namespace HDEngine
 			// save hitpoint(for particle effect or sth)
 			physx::PxVec3 hitPoint = hitBuffer.block.position;
 		}
-		
+
 		return hitCol;
 	}
 

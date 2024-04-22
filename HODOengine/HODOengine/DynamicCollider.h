@@ -25,6 +25,8 @@ namespace HDData
 	public:
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
 		void LockPlayerRotation();
+		void SetParentCollider(HDData::DynamicCollider* col);
+		void SetChildCollider(HDData::DynamicCollider* childCol);
 
 	// Move and Control
 	public:
@@ -47,6 +49,8 @@ namespace HDData
 	public:
 		void Collide();
 		bool GetIsCollided();
+		physx::PxRigidDynamic* GetPhysXRigid() const;
+		HDData::DynamicCollider* GetParentCollider() const;
 
 	private:
 		bool _isJumping;
@@ -55,6 +59,8 @@ namespace HDData
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;
+		HDData::DynamicCollider* _parentCollider;
+		std::vector<HDData::DynamicCollider*> _childColliders;
 	};
 }
 

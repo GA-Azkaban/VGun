@@ -146,47 +146,55 @@ namespace RocketCore::Graphics
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		/// Load resources
-		// FBX파일보다 Texture 파일들이 먼저 로드되어야 한다.
-		_resourceManager.LoadTextureFile("Character/TP_Red_B.png");
-		_resourceManager.LoadTextureFile("Character/TP_Green_B.png");
-		_resourceManager.LoadTextureFile("Character/TP_Blue_B.png");
-		_resourceManager.LoadTextureFile("Character/FP_Yellow_A.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_039_D.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_Basic_R.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_D.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_001_R.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_Camo_N.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_001_D.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_N.png");
-		_resourceManager.LoadTextureFile("Weapons/T_WEP_CarbonFibre_R.png");
-		_resourceManager.LoadTextureFile("StaticMesh/colorpalette_standard.png");
-		_resourceManager.LoadTextureFile("StaticMesh/M_grid_transparent.png");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_idle.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_run.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_jump.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouch.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchDown.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_X_crouchUp.fbx");
-		_resourceManager.LoadFBXFile("TP/SKM_TP_HG_shoot.fbx");
-		_resourceManager.LoadFBXFile("SM/SM_Plane.fbx");
-		_resourceManager.LoadFBXFile("SM/SM_building_ruin_01.fbx");
-		_resourceManager.LoadFBXFile("SM/SM_hesco_bastion.fbx");
+		/// FBX파일보다 Texture 파일들이 먼저 로드되어야 한다.
 
-		//_resourceManager.LoadFBXFile("FP/SKM_FP_X_idle.fbx");
-		//_resourceManager.LoadFBXFile("SM/Weapons/SM_AR1.fbx");
+		/// tex
+
+		// load all static texture
+		const auto& SMtextures = GetEveryTextureFileNamesInFolder("Textures/StaticMesh");
+		for (int i = 0; i < SMtextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("StaticMesh/" + SMtextures[i]);
+		}
+
+		// load all skinning texture
+		const auto& SKMtextures = GetEveryTextureFileNamesInFolder("Textures/Character");
+		for (int i = 0; i < SKMtextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("Character/" + SKMtextures[i]);
+		}
+
+		// load all weapon texture
+		const auto& WPtextures = GetEveryTextureFileNamesInFolder("Textures/Weapons");
+		for (int i = 0; i < WPtextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("Weapons/" + WPtextures[i]);
+		}
+
+		// load all skybox texture
+		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
+		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+
+		/// fbx
 
 		// load all static mesh
-		const auto& SMfiles = GetEveryFileNamesInFolder("SM");
+		const auto& SMfiles = GetEveryMeshFileNamesInFolder("Models/SM");
 		for (int i = 0; i < SMfiles.size(); ++i)
 		{
 			_resourceManager.LoadFBXFile("SM/" + SMfiles[i]);
 		}
 
-		// load all static texture
-		_resourceManager.LoadTextureFile("StaticMesh/M_grid_transparent.png");
-
-		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
-		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+		// load all character mesh
+		const auto& TPfiles = GetEveryMeshFileNamesInFolder("Models/TP");
+		for (int i = 0; i < TPfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("TP/" + TPfiles[i]);
+		}
+		const auto& FPfiles = GetEveryMeshFileNamesInFolder("Models/FP");
+		for (int i = 0; i < FPfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("FP/" + FPfiles[i]);
+		}
 
 		CreateDepthStencilStates();
 
@@ -447,9 +455,11 @@ namespace RocketCore::Graphics
 		_deviceContext->OMSetDepthStencilState(dss, 0);
 	}
 
-	std::vector<std::string>& RocketDX11::GetEveryFileNamesInFolder(const std::string filePath)
+	std::vector<std::string>& RocketDX11::GetEveryMeshFileNamesInFolder(const std::string filePath)
 	{
-		std::string searchPath = "Resources/Models/" + filePath + "/*.*";
+		_fileNames.clear();
+
+		std::string searchPath = "Resources/" + filePath + "/*.*";
 		WIN32_FIND_DATAA fileData;
 		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &fileData);
 		if (hFind != INVALID_HANDLE_VALUE)
@@ -459,12 +469,35 @@ namespace RocketCore::Graphics
 				if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 				{
 					std::string name = fileData.cFileName;
-					if (name.find(filePath) == 0) _fileNames.push_back(fileData.cFileName);
+					if (name.find("SM_") == 0 ||
+						name.find("SKM_") == 0)
+					{
+						_fileNames.push_back(fileData.cFileName);
+					}
 				}
 			} while (FindNextFileA(hFind, &fileData));
 			FindClose(hFind);
 		}
 
+		return _fileNames;
+	}
+
+	std::vector<std::string>& RocketDX11::GetEveryTextureFileNamesInFolder(const std::string filePath)
+	{
+		std::string searchPath = "Resources/" + filePath + "/*.*";
+		WIN32_FIND_DATAA fileData;
+		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &fileData);
+		if (hFind != INVALID_HANDLE_VALUE)
+		{
+			do
+			{
+				if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				{
+					_fileNames.push_back(fileData.cFileName);
+				}
+			} while (FindNextFileA(hFind, &fileData));
+			FindClose(hFind);
+		}
 
 		return _fileNames;
 	}

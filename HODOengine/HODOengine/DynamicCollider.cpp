@@ -5,6 +5,7 @@
 #include "../include/physX/PxPhysicsAPI.h"
 
 HDData::DynamicCollider::DynamicCollider()
+	:_parentCollider(nullptr)
 {
 
 }
@@ -19,6 +20,17 @@ void HDData::DynamicCollider::LockPlayerRotation()
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+}
+
+void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
+{
+	_parentCollider = col;
+	col->SetChildCollider(this);
+}
+
+void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol)
+{
+	_childColliders.push_back(childCol);
 }
 
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
@@ -94,4 +106,14 @@ void HDData::DynamicCollider::Collide()
 bool HDData::DynamicCollider::GetIsCollided()
 {
 	return _isCollided;
+}
+
+physx::PxRigidDynamic* HDData::DynamicCollider::GetPhysXRigid() const
+{
+	return _physXRigid;
+}
+
+HDData::DynamicCollider* HDData::DynamicCollider::GetParentCollider() const
+{
+	return _parentCollider;
 }

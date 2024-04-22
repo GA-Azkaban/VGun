@@ -56,9 +56,9 @@ namespace HDData
 		void OnCollisionStay();
 		void OnCollisionExit();
 
-		template <ComponentConcept ComponentType>
-		ComponentType* AddComponent() {
-			ComponentType* component = new ComponentType();
+		template <ComponentConcept ComponentType, typename... Args>
+		ComponentType* AddComponent(Args&&... args) {
+			ComponentType* component = new ComponentType(std::forward<Args>(args)...);
 			component->_gameObject = this;
 			_componentsIndexed.push_back(component);
 			return component;
@@ -125,7 +125,7 @@ namespace HDData
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
 		GameObject* GetGameObjectByNameInChildren(const std::string& objectName);
-		Transform* GetTransform() const { return _transform; }
+		Transform* GetTransform() { return _transform; }
 		bool IsActive() { return _selfActive; }
 
 		void SetParentObject(GameObject* parentObject);

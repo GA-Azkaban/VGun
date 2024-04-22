@@ -3,8 +3,6 @@
 #include "LoginSceneView.h"
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
-#include "A.h"
-#include "B.h"
 
 Client::Client()
 {
@@ -31,12 +29,6 @@ void Client::Initialize()
 
 	UnitySceneLoaderTest unity;
 	unity.Start();
-
-	//A a;
-	//a.Initialize();
-
-	//B b;
-	//b.Initialize();
 
 	//API::LoadSceneByName("MainLobby");
 	API::LoadSceneByName("Scene2");
