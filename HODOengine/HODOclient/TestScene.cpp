@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -31,7 +31,6 @@ TestScene::TestScene()
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("SM_Plane.fbx");
 	boxRender1->LoadMesh("primitiveCube");
 
 	auto testBox2 = API::CreateObject(_scene);
@@ -54,6 +53,27 @@ TestScene::TestScene()
 	auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
 	boxRender5->LoadMesh("primitiveCube");
 	*/
+
+	auto buildingTest1 = API::CreateObject(_scene);
+	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
+	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
+	buildingRenderer1->LoadMesh("SM_hesco_bastion.fbx");
+	HDEngine::MaterialDesc buildingDesc1;
+	buildingDesc1.materialName = "colorpalette_standard";
+	buildingDesc1.albedo = "colorpalette_standard.png";
+	buildingDesc1.color = { 255,255,255,255 };
+	buildingDesc1.metallic = 0.0f;
+	buildingDesc1.roughness = 0.56f;
+	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
+	HDEngine::MaterialDesc buildingDesc2;
+	buildingDesc2.materialName = "M_grid_transparent";
+	//buildingDesc2.albedo = "M_grid_transparent.png";
+	buildingDesc2.color = { 147,133,111,255 };
+	buildingDesc2.metallic = 0.538f;
+	buildingDesc2.roughness = 0.5f;
+	HDData::Material* newBuildingMat2 = API::CreateMaterial(buildingDesc2);
+	buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
+	buildingRenderer1->LoadMaterial(newBuildingMat2, 1);
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
@@ -190,73 +210,73 @@ TestScene::TestScene()
 	RFootCollider->SetParentCollider(RLLegCollider);
 
 	//-----------------------------------------
-	auto playerTest2 = API::CreateObject(_scene, "player2");
-	playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -20.0f, 0.5f, 0.0f });
-	playerTest2->LoadFBXFile("SKM_TP_X_idle.fbx");
+	//auto playerTest2 = API::CreateObject(_scene, "player2");
+	//playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -20.0f, 0.5f, 0.0f });
+	//playerTest2->LoadFBXFile("SKM_TP_X_idle.fbx");
 
-	auto meshComp2 = playerTest2->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc2;
-	desc2.materialName = "TP_Green";
-	desc2.albedo = "TP_Green_B.png";
-	HDData::Material* newMat2 = API::CreateMaterial(desc2);
-	meshComp2->LoadMaterial(newMat2, 0);
-	meshComp2->LoadMaterial(newMat2, 1);
-	meshComp2->LoadMaterial(newMat2, 2);
-	meshComp2->LoadMaterial(newMat2, 3);
-	meshComp2->LoadMaterial(newMat2, 4);
-	meshComp2->PlayAnimation("X_idle", true);
-	meshComp2->SetOutlineActive(true);
+	//auto meshComp2 = playerTest2->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//HDEngine::MaterialDesc desc2;
+	//desc2.materialName = "TP_Green";
+	//desc2.albedo = "TP_Green_B.png";
+	//HDData::Material* newMat2 = API::CreateMaterial(desc2);
+	//meshComp2->LoadMaterial(newMat2, 0);
+	//meshComp2->LoadMaterial(newMat2, 1);
+	//meshComp2->LoadMaterial(newMat2, 2);
+	//meshComp2->LoadMaterial(newMat2, 3);
+	//meshComp2->LoadMaterial(newMat2, 4);
+	//meshComp2->PlayAnimation("X_idle", true);
+	//meshComp2->SetOutlineActive(true);
 
-	auto playerTest3 = API::CreateObject(_scene, "player3");
-	playerTest3->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -50.0f, 0.5f, 0.0f });
-	playerTest3->LoadFBXFile("SKM_TP_X_idle.fbx");
+	//auto playerTest3 = API::CreateObject(_scene, "player3");
+	//playerTest3->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -50.0f, 0.5f, 0.0f });
+	//playerTest3->LoadFBXFile("SKM_TP_X_idle.fbx");
 
-	auto meshComp3 = playerTest3->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc3;
-	desc3.materialName = "TP_Blue";
-	desc3.albedo = "TP_Blue_B.png";
-	HDData::Material* newMat3 = API::CreateMaterial(desc3);
-	meshComp3->LoadMaterial(newMat3, 0);
-	meshComp3->LoadMaterial(newMat3, 1);
-	meshComp3->LoadMaterial(newMat3, 2);
-	meshComp3->LoadMaterial(newMat3, 3);
-	meshComp3->LoadMaterial(newMat3, 4);
-	meshComp3->PlayAnimation("X_idle", true);
-	meshComp3->SetOutlineActive(true);
+	//auto meshComp3 = playerTest3->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//HDEngine::MaterialDesc desc3;
+	//desc3.materialName = "TP_Blue";
+	//desc3.albedo = "TP_Blue_B.png";
+	//HDData::Material* newMat3 = API::CreateMaterial(desc3);
+	//meshComp3->LoadMaterial(newMat3, 0);
+	//meshComp3->LoadMaterial(newMat3, 1);
+	//meshComp3->LoadMaterial(newMat3, 2);
+	//meshComp3->LoadMaterial(newMat3, 3);
+	//meshComp3->LoadMaterial(newMat3, 4);
+	//meshComp3->PlayAnimation("X_idle", true);
+	//meshComp3->SetOutlineActive(true);
 
-	auto playerTest4 = API::CreateObject(_scene, "player4");
-	playerTest4->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -80.0f, 0.5f, 20.0f });
-	playerTest4->LoadFBXFile("SKM_TP_X_idle.fbx");
+	//auto playerTest4 = API::CreateObject(_scene, "player4");
+	//playerTest4->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -80.0f, 0.5f, 20.0f });
+	//playerTest4->LoadFBXFile("SKM_TP_X_idle.fbx");
 
-	auto meshComp4 = playerTest4->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//HDEngine::MaterialDesc desc4;
-	//desc4.materialName = "TP_Blue";
-	//desc4.albedo = "TP_Blue_B.png";
-	//HDData::Material* newMat4 = API::CreateMaterial(desc4);
-	meshComp4->LoadMaterial(newMat2, 0);
-	meshComp4->LoadMaterial(newMat2, 1);
-	meshComp4->LoadMaterial(newMat2, 2);
-	meshComp4->LoadMaterial(newMat2, 3);
-	meshComp4->LoadMaterial(newMat2, 4);
-	meshComp4->PlayAnimation("X_idle", true);
-	meshComp4->SetOutlineActive(true);
+	//auto meshComp4 = playerTest4->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	////HDEngine::MaterialDesc desc4;
+	////desc4.materialName = "TP_Blue";
+	////desc4.albedo = "TP_Blue_B.png";
+	////HDData::Material* newMat4 = API::CreateMaterial(desc4);
+	//meshComp4->LoadMaterial(newMat2, 0);
+	//meshComp4->LoadMaterial(newMat2, 1);
+	//meshComp4->LoadMaterial(newMat2, 2);
+	//meshComp4->LoadMaterial(newMat2, 3);
+	//meshComp4->LoadMaterial(newMat2, 4);
+	//meshComp4->PlayAnimation("X_idle", true);
+	//meshComp4->SetOutlineActive(true);
 
-	auto playerTest5 = API::CreateObject(_scene, "player5");
-	playerTest5->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 50.0f, 0.5f, -10.0f });
-	playerTest5->LoadFBXFile("SKM_TP_X_idle.fbx");
+	//auto playerTest5 = API::CreateObject(_scene, "player5");
+	//playerTest5->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 50.0f, 0.5f, -10.0f });
+	//playerTest5->LoadFBXFile("SKM_TP_X_idle.fbx");
 
-	auto meshComp5 = playerTest5->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//HDEngine::MaterialDesc desc5;
-	//desc5.materialName = "TP_Blue";
-	//desc5.albedo = "TP_Blue_B.png";
-	//HDData::Material* newMat5 = API::CreateMaterial(desc4);
-	meshComp5->LoadMaterial(newMat3, 0);
-	meshComp5->LoadMaterial(newMat3, 1);
-	meshComp5->LoadMaterial(newMat3, 2);
-	meshComp5->LoadMaterial(newMat3, 3);
-	meshComp5->LoadMaterial(newMat3, 4);
-	meshComp5->PlayAnimation("X_idle", true);
-	meshComp5->SetOutlineActive(true);
+	//auto meshComp5 = playerTest5->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	////HDEngine::MaterialDesc desc5;
+	////desc5.materialName = "TP_Blue";
+	////desc5.albedo = "TP_Blue_B.png";
+	////HDData::Material* newMat5 = API::CreateMaterial(desc4);
+	//meshComp5->LoadMaterial(newMat3, 0);
+	//meshComp5->LoadMaterial(newMat3, 1);
+	//meshComp5->LoadMaterial(newMat3, 2);
+	//meshComp5->LoadMaterial(newMat3, 3);
+	//meshComp5->LoadMaterial(newMat3, 4);
+	//meshComp5->PlayAnimation("X_idle", true);
+	//meshComp5->SetOutlineActive(true);
 
 	auto btn = API::CreateButton(_scene);
 	btn->GetComponent<HDData::Button>()->SetOnClickEvent([]()

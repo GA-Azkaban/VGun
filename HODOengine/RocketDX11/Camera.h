@@ -44,7 +44,11 @@ namespace RocketCore::Graphics
 		DirectX::XMFLOAT3 GetUp() const;
 		DirectX::XMFLOAT3 GetRight() const;
 
-		DirectX::BoundingFrustum GetFrustum();
+		float GetFOVY() const;
+		float GetFOVZ() const;
+		float GetAspect() const;
+		float GetNearZ() const;
+		float GetFarZ() const;
 
 	private:
 		DirectX::XMFLOAT3 _position;				// 위치 (월드)
@@ -53,15 +57,15 @@ namespace RocketCore::Graphics
 		float _nearZ;					// frustum의 가까운 평면까지의 거리
 		float _farZ;					// frustum의 먼 평면까지의 거리
 		float _aspect;					// 가로 / 세로 비율
-		float _fovY;					// fov각도를 60분법으로 갖고있음
+		float _fovY;					// fov각도를 60분법으로 갖고있음. 수직각도
 		float _nearWindowHeight;		// frustum의 가까운 평면의 높이
 		float _farWindowHeight;			// frustum의 먼 평면의 높이
+		float _nearWindowWidth;
+		float _farWindowWidth;
 
 		DirectX::XMMATRIX _worldMatrix;		// 카메라 worldTM
 		DirectX::XMMATRIX _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMMATRIX _projectionMatrix;	// 카메라의 투영 행렬
-
-		DirectX::BoundingSphere _boundingSphere; // 그림자 품질 높게 그릴 범위이다.
 
 	public:
 		static Camera* GetMainCamera();

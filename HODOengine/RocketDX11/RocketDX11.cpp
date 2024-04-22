@@ -1,4 +1,4 @@
-﻿#include <cassert>
+#include <cassert>
 #include <windows.h>
 
 #include "RocketDX11.h"
