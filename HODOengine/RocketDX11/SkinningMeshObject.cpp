@@ -114,87 +114,9 @@ namespace RocketCore::Graphics
 		if (m_separateUpperAndLowerAnim)
 		{
 			// upper animation
-			if (m_currentUpperAnimation != nullptr)
-			{
-				if (m_blendFlagUpper)
-				{
-					m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
-
-					if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->blendDuration)
-					{
-						m_blendFlagUpper = false;
-						m_currentUpperAnimation->accumulatedTime = 0.0f;
-						return;
-					}
-
-					UpdateBlendAnimationSeparated(m_previousUpperAnimation->accumulatedTime, m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
-				}
-				else
-				{
-					m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
-
-					if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->duration)
-					{
-						m_currentUpperAnimation->isEnd = true;
-						if (m_currentUpperAnimation->isLoop == true)
-						{
-							m_currentUpperAnimation->accumulatedTime = 0.0f;
-						}
-						return;
-					}
-
-					if (m_currentUpperAnimation->isEnd == true)
-					{
-						m_currentUpperAnimation->isEnd = false;
-					}
-
-					if (!m_currentUpperAnimation->isEnd)
-					{
-						UpdateAnimationSeparated(m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
-					}
-				}
-			}
+			UpdateUpperAnimation(deltaTime);
 			//lower animation
-			if (m_currentLowerAnimation != nullptr)
-			{
-				if (m_blendFlagLower)
-				{
-					m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
-
-					if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->blendDuration)
-					{
-						m_blendFlagLower = false;
-						m_currentLowerAnimation->accumulatedTime = 0.0f;
-						return;
-					}
-
-					UpdateBlendAnimationSeparated(m_previousLowerAnimation->accumulatedTime, m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
-				}
-				else
-				{
-					m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
-
-					if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->duration)
-					{
-						m_currentLowerAnimation->isEnd = true;
-						if (m_currentLowerAnimation->isLoop == true)
-						{
-							m_currentLowerAnimation->accumulatedTime = 0.0f;
-						}
-						return;
-					}
-
-					if (m_currentLowerAnimation->isEnd == true)
-					{
-						m_currentLowerAnimation->isEnd = false;
-					}
-
-					if (!m_currentLowerAnimation->isEnd)
-					{
-						UpdateAnimationSeparated(m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
-					}
-				}
-			}
+			UpdateLowerAnimation(deltaTime);
 		}
 		else
 		{
@@ -236,6 +158,94 @@ namespace RocketCore::Graphics
 					{
 						UpdateAnimation(m_currentAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 					}
+				}
+			}
+		}
+	}
+
+	void SkinningMeshObject::UpdateUpperAnimation(float deltaTime)
+	{
+		if (m_currentUpperAnimation != nullptr)
+		{
+			if (m_blendFlagUpper)
+			{
+				m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
+
+				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->blendDuration)
+				{
+					m_blendFlagUpper = false;
+					m_currentUpperAnimation->accumulatedTime = 0.0f;
+					return;
+				}
+
+				UpdateBlendAnimationSeparated(m_previousUpperAnimation->accumulatedTime, m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
+			}
+			else
+			{
+				m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
+
+				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->duration)
+				{
+					m_currentUpperAnimation->isEnd = true;
+					if (m_currentUpperAnimation->isLoop == true)
+					{
+						m_currentUpperAnimation->accumulatedTime = 0.0f;
+					}
+					return;
+				}
+
+				if (m_currentUpperAnimation->isEnd == true)
+				{
+					m_currentUpperAnimation->isEnd = false;
+				}
+
+				if (!m_currentUpperAnimation->isEnd)
+				{
+					UpdateAnimationSeparated(m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
+				}
+			}
+		}
+	}
+
+	void SkinningMeshObject::UpdateLowerAnimation(float deltaTime)
+	{
+		if (m_currentLowerAnimation != nullptr)
+		{
+			if (m_blendFlagLower)
+			{
+				m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
+
+				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->blendDuration)
+				{
+					m_blendFlagLower = false;
+					m_currentLowerAnimation->accumulatedTime = 0.0f;
+					return;
+				}
+
+				UpdateBlendAnimationSeparated(m_previousLowerAnimation->accumulatedTime, m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
+			}
+			else
+			{
+				m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
+
+				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->duration)
+				{
+					m_currentLowerAnimation->isEnd = true;
+					if (m_currentLowerAnimation->isLoop == true)
+					{
+						m_currentLowerAnimation->accumulatedTime = 0.0f;
+					}
+					return;
+				}
+
+				if (m_currentLowerAnimation->isEnd == true)
+				{
+					m_currentLowerAnimation->isEnd = false;
+				}
+
+				if (!m_currentLowerAnimation->isEnd)
+				{
+					UpdateAnimationSeparated(m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
 				}
 			}
 		}
@@ -808,20 +818,20 @@ namespace RocketCore::Graphics
 			return;
 		}
 
-		if (m_currentAnimation == &(animIter->second))
-		{
-			m_currentAnimation->isLoop = isLoop;
-			if (m_currentAnimation->isLoop)
-			{
-				return;
-			}
-
-			if (!m_currentAnimation->isEnd)
-				return;
-		}
-
 		if (m_currentAnimation != nullptr)
 		{
+			if (m_currentAnimation->animName == animIter->second->animName)
+			{
+				m_currentAnimation->isLoop = isLoop;
+				if (m_currentAnimation->isLoop)
+				{
+					return;
+				}
+
+				if (!m_currentAnimation->isEnd)
+					return;
+			}
+
 			m_savedPreviousAnimation = *m_currentAnimation;
 			m_previousAnimation = &m_savedPreviousAnimation;
 		}
@@ -829,18 +839,19 @@ namespace RocketCore::Graphics
 		{
 			m_previousAnimation = nullptr;
 		}
-		m_currentAnimation = &(animIter->second);
-		m_currentUpperAnimation = m_currentAnimation;
-		m_currentLowerAnimation = m_currentAnimation;
+
+		m_savedCurrentAnimation = *(animIter->second);
+		m_savedUpperCurrentAnimation = *(animIter->second);
+		m_savedLowerCurrentAnimation = *(animIter->second);
+		m_currentAnimation = &m_savedCurrentAnimation;
+		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
+		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
 		m_currentAnimation->isLoop = isLoop;
+		m_currentAnimation->accumulatedTime = 0.0f;
+		m_currentAnimation->isEnd = false;
 
 		if (m_previousAnimation != nullptr)
 		{
-			m_currentAnimation->accumulatedTime = 0.0f;
-			if (m_currentAnimation->isLoop == false)
-			{
-				m_currentAnimation->isEnd = false;
-			}
 			m_blendFlag = true;
 		}
 	}
@@ -859,18 +870,23 @@ namespace RocketCore::Graphics
 			return;
 		}
 
-		if (m_currentUpperAnimation == &(animIter->second))
-		{
-			m_currentUpperAnimation->isLoop = isLoop;
-			if (m_currentUpperAnimation->isLoop)
-				return;
-
-			if (!m_currentUpperAnimation->isEnd)
-				return;
-		}
-
 		if (m_currentUpperAnimation != nullptr)
 		{
+			if (m_currentUpperAnimation->animName == animIter->second->animName)
+			{
+				m_currentUpperAnimation->isLoop = isLoop;
+
+				if (m_currentUpperAnimation->isLoop)
+				{
+					return;
+				}
+
+				if (!m_currentUpperAnimation->isEnd)
+				{
+					return;
+				}
+			}
+
 			m_savedUpperPreviousAnimation = *m_currentUpperAnimation;
 			m_previousUpperAnimation = &m_savedUpperPreviousAnimation;
 		}
@@ -878,16 +894,16 @@ namespace RocketCore::Graphics
 		{
 			m_previousUpperAnimation = nullptr;
 		}
+
 		m_currentAnimation = nullptr;
-		m_currentUpperAnimation = &(animIter->second);
+		m_savedUpperCurrentAnimation = *(animIter->second);
+		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
 		m_currentUpperAnimation->isLoop = isLoop;
+		m_currentUpperAnimation->accumulatedTime = 0.0f;
+		m_currentUpperAnimation->isEnd = false;
+
 		if (m_previousUpperAnimation != nullptr)
 		{
-			m_currentUpperAnimation->accumulatedTime = 0.0f;
-			if (m_currentUpperAnimation->isLoop == false)
-			{
-				m_currentUpperAnimation->isEnd = false;
-			}
 			m_blendFlagUpper = true;
 		}
 	}
@@ -906,18 +922,18 @@ namespace RocketCore::Graphics
 			return;
 		}
 
-		if (m_currentLowerAnimation == &(animIter->second))
-		{
-			m_currentLowerAnimation->isLoop = isLoop;
-			if (m_currentLowerAnimation->isLoop)
-				return;
-
-			if (!m_currentLowerAnimation->isEnd)
-				return;
-		}
-
 		if (m_currentLowerAnimation != nullptr)
 		{
+			if (m_currentLowerAnimation->animName == animIter->second->animName)
+			{
+				m_currentLowerAnimation->isLoop = isLoop;
+				if (m_currentLowerAnimation->isLoop)
+					return;
+
+				if (!m_currentLowerAnimation->isEnd)
+					return;
+			}
+
 			m_savedLowerPreviousAnimation = *m_currentLowerAnimation;
 			m_previousLowerAnimation = &m_savedLowerPreviousAnimation;
 		}
@@ -925,16 +941,16 @@ namespace RocketCore::Graphics
 		{
 			m_previousLowerAnimation = nullptr;
 		}
+
 		m_currentAnimation = nullptr;
-		m_currentLowerAnimation = &(animIter->second);
+		m_savedLowerCurrentAnimation = *(animIter->second);
+		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
 		m_currentLowerAnimation->isLoop = isLoop;
+		m_currentLowerAnimation->accumulatedTime = 0.0f;
+		m_currentLowerAnimation->isEnd = false;
+
 		if (m_previousLowerAnimation != nullptr)
 		{
-			m_currentLowerAnimation->accumulatedTime = 0.0f;
-			if (m_currentLowerAnimation->isLoop == false)
-			{
-				m_currentLowerAnimation->isEnd = false;
-			}
 			m_blendFlagLower = true;
 		}
 	}
@@ -1065,12 +1081,7 @@ namespace RocketCore::Graphics
 
 	void SkinningMeshObject::LoadAnimation(const std::unordered_map<std::string, Animation*>& animation)
 	{
-		for (auto& e : animation)
-		{
-			std::string animName = e.first;
-			Animation newAnim = *(e.second);
-			m_animations.insert(std::make_pair(animName, newAnim));
-		}
+		m_animations = animation;
 	}
 
 	Node* SkinningMeshObject::GetNode()

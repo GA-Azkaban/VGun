@@ -69,6 +69,9 @@ namespace RocketCore::Graphics
 	private:
 		void LoadAnimation(const std::unordered_map<std::string, Animation*>& animation);
 
+		void UpdateUpperAnimation(float deltaTime);
+		void UpdateLowerAnimation(float deltaTime);
+
 		void UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		void UpdateAnimationSeparated(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
@@ -95,16 +98,19 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
 		// Animation
-		std::unordered_map<std::string, Animation> m_animations;
+		std::unordered_map<std::string, Animation*> m_animations;
 		Animation m_savedPreviousAnimation;
+		Animation m_savedCurrentAnimation;
 		Animation* m_previousAnimation;
 		Animation* m_currentAnimation;
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
 		Node m_node;
 
 		// upper, lower animation
-		Animation m_savedUpperPreviousAnimation; 
+		Animation m_savedUpperPreviousAnimation;
 		Animation m_savedLowerPreviousAnimation;
+		Animation m_savedUpperCurrentAnimation;
+		Animation m_savedLowerCurrentAnimation;
 		Animation* m_previousUpperAnimation;
 		Animation* m_previousLowerAnimation;
 		Animation* m_currentUpperAnimation;
