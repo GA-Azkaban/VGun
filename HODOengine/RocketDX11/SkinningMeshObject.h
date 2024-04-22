@@ -1,8 +1,9 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <string>
 #include <wrl.h>
 #include "Animation.h"
@@ -51,6 +52,8 @@ namespace RocketCore::Graphics
 		virtual Node* GetNode() override;
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
+		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true) override;
+		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true) override;
 		virtual bool IsAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
@@ -66,12 +69,17 @@ namespace RocketCore::Graphics
 	private:
 		void LoadAnimation(const std::unordered_map<std::string, Animation*>& animation);
 
+		void UpdateUpperAnimation(float deltaTime);
+		void UpdateLowerAnimation(float deltaTime);
+
 		void UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateAnimationSeparated(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT3 CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim);
 
 		void UpdateBlendAnimation(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateBlendAnimationSeparated(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
 		DirectX::XMFLOAT3 CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT4 CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT3 CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
@@ -83,20 +91,26 @@ namespace RocketCore::Graphics
 		bool m_receiveTMInfoFlag;
 		bool m_blendFlag;
 		bool m_isOutlineActive;
+		bool m_separateUpperAndLowerAnim;
+		bool m_blendFlagUpper;
+		bool m_blendFlagLower;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
 		// Animation
-		std::unordered_map<std::string, Animation> m_animations;
+		std::unordered_map<std::string, Animation*> m_animations;
 		Animation m_savedPreviousAnimation;
+		Animation m_savedCurrentAnimation;
 		Animation* m_previousAnimation;
 		Animation* m_currentAnimation;
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
 		Node m_node;
 
 		// upper, lower animation
-		Animation m_savedUpperPreviousAnimation; 
+		Animation m_savedUpperPreviousAnimation;
 		Animation m_savedLowerPreviousAnimation;
+		Animation m_savedUpperCurrentAnimation;
+		Animation m_savedLowerCurrentAnimation;
 		Animation* m_previousUpperAnimation;
 		Animation* m_previousLowerAnimation;
 		Animation* m_currentUpperAnimation;
@@ -109,5 +123,9 @@ namespace RocketCore::Graphics
 
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
+
+		// 우리 게임에 사용하는 캐릭터 전용 노드 하드 코딩.
+		std::unordered_set<std::string> _upperAnimationNodes;
+		std::unordered_set<std::string> _lowerAnimationNodes;
 	};
 }

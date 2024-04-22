@@ -18,8 +18,8 @@ void Client::Initialize()
 {
 	//NetworkManager::Instance();
 
-	//TestScene test;
-	//test.Start();
+	TestScene test;
+	test.Start();
 
 	//LoginSceneView login;
 	//login.Initialize();
@@ -27,9 +27,9 @@ void Client::Initialize()
 	//MainMenuScene menu;
 	//menu.Initalize();
 
-	UnitySceneLoaderTest unity;
-	unity.Start();
+	//UnitySceneLoaderTest unity;
+	//unity.Start();
 
 	//API::LoadSceneByName("MainLobby");
-	API::LoadSceneByName("Scene2");
+	//API::LoadSceneByName("Scene2");
 }
