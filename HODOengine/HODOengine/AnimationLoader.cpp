@@ -70,10 +70,15 @@ namespace HDEngine
 				{
 					node->nodeName = nodeInfo["name"].GetString();
 				}
-				if (nodeInfo.HasMember("FBX") && nodeInfo["FBX"].IsString())
+				if (nodeInfo.HasMember("upperFBX") && nodeInfo["upperFBX"].IsString())
 				{
-					auto p = nodeInfo["FBX"].GetString();
-					node->fileName = CutAnimationName(p);
+					auto p = nodeInfo["upperFBX"].GetString();
+					node->upperFBX = CutAnimationName(p);
+				}
+				if (nodeInfo.HasMember("lowerFBX") && nodeInfo["lowerFBX"].IsString())
+				{
+					auto p = nodeInfo["lowerFBX"].GetString();
+					node->lowerFBX = CutAnimationName(p);
 				}
 
 				_nodes.push_back(*node);
@@ -177,7 +182,7 @@ namespace HDEngine
 	{
 		for (auto& node : _nodes)
 		{
-			con->CreateState(node.nodeName, node.fileName);
+			con->CreateState(node.nodeName, node.upperFBX, node.lowerFBX);
 		}
 	}
 

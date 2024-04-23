@@ -7,9 +7,6 @@
     <ClCompile Include="Application.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp">
-      <Filter>02_Client\TestScene</Filter>
-    </ClCompile>
     <ClCompile Include="CameraMove.cpp">
       <Filter>02_Client\TestScene\Camera</Filter>
     </ClCompile>
@@ -30,9 +27,6 @@
     </ClCompile>
     <ClCompile Include="LobbyManager.cpp">
       <Filter>03_Manager\LobbyManager</Filter>
-    </ClCompile>
-    <ClCompile Include="SliderSoundScript.cpp">
-      <Filter>02_Client\TestScene</Filter>
     </ClCompile>
     <ClCompile Include="Enum.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
@@ -64,13 +58,17 @@
     </ClCompile>
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
     <ClCompile Include="FSMtestScript.cpp" />
+    <ClCompile Include="SliderSoundScript.cpp">
+      <Filter>02_Client\TestScene\test</Filter>
+    </ClCompile>
+    <ClCompile Include="TestScene.cpp">
+      <Filter>02_Client\TestScene\test</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationLoaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
       <Filter>01_Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="TestScene.h">
-      <Filter>02_Client\TestScene</Filter>
     </ClInclude>
     <ClInclude Include="CameraMove.h">
       <Filter>02_Client\TestScene\Camera</Filter>
@@ -105,9 +103,6 @@
     <ClInclude Include="Weapon.h">
       <Filter>02_Client\TestScene\Weapon</Filter>
     </ClInclude>
-    <ClInclude Include="SliderSoundScript.h">
-      <Filter>02_Client\TestScene</Filter>
-    </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClInclude>
@@ -133,6 +128,13 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
+    <ClInclude Include="TestScene.h">
+      <Filter>02_Client\TestScene\test</Filter>
+    </ClInclude>
+    <ClInclude Include="SliderSoundScript.h">
+      <Filter>02_Client\TestScene\test</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationLoaderTest.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -202,6 +204,9 @@
     </Filter>
     <Filter Include="03_Manager\MenuManager">
       <UniqueIdentifier>{76b2ac2e-a96f-4c9f-a9be-c4305db62ff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\test">
+      <UniqueIdentifier>{fc498499-d32a-4872-8cb0-5341026958db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

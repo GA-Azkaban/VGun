@@ -1,105 +1,54 @@
 ﻿#include "Animator.h"
-#include "SkinnedMeshRenderer.h"
 #include "GameObject.h"
+#include "SkinnedMeshRenderer.h"
 
 namespace HDData
 {
 	Animator::Animator()
-		: _animationController(nullptr), _engageIng(false)
 	{
-
+		_upper = new UpperAnimator();
+		_lower = new LowerAnimator();
 	}
 
 	Animator::~Animator()
 	{
-
+		delete _upper;
+		delete _lower;
 	}
 
 	void Animator::Start()
 	{
-		if (_animationController == nullptr) return;
-
-		_animationController->Start();
-		_meshRenderer = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, true);
-		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, true);
+		auto MR = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		_upper->SetMeshRenderer(MR);
+		_upper->Start();
+		_lower->SetMeshRenderer(MR);
+		_lower->Start();
 	}
 
 	void Animator::Update()
 	{
-		if (_animationController == nullptr) return;
-
-		_animationController->Update();
-
-		if (!_animationController->GetMotionBuffer().empty())
-		{
-			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_upperMotion, false);
-			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_lowerMotion, false);
-			_animationController->GetMotionBuffer().pop_back();
-			_engageIng = true;
-		}
-
-		if (_engageIng && _meshRenderer->IsAnimationEnd())
-		{
-			_engageIng = false;
-			_animationController->_isStateChange = true;
-		}
-		
-		if(_animationController->IsStateChange() && !_engageIng)
-		{
-			if (_animationController->GetCurrentState()->GetIsLoop())
-			{
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, true);
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, true);
-			}
-			else
-			{
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, false);
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, false);
-			}
-		}
-
-		if (!(_animationController->GetCurrentState()->GetIsLoop()) && _meshRenderer->IsAnimationEnd())
-		{
-			_animationController->SetCurrentState(_animationController->GetPrevStateName());
-			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, true);
-			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, true);
-		}
+		_upper->Update();
+		_lower->Update();
 	}
 
-	void Animator::SetAnimationController(AnimationController* controller)
+	void Animator::SetUpperAnimationController(AnimationController* controller)
 	{
-		_animationController = controller;
+		_upper->SetAnimationController(controller);
 	}
 
-	std::string Animator::GetCurrentState()
+	void Animator::SetLowerAnimationController(AnimationController* controller)
 	{
-		return _animationController->GetCurrentStateName();
+		_lower->SetAnimationController(controller);
 	}
 
-	void Animator::SetCurrentState(std::string stateName)
+	HDData::UpperAnimator* Animator::GetUpperAC()
 	{
-		_animationController->SetCurrentState(stateName);
+		return _upper;
 	}
 
-	void Animator::SetFloat(std::string name, float val)
+	LowerAnimator* Animator::GetLowerAC()
 	{
-		_animationController->SetFloatParam(name, val);
-	}
-
-	void Animator::SetInt(std::string name, int val)
-	{
-		_animationController->SetIntParam(name, val);
-	}
-
-	void Animator::SetBool(std::string name, bool val)
-	{
-		_animationController->SetBoolParam(name, val);
-	}
-
-	void Animator::SetTrigger(std::string name)
-	{
-		_animationController->SetTriggerParam(name);
+		return _lower;
 	}
 
 }

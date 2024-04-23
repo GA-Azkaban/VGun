@@ -61,8 +61,7 @@ namespace HDData
 		bool _isLoop;
 
 		std::unordered_map<std::string, std::vector<Transition*>> _transableStates;
-		std::string _upperMotion;
-		std::string _lowerMotion;
+		std::string _motion;
 	};
 
 	class HODO_API AnimationController

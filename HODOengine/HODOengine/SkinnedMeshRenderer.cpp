@@ -27,7 +27,7 @@ namespace HDData
 	{
 		_skinnedMesh->LoadNode(fileName);
 	}
-
+	
 	void SkinnedMeshRenderer::LoadMaterial(HDData::Material* material, unsigned int element /*= 0*/)
 	{
 		_skinnedMesh->LoadMaterial(material->_material, element);
