@@ -27,6 +27,8 @@ namespace HDEngine
 		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true) = 0;
 		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true) = 0;
 		virtual bool IsAnimationEnd() = 0;
+		virtual bool IsUpperAnimationEnd() = 0;
+		virtual bool IsLowerAnimationEnd() = 0;
 		virtual Node* GetNode() = 0;
 	};
 }
