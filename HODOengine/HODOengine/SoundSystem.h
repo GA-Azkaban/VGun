@@ -18,7 +18,7 @@ namespace HDEngine
 		friend Singleton;
 
 	private:
-		SoundSystem() = default;
+		SoundSystem();
 		~SoundSystem();
 
 	public:

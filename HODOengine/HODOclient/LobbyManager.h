@@ -37,6 +37,7 @@ public:
 
 
 	void showOff(HDData::GameObject*);
+	void showOn(HDData::GameObject*);
 
 public:
 	void SetLobbyMainCanvas(HDData::GameObject* mainCanvas);

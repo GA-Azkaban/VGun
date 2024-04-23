@@ -137,11 +137,6 @@ namespace API
 			return obj;
 		}
 
-		HODO_API HDData::AudioSource* CreateSoundPlayer(HDData::Scene* scene, std::string soundName, std::string soundPath, HDData::SoundGroup soundType)
-		{
-			auto obj = HDEngine::SoundSystem::Instance().CreateSound(soundPath, soundType);
-		}
-
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
 		{
 			auto obj = HDEngine::ObjectSystem::Instance().CreateObject(scene, objectName, parentObject);

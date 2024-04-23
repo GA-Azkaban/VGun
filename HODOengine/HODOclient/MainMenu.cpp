@@ -37,10 +37,8 @@ void MainMenuScene::Initalize()
 
 void MainMenuScene::MainMenu()
 {
-	HDData::AudioSource* bgmPlayer = GetGameObject()->GetComponent<HDData::AudioSource>();
-	bgmPlayer->AddAudio("Sample_BGM", "Resources/Sound/BGM/Sample_BGM_mp3", HDData::SoundGroup::BackgroundMusic);
-
-
+	//HDData::AudioSource* bgmPlayer = GetGameObject()->GetComponent<HDData::AudioSource>();
+	//bgmPlayer->AddAudio("Sample_BGM", "Resources/Sound/BGM/Sample_BGM_mp3", HDData::SoundGroup::BackgroundMusic);
 
 	HDData::GameObject* mainmenuCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
@@ -48,10 +46,6 @@ void MainMenuScene::MainMenu()
 	mainmenuCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	mainmenuCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
 	_menuManager.Instance().SetMainMenuCanvas(mainmenuCanvas);
-
-	HDData::GameObject* mainControlObject = API::CreateImageBox(_scene, "controlObject");
-	mainControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
-	mainControlObject->SetSelfActive(true);
 
 	// fade option canvas
 	// 페이드 아웃용 검은색 캔버스는 0.5f 1에 가까울수록 UI 낮을수록 배경
@@ -61,6 +55,10 @@ void MainMenuScene::MainMenu()
 	fadeCanvas->GetTransform()->SetPosition(960.0f, 540.f, 0.f);
 	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
 	fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+
+	HDData::GameObject* mainControlObject = API::CreateImageBox(_scene, "controlObject");
+	mainControlObject->SetSelfActive(true);
+	mainControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 
 	// play->RoomEnter & make sequence
 	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainControlObject);
@@ -80,8 +78,7 @@ void MainMenuScene::MainMenu()
 	roomListCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.0f);
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	roomListCanvas->SetSelfActive(false);
-	//MenuManager::Instance().SetRoomList(roomListCanvas);
-
+	MenuManager::Instance().SetRoomList(roomListCanvas);
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
 	roomMakeBtn->GetTransform()->SetPosition(365.f, 290.f, 0.6f);
@@ -97,6 +94,12 @@ void MainMenuScene::MainMenu()
 	setRoomCanvas->SetSelfActive(false);
 
 	// room name Set
+	HDData::GameObject* roomNameTextLabel = API::CreateTextbox(_scene,"reoomNameTextLabel", setRoomCanvas);
+	roomNameTextLabel->GetTransform()->SetPosition(710.0f, 240.0f, 0.f);
+	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetText("RoomName");
+	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+
 	HDData::GameObject* roomNameTextbox = API::CreateTextInputBox(_scene, "roomNameTextBox", setRoomCanvas);
 	roomNameTextbox->GetTransform()->SetPosition(960.0f, 240.0f, 0.0f);
 	auto newRoomName = roomNameTextbox->GetComponent<HDData::TextInputBoxUI>();
@@ -105,24 +108,30 @@ void MainMenuScene::MainMenu()
 	roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.61f);
 
 	// privateRoom Set
+	HDData::GameObject* privateRoomTextLabel = API::CreateTextbox(_scene, "privateRoomTextLabel", setRoomCanvas);
+	privateRoomTextLabel->GetTransform()->SetPosition(710.0f, 320.0f, 0.f);
+	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetText("privateRoom");
+	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+
 	HDData::GameObject* privateCheckBox = API::CreateButton(_scene, "privateCheckBox", setRoomCanvas);
 	privateCheckBox->GetComponent<HDData::Button>()->SetImage("checkbox_background.png");
-	privateCheckBox->GetTransform()->SetPosition(750.0f, 320.0f, 0.0f);
-	privateCheckBox->GetComponent<HDData::Button>()->SetSortOrder(0.61f);
+	privateCheckBox->GetTransform()->SetPosition(1170.0f, 320.0f, 0.0f);
+	privateCheckBox->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
 
 	HDData::GameObject* privateCheck = API::CreateImageBox(_scene, "privateCheck", setRoomCanvas);
 	privateCheck->GetComponent<HDData::ImageUI>()->SetImage("checkbox_cross.png");
 	privateCheck->GetTransform()->SetPosition(privateCheckBox->GetTransform()->GetPosition());
-	privateCheck->GetComponent<HDData::ImageUI>()->SetSortOrder(0.62f);
+	privateCheck->GetComponent<HDData::ImageUI>()->SetSortOrder(0.63f);
 	privateCheck->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 	privateCheck->SetSelfActive(false);
 
-	HDData::GameObject* roomPassWord = API::CreateTextInputBox(_scene, "roomPassWord", setRoomCanvas);
-	roomPassWord->GetTransform()->SetPosition(960.0f, 320.0f, 0.0f);
-	auto newRoomPassWord = roomPassWord->GetComponent<HDData::TextInputBoxUI>();
-	roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.6f);
-	roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.61f);
-	roomPassWord->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.61f);
+	HDData::GameObject* roomPassWordTextBox = API::CreateTextInputBox(_scene, "roomPassWord", setRoomCanvas);
+	roomPassWordTextBox->GetTransform()->SetPosition(960.0f, 320.0f, 0.0f);
+	auto newRoomPassWord = roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>();
+	roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.6f);
+	roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.61f);
+	roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.61f);
 
 	// number of people 01 ~ 06
 	HDData::GameObject* numPeopleRoom01 = API::CreateButton(_scene, "numPeopleRoom01", setRoomCanvas);
@@ -164,10 +173,10 @@ void MainMenuScene::MainMenu()
 	// Training room -> scene change
 	HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
 	trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
-	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("training_room.png");
+	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("test1.png");
 
 	// Exit button
-	HDData::GameObject* exitBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
+	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
 	exitBtn->GetTransform()->SetPosition(130.f, 560, 0.6f); // y += 160
 	exitBtn->GetComponent<HDData::Button>()->SetImage("exit_btn.png");
 
@@ -182,26 +191,26 @@ void MainMenuScene::MainMenu()
 	settingControlObject->SetSelfActive(false);
 
 	HDData::GameObject* displaySetting = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
-	displaySetting->GetTransform()->SetPosition(363.f, 354.f, 0.f);
-	displaySetting->GetComponent<HDData::ImageUI>()->SetImage("_card_holder.png");
+	displaySetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	displaySetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
 	displaySetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	displaySetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	HDData::GameObject* audioSetting = API::CreateImageBox(_scene, "audioSetting", settingControlObject);
-	audioSetting->GetTransform()->SetPosition(763.f, 354.f, 0.f);
-	audioSetting->GetComponent<HDData::ImageUI>()->SetImage("_card_holder.png");
+	audioSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	audioSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
 	audioSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	audioSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	HDData::GameObject* gameSetting = API::CreateImageBox(_scene, "gameSetting", settingControlObject);
-	gameSetting->GetTransform()->SetPosition(1163.f, 354.f, 0.f);
-	gameSetting->GetComponent<HDData::ImageUI>()->SetImage("_card_holder.png");
+	gameSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	gameSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
 	gameSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	gameSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	HDData::GameObject* operationSetting = API::CreateImageBox(_scene, "operationSetting", settingControlObject);
-	operationSetting->GetTransform()->SetPosition(1563.f, 354.f, 0.f);
-	operationSetting->GetComponent<HDData::ImageUI>()->SetImage("_card_holder.png");
+	operationSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	operationSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
 	operationSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	operationSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
