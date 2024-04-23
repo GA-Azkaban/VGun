@@ -27,7 +27,6 @@ namespace RocketCore::Graphics
 		void SetRenderTargets();
 		// 임시
 		void SetSSAORenderTarget();
-		void SetShadowMapRenderTarget();
 
 		void SetEnvironmentMap(std::string fileName);
 		
@@ -41,13 +40,11 @@ namespace RocketCore::Graphics
 		ID3D11ShaderResourceView* GetEnvPreFilterMap();
 		ID3D11ShaderResourceView* GetBRDFLut();
 		ID3D11ShaderResourceView* GetSSAOMap();
-		ID3D11ShaderResourceView* GetShadowMap();
 
 		void ClearRenderTargets(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
 		void ClearDepthStencil();
 		// 임시
 		void ClearSSAORenderTarget(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
-		void ClearShadowMapRenderTarget(DirectX::XMVECTOR color = DirectX::XMVECTOR{ 0.0f, 0.0f, 0.0f, 0.0f });
 		
 		void FlushShaderResourceViews();
 
@@ -76,12 +73,5 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> _ssaoTexture;
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _ssaoRenderTargetView;
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _ssaoShaderResourceView;
-
-		// Shadow map
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> _shadowMapTexture;
-		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _shadowMapRenderTargetView;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _shadowMapShaderResourceView;
-		Microsoft::WRL::ComPtr<ID3D11Texture2D> _shadowMapDepthTexture;
-		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _shadowMapDSV;
 	};
 }
