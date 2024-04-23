@@ -85,11 +85,11 @@ namespace RocketCore::Graphics
 		_upperAnimationNodes.insert("neck_01");
 		_upperAnimationNodes.insert("head");
 
-		//_lowerAnimationNodes.insert("root");
+		_lowerAnimationNodes.insert("root");
 		_lowerAnimationNodes.insert("ik_foot_root");
 		_lowerAnimationNodes.insert("ik_foot_l");
 		_lowerAnimationNodes.insert("ik_foot_r");
-		//_lowerAnimationNodes.insert("pelvis");
+		_lowerAnimationNodes.insert("pelvis");
 		_lowerAnimationNodes.insert("thigh_l");
 		_lowerAnimationNodes.insert("calf_l");
 		_lowerAnimationNodes.insert("calf_twist_01_l");
@@ -113,10 +113,10 @@ namespace RocketCore::Graphics
 	{
 		if (m_separateUpperAndLowerAnim)
 		{
-			// upper animation
-			UpdateUpperAnimation(deltaTime);
 			//lower animation
 			UpdateLowerAnimation(deltaTime);
+			// upper animation
+			UpdateUpperAnimation(deltaTime);
 		}
 		else
 		{
@@ -403,6 +403,17 @@ namespace RocketCore::Graphics
 				{
 					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 					{
+						if (m_currentUpperAnimation->animName != m_currentLowerAnimation->animName)
+						{
+							if (node->name == "root" || node->name == "pelvis")
+							{
+								if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+								{
+									nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
+									break;
+								}
+							}
+						}
 						nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
 						break;
 					}
@@ -417,6 +428,13 @@ namespace RocketCore::Graphics
 				{
 					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
 					{
+						/*if (m_currentUpperAnimation->animName != m_currentLowerAnimation->animName)
+						{
+							if (node->name == "root" || node->name == "pelvis")
+							{
+								break;
+							}
+						}*/
 						nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
 						break;
 					}
