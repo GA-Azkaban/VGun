@@ -21,8 +21,8 @@ namespace HDData
 
 		_animationController->Start();
 		_meshRenderer = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, true);
-		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, true);
+		_meshRenderer->PlayAnimationUpper(_animationController->GetCurrentState()->_upperMotion, true);
+		_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_lowerMotion, true);
 	}
 
 	void Animator::Update()
@@ -33,8 +33,8 @@ namespace HDData
 
 		if (!_animationController->GetMotionBuffer().empty())
 		{
-			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_upperMotion, false);
-			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_lowerMotion, false);
+			_meshRenderer->PlayAnimationUpper(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_upperMotion, false);
+			_meshRenderer->PlayAnimationLower(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_lowerMotion, false);
 			_animationController->GetMotionBuffer().pop_back();
 			_engageIng = true;
 		}
@@ -49,21 +49,21 @@ namespace HDData
 		{
 			if (_animationController->GetCurrentState()->GetIsLoop())
 			{
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, true);
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, true);
+				_meshRenderer->PlayAnimationUpper(_animationController->GetCurrentState()->_upperMotion, true);
+				_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_lowerMotion, true);
 			}
 			else
 			{
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, false);
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, false);
+				_meshRenderer->PlayAnimationUpper(_animationController->GetCurrentState()->_upperMotion, false);
+				_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_lowerMotion, false);
 			}
 		}
 
 		if (!(_animationController->GetCurrentState()->GetIsLoop()) && _meshRenderer->IsAnimationEnd())
 		{
 			_animationController->SetCurrentState(_animationController->GetPrevStateName());
-			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_upperMotion, true);
-			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_lowerMotion, true);
+			_meshRenderer->PlayAnimationUpper(_animationController->GetCurrentState()->_upperMotion, true);
+			_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_lowerMotion, true);
 		}
 	}
 

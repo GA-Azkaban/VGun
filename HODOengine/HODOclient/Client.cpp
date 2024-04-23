@@ -3,6 +3,7 @@
 #include "LoginSceneView.h"
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
+#include "AnimationLoaderTest.h"
 
 Client::Client()
 {
@@ -18,8 +19,8 @@ void Client::Initialize()
 {
 	//NetworkManager::Instance();
 
-	TestScene test;
-	test.Start();
+	/*TestScene test;
+	test.Start();*/
 
 	//LoginSceneView login;
 	//login.Initialize();
@@ -30,6 +31,9 @@ void Client::Initialize()
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
 
+	AnimationLoaderTest loader;
+	loader.Start();
+
 	//API::LoadSceneByName("MainLobby");
-	//API::LoadSceneByName("Scene2");
+	API::LoadSceneByName("ALT");
 }
