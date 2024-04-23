@@ -93,16 +93,6 @@ namespace HDData
 		return _skinnedMesh->IsAnimationEnd();
 	}
 
-	bool SkinnedMeshRenderer::IsUpperAnimationEnd()
-	{
-		return _skinnedMesh->IsUpperAnimationEnd();
-	}
-
-	bool SkinnedMeshRenderer::IsLowerAnimationEnd()
-	{
-		return _skinnedMesh->IsLowerAnimationEnd();
-	}
-
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_skinnedMesh->SetOutlineActive(isActive);

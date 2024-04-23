@@ -1065,16 +1065,6 @@ namespace RocketCore::Graphics
 		return m_currentAnimation->isEnd;
 	}
 
-	bool SkinningMeshObject::IsUpperAnimationEnd()
-	{
-		return m_currentUpperAnimation->isEnd;
-	}
-
-	bool SkinningMeshObject::IsLowerAnimationEnd()
-	{
-		return m_currentLowerAnimation->isEnd;
-	}
-
 	void SkinningMeshObject::SetOutlineActive(bool isActive)
 	{
 		if (isActive)

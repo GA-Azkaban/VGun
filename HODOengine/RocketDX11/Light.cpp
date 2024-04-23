@@ -11,7 +11,7 @@ namespace RocketCore::Graphics
 	LightManager::LightManager()
 		: _numLights(0)
 	{
-		
+		//_lightProj = XMMatrixOrthographicLH(300, 300, 1, 600);
 	}
 
 	LightManager::~LightManager()
@@ -29,10 +29,6 @@ namespace RocketCore::Graphics
 				dirLight = &(_lights[i]);
 			}
 		}
-
-		static float const far_factor = 1.5f;
-		static float const light_distance_factor = 1.0f;
-
 		Camera* mainCamera = Camera::GetMainCamera();
 		XMMATRIX invView = XMMatrixInverse(nullptr, mainCamera->GetViewMatrix());
 

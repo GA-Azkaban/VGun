@@ -30,8 +30,6 @@ namespace HDData
 		void PlayAnimationUpper(const std::string& animName, bool isLoop = true);
 		void PlayAnimationLower(const std::string& animName, bool isLoop = true);
 		bool IsAnimationEnd();
-		bool IsUpperAnimationEnd();
-		bool IsLowerAnimationEnd();
 		void SetOutlineActive(bool isActive);
 		Node* GetNode();
 

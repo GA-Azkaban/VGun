@@ -55,8 +55,6 @@ namespace RocketCore::Graphics
 		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true) override;
 		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true) override;
 		virtual bool IsAnimationEnd() override;
-		virtual bool IsUpperAnimationEnd() override;
-		virtual bool IsLowerAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
 

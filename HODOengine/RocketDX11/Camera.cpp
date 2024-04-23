@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include "MathHeader.h"
 #include "ResourceManager.h"
-#include "ShadowMapPass.h"
 
 using namespace DirectX;
 
@@ -21,7 +20,6 @@ namespace RocketCore::Graphics
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_nearWindowWidth = _nearWindowHeight * _aspect;
 		_farWindowWidth = _farWindowHeight * _aspect;
-		_dividedProjectionMatrices.reserve(ShadowMapPass::CASCADE_COUNT);
 		UpdateProjectionMatrix();
 	}
 
@@ -195,12 +193,6 @@ namespace RocketCore::Graphics
 		return _farZ;
 	}
 
-	const std::vector<DirectX::XMMATRIX>& Camera::GetDividedProjectionMatrices()
-	{
-		RecalculateDividedProjectionMatrices();
-		return _dividedProjectionMatrices;
-	}
-
 	void Camera::SetWorldTM(const Matrix& matrix)
 	{
 		_worldMatrix = matrix;
@@ -285,27 +277,6 @@ namespace RocketCore::Graphics
 	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)
 	{
 		_viewMatrix = tm;
-	}
-
-	void Camera::RecalculateDividedProjectionMatrices()
-	{
-		static const float split_lambda = 0.25f;
-		std::vector<float> split_distances;
-		split_distances.reserve(ShadowMapPass::CASCADE_COUNT);
-		float f = 1.0f / ShadowMapPass::CASCADE_COUNT;
-		for (UINT i = 0; i < _dividedProjectionMatrices.size(); ++i)
-		{
-			float fi = (i + 1) * f;
-			float l = _nearZ * pow(_farZ / _nearZ, fi);
-			float u = _nearZ + (_farZ - _nearZ) * fi;
-			split_distances[i] = l * split_lambda + u * (1.0f - split_lambda);
-		}
-
-		_dividedProjectionMatrices[0] = XMMatrixPerspectiveFovLH(_fovY, _aspect, _nearZ, split_distances[0]);
-		for (UINT i = 1; i < _dividedProjectionMatrices.size(); ++i)
-		{
-			_dividedProjectionMatrices[i] = XMMatrixPerspectiveFovLH(_fovY, _aspect, split_distances[i - 1], split_distances[i]);
-		}
 	}
 
 }

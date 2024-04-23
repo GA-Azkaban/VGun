@@ -161,6 +161,66 @@ namespace RocketCore::Graphics
 		aoSRVDesc.Texture2D.MipLevels = 1;
 
 		_device->CreateShaderResourceView(_ssaoTexture.Get(), &aoSRVDesc, _ssaoShaderResourceView.GetAddressOf());
+
+		// Create shadow map texture, RTV, SRV
+		D3D11_TEXTURE2D_DESC shadowMapTexDesc{
+			.Width = _textureWidth,
+			.Height = _textureHeight,
+			.MipLevels = 1,
+			.ArraySize = 1,
+			.Format = DXGI_FORMAT_R32_TYPELESS,
+			.SampleDesc{ .Count = 1 },
+			.Usage = D3D11_USAGE_DEFAULT,
+			.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE,
+			.CPUAccessFlags = 0,
+			.MiscFlags = 0
+		};
+
+		_device->CreateTexture2D(&shadowMapTexDesc, nullptr, _shadowMapTexture.GetAddressOf());
+
+		D3D11_RENDER_TARGET_VIEW_DESC shadowMapRTVDesc;
+		shadowMapRTVDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		shadowMapRTVDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		shadowMapRTVDesc.Texture2D.MipSlice = 0;
+
+		_device->CreateRenderTargetView(_shadowMapTexture.Get(), &shadowMapRTVDesc, _shadowMapRenderTargetView.GetAddressOf());
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC shadowMapSRVDesc;
+		shadowMapSRVDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		shadowMapSRVDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		shadowMapSRVDesc.Texture2D.MostDetailedMip = 0;
+		shadowMapSRVDesc.Texture2D.MipLevels = 1;
+
+		_device->CreateShaderResourceView(_shadowMapTexture.Get(), &shadowMapSRVDesc, _shadowMapShaderResourceView.GetAddressOf());
+
+		// Create the depth/stencil buffer and view of Shadow map
+		D3D11_TEXTURE2D_DESC shadowMapDepthBufferDesc;
+		ZeroMemory(&shadowMapDepthBufferDesc, sizeof(shadowMapDepthBufferDesc));
+		shadowMapDepthBufferDesc.Width = _textureWidth;
+		shadowMapDepthBufferDesc.Height = _textureHeight;
+		shadowMapDepthBufferDesc.MipLevels = 1;
+		shadowMapDepthBufferDesc.ArraySize = 1;
+		shadowMapDepthBufferDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
+		shadowMapDepthBufferDesc.SampleDesc.Count = 1;
+		shadowMapDepthBufferDesc.SampleDesc.Quality = 0;
+		shadowMapDepthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		shadowMapDepthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		shadowMapDepthBufferDesc.CPUAccessFlags = 0;
+		shadowMapDepthBufferDesc.MiscFlags = 0;
+
+		// Create the texture for the depth buffer
+		_device->CreateTexture2D(&shadowMapDepthBufferDesc, NULL, _shadowMapDepthTexture.GetAddressOf());
+
+		D3D11_DEPTH_STENCIL_VIEW_DESC shadowMapDSVDesc;
+		ZeroMemory(&shadowMapDSVDesc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+		shadowMapDSVDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		shadowMapDSVDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		shadowMapDSVDesc.Texture2D.MipSlice = 0;
+		shadowMapDSVDesc.Flags = 0;
+
+		// Create the depth/stencil view
+		_device->CreateDepthStencilView(_shadowMapDepthTexture.Get(),
+			&shadowMapDSVDesc, _shadowMapDSV.GetAddressOf());
 	}
 
 	void DeferredBuffers::SetRenderTargets()
@@ -172,6 +232,11 @@ namespace RocketCore::Graphics
 	void DeferredBuffers::SetSSAORenderTarget()
 	{
 		_deviceContext->OMSetRenderTargets(1, _ssaoRenderTargetView.GetAddressOf(), nullptr);
+	}
+
+	void DeferredBuffers::SetShadowMapRenderTarget()
+	{
+		_deviceContext->OMSetRenderTargets(1, _shadowMapRenderTargetView.GetAddressOf(), _shadowMapDSV.Get());
 	}
 
 	ID3D11ShaderResourceView* DeferredBuffers::GetShaderResourceView(UINT index)
@@ -214,6 +279,12 @@ namespace RocketCore::Graphics
 		_deviceContext->ClearRenderTargetView(_ssaoRenderTargetView.Get(), reinterpret_cast<const float*>(&color));
 	}
 
+	void DeferredBuffers::ClearShadowMapRenderTarget(DirectX::XMVECTOR color)
+	{
+		_deviceContext->ClearRenderTargetView(_shadowMapRenderTargetView.Get(), reinterpret_cast<const float*>(&color));
+		_deviceContext->ClearDepthStencilView(_shadowMapDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	}
+
 	void DeferredBuffers::FlushShaderResourceViews()
 	{
 		ID3D11ShaderResourceView* shaderResView = NULL;
@@ -249,6 +320,11 @@ namespace RocketCore::Graphics
 	ID3D11ShaderResourceView* DeferredBuffers::GetSSAOMap()
 	{
 		return _ssaoShaderResourceView.Get();
+	}
+
+	ID3D11ShaderResourceView* DeferredBuffers::GetShadowMap()
+	{
+		return _shadowMapShaderResourceView.Get();
 	}
 
 }
