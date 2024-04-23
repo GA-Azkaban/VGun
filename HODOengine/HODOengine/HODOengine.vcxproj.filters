@@ -133,9 +133,6 @@
     <ClCompile Include="Light.cpp">
       <Filter>05_Component\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Animator.cpp">
-      <Filter>05_Component\Animation\Animator</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationController.cpp">
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClCompile>
@@ -173,6 +170,15 @@
       <Filter>05_Component\Collider\Collision</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSphereCollider.cpp" />
+    <ClCompile Include="UpperAnimator.cpp">
+      <Filter>05_Component\Animation\Animator\Upper</Filter>
+    </ClCompile>
+    <ClCompile Include="LowerAnimator.cpp">
+      <Filter>05_Component\Animation\Animator\Lower</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>05_Component\Animation\Animator\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -340,9 +346,6 @@
     <ClInclude Include="Light.h">
       <Filter>05_Component\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Animator.h">
-      <Filter>05_Component\Animation\Animator</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationController.h">
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClInclude>
@@ -383,6 +386,15 @@
       <Filter>05_Component\Collider\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSphereCollider.h" />
+    <ClInclude Include="UpperAnimator.h">
+      <Filter>05_Component\Animation\Animator\Upper</Filter>
+    </ClInclude>
+    <ClInclude Include="LowerAnimator.h">
+      <Filter>05_Component\Animation\Animator\Lower</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>05_Component\Animation\Animator\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -537,9 +549,6 @@
     <Filter Include="05_Component\Animation">
       <UniqueIdentifier>{b5ee79ba-d963-4a51-b314-3427994f34b5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\Animation\Animator">
-      <UniqueIdentifier>{0d2c3228-48e0-4ff8-a1dd-4b70a61800eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Animation\AnimationController">
       <UniqueIdentifier>{aee8b258-77bb-4ff6-a3a7-ac3c24b27496}</UniqueIdentifier>
     </Filter>
@@ -575,6 +584,18 @@
     </Filter>
     <Filter Include="05_Component\Collider\Particle">
       <UniqueIdentifier>{0bf802f5-6f43-4f75-8589-8ba81a4118b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Animation\Animator">
+      <UniqueIdentifier>{0d2c3228-48e0-4ff8-a1dd-4b70a61800eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Animation\Animator\Upper">
+      <UniqueIdentifier>{0431d628-7103-48ee-bbb7-02daa223eb9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Animation\Animator\Lower">
+      <UniqueIdentifier>{f6a74dc3-bd8d-45a9-9fa5-69a84a5375ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Animation\Animator\Base">
+      <UniqueIdentifier>{ab390f21-497f-42f2-ae64-81460e8bd14e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -229,6 +229,8 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AnimationLoader.h" />
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="LowerAnimator.h" />
+    <ClInclude Include="UpperAnimator.h" />
     <ClInclude Include="AudioClip.h" />
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="AudioSource.h" />
@@ -322,6 +324,8 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationLoader.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="LowerAnimator.cpp" />
+    <ClCompile Include="UpperAnimator.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />

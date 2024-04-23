@@ -9,6 +9,7 @@
 #include "PhysicsSystem.h"
 #include "RenderSystem.h"
 #include "SceneLoader.h"
+#include "Animator.h"
 #include "AnimationLoader.h"
 
 #include "TweenSystem.h"
@@ -243,10 +244,16 @@ namespace API
 			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName);
 		}
 
-		HODO_API void LoadAnimationFromData(HDData::GameObject* gameobject, std::string data)
+		HODO_API void LoadUpperAnimationFromData(HDData::GameObject* gameobject, std::string data)
 		{
-			auto animator = gameobject->AddComponent<HDData::Animator>();
-			animator->SetAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
+			auto animator = gameobject->GetComponent<HDData::Animator>();
+			animator->SetUpperAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
+		}
+
+		HODO_API void LoadLowerAnimationFromData(HDData::GameObject* gameobject, std::string data)
+		{
+			auto animator = gameobject->GetComponent<HDData::Animator>();
+			animator->SetLowerAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
 		}
 
 		HODO_API HDData::Camera* GetMainCamera()

@@ -2,8 +2,8 @@
 #include "dllExporter.h"
 #include "Component.h"
 #include "AnimationController.h"
-#include "SkinnedMeshRenderer.h"
-
+#include "UpperAnimator.h"
+#include "LowerAnimator.h"
 
 namespace HDData
 {
@@ -12,25 +12,20 @@ namespace HDData
 	public:
 		Animator();
 		~Animator();
-
+	
 	public:
 		virtual void Start() override;
 		virtual void Update() override;
-		void SetAnimationController(AnimationController* controller);
+		void SetUpperAnimationController(AnimationController* controller);
+		void SetLowerAnimationController(AnimationController* controller);
+		UpperAnimator* GetUpperAC();
+		LowerAnimator* GetLowerAC();
 
 	private:
-		// 컨트롤러에 대한 포인터
-		AnimationController* _animationController;
-		SkinnedMeshRenderer* _meshRenderer;
-		bool _engageIng;
-	public:
-		std::string GetCurrentState();
-		void SetCurrentState(std::string stateName);
-		void SetFloat(std::string, float);
-		void SetInt(std::string, int);
-		void SetBool(std::string, bool);
-		void SetTrigger(std::string);
+		UpperAnimator* _upper;
+		LowerAnimator* _lower;
 	};
+
 }
 
 

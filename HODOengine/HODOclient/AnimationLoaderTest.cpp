@@ -39,7 +39,9 @@ void AnimationLoaderTest::Start()
 	meshComp->PlayAnimationUpper("X_idle", true);
 	meshComp->PlayAnimationLower("X_idle", true);
 
-	API::LoadAnimationFromData(playerTP, "data.json");
+	playerTP->AddComponent<HDData::Animator>();
+	API::LoadUpperAnimationFromData(playerTP, "data.json");
+	API::LoadLowerAnimationFromData(playerTP, "data.json");
 
 	playerTP->AddComponent<FSMtestScript>();
 }

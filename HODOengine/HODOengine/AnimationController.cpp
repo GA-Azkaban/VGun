@@ -96,8 +96,7 @@ namespace HDData
 	{
 		State* state = new State(stateName, this);
 		state->_stateName = stateName;
-		state->_upperMotion = upper;
-		state->_lowerMotion = lower;
+		state->_motion = upper;
 
 		_allStates.insert({ stateName, state });
 
