@@ -40,6 +40,7 @@ namespace HDData
 		void SetLocalPosition(float x, float y, float z);
 		void SetLocalRotation(const Quaternion& rotation);
 		void SetLocalRotation(float x, float y, float z, float w);
+		void SetLocalRotationEuler(Vector3 eulerAngle);
 		void SetLocalScale(const Vector3& scale);
 		void SetLocalScale(float x, float y, float z);
 

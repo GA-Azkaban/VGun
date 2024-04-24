@@ -149,6 +149,23 @@ void UnitySceneLoaderTest::Start()
 	//playerTP->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	//playerMove->SetHeadCam(headCam);
 
+	// 피격 표시 particle
+	std::vector<HDData::ParticleSphereCollider*> particleContainer;
+	particleContainer.reserve(30);
+	for (int i = 0; i < 30; ++i)
+	{
+		auto particleTest = API::CreateObject(_scene, "particleTest");
+		particleTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 5.f, 0.f);
+		auto particleCollider = particleTest->AddComponent<HDData::ParticleSphereCollider>();
+		particleContainer.push_back(particleCollider);
+	}
+	playerMove->SetHitParticle(particleContainer);
+
+	// sound 추가
+	HDData::AudioSource* playerSound = playerTP->AddComponent<HDData::AudioSource>();
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
+
 	/*auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAlbedoMap("TP_Red_B.png");*/
 	//playerTP->AddComponent<FSMtestScript>();
