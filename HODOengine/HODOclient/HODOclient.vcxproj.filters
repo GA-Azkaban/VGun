@@ -64,6 +64,12 @@
     </ClCompile>
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
     <ClCompile Include="FSMtestScript.cpp" />
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>04_SceneView\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeInOut.cpp">
+      <Filter>04_SceneView\FadeInOut</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -128,6 +134,22 @@
     </ClInclude>
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="A.h" />
+    <ClInclude Include="B.h" />
+    <ClInclude Include="FSMtestScript.h" />
+    <ClInclude Include="UnitySceneLoaderTest.h" />
+    <ClInclude Include="MenuManager.h">
+      <Filter>03_Manager\MenuManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>04_SceneView\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>04_SceneView\SoundPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeInOut.h">
+      <Filter>04_SceneView\FadeInOut</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -198,6 +220,12 @@
     </Filter>
     <Filter Include="03_Manager\MenuManager">
       <UniqueIdentifier>{76b2ac2e-a96f-4c9f-a9be-c4305db62ff6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\SoundPlayer">
+      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\FadeInOut">
+      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

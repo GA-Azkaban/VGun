@@ -163,4 +163,9 @@ namespace RocketCore::Graphics
 		return true;
 	}
 
+	bool TextRenderer::GetComplete()
+	{
+		return true;
+	}
+
 }

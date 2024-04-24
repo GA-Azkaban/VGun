@@ -11,7 +11,6 @@
 #include "SceneLoader.h"
 #include "AnimationLoader.h"
 
-
 namespace API
 {
 	extern "C"

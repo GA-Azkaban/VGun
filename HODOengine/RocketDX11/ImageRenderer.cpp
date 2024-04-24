@@ -103,6 +103,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			if (_fadeAlpha > 1.0f)
 			{
 				_fadeAlpha = 1.0f;
+				_isComplete = true;
 			}
 			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
 		}
@@ -115,6 +116,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			if (_fadeAlpha < 0.0f)
 			{
 				_fadeAlpha = 0.0f;
+				_isComplete = false;
 			}
 			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
 		}
@@ -223,5 +225,10 @@ bool RocketCore::Graphics::ImageRenderer::GetFadeMode()
 bool RocketCore::Graphics::ImageRenderer::SetFadeMode(bool SetFade)
 {
 	return _fadeMode = SetFade;
+}
+
+bool RocketCore::Graphics::ImageRenderer::GetComplete()
+{
+	return _isComplete;
 }
 

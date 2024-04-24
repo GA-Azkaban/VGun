@@ -35,7 +35,6 @@ public:
 
 	void LoginSucess(int uid,std::string nickname);
 
-
 	void showOff(HDData::GameObject*);
 	void showOn(HDData::GameObject*);
 

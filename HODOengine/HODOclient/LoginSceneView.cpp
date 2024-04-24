@@ -1,9 +1,12 @@
 ﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
+#include "FadeInOut.h"
 
 LoginSceneView::LoginSceneView()
-	: _lobbyManager(LobbyManager::Instance())
+	: _lobbyManager(LobbyManager::Instance()),
+	_fadeInOut(FadeInOut::Instance())
 {
+
 }
 
 LoginSceneView::~LoginSceneView()
@@ -51,27 +54,29 @@ void LoginSceneView::LoginView()
 	//mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
 	//mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 
-
 	// fade option canvas
 	// 페이드 아웃용 검은색 캔버스는 0.5f 1에 가까울수록 UI 낮을수록 배경
-	HDData::GameObject* loginfadeCanvas = API::CreateImageBox(_scene, "fadeCanvas");
-	loginfadeCanvas->GetComponent<HDData::ImageUI>()->SetImage("black.png");
-	loginfadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
-	loginfadeCanvas->GetTransform()->SetPosition(960.0f, 540.f, 0.f);
-	loginfadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
-	loginfadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	//HDData::GameObject* loginfadeCanvas = API::CreateImageBox(_scene, "fadeCanvas");
+	//loginfadeCanvas->GetComponent<HDData::ImageUI>()->SetImage("black.png");
+	//loginfadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
+	//loginfadeCanvas->GetTransform()->SetPosition(960.0f, 540.f, 0.f);
+	//loginfadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
+	//loginfadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	// fade option canvas
-	HDData::GameObject* fadeCanvas = API::CreateImageBox(_scene, "blackCanvas");
-	fadeCanvas->GetComponent<HDData::ImageUI>()->SetImage("black.png");
-	fadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
-	fadeCanvas->GetTransform()->SetPosition(960.0f, 540.f, 0.f);
-	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
-	fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	//HDData::GameObject* fadeCanvas = API::CreateImageBox(_scene, "blackCanvas");
+	//fadeCanvas->GetComponent<HDData::ImageUI>()->SetImage("black.png");
+	//fadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
+	//fadeCanvas->GetTransform()->SetPosition(960.0f, 540.f, 0.f);
+	//fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
+	//fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 	//_lobbyManager.SetFadeCanvas(fadeCanvas);
 
+	// fadeIn Test
+	FadeInOut::Instance().FadeOut();
+
 	// login Control Object
-	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
+	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "l oginControlObject");
 	loginControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 	loginControlObject->SetSelfActive(true);
 	_lobbyManager.SetLobbyMainCanvas(loginControlObject);
@@ -205,8 +210,7 @@ void LoginSceneView::LoginView()
 		{
 			LobbyManager::Instance().showOff(loginSucess);
 			// load main menu scene
-
-			loginfadeCanvas->GetComponent<HDData::ImageUI>()->FadeIn();
+			FadeInOut::Instance().FadeIn();
 			API::LoadSceneByName("MainMenu");
 		}
 	);
@@ -231,6 +235,7 @@ void LoginSceneView::LoginView()
 	idDupl->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
 	idDupl->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	idDupl->SetSelfActive(false);
+
 	_lobbyManager.SetidDupl(idDupl);
 	idDupl->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
@@ -295,5 +300,6 @@ void LoginSceneView::LoginView()
 			}
 		}
 	);
+
 }
 

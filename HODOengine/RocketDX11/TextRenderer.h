@@ -46,6 +46,7 @@ namespace RocketCore::Graphics
 
 		virtual void FadeIn() override;
 		virtual void FadeOut() override;
+		virtual bool GetComplete() override;
 		virtual bool GetFadeMode() override;
 		virtual bool SetFadeMode(bool isFade) override;
 

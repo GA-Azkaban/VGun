@@ -37,8 +37,11 @@ void MainMenuScene::Initalize()
 
 void MainMenuScene::MainMenu()
 {
-	//HDData::AudioSource* bgmPlayer = GetGameObject()->GetComponent<HDData::AudioSource>();
-	//bgmPlayer->AddAudio("Sample_BGM", "Resources/Sound/BGM/Sample_BGM_mp3", HDData::SoundGroup::BackgroundMusic);
+	//HDData::GameObject* bgmPlayer;
+	//auto audio = bgmPlayer->AddComponent<HDData::AudioSource>();
+	//audio->AddAudio();
+
+
 
 	HDData::GameObject* mainmenuCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
@@ -173,12 +176,12 @@ void MainMenuScene::MainMenu()
 	// Training room -> scene change
 	HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
 	trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
-	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("test1.png");
+	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("exit_btn1.png");
 
 	// Exit button
 	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
 	exitBtn->GetTransform()->SetPosition(130.f, 560, 0.6f); // y += 160
-	exitBtn->GetComponent<HDData::Button>()->SetImage("exit_btn.png");
+	exitBtn->GetComponent<HDData::Button>()->SetImage("exit_btn2.png");
 
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
@@ -192,27 +195,27 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* displaySetting = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
 	displaySetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	displaySetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
+	displaySetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
 	displaySetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	displaySetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
-	HDData::GameObject* audioSetting = API::CreateImageBox(_scene, "audioSetting", settingControlObject);
-	audioSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	audioSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
-	audioSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	audioSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	//HDData::GameObject* audioSetting = API::CreateImageBox(_scene, "audioSetting", settingControlObject);
+	//audioSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	//audioSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
+	//audioSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	//audioSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
-	HDData::GameObject* gameSetting = API::CreateImageBox(_scene, "gameSetting", settingControlObject);
-	gameSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	gameSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
-	gameSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	gameSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	//HDData::GameObject* gameSetting = API::CreateImageBox(_scene, "gameSetting", settingControlObject);
+	//gameSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	//gameSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
+	//gameSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	//gameSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
-	HDData::GameObject* operationSetting = API::CreateImageBox(_scene, "operationSetting", settingControlObject);
-	operationSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	operationSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas.png");
-	operationSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	operationSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	//HDData::GameObject* operationSetting = API::CreateImageBox(_scene, "operationSetting", settingControlObject);
+	//operationSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	//operationSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
+	//operationSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	//operationSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	// event
 	// game play btn
