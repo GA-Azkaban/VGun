@@ -167,11 +167,16 @@ void UnitySceneLoaderTest::Start()
 	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
 
+	playerTP->AddComponent<HDData::Animator>();
+	API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
+	API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
+
+	playerTP->AddComponent<FSMtestScript>();
+
 	/*auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAlbedoMap("TP_Red_B.png");*/
 	//playerTP->AddComponent<FSMtestScript>();
 	//API::LoadAnimationFromData(playerTP, "data.json");
-
 	// animationController
 	/*auto aniComp = playerTP->AddComponent<HDData::Animator>();
 	auto controller = API::CreateAnimationController();
@@ -208,13 +213,6 @@ void UnitySceneLoaderTest::Start()
 	controller->GetState("CRUNCH").MakeTransition("CRUNCH_SHOOT").AddTrigger("CRUNCH_SHOOT", "isCrunchShoot", true);
 	controller->GetState("CRUNCH_SHOOT").MakeTransition("CRUNCH");
 	controller->SetEntryState("IDLE");*/
-
-	//auto btn = API::CreateButton(_scene);
-	//btn->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
-
-	//	LobbyManager::Instance().Test();
-	//	
-	//	});
 
 
 	API::LoadSceneFromData("sceneData.json");
