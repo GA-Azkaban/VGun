@@ -106,7 +106,7 @@ namespace HDEngine
 			std::string meshName = info.meshName;
 
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
-			
+
 			if (meshName == "Plane" ||
 				meshName == "Cube")
 			{
@@ -114,7 +114,7 @@ namespace HDEngine
 				meshRenderer->LoadMesh("primitiveCube");
 			}
 			else if (meshName == "Stair" ||
-					meshName == "2FPlane" )
+				meshName == "2FPlane")
 			{
 				info.meshName = "2F";
 				meshRenderer->LoadMesh("primitiveCube");
@@ -190,8 +190,6 @@ namespace HDEngine
 				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
 			}
 
-			object->GetTransform()->Rotate(0, info.rotation.y + 180, 0);
-				
 		}
 	}
 }
