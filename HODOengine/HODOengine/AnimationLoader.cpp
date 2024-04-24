@@ -58,7 +58,7 @@ namespace HDEngine
 		doc.Parse(serializeDataOnce.c_str());
 
 		// nodes
-		if (doc.HasMember("Nodes") && doc["Nodes"].IsObject())
+		if (doc.HasMember("Nodes"))
 		{
 			const Value& nodes = doc["Nodes"];
 			for (Value::ConstMemberIterator itr = nodes.MemberBegin(); itr != nodes.MemberEnd(); ++itr)
@@ -70,15 +70,10 @@ namespace HDEngine
 				{
 					node->nodeName = nodeInfo["name"].GetString();
 				}
-				if (nodeInfo.HasMember("upperFBX") && nodeInfo["upperFBX"].IsString())
+				if (nodeInfo.HasMember("FBX") && nodeInfo["FBX"].IsString())
 				{
-					auto p = nodeInfo["upperFBX"].GetString();
-					node->upperFBX = CutAnimationName(p);
-				}
-				if (nodeInfo.HasMember("lowerFBX") && nodeInfo["lowerFBX"].IsString())
-				{
-					auto p = nodeInfo["lowerFBX"].GetString();
-					node->lowerFBX = CutAnimationName(p);
+					auto p = nodeInfo["FBX"].GetString();
+					node->motion = CutAnimationName(p);
 				}
 
 				_nodes.push_back(*node);
@@ -182,7 +177,7 @@ namespace HDEngine
 	{
 		for (auto& node : _nodes)
 		{
-			con->CreateState(node.nodeName, node.upperFBX, node.lowerFBX);
+			con->CreateState(node.nodeName, node.motion);
 		}
 	}
 
