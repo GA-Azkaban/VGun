@@ -4,6 +4,7 @@
 #include "LobbyManager.h"
 #include "PlayerMove.h"
 
+
 UnitySceneLoaderTest::UnitySceneLoaderTest()
 {
 
@@ -20,7 +21,12 @@ void UnitySceneLoaderTest::Start()
 
 	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
-	mainCam->GetTransform()->SetPosition(9.2, 1.8, -2.5);
+	mainCam->GetTransform()->SetPosition(-20.f, 22.f, 28.f);
+	mainCam->GetTransform()->Rotate(30.07, 150.f, 0.f);
+
+	auto camText = API::CreateTextbox(_scene);
+	camText->GetTransform()->SetPosition(500.f, 100.f, 0.f);
+	
 
 	auto playerTP = API::CreateObject(_scene, "playerTP");
 	//playerTP->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 3.0f, 0.0f });
@@ -39,133 +45,139 @@ void UnitySceneLoaderTest::Start()
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
 
-	meshComp->PlayAnimationUpper("X_idle", true);
-	meshComp->PlayAnimationLower("X_idle", true);
+	auto btn = API::CreateButton(_scene);
+	btn->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
+		LobbyManager::Instance().Test();
+		});
 
-	//auto playerFP = API::CreateObject(_scene, "playerFP");
-	//playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
-	
-	//auto meshCompFP = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//meshCompFP->LoadAlbedoMap("FP_Yellow_A.png");
-	//meshCompFP->PlayAnimation("X_idle", true);
 
-	//auto playerTP = API::CreateObject(_scene, "playerTP");
-	//playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
-	//playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
-	//playerTP->GetTransform()->Translate(10.f, 0.f, 0.f);
+	//meshComp->PlayAnimationUpper("X_idle", true);
+	//meshComp->PlayAnimationLower("X_idle", true);
 
-	// 바닥
-	auto groundFloor = API::CreateObject(_scene, "ground");
-	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
+	////auto playerFP = API::CreateObject(_scene, "playerFP");
+	////playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
+	//
+	////auto meshCompFP = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	////meshCompFP->LoadAlbedoMap("FP_Yellow_A.png");
+	////meshCompFP->PlayAnimation("X_idle", true);
 
-	// 플레이어 collider들을 추가해주는 부분
-	auto playerCollider = playerTP->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
+	////auto playerTP = API::CreateObject(_scene, "playerTP");
+	////playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
+	////playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
+	////playerTP->GetTransform()->Translate(10.f, 0.f, 0.f);
 
-	auto playerTestHead = playerTP->GetGameObjectByNameInChildren("head");
-	playerTestHead->SetParentObject(playerTP);
-	playerTestHead->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.9f, 0.0f });
-	auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
-	playerHeadCollider->SetParentCollider(playerCollider);
+	//// 바닥
+	//auto groundFloor = API::CreateObject(_scene, "ground");
+	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
-	auto plLeftUpperArm = playerTP->GetGameObjectByNameInChildren("upperarm_l");
-	plLeftUpperArm->SetParentObject(playerTP);
-	plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
-	auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
-	LUArmCollider->SetParentCollider(playerCollider);
+	//// 플레이어 collider들을 추가해주는 부분
+	//auto playerCollider = playerTP->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
 
-	auto plLeftForeArm = playerTP->GetGameObjectByNameInChildren("lowerarm_l");
-	plLeftForeArm->SetParentObject(plLeftUpperArm);
-	plLeftForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
-	auto LFArmCollider = plLeftForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
-	LFArmCollider->SetParentCollider(LUArmCollider);
+	//auto playerTestHead = playerTP->GetGameObjectByNameInChildren("head");
+	//playerTestHead->SetParentObject(playerTP);
+	//playerTestHead->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.9f, 0.0f });
+	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
+	//playerHeadCollider->SetParentCollider(playerCollider);
 
-	auto plRightUpperArm = playerTP->GetGameObjectByNameInChildren("upperarm_r");
-	plRightUpperArm->SetParentObject(playerTP);
-	plRightUpperArm->GetTransform()->SetLocalPosition(Vector3{ 0.65f, 0.2f, 0.0f });
-	auto RUArmCollider = plRightUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
-	RUArmCollider->SetParentCollider(playerCollider);
+	//auto plLeftUpperArm = playerTP->GetGameObjectByNameInChildren("upperarm_l");
+	//plLeftUpperArm->SetParentObject(playerTP);
+	//plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
+	//auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
+	//LUArmCollider->SetParentCollider(playerCollider);
 
-	auto plRightForeArm = playerTP->GetGameObjectByNameInChildren("lowerarm_r");
-	plRightForeArm->SetParentObject(plRightUpperArm);
-	plRightForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
-	auto RFArmCollider = plRightForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
-	RFArmCollider->SetParentCollider(RUArmCollider);
+	//auto plLeftForeArm = playerTP->GetGameObjectByNameInChildren("lowerarm_l");
+	//plLeftForeArm->SetParentObject(plLeftUpperArm);
+	//plLeftForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
+	//auto LFArmCollider = plLeftForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
+	//LFArmCollider->SetParentCollider(LUArmCollider);
 
-	auto plLeftThigh = playerTP->GetGameObjectByNameInChildren("thigh_l");
-	plLeftThigh->SetParentObject(playerTP);
-	plLeftThigh->GetTransform()->SetLocalPosition(Vector3{ -0.3f, -0.95f, 0.0f });
-	auto LThighCollider = plLeftThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	LThighCollider->SetParentCollider(playerCollider);
+	//auto plRightUpperArm = playerTP->GetGameObjectByNameInChildren("upperarm_r");
+	//plRightUpperArm->SetParentObject(playerTP);
+	//plRightUpperArm->GetTransform()->SetLocalPosition(Vector3{ 0.65f, 0.2f, 0.0f });
+	//auto RUArmCollider = plRightUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
+	//RUArmCollider->SetParentCollider(playerCollider);
 
-	auto plLeftLowerLeg = playerTP->GetGameObjectByNameInChildren("calf_l");
-	plLeftLowerLeg->SetParentObject(plLeftThigh);
-	plLeftLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
-	auto LLLegCollider = plLeftLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	LLLegCollider->SetParentCollider(LThighCollider);
+	//auto plRightForeArm = playerTP->GetGameObjectByNameInChildren("lowerarm_r");
+	//plRightForeArm->SetParentObject(plRightUpperArm);
+	//plRightForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
+	//auto RFArmCollider = plRightForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
+	//RFArmCollider->SetParentCollider(RUArmCollider);
 
-	auto plLeftFoot = playerTP->GetGameObjectByNameInChildren("foot_l");
-	plLeftFoot->SetParentObject(plLeftLowerLeg);
-	plLeftFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
-	auto LFootCollider = plLeftFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
-	LFootCollider->SetParentCollider(LLLegCollider);
+	//auto plLeftThigh = playerTP->GetGameObjectByNameInChildren("thigh_l");
+	//plLeftThigh->SetParentObject(playerTP);
+	//plLeftThigh->GetTransform()->SetLocalPosition(Vector3{ -0.3f, -0.95f, 0.0f });
+	//auto LThighCollider = plLeftThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
+	//LThighCollider->SetParentCollider(playerCollider);
 
-	auto plRightThigh = playerTP->GetGameObjectByNameInChildren("thigh_r");
-	plRightThigh->SetParentObject(playerTP);
-	plRightThigh->GetTransform()->SetLocalPosition(Vector3{ 0.3f, -0.95f, 0.0f });
-	auto RThighCollider = plRightThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	RThighCollider->SetParentCollider(playerCollider);
+	//auto plLeftLowerLeg = playerTP->GetGameObjectByNameInChildren("calf_l");
+	//plLeftLowerLeg->SetParentObject(plLeftThigh);
+	//plLeftLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
+	//auto LLLegCollider = plLeftLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
+	//LLLegCollider->SetParentCollider(LThighCollider);
 
-	auto plRightLowerLeg = playerTP->GetGameObjectByNameInChildren("calf_r");
-	plRightLowerLeg->SetParentObject(plRightThigh);
-	plRightLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
-	auto RLLegCollider = plRightLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	RLLegCollider->SetParentCollider(RThighCollider);
+	//auto plLeftFoot = playerTP->GetGameObjectByNameInChildren("foot_l");
+	//plLeftFoot->SetParentObject(plLeftLowerLeg);
+	//plLeftFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
+	//auto LFootCollider = plLeftFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
+	//LFootCollider->SetParentCollider(LLLegCollider);
 
-	auto plRightFoot = playerTP->GetGameObjectByNameInChildren("foot_r");
-	plRightFoot->SetParentObject(plRightLowerLeg);
-	plRightFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
-	auto RFootCollider = plRightFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
-	RFootCollider->SetParentCollider(RLLegCollider);
+	//auto plRightThigh = playerTP->GetGameObjectByNameInChildren("thigh_r");
+	//plRightThigh->SetParentObject(playerTP);
+	//plRightThigh->GetTransform()->SetLocalPosition(Vector3{ 0.3f, -0.95f, 0.0f });
+	//auto RThighCollider = plRightThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
+	//RThighCollider->SetParentCollider(playerCollider);
 
-	// 텍스트 오브젝트
-	auto playerPosText = API::CreateTextbox(_scene);
-	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
-	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
+	//auto plRightLowerLeg = playerTP->GetGameObjectByNameInChildren("calf_r");
+	//plRightLowerLeg->SetParentObject(plRightThigh);
+	//plRightLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
+	//auto RLLegCollider = plRightLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
+	//RLLegCollider->SetParentCollider(RThighCollider);
 
-	auto aimText = API::CreateTextbox(_scene);
-	aimText->GetTransform()->SetPosition(Vector3(950.0f, 520.0f, 50.0f));
-	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
-	aimText->GetComponent<HDData::TextUI>()->SetText("");
+	//auto plRightFoot = playerTP->GetGameObjectByNameInChildren("foot_r");
+	//plRightFoot->SetParentObject(plRightLowerLeg);
+	//plRightFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
+	//auto RFootCollider = plRightFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
+	//RFootCollider->SetParentCollider(RLLegCollider);
 
-	// 플레이어에 달린 카메라, 움직임
-	auto headCamObj = API::CreateObject(_scene, "headCamObj");
-	headCamObj->SetParentObject(playerTestHead);
-	headCamObj->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.1f, 0.3f });
-	auto headCam = headCamObj->AddComponent<HDData::Camera>();
+	//// 텍스트 오브젝트
+	//auto playerPosText = API::CreateTextbox(_scene);
+	//playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
+	//playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
 
-	auto playerMove = playerTP->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>());
-	playerTP->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
-	playerMove->SetHeadCam(headCam);
+	//auto aimText = API::CreateTextbox(_scene);
+	//aimText->GetTransform()->SetPosition(Vector3(950.0f, 520.0f, 50.0f));
+	//aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
+	//aimText->GetComponent<HDData::TextUI>()->SetText("");
 
-	// 피격 표시 particle
-	std::vector<HDData::ParticleSphereCollider*> particleContainer;
-	particleContainer.reserve(30);
-	for (int i = 0; i < 30; ++i)
-	{
-		auto particleTest = API::CreateObject(_scene, "particleTest");
-		particleTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 5.f, 0.f);
-		auto particleCollider = particleTest->AddComponent<HDData::ParticleSphereCollider>();
-		particleContainer.push_back(particleCollider);
-	}
-	playerMove->SetHitParticle(particleContainer);
+	//// 플레이어에 달린 카메라, 움직임
+	//auto headCamObj = API::CreateObject(_scene, "headCamObj");
+	//headCamObj->SetParentObject(playerTestHead);
+	//headCamObj->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.1f, 0.3f });
+	//auto headCam = headCamObj->AddComponent<HDData::Camera>();
 
-	// sound 추가
-	HDData::AudioSource* playerSound = playerTP->AddComponent<HDData::AudioSource>();
-	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
+	//auto playerMove = playerTP->AddComponent<PlayerMove>();
+	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>());
+	//playerTP->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
+	//playerMove->SetHeadCam(headCam);
+
+	//// 피격 표시 particle
+	//std::vector<HDData::ParticleSphereCollider*> particleContainer;
+	//particleContainer.reserve(30);
+	//for (int i = 0; i < 30; ++i)
+	//{
+	//	auto particleTest = API::CreateObject(_scene, "particleTest");
+	//	particleTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 5.f, 0.f);
+	//	auto particleCollider = particleTest->AddComponent<HDData::ParticleSphereCollider>();
+	//	particleContainer.push_back(particleCollider);
+	//}
+	//playerMove->SetHitParticle(particleContainer);
+
+	//// sound 추가
+	//HDData::AudioSource* playerSound = playerTP->AddComponent<HDData::AudioSource>();
+	//playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
+	//playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
 
 	playerTP->AddComponent<HDData::Animator>();
 	API::LoadUpperAnimationFromData(playerTP, "upperdata.json");

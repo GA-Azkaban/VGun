@@ -4,6 +4,7 @@ CameraMove::CameraMove()
 	: moveSpeed(5.0f),
 	rotateSpeed(5.0f)
 {
+	
 }
 
 void CameraMove::Update()

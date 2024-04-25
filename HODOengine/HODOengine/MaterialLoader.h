@@ -20,6 +20,7 @@ namespace HDEngine
 			std::string metalicTexture;
 			int color[4];
 			float roughness;
+			float metallic;
 		};
 
 	public:
