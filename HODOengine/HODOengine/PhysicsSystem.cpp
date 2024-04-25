@@ -30,7 +30,7 @@ namespace HDEngine
 		// 버전, 세팅, 단위 등의 정보를 지정해 물리 씬을 생성
 		_physics = PxCreatePhysics(PX_PHYSICS_VERSION, *_foundation, physx::PxTolerancesScale(), true, _pvd);
 
-		//PxInitExtensions(*_physics, _pvd);
+		PxInitExtensions(*_physics, _pvd);
 
 		CreatePhysXScene();
 
@@ -115,7 +115,7 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-		sceneDesc.gravity = physx::PxVec3(0.0f, -98.1f, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -981.0f, 0.0f);
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -258,9 +258,9 @@ namespace HDEngine
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
-				boxRigid->setLinearDamping(0.9f);
-				boxRigid->setAngularDamping(0.9f);
-				physx::PxRigidBodyExt::updateMassAndInertia(*boxRigid, 0.9f);
+				boxRigid->setLinearDamping(0.1f);
+				boxRigid->setAngularDamping(0.1f);
+				//physx::PxRigidBodyExt::updateMassAndInertia(*boxRigid, 0.9f);
 				//boxRigid->setMass(10.0f);
 				if (box->GetColGroup() != 0)
 				{
@@ -419,7 +419,7 @@ namespace HDEngine
 		for (auto& dynamics : _rigidDynamics)
 		{
 			HDData::DynamicCollider* thisCol = static_cast<HDData::DynamicCollider*>(dynamics->userData);
-			HDData::DynamicCollider* parentCol = thisCol->GetParentCollider();
+			HDData::DynamicCollider* parentCol = static_cast<HDData::DynamicCollider*>(thisCol->GetParentCollider());
 			if (parentCol != nullptr)
 				//if (thisCol->GetGameObject()->GetObjectName() == "playerHead")
 			{

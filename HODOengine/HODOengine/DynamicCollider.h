@@ -33,6 +33,7 @@ namespace HDData
 		void Move(Vector3 moveStep, float speed);
 		void RotateY(float rotationAmount);
 		void RotateOnAxis(float rotationAmount, Vector3 axis);
+		void SetColliderRotation(Quaternion rot);
 		void Jump();
 		void Sleep();
 		void Stop();
@@ -51,8 +52,8 @@ namespace HDData
 		void Collide();
 		bool GetIsCollided();
 		physx::PxRigidDynamic* GetPhysXRigid() const;
-		HDData::DynamicCollider* GetParentCollider() const;
-		std::vector<HDData::DynamicCollider*> GetChildColliderVec()const;
+		HDData::Collider* GetParentCollider() const;
+		std::vector<HDData::Collider*> GetChildColliderVec()const;
 
 	private:
 		bool _isJumping;
@@ -61,8 +62,6 @@ namespace HDData
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;
-		HDData::DynamicCollider* _parentCollider;
-		std::vector<HDData::DynamicCollider*> _childColliders;
 	};
 }
 

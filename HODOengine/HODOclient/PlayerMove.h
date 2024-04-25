@@ -78,7 +78,8 @@ private:
 
 	Vector3 _prevCameraPos;
 	Quaternion _prevCameraRot;
-	float _pitchAngle;
+	float _rotAngleX;
+	float _rotAngleY;
 
 	int _particleIndex;
 	float _shootCooldown;

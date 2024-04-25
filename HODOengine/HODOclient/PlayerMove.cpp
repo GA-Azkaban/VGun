@@ -5,7 +5,8 @@ PlayerMove::PlayerMove()
 	: _particleIndex(0),
 	_shootCooldown(0.0f),
 	_shootCount(0),
-	_sprayPattern()
+	_sprayPattern(),
+	_rotAngleX(0.0f), _rotAngleY(0.0f)
 {
 
 }
@@ -14,8 +15,6 @@ void PlayerMove::Start()
 {
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_moveSpeed = 3.0f;
-
-	_pitchAngle = 0.0f;
 
 	_isOnGround = false;
 	_isJumping = true;
@@ -54,6 +53,11 @@ void PlayerMove::Update()
 		_hitParticles[i]->CheckTimer(_deltaTime);
 	}
 
+	if (API::GetMouseDown(MOUSE_LEFT))
+	{
+		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
+	}
+
 	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
 	{
 		ShootGunDdabal();
@@ -62,6 +66,7 @@ void PlayerMove::Update()
 	if (API::GetMouseUp(MOUSE_LEFT))
 	{
 		_shootCount = 0;
+		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.12f, 0.2f));
 	}
 
 	// 마우스에 따른 플레이어 회전 체크
@@ -105,37 +110,83 @@ void PlayerMove::CheckMoveInfo()
 {
 	_moveDirection = 5;
 
-	if (API::GetKeyPressing(DIK_I))
+	if (!_isHeadCam)
 	{
-		_moveDirection = 8;
+		if (API::GetKeyPressing(DIK_I))
+		{
+			_moveDirection = 8;
+		}
+		if (API::GetKeyPressing(DIK_L))
+		{
+			_moveDirection = 6;
+		}
+		if (API::GetKeyPressing(DIK_K))
+		{
+			_moveDirection = 2;
+		}
+		if (API::GetKeyPressing(DIK_J))
+		{
+			_moveDirection = 4;
+		}
+		if (API::GetKeyPressing(DIK_I) && API::GetKeyPressing(DIK_J))
+		{
+			_moveDirection = 7;
+		}
+		if (API::GetKeyPressing(DIK_I) && API::GetKeyPressing(DIK_L))
+		{
+			_moveDirection = 9;
+		}
+		if (API::GetKeyPressing(DIK_J) && API::GetKeyPressing(DIK_K))
+		{
+			_moveDirection = 1;
+		}
+		if (API::GetKeyPressing(DIK_K) && API::GetKeyPressing(DIK_L))
+		{
+			_moveDirection = 3;
+		}
 	}
-	if (API::GetKeyPressing(DIK_L))
+	else
 	{
-		_moveDirection = 6;
+		if (API::GetKeyPressing(DIK_W))
+		{
+			_moveDirection = 8;
+		}
+		if (API::GetKeyPressing(DIK_A))
+		{
+			_moveDirection = 4;
+		}
+		if (API::GetKeyPressing(DIK_S))
+		{
+			_moveDirection = 2;
+		}
+		if (API::GetKeyPressing(DIK_D))
+		{
+			_moveDirection = 6;
+		}
+		if (API::GetKeyPressing(DIK_W) && API::GetKeyPressing(DIK_A))
+		{
+			_moveDirection = 7;
+		}
+		if (API::GetKeyPressing(DIK_W) && API::GetKeyPressing(DIK_D))
+		{
+			_moveDirection = 9;
+		}
+		if (API::GetKeyPressing(DIK_A) && API::GetKeyPressing(DIK_S))
+		{
+			_moveDirection = 1;
+		}
+		if (API::GetKeyPressing(DIK_S) && API::GetKeyPressing(DIK_D))
+		{
+			_moveDirection = 3;
+		}
 	}
-	if (API::GetKeyPressing(DIK_K))
+
+	if (_moveDirection != 5)
 	{
-		_moveDirection = 2;
-	}
-	if (API::GetKeyPressing(DIK_J))
-	{
-		_moveDirection = 4;
-	}
-	if (API::GetKeyPressing(DIK_I) && API::GetKeyPressing(DIK_J))
-	{
-		_moveDirection = 7;
-	}
-	if (API::GetKeyPressing(DIK_I) && API::GetKeyPressing(DIK_L))
-	{
-		_moveDirection = 9;
-	}
-	if (API::GetKeyPressing(DIK_J) && API::GetKeyPressing(DIK_K))
-	{
-		_moveDirection = 1;
-	}
-	if (API::GetKeyPressing(DIK_K) && API::GetKeyPressing(DIK_L))
-	{
-		_moveDirection = 3;
+		if (!_playerAudio->IsSoundPlaying("walk"))
+		{
+			_playerAudio->PlayOnce("walk");
+		}
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
@@ -248,15 +299,16 @@ void PlayerMove::ShootGunDdabal()
 	{
 		return;
 	}
-	++_shootCount;
 
 	// 총기 반동
 	ApplyRecoil();
 
+	++_shootCount;
+
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
 
-	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 2.0f;
+	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 1.0f;
 	Vector3 hitPoint = { 314.0f, 314.0f, 314.0f };
 
 	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
@@ -299,16 +351,19 @@ void PlayerMove::SpawnParticle(Vector3 position)
 
 void PlayerMove::ApplyRecoil()
 {
-	// 고정된 값으로 spray 해주는 버전
-	_playerCollider->GetChildColliderVec()[0]->RotateY(_sprayPattern[_shootCount].first);
-	Pitch(_sprayPattern[_shootCount].second);
+	//// 고정된 값으로 spray 해주는 버전
+	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateY(_sprayPattern[_shootCount].first);
+	//Pitch(_sprayPattern[_shootCount].second);
+	_rotAngleY += _sprayPattern[_shootCount].first;
+	_rotAngleX += _sprayPattern[_shootCount].second * 0.01f;
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
 {
 	Vector3 pos = GetTransform()->GetPosition();
 	std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
-	_playerInfoText->SetText(posText);
+	//_playerInfoText->SetText(posText);
+	_playerInfoText->SetText("");
 }
 
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
@@ -378,7 +433,7 @@ void PlayerMove::Jump()
 {
 	//CheckIsOnGround();
 
-	if ((!_isJumping) && (_isOnGround))
+	//if ((!_isJumping) && (_isOnGround))
 		//if (!_isJumping)
 	{
 		// 점프
@@ -580,6 +635,8 @@ void PlayerMove::Pitch(float rotationValue)
 
 		cameraTransform->SetLocalRotation(rotToX);
 	}*/
+
+	/*
 	HDData::Transform* cameraTransform = _headCam->GetTransform();
 
 	float rotAngleX = DirectX::XMConvertToDegrees(cameraTransform->GetLocalRotation().ToEuler().x);
@@ -615,6 +672,33 @@ void PlayerMove::Pitch(float rotationValue)
 	{
 		cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
 	}
+	*/
+
+	HDData::Transform* headTrasnform = _headCam->GetGameObject()->GetParentGameObject()->GetTransform();
+
+	float rotAngleX = DirectX::XMConvertToDegrees(headTrasnform->GetLocalRotation().ToEuler().x);
+	if (rotAngleX >= 79.0f)
+	{
+		if (rotationValue >= -0.0f)
+		{
+			return;
+		}
+	}
+	else if (rotAngleX <= -79.0f)
+	{
+		if (rotationValue <= 0.0f)
+		{
+			return;
+		}
+	}
+
+	Vector3 rotAxis = headTrasnform->GetRight();
+	rotAxis.y = 0.0f;
+	//Quaternion rotVal = XMQuaternionRotationAxis(rotAxis, rotationValue);
+	//Quaternion newRot = XMQuaternionMultiply(headTrasnform->GetRotation(), rotVal);
+	//headTrasnform->Rotate(rotVal);
+	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
+
 
 }
 
@@ -649,9 +733,37 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
-	// RotateY
-	_playerCollider->RotateY(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
+	//// RotateY
+	//_playerCollider->RotateY(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
 
-	// Pitch in closed angle
-	Pitch(mouseDelta.y * 0.1f);
+	//// Pitch in closed angle
+	//Pitch(mouseDelta.y * 0.1f);
+
+	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.002f);
+	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.002f);
+
+
+	//if (_rotAngleY >= 3.14159265358979f)
+	//{
+	//	_rotAngleY -= -3.14159265358979f;
+	//}
+	//if (_rotAngleY <= -3.14159265358979f)
+	//{
+	//	_rotAngleY += 3.14159265358979f;
+	//}
+
+	if (_rotAngleX >= 1.5f)
+	{
+		_rotAngleX = 1.5f;
+	}
+	if (_rotAngleX <= -1.5f)
+	{
+		_rotAngleX = -1.5f;
+	}
+
+	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
+	_playerCollider->SetColliderRotation(rot);
+
+	Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
 }

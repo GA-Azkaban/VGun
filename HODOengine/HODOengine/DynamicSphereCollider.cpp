@@ -10,7 +10,7 @@ HDData::DynamicSphereCollider::DynamicSphereCollider()
 }
 
 HDData::DynamicSphereCollider::DynamicSphereCollider(float rad, bool isPlayer)
-	: _radius(0.5f), _isPlayer(isPlayer)
+	: _radius(rad), _isPlayer(isPlayer)
 {
 	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 	_debugStruct = _sphereDebugStruct;
@@ -52,7 +52,22 @@ void HDData::DynamicSphereCollider::DrawDebug()
 	colWorld *= GetTransformMatrix();
 	colWorld *= GetTransform()->GetWorldTM();
 	_debugStruct->worldTM = colWorld;
-	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
+	//_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
+	_debugStruct->color = { 0.0f,1.0f,0.0f,0.0f };
 
 	_sphereDebugStruct->diameter = _radius * 2;
+
+	//Transform* transform = GetTransform();
+	//Vector3 scale = transform->GetScale();
+	//Vector3 pos = transform->GetPosition();
+
+	//Matrix rotMat = XMMatrixRotationQuaternion(transform->GetRotation());
+	//Matrix scaleMat = { scale.x, 0, 0, 0,  0, scale.y, 0, 0,  0, 0, scale.z, 0,  0, 0, 0, 1 };
+	//Matrix transformMat = rotMat * scaleMat;
+	//transformMat.m[3][0] = pos.x;
+	//transformMat.m[3][1] = pos.y;
+	//transformMat.m[3][2] = pos.z;
+	//transformMat.m[3][3] = 1;
+
+	//_debugStruct->worldTM = transformMat;
 }
