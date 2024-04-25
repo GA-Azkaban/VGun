@@ -3,6 +3,7 @@
 #include "FSMtestScript.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
+#include "FPAniScript.h"
 
 
 UnitySceneLoaderTest::UnitySceneLoaderTest()
@@ -24,47 +25,93 @@ void UnitySceneLoaderTest::Start()
 	mainCam->GetTransform()->SetPosition(-20.f, 22.f, 28.f);
 	mainCam->GetTransform()->Rotate(30.07, 150.f, 0.f);
 
-	auto camText = API::CreateTextbox(_scene);
-	camText->GetTransform()->SetPosition(500.f, 100.f, 0.f);
-	
+	auto playerFP = API::CreateObject(_scene);
+	playerFP->GetTransform()->SetPosition(Vector3{ 0, 10, 0 });
+	playerFP->LoadFBXFile("SKM_FP_HG_idle");
 
-	auto playerTP = API::CreateObject(_scene, "playerTP");
-	//playerTP->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 3.0f, 0.0f });
-	playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
-	playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	auto meshComp = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	HDEngine::MaterialDesc desc;
-	desc.materialName = "TP_Red";
-	desc.albedo = "TP_Red_B.png";
+	desc.materialName = "FP_Red";
+	desc.albedo = "FP_Red_B.png";
 
 	HDData::Material* newMat = API::CreateMaterial(desc);
 	meshComp->LoadMaterial(newMat, 0);
-	meshComp->LoadMaterial(newMat, 1);
-	meshComp->LoadMaterial(newMat, 2);
-	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);
 
-	auto btn = API::CreateButton(_scene);
-	btn->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
-		LobbyManager::Instance().Test();
-		});
+	playerFP->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(playerFP, "fp_data.json");
+
+	playerFP->AddComponent<FPAniScript>();
+
+	auto hand = playerFP->GetGameObjectByNameInChildren("ik_hand_r");
+	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-16.f, -5.0f, -2.f);
+	weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
+	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	weaponComp->LoadMesh("SM_AR_01.fbx");
+	HDEngine::MaterialDesc weaponMatDesc;
+	weaponMatDesc.materialName = "M_WEP_Basic_039";
+	weaponMatDesc.albedo = "T_WEP_Basic_039_D.png";
+	weaponMatDesc.roughness = "T_WEP_Basic_R.png";
+	weaponMatDesc.metallicValue = 0.15;
+	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
+	HDEngine::MaterialDesc weaponMatDesc2;
+	weaponMatDesc2.materialName = "M_WEP_Camo_001";
+	weaponMatDesc2.albedo = "T_WEP_Camo_001_D.png";
+	weaponMatDesc2.normalMap = "T_WEP_Camo_N.png";
+	weaponMatDesc2.roughness = "T_WEP_Camo_001_R.png";
+	weaponMatDesc2.metallicValue = 0.1f;
+	HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
+	HDEngine::MaterialDesc weaponMatDesc3;
+	weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
+	weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
+	weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
+	weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
+	weaponMatDesc3.metallicValue = 0.1f;
+	HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
+	weaponComp->LoadMaterial(weaponMat1, 0);
+	weaponComp->LoadMaterial(weaponMat2, 1);
+	weaponComp->LoadMaterial(weaponMat2, 3);
+	weaponComp->LoadMaterial(weaponMat2, 5);
+	weaponComp->LoadMaterial(weaponMat3, 2);
+	weaponComp->LoadMaterial(weaponMat3, 4);
+
+	//auto playerTP = API::CreateObject(_scene, "playerTP");
+	//playerTP->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, -3.0f, 0.0f });
+	//playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
+	//playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
+
+	//auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//HDEngine::MaterialDesc desc;
+	//desc.materialName = "TP_Red";
+	//desc.albedo = "TP_Red_B.png";
+
+	//HDData::Material* newMat = API::CreateMaterial(desc);
+	//meshComp->LoadMaterial(newMat, 0);
+	//meshComp->LoadMaterial(newMat, 1);
+	//meshComp->LoadMaterial(newMat, 2);
+	//meshComp->LoadMaterial(newMat, 3);
+	//meshComp->LoadMaterial(newMat, 4);
+
+	//auto btn = API::CreateButton(_scene);
+	//btn->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
+	//	LobbyManager::Instance().Test();
+	//	});
 
 
 	//meshComp->PlayAnimationUpper("X_idle", true);
 	//meshComp->PlayAnimationLower("X_idle", true);
 
-	////auto playerFP = API::CreateObject(_scene, "playerFP");
-	////playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
-	//
-	////auto meshCompFP = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	////meshCompFP->LoadAlbedoMap("FP_Yellow_A.png");
-	////meshCompFP->PlayAnimation("X_idle", true);
+	//auto playerFP = API::CreateObject(_scene, "playerFP");
+	//playerFP->LoadNodeFromFBXFile("SKM_FP_X_idle.fbx");
+	
+	//auto meshCompFP = playerFP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//meshCompFP->LoadAlbedoMap("FP_Yellow_A.png");
+	//meshCompFP->PlayAnimation("X_idle", true);
 
-	////auto playerTP = API::CreateObject(_scene, "playerTP");
-	////playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
-	////playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
-	////playerTP->GetTransform()->Translate(10.f, 0.f, 0.f);
+	//auto playerTP = API::CreateObject(_scene, "playerTP");
+	//playerTP->GetTransform()->Translate(5.f, 3.f, 0.f);
+	//playerTP->LoadFBXFile("SKM_TP_X_idle.fbx");
+	//playerTP->GetTransform()->Translate(10.f, 0.f, 0.f);
 
 	//// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
@@ -177,13 +224,13 @@ void UnitySceneLoaderTest::Start()
 	//// sound 추가
 	//HDData::AudioSource* playerSound = playerTP->AddComponent<HDData::AudioSource>();
 	//playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
-	//playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
+	//playerSound->AddAudio("hit", "./Resourceds/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
 
-	playerTP->AddComponent<HDData::Animator>();
-	API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
-	API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
+	//playerTP->AddComponent<HDData::Animator>();
+	//API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
+	//API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
 
-	playerTP->AddComponent<FSMtestScript>();
+	//playerTP->AddComponent<FSMtestScript>();
 
 	/*auto meshComp = playerTP->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAlbedoMap("TP_Red_B.png");*/

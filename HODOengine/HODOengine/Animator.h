@@ -4,6 +4,7 @@
 #include "AnimationController.h"
 #include "UpperAnimator.h"
 #include "LowerAnimator.h"
+#include "AllAnimator.h"
 
 namespace HDData
 {
@@ -18,12 +19,15 @@ namespace HDData
 		virtual void Update() override;
 		void SetUpperAnimationController(AnimationController* controller);
 		void SetLowerAnimationController(AnimationController* controller);
+		void SetAllAnimationController(AnimationController* controller);
 		UpperAnimator* GetUpperAC();
 		LowerAnimator* GetLowerAC();
+		AllAnimator* GetAllAC();
 
 	private:
 		UpperAnimator* _upper;
 		LowerAnimator* _lower;
+		AllAnimator* _all;
 	};
 
 }
