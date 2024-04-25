@@ -1,4 +1,4 @@
-#include "Light.h"
+﻿#include "Light.h"
 #include "Camera.h"
 #include "ShadowMapPass.h"
 #include <exception>
@@ -32,7 +32,7 @@ namespace RocketCore::Graphics
 		Camera* mainCamera = Camera::GetMainCamera();
 		XMMATRIX invView = XMMatrixInverse(nullptr, mainCamera->GetViewMatrix());
 
-		static float const far_factor = 3.5f;
+		static float const far_factor = 1.5f;
 		static float const light_distance_factor = 1.0f;
 		static float const radius = 30.0f;
 
@@ -41,8 +41,8 @@ namespace RocketCore::Graphics
 		Vector3 cameraPos = Camera::GetMainCamera()->GetPosition();
 		Vector3 cameraForward = Camera::GetMainCamera()->GetForward();
 		
-		frustum_center.x += std::ceil(cameraPos.x);
-		frustum_center.z += std::ceil(cameraPos.z);
+		frustum_center.x += (cameraPos.x);
+		frustum_center.z += (cameraPos.z);
 
 		frustum_center.x += cameraForward.x * radius;
 		frustum_center.z += cameraForward.z * radius;
@@ -63,6 +63,18 @@ namespace RocketCore::Graphics
 
 		Matrix P = XMMatrixOrthographicOffCenterLH(l, r, b, t, n, f);
 		
+		Matrix VP = V * P;
+		Vector3 shadow_origin(0, 0, 0);
+		shadow_origin = Vector3::Transform(shadow_origin, VP);
+		shadow_origin *= (500.0f / 2.0f);
+
+		Vector3 rounded_origin = XMVectorRound(shadow_origin);
+		Vector3 rounded_offset = rounded_origin - shadow_origin;
+		rounded_offset *= (2.0f / 500.0f);
+		rounded_offset.z = 0.0f;
+		P.m[3][0] += rounded_offset.x;
+		P.m[3][1] += rounded_offset.y;
+
 		_lightView = V;
 		_lightProj = P;
 	}
