@@ -179,6 +179,9 @@
     <ClCompile Include="Animator.cpp">
       <Filter>05_Component\Animation\Animator\Base</Filter>
     </ClCompile>
+    <ClCompile Include="AllAnimator.cpp">
+      <Filter>05_Component\Animation\Animator\All</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -395,6 +398,9 @@
     <ClInclude Include="Animator.h">
       <Filter>05_Component\Animation\Animator\Base</Filter>
     </ClInclude>
+    <ClInclude Include="AllAnimator.h">
+      <Filter>05_Component\Animation\Animator\All</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -596,6 +602,9 @@
     </Filter>
     <Filter Include="05_Component\Animation\Animator\Base">
       <UniqueIdentifier>{ab390f21-497f-42f2-ae64-81460e8bd14e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Animation\Animator\All">
+      <UniqueIdentifier>{28d27115-eb4f-48cf-b5a0-ebb7a7ca5fa4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

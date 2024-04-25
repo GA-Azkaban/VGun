@@ -17,7 +17,8 @@ float ShadowFactor(float4 worldPos, float nDotL)
 	projCoords.y = 1.0 - projCoords.y;
 
 	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
-
+    //texelSize *= 1.2f;
+	
 	float shadow = 0;
 	float bias = 0.001f;
     //float bias = max(0.00005 * (1.0 - nDotL), 0.000005f);

@@ -256,6 +256,12 @@ namespace API
 			animator->SetLowerAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
 		}
 
+		HODO_API void LoadFPAnimationFromData(HDData::GameObject* gameobject, std::string data)
+		{
+			auto animator = gameobject->GetComponent<HDData::Animator>();
+			animator->SetAllAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
+		}
+
 		HODO_API HDData::Camera* GetMainCamera()
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
@@ -294,6 +300,7 @@ namespace API
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 	}
+
 
 
 }

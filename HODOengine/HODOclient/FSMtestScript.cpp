@@ -14,12 +14,12 @@ void FSMtestScript::Start()
 
 void FSMtestScript::Update()
 {
-	if (API::GetKeyPressing(DIK_W))
+	if (API::GetKeyPressing(DIK_I))
 	{
 		_animator->GetUpperAC()->SetBool("isRun", true);
 		_animator->GetLowerAC()->SetBool("isRun", true);
 	}
-	if (API::GetKeyUp(DIK_W))
+	if (API::GetKeyUp(DIK_I))
 	{
 		_animator->GetUpperAC()->SetBool("isRun", false);
 		_animator->GetLowerAC()->SetBool("isRun", false);

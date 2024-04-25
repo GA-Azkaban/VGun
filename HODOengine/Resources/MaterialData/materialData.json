@@ -218,7 +218,7 @@
         255
     ],
     "roughness": 0.3709999918937683,
-    "metalic": 0.0
+    "metalic": 0.017999999225139619
 },
 {
     "name": "M_battleship_base",
@@ -231,7 +231,7 @@
         255
     ],
     "roughness": 0.3709999918937683,
-    "metalic": 0.0
+    "metalic": 0.6729999780654907
 },
 {
     "name": "M_bullets",
@@ -257,7 +257,7 @@
         255
     ],
     "roughness": 0.5,
-    "metalic": 0.0
+    "metalic": 0.8539999723434448
 },
 {
     "name": "M_chainlink",
@@ -270,7 +270,7 @@
         255
     ],
     "roughness": 0.5,
-    "metalic": 0.0
+    "metalic": 0.8539999723434448
 },
 {
     "name": "M_cliffs",
@@ -426,7 +426,7 @@
         255
     ],
     "roughness": 0.45499998331069949,
-    "metalic": 0.0
+    "metalic": 0.6079999804496765
 },
 {
     "name": "M_grid_transparent",
@@ -439,7 +439,7 @@
         255
     ],
     "roughness": 0.5,
-    "metalic": 0.0
+    "metalic": 0.5379999876022339
 },
 {
     "name": "M_ground_sandy",
@@ -530,7 +530,7 @@
         255
     ],
     "roughness": 0.3579999804496765,
-    "metalic": 0.0
+    "metalic": 0.531000018119812
 },
 {
     "name": "M_metallic_rough",
@@ -543,7 +543,7 @@
         255
     ],
     "roughness": 0.3840000033378601,
-    "metalic": 0.0
+    "metalic": 0.6470000147819519
 },
 {
     "name": "M_metallic_rough_02",
@@ -556,7 +556,7 @@
         255
     ],
     "roughness": 0.3840000033378601,
-    "metalic": 0.0
+    "metalic": 0.13300000131130219
 },
 {
     "name": "M_metallic_shiny",
@@ -569,7 +569,7 @@
         255
     ],
     "roughness": 0.28600001335144045,
-    "metalic": 0.0
+    "metalic": 0.9229999780654907
 },
 {
     "name": "M_military_green 1",
@@ -816,7 +816,7 @@
         13
     ],
     "roughness": 0.0,
-    "metalic": 0.0
+    "metalic": 0.42800000309944155
 },
 {
     "name": "M_wooden 1",
@@ -1369,9 +1369,9 @@
     "mainTex": "",
     "metalicTex": "",
     "color": [
-        18,
-        18,
-        18,
+        75,
+        75,
+        75,
         255
     ],
     "roughness": 0.5527864098548889,
