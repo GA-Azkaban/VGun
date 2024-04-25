@@ -33,7 +33,11 @@ float4 main(VertexToPixel input) : SV_TARGET
 		}
 	}
 	prefilteredColor = prefilteredColor / totalWeight;
-    prefilteredColor *= 0.8f;
+	
+    prefilteredColor.x *= 1.05f; 
+    prefilteredColor.y *= 0.965f; 
+    prefilteredColor.z *= 1.045f; 
 	
 	return float4(prefilteredColor, 1.0f);
+	//return float4(1.0f, 1.0f, 1.0f, 1.0f);
 }

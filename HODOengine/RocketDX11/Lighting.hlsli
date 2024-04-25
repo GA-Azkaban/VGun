@@ -6,7 +6,7 @@
 
 Texture2D ShadowMap : register(t8);
 
-float ShadowFactor(float4 worldPos)
+float ShadowFactor(float4 worldPos, float nDotL)
 {
 	float4 lightSpacePosition = mul(worldPos, lightViewProjection);
 	float3 projCoords = lightSpacePosition.xyz / lightSpacePosition.w;
@@ -19,18 +19,19 @@ float ShadowFactor(float4 worldPos)
 	float2 texelSize = float2(1, 1) / float2(screenWidth, screenHeight);
 
 	float shadow = 0;
-	float bias = 0.0001f;
+	float bias = 0.001f;
+    //float bias = max(0.00005 * (1.0 - nDotL), 0.000005f);
 
-	for (int x = -1; x < 2; ++x)
+	for (int x = -2; x < 3; ++x)
 	{
-		for (int y = -1; y < 2; ++y)
+		for (int y = -2; y < 3; ++y)
 		{
 			shadow += ShadowMap.SampleCmpLevelZero(ShadowSampler,
 				projCoords.xy + float2(x, y) * texelSize, currentDepth - bias).r;
 		}
 	}
 
-	shadow /= 9.0f;
+	shadow /= 25.0f;
 	return shadow;
 }
 

@@ -27,7 +27,8 @@ namespace HDData
 		dirLightComp->SetDirection(Vector4(-1, -3, -2, 0));
 		//dirLightComp->SetColor(Vector4(3.0f, 3.0f, 3.0f, 1.0f));
 		//dirLightComp->SetColor(Vector4(2.91f, 2.776f, 2.516f, 1.0f));
-		dirLightComp->SetColor(Vector4(4.365f, 4.164f, 3.774f, 1.0f));
+		dirLightComp->SetColor(Vector4(1.0f, 244/255.0f, 214/255.0f, 1.0f));
+		//dirLightComp->SetColor(Vector4(4.365f, 4.164f, 3.774f, 1.0f));
 		dirLightComp->SetLightType(Light::DirectionalLight);
 	}
 

@@ -653,6 +653,17 @@ namespace RocketCore::Graphics
 				{
 					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 					{
+						if (m_previousUpperAnimation->animName != m_previousLowerAnimation->animName)
+						{
+							if (node->name == "root" || node->name == "pelvis")
+							{
+								//if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+								//{
+								prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+								break;
+								//}
+							}
+						}
 						prevAnim = m_previousUpperAnimation->nodeAnimations[i];
 						break;
 					}
@@ -665,6 +676,19 @@ namespace RocketCore::Graphics
 				{
 					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 					{
+						if (m_currentUpperAnimation->animName != m_currentLowerAnimation->animName) 
+						{
+							if (node->name == "root" || node->name == "pelvis")
+							{
+								if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+								{
+									currAnim = m_currentLowerAnimation->nodeAnimations[i];
+									blendDuration = m_currentUpperAnimation->blendDuration;
+									break;
+								}
+							}
+						}
+						
 						currAnim = m_currentUpperAnimation->nodeAnimations[i];
 						blendDuration = m_currentUpperAnimation->blendDuration;
 						break;
