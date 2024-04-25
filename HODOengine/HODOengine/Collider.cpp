@@ -8,7 +8,8 @@ namespace HDData
 	Collider::Collider()
 		: _positionOffset(Vector3::Zero)
 , _rotationOffset(Quaternion::Identity)
-, _scaleOffset(Vector3::One)
+, _scaleOffset(Vector3::One),
+_parentCollider(nullptr)
 	{
 		HDEngine::RenderSystem::Instance().PushCollider(this);
 	}
@@ -99,7 +100,16 @@ namespace HDData
 
 	Matrix Collider::GetTransformMatrix()
 	{
-		return Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
+		//Matrix result = Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
+		Matrix result = Matrix::Identity * GetTranslateMatrix()  * GetRotationMatrix() *GetScaleMatrix();
+
+		if (_parentCollider != nullptr)
+		{
+			result = _parentCollider->GetTransformMatrix() * result;
+		}
+
+		return result;
+		//return Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
 	}
 
 	void Collider::Setflag(int flag)

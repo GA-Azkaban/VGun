@@ -30,7 +30,7 @@ namespace HDEngine
 		// 버전, 세팅, 단위 등의 정보를 지정해 물리 씬을 생성
 		_physics = PxCreatePhysics(PX_PHYSICS_VERSION, *_foundation, physx::PxTolerancesScale(), true, _pvd);
 
-		//PxInitExtensions(*_physics, _pvd);
+		PxInitExtensions(*_physics, _pvd);
 
 		CreatePhysXScene();
 
@@ -419,7 +419,7 @@ namespace HDEngine
 		for (auto& dynamics : _rigidDynamics)
 		{
 			HDData::DynamicCollider* thisCol = static_cast<HDData::DynamicCollider*>(dynamics->userData);
-			HDData::DynamicCollider* parentCol = thisCol->GetParentCollider();
+			HDData::DynamicCollider* parentCol = static_cast<HDData::DynamicCollider*>(thisCol->GetParentCollider());
 			if (parentCol != nullptr)
 				//if (thisCol->GetGameObject()->GetObjectName() == "playerHead")
 			{

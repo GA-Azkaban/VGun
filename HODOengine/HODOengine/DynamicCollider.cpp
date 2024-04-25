@@ -5,7 +5,6 @@
 #include "../include/physX/PxPhysicsAPI.h"
 
 HDData::DynamicCollider::DynamicCollider()
-	:_parentCollider(nullptr)
 {
 
 }
@@ -20,6 +19,10 @@ void HDData::DynamicCollider::LockPlayerRotation()
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->LockPlayerRotation();
+	}
 }
 
 void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
@@ -45,7 +48,7 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 	for (auto& child : _childColliders)
 	{
-		child->Move(moveStep, speed);
+		dynamic_cast<HDData::DynamicCollider*>(child)->LockPlayerRotation();
 	}
 }
 
@@ -61,7 +64,7 @@ void HDData::DynamicCollider::RotateY(float rotationAmount)
 
 	for (auto& child : _childColliders)
 	{
-		child->RotateY(rotationAmount);
+		dynamic_cast<HDData::DynamicCollider*>(child)->RotateY(rotationAmount);
 	}
 }
 
@@ -72,6 +75,17 @@ void HDData::DynamicCollider::RotateOnAxis(float rotationAmount, Vector3 axis)
 	physx::PxQuat newRot = currentTransform.q * physx::PxQuat(physx::PxPi * rotationAmount, axisX);
 
 	_physXRigid->setGlobalPose(physx::PxTransform(currentTransform.p, newRot));
+}
+
+void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
+{
+	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
+	_physXRigid->setGlobalPose(physx::PxTransform(currentTransform.p, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->SetColliderRotation(rot);
+	}
 }
 
 void HDData::DynamicCollider::Jump()
@@ -131,12 +145,12 @@ physx::PxRigidDynamic* HDData::DynamicCollider::GetPhysXRigid() const
 	return _physXRigid;
 }
 
-HDData::DynamicCollider* HDData::DynamicCollider::GetParentCollider() const
+HDData::Collider* HDData::DynamicCollider::GetParentCollider() const
 {
 	return _parentCollider;
 }
 
-std::vector<HDData::DynamicCollider*> HDData::DynamicCollider::GetChildColliderVec() const
+std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() const
 {
 	return _childColliders;
 }

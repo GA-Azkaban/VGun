@@ -5,7 +5,8 @@ PlayerMove::PlayerMove()
 	: _particleIndex(0),
 	_shootCooldown(0.0f),
 	_shootCount(0),
-	_sprayPattern()
+	_sprayPattern(),
+	_rotAngleX(0.0f), _rotAngleY(0.0f)
 {
 
 }
@@ -14,8 +15,6 @@ void PlayerMove::Start()
 {
 	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_moveSpeed = 3.0f;
-
-	_pitchAngle = 0.0f;
 
 	_isOnGround = false;
 	_isJumping = true;
@@ -300,7 +299,7 @@ void PlayerMove::SpawnParticle(Vector3 position)
 void PlayerMove::ApplyRecoil()
 {
 	// 고정된 값으로 spray 해주는 버전
-	_playerCollider->GetChildColliderVec()[0]->RotateY(_sprayPattern[_shootCount].first);
+	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateY(_sprayPattern[_shootCount].first);
 	Pitch(_sprayPattern[_shootCount].second);
 }
 
@@ -580,6 +579,8 @@ void PlayerMove::Pitch(float rotationValue)
 
 		cameraTransform->SetLocalRotation(rotToX);
 	}*/
+
+	/*
 	HDData::Transform* cameraTransform = _headCam->GetTransform();
 
 	float rotAngleX = DirectX::XMConvertToDegrees(cameraTransform->GetLocalRotation().ToEuler().x);
@@ -615,6 +616,33 @@ void PlayerMove::Pitch(float rotationValue)
 	{
 		cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
 	}
+	*/
+
+	HDData::Transform* headTrasnform = _headCam->GetGameObject()->GetParentGameObject()->GetTransform();
+
+	float rotAngleX = DirectX::XMConvertToDegrees(headTrasnform->GetLocalRotation().ToEuler().x);
+	if (rotAngleX >= 79.0f)
+	{
+		if (rotationValue >= -0.0f)
+		{
+			return;
+		}
+	}
+	else if (rotAngleX <= -79.0f)
+	{
+		if (rotationValue <= 0.0f)
+		{
+			return;
+		}
+	}
+
+	Vector3 rotAxis = headTrasnform->GetRight();
+	rotAxis.y = 0.0f;
+	//Quaternion rotVal = XMQuaternionRotationAxis(rotAxis, rotationValue);
+	//Quaternion newRot = XMQuaternionMultiply(headTrasnform->GetRotation(), rotVal);
+	//headTrasnform->Rotate(rotVal);
+	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
+
 
 }
 
@@ -649,9 +677,35 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
-	// RotateY
-	_playerCollider->RotateY(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
+	//// RotateY
+	//_playerCollider->RotateY(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
 
-	// Pitch in closed angle
-	Pitch(mouseDelta.y * 0.1f);
+	//// Pitch in closed angle
+	//Pitch(mouseDelta.y * 0.1f);
+
+	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.002f);
+	if (_rotAngleY >= 360.0f)
+	{
+		_rotAngleY -= 360.0f;
+	}
+	if (_rotAngleY <= -360.0f)
+	{
+		_rotAngleY += 360.0f;
+	}
+
+	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.002f);
+	if (_rotAngleX >= 60.0f)
+	{
+		_rotAngleX = 60.0f;
+	}
+	if (_rotAngleX <= -60.0f)
+	{
+		_rotAngleX = -60.0f;
+	}
+
+	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
+	_playerCollider->SetColliderRotation(rot);
+
+	Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
 }
