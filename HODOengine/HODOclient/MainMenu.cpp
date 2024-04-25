@@ -41,8 +41,6 @@ void MainMenuScene::MainMenu()
 	//auto audio = bgmPlayer->AddComponent<HDData::AudioSource>();
 	//audio->AddAudio();
 
-
-
 	HDData::GameObject* mainmenuCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
 	mainmenuCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
