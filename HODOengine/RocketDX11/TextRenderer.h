@@ -21,6 +21,8 @@ namespace RocketCore::Graphics
 
 		virtual void SetText(const std::string& str) override;
 
+		virtual void SetFont(const std::string& str) override;
+
 		virtual void SetFloatValue(const float value) override;
 
 		virtual void SetintValue(const int value) override;

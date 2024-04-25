@@ -89,7 +89,7 @@ void MainMenuScene::MainMenu()
 
 	// room setting
 	HDData::GameObject* setRoomCanvas = API::CreateImageBox(_scene, "lobbyCanvas", roomMakeBtn);
-	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetImage("green.png");
+	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
 	setRoomCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.f);
 	setRoomCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.57f);
 	setRoomCanvas->SetSelfActive(false);
@@ -98,7 +98,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* roomNameTextLabel = API::CreateTextbox(_scene,"reoomNameTextLabel", setRoomCanvas);
 	roomNameTextLabel->GetTransform()->SetPosition(710.0f, 240.0f, 0.f);
 	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetText("RoomName");
-	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 
 	HDData::GameObject* roomNameTextbox = API::CreateTextInputBox(_scene, "roomNameTextBox", setRoomCanvas);
@@ -112,12 +112,12 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* privateRoomTextLabel = API::CreateTextbox(_scene, "privateRoomTextLabel", setRoomCanvas);
 	privateRoomTextLabel->GetTransform()->SetPosition(710.0f, 320.0f, 0.f);
 	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetText("privateRoom");
-	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Black);
+	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	privateRoomTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 
 	HDData::GameObject* privateCheckBox = API::CreateButton(_scene, "privateCheckBox", setRoomCanvas);
 	privateCheckBox->GetComponent<HDData::Button>()->SetImage("checkbox_background.png");
-	privateCheckBox->GetTransform()->SetPosition(1170.0f, 320.0f, 0.0f);
+	privateCheckBox->GetTransform()->SetPosition(1300.0f, 320.0f, 0.0f);
 	privateCheckBox->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
 
 	HDData::GameObject* privateCheck = API::CreateImageBox(_scene, "privateCheck", setRoomCanvas);
@@ -172,9 +172,12 @@ void MainMenuScene::MainMenu()
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	// Training room -> scene change
-	HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
-	trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
-	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("exit_btn1.png");
+	//HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
+	//trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
+	//trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("exit_btn1.png");
+
+	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", mainControlObject);
+	trainingText->GetComponent<HDData::TextUI>()->SetFont("KRAFTON_FontIncludeKR_40.spritefont");
 
 	// Exit button
 	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);

@@ -1656,4 +1656,12 @@ namespace RocketCore::Graphics
 		return name;
 	}
 
+	DirectX::SpriteFont* ResourceManager::SetFont(const std::string& str)
+	{
+		std::wstring wstr(str.begin(), str.end());
+		const wchar_t* wchars = wstr.c_str();
+
+		return _defaultFont = new DirectX::SpriteFont(_device.Get(), wchars);
+	}
+
 }

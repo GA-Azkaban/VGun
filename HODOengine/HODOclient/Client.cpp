@@ -24,12 +24,12 @@ void Client::Initialize()
 	//TestScene test;
 	//test.Start();
 
-	LoginSceneView login;
-	login.Initialize();
+	//LoginSceneView login;
+	//login.Initialize();
 
-	//MainMenuScene menu;
-	//menu.Initalize();
-	//API::LoadSceneByName("MainMenu");
+	MainMenuScene menu;
+	menu.Initalize();
+	API::LoadSceneByName("MainMenu");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -40,5 +40,5 @@ void Client::Initialize()
 	//B b;
 	//b.Initialize();
 
-	API::LoadSceneByName("MainLobby");
+	//API::LoadSceneByName("MainLobby");
 }

@@ -27,6 +27,11 @@ namespace HDData
 		_textUI->SetWorldSpace();
 	}
 
+	void TextUI::SetFont(const std::string& str)
+	{
+		_textUI->SetFont(str);
+	}
+
 	void TextUI::SetColor(DirectX::FXMVECTOR color)
 	{
 		_textUI->SetColor(color);
