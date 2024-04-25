@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -19,8 +19,8 @@ void Client::Initialize()
 {
 	//NetworkManager::Instance();
 
-	//TestScene test;
-	//test.Start();
+	TestScene test;
+	test.Start();
 
 	//LoginSceneView login;
 	//login.Initialize();
@@ -28,8 +28,8 @@ void Client::Initialize()
 	//MainMenuScene menu;
 	//menu.Initalize();
 
-	UnitySceneLoaderTest unity;
-	unity.Start();
+	//UnitySceneLoaderTest unity;
+	//unity.Start();
 
 	/*AnimationLoaderTest loader;
 	loader.Start();*/

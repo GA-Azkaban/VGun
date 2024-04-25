@@ -238,7 +238,7 @@ namespace HDData
 		{
 			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "Armature", this);
 			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
-			Node* root = FindNodeByName(rendererNode, "root");
+			Node* root = FindNodeByName(rendererNode, "root");			
 			if (root != nullptr)
 			{
 				ProcessNode(root, newObject);
@@ -270,6 +270,7 @@ namespace HDData
 		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), node->name, parentObject);
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
 		node->nodeTransform = newObject->GetTransform()->_transform;
+		//newObject->AddComponent<StaticBoxCollider>();
 		
 		for (int i = 0; i < node->children.size(); ++i)
 		{
