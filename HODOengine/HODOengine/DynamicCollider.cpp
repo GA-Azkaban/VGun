@@ -48,7 +48,7 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->LockPlayerRotation();
+		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed);
 	}
 }
 
@@ -90,7 +90,7 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 
 void HDData::DynamicCollider::Jump()
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 16.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 320.0f, 0.0f), physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
