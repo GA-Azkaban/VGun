@@ -124,27 +124,27 @@ namespace HDEngine
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
 
-			switch (info.colliderType)
-			{
-				case 1:	// box static
-				{
-					auto col = object->AddComponent<HDData::StaticBoxCollider>();
-					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
-					col->SetWidth(info.boxColliderSize.x);
-					col->SetHeight(info.boxColliderSize.y);
-					col->SetDepth(info.boxColliderSize.z);
-				}
-				break;
-				case 2:	// sphere dynamic
-				{
-					auto col = object->AddComponent<HDData::DynamicSphereCollider>();
-					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
-					col->SetRadius(info.sphereColliderRadius);
-				}
-				break;
-				default:
-					break;
-			}
+			//switch (info.colliderType)
+			//{
+			//	case 1:	// box static
+			//	{
+			//		auto col = object->AddComponent<HDData::StaticBoxCollider>();
+			//		col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
+			//		col->SetWidth(info.boxColliderSize.x);
+			//		col->SetHeight(info.boxColliderSize.y);
+			//		col->SetDepth(info.boxColliderSize.z);
+			//	}
+			//	break;
+			//	case 2:	// sphere dynamic
+			//	{
+			//		auto col = object->AddComponent<HDData::DynamicSphereCollider>();
+			//		col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
+			//		col->SetRadius(info.sphereColliderRadius);
+			//	}
+			//	break;
+			//	default:
+			//		break;
+			//}
 
 			for (int m = 0; m < info.materials.size(); m++)
 			{

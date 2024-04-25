@@ -8,12 +8,14 @@ namespace HDData
 	{
 		_upper = new UpperAnimator();
 		_lower = new LowerAnimator();
+		_all = new AllAnimator();
 	}
 
 	Animator::~Animator()
 	{
 		delete _upper;
 		delete _lower;
+		delete _all;
 	}
 
 	void Animator::Start()
@@ -23,12 +25,15 @@ namespace HDData
 		_upper->Start();
 		_lower->SetMeshRenderer(MR);
 		_lower->Start();
+		_all->SetMeshRenderer(MR);
+		_all->Start();
 	}
 
 	void Animator::Update()
 	{
 		_upper->Update();
 		_lower->Update();
+		_all->Update();
 	}
 
 	void Animator::SetUpperAnimationController(AnimationController* controller)
@@ -41,6 +46,11 @@ namespace HDData
 		_lower->SetAnimationController(controller);
 	}
 
+	void Animator::SetAllAnimationController(AnimationController* controller)
+	{
+		_all->SetAnimationController(controller);
+	}
+
 	HDData::UpperAnimator* Animator::GetUpperAC()
 	{
 		return _upper;
@@ -49,6 +59,11 @@ namespace HDData
 	LowerAnimator* Animator::GetLowerAC()
 	{
 		return _lower;
+	}
+
+	HDData::AllAnimator* Animator::GetAllAC()
+	{
+		return _all;
 	}
 
 }

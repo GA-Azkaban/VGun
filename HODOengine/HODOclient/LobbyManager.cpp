@@ -130,7 +130,7 @@ void LobbyManager::Test()
 	auto camMove = API::CreateTween();
 	auto camRotate = API::CreateTween();
 
-	float dest = { 10.7f};
+	float dest = { -35.7f };
 
 	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
 

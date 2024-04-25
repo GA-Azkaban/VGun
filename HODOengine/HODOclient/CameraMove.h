@@ -31,4 +31,5 @@ public:
 public:
 	float moveSpeed;
 	float rotateSpeed;
+
 };

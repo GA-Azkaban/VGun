@@ -31,9 +31,10 @@ void Client::Initialize()
 	UnitySceneLoaderTest unity;
 	unity.Start();
 
-	//AnimationLoaderTest loader;
-	//loader.Start();
+	/*AnimationLoaderTest loader;
+	loader.Start();*/
 
 	//API::LoadSceneByName("MainLobby");
+	//API::LoadSceneByName("ALT");
 	API::LoadSceneByName("Scene2");
 }

@@ -63,6 +63,7 @@ namespace HDEngine
 			}
 
 			info.roughness = obj["roughness"].GetFloat();
+			info.metallic = obj["metalic"].GetFloat();
 
 			_materialList.emplace_back(info);
 		}

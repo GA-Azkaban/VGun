@@ -36,9 +36,6 @@ void AnimationLoaderTest::Start()
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
 
-	//meshComp->PlayAnimationUpper("X_idle", true);
-	//meshComp->PlayAnimationLower("X_idle", true);
-
 	playerTP->AddComponent<HDData::Animator>();
 	API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
 	API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");

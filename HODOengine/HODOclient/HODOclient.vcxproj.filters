@@ -49,7 +49,6 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
-    <ClCompile Include="UnitySceneLoaderTest.cpp" />
     <ClCompile Include="MainMenu.cpp">
       <Filter>04_SceneView\MainMenu</Filter>
     </ClCompile>
@@ -57,14 +56,22 @@
       <Filter>03_Manager\MenuManager</Filter>
     </ClCompile>
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
-    <ClCompile Include="FSMtestScript.cpp" />
     <ClCompile Include="SliderSoundScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationLoaderTest.cpp" />
+    <ClCompile Include="AnimationLoaderTest.cpp">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="FSMtestScript.cpp">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="UnitySceneLoaderTest.cpp">
+      <Filter>02_Client\TestScene\SceneLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="FPAniScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -124,17 +131,24 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuManager.h" />
-    <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="TestScene.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationLoaderTest.h" />
+    <ClInclude Include="AnimationLoaderTest.h">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="FSMtestScript.h">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="UnitySceneLoaderTest.h">
+      <Filter>02_Client\TestScene\SceneLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="FPAniScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -207,6 +221,12 @@
     </Filter>
     <Filter Include="02_Client\TestScene\test">
       <UniqueIdentifier>{fc498499-d32a-4872-8cb0-5341026958db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Animation">
+      <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\SceneLoader">
+      <UniqueIdentifier>{84041ead-e90d-49f3-8dce-9afc738d60c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
