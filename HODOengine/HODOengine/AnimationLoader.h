@@ -24,8 +24,7 @@ namespace HDEngine
 		struct Node
 		{
 			std::string nodeName;
-			std::string upperFBX;
-			std::string lowerFBX;
+			std::string motion;
 		};
 
 		struct Param

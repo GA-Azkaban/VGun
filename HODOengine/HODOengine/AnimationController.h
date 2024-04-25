@@ -77,7 +77,7 @@ namespace HDData
 		void Update();
 
 	public:
-		State* CreateState(std::string stateName, std::string upper, std::string lower);
+		State* CreateState(std::string stateName, std::string motion);
 		State& GetState(std::string stateName);
 		std::unordered_map<std::string, State*> GetAllStates();
 		

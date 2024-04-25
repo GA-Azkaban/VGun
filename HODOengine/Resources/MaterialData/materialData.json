@@ -78,6 +78,19 @@
     "metalic": 0.0
 },
 {
+    "name": "M_hayroof",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        51,
+        49,
+        29,
+        255
+    ],
+    "roughness": 0.8650000095367432,
+    "metalic": 0.0
+},
+{
     "name": "M_resistance_fighter_military 1",
     "mainTex": "M_resistance_fighter_albedo_02.png",
     "metalicTex": "M_resistance_fighter_metallic_02",
@@ -452,19 +465,6 @@
         255
     ],
     "roughness": 0.5,
-    "metalic": 0.0
-},
-{
-    "name": "M_hayroof",
-    "mainTex": "",
-    "metalicTex": "",
-    "color": [
-        51,
-        49,
-        29,
-        255
-    ],
-    "roughness": 0.8650000095367432,
     "metalic": 0.0
 },
 {

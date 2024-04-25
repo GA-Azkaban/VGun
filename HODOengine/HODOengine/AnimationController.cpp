@@ -92,11 +92,11 @@ namespace HDData
 		}
 	}
 
-	State* AnimationController::CreateState(std::string stateName, std::string upper, std::string lower)
+	State* AnimationController::CreateState(std::string stateName, std::string motion)
 	{
 		State* state = new State(stateName, this);
 		state->_stateName = stateName;
-		state->_motion = upper;
+		state->_motion = motion;
 
 		_allStates.insert({ stateName, state });
 
