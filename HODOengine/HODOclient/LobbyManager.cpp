@@ -132,21 +132,15 @@ void LobbyManager::Test()
 
 	float dest = { -35.7f };
 
-	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
+	HDData::GameObject* mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
 
 	camMove->GetData(&(mainCam->GetTransform()->GetPositionRef().x))
 		.DoMove(dest, 5)
 		.SetEase(HDData::OUTQUINT)
 		.OnComplete([this]() 
 			{ 
-				Test2(); 
+				//Test2(); 
 			});
 
 
-}
-
-void LobbyManager::Test2()
-{
-	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
-	mainCam->GetTransform()->SetPosition(8.8f, 1.73f, -2.6f);
 }

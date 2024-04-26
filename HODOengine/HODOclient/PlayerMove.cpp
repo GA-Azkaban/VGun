@@ -410,11 +410,11 @@ void PlayerMove::PresetSprayPattern()
 
 void PlayerMove::ToggleCam()
 {
-	HDData::Camera* nowCam = API::GetMainCamera();
+	HDData::Camera* nowCam = API::GetCurrenSceneMainCamera();
 
 	if (nowCam == _headCam)
 	{
-		API::SetMainCamera(_prevCam);
+		API::SetCurrentSceneMainCamera(_prevCam);
 		_prevCam = nullptr;
 		_isHeadCam = false;
 		_aimText->SetText("");
@@ -422,7 +422,7 @@ void PlayerMove::ToggleCam()
 	}
 	else
 	{
-		_prevCam = API::SetMainCamera(_headCam);
+		_prevCam = API::SetCurrentSceneMainCamera(_headCam);
 		_isHeadCam = true;
 		_aimText->SetText("O");
 		_isFirstPersonPerspective = true;

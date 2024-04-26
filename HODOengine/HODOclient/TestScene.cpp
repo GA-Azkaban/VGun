@@ -20,7 +20,7 @@ TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test Scene");
 
-	auto mainCam = API::GetMainCamera()->GetGameObject();
+	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
 	auto skybox = API::CreateObject(_scene);

@@ -20,7 +20,7 @@ void UnitySceneLoaderTest::Start()
 {
 	_scene = API::CreateScene("Scene2");
 
-	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
+	HDData::GameObject* mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 	mainCam->GetTransform()->SetPosition(-20.f, 22.f, 28.f);
 	mainCam->GetTransform()->Rotate(30.07, 150.f, 0.f);
@@ -349,7 +349,7 @@ void UnitySceneLoaderTest::Start()
 	controller->SetEntryState("IDLE");*/
 
 
-	API::LoadSceneFromData("sceneData.json");
+	API::LoadSceneFromData("sceneData.json", this->_scene);
 
 	//API::LoadScene(_scene);
 }

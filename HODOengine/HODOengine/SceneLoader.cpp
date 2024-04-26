@@ -30,10 +30,12 @@ namespace HDEngine
 
 	}
 
-	void SceneLoader::LoadUnityScene(std::string fileName)
+	void SceneLoader::LoadUnityScene(std::string fileName, HDData::Scene* scene)
 	{
+		now = scene;
+
 		LoadFromJson(SCENEDATA_PATH + fileName);
-		CreateObject();
+		CreateObject(scene);
 		LinkHierachy();
 		SetTransform();
 	}
@@ -96,12 +98,13 @@ namespace HDEngine
 		}
 	}
 
-	void SceneLoader::CreateObject()
+	void SceneLoader::CreateObject(HDData::Scene* scene)
 	{
-		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
+		_gameObjectMap.clear();
+
 		for (auto& info : _infoList)
 		{
-			HDData::GameObject* object = currentScene->CreateObject(info.name);
+			HDData::GameObject* object = scene->CreateObject(info.name);
 
 			std::string meshName = info.meshName;
 
@@ -124,27 +127,27 @@ namespace HDEngine
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
 
-			//switch (info.colliderType)
-			//{
-			//	case 1:	// box static
-			//	{
-			//		auto col = object->AddComponent<HDData::StaticBoxCollider>();
-			//		col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
-			//		col->SetWidth(info.boxColliderSize.x);
-			//		col->SetHeight(info.boxColliderSize.y);
-			//		col->SetDepth(info.boxColliderSize.z);
-			//	}
-			//	break;
-			//	case 2:	// sphere dynamic
-			//	{
-			//		auto col = object->AddComponent<HDData::DynamicSphereCollider>();
-			//		col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
-			//		col->SetRadius(info.sphereColliderRadius);
-			//	}
-			//	break;
-			//	default:
-			//		break;
-			//}
+			switch (info.colliderType)
+			{
+				case 1:	// box static
+				{
+					auto col = object->AddComponent<HDData::StaticBoxCollider>();
+					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
+					col->SetWidth(info.boxColliderSize.x);
+					col->SetHeight(info.boxColliderSize.y);
+					col->SetDepth(info.boxColliderSize.z);
+				}
+				break;
+				case 2:	// sphere dynamic
+				{
+					auto col = object->AddComponent<HDData::DynamicSphereCollider>();
+					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
+					col->SetRadius(info.sphereColliderRadius);
+				}
+				break;
+				default:
+					break;
+			}
 
 			for (int m = 0; m < info.materials.size(); m++)
 			{

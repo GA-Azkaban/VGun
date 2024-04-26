@@ -239,9 +239,9 @@ namespace API
 			HDEngine::RenderSystem::Instance().DrawLine(start, direction, length, color);
 		}
 
-		HODO_API void LoadSceneFromData(std::string fileName)
+		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene)
 		{
-			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName);
+			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName, scene);
 		}
 
 		HODO_API void LoadUpperAnimationFromData(HDData::GameObject* gameobject, std::string data)
@@ -262,14 +262,14 @@ namespace API
 			animator->SetAllAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
 		}
 
-		HODO_API HDData::Camera* GetMainCamera()
+		HODO_API HDData::Camera* GetCurrenSceneMainCamera()
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
 		}
 
-		HODO_API HDData::Camera* SetMainCamera(HDData::Camera* camera)
+		HODO_API HDData::Camera* SetCurrentSceneMainCamera(HDData::Camera* camera)
 		{
-			HDData::Camera* prevCam = GetMainCamera();
+			HDData::Camera* prevCam = GetCurrenSceneMainCamera();
 			HDEngine::SceneSystem::Instance().GetCurrentScene()->SetMainCamera(camera);
 			return prevCam;
 		}

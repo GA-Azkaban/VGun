@@ -4,6 +4,7 @@
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
 #include "AnimationLoaderTest.h"
+#include "InGameSceneView.h"
 
 Client::Client()
 {
@@ -36,5 +37,9 @@ void Client::Initialize()
 
 	//API::LoadSceneByName("MainLobby");
 	//API::LoadSceneByName("ALT");
-	API::LoadSceneByName("Scene2");
+
+	InGameSceneView inGame;
+	inGame.Initialize();
+
+	API::LoadSceneByName("InGameScene");
 }

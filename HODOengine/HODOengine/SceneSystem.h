@@ -30,6 +30,7 @@ namespace HDEngine
 		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();
 
+
 	private:
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 		HDData::Scene* _currentScene;
