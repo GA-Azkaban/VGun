@@ -27,7 +27,7 @@ void HDData::ParticleSphereCollider::CheckTimer(float deltaTime)
 	}
 	else
 	{
-		this->SetGlobalPosition(Vector3(5.0f, 5.0f, 5.0f));
+		this->SetGlobalPosition(Vector3(0.0f, -5.0f, 0.0f));
 	}
 }
 

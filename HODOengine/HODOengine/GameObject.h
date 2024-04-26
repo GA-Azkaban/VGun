@@ -133,6 +133,7 @@ namespace HDData
 		bool GetSelfActive();
 		bool GetParentActive();
 		std::string GetObjectName();
+		GameObject* GetParentObject();
 
 		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
 		void LoadFBXFile(std::string fileName);

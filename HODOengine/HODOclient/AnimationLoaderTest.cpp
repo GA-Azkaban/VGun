@@ -17,7 +17,7 @@ void AnimationLoaderTest::Start()
 {
 	_scene = API::CreateScene("ALT");
 
-	HDData::GameObject* mainCam = API::GetMainCamera()->GetGameObject();
+	HDData::GameObject* mainCam = _scene->GetMainCamera()->GetGameObject();
 	//mainCam->AddComponent<CameraMove>();
 
 	auto playerTP = API::CreateObject(_scene, "playerTP");

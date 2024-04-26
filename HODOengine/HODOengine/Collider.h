@@ -71,6 +71,10 @@ namespace HDData
 
 		// copy ver
 		std::vector<PhysicsCollision*> _collisionStorage;
+
+	protected:
+		HDData::Collider* _parentCollider;
+		std::vector<HDData::Collider*> _childColliders;
 	};
 }
 

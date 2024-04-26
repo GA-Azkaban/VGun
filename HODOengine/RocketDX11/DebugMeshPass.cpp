@@ -29,9 +29,9 @@ namespace RocketCore::Graphics
 
 		for (auto e : ObjectManager::Instance().GetCubePrimitiveList())
 		{
-			e->worldTM.m[0][0] *= e->widthHeightDepth.x;
-			e->worldTM.m[1][1] *= e->widthHeightDepth.y;
-			e->worldTM.m[2][2] *= e->widthHeightDepth.z;
+			//e->worldTM.m[0][0] *= e->widthHeightDepth.x;
+			//e->worldTM.m[1][1] *= e->widthHeightDepth.y;
+			//e->worldTM.m[2][2] *= e->widthHeightDepth.z;
 
 			ResourceManager::Instance().GetCubePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}

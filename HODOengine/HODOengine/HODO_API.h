@@ -62,7 +62,7 @@ namespace API
 		HODO_API void LoadSceneByName(std::string scene);
 
 		// 씬 데이터에서 씬 로드
-		HODO_API void LoadSceneFromData(std::string fileName);
+		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
 
 		// 애니메이션 툴 데이터에서 FSM 로드
 		HODO_API void LoadUpperAnimationFromData(HDData::GameObject* gameobject, std::string data);
@@ -83,8 +83,8 @@ namespace API
 		HODO_API HDData::Tween* CreateTween();
 
 		// 메인 카메라 조작을 위한 함수
-		HODO_API HDData::Camera* GetMainCamera();
-		HODO_API HDData::Camera* SetMainCamera(HDData::Camera* camera);
+		HODO_API HDData::Camera* GetCurrenSceneMainCamera();
+		HODO_API HDData::Camera* SetCurrentSceneMainCamera(HDData::Camera* camera);
 
 		// 키 입력을 위한 함수 (키보드, 마우스)
 		HODO_API bool GetKeyDown(BYTE keyCode);

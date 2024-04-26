@@ -219,6 +219,11 @@ namespace HDData
 		return _objectName;
 	}
 
+	GameObject* GameObject::GetParentObject()
+	{
+		return _parentGameObject;
+	}
+
 	void GameObject::LoadFBXFile(std::string fileName)
 	{
 		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);

@@ -9,6 +9,7 @@
 namespace HDData
 {
 	class GameObject;
+	class Scene;
 }
 
 namespace HDEngine
@@ -36,15 +37,16 @@ namespace HDEngine
 		};
 
 	public:
-		void LoadUnityScene(std::string fileName);
+		void LoadUnityScene(std::string fileName, HDData::Scene* scene);
 
 	private:
 		void LoadFromJson(std::string filePath);
-		void CreateObject();
+		void CreateObject(HDData::Scene* scene);
 		void LinkHierachy();
 		void SetTransform();
 
 	private:
+		HDData::Scene * now;
 		std::vector<InfoStruct> _infoList;
 		std::unordered_map<int, HDData::GameObject*> _gameObjectMap;
 	};
