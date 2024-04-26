@@ -32,6 +32,9 @@ namespace HDData
 		void SetBlendDuration(float duration);
 		void SetBlendDurationUpper(float duration);
 		void SetBlendDurationLower(float duration);
+		bool IsAnimationExitTimeElapsed();
+		bool IsUpperAnimationExitTimeElapsed();
+		bool IsLowerAnimationExitTimeElapsed();
 		bool IsAnimationEnd();
 		bool IsUpperAnimationEnd();
 		bool IsLowerAnimationEnd();

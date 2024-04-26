@@ -58,6 +58,11 @@ namespace RocketCore::Graphics
 		virtual void SetBlendDuration(float duration) override;
 		virtual void SetBlendDurationUpper(float duration) override;
 		virtual void SetBlendDurationLower(float duration) override;
+
+		virtual bool IsAnimationExitTimeElapsed() override;
+		virtual bool IsUpperAnimationExitTimeElapsed() override;
+		virtual bool IsLowerAnimationExitTimeElapsed() override;
+
 		virtual bool IsAnimationEnd() override;
 		virtual bool IsUpperAnimationEnd() override;
 		virtual bool IsLowerAnimationEnd() override;
@@ -109,9 +114,9 @@ namespace RocketCore::Graphics
 		float m_exitTime;
 		float m_exitTimeUpper;
 		float m_exitTimeLower;
-		bool m_isPassExitTime;
-		bool m_isPassExitTimeUpper;
-		bool m_isPassExitTimeLower;
+		bool m_isExitTimeElapsed;
+		bool m_isExitTimeUpperElapsed;
+		bool m_isExitTimeLowerElapsed;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 

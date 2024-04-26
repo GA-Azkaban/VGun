@@ -29,6 +29,9 @@ namespace HDEngine
 		virtual void SetBlendDuration(float duration) = 0;
 		virtual void SetBlendDurationUpper(float duration) = 0;
 		virtual void SetBlendDurationLower(float duration) = 0;
+		virtual bool IsAnimationExitTimeElapsed() = 0 ;
+		virtual bool IsUpperAnimationExitTimeElapsed() = 0;
+		virtual bool IsLowerAnimationExitTimeElapsed() = 0;
 		virtual bool IsAnimationEnd() = 0;
 		virtual bool IsUpperAnimationEnd() = 0;
 		virtual bool IsLowerAnimationEnd() = 0;
