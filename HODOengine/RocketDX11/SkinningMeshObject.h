@@ -68,6 +68,7 @@ namespace RocketCore::Graphics
 		virtual bool IsLowerAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
+		virtual void SetFillModeWireFrame(bool setWireFrame) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		std::vector<Material*>& GetMaterials() { return m_materials; }

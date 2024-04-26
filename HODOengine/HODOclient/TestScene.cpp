@@ -87,6 +87,7 @@ TestScene::TestScene()
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//meshComp->SetActive(false);
+	meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
 	desc.materialName = "TP_Red";
 	desc.albedo = "TP_Red_B.png";

@@ -1325,4 +1325,16 @@ namespace RocketCore::Graphics
 		return &m_node;
 	}
 
+	void SkinningMeshObject::SetFillModeWireFrame(bool setWireFrame)
+	{
+		if (setWireFrame)
+		{
+			m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::WIREFRAME);
+		}
+		else
+		{
+			m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
+		}
+	}
+
 }
