@@ -39,8 +39,8 @@ void Player::Update()
 	}
 	else if (API::GetKeyDown(DIK_6))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", true);
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_run", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", true, false);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_run", true, false);
 	}
 	else if (API::GetKeyDown(DIK_7))
 	{

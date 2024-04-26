@@ -103,6 +103,21 @@ namespace HDData
 		_skinnedMesh->SetBlendDurationLower(duration);
 	}
 
+	bool SkinnedMeshRenderer::IsAnimationExitTimeElapsed()
+	{
+		return _skinnedMesh->IsAnimationExitTimeElapsed();
+	}
+
+	bool SkinnedMeshRenderer::IsUpperAnimationExitTimeElapsed()
+	{
+		return _skinnedMesh->IsUpperAnimationExitTimeElapsed();
+	}
+
+	bool SkinnedMeshRenderer::IsLowerAnimationExitTimeElapsed()
+	{
+		return _skinnedMesh->IsLowerAnimationExitTimeElapsed();
+	}
+
 	bool SkinnedMeshRenderer::IsAnimationEnd()
 	{
 		return _skinnedMesh->IsAnimationEnd();

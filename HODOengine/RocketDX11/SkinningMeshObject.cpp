@@ -26,7 +26,7 @@ namespace RocketCore::Graphics
 		m_blendDuration(0.1f), m_blendDurationUpper(0.1f), m_blendDurationLower(0.1f),
 		m_hasExitTime(false), m_hasExitTimeUpper(false), m_hasExitTimeLower(false),
 		m_exitTime(0.0f), m_exitTimeUpper(0.0f), m_exitTimeLower(0.0f),
-		m_isPassExitTime(true), m_isPassExitTimeUpper(true), m_isPassExitTimeLower(true)
+		m_isExitTimeElapsed(true), m_isExitTimeUpperElapsed(true), m_isExitTimeLowerElapsed(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
@@ -155,7 +155,7 @@ namespace RocketCore::Graphics
 					
 					if (m_currentAnimation->accumulatedTime >= m_exitTime)
 					{
-						m_isPassExitTime = true;
+						m_isExitTimeElapsed = true;
 					}
 
 					if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
@@ -164,7 +164,7 @@ namespace RocketCore::Graphics
 						if (m_currentAnimation->isLoop == true)
 						{
 							m_currentAnimation->accumulatedTime = 0.0f;
-							m_isPassExitTime = false;
+							m_isExitTimeElapsed = false;
 						}
 						return;
 					}
@@ -206,7 +206,7 @@ namespace RocketCore::Graphics
 
 				if (m_currentUpperAnimation->accumulatedTime >= m_exitTimeUpper)
 				{
-					m_isPassExitTimeUpper = true;
+					m_isExitTimeUpperElapsed = true;
 				}
 
 				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->duration)
@@ -215,7 +215,7 @@ namespace RocketCore::Graphics
 					if (m_currentUpperAnimation->isLoop == true)
 					{
 						m_currentUpperAnimation->accumulatedTime = 0.0f;
-						m_isPassExitTimeUpper = false;
+						m_isExitTimeUpperElapsed = false;
 					}
 					return;
 				}
@@ -256,7 +256,7 @@ namespace RocketCore::Graphics
 
 				if (m_currentLowerAnimation->accumulatedTime >= m_exitTimeLower)
 				{
-					m_isPassExitTimeLower = true;
+					m_isExitTimeLowerElapsed = true;
 				}
 
 				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->duration)
@@ -265,7 +265,7 @@ namespace RocketCore::Graphics
 					if (m_currentLowerAnimation->isLoop == true)
 					{
 						m_currentLowerAnimation->accumulatedTime = 0.0f;
-						m_isPassExitTimeLower = false;
+						m_isExitTimeLowerElapsed = false;
 					}
 					return;
 				}
@@ -890,7 +890,7 @@ namespace RocketCore::Graphics
 		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
 		if (m_hasExitTime)
 		{
-			if (!m_isPassExitTime)
+			if (!m_isExitTimeElapsed)
 			{
 				return;
 			}
@@ -970,7 +970,7 @@ namespace RocketCore::Graphics
 		// 애니메이션 실행 시간 초기화
 		m_currentAnimation->accumulatedTime = 0.0f;
 		m_currentAnimation->isEnd = false;
-		m_isPassExitTime = false;
+		m_isExitTimeElapsed = false;
 
 		// 우선 블렌딩 없이
 		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
@@ -986,7 +986,7 @@ namespace RocketCore::Graphics
 		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
 		if (m_hasExitTimeUpper)
 		{
-			if (!m_isPassExitTimeUpper)
+			if (!m_isExitTimeUpperElapsed)
 			{
 				return;
 			}
@@ -1063,7 +1063,7 @@ namespace RocketCore::Graphics
 		// 애니메이션 실행 시간 초기화
 		m_currentUpperAnimation->accumulatedTime = 0.0f;
 		m_currentUpperAnimation->isEnd = false;
-		m_isPassExitTimeUpper = false;
+		m_isExitTimeUpperElapsed = false;
 
 		// 우선 블렌딩 없이
 		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
@@ -1079,7 +1079,7 @@ namespace RocketCore::Graphics
 		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
 		if (m_hasExitTimeLower)
 		{
-			if (!m_isPassExitTimeLower)
+			if (!m_isExitTimeLowerElapsed)
 			{
 				return;
 			}
@@ -1143,7 +1143,7 @@ namespace RocketCore::Graphics
 		m_currentLowerAnimation->isLoop = isLoop;
 		m_currentLowerAnimation->accumulatedTime = 0.0f;
 		m_currentLowerAnimation->isEnd = false;
-		m_isPassExitTimeLower = false;
+		m_isExitTimeLowerElapsed = false;
 		// 우선 블렌딩 없이
 		//if (m_previousLowerAnimation != nullptr)
 		//{
@@ -1269,6 +1269,21 @@ namespace RocketCore::Graphics
 	void SkinningMeshObject::SetBlendDurationLower(float duration)
 	{
 		m_blendDurationLower = duration;
+	}
+
+	bool SkinningMeshObject::IsAnimationExitTimeElapsed()
+	{
+		return m_isExitTimeElapsed;
+	}
+
+	bool SkinningMeshObject::IsUpperAnimationExitTimeElapsed()
+	{
+		return m_isExitTimeUpperElapsed;
+	}
+
+	bool SkinningMeshObject::IsLowerAnimationExitTimeElapsed()
+	{
+		return m_isExitTimeLowerElapsed;
 	}
 
 	bool SkinningMeshObject::IsAnimationEnd()
