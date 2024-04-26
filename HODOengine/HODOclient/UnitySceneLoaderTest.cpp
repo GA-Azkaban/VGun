@@ -301,36 +301,6 @@ void UnitySceneLoaderTest::Start()
 	playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
 
-	//// 플레이어에 달린 카메라, 움직임
-	//auto headCamObj = API::CreateObject(_scene, "headCamObj");
-	//headCamObj->SetParentObject(playerTestHead);
-	//headCamObj->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.1f, 0.3f });
-	//auto headCam = headCamObj->AddComponent<HDData::Camera>();
-
-	//auto playerMove = playerTP->AddComponent<PlayerMove>();
-	//playerMove->SetPlayerCamera(_scene->GetMainCamera());
-	//playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>());
-	//playerTP->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
-	//playerMove->SetHeadCam(headCam);
-
-	//// 피격 표시 particle
-	//std::vector<HDData::ParticleSphereCollider*> particleContainer;
-	//particleContainer.reserve(30);
-	//for (int i = 0; i < 30; ++i)
-	//{
-	//	auto particleTest = API::CreateObject(_scene, "particleTest");
-	//	particleTest->GetComponent<HDData::Transform>()->SetPosition(-5.f, 5.f, 0.f);
-	//	auto particleCollider = particleTest->AddComponent<HDData::ParticleSphereCollider>();
-	//	particleContainer.push_back(particleCollider);
-	//}
-	//playerMove->SetHitParticle(particleContainer);
-
-	//// sound 추가
-	//HDData::AudioSource* playerSound = playerTP->AddComponent<HDData::AudioSource>();
-	//playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
-	//playerSound->AddAudio("hit", "./Resourceds/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
->>>>>>> a160298ac4a73e3c1b7df69d05f26514f372ba0c
-
 	//playerTP->AddComponent<HDData::Animator>();
 	//API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
 	//API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");

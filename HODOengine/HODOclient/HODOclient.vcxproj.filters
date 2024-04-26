@@ -71,7 +71,9 @@
     <ClCompile Include="UnitySceneLoaderTest.cpp">
       <Filter>02_Client\TestScene\SceneLoader</Filter>
     </ClCompile>
-    <ClCompile Include="FPAniScript.cpp" />
+    <ClCompile Include="FPAniScript.cpp">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -148,7 +150,9 @@
     <ClInclude Include="UnitySceneLoaderTest.h">
       <Filter>02_Client\TestScene\SceneLoader</Filter>
     </ClInclude>
-    <ClInclude Include="FPAniScript.h" />
+    <ClInclude Include="FPAniScript.h">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
