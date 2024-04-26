@@ -1256,19 +1256,6 @@ namespace RocketCore::Graphics
 		return m_node.rootNodeInvTransform * m_world;
 	}
 
-	void SkinningMeshObject::SetExitTime(bool hasExitTime, float exitTime /* = 0.0f */)
-	{
-		m_hasExitTime = hasExitTime;
-		if (hasExitTime)
-		{
-			m_exitTime = exitTime;
-		}
-		else
-		{
-			m_exitTime = 0.0f;
-		}
-	}
-
 	void SkinningMeshObject::SetBlendDuration(float duration)
 	{
 		m_blendDuration = duration;

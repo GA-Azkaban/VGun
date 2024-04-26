@@ -73,24 +73,34 @@ namespace HDData
 		_skinnedMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimation(animName, isLoop);
+		_skinnedMesh->PlayAnimation(animName, isLoop, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimationUpper(animName, isLoop);
+		_skinnedMesh->PlayAnimationUpper(animName, isLoop, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimationLower(animName, isLoop);
+		_skinnedMesh->PlayAnimationLower(animName, isLoop, hasExitTime, exitTime);
 	}
 
 	void SkinnedMeshRenderer::SetBlendDuration(float duration)
 	{
 		_skinnedMesh->SetBlendDuration(duration);
+	}
+
+	void SkinnedMeshRenderer::SetBlendDurationUpper(float duration)
+	{
+		_skinnedMesh->SetBlendDurationUpper(duration);
+	}
+
+	void SkinnedMeshRenderer::SetBlendDurationLower(float duration)
+	{
+		_skinnedMesh->SetBlendDurationLower(duration);
 	}
 
 	bool SkinnedMeshRenderer::IsAnimationEnd()

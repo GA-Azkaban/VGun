@@ -26,7 +26,6 @@ namespace HDEngine
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) = 0;
 		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) = 0;
 		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) = 0;
-		virtual void SetExitTime(bool hasExitTime, float exitTime = 0.0f) = 0;
 		virtual void SetBlendDuration(float duration) = 0;
 		virtual void SetBlendDurationUpper(float duration) = 0;
 		virtual void SetBlendDurationLower(float duration) = 0;
