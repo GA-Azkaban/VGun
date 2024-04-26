@@ -29,6 +29,7 @@ namespace HDData
 		void PlayAnimation(const std::string& animName, bool isLoop = true);
 		void PlayAnimationUpper(const std::string& animName, bool isLoop = true);
 		void PlayAnimationLower(const std::string& animName, bool isLoop = true);
+		void SetBlendDuration(float duration);
 		bool IsAnimationEnd();
 		bool IsUpperAnimationEnd();
 		bool IsLowerAnimationEnd();

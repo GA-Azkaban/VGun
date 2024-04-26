@@ -51,9 +51,13 @@ namespace RocketCore::Graphics
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual Node* GetNode() override;
 
-		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
-		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true) override;
-		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true) override;
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) override;
+		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) override;
+		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) override;
+		
+		virtual void SetBlendDuration(float duration) override;
+		virtual void SetBlendDurationUpper(float duration) override;
+		virtual void SetBlendDurationLower(float duration) override;
 		virtual bool IsAnimationEnd() override;
 		virtual bool IsUpperAnimationEnd() override;
 		virtual bool IsLowerAnimationEnd() override;
@@ -91,11 +95,23 @@ namespace RocketCore::Graphics
 		std::vector<Material*> m_materials;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
-		bool m_blendFlag;
 		bool m_isOutlineActive;
 		bool m_separateUpperAndLowerAnim;
+		bool m_blendFlag;
 		bool m_blendFlagUpper;
 		bool m_blendFlagLower;
+		float m_blendDuration;
+		float m_blendDurationUpper;
+		float m_blendDurationLower;
+		bool m_hasExitTime;
+		bool m_hasExitTimeUpper;
+		bool m_hasExitTimeLower;
+		float m_exitTime;
+		float m_exitTimeUpper;
+		float m_exitTimeLower;
+		bool m_isPassExitTime;
+		bool m_isPassExitTimeUpper;
+		bool m_isPassExitTimeLower;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
@@ -129,5 +145,6 @@ namespace RocketCore::Graphics
 		// 우리 게임에 사용하는 캐릭터 전용 노드 하드 코딩.
 		std::unordered_set<std::string> _upperAnimationNodes;
 		std::unordered_set<std::string> _lowerAnimationNodes;
+		std::unordered_set<std::string> _lowerAnimationNames;
 	};
 }

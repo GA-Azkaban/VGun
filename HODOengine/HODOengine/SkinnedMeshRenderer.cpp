@@ -88,6 +88,11 @@ namespace HDData
 		_skinnedMesh->PlayAnimationLower(animName, isLoop);
 	}
 
+	void SkinnedMeshRenderer::SetBlendDuration(float duration)
+	{
+		_skinnedMesh->SetBlendDuration(duration);
+	}
+
 	bool SkinnedMeshRenderer::IsAnimationEnd()
 	{
 		return _skinnedMesh->IsAnimationEnd();

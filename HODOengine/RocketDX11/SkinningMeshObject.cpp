@@ -20,10 +20,13 @@ namespace RocketCore::Graphics
 	SkinningMeshObject::SkinningMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_separateUpperAndLowerAnim(false), m_isOutlineActive(false),
-		m_currentAnimation(nullptr), m_blendFlag(false),
-		m_currentUpperAnimation(nullptr), m_currentLowerAnimation(nullptr),
-		m_previousUpperAnimation(nullptr), m_previousLowerAnimation(nullptr),
-		m_blendFlagUpper(false), m_blendFlagLower(false)
+		m_currentAnimation(nullptr), m_currentUpperAnimation(nullptr), m_currentLowerAnimation(nullptr),
+		m_previousAnimation(nullptr), m_previousUpperAnimation(nullptr), m_previousLowerAnimation(nullptr),
+		m_blendFlag(false), m_blendFlagUpper(false), m_blendFlagLower(false),
+		m_blendDuration(0.1f), m_blendDurationUpper(0.1f), m_blendDurationLower(0.1f),
+		m_hasExitTime(false), m_hasExitTimeUpper(false), m_hasExitTimeLower(false),
+		m_exitTime(0.0f), m_exitTimeUpper(0.0f), m_exitTimeLower(0.0f),
+		m_isPassExitTime(true), m_isPassExitTimeUpper(true), m_isPassExitTimeLower(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
@@ -102,6 +105,17 @@ namespace RocketCore::Graphics
 		_lowerAnimationNodes.insert("foot_r");
 		_lowerAnimationNodes.insert("ball_r");
 		_lowerAnimationNodes.insert("thigh_twist_01_r");
+
+		_lowerAnimationNames.insert("X_crouch");
+		_lowerAnimationNames.insert("X_crouchDown");
+		_lowerAnimationNames.insert("X_crouchUp");
+		_lowerAnimationNames.insert("X_crouchWalk_B");
+		_lowerAnimationNames.insert("X_crouchWalk_F");
+		_lowerAnimationNames.insert("AR_crouch");
+		_lowerAnimationNames.insert("AR_crouchDown");
+		_lowerAnimationNames.insert("AR_crouchUp");
+		_lowerAnimationNames.insert("AR_crouchWalk_B");
+		_lowerAnimationNames.insert("AR_crouchWalk_F");
 	}
 
 	SkinningMeshObject::~SkinningMeshObject()
@@ -113,10 +127,10 @@ namespace RocketCore::Graphics
 	{
 		if (m_separateUpperAndLowerAnim)
 		{
-			//lower animation
-			UpdateLowerAnimation(deltaTime);
 			// upper animation
 			UpdateUpperAnimation(deltaTime);
+			//lower animation
+			UpdateLowerAnimation(deltaTime);
 		}
 		else
 		{
@@ -126,7 +140,7 @@ namespace RocketCore::Graphics
 				{
 					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
 
-					if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
+					if (m_currentAnimation->accumulatedTime > (m_blendDuration * m_currentAnimation->ticksPerSecond))
 					{
 						m_blendFlag = false;
 						m_currentAnimation->accumulatedTime = 0.0f;
@@ -138,6 +152,11 @@ namespace RocketCore::Graphics
 				else
 				{
 					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
+					
+					if (m_currentAnimation->accumulatedTime >= m_exitTime)
+					{
+						m_isPassExitTime = true;
+					}
 
 					if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 					{
@@ -145,6 +164,7 @@ namespace RocketCore::Graphics
 						if (m_currentAnimation->isLoop == true)
 						{
 							m_currentAnimation->accumulatedTime = 0.0f;
+							m_isPassExitTime = false;
 						}
 						return;
 					}
@@ -171,7 +191,7 @@ namespace RocketCore::Graphics
 			{
 				m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
 
-				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->blendDuration)
+				if (m_currentUpperAnimation->accumulatedTime > (m_blendDurationUpper * m_currentUpperAnimation->ticksPerSecond))
 				{
 					m_blendFlagUpper = false;
 					m_currentUpperAnimation->accumulatedTime = 0.0f;
@@ -184,12 +204,18 @@ namespace RocketCore::Graphics
 			{
 				m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
 
+				if (m_currentUpperAnimation->accumulatedTime >= m_exitTimeUpper)
+				{
+					m_isPassExitTimeUpper = true;
+				}
+
 				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->duration)
 				{
 					m_currentUpperAnimation->isEnd = true;
 					if (m_currentUpperAnimation->isLoop == true)
 					{
 						m_currentUpperAnimation->accumulatedTime = 0.0f;
+						m_isPassExitTimeUpper = false;
 					}
 					return;
 				}
@@ -215,7 +241,7 @@ namespace RocketCore::Graphics
 			{
 				m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
 
-				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->blendDuration)
+				if (m_currentLowerAnimation->accumulatedTime > (m_blendDurationLower * m_currentLowerAnimation->ticksPerSecond))
 				{
 					m_blendFlagLower = false;
 					m_currentLowerAnimation->accumulatedTime = 0.0f;
@@ -228,12 +254,18 @@ namespace RocketCore::Graphics
 			{
 				m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
 
+				if (m_currentLowerAnimation->accumulatedTime >= m_exitTimeLower)
+				{
+					m_isPassExitTimeLower = true;
+				}
+
 				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->duration)
 				{
 					m_currentLowerAnimation->isEnd = true;
 					if (m_currentLowerAnimation->isLoop == true)
 					{
 						m_currentLowerAnimation->accumulatedTime = 0.0f;
+						m_isPassExitTimeLower = false;
 					}
 					return;
 				}
@@ -403,15 +435,13 @@ namespace RocketCore::Graphics
 				{
 					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 					{
-						if (m_currentUpperAnimation->animName != m_currentLowerAnimation->animName)
+						if (node->name == "root" || node->name == "pelvis")
 						{
-							if (node->name == "root" || node->name == "pelvis")
+							// crouch 애니메이션이라면 하체의 root 와 pelvis로 갱신
+							if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) != _lowerAnimationNames.end())
 							{
-								//if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-								//{
 								nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
 								break;
-								//}
 							}
 						}
 						nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
@@ -428,6 +458,15 @@ namespace RocketCore::Graphics
 				{
 					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
 					{
+						if (node->name == "root" || node->name == "pelvis")
+						{
+							// crouch 애니메이션이 아니라면 상체의 root 와 pelvis로 갱신
+							if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) == _lowerAnimationNames.end())
+							{
+								nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
+								break;
+							}
+						}
 						nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
 						break;
 					}
@@ -598,18 +637,20 @@ namespace RocketCore::Graphics
 			}
 		}
 
+		float blendDuration = m_blendDuration * m_currentAnimation->ticksPerSecond;
+
 		if (prevAnim != nullptr && currAnim != nullptr)
 		{
 			// calculate interpolated position
-			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
+			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
 			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
 
 			// calculate interpolated rotation
-			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
+			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
 			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
 			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
 
-			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
+			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
 			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
@@ -642,38 +683,21 @@ namespace RocketCore::Graphics
 		{
 			for (UINT i = 0; i < m_previousUpperAnimation->nodeAnimations.size(); ++i)
 			{
-				if (m_previousUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+				if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 				{
-					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+					if (node->name == "root" || node->name == "pelvis")
 					{
-						if (m_previousLowerAnimation != nullptr)
+						//if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+						// crouch 애니메이션 이라면
+						if (_lowerAnimationNames.find(m_previousLowerAnimation->animName) != _lowerAnimationNames.end())
 						{
-							if (m_previousUpperAnimation->animName != m_previousLowerAnimation->animName)
-							{
-								if (node->name == "root" || node->name == "pelvis")
-								{
-									//if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-									//{
-									prevAnim = m_previousLowerAnimation->nodeAnimations[i];
-									break;
-									//}
-								}
-							}
+							prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+							break;
 						}
-						else
-						{
-							if (m_previousUpperAnimation->animName != m_currentLowerAnimation->animName)
-							{
-								if (node->name == "root" || node->name == "pelvis")
-								{
-									//if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-									//{
-									prevAnim = m_currentLowerAnimation->nodeAnimations[i];
-									break;
-									//}
-								}
-							}
-						}
+					}
+
+					if (m_previousUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+					{
 						prevAnim = m_previousUpperAnimation->nodeAnimations[i];
 						break;
 					}
@@ -696,7 +720,7 @@ namespace RocketCore::Graphics
 									if (m_currentLowerAnimation->nodeAnimations[j]->nodeName == node->name)
 									{
 										currAnim = m_currentLowerAnimation->nodeAnimations[j];
-										blendDuration = m_currentUpperAnimation->blendDuration;
+										blendDuration = m_blendDurationUpper * m_currentUpperAnimation->ticksPerSecond;
 									}
 									break;
 								}
@@ -704,7 +728,7 @@ namespace RocketCore::Graphics
 						}
 
 						currAnim = m_currentUpperAnimation->nodeAnimations[i];
-						blendDuration = m_currentUpperAnimation->blendDuration;
+						blendDuration = m_blendDurationUpper * m_currentUpperAnimation->ticksPerSecond;
 						break;
 					}
 				}
@@ -731,7 +755,7 @@ namespace RocketCore::Graphics
 					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
 					{
 						currAnim = m_currentLowerAnimation->nodeAnimations[i];
-						blendDuration = m_currentLowerAnimation->blendDuration;
+						blendDuration = m_blendDurationLower * m_currentLowerAnimation->ticksPerSecond;
 						break;
 					}
 				}
@@ -860,13 +884,19 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
 	{
-		if (m_separateUpperAndLowerAnim == true)
+		// exitTime을 가지고 있는 경우
+		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
+		if (m_hasExitTime)
 		{
-			m_separateUpperAndLowerAnim = false;
+			if (!m_isPassExitTime)
+			{
+				return;
+			}
 		}
 
+		// 애니메이션 리스트에 없는 애니메이션은 재생할 수 없다.
 		auto animIter = m_animations.find(animName);
 		if (animIter == m_animations.end())
 		{
@@ -874,49 +904,92 @@ namespace RocketCore::Graphics
 			return;
 		}
 
+		// 애니메이션 분리 여부 저장		
+		m_separateUpperAndLowerAnim = false;
+
+		// 현재 실행 중인 애니메이션이 있다면
+		// 그 애니메이션을 이전 애니메이션으로 저장해두고 다음 애니메이션으로 넘어간다.
 		if (m_currentAnimation != nullptr)
 		{
+			/// 중복 입력 버그가 있어 넣어두는 코드
+			// 현재 실행 중인 애니메이션과 실행시키려는 애니메이션 이름이 같다면
 			if (m_currentAnimation->animName == animIter->second->animName)
 			{
+				// 루프 여부 저장
 				m_currentAnimation->isLoop = isLoop;
+				// 루프가 true인 애니메이션은 실행하던 애니메이션을 바꾸지 않고 종료
 				if (m_currentAnimation->isLoop)
+				{
+					// hasExitTime 여부와 exitTime 저장
+					m_hasExitTime = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTime = exitTime;
+					}
+					return;
+				}
+			}
+			// 루프가 false라면 
+			// 그리고 실행 중인 애니메이션과 실행시키려는 애니메이션의 이름이 다른 경우
+			// exitTime이 있는 경우는 위에서 exitTime 지났는지 체크하고 있다.
+			// exitTime이 없는 경우는 애니메이션이 종료되어야 전환 가능
+			if (!m_hasExitTime)
+			{
+				if (!m_currentAnimation->isEnd)
 				{
 					return;
 				}
-
-				if (!m_currentAnimation->isEnd)
-					return;
 			}
 
+			// 이전 애니메이션을 저장해둔다.
 			m_savedPreviousAnimation = *m_currentAnimation;
 			m_previousAnimation = &m_savedPreviousAnimation;
 		}
 		else
 		{
+			// 현재 애니메이션이 없다면 이전 애니메이션을 저장할 필요가 없다.
 			m_previousAnimation = nullptr;
 		}
 
+		// 애니메이션 전환
 		m_savedCurrentAnimation = *(animIter->second);
 		m_savedUpperCurrentAnimation = *(animIter->second);
 		m_savedLowerCurrentAnimation = *(animIter->second);
 		m_currentAnimation = &m_savedCurrentAnimation;
 		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
 		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
+
+		// hasExitTime 여부와 exitTime 저장
+		m_hasExitTime = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTime = exitTime;
+		}
+		// 루프 여부 저장
 		m_currentAnimation->isLoop = isLoop;
+		// 애니메이션 실행 시간 초기화
 		m_currentAnimation->accumulatedTime = 0.0f;
 		m_currentAnimation->isEnd = false;
+		m_isPassExitTime = false;
 
-		if (m_previousAnimation != nullptr)
-		{
-			m_blendFlag = true;
-		}
+		// 우선 블렌딩 없이
+		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
+		//if (m_previousAnimation != nullptr)
+		//{
+		//	m_blendFlag = true;
+		//}
 	}
 
-	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
 	{
-		if (m_separateUpperAndLowerAnim == false)
+		// exitTime을 가지고 있는 경우
+		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
+		if (m_hasExitTimeUpper)
 		{
-			m_separateUpperAndLowerAnim = true;
+			if (!m_isPassExitTimeUpper)
+			{
+				return;
+			}
 		}
 
 		auto animIter = m_animations.find(animName);
@@ -926,49 +999,90 @@ namespace RocketCore::Graphics
 			return;
 		}
 
-		if (m_currentUpperAnimation != nullptr)
-		{
-			if (m_currentUpperAnimation->animName == animIter->second->animName)
-			{
-				m_currentUpperAnimation->isLoop = isLoop;
+		// 애니메이션 분리 여부 저장
+		m_separateUpperAndLowerAnim = true;
 
+		if (m_currentUpperAnimation != nullptr)
+		{		
+			// 현재 실행하고 있는 애니메이션과 같은 애니메이션 또 재생 눌렸을 때
+			if (m_currentUpperAnimation->animName == animIter->second->animName)
+			{			
+				// 루프 여부 저장
+				m_currentUpperAnimation->isLoop = isLoop;
+				// 루프가 true면 실행되고 있는 애니메이션 전환하지 않고
+				// 받아온 정보들만 저장해준다.
+				// false면 애니메이션 처음부터 다시 재생될 것이다.
 				if (m_currentUpperAnimation->isLoop)
 				{
+					m_hasExitTimeUpper = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTimeUpper = exitTime;
+					}
 					return;
 				}
+			}
 
+			// exitTime이 없는 경우에
+			// 애니메이션 재생이 모두 끝나지 않았다면 전환하지 않는다.
+			if (!m_hasExitTimeUpper)
+			{
 				if (!m_currentUpperAnimation->isEnd)
 				{
 					return;
 				}
 			}
 
+			// 이전 애니메이션 저장한다.
 			m_savedUpperPreviousAnimation = *m_currentUpperAnimation;
 			m_previousUpperAnimation = &m_savedUpperPreviousAnimation;
 		}
 		else
 		{
+			// 현재 애니메이션이 없다면 이전 애니메이션을 저장할 필요가 없다.
 			m_previousUpperAnimation = nullptr;
 		}
 
+		// currentAnimation은 우선 nullptr로 저장한다. 
+		// PlayAnimationUpper에서 PlayAnimation으로 애니메이션 전환을 하는 경우도 생각해봐야 한다.
 		m_currentAnimation = nullptr;
+
+		// 애니메이션 전환
 		m_savedUpperCurrentAnimation = *(animIter->second);
 		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
+
+		// hasExitTime 여부와 exitTime 저장
+		m_hasExitTimeUpper = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTimeUpper = exitTime;
+		}
+
+		// 루프 여부 저장
 		m_currentUpperAnimation->isLoop = isLoop;
+		// 애니메이션 실행 시간 초기화
 		m_currentUpperAnimation->accumulatedTime = 0.0f;
 		m_currentUpperAnimation->isEnd = false;
+		m_isPassExitTimeUpper = false;
 
-		if (m_previousUpperAnimation != nullptr)
-		{
-			m_blendFlagUpper = true;
-		}
+		// 우선 블렌딩 없이
+		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
+		//if (m_previousUpperAnimation != nullptr)
+		//{
+		//	m_blendFlagUpper = true;
+		//}
 	}
 
-	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
 	{
-		if (m_separateUpperAndLowerAnim == false)
+		// exitTime을 가지고 있는 경우
+		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
+		if (m_hasExitTimeLower)
 		{
-			m_separateUpperAndLowerAnim = true;
+			if (!m_isPassExitTimeLower)
+			{
+				return;
+			}
 		}
 
 		auto animIter = m_animations.find(animName);
@@ -977,6 +1091,9 @@ namespace RocketCore::Graphics
 			m_currentLowerAnimation = nullptr;
 			return;
 		}
+		
+		// 애니메이션 분리 여부 저장
+		m_separateUpperAndLowerAnim = true;		
 
 		if (m_currentLowerAnimation != nullptr)
 		{
@@ -984,10 +1101,24 @@ namespace RocketCore::Graphics
 			{
 				m_currentLowerAnimation->isLoop = isLoop;
 				if (m_currentLowerAnimation->isLoop)
+				{
+					m_hasExitTimeLower = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTimeLower = exitTime;
+					}
 					return;
+				}			
+			}
 
+			// exitTime이 없는 경우에
+			// 애니메이션 재생이 모두 끝나지 않았다면 전환하지 않는다.
+			if (!m_hasExitTimeLower)
+			{
 				if (!m_currentLowerAnimation->isEnd)
+				{
 					return;
+				}
 			}
 
 			m_savedLowerPreviousAnimation = *m_currentLowerAnimation;
@@ -999,16 +1130,25 @@ namespace RocketCore::Graphics
 		}
 
 		m_currentAnimation = nullptr;
+
 		m_savedLowerCurrentAnimation = *(animIter->second);
 		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
+
+		m_hasExitTimeLower = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTimeLower = exitTime;
+		}
+
 		m_currentLowerAnimation->isLoop = isLoop;
 		m_currentLowerAnimation->accumulatedTime = 0.0f;
 		m_currentLowerAnimation->isEnd = false;
-
-		if (m_previousLowerAnimation != nullptr)
-		{
-			m_blendFlagLower = true;
-		}
+		m_isPassExitTimeLower = false;
+		// 우선 블렌딩 없이
+		//if (m_previousLowerAnimation != nullptr)
+		//{
+		//	m_blendFlagLower = true;
+		//}
 	}
 
 	void SkinningMeshObject::LoadMesh(const std::string& fileName)
@@ -1114,6 +1254,34 @@ namespace RocketCore::Graphics
 	DirectX::XMMATRIX SkinningMeshObject::GetWorldTM()
 	{
 		return m_node.rootNodeInvTransform * m_world;
+	}
+
+	void SkinningMeshObject::SetExitTime(bool hasExitTime, float exitTime /* = 0.0f */)
+	{
+		m_hasExitTime = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTime = exitTime;
+		}
+		else
+		{
+			m_exitTime = 0.0f;
+		}
+	}
+
+	void SkinningMeshObject::SetBlendDuration(float duration)
+	{
+		m_blendDuration = duration;
+	}
+
+	void SkinningMeshObject::SetBlendDurationUpper(float duration)
+	{
+		m_blendDurationUpper = duration;
+	}
+
+	void SkinningMeshObject::SetBlendDurationLower(float duration)
+	{
+		m_blendDurationLower = duration;
 	}
 
 	bool SkinningMeshObject::IsAnimationEnd()
