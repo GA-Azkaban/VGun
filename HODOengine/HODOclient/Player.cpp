@@ -14,28 +14,28 @@ void Player::Update()
 	// Animation Test용 임시코드
 	if (API::GetKeyDown(DIK_1))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_idle", true);
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_idle", true, true, 0.0f);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true, true, 0.0f);
 	}
 	else if (API::GetKeyDown(DIK_2))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", true);
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", true, true, 0.0f);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true, true, 0.0f);
 	}
 	else if (API::GetKeyDown(DIK_3))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_crouch", true);
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_crouch", true, true, 0.0f);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true, true, 0.0f);
 	}
 	else if (API::GetKeyDown(DIK_4))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", false);
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", false);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", false, true, 0.0f);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", false, true, 0.0f);
 	}
 	else if (API::GetKeyDown(DIK_5))
 	{
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_idle", true);
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_idle", true);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_idle", true, true, 0.0f);
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_idle", true, true, 0.0f);
 	}
 	else if (API::GetKeyDown(DIK_6))
 	{

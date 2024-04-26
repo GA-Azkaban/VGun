@@ -884,7 +884,7 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
+	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		// exitTime을 가지고 있는 경우
 		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
@@ -924,7 +924,7 @@ namespace RocketCore::Graphics
 					m_hasExitTime = hasExitTime;
 					if (hasExitTime)
 					{
-						m_exitTime = exitTime;
+						m_exitTime = exitTime * m_currentAnimation->ticksPerSecond;
 					}
 					return;
 				}
@@ -963,7 +963,7 @@ namespace RocketCore::Graphics
 		m_hasExitTime = hasExitTime;
 		if (hasExitTime)
 		{
-			m_exitTime = exitTime;
+			m_exitTime = exitTime * m_currentAnimation->ticksPerSecond;
 		}
 		// 루프 여부 저장
 		m_currentAnimation->isLoop = isLoop;
@@ -980,7 +980,7 @@ namespace RocketCore::Graphics
 		//}
 	}
 
-	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
+	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		// exitTime을 가지고 있는 경우
 		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
@@ -1017,7 +1017,7 @@ namespace RocketCore::Graphics
 					m_hasExitTimeUpper = hasExitTime;
 					if (hasExitTime)
 					{
-						m_exitTimeUpper = exitTime;
+						m_exitTimeUpper = exitTime * m_currentUpperAnimation->ticksPerSecond;
 					}
 					return;
 				}
@@ -1055,7 +1055,7 @@ namespace RocketCore::Graphics
 		m_hasExitTimeUpper = hasExitTime;
 		if (hasExitTime)
 		{
-			m_exitTimeUpper = exitTime;
+			m_exitTimeUpper = exitTime * m_currentUpperAnimation->ticksPerSecond;
 		}
 
 		// 루프 여부 저장
@@ -1073,7 +1073,7 @@ namespace RocketCore::Graphics
 		//}
 	}
 
-	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
+	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		// exitTime을 가지고 있는 경우
 		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
@@ -1105,7 +1105,7 @@ namespace RocketCore::Graphics
 					m_hasExitTimeLower = hasExitTime;
 					if (hasExitTime)
 					{
-						m_exitTimeLower = exitTime;
+						m_exitTimeLower = exitTime * m_currentLowerAnimation->ticksPerSecond;
 					}
 					return;
 				}			
@@ -1137,7 +1137,7 @@ namespace RocketCore::Graphics
 		m_hasExitTimeLower = hasExitTime;
 		if (hasExitTime)
 		{
-			m_exitTimeLower = exitTime;
+			m_exitTimeLower = exitTime * m_currentLowerAnimation->ticksPerSecond;
 		}
 
 		m_currentLowerAnimation->isLoop = isLoop;

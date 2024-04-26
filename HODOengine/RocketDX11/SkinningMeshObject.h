@@ -51,9 +51,9 @@ namespace RocketCore::Graphics
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual Node* GetNode() override;
 
-		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) override;
-		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) override;
-		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f) override;
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f) override;
 		
 		virtual void SetBlendDuration(float duration) override;
 		virtual void SetBlendDurationUpper(float duration) override;

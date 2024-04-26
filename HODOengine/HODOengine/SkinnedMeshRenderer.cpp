@@ -73,17 +73,17 @@ namespace HDData
 		_skinnedMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
+	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		_skinnedMesh->PlayAnimation(animName, isLoop, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
+	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		_skinnedMesh->PlayAnimationUpper(animName, isLoop, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= false*/, float exitTime /*= 0.0f*/)
+	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		_skinnedMesh->PlayAnimationLower(animName, isLoop, hasExitTime, exitTime);
 	}

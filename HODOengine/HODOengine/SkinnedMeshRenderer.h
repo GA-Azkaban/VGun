@@ -26,9 +26,9 @@ namespace HDData
 		void SetRoughnessValue(float value, unsigned int element = 0);
 		void SetMetallicValue(float value, unsigned int element = 0);
 		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
-		void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f);
-		void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f);
-		void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = false, float exitTime = 0.0f);
+		void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f);
+		void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f);
+		void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f);
 		void SetBlendDuration(float duration);
 		void SetBlendDurationUpper(float duration);
 		void SetBlendDurationLower(float duration);

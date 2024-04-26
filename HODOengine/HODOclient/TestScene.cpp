@@ -96,6 +96,8 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
+	//meshComp->PlayAnimationUpper("AR_idle", true, true, 0.1f);
+	//meshComp->PlayAnimationLower("AR_idle", true, true, 0.1f);
 	meshComp->PlayAnimationUpper("AR_idle", true);
 	meshComp->PlayAnimationLower("AR_idle", true);
 	//meshComp->SetOutlineActive(true);
