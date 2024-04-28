@@ -51,13 +51,9 @@ namespace RocketCore::Graphics
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual Node* GetNode() override;
 
-		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f) override;
-		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f) override;
-		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, bool hasExitTime = true, float exitTime = 0.0f) override;
-		
-		virtual void SetBlendDuration(float duration) override;
-		virtual void SetBlendDurationUpper(float duration) override;
-		virtual void SetBlendDurationLower(float duration) override;
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 
 		virtual bool IsAnimationExitTimeElapsed() override;
 		virtual bool IsUpperAnimationExitTimeElapsed() override;
@@ -85,13 +81,15 @@ namespace RocketCore::Graphics
 		void UpdateLowerAnimation(float deltaTime);
 
 		void UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateAnimationSeparated(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
+		void UpdateAnimationUpper(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateAnimationLower(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT3 CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim);
 
 		void UpdateBlendAnimation(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateBlendAnimationSeparated(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
+		void UpdateBlendAnimationUpper(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateBlendAnimationLower(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT4 CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT3 CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
