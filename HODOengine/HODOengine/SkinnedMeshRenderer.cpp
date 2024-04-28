@@ -73,34 +73,19 @@ namespace HDData
 		_skinnedMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
+	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimation(animName, isLoop, hasExitTime, exitTime);
+		_skinnedMesh->PlayAnimation(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
+	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimationUpper(animName, isLoop, hasExitTime, exitTime);
+		_skinnedMesh->PlayAnimationUpper(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
+	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimationLower(animName, isLoop, hasExitTime, exitTime);
-	}
-
-	void SkinnedMeshRenderer::SetBlendDuration(float duration)
-	{
-		_skinnedMesh->SetBlendDuration(duration);
-	}
-
-	void SkinnedMeshRenderer::SetBlendDurationUpper(float duration)
-	{
-		_skinnedMesh->SetBlendDurationUpper(duration);
-	}
-
-	void SkinnedMeshRenderer::SetBlendDurationLower(float duration)
-	{
-		_skinnedMesh->SetBlendDurationLower(duration);
+		_skinnedMesh->PlayAnimationLower(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
 	bool SkinnedMeshRenderer::IsAnimationExitTimeElapsed()
