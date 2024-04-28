@@ -152,7 +152,7 @@ namespace RocketCore::Graphics
 				else
 				{
 					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
-					
+
 					if (m_currentAnimation->accumulatedTime >= m_exitTime)
 					{
 						m_isExitTimeElapsed = true;
@@ -629,11 +629,8 @@ namespace RocketCore::Graphics
 		{
 			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
-				if (_lowerAnimationNodes.find(node->name) == _lowerAnimationNodes.end())
-				{
-					currAnim = m_currentAnimation->nodeAnimations[i];
-					break;
-				}
+				currAnim = m_currentAnimation->nodeAnimations[i];
+				break;
 			}
 		}
 
@@ -972,12 +969,11 @@ namespace RocketCore::Graphics
 		m_currentAnimation->isEnd = false;
 		m_isExitTimeElapsed = false;
 
-		// 우선 블렌딩 없이
 		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
-		//if (m_previousAnimation != nullptr)
-		//{
-		//	m_blendFlag = true;
-		//}
+		if (m_previousAnimation != nullptr)
+		{
+			m_blendFlag = true;
+		}
 	}
 
 	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
@@ -1003,10 +999,10 @@ namespace RocketCore::Graphics
 		m_separateUpperAndLowerAnim = true;
 
 		if (m_currentUpperAnimation != nullptr)
-		{		
+		{
 			// 현재 실행하고 있는 애니메이션과 같은 애니메이션 또 재생 눌렸을 때
 			if (m_currentUpperAnimation->animName == animIter->second->animName)
-			{			
+			{
 				// 루프 여부 저장
 				m_currentUpperAnimation->isLoop = isLoop;
 				// 루프가 true면 실행되고 있는 애니메이션 전환하지 않고
@@ -1091,9 +1087,9 @@ namespace RocketCore::Graphics
 			m_currentLowerAnimation = nullptr;
 			return;
 		}
-		
+
 		// 애니메이션 분리 여부 저장
-		m_separateUpperAndLowerAnim = true;		
+		m_separateUpperAndLowerAnim = true;
 
 		if (m_currentLowerAnimation != nullptr)
 		{
@@ -1108,7 +1104,7 @@ namespace RocketCore::Graphics
 						m_exitTimeLower = exitTime * m_currentLowerAnimation->ticksPerSecond;
 					}
 					return;
-				}			
+				}
 			}
 
 			// exitTime이 없는 경우에
