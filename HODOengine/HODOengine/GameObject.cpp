@@ -244,7 +244,8 @@ namespace HDData
 
 	void GameObject::LoadFBXFile(std::string fileName)
 	{
-		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "mesh", this);
+		Scene* currentScene = GetThisObjectScene();
+		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "mesh", this);
 		auto rendererComp = rendererObject->AddComponent<SkinnedMeshRenderer>();
 		rendererComp->LoadNode(fileName);
 		rendererComp->LoadMesh(fileName);
@@ -255,16 +256,16 @@ namespace HDData
 		Node* armature = FindNodeByName(rendererNode, "Armature");
 		if (armature != nullptr)
 		{
-			ProcessNode(armature, this);
+			ProcessNode(currentScene, armature, this);
 		}
 		else
 		{
-			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), "Armature", this);
+			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "Armature", this);
 			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
 			Node* root = FindNodeByName(rendererNode, "root");			
 			if (root != nullptr)
 			{
-				ProcessNode(root, newObject);
+				ProcessNode(currentScene, root, newObject);
 			}
 		}
 		// 그래픽스엔진의 SkinningObject의 LoadMesh에서 호출되는 LoadNode는 없애야 한다.
@@ -288,16 +289,16 @@ namespace HDData
 		return nullptr;
 	}
 
-	void GameObject::ProcessNode(Node* node, GameObject* parentObject)
+	void GameObject::ProcessNode(Scene* scene, Node* node, GameObject* parentObject)
 	{
-		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(HDEngine::SceneSystem::Instance().GetCurrentScene(), node->name, parentObject);
+		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(scene, node->name, parentObject);
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
 		node->nodeTransform = newObject->GetTransform()->_transform;
 		//newObject->AddComponent<StaticBoxCollider>();
 		
 		for (int i = 0; i < node->children.size(); ++i)
 		{
-			ProcessNode(&(node->children[i]), newObject);
+			ProcessNode(scene, &(node->children[i]), newObject);
 		}
 	}
 	
