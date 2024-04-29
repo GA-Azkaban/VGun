@@ -1,9 +1,9 @@
-#include "DynamicSphereCollider.h"
+﻿#include "DynamicSphereCollider.h"
 #include "GameObject.h"
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicSphereCollider::DynamicSphereCollider()
-	: _radius(0.5f), _isPlayer(false)
+	: _radius(10.0f), _isPlayer(false)
 {
 	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 	_debugStruct = _sphereDebugStruct;
@@ -51,7 +51,7 @@ void HDData::DynamicSphereCollider::DrawDebug()
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();
 	colWorld *= GetTransform()->GetWorldTM();
-	_debugStruct->worldTM = colWorld;
+	_debugStruct->worldTM = XMMatrixTranspose(colWorld);
 	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
 
 	_sphereDebugStruct->diameter = _radius * 2;

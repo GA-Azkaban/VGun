@@ -436,7 +436,7 @@ namespace RocketCore::Graphics
 				{
 					if (node->name == "root" || node->name == "pelvis")
 					{
-						// crouch 애니메이션이라면 하체의 root 와 pelvis로 갱신
+						// 하체가 crouch 애니메이션이라면 하체의 root 와 pelvis로 갱신
 						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) != _lowerAnimationNames.end())
 						{
 							nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
@@ -498,7 +498,7 @@ namespace RocketCore::Graphics
 				{
 					if (node->name == "root" || node->name == "pelvis")
 					{
-						// crouch 애니메이션이 아니라면 상체의 root 와 pelvis로 갱신
+						// 하체가 crouch 애니메이션이 아니라면 상체의 root 와 pelvis로 갱신
 						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) == _lowerAnimationNames.end())
 						{
 							nodeAnim = m_currentUpperAnimation->nodeAnimations[i];

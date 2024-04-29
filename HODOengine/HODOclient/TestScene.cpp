@@ -85,7 +85,7 @@ TestScene::TestScene()
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//meshComp->SetActive(false);
-	//meshComp->SetFillModeWireFrame(true);
+	meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
 	desc.materialName = "TP_Red";
 	desc.albedo = "TP_Red_B.png";
@@ -149,13 +149,20 @@ TestScene::TestScene()
 
 	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
 	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
-	headColliderObj->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
-	headColliderObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
-	headColliderObj->GetTransform()->SetLocalPosition(Vector3{ -170.0f, 0.0f, 0.0f });
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
+	headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
+	headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
+	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
+	auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
 	//playerHeadCollider->SetParentCollider(playerCollider);
 
-	//auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
+	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
+	auto leftUpperArmObj = API::CreateObject(_scene, "LeftUpperArmCollider", plLeftUpperArm);
+	leftUpperArmObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -2.0f, 0.0f });
+	//leftUpperArmObj->GetTransform()->SetLocalRotation(0.0f, 0.52f, 0.0f, 1.0f);
+	leftUpperArmObj->GetTransform()->SetLocalScale(20.0f, 15.0f, 10.0f);
+	auto leftUpperCollider = leftUpperArmObj->AddComponent<HDData::StaticBoxCollider>();
 	//plLeftUpperArm->SetParentObject(playerTest);
 	//plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
 	//auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
