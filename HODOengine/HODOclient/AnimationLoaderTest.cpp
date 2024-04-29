@@ -36,9 +36,6 @@ void AnimationLoaderTest::Start()
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
 
-	meshComp->PlayAnimationUpper("AR_idle", true);
-	meshComp->PlayAnimationLower("AR_idle", true);
-
 	auto name = playerTP->GetThisObjectScene()->GetSceneName();
 
 	playerTP->AddComponent<HDData::Animator>();

@@ -75,6 +75,14 @@ namespace HDEngine
 					auto p = nodeInfo["FBX"].GetString();
 					node->motion = CutAnimationName(p);
 				}
+				if (nodeInfo.HasMember("hasExitTime") && nodeInfo["hasExitTime"].IsBool())
+				{
+					node->hasExitTime = nodeInfo["hasExitTime"].GetBool();
+				}
+				if (nodeInfo.HasMember("exitTime") && nodeInfo["exitTime"].IsFloat())
+				{
+					node->exitTime = nodeInfo["exitTime"].GetFloat();
+				}
 
 				_nodes.push_back(*node);
 			}
@@ -177,7 +185,9 @@ namespace HDEngine
 	{
 		for (auto& node : _nodes)
 		{
-			con->CreateState(node.nodeName, node.motion);
+			auto state = con->CreateState(node.nodeName, node.motion);
+			state->_hasExitTime = node.hasExitTime;
+			state->_exitTime = node.exitTime;
 		}
 	}
 

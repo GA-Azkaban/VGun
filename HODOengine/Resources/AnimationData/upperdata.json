@@ -2,39 +2,57 @@
   "Nodes": {
     "Entry": {
       "name": "Entry",
-      "FBX": ""
+      "FBX": "",
+      "hasExitTime": true,
+      "exitTime": 0.0
     },
     "Exit": {
       "name": "Exit",
-      "FBX": ""
+      "FBX": "",
+      "hasExitTime": true,
+      "exitTime": 0.0
     },
     "IDLE": {
       "name": "IDLE",
-      "FBX": "SKM_TP_X_idle.fbx"
+      "FBX": "SKM_TP_X_idle.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
     },
     "JUMP": {
       "name": "JUMP",
-      "FBX": "SKM_TP_X_jump.fbx"
+      "FBX": "SKM_TP_X_jump.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
     },
     "RUN": {
       "name": "RUN",
-      "FBX": "SKM_TP_X_run.fbx"
-    },
-    "CROUCH": {
-      "name": "CROUCH",
-      "FBX": "SKM_TP_X_crouch.fbx"
-    },
-    "SHOOT": {
-      "name": "SHOOT",
-      "FBX": "SKM_TP_HG_shoot.fbx"
+      "FBX": "SKM_TP_X_run.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
     },
     "CROUCH_UP": {
       "name": "CROUCH_UP",
-      "FBX": "SKM_TP_X_crouchUp.fbx"
+      "FBX": "SKM_TP_X_crouchUp.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
     },
     "CROUCH_DOWN": {
       "name": "CROUCH_DOWN",
-      "FBX": "SKM_TP_X_crouchDown.fbx"
+      "FBX": "SKM_TP_X_crouchDown.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
+    },
+    "CROUCH": {
+      "name": "CROUCH",
+      "FBX": "SKM_TP_X_crouch.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
+    },
+    "FIRE": {
+      "name": "FIRE",
+      "FBX": "SKM_TP_HG_shoot.fbx",
+      "hasExitTime": true,
+      "exitTime": 0.0
     }
   },
   "Params": {
@@ -96,19 +114,6 @@
     },
     "link": {
       "start": "IDLE",
-      "end": "SHOOT",
-      "condition": "isShoot",
-      "type": 3,
-      "value": "",
-      "transitionAnimation": ""
-    },
-    "link": {
-      "start": "SHOOT",
-      "end": "IDLE",
-      "transitionAnimation": ""
-    },
-    "link": {
-      "start": "IDLE",
       "end": "CROUCH",
       "condition": "isCrouch",
       "type": 2,
@@ -124,15 +129,28 @@
       "transitionAnimation": "CROUCH_UP"
     },
     "link": {
-      "start": "CROUCH",
-      "end": "SHOOT",
+      "start": "IDLE",
+      "end": "FIRE",
       "condition": "isShoot",
       "type": 3,
       "value": "",
       "transitionAnimation": ""
     },
     "link": {
-      "start": "SHOOT",
+      "start": "FIRE",
+      "end": "IDLE",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "CROUCH",
+      "end": "FIRE",
+      "condition": "isShoot",
+      "type": 3,
+      "value": "",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "FIRE",
       "end": "CROUCH",
       "transitionAnimation": ""
     }

@@ -21,7 +21,7 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Start();
-		_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, true);
+		_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 	}
 
 	void LowerAnimator::Update()
@@ -32,7 +32,7 @@ namespace HDData
 
 		if (!_animationController->GetMotionBuffer().empty())
 		{
-			_meshRenderer->PlayAnimationLower(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_motion, false);
+			_meshRenderer->PlayAnimationLower(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_motion, false, 0.075, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			_animationController->GetMotionBuffer().pop_back();
 			_engageIng = true;
 		}
@@ -47,18 +47,18 @@ namespace HDData
 		{
 			if (_animationController->GetCurrentState()->GetIsLoop() && _animationController->GetCurrentState()->_motion != "")
 			{
-				_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, true);
+				_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			}
 			else if (_animationController->GetCurrentState()->_motion != "")
 			{
-				_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, false);
+				_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, false, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			}
 		}
 
 		if (!(_animationController->GetCurrentState()->GetIsLoop()) && _meshRenderer->IsLowerAnimationEnd())
 		{
 			_animationController->SetCurrentState(_animationController->GetPrevStateName());
-			_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, true);
+			_meshRenderer->PlayAnimationLower(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 		}
 	}
 

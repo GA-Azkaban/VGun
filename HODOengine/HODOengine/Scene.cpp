@@ -86,7 +86,7 @@ namespace HDData
 		{
 			if (gameObject->IsActive())
 			{
-				gameObject->Update();
+ 				gameObject->Update();
 			}
 		}
 	}
