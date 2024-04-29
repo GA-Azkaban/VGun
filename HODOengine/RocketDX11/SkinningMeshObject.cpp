@@ -1153,8 +1153,11 @@ namespace RocketCore::Graphics
 		m_blendDurationUpper = blendDuration * m_currentUpperAnimation->ticksPerSecond;
 
 		// 상체 애니메이션 전환 시에 재생되고 있는 하체 애니메이션 저장
-		m_savedLowerPreviousAnimationForUpper = *m_currentLowerAnimation;
-		m_lowerPreviousAnimationForUpper = &m_savedLowerPreviousAnimationForUpper;
+		if (m_currentLowerAnimation != nullptr)
+		{
+			m_savedLowerPreviousAnimationForUpper = *m_currentLowerAnimation;
+			m_lowerPreviousAnimationForUpper = &m_savedLowerPreviousAnimationForUpper;
+		}
 
 		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
 		if (m_previousUpperAnimation != nullptr)
@@ -1247,8 +1250,11 @@ namespace RocketCore::Graphics
 		m_blendDurationLower = blendDuration * m_currentLowerAnimation->ticksPerSecond;
 
 		// 하체 애니메이션 전환 시 재생되고 있는 상체 애니메이션 저장
-		m_savedUpperPreviousAnimationForLower = *m_currentUpperAnimation;
-		m_upperPreviousAnimationForLower = &m_savedUpperPreviousAnimationForLower;
+		if (m_currentUpperAnimation != nullptr)
+		{
+			m_savedUpperPreviousAnimationForLower = *m_currentUpperAnimation;
+			m_upperPreviousAnimationForLower = &m_savedUpperPreviousAnimationForLower;
+		}
 
 		if (m_previousLowerAnimation != nullptr)
 		{
