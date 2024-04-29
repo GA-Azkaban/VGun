@@ -25,6 +25,8 @@ namespace HDEngine
 		{
 			std::string nodeName;
 			std::string motion;
+			bool hasExitTime = true;
+			float exitTime = 0.0f;
 		};
 
 		struct Param

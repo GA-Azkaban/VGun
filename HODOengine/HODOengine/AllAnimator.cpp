@@ -22,7 +22,7 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Start();
-		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
+		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 	}
 
 	void AllAnimator::Update()
@@ -33,7 +33,7 @@ namespace HDData
 
 		if (!_animationController->GetMotionBuffer().empty())
 		{
-			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_motion, false);
+			_meshRenderer->PlayAnimation(_animationController->GetAllStates().find(_animationController->GetMotionBuffer().front().c_str())->second->_motion, false, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			_animationController->GetMotionBuffer().pop_back();
 			_engageIng = true;
 		}
@@ -48,18 +48,18 @@ namespace HDData
 		{
 			if (_animationController->GetCurrentState()->GetIsLoop() && _animationController->GetCurrentState()->_motion != "")
 			{
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
+				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			}
 			else if (_animationController->GetCurrentState()->_motion != "")
 			{
-				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, false);
+				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, false, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			}
 		}
 
 		if (!(_animationController->GetCurrentState()->GetIsLoop()) && _meshRenderer->IsAnimationEnd())
 		{
 			_animationController->SetCurrentState(_animationController->GetPrevStateName());
-			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true);
+			_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 		}
 	}
 
