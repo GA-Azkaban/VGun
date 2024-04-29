@@ -260,7 +260,7 @@ namespace HDEngine
 				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
 				boxRigid->setLinearDamping(0.1f);
 				boxRigid->setAngularDamping(0.1f);
-				//physx::PxRigidBodyExt::updateMassAndInertia(*boxRigid, 0.9f);
+				physx::PxRigidBodyExt::updateMassAndInertia(*boxRigid, 0.0f);
 				//boxRigid->setMass(10.0f);
 				if (box->GetColGroup() != 0)
 				{
@@ -330,6 +330,7 @@ namespace HDEngine
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
+				physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
 				sphereRigid->attachShape(*shape);
 
 				//_pxScene->addActor(*sphereRigid);

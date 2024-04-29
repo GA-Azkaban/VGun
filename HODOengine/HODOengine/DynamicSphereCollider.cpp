@@ -52,8 +52,7 @@ void HDData::DynamicSphereCollider::DrawDebug()
 	colWorld *= GetTransformMatrix();
 	colWorld *= GetTransform()->GetWorldTM();
 	_debugStruct->worldTM = colWorld;
-	//_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
-	_debugStruct->color = { 0.0f,1.0f,0.0f,0.0f };
+	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };
 
 	_sphereDebugStruct->diameter = _radius * 2;
 

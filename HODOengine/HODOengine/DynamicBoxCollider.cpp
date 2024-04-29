@@ -50,8 +50,7 @@ void HDData::DynamicBoxCollider::DrawDebug()
 	colWorld.m[1][1] *= _height;
 	colWorld.m[2][2] *= _depth;
 	_debugStruct->worldTM = colWorld;
-	//_debugStruct->color = { 1.0f,1.0f,0.0f,1.0f };
-	_debugStruct->color = { 1.0f,1.0f,0.0f,0.0f };
+	_debugStruct->color = { 1.0f,1.0f,0.0f,1.0f };
 
 	_cubeDebugStruct->widthHeightDepth = { _width, _height, _depth };
 }

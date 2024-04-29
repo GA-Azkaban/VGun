@@ -362,8 +362,7 @@ void PlayerMove::UpdatePlayerPositionDebug()
 {
 	Vector3 pos = GetTransform()->GetPosition();
 	std::string posText = "x : " + std::to_string(pos.x) + "\ny : " + std::to_string(pos.y) + "\nz : " + std::to_string(pos.z);
-	//_playerInfoText->SetText(posText);
-	_playerInfoText->SetText("");
+	_playerInfoText->SetText(posText);
 }
 
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
