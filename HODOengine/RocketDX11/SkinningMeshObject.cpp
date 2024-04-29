@@ -1037,9 +1037,17 @@ namespace RocketCore::Graphics
 		// 애니메이션 실행 시간 초기화
 		m_currentAnimation->accumulatedTime = 0.0f;
 		m_currentAnimation->isEnd = false;
-		m_isExitTimeElapsed = false;
 		// 블렌딩 시간 저장
 		m_blendDuration = blendDuration * m_currentAnimation->ticksPerSecond;
+
+		if (m_exitTime <= 0.0f)
+		{
+			m_isExitTimeElapsed = true;
+		}
+		else
+		{
+			m_isExitTimeElapsed = false;
+		}
 
 		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
 		if (m_previousAnimation != nullptr)
