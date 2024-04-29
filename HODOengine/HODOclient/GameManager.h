@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <unordered_map>
 
 #include "../HODOengine/HODO_API.h"
@@ -15,13 +15,15 @@ private:
 	~GameManager() = default;
 
 public:
-	void InitGame();
+	void Start() override;
+	void Update() override;
 
 public:
-	std::unordered_map<eWeaponType, const weaponData*> GetWeapons();
+	void InitGame();
+	void EndGame();
 
-private:
-	void SetWeaponData();
-	std::unordered_map<eWeaponType, const weaponData*> _weapons;
+public:
+	void InitRound();
+	void UpdateRound();
 };
 
