@@ -26,13 +26,17 @@ namespace HDData
 		void SetRoughnessValue(float value, unsigned int element = 0);
 		void SetMetallicValue(float value, unsigned int element = 0);
 		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
-		void PlayAnimation(const std::string& animName, bool isLoop = true);
-		void PlayAnimationUpper(const std::string& animName, bool isLoop = true);
-		void PlayAnimationLower(const std::string& animName, bool isLoop = true);
+		void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f);
+		void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f);
+		void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f);
+		bool IsAnimationExitTimeElapsed();
+		bool IsUpperAnimationExitTimeElapsed();
+		bool IsLowerAnimationExitTimeElapsed();
 		bool IsAnimationEnd();
 		bool IsUpperAnimationEnd();
 		bool IsLowerAnimationEnd();
 		void SetOutlineActive(bool isActive);
+		void SetFillModeWireFrame(bool setWireFrame);
 		Node* GetNode();
 
 	protected:

@@ -51,14 +51,20 @@ namespace RocketCore::Graphics
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual Node* GetNode() override;
 
-		virtual void PlayAnimation(const std::string& animName, bool isLoop = true) override;
-		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true) override;
-		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true) override;
+		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+
+		virtual bool IsAnimationExitTimeElapsed() override;
+		virtual bool IsUpperAnimationExitTimeElapsed() override;
+		virtual bool IsLowerAnimationExitTimeElapsed() override;
+
 		virtual bool IsAnimationEnd() override;
 		virtual bool IsUpperAnimationEnd() override;
 		virtual bool IsLowerAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
+		virtual void SetFillModeWireFrame(bool setWireFrame) override;
 
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		std::vector<Material*>& GetMaterials() { return m_materials; }
@@ -75,13 +81,15 @@ namespace RocketCore::Graphics
 		void UpdateLowerAnimation(float deltaTime);
 
 		void UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateAnimationSeparated(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
+		void UpdateAnimationUpper(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateAnimationLower(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT3 CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim);
 
 		void UpdateBlendAnimation(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateBlendAnimationSeparated(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index);
+		void UpdateBlendAnimationUpper(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
+		void UpdateBlendAnimationLower(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT4 CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT3 CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
@@ -91,11 +99,23 @@ namespace RocketCore::Graphics
 		std::vector<Material*> m_materials;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
-		bool m_blendFlag;
 		bool m_isOutlineActive;
 		bool m_separateUpperAndLowerAnim;
+		bool m_blendFlag;
 		bool m_blendFlagUpper;
 		bool m_blendFlagLower;
+		float m_blendDuration;
+		float m_blendDurationUpper;
+		float m_blendDurationLower;
+		bool m_hasExitTime;
+		bool m_hasExitTimeUpper;
+		bool m_hasExitTimeLower;
+		float m_exitTime;
+		float m_exitTimeUpper;
+		float m_exitTimeLower;
+		bool m_isExitTimeElapsed;
+		bool m_isExitTimeUpperElapsed;
+		bool m_isExitTimeLowerElapsed;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
@@ -129,5 +149,6 @@ namespace RocketCore::Graphics
 		// 우리 게임에 사용하는 캐릭터 전용 노드 하드 코딩.
 		std::unordered_set<std::string> _upperAnimationNodes;
 		std::unordered_set<std::string> _lowerAnimationNodes;
+		std::unordered_set<std::string> _lowerAnimationNames;
 	};
 }

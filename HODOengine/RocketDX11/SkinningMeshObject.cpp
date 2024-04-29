@@ -20,10 +20,13 @@ namespace RocketCore::Graphics
 	SkinningMeshObject::SkinningMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false),
 		m_world{ XMMatrixIdentity() }, m_separateUpperAndLowerAnim(false), m_isOutlineActive(false),
-		m_currentAnimation(nullptr), m_blendFlag(false),
-		m_currentUpperAnimation(nullptr), m_currentLowerAnimation(nullptr),
-		m_previousUpperAnimation(nullptr), m_previousLowerAnimation(nullptr),
-		m_blendFlagUpper(false), m_blendFlagLower(false)
+		m_currentAnimation(nullptr), m_currentUpperAnimation(nullptr), m_currentLowerAnimation(nullptr),
+		m_previousAnimation(nullptr), m_previousUpperAnimation(nullptr), m_previousLowerAnimation(nullptr),
+		m_blendFlag(false), m_blendFlagUpper(false), m_blendFlagLower(false),
+		m_blendDuration(0.1f), m_blendDurationUpper(0.1f), m_blendDurationLower(0.1f),
+		m_hasExitTime(false), m_hasExitTimeUpper(false), m_hasExitTimeLower(false),
+		m_exitTime(0.0f), m_exitTimeUpper(0.0f), m_exitTimeLower(0.0f),
+		m_isExitTimeElapsed(true), m_isExitTimeUpperElapsed(true), m_isExitTimeLowerElapsed(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
@@ -102,6 +105,17 @@ namespace RocketCore::Graphics
 		_lowerAnimationNodes.insert("foot_r");
 		_lowerAnimationNodes.insert("ball_r");
 		_lowerAnimationNodes.insert("thigh_twist_01_r");
+
+		_lowerAnimationNames.insert("X_crouch");
+		_lowerAnimationNames.insert("X_crouchDown");
+		_lowerAnimationNames.insert("X_crouchUp");
+		_lowerAnimationNames.insert("X_crouchWalk_B");
+		_lowerAnimationNames.insert("X_crouchWalk_F");
+		_lowerAnimationNames.insert("AR_crouch");
+		_lowerAnimationNames.insert("AR_crouchDown");
+		_lowerAnimationNames.insert("AR_crouchUp");
+		_lowerAnimationNames.insert("AR_crouchWalk_B");
+		_lowerAnimationNames.insert("AR_crouchWalk_F");
 	}
 
 	SkinningMeshObject::~SkinningMeshObject()
@@ -113,10 +127,10 @@ namespace RocketCore::Graphics
 	{
 		if (m_separateUpperAndLowerAnim)
 		{
-			//lower animation
-			UpdateLowerAnimation(deltaTime);
 			// upper animation
 			UpdateUpperAnimation(deltaTime);
+			//lower animation
+			UpdateLowerAnimation(deltaTime);
 		}
 		else
 		{
@@ -126,7 +140,7 @@ namespace RocketCore::Graphics
 				{
 					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
 
-					if (m_currentAnimation->accumulatedTime > m_currentAnimation->blendDuration)
+					if (m_currentAnimation->accumulatedTime > (m_blendDuration * m_currentAnimation->ticksPerSecond))
 					{
 						m_blendFlag = false;
 						m_currentAnimation->accumulatedTime = 0.0f;
@@ -139,12 +153,18 @@ namespace RocketCore::Graphics
 				{
 					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
 
+					if (m_currentAnimation->accumulatedTime >= m_exitTime)
+					{
+						m_isExitTimeElapsed = true;
+					}
+
 					if (m_currentAnimation->accumulatedTime > m_currentAnimation->duration)
 					{
 						m_currentAnimation->isEnd = true;
 						if (m_currentAnimation->isLoop == true)
 						{
 							m_currentAnimation->accumulatedTime = 0.0f;
+							m_isExitTimeElapsed = false;
 						}
 						return;
 					}
@@ -171,18 +191,23 @@ namespace RocketCore::Graphics
 			{
 				m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
 
-				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->blendDuration)
+				if (m_currentUpperAnimation->accumulatedTime > m_blendDurationUpper)
 				{
 					m_blendFlagUpper = false;
 					m_currentUpperAnimation->accumulatedTime = 0.0f;
 					return;
 				}
 
-				UpdateBlendAnimationSeparated(m_previousUpperAnimation->accumulatedTime, m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
+				UpdateBlendAnimationUpper(m_previousUpperAnimation->accumulatedTime, m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 			}
 			else
 			{
 				m_currentUpperAnimation->accumulatedTime += deltaTime * m_currentUpperAnimation->ticksPerSecond;
+
+				if (m_currentUpperAnimation->accumulatedTime >= m_exitTimeUpper)
+				{
+					m_isExitTimeUpperElapsed = true;
+				}
 
 				if (m_currentUpperAnimation->accumulatedTime > m_currentUpperAnimation->duration)
 				{
@@ -190,6 +215,7 @@ namespace RocketCore::Graphics
 					if (m_currentUpperAnimation->isLoop == true)
 					{
 						m_currentUpperAnimation->accumulatedTime = 0.0f;
+						m_isExitTimeUpperElapsed = false;
 					}
 					return;
 				}
@@ -201,7 +227,7 @@ namespace RocketCore::Graphics
 
 				if (!m_currentUpperAnimation->isEnd)
 				{
-					UpdateAnimationSeparated(m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 0);
+					UpdateAnimationUpper(m_currentUpperAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 				}
 			}
 		}
@@ -215,18 +241,23 @@ namespace RocketCore::Graphics
 			{
 				m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
 
-				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->blendDuration)
+				if (m_currentLowerAnimation->accumulatedTime > m_blendDurationLower)
 				{
 					m_blendFlagLower = false;
 					m_currentLowerAnimation->accumulatedTime = 0.0f;
 					return;
 				}
 
-				UpdateBlendAnimationSeparated(m_previousLowerAnimation->accumulatedTime, m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
+				UpdateBlendAnimationLower(m_previousLowerAnimation->accumulatedTime, m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 			}
 			else
 			{
 				m_currentLowerAnimation->accumulatedTime += deltaTime * m_currentLowerAnimation->ticksPerSecond;
+
+				if (m_currentLowerAnimation->accumulatedTime >= m_exitTimeLower)
+				{
+					m_isExitTimeLowerElapsed = true;
+				}
 
 				if (m_currentLowerAnimation->accumulatedTime > m_currentLowerAnimation->duration)
 				{
@@ -234,6 +265,7 @@ namespace RocketCore::Graphics
 					if (m_currentLowerAnimation->isLoop == true)
 					{
 						m_currentLowerAnimation->accumulatedTime = 0.0f;
+						m_isExitTimeLowerElapsed = false;
 					}
 					return;
 				}
@@ -245,7 +277,7 @@ namespace RocketCore::Graphics
 
 				if (!m_currentLowerAnimation->isEnd)
 				{
-					UpdateAnimationSeparated(m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world), 1);
+					UpdateAnimationLower(m_currentLowerAnimation->accumulatedTime, &m_node, m_world, DirectX::XMMatrixInverse(nullptr, m_world));
 				}
 			}
 		}
@@ -391,46 +423,28 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void SkinningMeshObject::UpdateAnimationSeparated(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index)
+	void SkinningMeshObject::UpdateAnimationUpper(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
 	{
 		DirectX::XMMATRIX _nodeTransform = node->nodeTransformOffset;
 		NodeAnimation* nodeAnim = nullptr;
-		if (index == 0)
+
+		for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
 		{
-			for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
+			if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 			{
 				if (m_currentUpperAnimation->nodeAnimations[i]->nodeName == node->name)
 				{
-					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+					if (node->name == "root" || node->name == "pelvis")
 					{
-						if (m_currentUpperAnimation->animName != m_currentLowerAnimation->animName)
+						// crouch 애니메이션이라면 하체의 root 와 pelvis로 갱신
+						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) != _lowerAnimationNames.end())
 						{
-							if (node->name == "root" || node->name == "pelvis")
-							{
-								//if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-								//{
-								nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
-								break;
-								//}
-							}
+							nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
+							break;
 						}
-						nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
-						break;
 					}
-				}
-			}
-		}
-		else
-		{
-			for (UINT i = 0; i < m_currentLowerAnimation->nodeAnimations.size(); ++i)
-			{
-				if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-				{
-					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
-					{
-						nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
-						break;
-					}
+					nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
+					break;
 				}
 			}
 		}
@@ -459,25 +473,78 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		if (index == 0)
+		if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
 		{
-			if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
-			{
-				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
-			}
-		}
-		else
-		{
-			if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
-			{
-				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
-			}
+			m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
 		}
 
 		// update values for children bones
 		for (Node& child : node->children)
 		{
-			UpdateAnimationSeparated(animationTime, &child, globalTransform, globalInvTransform, index);
+			UpdateAnimationUpper(animationTime, &child, globalTransform, globalInvTransform);
+		}
+	}
+
+	void SkinningMeshObject::UpdateAnimationLower(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
+	{
+		DirectX::XMMATRIX _nodeTransform = node->nodeTransformOffset;
+		NodeAnimation* nodeAnim = nullptr;
+
+		for (UINT i = 0; i < m_currentLowerAnimation->nodeAnimations.size(); ++i)
+		{
+			if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+			{
+				if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (node->name == "root" || node->name == "pelvis")
+					{
+						// crouch 애니메이션이 아니라면 상체의 root 와 pelvis로 갱신
+						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) == _lowerAnimationNames.end())
+						{
+							nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
+							break;
+						}
+					}
+					nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
+					break;
+				}
+			}
+		}
+
+		if (nodeAnim != nullptr)
+		{
+			// calculate interpolated position
+			DirectX::XMFLOAT3 position = CalcInterpolatedPosition(animationTime, nodeAnim);
+			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
+
+			// calculate interpolated rotation
+			DirectX::XMFLOAT4 rotation = CalcInterpolatedRotation(animationTime, nodeAnim);
+			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
+
+			DirectX::XMFLOAT3 scale = CalcInterpolatedScaling(animationTime, nodeAnim);
+			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
+			{
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
+			}
+		}
+		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+
+		// 하체 관련 노드들에 대해서만 bone transform 갱신
+		if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+		{
+			m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		}
+
+		// update values for children bones
+		for (Node& child : node->children)
+		{
+			UpdateAnimationLower(animationTime, &child, globalTransform, globalInvTransform);
 		}
 	}
 
@@ -590,153 +657,12 @@ namespace RocketCore::Graphics
 		{
 			if (m_currentAnimation->nodeAnimations[i]->nodeName == node->name)
 			{
-				if (_lowerAnimationNodes.find(node->name) == _lowerAnimationNodes.end())
-				{
-					currAnim = m_currentAnimation->nodeAnimations[i];
-					break;
-				}
+				currAnim = m_currentAnimation->nodeAnimations[i];
+				break;
 			}
 		}
 
-		if (prevAnim != nullptr && currAnim != nullptr)
-		{
-			// calculate interpolated position
-			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
-			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
-
-			// calculate interpolated rotation
-			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
-			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
-			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
-
-			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, m_currentAnimation->blendDuration, prevAnim, currAnim);
-			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
-
-			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
-			if (node->nodeTransform != nullptr)
-			{
-				node->nodeTransform->_position = position;
-				node->nodeTransform->_rotation = rotation;
-				node->nodeTransform->_scale = scale;
-			}
-		}
-		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
-
-		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
-
-		// update values for children bones
-		for (Node& child : node->children)
-		{
-			UpdateBlendAnimation(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform);
-		}
-	}
-
-	void SkinningMeshObject::UpdateBlendAnimationSeparated(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform, UINT index)
-	{
-		DirectX::XMMATRIX _nodeTransform = (node->nodeTransformOffset);
-		NodeAnimation* prevAnim = nullptr;
-		NodeAnimation* currAnim = nullptr;
-		float blendDuration = 0.0f;
-
-		if (index == 0)
-		{
-			for (UINT i = 0; i < m_previousUpperAnimation->nodeAnimations.size(); ++i)
-			{
-				if (m_previousUpperAnimation->nodeAnimations[i]->nodeName == node->name)
-				{
-					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
-					{
-						if (m_previousLowerAnimation != nullptr)
-						{
-							if (m_previousUpperAnimation->animName != m_previousLowerAnimation->animName)
-							{
-								if (node->name == "root" || node->name == "pelvis")
-								{
-									//if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-									//{
-									prevAnim = m_previousLowerAnimation->nodeAnimations[i];
-									break;
-									//}
-								}
-							}
-						}
-						else
-						{
-							if (m_previousUpperAnimation->animName != m_currentLowerAnimation->animName)
-							{
-								if (node->name == "root" || node->name == "pelvis")
-								{
-									//if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-									//{
-									prevAnim = m_currentLowerAnimation->nodeAnimations[i];
-									break;
-									//}
-								}
-							}
-						}
-						prevAnim = m_previousUpperAnimation->nodeAnimations[i];
-						break;
-					}
-				}
-			}
-
-			for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
-			{
-				if (m_currentUpperAnimation->nodeAnimations[i]->nodeName == node->name)
-				{
-					if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
-					{
-						if (m_currentUpperAnimation->animName != m_currentLowerAnimation->animName)
-						{
-							if (node->name == "root" || node->name == "pelvis")
-							{
-								//if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-								for (UINT j = 0; j < m_currentLowerAnimation->nodeAnimations.size(); ++j)
-								{
-									if (m_currentLowerAnimation->nodeAnimations[j]->nodeName == node->name)
-									{
-										currAnim = m_currentLowerAnimation->nodeAnimations[j];
-										blendDuration = m_currentUpperAnimation->blendDuration;
-									}
-									break;
-								}
-							}
-						}
-
-						currAnim = m_currentUpperAnimation->nodeAnimations[i];
-						blendDuration = m_currentUpperAnimation->blendDuration;
-						break;
-					}
-				}
-			}
-		}
-		else
-		{
-			for (UINT i = 0; i < m_previousLowerAnimation->nodeAnimations.size(); ++i)
-			{
-				if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-				{
-					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
-					{
-						prevAnim = m_previousLowerAnimation->nodeAnimations[i];
-						break;
-					}
-				}
-			}
-
-			for (UINT i = 0; i < m_currentLowerAnimation->nodeAnimations.size(); ++i)
-			{
-				if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
-				{
-					if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
-					{
-						currAnim = m_currentLowerAnimation->nodeAnimations[i];
-						blendDuration = m_currentLowerAnimation->blendDuration;
-						break;
-					}
-				}
-			}
-		}
+		float blendDuration = m_blendDuration * m_currentAnimation->ticksPerSecond;
 
 		if (prevAnim != nullptr && currAnim != nullptr)
 		{
@@ -762,25 +688,201 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		if (index == 0)
+		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+
+		// update values for children bones
+		for (Node& child : node->children)
 		{
-			if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+			UpdateBlendAnimation(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform);
+		}
+	}
+
+	void SkinningMeshObject::UpdateBlendAnimationUpper(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
+	{
+		DirectX::XMMATRIX _nodeTransform = (node->nodeTransformOffset);
+		NodeAnimation* prevAnim = nullptr;
+		NodeAnimation* currAnim = nullptr;
+
+		if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+		{
+			for (UINT i = 0; i < m_previousUpperAnimation->nodeAnimations.size(); ++i)
 			{
-				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+				if (m_previousUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (node->name == "root" || node->name == "pelvis")
+					{
+						// 이전 애니메이션의 하체 애니메이션이 crouch 애니메이션 이라면
+						// root나 pelvis를 하체 애니메이션 기준으로 넣어줘야 한다.
+						if (_lowerAnimationNames.find(m_previousLowerAnimation->animName) != _lowerAnimationNames.end())
+						{
+							prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+							break;
+						}
+					}
+
+					prevAnim = m_previousUpperAnimation->nodeAnimations[i];
+					break;
+				}
+
+			}
+
+			for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_currentUpperAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (node->name == "root" || node->name == "pelvis")
+					{
+						// 현재 애니메이션의 하체 애니메이션이 crouch 애니메이션 이라면
+						// root나 pelvis를 하체 애니메이션 기준으로 넣어줘야 한다.
+						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) != _lowerAnimationNames.end())
+						{
+							currAnim = m_currentLowerAnimation->nodeAnimations[i];
+							break;
+						}
+					}
+
+					currAnim = m_currentUpperAnimation->nodeAnimations[i];
+					break;
+				}
 			}
 		}
-		else
+
+		if (prevAnim != nullptr && currAnim != nullptr)
 		{
-			if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+			// calculate interpolated position
+			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, m_blendDurationUpper, prevAnim, currAnim);
+			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
+
+			// calculate interpolated rotation
+			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, m_blendDurationUpper, prevAnim, currAnim);
+			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
+
+			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, m_blendDurationUpper, prevAnim, currAnim);
+			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
 			{
-				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
 			}
+		}
+		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+
+		if (_upperAnimationNodes.find(node->name) != _upperAnimationNodes.end())
+		{
+			m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
 		}
 
 		// update values for children bones
 		for (Node& child : node->children)
 		{
-			UpdateBlendAnimationSeparated(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform, index);
+			UpdateBlendAnimationUpper(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform);
+		}
+	}
+
+	void SkinningMeshObject::UpdateBlendAnimationLower(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform)
+	{
+		DirectX::XMMATRIX _nodeTransform = (node->nodeTransformOffset);
+		NodeAnimation* prevAnim = nullptr;
+		NodeAnimation* currAnim = nullptr;
+
+		// 하체 노드만 갱신한다
+		if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+		{
+			for (UINT i = 0; i < m_previousLowerAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_previousLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (node->name == "root" || node->name == "pelvis")
+					{
+						// 이전 애니메이션의 하체 애니메이션이 crouch 애니메이션이 아니라면
+						// root나 pelvis를 상체 애니메이션 기준으로 넣어줘야 한다.
+						if (_lowerAnimationNames.find(m_previousLowerAnimation->animName) == _lowerAnimationNames.end())
+						{
+							// 이전 상체 애니메이션이 있다면 상체 기준으로.
+							// 있는데 상체 애니메이션이 crouch였다면?
+							// 하체 애니메이션이 crouch가 아닌데 상체 애니메이션이 crouch인 경우는 없다.
+							if (m_previousUpperAnimation != nullptr)
+							{
+								prevAnim = m_previousUpperAnimation->nodeAnimations[i];
+								break;
+							}
+							else // 이전 상체 애니메이션이 없는 경우
+							{
+								prevAnim = m_currentUpperAnimation->nodeAnimations[i];
+								break;
+							}
+						}
+						else // 이전 애니메이션의 하체 애니메이션이 crouch 애니메이션이라면
+						{
+							prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+							break;
+						}
+					}
+
+					prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+					break;
+				}
+			}
+
+			for (UINT i = 0; i < m_currentLowerAnimation->nodeAnimations.size(); ++i)
+			{
+				if (m_currentLowerAnimation->nodeAnimations[i]->nodeName == node->name)
+				{
+					if (node->name == "root" || node->name == "pelvis")
+					{
+						// 현재 애니메이션의 하체 애니메이션이 crouch 애니메이션이 아니라면
+						// root나 pelvis를 상체 애니메이션 기준으로 넣어줘야 한다.
+						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) == _lowerAnimationNames.end())
+						{
+							currAnim = m_currentUpperAnimation->nodeAnimations[i];
+							break;
+						}
+					}
+
+					currAnim = m_currentLowerAnimation->nodeAnimations[i];
+					break;
+				}
+			}
+
+		}
+
+		if (prevAnim != nullptr && currAnim != nullptr)
+		{
+			// calculate interpolated position
+			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, m_blendDurationLower, prevAnim, currAnim);
+			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
+
+			// calculate interpolated rotation
+			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, m_blendDurationLower, prevAnim, currAnim);
+			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
+			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
+
+			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, m_blendDurationLower, prevAnim, currAnim);
+			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
+
+			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+			if (node->nodeTransform != nullptr)
+			{
+				node->nodeTransform->_position = position;
+				node->nodeTransform->_rotation = rotation;
+				node->nodeTransform->_scale = scale;
+			}
+		}
+		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
+
+		if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
+		{
+			m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		}
+
+		// update values for children bones
+		for (Node& child : node->children)
+		{
+			UpdateBlendAnimationLower(prevAnimationTime, animationTime, &child, globalTransform, globalInvTransform);
 		}
 	}
 
@@ -860,13 +962,19 @@ namespace RocketCore::Graphics
 		return ret;
 	}
 
-	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		if (m_separateUpperAndLowerAnim == true)
+		// exitTime을 가지고 있는 경우
+		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
+		if (m_hasExitTime)
 		{
-			m_separateUpperAndLowerAnim = false;
+			if (!m_isExitTimeElapsed)
+			{
+				return;
+			}
 		}
 
+		// 애니메이션 리스트에 없는 애니메이션은 재생할 수 없다.
 		auto animIter = m_animations.find(animName);
 		if (animIter == m_animations.end())
 		{
@@ -874,49 +982,95 @@ namespace RocketCore::Graphics
 			return;
 		}
 
+		// 애니메이션 분리 여부 저장		
+		m_separateUpperAndLowerAnim = false;
+
+		// 현재 실행 중인 애니메이션이 있다면
+		// 그 애니메이션을 이전 애니메이션으로 저장해두고 다음 애니메이션으로 넘어간다.
 		if (m_currentAnimation != nullptr)
 		{
+			/// 중복 입력 버그가 있어 넣어두는 코드
+			// 현재 실행 중인 애니메이션과 실행시키려는 애니메이션 이름이 같다면
 			if (m_currentAnimation->animName == animIter->second->animName)
 			{
+				// 루프 여부 저장
 				m_currentAnimation->isLoop = isLoop;
+				// 루프가 true인 애니메이션은 실행하던 애니메이션을 바꾸지 않고 종료
 				if (m_currentAnimation->isLoop)
+				{
+					// 이전 애니메이션으로 저장해둔다.					
+					m_previousAnimation = m_currentAnimation;
+					// hasExitTime 여부와 exitTime 저장
+					m_hasExitTime = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTime = exitTime * m_currentAnimation->ticksPerSecond;
+					}
+					return;
+				}
+			}
+			// 루프가 false라면 
+			// 그리고 실행 중인 애니메이션과 실행시키려는 애니메이션의 이름이 다른 경우
+			// exitTime이 있는 경우는 위에서 exitTime 지났는지 체크하고 있다.
+			// exitTime이 없는 경우는 애니메이션이 종료되어야 전환 가능
+			if (!m_hasExitTime)
+			{
+				if (!m_currentAnimation->isEnd)
 				{
 					return;
 				}
-
-				if (!m_currentAnimation->isEnd)
-					return;
 			}
 
+			// 이전 애니메이션을 저장해둔다.
 			m_savedPreviousAnimation = *m_currentAnimation;
 			m_previousAnimation = &m_savedPreviousAnimation;
 		}
 		else
 		{
+			// 현재 애니메이션이 없다면 이전 애니메이션을 저장할 필요가 없다.
 			m_previousAnimation = nullptr;
 		}
 
+		// 애니메이션 전환
 		m_savedCurrentAnimation = *(animIter->second);
 		m_savedUpperCurrentAnimation = *(animIter->second);
 		m_savedLowerCurrentAnimation = *(animIter->second);
 		m_currentAnimation = &m_savedCurrentAnimation;
 		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
 		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
+
+		// hasExitTime 여부와 exitTime 저장
+		m_hasExitTime = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTime = exitTime * m_currentAnimation->ticksPerSecond;
+		}
+		// 루프 여부 저장
 		m_currentAnimation->isLoop = isLoop;
+		// 애니메이션 실행 시간 초기화
 		m_currentAnimation->accumulatedTime = 0.0f;
 		m_currentAnimation->isEnd = false;
+		m_isExitTimeElapsed = false;
+		// 블렌딩 시간 저장
+		m_blendDuration = blendDuration * m_currentAnimation->ticksPerSecond;
 
+		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
 		if (m_previousAnimation != nullptr)
 		{
 			m_blendFlag = true;
 		}
 	}
 
-	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		if (m_separateUpperAndLowerAnim == false)
+		// exitTime을 가지고 있는 경우
+		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
+		if (m_hasExitTimeUpper)
 		{
-			m_separateUpperAndLowerAnim = true;
+			if (!m_isExitTimeUpperElapsed)
+			{
+				return;
+			}
 		}
 
 		auto animIter = m_animations.find(animName);
@@ -926,49 +1080,92 @@ namespace RocketCore::Graphics
 			return;
 		}
 
+		// 애니메이션 분리 여부 저장
+		m_separateUpperAndLowerAnim = true;
+
 		if (m_currentUpperAnimation != nullptr)
 		{
+			// 현재 실행하고 있는 애니메이션과 같은 애니메이션 또 재생 눌렸을 때
 			if (m_currentUpperAnimation->animName == animIter->second->animName)
 			{
+				// 루프 여부 저장
 				m_currentUpperAnimation->isLoop = isLoop;
-
+				// 루프가 true면 실행되고 있는 애니메이션 전환하지 않고
+				// 받아온 정보들만 저장해준다.
+				// false면 애니메이션 처음부터 다시 재생될 것이다.
 				if (m_currentUpperAnimation->isLoop)
 				{
+					m_previousUpperAnimation = m_currentUpperAnimation;
+					m_hasExitTimeUpper = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTimeUpper = exitTime * m_currentUpperAnimation->ticksPerSecond;
+					}
 					return;
 				}
+			}
 
+			// exitTime이 없는 경우에
+			// 애니메이션 재생이 모두 끝나지 않았다면 전환하지 않는다.
+			if (!m_hasExitTimeUpper)
+			{
 				if (!m_currentUpperAnimation->isEnd)
 				{
 					return;
 				}
 			}
 
+			// 이전 애니메이션 저장한다.
 			m_savedUpperPreviousAnimation = *m_currentUpperAnimation;
 			m_previousUpperAnimation = &m_savedUpperPreviousAnimation;
 		}
 		else
 		{
+			// 현재 애니메이션이 없다면 이전 애니메이션을 저장할 필요가 없다.
 			m_previousUpperAnimation = nullptr;
 		}
 
+		// currentAnimation은 우선 nullptr로 저장한다. 
+		// PlayAnimationUpper에서 PlayAnimation으로 애니메이션 전환을 하는 경우도 생각해봐야 한다.
 		m_currentAnimation = nullptr;
+
+		// 애니메이션 전환
 		m_savedUpperCurrentAnimation = *(animIter->second);
 		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
+
+		// hasExitTime 여부와 exitTime 저장
+		m_hasExitTimeUpper = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTimeUpper = exitTime * m_currentUpperAnimation->ticksPerSecond;
+		}
+
+		// 루프 여부 저장
 		m_currentUpperAnimation->isLoop = isLoop;
+		// 애니메이션 실행 시간 초기화
 		m_currentUpperAnimation->accumulatedTime = 0.0f;
 		m_currentUpperAnimation->isEnd = false;
+		m_isExitTimeUpperElapsed = false;
 
+		m_blendDurationUpper = blendDuration * m_currentUpperAnimation->ticksPerSecond;
+
+		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
 		if (m_previousUpperAnimation != nullptr)
 		{
 			m_blendFlagUpper = true;
 		}
 	}
 
-	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/)
+	void SkinningMeshObject::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		if (m_separateUpperAndLowerAnim == false)
+		// exitTime을 가지고 있는 경우
+		// exitTime만큼 지나지 않았다면 다음 애니메이션으로 넘어갈 수 없다.
+		if (m_hasExitTimeLower)
 		{
-			m_separateUpperAndLowerAnim = true;
+			if (!m_isExitTimeLowerElapsed)
+			{
+				return;
+			}
 		}
 
 		auto animIter = m_animations.find(animName);
@@ -978,16 +1175,34 @@ namespace RocketCore::Graphics
 			return;
 		}
 
+		// 애니메이션 분리 여부 저장
+		m_separateUpperAndLowerAnim = true;
+
 		if (m_currentLowerAnimation != nullptr)
 		{
 			if (m_currentLowerAnimation->animName == animIter->second->animName)
 			{
 				m_currentLowerAnimation->isLoop = isLoop;
 				if (m_currentLowerAnimation->isLoop)
+				{
+					m_previousLowerAnimation = m_currentLowerAnimation;
+					m_hasExitTimeLower = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTimeLower = exitTime * m_currentLowerAnimation->ticksPerSecond;
+					}
 					return;
+				}
+			}
 
+			// exitTime이 없는 경우에
+			// 애니메이션 재생이 모두 끝나지 않았다면 전환하지 않는다.
+			if (!m_hasExitTimeLower)
+			{
 				if (!m_currentLowerAnimation->isEnd)
+				{
 					return;
+				}
 			}
 
 			m_savedLowerPreviousAnimation = *m_currentLowerAnimation;
@@ -999,12 +1214,23 @@ namespace RocketCore::Graphics
 		}
 
 		m_currentAnimation = nullptr;
+
 		m_savedLowerCurrentAnimation = *(animIter->second);
 		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
+
+		m_hasExitTimeLower = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTimeLower = exitTime * m_currentLowerAnimation->ticksPerSecond;
+		}
+
 		m_currentLowerAnimation->isLoop = isLoop;
 		m_currentLowerAnimation->accumulatedTime = 0.0f;
 		m_currentLowerAnimation->isEnd = false;
+		m_isExitTimeLowerElapsed = false;
 
+		m_blendDurationLower = blendDuration * m_currentLowerAnimation->ticksPerSecond;
+		
 		if (m_previousLowerAnimation != nullptr)
 		{
 			m_blendFlagLower = true;
@@ -1116,6 +1342,21 @@ namespace RocketCore::Graphics
 		return m_node.rootNodeInvTransform * m_world;
 	}
 
+	bool SkinningMeshObject::IsAnimationExitTimeElapsed()
+	{
+		return m_isExitTimeElapsed;
+	}
+
+	bool SkinningMeshObject::IsUpperAnimationExitTimeElapsed()
+	{
+		return m_isExitTimeUpperElapsed;
+	}
+
+	bool SkinningMeshObject::IsLowerAnimationExitTimeElapsed()
+	{
+		return m_isExitTimeLowerElapsed;
+	}
+
 	bool SkinningMeshObject::IsAnimationEnd()
 	{
 		return m_currentAnimation->isEnd;
@@ -1153,6 +1394,18 @@ namespace RocketCore::Graphics
 	Node* SkinningMeshObject::GetNode()
 	{
 		return &m_node;
+	}
+
+	void SkinningMeshObject::SetFillModeWireFrame(bool setWireFrame)
+	{
+		if (setWireFrame)
+		{
+			m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::WIREFRAME);
+		}
+		else
+		{
+			m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
+		}
 	}
 
 }

@@ -73,19 +73,34 @@ namespace HDData
 		_skinnedMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimation(animName, isLoop);
+		_skinnedMesh->PlayAnimation(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimationUpper(animName, isLoop);
+		_skinnedMesh->PlayAnimationUpper(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/)
+	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
-		_skinnedMesh->PlayAnimationLower(animName, isLoop);
+		_skinnedMesh->PlayAnimationLower(animName, isLoop, blendDuration, hasExitTime, exitTime);
+	}
+
+	bool SkinnedMeshRenderer::IsAnimationExitTimeElapsed()
+	{
+		return _skinnedMesh->IsAnimationExitTimeElapsed();
+	}
+
+	bool SkinnedMeshRenderer::IsUpperAnimationExitTimeElapsed()
+	{
+		return _skinnedMesh->IsUpperAnimationExitTimeElapsed();
+	}
+
+	bool SkinnedMeshRenderer::IsLowerAnimationExitTimeElapsed()
+	{
+		return _skinnedMesh->IsLowerAnimationExitTimeElapsed();
 	}
 
 	bool SkinnedMeshRenderer::IsAnimationEnd()
@@ -106,6 +121,11 @@ namespace HDData
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
 		_skinnedMesh->SetOutlineActive(isActive);
+	}
+
+	void SkinnedMeshRenderer::SetFillModeWireFrame(bool setWireFrame)
+	{
+		_skinnedMesh->SetFillModeWireFrame(setWireFrame);
 	}
 
 	Node* SkinnedMeshRenderer::GetNode()
