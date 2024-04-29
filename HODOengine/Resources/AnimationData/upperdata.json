@@ -3,55 +3,55 @@
     "Entry": {
       "name": "Entry",
       "FBX": "",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "Exit": {
       "name": "Exit",
       "FBX": "",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "IDLE": {
       "name": "IDLE",
       "FBX": "SKM_TP_X_idle.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "JUMP": {
       "name": "JUMP",
       "FBX": "SKM_TP_X_jump.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "RUN": {
       "name": "RUN",
       "FBX": "SKM_TP_X_run.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "CROUCH_UP": {
       "name": "CROUCH_UP",
       "FBX": "SKM_TP_X_crouchUp.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "CROUCH_DOWN": {
       "name": "CROUCH_DOWN",
       "FBX": "SKM_TP_X_crouchDown.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "CROUCH": {
       "name": "CROUCH",
       "FBX": "SKM_TP_X_crouch.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     },
     "FIRE": {
       "name": "FIRE",
       "FBX": "SKM_TP_HG_shoot.fbx",
-      "hasExitTime": "\u0000",
+      "hasExitTime": true,
       "exitTime": 0.0
     }
   },

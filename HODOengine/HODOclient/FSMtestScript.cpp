@@ -26,12 +26,10 @@ void FSMtestScript::Update()
 	}
 	if (API::GetKeyPressing(DIK_L))
 	{
-		_animator->GetUpperAC()->SetBool("isWalkR", true);
 		_animator->GetLowerAC()->SetBool("isWalkR", true);
 	}
 	if (API::GetKeyUp(DIK_L))
 	{
-		_animator->GetUpperAC()->SetBool("isWalkR", false);
 		_animator->GetLowerAC()->SetBool("isWalkR", false);
 	}
 	if (API::GetKeyDown(DIK_SPACE))
@@ -41,12 +39,12 @@ void FSMtestScript::Update()
 	}
 	if (API::GetKeyDown(DIK_C))
 	{
-		if (_animator->GetUpperAC()->GetCurrentState() == "IDLE" || _animator->GetUpperAC()->GetCurrentState() == "IDLE_AIM" || _animator->GetUpperAC()->GetCurrentState() == "CRUNCH_AIM")
+		if (_animator->GetUpperAC()->GetCurrentState() == "IDLE")
 		{
 			_animator->GetUpperAC()->SetBool("isCrouch", true);
 			_animator->GetLowerAC()->SetBool("isCrouch", true);
 		}
-		else
+		else if(_animator->GetUpperAC()->GetCurrentState() != "FIRE")
 		{
 			_animator->GetUpperAC()->SetBool("isCrouch", false);
 			_animator->GetLowerAC()->SetBool("isCrouch", false);
