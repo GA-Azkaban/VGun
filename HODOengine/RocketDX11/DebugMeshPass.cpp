@@ -38,9 +38,9 @@ namespace RocketCore::Graphics
 
 		for (auto e : ObjectManager::Instance().GetSpherePrimitiveList())
 		{
-			e->worldTM.m[0][0] *= e->diameter;
-			e->worldTM.m[1][1] *= e->diameter;
-			e->worldTM.m[2][2] *= e->diameter;
+			//e->worldTM.m[0][0] *= e->diameter;
+			//e->worldTM.m[1][1] *= e->diameter;
+			//e->worldTM.m[2][2] *= e->diameter;
 
 			ResourceManager::Instance().GetSpherePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}

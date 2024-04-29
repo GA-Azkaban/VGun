@@ -27,7 +27,6 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
 	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
@@ -51,27 +50,26 @@ TestScene::TestScene()
 	//auto testBox5 = API::CreateObject(_scene);
 	//testBox5->GetComponent<HDData::Transform>()->SetPosition(50.0f, -1.0f, -10.0f);
 	//auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
-	//boxRender5->LoadMesh("primitiveCube");
-	
+	//boxRender5->LoadMesh("primitiveCube");	
 
-	auto buildingTest1 = API::CreateObject(_scene);
-	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
-	buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
-	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	buildingRenderer1->LoadMesh("SM_building_town_01.fbx");
-	HDEngine::MaterialDesc buildingDesc1;
-	buildingDesc1.materialName = "colorpalette_standard";
-	//buildingDesc1.albedo = "colorpalette_standard.png";
-	buildingDesc1.color = { 178,161,132,255 };
-	//buildingDesc1.metallic = 0.0f;
-	buildingDesc1.roughness = 1.0f - 0.057f;
-	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
+	//auto buildingTest1 = API::CreateObject(_scene);
+	//buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
+	//buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
+	//auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
+	//buildingRenderer1->LoadMesh("SM_building_town_01.fbx");
+	//HDEngine::MaterialDesc buildingDesc1;
+	//buildingDesc1.materialName = "colorpalette_standard";
+	////buildingDesc1.albedo = "colorpalette_standard.png";
+	//buildingDesc1.color = { 178,161,132,255 };
+	////buildingDesc1.metallic = 0.0f;
+	//buildingDesc1.roughness = 1.0f - 0.057f;
+	//HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
@@ -87,7 +85,7 @@ TestScene::TestScene()
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//meshComp->SetActive(false);
-	meshComp->SetFillModeWireFrame(true);
+	//meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
 	desc.materialName = "TP_Red";
 	desc.albedo = "TP_Red_B.png";
@@ -105,7 +103,7 @@ TestScene::TestScene()
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	/*auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
 	weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
@@ -139,7 +137,7 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat2, 3);
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
-	weaponComp->LoadMaterial(weaponMat3, 4);
+	weaponComp->LoadMaterial(weaponMat3, 4); */
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
@@ -149,10 +147,12 @@ TestScene::TestScene()
 	//// 플레이어 collider들을 추가해주는 부분
 	//auto playerCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
 
-	//auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
-	//playerTestHead->SetParentObject(playerTest);
-	//playerTestHead->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.9f, 0.0f });
-	//auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
+	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
+	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
+	headColliderObj->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+	headColliderObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
+	headColliderObj->GetTransform()->SetLocalPosition(Vector3{ -170.0f, 0.0f, 0.0f });
+	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
 	//playerHeadCollider->SetParentCollider(playerCollider);
 
 	//auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
