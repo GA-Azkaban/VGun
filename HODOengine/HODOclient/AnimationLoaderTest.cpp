@@ -18,7 +18,7 @@ void AnimationLoaderTest::Start()
 	_scene = API::CreateScene("ALT");
 
 	HDData::GameObject* mainCam = _scene->GetMainCamera()->GetGameObject();
-	//mainCam->AddComponent<CameraMove>();
+	mainCam->AddComponent<CameraMove>();
 
 	auto playerTP = API::CreateObject(_scene, "playerTP");
 	playerTP->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
@@ -36,9 +36,14 @@ void AnimationLoaderTest::Start()
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
 
-	playerTP->AddComponent<HDData::Animator>();
-	API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
-	API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
+	meshComp->PlayAnimationUpper("AR_idle", true);
+	meshComp->PlayAnimationLower("AR_idle", true);
 
-	playerTP->AddComponent<FSMtestScript>();
+	auto name = playerTP->GetThisObjectScene()->GetSceneName();
+
+	//playerTP->AddComponent<HDData::Animator>();
+	//API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
+	//API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
+
+	//playerTP->AddComponent<FSMtestScript>();
 }
