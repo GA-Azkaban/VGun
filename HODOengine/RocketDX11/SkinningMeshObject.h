@@ -138,6 +138,11 @@ namespace RocketCore::Graphics
 		Animation* m_currentUpperAnimation;
 		Animation* m_currentLowerAnimation;
 
+		Animation m_savedLowerPreviousAnimationForUpper;
+		Animation* m_lowerPreviousAnimationForUpper;
+		Animation m_savedUpperPreviousAnimationForLower;
+		Animation* m_upperPreviousAnimationForLower;
+
 		// Transform Matrix
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
 

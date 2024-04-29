@@ -713,9 +713,9 @@ namespace RocketCore::Graphics
 					{
 						// 이전 애니메이션의 하체 애니메이션이 crouch 애니메이션 이라면
 						// root나 pelvis를 하체 애니메이션 기준으로 넣어줘야 한다.
-						if (_lowerAnimationNames.find(m_previousLowerAnimation->animName) != _lowerAnimationNames.end())
+						if (_lowerAnimationNames.find(m_lowerPreviousAnimationForUpper->animName) != _lowerAnimationNames.end())
 						{
-							prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+							prevAnim = m_lowerPreviousAnimationForUpper->nodeAnimations[i];
 							break;
 						}
 					}
@@ -804,23 +804,10 @@ namespace RocketCore::Graphics
 						{
 							// 이전 상체 애니메이션이 있다면 상체 기준으로.
 							// 있는데 상체 애니메이션이 crouch였다면?
-							// 하체 애니메이션이 crouch가 아닌데 상체 애니메이션이 crouch인 경우는 없다.
-							if (m_previousUpperAnimation != nullptr)
-							{
-								prevAnim = m_previousUpperAnimation->nodeAnimations[i];
-								break;
-							}
-							else // 이전 상체 애니메이션이 없는 경우
-							{
-								prevAnim = m_currentUpperAnimation->nodeAnimations[i];
-								break;
-							}
-						}
-						else // 이전 애니메이션의 하체 애니메이션이 crouch 애니메이션이라면
-						{
-							prevAnim = m_previousLowerAnimation->nodeAnimations[i];
+							// 하체 애니메이션이 crouch가 아닌데 상체 애니메이션이 crouch인 경우는 없다.							
+							prevAnim = m_upperPreviousAnimationForLower->nodeAnimations[i];
 							break;
-						}
+						}						
 					}
 
 					prevAnim = m_previousLowerAnimation->nodeAnimations[i];
@@ -1149,6 +1136,10 @@ namespace RocketCore::Graphics
 
 		m_blendDurationUpper = blendDuration * m_currentUpperAnimation->ticksPerSecond;
 
+		// 상체 애니메이션 전환 시에 재생되고 있는 하체 애니메이션 저장
+		m_savedLowerPreviousAnimationForUpper = *m_currentLowerAnimation;
+		m_lowerPreviousAnimationForUpper = &m_savedLowerPreviousAnimationForUpper;
+
 		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
 		if (m_previousUpperAnimation != nullptr)
 		{
@@ -1230,7 +1221,11 @@ namespace RocketCore::Graphics
 		m_isExitTimeLowerElapsed = false;
 
 		m_blendDurationLower = blendDuration * m_currentLowerAnimation->ticksPerSecond;
-		
+
+		// 하체 애니메이션 전환 시 재생되고 있는 상체 애니메이션 저장
+		m_savedUpperPreviousAnimationForLower = *m_currentUpperAnimation;
+		m_upperPreviousAnimationForLower = &m_savedUpperPreviousAnimationForLower;
+
 		if (m_previousLowerAnimation != nullptr)
 		{
 			m_blendFlagLower = true;
