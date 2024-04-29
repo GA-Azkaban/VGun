@@ -239,7 +239,9 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="PlayerMove.h" />
+    <ClInclude Include="PlayerState.h" />
     <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ServerPacketHandler.h" />
@@ -270,6 +272,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerInfo.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="Protocol.pb.cc" />
     <ClCompile Include="ServerPacketHandler.cpp" />

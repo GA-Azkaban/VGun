@@ -26,6 +26,7 @@ namespace HDData
 {
 	class Component;
 	class Transform;
+	class Scene;
 
 	template <class ComponentType>
 	concept ComponentConcept = std::is_base_of<Component, ComponentType>::value;
@@ -125,6 +126,7 @@ namespace HDData
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
 		GameObject* GetGameObjectByNameInChildren(const std::string& objectName);
+		Scene* GetThisObjectScene();
 		Transform* GetTransform() { return _transform; }
 		bool IsActive() { return _selfActive; }
 

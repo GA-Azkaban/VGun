@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 
 GameManager* GameManager::GetInstance()
 {
@@ -17,36 +17,45 @@ GameManager::GameManager()
 
 }
 
+void GameManager::Start()
+{
+
+}
+
+void GameManager::Update()
+{
+
+}
+
 void GameManager::InitGame()
 {
+	// 라운드 초기화
+	InitRound();
 
 
-	// 모든 무기에 대한 데이터 설정
-	SetWeaponData();
 }
 
-std::unordered_map<eWeaponType, const weaponData*> GameManager::GetWeapons()
+void GameManager::EndGame()
 {
-	return _weapons;
+
 }
 
-void GameManager::SetWeaponData()
+void GameManager::InitRound()
 {
-	weaponData* handGun = new weaponData;
-	_weapons.insert({eWeaponType::HANDGUN, handGun});
+	// 타이머 초기화
+	// 각 팀당 킬카운트 초기화
 
-	weaponData* shotGun = new weaponData;
-	_weapons.insert({ eWeaponType::SHOTGUN, shotGun });
-
-	weaponData* AR1 = new weaponData;
-	_weapons.insert({ eWeaponType::ASSAULT_RIFLE1, AR1 });
-
-	weaponData* AR2 = new weaponData;
-	_weapons.insert({ eWeaponType::ASSAULT_RIFLE2, AR2 });
-
-	weaponData* AR3 = new weaponData;
-	_weapons.insert({ eWeaponType::ASSAULT_RIFLE3, AR3 });
-
-	weaponData* sniper = new weaponData;
-	_weapons.insert({ eWeaponType::SNIPER, sniper });
+	// 플레이어 정보 초기화
 }
+
+void GameManager::UpdateRound()
+{
+	// 플레이어 transform 정보 갱신
+
+	// 플레이어 state 정보 갱신
+
+	// 플레이어 killcount, time 갱신
+
+	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
+}
+

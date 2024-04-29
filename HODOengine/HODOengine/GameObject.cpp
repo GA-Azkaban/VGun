@@ -6,6 +6,13 @@
 #include "StaticBoxCollider.h"
 #include "SkinnedMeshRenderer.h"
 #include "MeshRenderer.h"
+#include "Scene.h"
+#include "SceneSystem.h"
+
+namespace HDEngine
+{
+	class SceneSystem;
+}
 
 namespace HDData
 {
@@ -152,6 +159,17 @@ namespace HDData
 		}
 		
 		return nullptr;
+	}
+
+	Scene* GameObject::GetThisObjectScene()
+	{
+		for (auto& scene : HDEngine::SceneSystem::Instance().GetAllScenes())
+		{
+			for (auto& obj : scene.second->GetGameObjectList())
+			{
+				if (obj == this) return scene.second;
+			}
+		}
 	}
 
 	void GameObject::SetParentObject(GameObject* parentObject)

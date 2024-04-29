@@ -290,7 +290,7 @@ TestScene::TestScene()
 	//		API::LoadSceneByName("B");
 	//	});
 
-	API::LoadScene(_scene);
+	//API::LoadScene(_scene);
 }
 
 TestScene::~TestScene()
