@@ -24,6 +24,16 @@ void FSMtestScript::Update()
 		_animator->GetUpperAC()->SetBool("isRun", false);
 		_animator->GetLowerAC()->SetBool("isRun", false);
 	}
+	if (API::GetKeyPressing(DIK_L))
+	{
+		_animator->GetUpperAC()->SetBool("isWalkR", true);
+		_animator->GetLowerAC()->SetBool("isWalkR", true);
+	}
+	if (API::GetKeyUp(DIK_L))
+	{
+		_animator->GetUpperAC()->SetBool("isWalkR", false);
+		_animator->GetLowerAC()->SetBool("isWalkR", false);
+	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
 		_animator->GetUpperAC()->SetTrigger("isJump");

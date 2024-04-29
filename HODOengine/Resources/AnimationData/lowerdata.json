@@ -2,35 +2,63 @@
   "Nodes": {
     "Entry": {
       "name": "Entry",
-      "FBX": ""
+      "FBX": "",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     },
     "Exit": {
       "name": "Exit",
-      "FBX": ""
+      "FBX": "",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     },
     "IDLE": {
       "name": "IDLE",
-      "FBX": "SKM_TP_X_idle.fbx"
-    },
-    "JUMP": {
-      "name": "JUMP",
-      "FBX": "SKM_TP_X_jump.fbx"
+      "FBX": "SKM_TP_X_idle",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     },
     "RUN": {
       "name": "RUN",
-      "FBX": "SKM_TP_X_run.fbx"
+      "FBX": "SKM_TP_X_run.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
+    },
+    "JUMP": {
+      "name": "JUMP",
+      "FBX": "SKM_TP_X_jump.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     },
     "CROUCH": {
       "name": "CROUCH",
-      "FBX": "SKM_TP_X_crouch.fbx"
+      "FBX": "SKM_TP_X_crouch.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
+    },
+    "MOVE_R": {
+      "name": "MOVE_R",
+      "FBX": "SKM_FP_HG_walkR.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
+    },
+    "MOVE_L": {
+      "name": "MOVE_L",
+      "FBX": "SKM_FP_HG_walkL.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     },
     "CROUCH_UP": {
       "name": "CROUCH_UP",
-      "FBX": "SKM_TP_X_crouchUp.fbx"
+      "FBX": "SKM_TP_X_crouchUp.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     },
     "CROUCH_DOWN": {
       "name": "CROUCH_DOWN",
-      "FBX": "SKM_TP_X_crouchDown.fbx"
+      "FBX": "SKM_TP_X_crouchDown.fbx",
+      "hasExitTime": "\u0000",
+      "exitTime": 0.0
     }
   },
   "Params": {
@@ -39,19 +67,24 @@
       "type": 2,
       "value": false
     },
-    "isJump": {
-      "paramName": "isJump",
-      "type": 3,
-      "value": false
-    },
     "isCrouch": {
       "paramName": "isCrouch",
       "type": 2,
       "value": false
     },
-    "isShoot": {
-      "paramName": "isShoot",
+    "isJump": {
+      "paramName": "isJump",
       "type": 3,
+      "value": false
+    },
+    "isWalkR": {
+      "paramName": "isWalkR",
+      "type": 2,
+      "value": false
+    },
+    "isWalkL": {
+      "paramName": "isWalkL",
+      "type": 2,
       "value": false
     }
   },
@@ -59,6 +92,22 @@
     "link": {
       "start": "Entry",
       "end": "IDLE",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "IDLE",
+      "end": "RUN",
+      "condition": "isRun",
+      "type": 2,
+      "value": "True",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "RUN",
+      "end": "IDLE",
+      "condition": "isRun",
+      "type": 2,
+      "value": "False",
       "transitionAnimation": ""
     },
     "link": {
@@ -76,16 +125,32 @@
     },
     "link": {
       "start": "IDLE",
-      "end": "RUN",
-      "condition": "isRun",
+      "end": "MOVE_R",
+      "condition": "isWalkR",
       "type": 2,
       "value": "True",
       "transitionAnimation": ""
     },
     "link": {
-      "start": "RUN",
+      "start": "MOVE_R",
       "end": "IDLE",
-      "condition": "isRun",
+      "condition": "isWalkR",
+      "type": 2,
+      "value": "False",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "IDLE",
+      "end": "MOVE_L",
+      "condition": "isWalkL",
+      "type": 2,
+      "value": "True",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "MOVE_L",
+      "end": "IDLE",
+      "condition": "isWalkL",
       "type": 2,
       "value": "False",
       "transitionAnimation": ""
