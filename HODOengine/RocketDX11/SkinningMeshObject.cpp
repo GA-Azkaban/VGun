@@ -807,7 +807,7 @@ namespace RocketCore::Graphics
 							// 하체 애니메이션이 crouch가 아닌데 상체 애니메이션이 crouch인 경우는 없다.							
 							prevAnim = m_upperPreviousAnimationForLower->nodeAnimations[i];
 							break;
-						}						
+						}
 					}
 
 					prevAnim = m_previousLowerAnimation->nodeAnimations[i];
@@ -1132,7 +1132,15 @@ namespace RocketCore::Graphics
 		// 애니메이션 실행 시간 초기화
 		m_currentUpperAnimation->accumulatedTime = 0.0f;
 		m_currentUpperAnimation->isEnd = false;
-		m_isExitTimeUpperElapsed = false;
+
+		if (m_exitTimeUpper <= 0.0f)
+		{
+			m_isExitTimeUpperElapsed = true;
+		}
+		else
+		{
+			m_isExitTimeUpperElapsed = false;
+		}
 
 		m_blendDurationUpper = blendDuration * m_currentUpperAnimation->ticksPerSecond;
 
@@ -1218,7 +1226,15 @@ namespace RocketCore::Graphics
 		m_currentLowerAnimation->isLoop = isLoop;
 		m_currentLowerAnimation->accumulatedTime = 0.0f;
 		m_currentLowerAnimation->isEnd = false;
-		m_isExitTimeLowerElapsed = false;
+
+		if (m_exitTimeLower <= 0.0f)
+		{
+			m_isExitTimeLowerElapsed = true;
+		}
+		else
+		{
+			m_isExitTimeLowerElapsed = false;
+		}
 
 		m_blendDurationLower = blendDuration * m_currentLowerAnimation->ticksPerSecond;
 
