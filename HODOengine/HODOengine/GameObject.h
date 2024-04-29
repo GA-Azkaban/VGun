@@ -145,7 +145,7 @@ namespace HDData
 
 	private:
 		Node* FindNodeByName(Node* node, std::string nodeName);
-		void ProcessNode(Node* node, GameObject* parentObject);
+		void ProcessNode(Scene* scene, Node* node, GameObject* parentObject);
 
 	private:
 		//std::unordered_set<Component*> _components;
