@@ -140,29 +140,35 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat3, 4); */
 
 	// 바닥
-	//auto groundFloor = API::CreateObject(_scene, "ground");
-	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
+	auto groundFloor = API::CreateObject(_scene, "ground");
+	groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
+	auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
 	//// 플레이어 collider들을 추가해주는 부분
 	//auto playerCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
 
 	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
 	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
+	headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 25.0f);
+	headColliderObj->GetTransform()->SetPosition(0.0f, 0.0f, 0.0f);
 	//headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
+	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(35.0f, true);
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
 	//playerHeadCollider->SetParentCollider(playerCollider);
 
 	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
+	plLeftUpperArm->GetTransform()->SetPosition(0.0f,0.0f,0.0f);
+	plLeftUpperArm->GetTransform()->SetScale(10.0f,10.0f,10.0f);
 	auto leftUpperArmObj = API::CreateObject(_scene, "LeftUpperArmCollider", plLeftUpperArm);
 	leftUpperArmObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -2.0f, 0.0f });
 	//leftUpperArmObj->GetTransform()->SetLocalRotation(0.0f, 0.52f, 0.0f, 1.0f);
 	leftUpperArmObj->GetTransform()->SetLocalScale(20.0f, 15.0f, 10.0f);
 	auto leftUpperCollider = leftUpperArmObj->AddComponent<HDData::StaticBoxCollider>();
+	//auto leftUpperCollider = plLeftUpperArm->AddComponent<HDData::StaticBoxCollider>();
 	//plLeftUpperArm->SetParentObject(playerTest);
 	//plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
 	//auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
