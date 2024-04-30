@@ -73,7 +73,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -10.0f, 1.0f, 0.0f });
 	playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
@@ -147,6 +147,7 @@ TestScene::TestScene()
 	//// 플레이어 collider들을 추가해주는 부분
 	//auto playerCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
 
+	/*
 	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
 	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
 	headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 25.0f);
@@ -154,7 +155,7 @@ TestScene::TestScene()
 	//headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(35.0f, true);
+	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
@@ -173,6 +174,24 @@ TestScene::TestScene()
 	//plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
 	//auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
 	//LUArmCollider->SetParentCollider(playerCollider);
+	*/
+
+	auto playerBodyCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.0f, 0.5f);
+	playerTest->AddComponent<PlayerMove>();
+
+	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
+	playerTestHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
+	playerTestHead->SetParentObject(playerTest);
+	auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
+	playerHeadCollider->SetParentCollider(playerBodyCollider);
+
+	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
+	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);
+	plLeftUpperArm->SetParentObject(playerTest);
+	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f);
+	playerLUCollider->SetParentCollider(playerBodyCollider);
+
+	
 
 	//auto plLeftForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_l");
 	//plLeftForeArm->SetParentObject(plLeftUpperArm);
