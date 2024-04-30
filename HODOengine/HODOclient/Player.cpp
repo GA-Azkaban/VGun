@@ -12,7 +12,7 @@ void Player::Start()
 void Player::Update()
 {
 	// Animation Test용 임시코드
-	if (API::GetKeyDown(DIK_1))
+	/*if (API::GetKeyDown(DIK_1))
 	{
 		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_idle", true, 0.1f);
 		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true, 0.1f);
@@ -47,6 +47,65 @@ void Player::Update()
 	{
 		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_reload", false);
 		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_idle", true);
+	} */
+
+
+	_upperState = eUpperState::IDLE;
+	_lowerState = eLowerState::IDLE;
+
+	if (API::GetKeyPressing(DIK_C))
+	{
+		_upperState = eUpperState::CROUCH;
+		_lowerState = eLowerState::CROUCH;
+	}
+	else if (API::GetKeyPressing(DIK_F))
+	{
+		_upperState = eUpperState::RUN;
+		_lowerState = eLowerState::RUN;
+	}
+
+	if (API::GetMouseHold(MOUSE_LEFT))
+	{
+		_upperState = eUpperState::SHOOT;
+		if (_lowerState == eLowerState::IDLE)
+		{
+			_lowerState = eLowerState::SHOOT;
+		}
+	}
+
+	switch (_upperState)
+	{
+		case eUpperState::IDLE:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_idle", true);
+			break;
+		case eUpperState::RUN:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_run", true);
+			break;
+		case eUpperState::SHOOT:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_fire", false, 0.075f, true, 0.18f);
+			break;
+		case eUpperState::CROUCH:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationUpper("AR_crouch", true);
+			break;
+		default:
+			break;
+	}
+	switch (_lowerState)
+	{
+		case eLowerState::IDLE:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_idle", true);
+			break;
+		case eLowerState::RUN:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_run", true);
+			break;
+		case eLowerState::SHOOT:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_fire", false, 0.075f, true, 0.18f);
+			break;
+		case eLowerState::CROUCH:
+			GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationLower("AR_crouch", true);
+			break;
+		default:
+			break;
 	}
 }
 
