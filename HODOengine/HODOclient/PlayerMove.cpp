@@ -48,10 +48,10 @@ void PlayerMove::Update()
 		_shootCooldown -= _deltaTime;
 	}
 
-	for (int i = 0; i < 30; ++i)
-	{
-		_hitParticles[i]->CheckTimer(_deltaTime);
-	}
+	//for (int i = 0; i < 30; ++i)
+	//{
+	//	_hitParticles[i]->CheckTimer(_deltaTime);
+	//}
 
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
@@ -81,6 +81,9 @@ void PlayerMove::Update()
 
 	// 이동, 회전
 	Move(_moveDirection);
+
+	// 임시 애니콜
+	AniCol();
 
 	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 	
@@ -183,10 +186,10 @@ void PlayerMove::CheckMoveInfo()
 
 	if (_moveDirection != 5)
 	{
-		if (!_playerAudio->IsSoundPlaying("walk"))
-		{
-			_playerAudio->PlayOnce("walk");
-		}
+		//if (!_playerAudio->IsSoundPlaying("walk"))
+		//{
+		//	_playerAudio->PlayOnce("walk");
+		//}
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
@@ -312,12 +315,12 @@ void PlayerMove::ShootGunDdabal()
 	Vector3 hitPoint = { 314.0f, 314.0f, 314.0f };
 
 	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
-	_playerAudio->PlayOnce("shoot");
+	//_playerAudio->PlayOnce("shoot");
 
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
 	{
-		_playerAudio->PlayOnce("hit");
+		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
 	}
 
@@ -698,6 +701,11 @@ void PlayerMove::Pitch(float rotationValue)
 	//headTrasnform->Rotate(rotVal);
 	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
 
+
+}
+
+void PlayerMove::AniCol()
+{
 
 }
 

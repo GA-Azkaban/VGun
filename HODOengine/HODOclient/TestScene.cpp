@@ -73,7 +73,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -10.0f, 1.0f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 1.0f, 0.0f });
 	playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
@@ -177,13 +177,30 @@ TestScene::TestScene()
 	*/
 
 	auto playerBodyCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.0f, 0.5f);
-	playerTest->AddComponent<PlayerMove>();
+	auto playerMove = playerTest->AddComponent<PlayerMove>();
+	playerMove->SetPlayerCamera(_scene->GetMainCamera());
+
+	auto playerPosText = API::CreateTextbox(_scene);
+	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
+	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
+	auto aimText = API::CreateTextbox(_scene);
+	aimText->GetTransform()->SetPosition(Vector3(950.0f, 520.0f, 50.0f));
+	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
+	aimText->GetComponent<HDData::TextUI>()->SetText("");
+	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>());
+
 
 	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
 	playerTestHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
 	playerTestHead->SetParentObject(playerTest);
 	auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
 	playerHeadCollider->SetParentCollider(playerBodyCollider);
+
+	auto headCamObj = API::CreateObject(_scene, "headCamObj");
+	headCamObj->SetParentObject(playerTestHead);
+	headCamObj->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.12f, 0.2f });
+	auto headCam = headCamObj->AddComponent<HDData::Camera>();
+	playerMove->SetHeadCam(headCam);
 
 	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
 	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);

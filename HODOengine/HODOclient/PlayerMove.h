@@ -42,6 +42,8 @@ private:
 	void Move(int direction);
 	void Pitch(float rotationValue);
 
+	void AniCol();
+
 	// 사격 관련
 private:
 	void ShootGun();
