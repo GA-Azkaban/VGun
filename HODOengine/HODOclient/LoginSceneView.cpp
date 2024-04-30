@@ -91,6 +91,7 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", loginControlObject);
 	idTextLabel->GetTransform()->SetPosition(770.f, 440.f, 0.f);
+	idTextLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);

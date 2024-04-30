@@ -63,7 +63,8 @@ void MainMenuScene::MainMenu()
 
 	// play->RoomEnter & make sequence
 	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainControlObject);
-	playBtn->GetComponent<HDData::Button>()->SetImage("play_btn.png");
+	playBtn->GetComponent<HDData::Button>()->SetImage("play_btn_eng.png");
+	//playBtn->GetComponent<HDData::Button>()->SetIsHovering();					// hovering event
 	playBtn->GetTransform()->SetPosition(130.f, 240.f, 0.6f);
 	playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
@@ -172,12 +173,15 @@ void MainMenuScene::MainMenu()
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	// Training room -> scene change
-	//HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
-	//trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
-	//trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("exit_btn1.png");
+	HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
+	trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
+	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("play_btn_eng.png");
 
-	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", mainControlObject);
-	trainingText->GetComponent<HDData::TextUI>()->SetFont("KRAFTON_FontIncludeKR_40.spritefont");
+	// Testing
+	//HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", mainControlObject);
+	//trainingText->GetTransform()->SetPosition(130.0f, 400.0f, 0.f);
+	//trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
+	//trainingText->GetComponent<HDData::TextUI>()->SetText("Testing");
 
 	// Exit button
 	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
@@ -223,6 +227,11 @@ void MainMenuScene::MainMenu()
 	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			if (playBtn->SetIsHovering())
+			{
+
+			}
+
 			if (!roomMakeBtn->GetSelfActive() && !roomEnterBtn->GetSelfActive())
 			{
 				roomMakeBtn->SetSelfActive(true);
