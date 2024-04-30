@@ -85,7 +85,7 @@ TestScene::TestScene()
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//meshComp->SetActive(false);
-	meshComp->SetFillModeWireFrame(true);
+	//meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
 	desc.materialName = "TP_Red";
 	desc.albedo = "TP_Red_B.png";
@@ -149,7 +149,7 @@ TestScene::TestScene()
 
 	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
 	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
-	//headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
+	headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
 	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);

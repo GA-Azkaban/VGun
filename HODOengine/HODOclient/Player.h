@@ -15,6 +15,8 @@ enum class eUpperState
 {
 	IDLE,
 	RUN,
+	RUN_R,
+	RUN_L,
 	SHOOT,
 	CROUCH
 };
@@ -23,6 +25,8 @@ enum class eLowerState
 {
 	IDLE,
 	RUN,
+	RUN_R,
+	RUN_L,
 	SHOOT,
 	CROUCH
 };
