@@ -103,7 +103,7 @@ TestScene::TestScene()
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	/*auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
 	weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
@@ -137,7 +137,7 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat2, 3);
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
-	weaponComp->LoadMaterial(weaponMat3, 4); */
+	weaponComp->LoadMaterial(weaponMat3, 4);
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
