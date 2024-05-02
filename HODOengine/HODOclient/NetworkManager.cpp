@@ -86,6 +86,31 @@ void NetworkManager::RecvCreateAccount()
 	// 회원가입 성공 처리
 }
 
+void NetworkManager::SendRoomListRequest()
+{
+	Protocol::C_ROOM_LIST_REQUEST packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvRoomList(Protocol::S_ROOM_LIST roomList)
+{
+	// vector처럼 사용가능
+	for (auto room : roomList.roominfo())
+	{
+		auto id = room.roomid();
+		auto name = room.roomname();
+		auto maxPlayerCount = room.maxplayercount();
+		auto currentPlayerCount = room.currentplayercount();
+
+		auto isPrivate = room.isprivate();
+		auto isTeam = room.isteam();
+	}
+
+	// Todo 방 리스트 처리
+}
+
 void NetworkManager::SendRoomEnter(std::string roomCode)
 {
 	Protocol::C_ROOM_ENTER packet;

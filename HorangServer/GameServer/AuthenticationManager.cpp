@@ -25,27 +25,6 @@ void AuthenticationManager::SignUp()
 
 }
 
-void AuthenticationManager::PushJob(JobRef job)
-{
-	WRITE_LOCK;
-
-	this->_jobs.Push(job);
-}
-
-void AuthenticationManager::FlushJob()
-{
-	WRITE_LOCK;
-
-	while (true)
-	{
-		JobRef job = _jobs.Pop();
-		if (job == nullptr)
-			break;
-
-		job->Execute();
-	}
-}
-
 void SignInJob::Execute()
 {
 	if (_id.length() > 40 || _password.length() > 80)

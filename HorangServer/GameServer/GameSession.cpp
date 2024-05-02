@@ -3,6 +3,8 @@
 #include "GameSessionManager.h"
 #include "ClientPacketHandler.h"
 #include "ErrorCode.h"
+#include "JobQueue.h"
+#include "Room.h"
 
 void GameSession::OnConnected()
 {
@@ -11,9 +13,18 @@ void GameSession::OnConnected()
 
 void GameSession::OnDisconnected()
 {
+	GSessionManager->Remove(static_pointer_cast<GameSession>(shared_from_this()));
+
+	if (_player)
+	{
+		if (auto room = _room.lock())
+		{
+			room->DoAsyncJob(Horang::MakeShared<EnterJob>(room, _player));
+		}
+	}
+
 	_player = nullptr;
 
-	GSessionManager->Remove(static_pointer_cast<GameSession>(shared_from_this()));
 }
 
 void GameSession::OnRecvPacket(BYTE* buffer, int32 len)
