@@ -109,8 +109,10 @@ namespace RocketCore::Graphics
 		_lowerAnimationNames.insert("X_crouch");
 		_lowerAnimationNames.insert("X_crouchDown");
 		_lowerAnimationNames.insert("X_crouchUp");
-		_lowerAnimationNames.insert("X_crouchWalk_B");
-		_lowerAnimationNames.insert("X_crouchWalk_F");
+		_lowerAnimationNames.insert("X_crouchWalkF");
+		_lowerAnimationNames.insert("X_crouchWalkB");
+		_lowerAnimationNames.insert("X_crouchWalkR");
+		_lowerAnimationNames.insert("X_crouchWalkL");
 		_lowerAnimationNames.insert("AR_crouch");
 		_lowerAnimationNames.insert("AR_crouchDown");
 		_lowerAnimationNames.insert("AR_crouchUp");
@@ -427,6 +429,7 @@ namespace RocketCore::Graphics
 	{
 		DirectX::XMMATRIX _nodeTransform = node->nodeTransformOffset;
 		NodeAnimation* nodeAnim = nullptr;
+		NodeAnimation* nodeAnimLower = nullptr;
 
 		for (UINT i = 0; i < m_currentUpperAnimation->nodeAnimations.size(); ++i)
 		{
@@ -436,7 +439,7 @@ namespace RocketCore::Graphics
 				{
 					if (node->name == "root" || node->name == "pelvis")
 					{
-						// crouch 애니메이션이라면 하체의 root 와 pelvis로 갱신
+						// 하체가 crouch 애니메이션이라면 하체의 root 와 pelvis로 갱신
 						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) != _lowerAnimationNames.end())
 						{
 							nodeAnim = m_currentLowerAnimation->nodeAnimations[i];
@@ -464,12 +467,14 @@ namespace RocketCore::Graphics
 			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
+
 			if (node->nodeTransform != nullptr)
 			{
 				node->nodeTransform->_position = position;
 				node->nodeTransform->_rotation = rotation;
 				node->nodeTransform->_scale = scale;
 			}
+
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
@@ -498,7 +503,7 @@ namespace RocketCore::Graphics
 				{
 					if (node->name == "root" || node->name == "pelvis")
 					{
-						// crouch 애니메이션이 아니라면 상체의 root 와 pelvis로 갱신
+						// 하체가 crouch 애니메이션이 아니라면 상체의 root 와 pelvis로 갱신
 						if (_lowerAnimationNames.find(m_currentLowerAnimation->animName) == _lowerAnimationNames.end())
 						{
 							nodeAnim = m_currentUpperAnimation->nodeAnimations[i];
@@ -528,9 +533,12 @@ namespace RocketCore::Graphics
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
 			if (node->nodeTransform != nullptr)
 			{
-				node->nodeTransform->_position = position;
-				node->nodeTransform->_rotation = rotation;
-				node->nodeTransform->_scale = scale;
+				if (node->name != "root" && node->name != "pelvis")
+				{
+					node->nodeTransform->_position = position;
+					node->nodeTransform->_rotation = rotation;
+					node->nodeTransform->_scale = scale;
+				}
 			}
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
@@ -538,7 +546,10 @@ namespace RocketCore::Graphics
 		// 하체 관련 노드들에 대해서만 bone transform 갱신
 		if (_lowerAnimationNodes.find(node->name) != _lowerAnimationNodes.end())
 		{
-			m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+			if (node->name != "root" && node->name != "pelvis")
+			{
+				m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+			}
 		}
 
 		// update values for children bones

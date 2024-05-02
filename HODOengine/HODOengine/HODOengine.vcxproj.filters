@@ -182,6 +182,9 @@
     <ClCompile Include="AllAnimator.cpp">
       <Filter>05_Component\Animation\Animator\All</Filter>
     </ClCompile>
+    <ClCompile Include="StaticSphereCollider.cpp">
+      <Filter>05_Component\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -400,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="AllAnimator.h">
       <Filter>05_Component\Animation\Animator\All</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticSphereCollider.h">
+      <Filter>05_Component\Collider</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

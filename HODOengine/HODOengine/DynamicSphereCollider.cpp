@@ -1,9 +1,9 @@
-#include "DynamicSphereCollider.h"
+﻿#include "DynamicSphereCollider.h"
 #include "GameObject.h"
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicSphereCollider::DynamicSphereCollider()
-	: _radius(0.5f), _isPlayer(false)
+	: _radius(10.0f), _isPlayer(false)
 {
 	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 	_debugStruct = _sphereDebugStruct;

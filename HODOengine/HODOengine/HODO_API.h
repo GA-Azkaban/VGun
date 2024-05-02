@@ -23,6 +23,7 @@
 #include "Collider.h"
 #include "StaticPlaneCollider.h"
 #include "StaticBoxCollider.h"
+#include "StaticSphereCollider.h"
 #include "DynamicBoxCollider.h"
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"

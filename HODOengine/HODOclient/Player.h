@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <vector>
 
 #include "../HODOengine/HODO_API.h"
@@ -11,7 +11,30 @@
 /// 상점은 죽어야만 열린다
 /// </summary>
 
+enum class eUpperState
+{
+	IDLE,
+	RUN,
+	SHOOT,
+	CROUCH,
+	RELOAD
+};
 
+enum class eLowerState
+{
+	IDLE,
+	RUN_F,
+	RUN_B,
+	RUN_R,
+	RUN_L,
+	CROUCH,
+	CROUCH_RUN_F,
+	CROUCH_RUN_B,
+	CROUCH_RUN_R,
+	CROUCH_RUN_L,
+	SHOOT,
+	JUMP
+};
 
 class Player : public HDData::Script
 {
@@ -55,5 +78,10 @@ private:
 	float _shootTime;
 
 	bool _isDie;
+
+	eUpperState _upperState;
+	eLowerState _lowerState;
+
+	HDData::SkinnedMeshRenderer* _skinnedMeshRenderer;
 };
 
