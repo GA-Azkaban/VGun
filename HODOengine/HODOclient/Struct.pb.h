@@ -372,8 +372,8 @@ class RoomInfo final :
     kPasswordFieldNumber = 6,
     kRoomIdFieldNumber = 1,
     kStateFieldNumber = 3,
-    kMaxUserCountFieldNumber = 7,
-    kCurrentCountFieldNumber = 8,
+    kMaxPlayerCountFieldNumber = 7,
+    kCurrentPlayerCountFieldNumber = 8,
     kIsPrivateFieldNumber = 9,
     kIsTeamFieldNumber = 10,
   };
@@ -455,22 +455,22 @@ class RoomInfo final :
   void _internal_set_state(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 maxUserCount = 7;
-  void clear_maxusercount();
-  ::PROTOBUF_NAMESPACE_ID::int32 maxusercount() const;
-  void set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // int32 maxPlayerCount = 7;
+  void clear_maxplayercount();
+  ::PROTOBUF_NAMESPACE_ID::int32 maxplayercount() const;
+  void set_maxplayercount(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_maxusercount() const;
-  void _internal_set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_maxplayercount() const;
+  void _internal_set_maxplayercount(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 currentCount = 8;
-  void clear_currentcount();
-  ::PROTOBUF_NAMESPACE_ID::int32 currentcount() const;
-  void set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // int32 currentPlayerCount = 8;
+  void clear_currentplayercount();
+  ::PROTOBUF_NAMESPACE_ID::int32 currentplayercount() const;
+  void set_currentplayercount(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_currentcount() const;
-  void _internal_set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_currentplayercount() const;
+  void _internal_set_currentplayercount(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // bool isPrivate = 9;
@@ -504,8 +504,8 @@ class RoomInfo final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
   ::PROTOBUF_NAMESPACE_ID::int32 roomid_;
   ::PROTOBUF_NAMESPACE_ID::int32 state_;
-  ::PROTOBUF_NAMESPACE_ID::int32 maxusercount_;
-  ::PROTOBUF_NAMESPACE_ID::int32 currentcount_;
+  ::PROTOBUF_NAMESPACE_ID::int32 maxplayercount_;
+  ::PROTOBUF_NAMESPACE_ID::int32 currentplayercount_;
   bool isprivate_;
   bool isteam_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -1687,44 +1687,44 @@ inline void RoomInfo::set_allocated_password(std::string* password) {
   // @@protoc_insertion_point(field_set_allocated:Protocol.RoomInfo.password)
 }
 
-// int32 maxUserCount = 7;
-inline void RoomInfo::clear_maxusercount() {
-  maxusercount_ = 0;
+// int32 maxPlayerCount = 7;
+inline void RoomInfo::clear_maxplayercount() {
+  maxplayercount_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_maxusercount() const {
-  return maxusercount_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_maxplayercount() const {
+  return maxplayercount_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::maxusercount() const {
-  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.maxUserCount)
-  return _internal_maxusercount();
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::maxplayercount() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.maxPlayerCount)
+  return _internal_maxplayercount();
 }
-inline void RoomInfo::_internal_set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void RoomInfo::_internal_set_maxplayercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  maxusercount_ = value;
+  maxplayercount_ = value;
 }
-inline void RoomInfo::set_maxusercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_maxusercount(value);
-  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.maxUserCount)
+inline void RoomInfo::set_maxplayercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_maxplayercount(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.maxPlayerCount)
 }
 
-// int32 currentCount = 8;
-inline void RoomInfo::clear_currentcount() {
-  currentcount_ = 0;
+// int32 currentPlayerCount = 8;
+inline void RoomInfo::clear_currentplayercount() {
+  currentplayercount_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_currentcount() const {
-  return currentcount_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_currentplayercount() const {
+  return currentplayercount_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::currentcount() const {
-  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.currentCount)
-  return _internal_currentcount();
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::currentplayercount() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.currentPlayerCount)
+  return _internal_currentplayercount();
 }
-inline void RoomInfo::_internal_set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void RoomInfo::_internal_set_currentplayercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  currentcount_ = value;
+  currentplayercount_ = value;
 }
-inline void RoomInfo::set_currentcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_currentcount(value);
-  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.currentCount)
+inline void RoomInfo::set_currentplayercount(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_currentplayercount(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.currentPlayerCount)
 }
 
 // bool isPrivate = 9;

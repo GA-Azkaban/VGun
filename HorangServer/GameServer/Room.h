@@ -1,160 +1,167 @@
 #pragma once
+#include "JobQueue.h"
 
-class Room : public std::enable_shared_from_this<Room>
+class Room : public Horang::JobQueue, public std::enable_shared_from_this<Room>
 {
+	friend class RoomManager;
+
 private:
 	struct PlayerGameData
 	{
-		PlayerRef player;
+		PlayerWeakRef player;
 
 		Protocol::PlayerData data;
 	};
 
 public:
 	Room();
+	~Room();
 
 	void Initialize();
 
 public:
-	bool Enter(PlayerRef player);
-	bool Leave(PlayerRef player);
+	bool Enter(PlayerWeakRef playerWeak);
+	bool Leave(PlayerWeakRef playerWeak);
 	void BroadCast(Horang::SendBufferRef sendBuffer);
-	void ClientUpdate(PlayerRef player, Protocol::C_PLAY_UPDATE& pkt);
+	void ClientUpdate(PlayerWeakRef playerWeak, Protocol::C_PLAY_UPDATE& pkt);
 
 public:
-	void GameStart();
+	void GameStart(PlayerWeakRef playerWeak);
 	void Update();
 
 public: // 패킷 작성
 	Protocol::RoomInfo GetRoomInfo();
 	void GetRoomInfo(Protocol::RoomInfo& roomInfo);
 	void GetRoomInfo(Protocol::RoomInfo* roomInfo);
+	void GetRoomInfoList(Protocol::RoomInfo* roomInfo);
 
 	void SetUpdatePacket(Protocol::S_PLAY_UPDATE& packet);
 	void GetPlayerData(Protocol::PlayerData& playerData, int32 uid);
 
-public:
-	void PushJob(JobRef job);
-	void FlushJob();
-
 private:
-	USE_LOCK;
-
-	// 게임 시간
-	uint64 _gameTime;
-
-	int32 _roomID;
+	int32 _roomId;
 	std::string _roomCode;
 	Protocol::eRoomState _state;
 
 	Horang::HashMap<int32, PlayerGameData> _players;
-	JobQueue _jobs;
-};
 
-extern RoomRef GRoom;
+	std::string _roomName;
+	std::string _password;
+
+	int32 _maxPlayerCount;
+	int32 _currentPlayerCount;
+
+	bool _isPrivate;
+	bool _isTeam;
+
+private:
+	// 게임 시간
+	uint64 _gameTime;
+
+};
 
 /////////////////////////////
 // 
 /////////////////////////////
 
-class EnterJob : public IJob
+class EnterJob : public Horang::IJob
 {
 public:
-	EnterJob(RoomRef room, PlayerRef player)
+	EnterJob(RoomWeakRef room, PlayerWeakRef player)
 		: _room(room), _player(player)
 	{}
 
 	virtual void Execute() override
 	{
-		_room->Enter(_player);
+		_room.lock()->Enter(_player);
 	}
 
 private:
-	RoomRef _room;
-	PlayerRef _player;
+	RoomWeakRef _room;
+	PlayerWeakRef _player;
 };
 
-class LeaveJob : public IJob
+class LeaveJob : public Horang::IJob
 {
 public:
-	LeaveJob(RoomRef room, PlayerRef player)
+	LeaveJob(RoomWeakRef room, PlayerWeakRef player)
 		: _room(room), _player(player)
 	{}
 
 	virtual void Execute() override
 	{
-		_room->Leave(_player);
+		_room.lock()->Leave(_player);
 	}
 
 private:
-	RoomRef _room;
-	PlayerRef _player;
+	RoomWeakRef _room;
+	PlayerWeakRef _player;
 };
 
-class GameStartJob : public IJob
+class GameStartJob : public Horang::IJob
 {
 public:
-	GameStartJob(RoomRef room, PlayerRef player)
+	GameStartJob(RoomWeakRef room, PlayerWeakRef player)
 		: _room(room), _player(player)
 	{}
 
 	virtual void Execute() override
 	{
-		_room->GameStart();
+		_room.lock()->GameStart(_player);
 	}
 
 private:
-	RoomRef _room;
-	PlayerRef _player;
+	RoomWeakRef _room;
+	PlayerWeakRef _player;
 };
 
-class ClientUpdateJob : public IJob
+class ClientUpdateJob : public Horang::IJob
 {
 public:
-	ClientUpdateJob(RoomRef room, PlayerRef player, Protocol::C_PLAY_UPDATE pkt)
+	ClientUpdateJob(RoomWeakRef room, PlayerWeakRef player, Protocol::C_PLAY_UPDATE pkt)
 		: _room(room), _player(player), _pkt(pkt)
 	{}
 
 	virtual void Execute() override
 	{
-		_room->ClientUpdate(_player, _pkt);
+		_room.lock()->ClientUpdate(_player, _pkt);
 	}
 
 private:
-	RoomRef _room;
-	PlayerRef _player;
+	RoomWeakRef _room;
+	PlayerWeakRef _player;
 	Protocol::C_PLAY_UPDATE _pkt;
 };
 
-class UpdateJob : public IJob
+class UpdateJob : public Horang::IJob
 {
 public:
-	UpdateJob(RoomRef room)
+	UpdateJob(RoomWeakRef room)
 		: _room(room)
 	{}
 
 	virtual void Execute() override
 	{
-		_room->Update();
+		_room.lock()->Update();
 	}
 
 private:
-	RoomRef _room;
+	RoomWeakRef _room;
 };
 
-class BroadCastJob : public IJob
+class BroadCastJob : public Horang::IJob
 {
 public:
-	BroadCastJob(Room& room, Horang::SendBufferRef sendBuffer)
+	BroadCastJob(RoomWeakRef room, Horang::SendBufferRef sendBuffer)
 		: _room(room), _sendBuffer(sendBuffer)
 	{}
 
 	virtual void Execute() override
 	{
-		_room.BroadCast(_sendBuffer);
+		_room.lock()->BroadCast(_sendBuffer);
 	}
 
 private:
-	Room& _room;
+	RoomWeakRef _room;
 	Horang::SendBufferRef _sendBuffer;
 };

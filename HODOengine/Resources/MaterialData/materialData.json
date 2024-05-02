@@ -1,0 +1,1263 @@
+[
+,
+{
+    "name": "M_engineer_military",
+    "mainTex": "M_engineer_albedo",
+    "metalicTex": "M_engineer_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_engineer_military_02",
+    "mainTex": "M_engineer_albedo_02",
+    "metalicTex": "M_engineer_metallic_02",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_engineer_military_03",
+    "mainTex": "M_engineer_albedo_03",
+    "metalicTex": "M_engineer_metallic_03",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_general_military_01",
+    "mainTex": "M_general_military_albedo_01",
+    "metalicTex": "M_general_military_metallic_01",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_general_military_02",
+    "mainTex": "M_general_military_albedo_02",
+    "metalicTex": "M_general_military_metallic_02",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_general_military_03",
+    "mainTex": "M_general_military_albedo_03",
+    "metalicTex": "M_general_military_metallic_03",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_resistance_fighter_military 1",
+    "mainTex": "M_resistance_fighter_albedo_02",
+    "metalicTex": "M_resistance_fighter_metallic_02",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_resistance_fighter_military 2",
+    "mainTex": "M_resistance_fighter_albedo_03",
+    "metalicTex": "M_resistance_fighter_metallic_03",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_resistance_fighter_military 3",
+    "mainTex": "M_resistance_fighter_albedo_04",
+    "metalicTex": "M_resistance_fighter_metallic_04",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_resistance_fighter_military",
+    "mainTex": "M_resistance_fighter_albedo_01",
+    "metalicTex": "M_resistance_fighter_metallic_01",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_soldier_military 1",
+    "mainTex": "M_soldier_military_albedo_02",
+    "metalicTex": "M_soldier_military_metallic_02",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_soldier_military 2",
+    "mainTex": "M_soldier_military_albedo_03",
+    "metalicTex": "M_soldier_military_metallic_03",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_soldier_military 3",
+    "mainTex": "M_soldier_military_albedo_04",
+    "metalicTex": "M_soldier_military_metallic_04",
+    "color": [
+        226,
+        226,
+        226,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_soldier_military 4",
+    "mainTex": "M_soldier_military_albedo_05",
+    "metalicTex": "M_soldier_military_metallic_04",
+    "color": [
+        226,
+        226,
+        226,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_soldier_military",
+    "mainTex": "M_soldier_military_albedo_01",
+    "metalicTex": "M_soldier_military_metallic_01",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_battleship_base 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        111,
+        111,
+        111,
+        255
+    ],
+    "roughness": 0.3709999918937683,
+    "metalic": 0.0
+},
+{
+    "name": "M_battleship_base",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        149,
+        149,
+        149,
+        255
+    ],
+    "roughness": 0.3709999918937683,
+    "metalic": 0.0
+},
+{
+    "name": "M_bullets",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        154,
+        127,
+        86,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_chainlink 1",
+    "mainTex": "M_chainlink_transparent",
+    "metalicTex": "",
+    "color": [
+        195,
+        195,
+        195,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_chainlink",
+    "mainTex": "M_chainlink_transparent",
+    "metalicTex": "",
+    "color": [
+        195,
+        195,
+        195,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_cliffs",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        137,
+        119,
+        105,
+        255
+    ],
+    "roughness": 0.9169999957084656,
+    "metalic": 0.0
+},
+{
+    "name": "M_color_palette",
+    "mainTex": "colorpalette_standard",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_dark",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        26,
+        26,
+        26,
+        255
+    ],
+    "roughness": 0.9559999704360962,
+    "metalic": 0.0
+},
+{
+    "name": "M_darkblue",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        75,
+        87,
+        113,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_dirt 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        99,
+        81,
+        65,
+        255
+    ],
+    "roughness": 0.7610000371932983,
+    "metalic": 0.0
+},
+{
+    "name": "M_dirt",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        111,
+        91,
+        72,
+        255
+    ],
+    "roughness": 0.7610000371932983,
+    "metalic": 0.0
+},
+{
+    "name": "M_dirt_grey 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        152,
+        136,
+        122,
+        255
+    ],
+    "roughness": 0.878000020980835,
+    "metalic": 0.0
+},
+{
+    "name": "M_dirt_grey 2",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        106,
+        95,
+        85,
+        255
+    ],
+    "roughness": 0.878000020980835,
+    "metalic": 0.0
+},
+{
+    "name": "M_dirt_grey",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        99,
+        89,
+        80,
+        255
+    ],
+    "roughness": 0.878000020980835,
+    "metalic": 0.0
+},
+{
+    "name": "M_emissive_light_01",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        255,
+        241,
+        201,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_explosives",
+    "mainTex": "M_explosives_albedo",
+    "metalicTex": "M_explosives_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_glass_dark",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        0,
+        0,
+        0,
+        255
+    ],
+    "roughness": 0.45499998331069949,
+    "metalic": 0.0
+},
+{
+    "name": "M_grid_transparent",
+    "mainTex": "M_grid_transparent",
+    "metalicTex": "",
+    "color": [
+        72,
+        72,
+        72,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_ground_sandy",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        147,
+        133,
+        111,
+        255
+    ],
+    "roughness": 0.6769999861717224,
+    "metalic": 0.0
+},
+{
+    "name": "M_handguns",
+    "mainTex": "M_handguns_albedo",
+    "metalicTex": "M_handguns_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_hayroof",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        51,
+        49,
+        29,
+        255
+    ],
+    "roughness": 0.8650000095367432,
+    "metalic": 0.0
+},
+{
+    "name": "M_headwear",
+    "mainTex": "M_headwear_albedo",
+    "metalicTex": "M_headwear_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_leaves 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        49,
+        75,
+        42,
+        255
+    ],
+    "roughness": 0.7870000004768372,
+    "metalic": 0.0
+},
+{
+    "name": "M_leaves",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        66,
+        89,
+        42,
+        255
+    ],
+    "roughness": 0.7870000004768372,
+    "metalic": 0.0
+},
+{
+    "name": "M_leaves_dark",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        35,
+        77,
+        36,
+        255
+    ],
+    "roughness": 0.7870000004768372,
+    "metalic": 0.0
+},
+{
+    "name": "M_metallic_dark",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        58,
+        58,
+        58,
+        255
+    ],
+    "roughness": 0.3579999804496765,
+    "metalic": 0.0
+},
+{
+    "name": "M_metallic_rough",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        168,
+        168,
+        168,
+        255
+    ],
+    "roughness": 0.3840000033378601,
+    "metalic": 0.0
+},
+{
+    "name": "M_metallic_rough_02",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        115,
+        115,
+        115,
+        255
+    ],
+    "roughness": 0.3840000033378601,
+    "metalic": 0.0
+},
+{
+    "name": "M_metallic_shiny",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        168,
+        168,
+        168,
+        255
+    ],
+    "roughness": 0.28600001335144045,
+    "metalic": 0.0
+},
+{
+    "name": "M_military_green 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        96,
+        101,
+        78,
+        255
+    ],
+    "roughness": 0.6769999861717224,
+    "metalic": 0.0
+},
+{
+    "name": "M_military_green",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        96,
+        101,
+        78,
+        255
+    ],
+    "roughness": 0.6769999861717224,
+    "metalic": 0.0
+},
+{
+    "name": "M_red",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        137,
+        50,
+        50,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_rifles_01",
+    "mainTex": "M_rifles_01_albedo",
+    "metalicTex": "M_rifles_01_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_rifles_02",
+    "mainTex": "M_rifles_02_albedo",
+    "metalicTex": "M_rifles_02_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_ruins_wall",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        176,
+        153,
+        122,
+        255
+    ],
+    "roughness": 0.8259999752044678,
+    "metalic": 0.0
+},
+{
+    "name": "M_sand_color_01",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        226,
+        189,
+        133,
+        255
+    ],
+    "roughness": 0.6769999861717224,
+    "metalic": 0.0
+},
+{
+    "name": "M_sand_color_02",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        185,
+        157,
+        114,
+        255
+    ],
+    "roughness": 0.6769999861717224,
+    "metalic": 0.0
+},
+{
+    "name": "M_sandstone",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        178,
+        161,
+        132,
+        255
+    ],
+    "roughness": 0.9430000185966492,
+    "metalic": 0.0
+},
+{
+    "name": "M_scopes",
+    "mainTex": "M_scopes_albedo",
+    "metalicTex": "M_scopes_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_specialweapons",
+    "mainTex": "M_specialweapons_albedo",
+    "metalicTex": "M_specialweapons_metallic",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_stone_grey 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        96,
+        96,
+        96,
+        255
+    ],
+    "roughness": 0.800000011920929,
+    "metalic": 0.0
+},
+{
+    "name": "M_stone_grey",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        142,
+        142,
+        142,
+        255
+    ],
+    "roughness": 0.800000011920929,
+    "metalic": 0.0
+},
+{
+    "name": "M_trees_base 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        94,
+        77,
+        54,
+        255
+    ],
+    "roughness": 0.7870000004768372,
+    "metalic": 0.0
+},
+{
+    "name": "M_trees_base",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        67,
+        53,
+        37,
+        255
+    ],
+    "roughness": 0.7870000004768372,
+    "metalic": 0.0
+},
+{
+    "name": "M_water",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        103,
+        124,
+        161,
+        157
+    ],
+    "roughness": 1.0,
+    "metalic": 0.0
+},
+{
+    "name": "M_white",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        197,
+        197,
+        197,
+        255
+    ],
+    "roughness": 0.8519999980926514,
+    "metalic": 0.0
+},
+{
+    "name": "M_windows_black",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        0,
+        0,
+        0,
+        255
+    ],
+    "roughness": 0.42900002002716067,
+    "metalic": 0.0
+},
+{
+    "name": "M_windows_opaque",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        159,
+        159,
+        159,
+        13
+    ],
+    "roughness": 0.0,
+    "metalic": 0.0
+},
+{
+    "name": "M_wooden 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        115,
+        97,
+        255
+    ],
+    "roughness": 0.8199999928474426,
+    "metalic": 0.0
+},
+{
+    "name": "M_wooden",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        132,
+        111,
+        82,
+        255
+    ],
+    "roughness": 0.8199999928474426,
+    "metalic": 0.0
+},
+{
+    "name": "M_woodenplanks",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        89,
+        75,
+        56,
+        255
+    ],
+    "roughness": 0.8650000095367432,
+    "metalic": 0.0
+},
+{
+    "name": "M_woodensticks 1",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        79,
+        66,
+        48,
+        255
+    ],
+    "roughness": 0.8650000095367432,
+    "metalic": 0.0
+},
+{
+    "name": "M_woodensticks 2",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        79,
+        66,
+        48,
+        255
+    ],
+    "roughness": 0.8650000095367432,
+    "metalic": 0.0
+},
+{
+    "name": "M_woodensticks",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        75,
+        69,
+        61,
+        255
+    ],
+    "roughness": 0.8650000095367432,
+    "metalic": 0.0
+},
+{
+    "name": "M_metal_dark",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        40,
+        40,
+        40,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_color_palette.001",
+    "mainTex": "colorpalette_standard",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_color_palette.002",
+    "mainTex": "colorpalette_standard",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_bricks",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_bricks.001",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_bricks.002",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_floor",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        70,
+        70,
+        70,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_floor",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        70,
+        70,
+        70,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_floor.003",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        70,
+        70,
+        70,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_floor.004",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        70,
+        70,
+        70,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_floor.005",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        70,
+        70,
+        70,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_floor.017",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        70,
+        70,
+        70,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "Material.001",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.5,
+    "metalic": 0.0
+},
+{
+    "name": "M_chainlink.002",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_chainlink.003",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_metallic_shiny.003",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        87,
+        87,
+        87,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_color_palette.003",
+    "mainTex": "colorpalette_standard",
+    "metalicTex": "",
+    "color": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_Desert_Demo_Map.008",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
+    "metalic": 0.0
+},
+{
+    "name": "M_tent_barracks.001",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        150,
+        150,
+        150,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_tent_outpost.001",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        150,
+        150,
+        150,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "Material.002",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.4196891188621521,
+    "metalic": 0.0
+},
+{
+    "name": "M_Desert_Demo_Map.010",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
+    "metalic": 0.0
+},
+{
+    "name": "M_Desert_Demo_Map.011",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
+    "metalic": 0.0
+},
+{
+    "name": "M_Target_Demo_Map.001",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
+    "metalic": 0.0
+},
+{
+    "name": "M_car_city",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        128,
+        128,
+        128,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_black",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        18,
+        18,
+        18,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_stone",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        213,
+        183,
+        138,
+        255
+    ],
+    "roughness": 0.5527864098548889,
+    "metalic": 0.0
+},
+{
+    "name": "M_Target_Demo_Map",
+    "mainTex": "",
+    "metalicTex": "",
+    "color": [
+        204,
+        204,
+        204,
+        255
+    ],
+    "roughness": 0.40000003576278689,
+    "metalic": 0.0
+}]
