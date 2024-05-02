@@ -13,9 +13,6 @@
     <ClCompile Include="PlayerMove.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>02_Client\TestScene\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
@@ -95,9 +92,6 @@
       <Filter>00_default</Filter>
     </ClInclude>
     <ClInclude Include="PlayerMove.h">
-      <Filter>02_Client\TestScene\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
     <ClInclude Include="Client.h">

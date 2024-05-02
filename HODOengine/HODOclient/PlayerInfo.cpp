@@ -22,6 +22,7 @@ void PlayerInfo::Init()
 	this-> _death = 0;
 	this->_isDie = false;
 	this->_bulletCount = 0;
+	this->_state = ePlayerState::IDLE;
 }
 
 void PlayerInfo::SetCurrentHP(int hp)

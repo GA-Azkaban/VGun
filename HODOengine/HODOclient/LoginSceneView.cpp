@@ -19,7 +19,7 @@ void LoginSceneView::Initialize()
 
 	LoginView();
 
-	API::LoadScene(_scene);
+	//API::LoadScene(_scene);
 	//API::LoadScene(menu);
 }
 

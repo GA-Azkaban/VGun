@@ -49,6 +49,7 @@
 #include "HDMaterial.h"
 #include "MaterialManager.h"
 #include "Tween.h"
+#include "TriggerBoxCollider.h"
 
 
 #include "ObjectSystem.h"

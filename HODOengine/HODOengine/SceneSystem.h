@@ -29,12 +29,13 @@ namespace HDEngine
 
 		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();
+		HDData::Scene* GetPrevScene();
 
 
 	private:
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 		HDData::Scene* _currentScene;
-		HDData::Scene* _nextScene;
+		HDData::Scene* _prevScene;
 	};
 
 }

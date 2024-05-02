@@ -1,6 +1,5 @@
 ﻿#include "AnimationLoaderTest.h"
 #include "CameraMove.h"
-#include "Player.h"
 #include "FSMtestScript.h"
 #include "LobbyManager.h"
 
@@ -46,6 +45,7 @@ void AnimationLoaderTest::Start()
 	playerTP->AddComponent<FSMtestScript>();
 
 	HDData::GameObject* test2 = API::CreateButton(_scene);
+	//test2->GetComponent<HDData::Button>()->SetSortOrder(0.5f);
 	test2->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()
 		{

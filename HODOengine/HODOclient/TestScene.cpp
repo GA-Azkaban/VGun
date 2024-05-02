@@ -4,7 +4,6 @@
 #include "../HODOengine/Component.h"
 #include "../HODOengine/AudioSource.h"
 #include "CameraMove.h"
-#include "Player.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
 #include "SliderSoundScript.h"
@@ -74,7 +73,7 @@ TestScene::TestScene()
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	playerTest->AddComponent<Player>();
+	//playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
