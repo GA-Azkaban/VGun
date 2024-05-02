@@ -70,6 +70,7 @@
     <ClCompile Include="FadeInOut.cpp">
       <Filter>04_SceneView\FadeInOut</Filter>
     </ClCompile>
+    <ClCompile Include="BtnScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -151,6 +152,7 @@
     <ClInclude Include="FadeInOut.h">
       <Filter>04_SceneView\FadeInOut</Filter>
     </ClInclude>
+    <ClInclude Include="BtnScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

@@ -225,6 +225,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="A.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="B.h" />
+    <ClInclude Include="BtnScript.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Enum.pb.h" />
@@ -254,6 +255,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BtnScript.cpp" />
     <ClCompile Include="CameraMove.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="Entry.cpp" />

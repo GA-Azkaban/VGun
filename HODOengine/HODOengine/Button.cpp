@@ -58,6 +58,11 @@ namespace HDData
 		_button->SetIsIgnoreFocus(isIgnore);
 	}
 
+	HDData::ImageUI* Button::GetButtonComp()
+	{
+		return _button;
+	}
+
 	void Button::FadeIn()
 	{
 		_button->FadeIn();

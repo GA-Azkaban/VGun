@@ -4,6 +4,8 @@
 
 #include "../HODOengine/AudioSource.h"
 
+#include "BtnScript.h"
+
 
 MainMenuScene::MainMenuScene()
 	:_menuManager(MenuManager::Instance())
@@ -64,9 +66,9 @@ void MainMenuScene::MainMenu()
 	// play->RoomEnter & make sequence
 	HDData::GameObject* playBtn = API::CreateButton(_scene, "playBtn", mainControlObject);
 	playBtn->GetComponent<HDData::Button>()->SetImage("play_btn_eng.png");
-	//playBtn->GetComponent<HDData::Button>()->SetIsHovering();					// hovering event
 	playBtn->GetTransform()->SetPosition(130.f, 240.f, 0.6f);
 	playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	//playBtn->AddComponent<BtnScript>();
 
 	HDData::GameObject* roomEnterBtn = API::CreateButton(_scene, "roomEnter", playBtn);
 	roomEnterBtn->GetTransform()->SetPosition(365.f, 190.f, 0.55f);
@@ -96,7 +98,7 @@ void MainMenuScene::MainMenu()
 	setRoomCanvas->SetSelfActive(false);
 
 	// room name Set
-	HDData::GameObject* roomNameTextLabel = API::CreateTextbox(_scene,"reoomNameTextLabel", setRoomCanvas);
+	HDData::GameObject* roomNameTextLabel = API::CreateTextbox(_scene, "reoomNameTextLabel", setRoomCanvas);
 	roomNameTextLabel->GetTransform()->SetPosition(710.0f, 240.0f, 0.f);
 	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetText("RoomName");
 	roomNameTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
@@ -173,15 +175,21 @@ void MainMenuScene::MainMenu()
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 
 	// Training room -> scene change
-	HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
-	trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
-	trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("play_btn_eng.png");
+	//HDData::GameObject* trainingRoomBtn = API::CreateButton(_scene, "trainingRoomBtn", mainControlObject);
+	//trainingRoomBtn->GetTransform()->SetPosition(130.f, 400.f, 0.f);
+	//trainingRoomBtn->GetComponent<HDData::Button>()->SetImage("play_btn_eng.png");
 
 	// Testing
-	//HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", mainControlObject);
-	//trainingText->GetTransform()->SetPosition(130.0f, 400.0f, 0.f);
-	//trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
-	//trainingText->GetComponent<HDData::TextUI>()->SetText("Testing");
+	HDData::GameObject* alphaBtnTest = API::CreateButton(_scene, "TestingBtn", mainControlObject);
+	alphaBtnTest->GetTransform()->SetPosition(130.0f,400.0f,0.f);
+	alphaBtnTest->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
+	alphaBtnTest->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	alphaBtnTest->AddComponent<BtnScript>();
+
+	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", alphaBtnTest);
+	trainingText->GetTransform()->SetPosition(130.0f, 400.0f, 0.f);
+	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
 
 	// Exit button
 	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
@@ -224,14 +232,11 @@ void MainMenuScene::MainMenu()
 
 	// event
 	// game play btn
+
+	
 	playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
-			if (playBtn->SetIsHovering())
-			{
-
-			}
-
 			if (!roomMakeBtn->GetSelfActive() && !roomEnterBtn->GetSelfActive())
 			{
 				roomMakeBtn->SetSelfActive(true);
@@ -333,6 +338,13 @@ void MainMenuScene::MainMenu()
 				mainControlObject->SetSelfActive(true);
 				settingControlObject->SetSelfActive(false);
 			}
+		}
+	);
+
+	alphaBtnTest->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			trainingText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
 		}
 	);
 

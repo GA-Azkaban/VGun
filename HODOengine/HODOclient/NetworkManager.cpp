@@ -24,7 +24,6 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
-	Start();
 }
 
 void NetworkManager::Start()
