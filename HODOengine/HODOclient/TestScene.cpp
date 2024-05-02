@@ -208,7 +208,9 @@ TestScene::TestScene()
 	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f);
 	playerLUCollider->SetParentCollider(playerBodyCollider);
 
-	
+	auto triggerTest = API::CreateObject(_scene);
+	triggerTest->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
+	auto triggerBoxCol = triggerTest->AddComponent<HDData::TriggerBoxCollider>(1.0f, 1.0f, 1.0f);
 
 	//auto plLeftForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_l");
 	//plLeftForeArm->SetParentObject(plLeftUpperArm);

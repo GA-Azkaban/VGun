@@ -30,16 +30,17 @@ namespace HDEngine
 		void Update();
 		void Finalize();
 
-	public:
+	private:
 		void CreatePhysXScene();
 		void CreateRigidBodies();
 		void CreateSphericalJoint();
 		void AddActorsToScene();
+		void PrepareCollisionCallback();
 
 	public:
 		physx::PxScene* GetScene() const;
 
-	public:
+	private:
 		void CreateStaticPlaneCollider(HDData::GameObject* object);
 		void CreateStaticBoxCollider(HDData::GameObject* object);
 		void CreateStaticBoxCollider(float width, float height, float depth);
@@ -70,6 +71,7 @@ namespace HDEngine
 		std::vector<physx::PxRigidDynamic*> _rigidDynamics;
 		std::vector<physx::PxRigidStatic*> _rigidStatics;
 		std::vector<physx::PxRigidStatic*> _movableStatics;
+		std::vector<physx::PxRigidStatic*> _triggerStatics;
 		std::vector<physx::PxJoint*> _joints;
 		int _directionX;
 		int _directionZ;

@@ -47,6 +47,8 @@ namespace HDData
 		int GetFlag();
 		void SetTrigger(bool isTrigger);
 		bool GetTrigger();
+		int GetCollisionCount();
+		void AddCollisionCount(int num);
 
 	protected:
 		int _flag;
@@ -68,6 +70,7 @@ namespace HDData
 	// index 0 ~ 2 is OnCollision_[Enter / Stay / Exit]
 	private:
 		std::vector<CollisionCallback*> _callbackFunctionVec;
+		int _collisionCount;
 
 		// copy ver
 		std::vector<PhysicsCollision*> _collisionStorage;

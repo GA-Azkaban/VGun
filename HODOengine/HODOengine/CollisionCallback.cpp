@@ -296,6 +296,8 @@ namespace HDEngine
 			//둘 다 제대로 존재하는지 확인하기.
 			assert(trigger != nullptr && otherCollider != nullptr);
 
+			//otherCollider->Collider_OnTriggerEnter(trigger);
+
 			//Collider들의 Pair 만들기.
 			CollidersPair collidersPair(trigger, otherCollider);
 
@@ -304,11 +306,15 @@ namespace HDEngine
 			{
 				//잃어버렸다고 표시.
 				_lostTriggerPairs.emplace_back(collidersPair);
+				trigger->AddCollisionCount(-1);
+				otherCollider->AddCollisionCount(-1);
 			}
 			else
 			{
 				//새롭게 추가된 Trigger 목록에 추가.
 				_newTriggerPairs.emplace_back(collidersPair);
+				trigger->AddCollisionCount(1);
+				otherCollider->AddCollisionCount(1);
 			}
 		}
 	}

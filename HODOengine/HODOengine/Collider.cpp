@@ -7,9 +7,10 @@ namespace HDData
 
 	Collider::Collider()
 		: _positionOffset(Vector3::Zero)
-, _rotationOffset(Quaternion::Identity)
-, _scaleOffset(Vector3::One),
-_parentCollider(nullptr)
+		, _rotationOffset(Quaternion::Identity)
+		, _scaleOffset(Vector3::One),
+		_parentCollider(nullptr),
+		_collisionCount(0)
 	{
 		HDEngine::RenderSystem::Instance().PushCollider(this);
 	}
@@ -132,6 +133,16 @@ _parentCollider(nullptr)
 		return _isTrigger;
 	}
 
+	int Collider::GetCollisionCount()
+	{
+		return _collisionCount;
+	}
+
+	void Collider::AddCollisionCount(int num)
+	{
+		_collisionCount += num;
+	}
+
 	void Collider::OnCollision(Collider* opponent, int actionType)
 	{
 		assert(actionType < 3, "action type index must be lower than 2");
@@ -167,11 +178,11 @@ _parentCollider(nullptr)
 
 	void Collider::Collider_OnTriggerEnter(Collider* col)
 	{
-
+		++_collisionCount;
 	}
 
 	void Collider::Collider_OnTriggerExit(Collider* col)
 	{
-
+		--_collisionCount;
 	}
 }

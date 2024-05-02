@@ -466,9 +466,9 @@ namespace RocketCore::Graphics
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
 			if (node->nodeTransform != nullptr)
 			{
-				node->nodeTransform->_position = position;
-				node->nodeTransform->_rotation = rotation;
-				node->nodeTransform->_scale = scale;
+				//node->nodeTransform->_position = position;
+				//node->nodeTransform->_rotation = rotation;
+				//node->nodeTransform->_scale = scale;
 			}
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
@@ -764,8 +764,8 @@ namespace RocketCore::Graphics
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
 			if (node->nodeTransform != nullptr)
 			{
-				node->nodeTransform->_position = position;
-				node->nodeTransform->_rotation = rotation;
+				//node->nodeTransform->_position = position;
+				//node->nodeTransform->_rotation = rotation;
 				node->nodeTransform->_scale = scale;
 			}
 		}
