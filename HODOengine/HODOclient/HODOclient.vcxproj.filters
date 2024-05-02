@@ -264,13 +264,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\Protobuf\bin\Enum.proto">
+    <None Include="..\Include\Protobuf\Enum.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
-    <None Include="..\Common\Protobuf\bin\Protocol.proto">
+    <None Include="..\Include\Protobuf\Protocol.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
-    <None Include="..\Common\Protobuf\bin\Struct.proto">
+    <None Include="..\Include\Protobuf\Struct.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
   </ItemGroup>

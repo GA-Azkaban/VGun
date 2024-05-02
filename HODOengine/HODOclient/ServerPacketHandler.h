@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Protocol.pb.h"
 
 using PacketHandlerFunc = std::function<bool(Horang::PacketSessionRef&, BYTE*, int32)>;
@@ -25,6 +25,8 @@ enum : uint16
 	PKT_S_ROOM_START = 1016,
 	PKT_C_PLAY_UPDATE = 1017,
 	PKT_S_PLAY_UPDATE = 1018,
+	PKT_C_ROOM_LIST_REQUEST = 1019,
+	PKT_S_ROOM_LIST = 1020,
 };
 
 // Custom Handlers
@@ -39,6 +41,7 @@ bool Handle_S_ANOTHER_ENTER_ROOM(Horang::PacketSessionRef& session, Protocol::S_
 bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_ANOTHER_LEAVE_ROOM& pkt);
 bool Handle_S_ROOM_START(Horang::PacketSessionRef& session, Protocol::S_ROOM_START& pkt);
 bool Handle_S_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::S_PLAY_UPDATE& pkt);
+bool Handle_S_ROOM_LIST(Horang::PacketSessionRef& session, Protocol::S_ROOM_LIST& pkt);
 
 class ServerPacketHandler
 {
@@ -57,6 +60,7 @@ public:
 		GPacketHandler[PKT_S_ANOTHER_LEAVE_ROOM] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ANOTHER_LEAVE_ROOM>(Handle_S_ANOTHER_LEAVE_ROOM, session, buffer, len); };
 		GPacketHandler[PKT_S_ROOM_START] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ROOM_START>(Handle_S_ROOM_START, session, buffer, len); };
 		GPacketHandler[PKT_S_PLAY_UPDATE] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAY_UPDATE>(Handle_S_PLAY_UPDATE, session, buffer, len); };
+		GPacketHandler[PKT_S_ROOM_LIST] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ROOM_LIST>(Handle_S_ROOM_LIST, session, buffer, len); };
 	}
 
 	static bool HandlePacket(Horang::PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -73,6 +77,7 @@ public:
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_LEAVE& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_LEAVE); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_START& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_START); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_PLAY_UPDATE& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAY_UPDATE); }
+	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_LIST_REQUEST& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_LIST_REQUEST); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

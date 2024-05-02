@@ -3,26 +3,51 @@
 #include "Player.h"
 #include "GameSession.h"
 #include "ClientPacketHandler.h"
+#include "RoomManager.h"
 
-RoomRef GRoom;
+using namespace Horang;
 
 Room::Room()
-	: _state(Protocol::eRoomState::ROOM_STATE_NONE)
 {
+	this->Initialize();
+}
 
+Room::~Room()
+{
+	this->Initialize();
 }
 
 void Room::Initialize()
 {
-	WRITE_LOCK;
-	this->_players.clear();
+	this->_roomId = 0;
 	this->_roomCode = "0000";
 	this->_state = Protocol::eRoomState::ROOM_STATE_LOBBY;
+
+	for (auto& [uid, user] : _players)
+	{
+		auto player = user.player.lock();
+		if (player == nullptr)
+			continue;
+
+		player->ownerGameSession->_room.reset();
+	}
+
+	this->_players.clear();
+
+	this->_roomName = "";
+	this->_password = "";
+	this->_maxPlayerCount = 6;
+	this->_currentPlayerCount = 0;
+	this->_isPrivate = false;
+	this->_isTeam = false;
+	this->_gameTime = 0;
 }
 
-bool Room::Enter(PlayerRef player)
+bool Room::Enter(PlayerWeakRef playerWeak)
 {
-	WRITE_LOCK;
+	auto player = playerWeak.lock();
+	if (player == nullptr)
+		return false;
 
 	// 게임중
 	if (_state != Protocol::eRoomState::ROOM_STATE_LOBBY)
@@ -40,7 +65,8 @@ bool Room::Enter(PlayerRef player)
 	}
 
 	_players[player->uid] = { player };
-	player->_currentRoom = this->shared_from_this();
+
+	player->ownerGameSession->_room = std::enable_shared_from_this<Room>::weak_from_this();
 
 	// 방장이 없을 때
 	if (_players.size() == 1)
@@ -69,15 +95,18 @@ bool Room::Enter(PlayerRef player)
 	return true;
 }
 
-bool Room::Leave(PlayerRef player)
+bool Room::Leave(PlayerWeakRef playerWeak)
 {
-	WRITE_LOCK;
+	auto player = playerWeak.lock();
+	if (player == nullptr)
+		return false;
 
 	// Todo 1명만 남았을때 방 삭제
 	if (this->_players.size() == 1)
 	{
 		this->_players.clear();
 		this->_state = Protocol::eRoomState::ROOM_STATE_LOBBY;
+		GRoomManager.Push(Horang::MakeShared<DestroyRoomJob>(this->std::enable_shared_from_this<Room>::shared_from_this()));
 		return true;
 	}
 
@@ -96,7 +125,7 @@ bool Room::Leave(PlayerRef player)
 	}
 
 	this->_players.erase(player->uid);
-	player->_currentRoom = nullptr;
+	player->ownerGameSession->_room.reset();
 
 	// 나간거 다른 사람에게 알려주기
 	{
@@ -113,17 +142,15 @@ bool Room::Leave(PlayerRef player)
 
 void Room::BroadCast(Horang::SendBufferRef sendBuffer)
 {
-	WRITE_LOCK;
 	for (auto& [id, playerData] : _players)
 	{
-		playerData.player->ownerGameSession->Send(sendBuffer);
+		playerData.player.lock()->ownerGameSession->Send(sendBuffer);
 	}
 }
 
-void Room::ClientUpdate(PlayerRef player, Protocol::C_PLAY_UPDATE& pkt)
+void Room::ClientUpdate(PlayerWeakRef playerWeak, Protocol::C_PLAY_UPDATE& pkt)
 {
-	WRITE_LOCK;
-
+	auto player = playerWeak.lock();
 	if (player == nullptr)
 		return;
 
@@ -139,9 +166,14 @@ void Room::ClientUpdate(PlayerRef player, Protocol::C_PLAY_UPDATE& pkt)
 	_players[player->uid].data.CopyFrom(pkt.playerdata());
 }
 
-void Room::GameStart()
+void Room::GameStart(PlayerWeakRef playerWeak)
 {
-	WRITE_LOCK;
+	auto player = playerWeak.lock();
+	if (player == nullptr)
+		return;
+
+	if (this->_players[player->uid].data.host() == false)
+		return;
 
 	if (_players.size() < 2)
 		return;
@@ -157,14 +189,12 @@ void Room::GameStart()
 
 
 	// Todo 게임 시작
-	JobRef job = Horang::MakeShared<UpdateJob>(this->shared_from_this());
-	this->PushJob(job);
+	Horang::JobRef job = Horang::MakeShared<UpdateJob>(this->std::enable_shared_from_this<Room>::shared_from_this());
+	this->Push(job);
 }
 
 void Room::Update()
 {
-	WRITE_LOCK;
-
 	if (this->_state != Protocol::eRoomState::ROOM_STATE_PLAY)
 		return;
 
@@ -181,8 +211,8 @@ void Room::Update()
 	// 16ms 이상 지났을 때만 업데이트
 	if (currentTime - _gameTime < 16)
 	{
-		JobRef job = Horang::MakeShared<UpdateJob>(this->shared_from_this());
-		this->PushJob(job);
+		JobRef job = Horang::MakeShared<UpdateJob>(this->std::enable_shared_from_this<Room>::shared_from_this());
+		this->Push(job);
 		return;
 	}
 
@@ -201,8 +231,8 @@ void Room::Update()
 
 	// 다시 Update Job 만들어서 대기열에 넣기
 	{
-		JobRef job = Horang::MakeShared<UpdateJob>(this->shared_from_this());
-		this->PushJob(job);
+		Horang::JobRef job = Horang::MakeShared<UpdateJob>(this->std::enable_shared_from_this<Room>::shared_from_this());
+		this->Push(job);
 	}
 }
 
@@ -215,20 +245,40 @@ Protocol::RoomInfo Room::GetRoomInfo()
 
 void Room::GetRoomInfo(Protocol::RoomInfo& roomInfo)
 {
-	roomInfo.set_roomid(_roomID);
+	roomInfo.set_roomid(_roomId);
 	roomInfo.set_roomcode(_roomCode);
 	roomInfo.set_state(_state);
 
 	for (auto& [uid, player] : _players)
 	{
 		auto userInfo = roomInfo.add_users();
-		player.player->GetUserInfo(userInfo);
+		player.player.lock()->GetUserInfo(userInfo);
 	}
+
+	roomInfo.set_roomname(_roomName);
+	roomInfo.set_password(_password);
+	roomInfo.set_maxplayercount(_maxPlayerCount);
+	roomInfo.set_currentplayercount(_currentPlayerCount);
+	roomInfo.set_isprivate(_isPrivate);
+	roomInfo.set_isteam(_isTeam);
 }
 
 void Room::GetRoomInfo(Protocol::RoomInfo* roomInfo)
 {
 	this->GetRoomInfo(*roomInfo);
+}
+
+void Room::GetRoomInfoList(Protocol::RoomInfo* roomInfo)
+{
+	roomInfo->set_roomid(_roomId);
+	roomInfo->set_roomcode(_roomCode);
+	roomInfo->set_state(_state);
+	roomInfo->set_roomname(_roomName);
+	roomInfo->set_password(_password);
+	roomInfo->set_maxplayercount(_maxPlayerCount);
+	roomInfo->set_currentplayercount(_currentPlayerCount);
+	roomInfo->set_isprivate(_isPrivate);
+	roomInfo->set_isteam(_isTeam);
 }
 
 void Room::SetUpdatePacket(Protocol::S_PLAY_UPDATE& packet)
@@ -244,22 +294,4 @@ void Room::SetUpdatePacket(Protocol::S_PLAY_UPDATE& packet)
 void Room::GetPlayerData(Protocol::PlayerData& playerData, int32 uid)
 {
 	playerData.CopyFrom(_players[uid].data);
-}
-
-void Room::PushJob(JobRef job)
-{
-	WRITE_LOCK;
-	_jobs.Push(job);
-}
-
-void Room::FlushJob()
-{
-	while (true)
-	{
-		JobRef job = _jobs.Pop();
-		if (job == nullptr)
-			break;
-
-		job->Execute();
-	}
 }

@@ -36,8 +36,14 @@ constexpr RoomInfo::RoomInfo(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : users_()
   , roomcode_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , roomname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , password_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , roomid_(0)
-  , state_(0){}
+  , state_(0)
+  , maxplayercount_(0)
+  , currentplayercount_(0)
+  , isprivate_(false)
+  , isteam_(false){}
 struct RoomInfoDefaultTypeInternal {
   constexpr RoomInfoDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -144,6 +150,12 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Struct_2eproto::offsets[] PROT
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, roomcode_),
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, state_),
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, users_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, roomname_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, password_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, maxplayercount_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, currentplayercount_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, isprivate_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, isteam_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::Vector3, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -192,11 +204,11 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Struct_2eproto::offsets[] PROT
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::Protocol::BuffData)},
   { 8, -1, sizeof(::Protocol::RoomInfo)},
-  { 17, -1, sizeof(::Protocol::Vector3)},
-  { 25, -1, sizeof(::Protocol::Quaternion)},
-  { 34, -1, sizeof(::Protocol::Transform)},
-  { 41, -1, sizeof(::Protocol::UserInfo)},
-  { 48, -1, sizeof(::Protocol::PlayerData)},
+  { 23, -1, sizeof(::Protocol::Vector3)},
+  { 31, -1, sizeof(::Protocol::Quaternion)},
+  { 40, -1, sizeof(::Protocol::Transform)},
+  { 47, -1, sizeof(::Protocol::UserInfo)},
+  { 54, -1, sizeof(::Protocol::PlayerData)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -212,27 +224,30 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"\?\n\010"
   "BuffData\022\016\n\006buffId\030\001 \001(\004\022\022\n\nremainTime\030\002"
-  " \001(\002\022\017\n\007victims\030\003 \003(\004\"^\n\010RoomInfo\022\016\n\006roo"
-  "mId\030\001 \001(\005\022\020\n\010roomCode\030\002 \001(\t\022\r\n\005state\030\003 \001"
-  "(\005\022!\n\005users\030\004 \003(\0132\022.Protocol.UserInfo\"*\n"
-  "\007Vector3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001("
-  "\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n"
-  "\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"Y\n\tTransform\022\"\n\007vect"
-  "or3\030\001 \001(\0132\021.Protocol.Vector3\022(\n\nquaterni"
-  "on\030\002 \001(\0132\024.Protocol.Quaternion\"(\n\010UserIn"
-  "fo\022\020\n\010nickName\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\"\264\001\n\nPla"
-  "yerData\022$\n\010userInfo\030\001 \001(\0132\022.Protocol.Use"
-  "rInfo\022\014\n\004host\030\002 \001(\010\022\014\n\004team\030\003 \001(\005\022&\n\ttra"
-  "nsform\030\004 \001(\0132\023.Protocol.Transform\022\n\n\002hp\030"
-  "\005 \001(\002\022\r\n\005maxHp\030\006 \001(\002\022\021\n\tisSitting\030\007 \001(\010\022"
-  "\016\n\006isDead\030\010 \001(\010b\006proto3"
+  " \001(\002\022\017\n\007victims\030\003 \003(\004\"\331\001\n\010RoomInfo\022\016\n\006ro"
+  "omId\030\001 \001(\005\022\020\n\010roomCode\030\002 \001(\t\022\r\n\005state\030\003 "
+  "\001(\005\022!\n\005users\030\004 \003(\0132\022.Protocol.UserInfo\022\020"
+  "\n\010roomName\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\022\026\n\016ma"
+  "xPlayerCount\030\007 \001(\005\022\032\n\022currentPlayerCount"
+  "\030\010 \001(\005\022\021\n\tisPrivate\030\t \001(\010\022\016\n\006isTeam\030\n \001("
+  "\010\"*\n\007Vector3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030"
+  "\003 \001(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001("
+  "\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"Y\n\tTransform\022\"\n\007"
+  "vector3\030\001 \001(\0132\021.Protocol.Vector3\022(\n\nquat"
+  "ernion\030\002 \001(\0132\024.Protocol.Quaternion\"(\n\010Us"
+  "erInfo\022\020\n\010nickName\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\"\264\001\n"
+  "\nPlayerData\022$\n\010userInfo\030\001 \001(\0132\022.Protocol"
+  ".UserInfo\022\014\n\004host\030\002 \001(\010\022\014\n\004team\030\003 \001(\005\022&\n"
+  "\ttransform\030\004 \001(\0132\023.Protocol.Transform\022\n\n"
+  "\002hp\030\005 \001(\002\022\r\n\005maxHp\030\006 \001(\002\022\021\n\tisSitting\030\007 "
+  "\001(\010\022\016\n\006isDead\030\010 \001(\010b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Struct_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto = {
-  false, false, 623, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
+  false, false, 747, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
   &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 7,
   schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
   file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto, file_level_service_descriptors_Struct_2eproto,
@@ -529,18 +544,30 @@ RoomInfo::RoomInfo(const RoomInfo& from)
     roomcode_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_roomcode(), 
       GetArenaForAllocation());
   }
+  roomname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_roomname().empty()) {
+    roomname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_roomname(), 
+      GetArenaForAllocation());
+  }
+  password_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_password().empty()) {
+    password_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_password(), 
+      GetArenaForAllocation());
+  }
   ::memcpy(&roomid_, &from.roomid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&state_) -
-    reinterpret_cast<char*>(&roomid_)) + sizeof(state_));
+    static_cast<size_t>(reinterpret_cast<char*>(&isteam_) -
+    reinterpret_cast<char*>(&roomid_)) + sizeof(isteam_));
   // @@protoc_insertion_point(copy_constructor:Protocol.RoomInfo)
 }
 
 void RoomInfo::SharedCtor() {
 roomcode_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+roomname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+password_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&roomid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&state_) -
-    reinterpret_cast<char*>(&roomid_)) + sizeof(state_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&isteam_) -
+    reinterpret_cast<char*>(&roomid_)) + sizeof(isteam_));
 }
 
 RoomInfo::~RoomInfo() {
@@ -552,6 +579,8 @@ RoomInfo::~RoomInfo() {
 void RoomInfo::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
   roomcode_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  roomname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  password_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void RoomInfo::ArenaDtor(void* object) {
@@ -572,9 +601,11 @@ void RoomInfo::Clear() {
 
   users_.Clear();
   roomcode_.ClearToEmpty();
+  roomname_.ClearToEmpty();
+  password_.ClearToEmpty();
   ::memset(&roomid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&state_) -
-      reinterpret_cast<char*>(&roomid_)) + sizeof(state_));
+      reinterpret_cast<char*>(&isteam_) -
+      reinterpret_cast<char*>(&roomid_)) + sizeof(isteam_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -617,6 +648,52 @@ const char* RoomInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // string roomName = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+          auto str = _internal_mutable_roomname();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.RoomInfo.roomName"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // string password = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
+          auto str = _internal_mutable_password();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.RoomInfo.password"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 maxPlayerCount = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          maxplayercount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 currentPlayerCount = 8;
+      case 8:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
+          currentplayercount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // bool isPrivate = 9;
+      case 9:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+          isprivate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // bool isTeam = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          isteam_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -678,6 +755,50 @@ failure:
       InternalWriteMessage(4, this->_internal_users(i), target, stream);
   }
 
+  // string roomName = 5;
+  if (!this->roomname().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_roomname().data(), static_cast<int>(this->_internal_roomname().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Protocol.RoomInfo.roomName");
+    target = stream->WriteStringMaybeAliased(
+        5, this->_internal_roomname(), target);
+  }
+
+  // string password = 6;
+  if (!this->password().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_password().data(), static_cast<int>(this->_internal_password().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Protocol.RoomInfo.password");
+    target = stream->WriteStringMaybeAliased(
+        6, this->_internal_password(), target);
+  }
+
+  // int32 maxPlayerCount = 7;
+  if (this->maxplayercount() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(7, this->_internal_maxplayercount(), target);
+  }
+
+  // int32 currentPlayerCount = 8;
+  if (this->currentplayercount() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(8, this->_internal_currentplayercount(), target);
+  }
+
+  // bool isPrivate = 9;
+  if (this->isprivate() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(9, this->_internal_isprivate(), target);
+  }
+
+  // bool isTeam = 10;
+  if (this->isteam() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_isteam(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -708,6 +829,20 @@ size_t RoomInfo::ByteSizeLong() const {
         this->_internal_roomcode());
   }
 
+  // string roomName = 5;
+  if (!this->roomname().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_roomname());
+  }
+
+  // string password = 6;
+  if (!this->password().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_password());
+  }
+
   // int32 roomId = 1;
   if (this->roomid() != 0) {
     total_size += 1 +
@@ -720,6 +855,30 @@ size_t RoomInfo::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
         this->_internal_state());
+  }
+
+  // int32 maxPlayerCount = 7;
+  if (this->maxplayercount() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_maxplayercount());
+  }
+
+  // int32 currentPlayerCount = 8;
+  if (this->currentplayercount() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_currentplayercount());
+  }
+
+  // bool isPrivate = 9;
+  if (this->isprivate() != 0) {
+    total_size += 1 + 1;
+  }
+
+  // bool isTeam = 10;
+  if (this->isteam() != 0) {
+    total_size += 1 + 1;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -757,11 +916,29 @@ void RoomInfo::MergeFrom(const RoomInfo& from) {
   if (!from.roomcode().empty()) {
     _internal_set_roomcode(from._internal_roomcode());
   }
+  if (!from.roomname().empty()) {
+    _internal_set_roomname(from._internal_roomname());
+  }
+  if (!from.password().empty()) {
+    _internal_set_password(from._internal_password());
+  }
   if (from.roomid() != 0) {
     _internal_set_roomid(from._internal_roomid());
   }
   if (from.state() != 0) {
     _internal_set_state(from._internal_state());
+  }
+  if (from.maxplayercount() != 0) {
+    _internal_set_maxplayercount(from._internal_maxplayercount());
+  }
+  if (from.currentplayercount() != 0) {
+    _internal_set_currentplayercount(from._internal_currentplayercount());
+  }
+  if (from.isprivate() != 0) {
+    _internal_set_isprivate(from._internal_isprivate());
+  }
+  if (from.isteam() != 0) {
+    _internal_set_isteam(from._internal_isteam());
   }
 }
 
@@ -792,9 +969,19 @@ void RoomInfo::InternalSwap(RoomInfo* other) {
       &roomcode_, GetArenaForAllocation(),
       &other->roomcode_, other->GetArenaForAllocation()
   );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &roomname_, GetArenaForAllocation(),
+      &other->roomname_, other->GetArenaForAllocation()
+  );
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &password_, GetArenaForAllocation(),
+      &other->password_, other->GetArenaForAllocation()
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(RoomInfo, state_)
-      + sizeof(RoomInfo::state_)
+      PROTOBUF_FIELD_OFFSET(RoomInfo, isteam_)
+      + sizeof(RoomInfo::isteam_)
       - PROTOBUF_FIELD_OFFSET(RoomInfo, roomid_)>(
           reinterpret_cast<char*>(&roomid_),
           reinterpret_cast<char*>(&other->roomid_));
