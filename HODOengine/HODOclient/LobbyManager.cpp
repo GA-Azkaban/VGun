@@ -127,20 +127,26 @@ void LobbyManager::SetFailCanvas(HDData::GameObject* failCanvas)
 
 void LobbyManager::Test()
 {
-	auto camMove = API::CreateTween();
-	auto camRotate = API::CreateTween();
+	//auto camMove = API::CreateTween();
+	//auto camRotate = API::CreateTween();
 
-	float dest = { -35.7f };
+	//float dest = { -35.7f };
 
-	HDData::GameObject* mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
+	//HDData::GameObject* mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
 
-	camMove->GetData(&(mainCam->GetTransform()->GetPositionRef().x))
-		.DoMove(dest, 5)
-		.SetEase(HDData::OUTQUINT)
-		.OnComplete([this]() 
-			{ 
-				//Test2(); 
-			});
+	//camMove->GetData(&(mainCam->GetTransform()->GetPositionRef().x))
+	//	.DoMove(dest, 5)
+	//	.SetEase(HDData::OUTQUINT)
+	//	.OnComplete([this]() 
+	//		{ 
+	//			//Test2(); 
+	//		});
 
+	API::LoadSceneByName("ALT");
 
+}
+
+void LobbyManager::Test2()
+{
+	API::LoadSceneByName("MainLobby");
 }

@@ -22,8 +22,8 @@
     <ClCompile Include="LoginSceneView.cpp">
       <Filter>04_SceneView\Login</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>03_Manager\GameManager</Filter>
+    <ClCompile Include="RoundManager.cpp">
+      <Filter>03_Manager\RoundManager</Filter>
     </ClCompile>
     <ClCompile Include="LobbyManager.cpp">
       <Filter>03_Manager\LobbyManager</Filter>
@@ -78,7 +78,7 @@
       <Filter>04_SceneView\InGame</Filter>
     </ClCompile>
     <ClCompile Include="PlayerInfo.cpp">
-      <Filter>03_Manager\GameManager\PlayerInfo</Filter>
+      <Filter>03_Manager\RoundManager\PlayerInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -109,8 +109,8 @@
     <ClInclude Include="LoginSceneView.h">
       <Filter>04_SceneView\Login</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>03_Manager\GameManager</Filter>
+    <ClInclude Include="RoundManager.h">
+      <Filter>03_Manager\RoundManager</Filter>
     </ClInclude>
     <ClInclude Include="LobbyManager.h">
       <Filter>03_Manager\LobbyManager</Filter>
@@ -167,10 +167,10 @@
       <Filter>04_SceneView\InGame</Filter>
     </ClInclude>
     <ClInclude Include="PlayerInfo.h">
-      <Filter>03_Manager\GameManager\PlayerInfo</Filter>
+      <Filter>03_Manager\RoundManager\PlayerInfo</Filter>
     </ClInclude>
     <ClInclude Include="PlayerState.h">
-      <Filter>03_Manager\GameManager\PlayerState</Filter>
+      <Filter>03_Manager\RoundManager\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -221,9 +221,6 @@
     <Filter Include="03_Manager\LobbyManager">
       <UniqueIdentifier>{6cc71ee5-77d6-4520-adb9-643ce13ccc65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03_Manager\GameManager">
-      <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03_Manager\NetworkManager">
       <UniqueIdentifier>{bb6cabb6-1ab9-4f86-83fe-c31ee701f7a3}</UniqueIdentifier>
     </Filter>
@@ -251,10 +248,13 @@
     <Filter Include="02_Client\TestScene\SceneLoader">
       <UniqueIdentifier>{84041ead-e90d-49f3-8dce-9afc738d60c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03_Manager\GameManager\PlayerInfo">
+    <Filter Include="03_Manager\RoundManager">
+      <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\RoundManager\PlayerInfo">
       <UniqueIdentifier>{3fd426df-0e08-4a6c-a6df-2b67ce877b2b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03_Manager\GameManager\PlayerState">
+    <Filter Include="03_Manager\RoundManager\PlayerState">
       <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

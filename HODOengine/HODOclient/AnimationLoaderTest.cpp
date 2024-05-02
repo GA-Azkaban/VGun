@@ -2,6 +2,7 @@
 #include "CameraMove.h"
 #include "Player.h"
 #include "FSMtestScript.h"
+#include "LobbyManager.h"
 
 AnimationLoaderTest::AnimationLoaderTest()
 {
@@ -43,4 +44,12 @@ void AnimationLoaderTest::Start()
 	API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
 
 	playerTP->AddComponent<FSMtestScript>();
+
+	HDData::GameObject* test2 = API::CreateButton(_scene);
+	test2->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[]()
+		{
+			LobbyManager::Instance().Test2();
+		}
+	);
 }

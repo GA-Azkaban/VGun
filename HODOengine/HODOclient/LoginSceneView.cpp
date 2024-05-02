@@ -249,6 +249,18 @@ void LoginSceneView::LoginView()
 		}
 	);
 
+	HDData::GameObject* test = API::CreateButton(_scene, "test");
+	test->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	test->GetComponent<HDData::Button>()->SetImage("defaultImg.png");
+	test->GetTransform()->SetPosition(10, 10, 0.f);
+	test->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			test->GetTransform()->Translate(100.f, 0, 0);
+			LobbyManager::Instance().Test();
+		}
+	);
+
 	joinCanvas->SetSelfActive(false);
 }
 
