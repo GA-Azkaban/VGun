@@ -4,7 +4,7 @@ class Player
 {
 public:
 	Player()
-		: uid(0), id(""), nickname(""), ownerGameSession(nullptr), _currentRoom(nullptr)
+		: uid(0), id(""), nickname(""), ownerGameSession(nullptr)
 	{}
 
 public:
@@ -17,6 +17,5 @@ public:
 	std::string nickname;
 
 	GameSessionRef ownerGameSession;
-	RoomRef _currentRoom;
 };
 

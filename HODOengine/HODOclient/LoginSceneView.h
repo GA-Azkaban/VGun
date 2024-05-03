@@ -2,6 +2,7 @@
 #include "../HODOengine/HODO_API.h"
 
 class LobbyManager;
+class FadeInOut;
 
 class LoginSceneView
 {
@@ -18,4 +19,5 @@ private:
 	HDData::Scene* _scene;
 
 	LobbyManager& _lobbyManager;
+	FadeInOut& _fadeInOut;
 };

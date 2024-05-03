@@ -129,3 +129,10 @@ bool Handle_S_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::S_PLAY_UP
 
 	return true;
 }
+
+bool Handle_S_ROOM_LIST(Horang::PacketSessionRef& session, Protocol::S_ROOM_LIST& pkt)
+{
+	NetworkManager::Instance().RecvRoomList(pkt);
+
+	return true;
+}

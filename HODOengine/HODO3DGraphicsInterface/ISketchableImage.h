@@ -20,6 +20,8 @@ namespace HDEngine
 		virtual void FadeIn() override = 0;
 		virtual void FadeOut() override = 0;
 		virtual bool GetFadeMode() override = 0;
+		virtual bool GetComplete() override = 0;
 		virtual bool SetFadeMode(bool SetFade) override = 0;
+
 	};
 }
