@@ -14,7 +14,7 @@ LoginSceneView::~LoginSceneView()
 void LoginSceneView::Initialize()
 {
 	// Create Scene
-	_scene = API::CreateScene("MainLobby");
+	_scene = API::CreateScene("Login");
 
 
 	LoginView();

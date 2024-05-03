@@ -77,6 +77,9 @@
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>03_Manager\RoundManager\PlayerInfo</Filter>
     </ClCompile>
+    <ClCompile Include="LobbySceneView.cpp">
+      <Filter>04_SceneView\Lobby</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -165,6 +168,9 @@
     </ClInclude>
     <ClInclude Include="PlayerState.h">
       <Filter>03_Manager\RoundManager\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbySceneView.h">
+      <Filter>04_SceneView\Lobby</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

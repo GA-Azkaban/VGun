@@ -1,9 +1,21 @@
 ﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 
+RoundManager* RoundManager::_instance = nullptr;
+
+RoundManager* RoundManager::Instance()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new RoundManager;
+	}
+
+	return _instance;
+}
+
 RoundManager::RoundManager()
 {
-
+	API::CreateStaticComponent(this);
 }
 
 void RoundManager::Start()
@@ -20,13 +32,14 @@ void RoundManager::InitGame()
 {
 	// 라운드 초기화
 	InitRound();
+	InitRandomSpawn();
 	NetworkManager::Instance().SendGameStart();
 
 }
 
 void RoundManager::EndGame()
 {
-	//NetworkManager::Instance().SendPlayUpdate();
+
 }
 
 void RoundManager::InitRound()

@@ -1,0 +1,1087 @@
+[
+
+{
+    "ID": -68582,
+    "ParentID": 0,
+    "Name": "SM_bed_military_01",
+    "MeshName": "SM_bed_military_01",
+    "Position": {
+        "x": -32.400001525878909,
+        "y": 0.019999999552965165,
+        "z": 1.7599999904632569
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.9626516699790955,
+        "z": 0.0,
+        "w": -0.270743191242218
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_metallic_rough",
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -67114,
+    "ParentID": 0,
+    "Name": "tree_tall_01 (1)",
+    "MeshName": "tree_tall_01",
+    "Position": {
+        "x": -31.510000228881837,
+        "y": 0.0,
+        "z": 3.890000104904175
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -66472,
+    "ParentID": 0,
+    "Name": "bush_04 (2)",
+    "MeshName": "bush_04",
+    "Position": {
+        "x": -36.630001068115237,
+        "y": -9.5367431640625e-7,
+        "z": -10.6899995803833
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -43394,
+    "ParentID": 0,
+    "Name": "tree_tall_02 (3)",
+    "MeshName": "tree_tall_02",
+    "Position": {
+        "x": -47.75,
+        "y": -1.350000023841858,
+        "z": -1.9299999475479127
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -22758,
+    "ParentID": 0,
+    "Name": "satellite_military_large",
+    "MeshName": "satellite_military_large",
+    "Position": {
+        "x": -39.131309509277347,
+        "y": 1.0547313690185547,
+        "z": -22.009885787963868
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.3642745912075043,
+        "z": 0.0,
+        "w": 0.9312916398048401
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_metallic_rough",
+        "M_white",
+        "M_emissive_light_01"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -19766,
+    "ParentID": 0,
+    "Name": "tree_tall_02 (2)",
+    "MeshName": "tree_tall_02",
+    "Position": {
+        "x": -47.75,
+        "y": 2.384185791015625e-7,
+        "z": 5.952817916870117
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -19522,
+    "ParentID": 0,
+    "Name": "drink_beer (2)",
+    "MeshName": "drink_beer",
+    "Position": {
+        "x": -30.2758731842041,
+        "y": 0.9729999899864197,
+        "z": -5.53000020980835
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -19414,
+    "ParentID": 0,
+    "Name": "drink_water (1)",
+    "MeshName": "drink_water",
+    "Position": {
+        "x": -30.16200065612793,
+        "y": 0.9369999766349793,
+        "z": -6.11299991607666
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -19300,
+    "ParentID": 0,
+    "Name": "drink_water",
+    "MeshName": "drink_water",
+    "Position": {
+        "x": -30.445053100585939,
+        "y": 0.9330000281333923,
+        "z": -6.110000133514404
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -18532,
+    "ParentID": 0,
+    "Name": "barrel_red_01 (1)",
+    "MeshName": "barrel_red_01",
+    "Position": {
+        "x": -34.41606521606445,
+        "y": 0.0,
+        "z": -3.8924031257629396
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -18414,
+    "ParentID": 0,
+    "Name": "barrel_green_01 (1)",
+    "MeshName": "barrel_green_01",
+    "Position": {
+        "x": -34.169647216796878,
+        "y": 2.384185791015625e-7,
+        "z": -4.562878608703613
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -18314,
+    "ParentID": 0,
+    "Name": "barrel_green_01",
+    "MeshName": "barrel_green_01",
+    "Position": {
+        "x": -35.37709045410156,
+        "y": 0.0,
+        "z": -4.705827236175537
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -18104,
+    "ParentID": 0,
+    "Name": "box_wooden_01",
+    "MeshName": "box_wooden_01",
+    "Position": {
+        "x": -34.576568603515628,
+        "y": 0.014645480550825596,
+        "z": -6.051935195922852
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_wooden"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -17686,
+    "ParentID": 0,
+    "Name": "sandbags_03",
+    "MeshName": "sandbags_03",
+    "Position": {
+        "x": -35.939998626708987,
+        "y": -2.384185791015625e-7,
+        "z": -0.4300000071525574
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -0.3418339788913727,
+        "z": 0.0,
+        "w": 0.9397603869438171
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_sandstone"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -17316,
+    "ParentID": 0,
+    "Name": "table_wooden_01",
+    "MeshName": "table_wooden_01",
+    "Position": {
+        "x": -30.459999084472658,
+        "y": -2.384185791015625e-7,
+        "z": -5.570000171661377
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.5204730033874512,
+        "z": 0.0,
+        "w": 0.8538782000541687
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_wooden"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -16588,
+    "ParentID": 0,
+    "Name": "tree_tall_01",
+    "MeshName": "tree_tall_01",
+    "Position": {
+        "x": -34.03570556640625,
+        "y": 0.0,
+        "z": -8.155937194824219
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -16484,
+    "ParentID": 0,
+    "Name": "tree_small_01",
+    "MeshName": "tree_small_01",
+    "Position": {
+        "x": -31.685928344726564,
+        "y": 9.5367431640625e-7,
+        "z": -10.330314636230469
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -16254,
+    "ParentID": 0,
+    "Name": "drink_beer (1)",
+    "MeshName": "drink_beer",
+    "Position": {
+        "x": -31.410512924194337,
+        "y": 0.0020000000949949028,
+        "z": -7.190000057220459
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_color_palette"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -15318,
+    "ParentID": 0,
+    "Name": "bush_04 (1)",
+    "MeshName": "bush_04",
+    "Position": {
+        "x": -32.869998931884769,
+        "y": -9.5367431640625e-7,
+        "z": -8.930000305175782
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -15210,
+    "ParentID": 0,
+    "Name": "bush_03",
+    "MeshName": "bush_03",
+    "Position": {
+        "x": -33.08000183105469,
+        "y": -9.5367431640625e-7,
+        "z": -7.389999866485596
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -15104,
+    "ParentID": 0,
+    "Name": "tree_palm_02 (1)",
+    "MeshName": "tree_palm_02",
+    "Position": {
+        "x": -24.600000381469728,
+        "y": -9.5367431640625e-7,
+        "z": -9.75
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_dirt_grey",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -13030,
+    "ParentID": 0,
+    "Name": "bush_04",
+    "MeshName": "bush_04",
+    "Position": {
+        "x": -37.959999084472659,
+        "y": 0.0,
+        "z": -1.690000057220459
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -12004,
+    "ParentID": 0,
+    "Name": "tree_palm_02",
+    "MeshName": "tree_palm_02",
+    "Position": {
+        "x": -39.209999084472659,
+        "y": -9.5367431640625e-7,
+        "z": -1.2100000381469727
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_trees_base",
+        "M_dirt_grey",
+        "M_leaves"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -11276,
+    "ParentID": 0,
+    "Name": "cliffs_02",
+    "MeshName": "cliffs_02",
+    "Position": {
+        "x": -38.25593948364258,
+        "y": 4.76837158203125e-7,
+        "z": 3.135468006134033
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 0.7080479860305786,
+        "y": 0.7080479860305786,
+        "z": 0.7080479860305786
+    },
+    "materials": [
+        "M_cliffs"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -10778,
+    "ParentID": 0,
+    "Name": "cliff_05",
+    "MeshName": "cliff_05",
+    "Position": {
+        "x": -43.661537170410159,
+        "y": -4.76837158203125e-7,
+        "z": -7.039999961853027
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_cliffs"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -10474,
+    "ParentID": 0,
+    "Name": "cliffs_04",
+    "MeshName": "cliffs_04",
+    "Position": {
+        "x": -27.83403205871582,
+        "y": -9.5367431640625e-7,
+        "z": -24.236446380615236
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 0.7080479860305786,
+        "y": 0.7080479860305786,
+        "z": 0.7080479860305786
+    },
+    "materials": [
+        "M_cliffs"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -10106,
+    "ParentID": 0,
+    "Name": "cliff_01",
+    "MeshName": "cliff_01",
+    "Position": {
+        "x": -34.119998931884769,
+        "y": 0.0,
+        "z": -12.899999618530274
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_cliffs"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -9998,
+    "ParentID": 0,
+    "Name": "cliff_03",
+    "MeshName": "cliff_03",
+    "Position": {
+        "x": -26.979999542236329,
+        "y": 0.0,
+        "z": -13.239999771118164
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": -1.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "Scale": {
+        "x": 1.0,
+        "y": 1.0,
+        "z": 1.0
+    },
+    "materials": [
+        "M_cliffs"
+    ],
+    "ColliderType": 0,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "SphereColliderRadius": 0.0
+},
+{
+    "ID": -9002,
+    "ParentID": 0,
+    "Name": "Plane",
+    "MeshName": "Plane",
+    "Position": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "Rotation": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 1.0
+    },
+    "Scale": {
+        "x": 10.0,
+        "y": 10.0,
+        "z": 10.0
+    },
+    "materials": [
+        "M_sand_color_01"
+    ],
+    "ColliderType": 1,
+    "ColliderCenter": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0
+    },
+    "BoxColliderSize": {
+        "x": 10.0,
+        "y": 2.220446049250313e-16,
+        "z": 10.0
+    },
+    "SphereColliderRadius": 0.0
+}]

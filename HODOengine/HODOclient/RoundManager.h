@@ -8,6 +8,10 @@
 class RoundManager : public HDData::Script
 {
 public:
+	static RoundManager* Instance();
+
+private:
+	static RoundManager* _instance;
 	RoundManager();
 	~RoundManager() = default;
 

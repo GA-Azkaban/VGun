@@ -5,6 +5,7 @@
 #include "UnitySceneLoaderTest.h"
 #include "AnimationLoaderTest.h"
 #include "InGameSceneView.h"
+#include "LobbySceneView.h"
 
 Client::Client()
 {
@@ -20,11 +21,11 @@ void Client::Initialize()
 {
 	//NetworkManager::Instance();
 
-	TestScene test;
-	test.Start();
+	//TestScene test;
+	//test.Start();
 
-	LoginSceneView login;
-	login.Initialize();
+	//LoginSceneView login;
+	//login.Initialize();
 
 	//MainMenuScene menu;
 	//menu.Initalize();
@@ -32,14 +33,14 @@ void Client::Initialize()
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
 
-	AnimationLoaderTest loader;
-	loader.Start();
-
-	//API::LoadSceneByName("MainLobby");
-	API::LoadSceneByName("MainLobby");
+	//AnimationLoaderTest loader;
+	//loader.Start();
 
 	//InGameSceneView inGame;
 	//inGame.Initialize();
 
-	//API::LoadSceneByName("InGameScene");
+	LobbySceneView lobby;
+	lobby.Initialize();
+
+	API::LoadSceneByName("Lobby");
 }

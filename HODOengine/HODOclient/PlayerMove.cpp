@@ -50,7 +50,7 @@ void PlayerMove::Update()
 
 	for (int i = 0; i < 30; ++i)
 	{
-		_hitParticles[i]->CheckTimer(_deltaTime);
+		//_hitParticles[i]->CheckTimer(_deltaTime);
 	}
 
 	if (API::GetMouseDown(MOUSE_LEFT))
@@ -183,10 +183,10 @@ void PlayerMove::CheckMoveInfo()
 
 	if (_moveDirection != 5)
 	{
-		if (!_playerAudio->IsSoundPlaying("walk"))
-		{
-			_playerAudio->PlayOnce("walk");
-		}
+		//if (!_playerAudio->IsSoundPlaying("walk"))
+		//{
+		//	_playerAudio->PlayOnce("walk");
+		//}
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
