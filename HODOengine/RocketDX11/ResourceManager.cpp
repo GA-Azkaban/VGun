@@ -126,13 +126,13 @@ namespace RocketCore::Graphics
 
 		const aiScene* _scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace);
 
-		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
+		if (_scene == nullptr || _scene->mRootNode == nullptr)
 		{
 			MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 		}
 
 		// SKM_ 으로 시작하는 파일명으로 받아온 FBX 파일은 메시랑 노드 한번만 로드한다.
-		if (_loadedFileInfo.find(_fileInfoKeyName) == _loadedFileInfo.end())
+		if (_scene->HasMeshes())
 		{
 			ProcessNode(_scene->mRootNode, _scene);
 		}
@@ -162,8 +162,8 @@ namespace RocketCore::Graphics
 		else
 		{
 			//hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
-			hr = CreateWICTextureFromFileEx(_device.Get(), _deviceContext.Get(), 
-				pathWS.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 
+			hr = CreateWICTextureFromFileEx(_device.Get(), _deviceContext.Get(),
+				pathWS.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE,
 				0, 0, WIC_LOADER_IGNORE_SRGB, nullptr, &srv);
 		}
 
@@ -582,6 +582,14 @@ namespace RocketCore::Graphics
 		PixelShader* blitPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
+
+		VertexShader* billboardVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (billboardVS->LoadShaderFile(L"Resources/Shaders/BillboardVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS));
+
+		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("BillboardPixelShader.cso", billboardPS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
@@ -901,16 +909,17 @@ namespace RocketCore::Graphics
 			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-			/*aiMatrix4x4 mat(
-				rightVec.x, forwardVec.x, -upVec.x, 0.0f,
-				rightVec.y, forwardVec.y, -upVec.y, 0.0f,
-				rightVec.z, forwardVec.z, -upVec.z, 0.0f,
-				0.0f, 0.0f, 0.0f, 1.0f);*/
+		/*aiMatrix4x4 mat(
+			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
+			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
+			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f); */
 
-		// create node hierarchy
+			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
+		//rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(nullptr, rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode);
 
 		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
@@ -1071,7 +1080,7 @@ namespace RocketCore::Graphics
 		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
-		unitScaleFactor = 1.0f / unitScaleFactor;
+		unitScaleFactor = 0.01f / unitScaleFactor;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
@@ -1089,7 +1098,7 @@ namespace RocketCore::Graphics
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
 		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
-		
+
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
 		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
 
@@ -1660,7 +1669,7 @@ namespace RocketCore::Graphics
 		{
 			return name;
 		}
-		
+
 		UINT firstBarIndex2 = name.find_first_of("_");
 		name = name.substr(0, firstBarIndex2);
 		return name;

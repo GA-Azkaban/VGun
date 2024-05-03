@@ -73,6 +73,12 @@
     <FxCompile Include="Outline_FullScreenQuadPS.hlsl">
       <Filter>Resource\Shader\HLSL\Outline</Filter>
     </FxCompile>
+    <FxCompile Include="BillboardVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Billboard</Filter>
+    </FxCompile>
+    <FxCompile Include="BillboardPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Billboard</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -188,6 +194,12 @@
     </ClCompile>
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Resource\Shader\GeometryShader</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardObject.cpp">
+      <Filter>Object\Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +346,12 @@
     </ClInclude>
     <ClInclude Include="GeometryShader.h">
       <Filter>Resource\Shader\GeometryShader</Filter>
+    </ClInclude>
+    <ClInclude Include="BillboardObject.h">
+      <Filter>Object\Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePass.h">
+      <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -537,6 +555,15 @@
     </Filter>
     <Filter Include="Resource\Shader\GeometryShader">
       <UniqueIdentifier>{6d310d2e-db01-44ec-b709-fa1ed4567547}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Billboard">
+      <UniqueIdentifier>{85c54b1c-5cf4-4dcc-9a3a-e8a4c8ad4b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Billboard">
+      <UniqueIdentifier>{4760ce01-4cbd-402d-a9d4-70a17115984e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ParticlePass">
+      <UniqueIdentifier>{92fbb2e3-43d9-440e-94c9-2dfc4f4f7401}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
