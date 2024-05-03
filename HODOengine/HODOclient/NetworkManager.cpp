@@ -24,7 +24,6 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
-	Start();
 }
 
 void NetworkManager::Start()
@@ -140,7 +139,7 @@ void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 
 }
 
-void NetworkManager::SetRoom()
+void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 {
 	Protocol::C_ROOM_CREATE packet;
 

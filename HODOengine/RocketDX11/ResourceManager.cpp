@@ -57,6 +57,7 @@ namespace RocketCore::Graphics
 		_deviceContext = deviceContext;
 
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
+		//_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
 
 		LoadShaders();
 		CreateRasterizerStates();
@@ -1664,6 +1665,17 @@ namespace RocketCore::Graphics
 		UINT firstBarIndex2 = name.find_first_of("_");
 		name = name.substr(0, firstBarIndex2);
 		return name;
+	}
+
+	DirectX::SpriteFont* ResourceManager::SetFont(const std::string& str)
+	{
+		std::wstring wstr(str.begin(), str.end());
+		const wchar_t* wchars = wstr.c_str();
+		DirectX::SpriteFont* font = new DirectX::SpriteFont(_device.Get(), wchars);
+
+		return font;
+
+		//return _defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/KRAFTON_FontIncludeKR_40.spritefont");
 	}
 
 }
