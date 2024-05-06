@@ -37,17 +37,20 @@ namespace RocketCore::Graphics
 
 		for (UINT i = 0; i < 6; ++i)
 		{
-			indices.push_back(i);
+			indices[i] = i;
 		}
 
 		_mesh = new Mesh(&vertices[0], 6, &indices[0], 6);
 		HDEngine::MaterialDesc desc;
 		desc.materialName = "BillboardMat";
 		desc.albedo = "shortMuzzleFires.png";
-		desc.color = { 255, 255, 255, 255 };
+		desc.color = { 255, 255, 255, 100 };
 		_material = ObjectManager::Instance().CreateMaterial(desc);
 		_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 		_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
+
+		float radian = XMConvertToRadians(90.0f);
+		_world *= XMMatrixRotationX(radian);
 	}
 
 	BillboardObject::~BillboardObject()
@@ -67,6 +70,7 @@ namespace RocketCore::Graphics
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+
 		_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(_world));
 		_vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 		_vertexShader->SetInt2("tiling", XMINT2(1, 4));

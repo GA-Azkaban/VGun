@@ -27,10 +27,10 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
-	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	boxRender1->LoadMesh("primitiveCube");
+	//auto testBox1 = API::CreateObject(_scene);
+	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
+	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	//boxRender1->LoadMesh("primitiveCube");
 	//
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
@@ -72,19 +72,19 @@ TestScene::TestScene()
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
 
 	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	//auto playerTest = API::CreateObject(_scene, "player");
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	//playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
 	//playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
-	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	/*auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
@@ -100,13 +100,13 @@ TestScene::TestScene()
 	//meshComp->PlayAnimationLower("AR_fire", true);
 	//meshComp->PlayAnimationUpper("AR_crouchFire", true);
 	//meshComp->PlayAnimationLower("AR_crouchWalk_F", true);
-	meshComp->PlayAnimation("AR_crouchWalk_L", true);
+	meshComp->PlayAnimation("AR_crouchWalk_L", true); */
 	//meshComp->SetOutlineActive(true);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
 	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
-	auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
+	/*auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
 	//weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
@@ -142,7 +142,7 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat2, 3);
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
-	weaponComp->LoadMaterial(weaponMat3, 4);
+	weaponComp->LoadMaterial(weaponMat3, 4); */
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
@@ -152,22 +152,22 @@ TestScene::TestScene()
 	//// 플레이어 collider들을 추가해주는 부분
 	//auto playerCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
 
-	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
-	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
-	headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
+	//auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
+	//auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
+	//headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
 	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
 	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
 	//playerHeadCollider->SetParentCollider(playerCollider);
 
-	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
-	auto leftUpperArmObj = API::CreateObject(_scene, "LeftUpperArmCollider", plLeftUpperArm);
-	leftUpperArmObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -2.0f, 0.0f });
+	//auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
+	//auto leftUpperArmObj = API::CreateObject(_scene, "LeftUpperArmCollider", plLeftUpperArm);
+	//leftUpperArmObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -2.0f, 0.0f });
 	//leftUpperArmObj->GetTransform()->SetLocalRotation(0.0f, 0.52f, 0.0f, 1.0f);
-	leftUpperArmObj->GetTransform()->SetLocalScale(20.0f, 15.0f, 10.0f);
-	auto leftUpperCollider = leftUpperArmObj->AddComponent<HDData::StaticBoxCollider>();
+	//leftUpperArmObj->GetTransform()->SetLocalScale(20.0f, 15.0f, 10.0f);
+	//auto leftUpperCollider = leftUpperArmObj->AddComponent<HDData::StaticBoxCollider>();
 	//plLeftUpperArm->SetParentObject(playerTest);
 	//plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
 	//auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
