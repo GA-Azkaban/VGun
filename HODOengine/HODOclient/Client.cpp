@@ -5,6 +5,7 @@
 #include "UnitySceneLoaderTest.h"
 #include "AnimationLoaderTest.h"
 #include "InGameSceneView.h"
+#include "NetworkManager.h"
 
 Client::Client()
 {
@@ -18,7 +19,7 @@ Client::~Client()
 
 void Client::Initialize()
 {
-	//NetworkManager::Instance();
+	NetworkManager::Instance();
 
 	//TestScene test;
 	//test.Start();
