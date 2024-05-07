@@ -72,7 +72,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* playText = API::CreateTextbox(_scene, "playText", playBtn);
 	playText->GetTransform()->SetPosition(playBtn->GetTransform()->GetPosition());
 	playText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	playText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::OrangeRed);
+	playText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
 	playText->GetComponent<HDData::TextUI>()->SetText("PLAY");
 
 	// RoomEnter Btn
@@ -196,8 +196,8 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
 
 	// Training Btn
-	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
-	trainingBtn->GetTransform()->SetPosition(130.0f,400.0f,0.f);
+	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "trainingBtn", mainControlObject);
+	trainingBtn->GetTransform()->SetPosition(150.0f,310.0f,0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	trainingBtn->AddComponent<BtnScript>();
@@ -206,10 +206,27 @@ void MainMenuScene::MainMenu()
 	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
 
+	//temp Btn
+	HDData::GameObject* tempBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
+	tempBtn->GetTransform()->SetPosition(150.0f, 355.0f, 0.f);
+	tempBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
+	tempBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	tempBtn->AddComponent<BtnScript>();
+	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", tempBtn);
+	tempText->GetTransform()->SetPosition(tempBtn->GetTransform()->GetPosition());
+	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	tempText->GetComponent<HDData::TextUI>()->SetText("TEMP");
+
 	// Exit button
-	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
-	exitBtn->GetTransform()->SetPosition(130.f, 560, 0.6f); // y += 160
-	exitBtn->GetComponent<HDData::Button>()->SetImage("exit_btn2.png");
+	//HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
+	//exitBtn->GetTransform()->SetPosition(100.f, 370.0f, 0.6f); // y += 160
+	//exitBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
+	//exitBtn->AddComponent<BtnScript>();
+	//HDData::GameObject* exitText = API::CreateTextbox(_scene, "exitText", exitBtn);
+	//exitText->GetTransform()->SetPosition(exitBtn->GetTransform()->GetPosition());
+	//exitText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	//exitText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::DarkRed);
+	//exitText->GetComponent<HDData::TextUI>()->SetText("EXIT");
 
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");

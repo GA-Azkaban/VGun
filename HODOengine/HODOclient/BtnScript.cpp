@@ -32,6 +32,6 @@ void BtnScript::Update()
 	}
 	else
 	{
-		_childObject->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::White);
+		_childObject->GetComponent<HDData::TextUI>()->ReturnDefaultColor();
 	}
 }
