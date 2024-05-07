@@ -31,8 +31,6 @@ namespace Horang
 	using ClientServiceRef = std::shared_ptr<class ClientService>;
 	using SendBufferRef = std::shared_ptr<class SendBuffer>;
 	using SendBufferChunkRef = std::shared_ptr<class SendBufferChunk>;
-	using JobRef = std::shared_ptr<class IJob>;
-	using JobQueueRef = std::shared_ptr<class JobQueue>;
 }
 
 using Horang::BYTE;
