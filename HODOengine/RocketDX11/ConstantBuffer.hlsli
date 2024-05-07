@@ -57,6 +57,8 @@ cbuffer MaterialData : register(b5)
 	float metallicValue;
 	float roughnessValue;
 	
+    int2 tiling;
+	
 	int useAlbedo;
 	int useNormalMap;
 	int useOccMetalRough;

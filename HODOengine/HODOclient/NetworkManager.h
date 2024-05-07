@@ -30,6 +30,10 @@ public: // 계정 관련
 	void RecvLogin(int32 uid, std::string id);
 	void RecvCreateAccount();
 
+public: // 방 리스트 관련
+	void SendRoomListRequest();
+	void RecvRoomList(Protocol::S_ROOM_LIST roomList);
+
 public: // 방 관련
 	void SendRoomEnter(std::string roomCode);
 	void SendRoomLeave();
@@ -37,7 +41,7 @@ public: // 방 관련
 	void RecvRoomEnter(Protocol::RoomInfo roomInfo);
 	void RecvRoomLeave(Protocol::RoomInfo roomInfo);
 
-	void SetRoom();
+	void SetRoom(Protocol::RoomInfo);
 
 public:
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);

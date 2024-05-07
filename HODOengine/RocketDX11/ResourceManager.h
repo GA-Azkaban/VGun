@@ -130,6 +130,7 @@ namespace RocketCore::Graphics
 		EnvMapInfo& GetEnvMapInfo(const std::string& fileName);
 
 		DirectX::SpriteFont* GetDefaultFont();
+		DirectX::SpriteFont* SetFont(const std::string& str);
 
 	public:
 		ID3D11Device* GetDevice();

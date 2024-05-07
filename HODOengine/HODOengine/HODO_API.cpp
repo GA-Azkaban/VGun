@@ -1,4 +1,4 @@
-﻿#include "HODO_API.h"
+#include "HODO_API.h"
 
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
@@ -300,7 +300,6 @@ namespace API
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 	}
-
 
 
 }

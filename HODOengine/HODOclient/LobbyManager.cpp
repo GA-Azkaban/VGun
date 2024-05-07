@@ -100,6 +100,11 @@ void LobbyManager::showOff(HDData::GameObject* object)
 	object->OnDisable();
 }
 
+void LobbyManager::showOn(HDData::GameObject* object)
+{
+	object->OnEnable();
+}
+
 void LobbyManager::SetLobbyMainCanvas(HDData::GameObject* mainCanvas)
 {
 	_mainCanvas = mainCanvas;

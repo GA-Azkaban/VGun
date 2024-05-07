@@ -81,6 +81,11 @@ namespace HDData
 		return _imageUI->FadeOut();
 	}
 
+	bool ImageUI::GetComplete()
+	{
+		return _imageUI->GetComplete();
+	}
+
 	bool ImageUI::GetFadeMode()
 	{
 		return _imageUI->GetFadeMode();

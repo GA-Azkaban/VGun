@@ -40,8 +40,8 @@ constexpr RoomInfo::RoomInfo(
   , password_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , roomid_(0)
   , state_(0)
-  , maxusercount_(0)
-  , currentcount_(0)
+  , maxplayercount_(0)
+  , currentplayercount_(0)
   , isprivate_(false)
   , isteam_(false){}
 struct RoomInfoDefaultTypeInternal {
@@ -152,8 +152,8 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Struct_2eproto::offsets[] PROT
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, users_),
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, roomname_),
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, password_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, maxusercount_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, currentcount_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, maxplayercount_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, currentplayercount_),
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, isprivate_),
   PROTOBUF_FIELD_OFFSET(::Protocol::RoomInfo, isteam_),
   ~0u,  // no _has_bits_
@@ -224,30 +224,30 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"\?\n\010"
   "BuffData\022\016\n\006buffId\030\001 \001(\004\022\022\n\nremainTime\030\002"
-  " \001(\002\022\017\n\007victims\030\003 \003(\004\"\321\001\n\010RoomInfo\022\016\n\006ro"
+  " \001(\002\022\017\n\007victims\030\003 \003(\004\"\331\001\n\010RoomInfo\022\016\n\006ro"
   "omId\030\001 \001(\005\022\020\n\010roomCode\030\002 \001(\t\022\r\n\005state\030\003 "
   "\001(\005\022!\n\005users\030\004 \003(\0132\022.Protocol.UserInfo\022\020"
-  "\n\010roomName\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\022\024\n\014ma"
-  "xUserCount\030\007 \001(\005\022\024\n\014currentCount\030\010 \001(\005\022\021"
-  "\n\tisPrivate\030\t \001(\010\022\016\n\006isTeam\030\n \001(\010\"*\n\007Vec"
-  "tor3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030\003 \001(\002\"8\n"
-  "\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001(\002\022\t\n\001y\030\003"
-  " \001(\002\022\t\n\001z\030\004 \001(\002\"Y\n\tTransform\022\"\n\007vector3\030"
-  "\001 \001(\0132\021.Protocol.Vector3\022(\n\nquaternion\030\002"
-  " \001(\0132\024.Protocol.Quaternion\"(\n\010UserInfo\022\020"
-  "\n\010nickName\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\"\264\001\n\nPlayerD"
-  "ata\022$\n\010userInfo\030\001 \001(\0132\022.Protocol.UserInf"
-  "o\022\014\n\004host\030\002 \001(\010\022\014\n\004team\030\003 \001(\005\022&\n\ttransfo"
-  "rm\030\004 \001(\0132\023.Protocol.Transform\022\n\n\002hp\030\005 \001("
-  "\002\022\r\n\005maxHp\030\006 \001(\002\022\021\n\tisSitting\030\007 \001(\010\022\016\n\006i"
-  "sDead\030\010 \001(\010b\006proto3"
+  "\n\010roomName\030\005 \001(\t\022\020\n\010password\030\006 \001(\t\022\026\n\016ma"
+  "xPlayerCount\030\007 \001(\005\022\032\n\022currentPlayerCount"
+  "\030\010 \001(\005\022\021\n\tisPrivate\030\t \001(\010\022\016\n\006isTeam\030\n \001("
+  "\010\"*\n\007Vector3\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\022\t\n\001z\030"
+  "\003 \001(\002\"8\n\nQuaternion\022\t\n\001w\030\001 \001(\002\022\t\n\001x\030\002 \001("
+  "\002\022\t\n\001y\030\003 \001(\002\022\t\n\001z\030\004 \001(\002\"Y\n\tTransform\022\"\n\007"
+  "vector3\030\001 \001(\0132\021.Protocol.Vector3\022(\n\nquat"
+  "ernion\030\002 \001(\0132\024.Protocol.Quaternion\"(\n\010Us"
+  "erInfo\022\020\n\010nickName\030\001 \001(\t\022\n\n\002id\030\002 \001(\t\"\264\001\n"
+  "\nPlayerData\022$\n\010userInfo\030\001 \001(\0132\022.Protocol"
+  ".UserInfo\022\014\n\004host\030\002 \001(\010\022\014\n\004team\030\003 \001(\005\022&\n"
+  "\ttransform\030\004 \001(\0132\023.Protocol.Transform\022\n\n"
+  "\002hp\030\005 \001(\002\022\r\n\005maxHp\030\006 \001(\002\022\021\n\tisSitting\030\007 "
+  "\001(\010\022\016\n\006isDead\030\010 \001(\010b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Struct_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto = {
-  false, false, 739, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
+  false, false, 747, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
   &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 7,
   schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
   file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto, file_level_service_descriptors_Struct_2eproto,
@@ -668,17 +668,17 @@ const char* RoomInfo::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 maxUserCount = 7;
+      // int32 maxPlayerCount = 7;
       case 7:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
-          maxusercount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          maxplayercount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 currentCount = 8;
+      // int32 currentPlayerCount = 8;
       case 8:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
-          currentcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          currentplayercount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -775,16 +775,16 @@ failure:
         6, this->_internal_password(), target);
   }
 
-  // int32 maxUserCount = 7;
-  if (this->maxusercount() != 0) {
+  // int32 maxPlayerCount = 7;
+  if (this->maxplayercount() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(7, this->_internal_maxusercount(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(7, this->_internal_maxplayercount(), target);
   }
 
-  // int32 currentCount = 8;
-  if (this->currentcount() != 0) {
+  // int32 currentPlayerCount = 8;
+  if (this->currentplayercount() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(8, this->_internal_currentcount(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(8, this->_internal_currentplayercount(), target);
   }
 
   // bool isPrivate = 9;
@@ -857,18 +857,18 @@ size_t RoomInfo::ByteSizeLong() const {
         this->_internal_state());
   }
 
-  // int32 maxUserCount = 7;
-  if (this->maxusercount() != 0) {
+  // int32 maxPlayerCount = 7;
+  if (this->maxplayercount() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_maxusercount());
+        this->_internal_maxplayercount());
   }
 
-  // int32 currentCount = 8;
-  if (this->currentcount() != 0) {
+  // int32 currentPlayerCount = 8;
+  if (this->currentplayercount() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_currentcount());
+        this->_internal_currentplayercount());
   }
 
   // bool isPrivate = 9;
@@ -928,11 +928,11 @@ void RoomInfo::MergeFrom(const RoomInfo& from) {
   if (from.state() != 0) {
     _internal_set_state(from._internal_state());
   }
-  if (from.maxusercount() != 0) {
-    _internal_set_maxusercount(from._internal_maxusercount());
+  if (from.maxplayercount() != 0) {
+    _internal_set_maxplayercount(from._internal_maxplayercount());
   }
-  if (from.currentcount() != 0) {
-    _internal_set_currentcount(from._internal_currentcount());
+  if (from.currentplayercount() != 0) {
+    _internal_set_currentplayercount(from._internal_currentplayercount());
   }
   if (from.isprivate() != 0) {
     _internal_set_isprivate(from._internal_isprivate());

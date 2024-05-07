@@ -26,10 +26,10 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	//auto testBox1 = API::CreateObject(_scene);
-	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
-	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("primitiveCube");
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("primitiveCube");
 	//
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
@@ -78,7 +78,8 @@ TestScene::TestScene()
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
+	//playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
+	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
@@ -94,18 +95,22 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
-	//meshComp->PlayAnimationUpper("AR_idle", true, true, 0.1f);
-	//meshComp->PlayAnimationLower("AR_idle", true, true, 0.1f);
-	meshComp->PlayAnimationUpper("AR_idle", true);
-	meshComp->PlayAnimationLower("AR_idle", true);
+	//meshComp->PlayAnimationUpper("AR_fire", true);
+	//meshComp->PlayAnimationLower("AR_fire", true);
+	//meshComp->PlayAnimationUpper("AR_crouchFire", true);
+	//meshComp->PlayAnimationLower("AR_crouchWalk_F", true);
+	meshComp->PlayAnimation("AR_crouchWalk_L", true);
 	//meshComp->SetOutlineActive(true);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
-	weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
+	//weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-13.0f, -10.0f, 0.0f);
+	weaponTest->GetComponent<HDData::Transform>()->Rotate(-45.0f, -40.0f, -15.0f);
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");
 	HDEngine::MaterialDesc weaponMatDesc;

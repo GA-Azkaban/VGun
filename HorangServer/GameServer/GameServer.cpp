@@ -16,8 +16,8 @@
 #include "DBConnectionRef.h"
 #include "Room.h"
 #include "AuthenticationManager.h"
+#include "RoomManager.h"
 
-#include <codecvt>
 int main()
 {
 
@@ -170,33 +170,21 @@ int main()
 			{
 				while (true)
 				{
-					service->GetIocpCore()->Dispatch();
+					LEndTickCount = ::GetTickCount64() + 64;
+
+					service->GetIocpCore()->Dispatch(10);
+
+					Horang::ThreadManager::DistributeReservedJobs();
+
+					Horang::ThreadManager::DoGlobalQueueWork();
 				}
 			}
 		);
 	}
 
-	GThreadManager->Launch([=]()
-		{
-			while (true)
-			{
-				GAuthentication.FlushJob();
-				std::this_thread::yield();
-			}
-		}
-	);
-
-	GRoom = Horang::MakeShared<Room>();
-	GRoom->Initialize();
-	GThreadManager->Launch([=]()
-		{
-			while (true)
-			{
-				GRoom->FlushJob();
-				std::this_thread::yield();
-			}
-		}
-	);
+	GRoomManager.CreateRoom("TestRoom1", "", 6, false, false);
+	GRoomManager.CreateRoom("TestRoom2", "123", 5, true, false);
+	GRoomManager.CreateRoom("TestRoom3", "", 6, false, true);
 
 	GThreadManager->Join();
 

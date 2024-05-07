@@ -2,6 +2,8 @@
 #include "ResourceManager.h"
 #include "MathHeader.h"
 
+#define FONTPATH "Resources/Font/"
+
 namespace RocketCore::Graphics
 {
 	TextRenderer::TextRenderer()
@@ -161,6 +163,16 @@ namespace RocketCore::Graphics
 	bool TextRenderer::SetFadeMode(bool isFade)
 	{
 		return true;
+	}
+
+	bool TextRenderer::GetComplete()
+	{
+		return true;
+	}
+
+	void TextRenderer::SetFont(const std::string& str)
+	{
+		_font = ResourceManager::Instance().SetFont(str);
 	}
 
 }

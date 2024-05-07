@@ -33,6 +33,7 @@
 #include "SkyboxPass.h"
 #include "ToneMapPass.h"
 #include "SpritePass.h"
+#include "ParticlePass.h"
 #include "BlitPass.h"
 
 #include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
@@ -171,6 +172,13 @@ namespace RocketCore::Graphics
 			_resourceManager.LoadTextureFile("Weapons/" + WPtextures[i]);
 		}
 
+		// load all particle texture
+		const auto& PCtextures = GetEveryTextureFileNamesInFolder("Textures/Particles");
+		for (int i = 0; i < PCtextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("Particles/" + PCtextures[i]);
+		}
+
 		// load all skybox texture
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
@@ -218,6 +226,7 @@ namespace RocketCore::Graphics
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
+		_particlePass = new ParticlePass(_toneMapBuffer);
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
@@ -357,6 +366,8 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_toneMapPass->Render();
 		_spritePass->Render();
+
+		//_particlePass->Render();
 
 		_deviceContext->RSSetViewports(1, &_viewport);
 		_blitPass->Render();

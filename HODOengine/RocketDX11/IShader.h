@@ -31,6 +31,7 @@ namespace RocketCore::Graphics
 		void SetData(std::string name, const void* data, unsigned int size);
 
 		void SetInt(std::string name, int data);
+		void SetInt2(std::string name, const DirectX::XMINT2& data);
 		void SetFloat(std::string name, float data);
 		void SetFloat2(std::string name, const float data[2]);
 		void SetFloat2(std::string name, const DirectX::XMFLOAT2& data);

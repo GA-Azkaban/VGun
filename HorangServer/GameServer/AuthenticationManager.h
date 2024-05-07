@@ -1,6 +1,6 @@
 #pragma once
 
-class AuthenticationManager
+class AuthenticationManager : public Horang::JobQueue
 {
 public:
 	AuthenticationManager();
@@ -9,19 +9,12 @@ public:
 	void SignIn();
 	void SignUp();
 
-public:
-	void PushJob(JobRef job);
-	void FlushJob();
-
 private:
-	USE_LOCK;
-
-	JobQueue _jobs;
 };
 
 extern AuthenticationManager GAuthentication;
 
-class SignInJob : public IJob
+class SignInJob : public Horang::IJob
 {
 public:
 	SignInJob(Horang::PacketSessionRef session, std::string id, std::string password)
@@ -36,7 +29,7 @@ private:
 	std::string _password;
 };
 
-class SignUpJob : public IJob
+class SignUpJob : public Horang::IJob
 {
 public:
 	SignUpJob(Horang::PacketSessionRef session, std::string id, std::string password,std::string nickname)
