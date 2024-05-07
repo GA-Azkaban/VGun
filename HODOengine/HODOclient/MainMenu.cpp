@@ -228,7 +228,7 @@ void MainMenuScene::MainMenu()
 
 	// Training Btn
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "trainingBtn", mainControlObject);
-	trainingBtn->GetTransform()->SetPosition(150.0f, 310.0f, 0.f);
+	trainingBtn->GetTransform()->SetPosition(150.0f,310.0f,0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	trainingBtn->AddComponent<BtnScript>();
@@ -246,7 +246,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", tempBtn);
 	tempText->GetTransform()->SetPosition(tempBtn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	tempText->GetComponent<HDData::TextUI>()->SetText("FADE");
+	tempText->GetComponent<HDData::TextUI>()->SetText("TEMP");
 
 	// Exit button
 	//HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
