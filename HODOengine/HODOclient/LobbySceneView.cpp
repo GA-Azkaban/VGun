@@ -23,7 +23,7 @@ void LobbySceneView::Initialize()
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -30.0f, 0.f, 0.0f });
 	playerTest->GetTransform()->Rotate(0, -90, 0);
-	playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
+	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	HDEngine::MaterialDesc desc;
@@ -36,9 +36,8 @@ void LobbySceneView::Initialize()
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
 
-	playerTest->AddComponent<HDData::Animator>();
-	API::LoadUpperAnimationFromData(playerTest, "upperdata.json");
-	API::LoadLowerAnimationFromData(playerTest, "lowerdata.json");
+	meshComp->PlayAnimationUpper("AR_idle", true);
+	meshComp->PlayAnimationLower("AR_idle", true);
 
-	API::LoadSceneFromData("lobbyData.json", _scene);
+	//API::LoadSceneFromData("lobbyData.json", _scene);
 }
