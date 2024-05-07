@@ -1,4 +1,4 @@
-﻿#include "TextUI.h"
+#include "TextUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"

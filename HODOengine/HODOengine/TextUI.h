@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "dllExporter.h"
 
 #include "UIBase.h"
