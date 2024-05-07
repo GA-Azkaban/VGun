@@ -20,7 +20,7 @@ namespace HDData
 		void SetColor(DirectX::FXMVECTOR color);
 		void SetText(const std::string& str);
 
-		void SetDefaultColor();
+		void SetDefaultColor(DirectX::FXMVECTOR color);
 		void ReturnDefaultColor();
 
 		std::string GetText();

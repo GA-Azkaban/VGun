@@ -29,6 +29,10 @@ namespace RocketCore::Graphics
 
 		virtual void SetColor(DirectX::FXMVECTOR color) override;
 
+		virtual void SetDefaultColor(DirectX::FXMVECTOR color)override;
+
+		virtual void ReturnDefaultColor()override;
+
 		virtual const std::string GetText() override;
 
 		virtual void SetScreenSpacePosition(float x, float y) override;
@@ -72,6 +76,7 @@ namespace RocketCore::Graphics
 		bool _isActive;
 
 		DirectX::XMVECTOR _color;
+		DirectX::XMVECTOR _defaultColor;
 		float _xLocation;
 		float _yLocation;
 		float _zLocation;

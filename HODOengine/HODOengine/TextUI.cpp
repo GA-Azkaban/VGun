@@ -44,12 +44,12 @@ namespace HDData
 
 	void TextUI::SetDefaultColor(DirectX::FXMVECTOR color)
 	{
-
+		_textUI->SetDefaultColor(color);
 	}
 
 	void TextUI::ReturnDefaultColor()
 	{
-
+		_textUI->ReturnDefaultColor();
 	}
 
 	std::string TextUI::GetText()
