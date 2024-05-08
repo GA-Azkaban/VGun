@@ -30,6 +30,7 @@ namespace HDData
 		// fade In & out
 		void FadeIn();
 		void FadeOut();
+		bool GetComplete();
 		bool GetFadeMode();
 		bool SetFadeMode(bool SetFade);
 

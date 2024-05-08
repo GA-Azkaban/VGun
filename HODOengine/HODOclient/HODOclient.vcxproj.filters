@@ -80,6 +80,14 @@
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>03_Manager\GameManager\PlayerInfo</Filter>
     </ClCompile>
+    <ClCompile Include="FSMtestScript.cpp" />
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>04_SceneView\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeInOut.cpp">
+      <Filter>04_SceneView\FadeInOut</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -139,6 +147,23 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
+    <ClInclude Include="A.h" />
+    <ClInclude Include="B.h" />
+    <ClInclude Include="FSMtestScript.h" />
+    <ClInclude Include="UnitySceneLoaderTest.h" />
+    <ClInclude Include="MenuManager.h">
+      <Filter>03_Manager\MenuManager</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>04_SceneView\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>04_SceneView\SoundPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeInOut.h">
+      <Filter>04_SceneView\FadeInOut</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnScript.h" />
     <ClInclude Include="TestScene.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
@@ -257,6 +282,12 @@
     <Filter Include="03_Manager\GameManager\PlayerState">
       <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04_SceneView\SoundPlayer">
+      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\FadeInOut">
+      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc">
@@ -264,13 +295,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Common\Protobuf\bin\Enum.proto">
+    <None Include="..\Include\Protobuf\Enum.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
-    <None Include="..\Common\Protobuf\bin\Protocol.proto">
+    <None Include="..\Include\Protobuf\Protocol.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
-    <None Include="..\Common\Protobuf\bin\Struct.proto">
+    <None Include="..\Include\Protobuf\Struct.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
   </ItemGroup>

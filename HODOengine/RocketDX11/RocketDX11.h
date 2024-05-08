@@ -40,6 +40,7 @@ namespace RocketCore::Graphics
 	class SkyboxPass;
 	class ToneMapPass;
 	class SpritePass;
+	class ParticlePass;
 	class BlitPass;
 	
 	class RocketDX11 final : public HDEngine::I3DRenderer
@@ -114,6 +115,7 @@ namespace RocketCore::Graphics
 		SkyboxPass* _skyboxPass;
 		ToneMapPass* _toneMapPass;
 		SpritePass* _spritePass;
+		ParticlePass* _particlePass;
 		BlitPass* _blitPass;
 
 	private:

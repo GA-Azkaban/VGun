@@ -204,7 +204,7 @@ namespace RocketCore::Graphics
 					m_pixelShader->SetFloat("roughnessValue", m_materials[i]->GetRoughnessValue());
 				}
 
-				if (m_materials[i]->GetRoughnessMap())
+				if (m_materials[i]->GetMetallicMap())
 				{
 					m_pixelShader->SetInt("useMetallicMap", 1);
 					m_pixelShader->SetShaderResourceView("Metallic", m_materials[i]->GetRoughnessMap());

@@ -228,6 +228,11 @@ namespace RocketCore::Graphics
 		SetData(name, (void*)(&data), sizeof(int));
 	}
 
+	void IShader::SetInt2(std::string name, const DirectX::XMINT2& data)
+	{
+		SetData(name, &data, sizeof(int) * 2);
+	}
+
 	void IShader::SetFloat(std::string name, float data)
 	{
 		SetData(name, (void*)(&data), sizeof(float));

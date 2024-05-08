@@ -16,6 +16,7 @@ namespace HDData
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
+		void SetFont(const std::string& str);
 		void SetColor(DirectX::FXMVECTOR color);
 		void SetText(const std::string& str);
 		std::string GetText();

@@ -16,15 +16,24 @@ enum class eUpperState
 	IDLE,
 	RUN,
 	SHOOT,
-	CROUCH
+	CROUCH,
+	RELOAD
 };
 
 enum class eLowerState
 {
 	IDLE,
-	RUN,
+	RUN_F,
+	RUN_B,
+	RUN_R,
+	RUN_L,
+	CROUCH,
+	CROUCH_RUN_F,
+	CROUCH_RUN_B,
+	CROUCH_RUN_R,
+	CROUCH_RUN_L,
 	SHOOT,
-	CROUCH
+	JUMP
 };
 
 class Player : public HDData::Script
@@ -72,5 +81,7 @@ private:
 
 	eUpperState _upperState;
 	eLowerState _lowerState;
+
+	HDData::SkinnedMeshRenderer* _skinnedMeshRenderer;
 };
 

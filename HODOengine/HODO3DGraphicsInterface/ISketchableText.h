@@ -10,6 +10,7 @@ namespace HDEngine
 	{
 	public:
 		virtual void SetText(const std::string& str) = 0;
+		virtual void SetFont(const std::string& str) = 0;
 		virtual void SetFloatValue(const float value) = 0;
 		virtual void SetintValue(const int value) = 0;
 		virtual void SetScreenSpacePosition(float x, float y) = 0;

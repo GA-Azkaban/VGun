@@ -1,12 +1,14 @@
 #include "pch.h"
 #include "ClientPacketHandler.h"
 #include "Player.h"
+#include "JobQueue.h"
 #include "Room.h"
 #include "GameSession.h"
 #include "DBConnectionPool.h"
 #include "DBBind.h"
 #include "DBConnector.h"
 #include "AuthenticationManager.h"
+#include "RoomManager.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -85,7 +87,7 @@ bool Handle_C_SIGNIN(Horang::PacketSessionRef& session, Protocol::C_SIGNIN& pkt)
 	GDBConnectionPool->Push(dbConn);
 
 	*/
-	GAuthentication.PushJob(Horang::MakeShared<SignInJob>(session, pkt.id(), pkt.password()));
+	GAuthentication.Push(Horang::MakeShared<SignInJob>(session, pkt.id(), pkt.password()));
 
 	return true;
 }
@@ -148,25 +150,30 @@ bool Handle_C_SIGNUP(Horang::PacketSessionRef& session, Protocol::C_SIGNUP& pkt)
 	GDBConnectionPool->Push(dbConn);
 	*/
 
-	GAuthentication.PushJob(Horang::MakeShared<SignUpJob>(session, pkt.id(), pkt.password(), pkt.nickname()));
+	GAuthentication.Push(Horang::MakeShared<SignUpJob>(session, pkt.id(), pkt.password(), pkt.nickname()));
 
 	return true;
 }
 
 bool Handle_C_ROOM_CREATE(Horang::PacketSessionRef& session, Protocol::C_ROOM_CREATE& pkt)
 {
+	auto gameSession = static_pointer_cast<GameSession>(session);
+
+	GRoomManager.Push(Horang::MakeShared<CreateRoomJob>(gameSession->_player, pkt.roomname(),
+		pkt.password(),
+		pkt.maxplayercount(),
+		pkt.isprivate(),
+		pkt.isteam()
+	));
+
 	return true;
 }
 
 bool Handle_C_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::C_ROOM_ENTER& pkt)
 {
-	// Todo RoomManager에서 방 유효한지 체크하는 job 넣어줘야함
+	auto gameSession = static_pointer_cast<GameSession>(session);
 
-	if (pkt.roomcode() == "0000")
-	{
-		GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-		GRoom->PushJob(Horang::MakeShared<EnterJob>(GRoom, static_pointer_cast<GameSession>(session)->_player));
-	}
+	GRoomManager.Push(Horang::MakeShared<EnterRoomJob>(gameSession->_player, stoi(pkt.roomcode())));
 
 	return true;
 }
@@ -174,22 +181,48 @@ bool Handle_C_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::C_ROOM_ENT
 bool Handle_C_ROOM_LEAVE(Horang::PacketSessionRef& session, Protocol::C_ROOM_LEAVE& pkt)
 {
 	// Todo
-	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-	GRoom->PushJob(Horang::MakeShared<LeaveJob>(GRoom, static_pointer_cast<GameSession>(session)->_player));
+	auto gameSession = static_pointer_cast<GameSession>(session);
+
+	auto room = gameSession->_room.lock();
+	if (room == nullptr)
+		return false;
+
+	room->Push(Horang::MakeShared<LeaveJob>(room, static_pointer_cast<GameSession>(session)->_player));
 
 	return true;
 }
 
 bool Handle_C_ROOM_START(Horang::PacketSessionRef& session, Protocol::C_ROOM_START& pkt)
 {
-	GRoom->PushJob(Horang::MakeShared<GameStartJob>(GRoom, static_pointer_cast<GameSession>(session)->_player));
+	auto gameSession = static_pointer_cast<GameSession>(session);
+
+	auto room = gameSession->_room.lock();
+	if (room == nullptr)
+		return false;
+
+	room->Push(Horang::MakeShared<GameStartJob>(room, gameSession->_player));
 
 	return true;
 }
 
 bool Handle_C_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::C_PLAY_UPDATE& pkt)
 {
-	GRoom->PushJob(Horang::MakeShared<ClientUpdateJob>(GRoom, static_pointer_cast<GameSession>(session)->_player, pkt));
+	auto gameSession = static_pointer_cast<GameSession>(session);
+
+	auto room = gameSession->_room.lock();
+	if (room == nullptr)
+		return false;
+
+	room->Push(Horang::MakeShared<ClientUpdateJob>(gameSession->_room, gameSession->_player, pkt));
+
+	return true;
+}
+
+bool Handle_C_ROOM_LIST_REQUEST(Horang::PacketSessionRef& session, Protocol::C_ROOM_LIST_REQUEST& pkt)
+{
+	auto gameSession = static_pointer_cast<GameSession>(session);
+
+	GRoomManager.Push(Horang::MakeShared<SendRoomListJob>(gameSession->_player));
 
 	return true;
 }

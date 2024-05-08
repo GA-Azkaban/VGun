@@ -54,6 +54,7 @@ namespace RocketCore::Graphics
 		virtual void FadeIn() override;
 		virtual void FadeOut() override;
 		virtual bool GetFadeMode() override;
+		virtual bool GetComplete() override;
 		virtual bool SetFadeMode(bool SetFade) override;
 
 	public:
@@ -81,6 +82,7 @@ namespace RocketCore::Graphics
 
 		// 페이드 인 & 아웃
 		bool _fadeMode = true;
+		bool _isComplete = false;
 		float _fadeAlpha = 1.0f;
 
 		ID3D11Device* _device;

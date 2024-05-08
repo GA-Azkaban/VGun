@@ -34,10 +34,14 @@ void MenuManager::RoomEneter(Protocol::RoomInfo)
 	NetworkManager::Instance().RecvRoomEnter(temp);
 }
 
-void MenuManager::SetRoom()
+void MenuManager::SetRoom(Protocol::RoomInfo roomInfo)
 {
-	Protocol::RoomInfo temp;
-	NetworkManager::Instance().SetRoom();
+	NetworkManager::Instance().SetRoom(roomInfo);
+}
+
+void MenuManager::ShowRoomList()
+{
+	_roomList->OnEnable();
 }
 
 void MenuManager::RoomExit()
@@ -56,5 +60,10 @@ void MenuManager::OtherPlayerExit()
 {
 	Protocol::RoomInfo temp;
 	NetworkManager::Instance().RecvAnotherPlayerLeave(temp);
+}
+
+void MenuManager::SetRoomList(HDData::GameObject* roomListCanvas)
+{
+	_roomList = roomListCanvas;
 }
 
