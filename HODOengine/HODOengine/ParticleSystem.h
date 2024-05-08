@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "Component.h"
 #include "dllExporter.h"
+#include "MainModule.h"
+#include "ColorOverLifetime.h"
+#include "EmssionModule.h"
 #include <DirectXMath.h>
 #include <functional>
 #include <string>
@@ -10,16 +13,6 @@
 
 namespace HDData
 {
-	struct Gradient
-	{
-		std::vector<std::map<
-	};
-
-	struct ColorOverLifetime
-	{
-		Gradient color;
-		bool enabled;
-	};
 
 	class Material;
 
@@ -79,7 +72,8 @@ namespace HDData
 		void Clear();
 
 	public:
-
-
+		MainModule main;
+		ColorOverLifetime colorOverLifetime;
+		EmissionModule emission;
 	};
 }

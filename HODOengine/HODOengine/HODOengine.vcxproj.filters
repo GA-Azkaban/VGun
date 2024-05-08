@@ -188,6 +188,9 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>05_Component\ParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="Gradient.cpp">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -413,6 +416,21 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>05_Component\ParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="Gradient.h">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MainModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="EmssionModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorOverLifetime.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="Burst.h">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -620,6 +638,9 @@
     </Filter>
     <Filter Include="05_Component\ParticleSystem">
       <UniqueIdentifier>{f75cfae9-5f0d-42b4-b5e9-94843a4009a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem\Module">
+      <UniqueIdentifier>{5db337a4-c348-4d41-b2bd-d388db46a219}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

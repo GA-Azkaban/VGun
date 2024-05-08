@@ -157,15 +157,14 @@ TestScene::TestScene()
 	//// 플레이어 collider들을 추가해주는 부분
 	//auto playerCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
 
-	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
-	auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
-	headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
-	headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
-	headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
-	auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
-
+	//auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
+	//auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
+	//headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
+	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
+	//headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
+	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
 	//playerHeadCollider->SetParentCollider(playerCollider);
 
 	//auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
