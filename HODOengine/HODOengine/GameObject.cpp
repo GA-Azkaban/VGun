@@ -293,7 +293,7 @@ namespace HDData
 	{
 		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(scene, node->name, parentObject);
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
-		node->nodeTransform = newObject->GetTransform()->_transform;
+		node->nodeTransform = newObject->GetTransform()->_nodeTransform;
 		//newObject->AddComponent<StaticBoxCollider>();
 		
 		for (int i = 0; i < node->children.size(); ++i)
