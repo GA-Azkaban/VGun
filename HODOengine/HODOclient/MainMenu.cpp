@@ -246,7 +246,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", tempBtn);
 	tempText->GetTransform()->SetPosition(tempBtn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	tempText->GetComponent<HDData::TextUI>()->SetText("TEMP");
+	tempText->GetComponent<HDData::TextUI>()->SetText("FADE");
 
 	// Exit button
 	//HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
@@ -403,18 +403,5 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			if (FadeInOut::Instance().GetComplete())
-			{
-				FadeInOut::Instance().FadeOut();
-			}
-			else
-			{
-				FadeInOut::Instance().FadeIn();
-			}
-		}
-	);
 
 }
