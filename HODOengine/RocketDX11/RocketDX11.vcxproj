@@ -209,7 +209,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BillboardObject.cpp" />
+    <ClCompile Include="BillboardParticle.cpp" />
     <ClCompile Include="BlitPass.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cubemap.cpp" />
@@ -253,7 +253,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AssimpMathConverter.h" />
-    <ClInclude Include="BillboardObject.h" />
+    <ClInclude Include="BillboardParticle.h" />
     <ClInclude Include="BlitPass.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cubemap.h" />

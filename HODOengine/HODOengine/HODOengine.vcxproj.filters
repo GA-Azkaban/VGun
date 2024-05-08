@@ -185,6 +185,9 @@
     <ClCompile Include="StaticSphereCollider.cpp">
       <Filter>05_Component\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -407,6 +410,9 @@
     <ClInclude Include="StaticSphereCollider.h">
       <Filter>05_Component\Collider</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -611,6 +617,9 @@
     </Filter>
     <Filter Include="05_Component\Animation\Animator\All">
       <UniqueIdentifier>{28d27115-eb4f-48cf-b5a0-ebb7a7ca5fa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem">
+      <UniqueIdentifier>{f75cfae9-5f0d-42b4-b5e9-94843a4009a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -10,11 +10,11 @@ namespace RocketCore::Graphics
 	class VertexShader;
 	class PixelShader;
 
-	class BillboardObject
+	class BillboardParticle
 	{		
 	public:
-		BillboardObject();
-		~BillboardObject();
+		BillboardParticle();
+		~BillboardParticle();
 
 		void Update(float deltaTime);
 		void Render();

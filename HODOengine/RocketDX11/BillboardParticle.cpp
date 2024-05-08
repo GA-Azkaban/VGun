@@ -1,4 +1,4 @@
-﻿#include "BillboardObject.h"
+﻿#include "BillboardParticle.h"
 #include "ResourceManager.h"
 #include "ObjectManager.h"
 #include "GraphicsStruct.h"
@@ -9,12 +9,13 @@
 #include "Camera.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
 #include <vector>
+#include <cmath>
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
 
-	BillboardObject::BillboardObject()
+	BillboardParticle::BillboardParticle()
 		: _world(XMMatrixIdentity()), _isActive(true)
 	{
 		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -43,27 +44,25 @@ namespace RocketCore::Graphics
 		_mesh = new Mesh(&vertices[0], 6, &indices[0], 6);
 		HDEngine::MaterialDesc desc;
 		desc.materialName = "BillboardMat";
-		desc.albedo = "shortMuzzleFires.png";
-		desc.color = { 255, 255, 255, 100 };
+		desc.albedo = "T_Sparks_D.png";
+		desc.color = { 255, 255, 255, 255 };
 		_material = ObjectManager::Instance().CreateMaterial(desc);
 		_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 		_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
 
-		float radian = XMConvertToRadians(90.0f);
-		_world *= XMMatrixRotationX(radian);
 	}
 
-	BillboardObject::~BillboardObject()
+	BillboardParticle::~BillboardParticle()
 	{
 
 	}
 
-	void BillboardObject::Update(float deltaTime)
+	void BillboardParticle::Update(float deltaTime)
 	{
 
 	}
 
-	void BillboardObject::Render()
+	void BillboardParticle::Render()
 	{
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		ResourceManager::Instance().GetDeviceContext()->RSSetState(_rasterizerState.Get());
@@ -71,9 +70,18 @@ namespace RocketCore::Graphics
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
 
+		_world = XMMatrixIdentity();
+
+		// atan2 함수를 통해 빌보드 모델에 적용될 회전값을 계산한다.
+		XMFLOAT3 cameraPosition = Camera::GetMainCamera()->GetPosition();
+		float angle = std::atan2(0.0 - cameraPosition.x, 0.0 - cameraPosition.z) * (180.0f / 3.141592f);
+		float rotation = angle * 0.0174532925f;
+
+		_world = _world * XMMatrixRotationY(rotation);
+
 		_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(_world));
 		_vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
-		_vertexShader->SetInt2("tiling", XMINT2(1, 4));
+		_vertexShader->SetInt2("tiling", XMINT2(1, 1));
 
 		_vertexShader->CopyAllBufferData();
 		_vertexShader->SetShader();

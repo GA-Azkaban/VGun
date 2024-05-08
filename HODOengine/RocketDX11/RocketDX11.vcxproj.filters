@@ -195,8 +195,8 @@
     <ClCompile Include="GeometryShader.cpp">
       <Filter>Resource\Shader\GeometryShader</Filter>
     </ClCompile>
-    <ClCompile Include="BillboardObject.cpp">
-      <Filter>Object\Billboard</Filter>
+    <ClCompile Include="BillboardParticle.cpp">
+      <Filter>Object\Particle\Billboard</Filter>
     </ClCompile>
     <ClCompile Include="ParticlePass.cpp">
       <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
@@ -347,8 +347,8 @@
     <ClInclude Include="GeometryShader.h">
       <Filter>Resource\Shader\GeometryShader</Filter>
     </ClInclude>
-    <ClInclude Include="BillboardObject.h">
-      <Filter>Object\Billboard</Filter>
+    <ClInclude Include="BillboardParticle.h">
+      <Filter>Object\Particle\Billboard</Filter>
     </ClInclude>
     <ClInclude Include="ParticlePass.h">
       <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
@@ -556,14 +556,20 @@
     <Filter Include="Resource\Shader\GeometryShader">
       <UniqueIdentifier>{6d310d2e-db01-44ec-b709-fa1ed4567547}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Billboard">
-      <UniqueIdentifier>{85c54b1c-5cf4-4dcc-9a3a-e8a4c8ad4b4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader\HLSL\Billboard">
       <UniqueIdentifier>{4760ce01-4cbd-402d-a9d4-70a17115984e}</UniqueIdentifier>
     </Filter>
     <Filter Include="DeferredRendering\RenderPasses\ParticlePass">
       <UniqueIdentifier>{92fbb2e3-43d9-440e-94c9-2dfc4f4f7401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle">
+      <UniqueIdentifier>{cc412ae1-1605-4bc7-8249-4e9aaccd64dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle\Billboard">
+      <UniqueIdentifier>{85c54b1c-5cf4-4dcc-9a3a-e8a4c8ad4b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle\Mesh">
+      <UniqueIdentifier>{b9ba8f41-c321-4aba-989e-c5b89d9be47f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
