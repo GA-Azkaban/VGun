@@ -3,6 +3,7 @@
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
 #include "../HODOengine/AudioSource.h"
+#include "../RocketDX11/SkinningMeshObject.h"
 #include "CameraMove.h"
 #include "Player.h"
 #include "PlayerMove.h"
@@ -100,6 +101,7 @@ TestScene::TestScene()
 	meshComp->PlayAnimationUpper("AR_idle", true);
 	meshComp->PlayAnimationLower("AR_idle", true);
 	//meshComp->SetOutlineActive(true);
+
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
@@ -204,13 +206,20 @@ TestScene::TestScene()
 
 	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
 	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);
-	plLeftUpperArm->SetParentObject(playerTest);
-	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f);
-	playerLUCollider->SetParentCollider(playerBodyCollider);
+	plLeftUpperArm->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
+	//plLeftUpperArm->SetParentObject(playerTest);
+	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::StaticBoxCollider>(0.2f, 0.5f, 0.2f);
+
+	//playerLUCollider->SetParentCollider(playerBodyCollider);
+
+
+	auto temp = static_cast<RocketCore::Graphics::SkinningMeshObject*>(meshComp->_skinnedMesh);
+	playerMove->SetMeshObj(temp);
+
 
 	auto triggerTest = API::CreateObject(_scene);
 	triggerTest->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
-	auto triggerBoxCol = triggerTest->AddComponent<HDData::TriggerBoxCollider>(1.0f, 1.0f, 1.0f);
+	//auto triggerBoxCol = triggerTest->AddComponent<HDData::TriggerBoxCollider>(1.0f, 1.0f, 1.0f);
 
 	//auto plLeftForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_l");
 	//plLeftForeArm->SetParentObject(plLeftUpperArm);

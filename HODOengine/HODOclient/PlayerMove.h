@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
+#include "../RocketDX11/SkinningMeshObject.h"
 
 /// <summary>
 /// 플레이어 움직임과 관련된 스크립트
@@ -20,6 +21,7 @@ public:
 	void SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec);
 	void SetHeadCam(HDData::Camera* cam);
 	void PresetSprayPattern();
+	void SetMeshObj(RocketCore::Graphics::SkinningMeshObject* obj);
 
 	// check ~~ series
 private:
@@ -69,6 +71,9 @@ private:
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;
 	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
+
+	RocketCore::Graphics::SkinningMeshObject* _meshObj;
+	Vector3 _prevNodePos;
 
 private:
 	HDData::AudioSource* _playerAudio = nullptr;

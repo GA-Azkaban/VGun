@@ -114,6 +114,11 @@ void HDData::DynamicCollider::AdjustVelocity(float ratio)
 	_physXRigid->setLinearVelocity(_physXRigid->getLinearVelocity() * ratio);
 }
 
+void HDData::DynamicCollider::SetPose(Vector3 pos)
+{
+	_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z));
+}
+
 void HDData::DynamicCollider::UpdateToPhysics()
 {
 

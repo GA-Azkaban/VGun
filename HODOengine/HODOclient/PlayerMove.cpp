@@ -6,7 +6,8 @@ PlayerMove::PlayerMove()
 	_shootCooldown(0.0f),
 	_shootCount(0),
 	_sprayPattern(),
-	_rotAngleX(0.0f), _rotAngleY(0.0f)
+	_rotAngleX(0.0f), _rotAngleY(0.0f),
+	_prevNodePos()
 {
 
 }
@@ -79,11 +80,11 @@ void PlayerMove::Update()
 
 	_headCam->ShakeCamera(_deltaTime);
 
-	// 이동, 회전
-	Move(_moveDirection);
-
 	// 임시 애니콜
 	AniCol();
+
+	// 이동, 회전
+	Move(_moveDirection);
 
 	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 	
@@ -410,6 +411,11 @@ void PlayerMove::PresetSprayPattern()
 	_sprayPattern[29] = std::make_pair(0.002f * scale, -0.2f * scale);
 }
 
+void PlayerMove::SetMeshObj(RocketCore::Graphics::SkinningMeshObject* obj)
+{
+	_meshObj = obj;
+}
+
 void PlayerMove::ToggleCam()
 {
 	HDData::Camera* nowCam = API::GetCurrenSceneMainCamera();
@@ -706,6 +712,11 @@ void PlayerMove::Pitch(float rotationValue)
 
 void PlayerMove::AniCol()
 {
+	//Vector3 posCheck = GetTransform()->GetPosition();
+	//Vector3 currentNodePos = _meshObj->GetNode()->nodeTransform->_position;
+	//_playerCollider->Move(currentNodePos - _prevNodePos, 1.0f);
+	//_prevNodePos = currentNodePos;
+
 
 }
 

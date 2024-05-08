@@ -44,7 +44,7 @@ namespace HDData
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
 
-	private:
+	public:
 		HDEngine::ISkinnedMesh* _skinnedMesh;
 	};
 }
