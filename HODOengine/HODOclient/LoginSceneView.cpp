@@ -1,6 +1,9 @@
-#include "LoginSceneView.h"
+﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
+
+#include "../HODOengine/AudioSource.h"
+#include "BtnScript.h"
 
 LoginSceneView::LoginSceneView()
 	: _lobbyManager(LobbyManager::Instance()),
@@ -23,7 +26,6 @@ void LoginSceneView::Initialize()
 	LoginView();
 
 	API::LoadScene(_scene);
-	//API::LoadScene(menu);
 }
 
 void LoginSceneView::LoginView()
@@ -77,7 +79,7 @@ void LoginSceneView::LoginView()
 	FadeInOut::Instance().FadeOut();
 
 	// login Control Object
-	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "l oginControlObject");
+	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
 	loginControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 	loginControlObject->SetSelfActive(true);
 	_lobbyManager.SetLobbyMainCanvas(loginControlObject);
@@ -92,7 +94,6 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", loginControlObject);
 	idTextLabel->GetTransform()->SetPosition(770.f, 440.f, 0.f);
-	idTextLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
@@ -113,9 +114,10 @@ void LoginSceneView::LoginView()
 
 	// login button
 	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", loginControlObject);
-	loginBtn->GetTransform()->SetPosition(870.f, 650.f, 0.f);
-	loginBtn->GetComponent<HDData::Button>()->SetImage("login.png");
+	loginBtn->GetTransform()->SetPosition(865.f, 640.f, 0.f);
+	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.1f);
+	loginBtn->AddComponent<BtnScript>();
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[id, pw]()
 		{
@@ -124,17 +126,30 @@ void LoginSceneView::LoginView()
 			LobbyManager::Instance().Login(ID, password);
 		}
 	);
+	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);
+	loginText->GetTransform()->SetPosition(loginBtn->GetTransform()->GetPosition());
+	loginText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	loginText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
+	loginText->GetComponent<HDData::TextUI>()->SetText("LOGIN");
 
-	// join Button
-	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn", loginControlObject);
-	joinBtn->GetTransform()->SetPosition(1050.f, 650.f, 0.f);
-	joinBtn->GetComponent<HDData::Button>()->SetImage("join.png");
-	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.1f);
-
+	// sign up control
 	HDData::GameObject* joinControlObject = API::CreateImageBox(_scene, "joinControlObject");
 	joinControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 	joinControlObject->SetSelfActive(false);
 	_lobbyManager.SetJoinCanvas(joinControlObject);
+
+	//signup Btn
+	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn",loginControlObject);
+	joinBtn->GetTransform()->SetPosition(1055.f, 640.f, 0.f);
+	joinBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
+	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	joinBtn->SetSelfActive(true);
+	joinBtn->AddComponent<BtnScript>();
+	HDData::GameObject* joinText = API::CreateTextbox(_scene, "joinText", joinBtn);
+	joinText->GetTransform()->SetPosition(joinBtn->GetTransform()->GetPosition());
+	joinText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	joinText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
+	joinText->GetComponent<HDData::TextUI>()->SetText("SIGN");
 
 	// join canvas
 	HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas", joinControlObject);
@@ -185,9 +200,10 @@ void LoginSceneView::LoginView()
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinControlObject);
-	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("addNewAccount.png");
-	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
+	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
+	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.21f);
 	makeAccountBtn->GetTransform()->SetPosition(960.f, 640.f, 0.f);
+	makeAccountBtn->AddComponent<BtnScript>();
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
 		[=]()
@@ -198,6 +214,12 @@ void LoginSceneView::LoginView()
 			}
 		}
 	);
+	HDData::GameObject* makeAccountText = API::CreateTextbox(_scene, "makeAccountText", makeAccountBtn);
+	makeAccountText->GetTransform()->SetPosition(makeAccountBtn->GetTransform()->GetPosition());
+	makeAccountText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	makeAccountText->GetComponent<HDData::TextUI>()->SetSortOrder(0.2f);
+	makeAccountText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
+	makeAccountText->GetComponent<HDData::TextUI>()->SetText("SIGN");
 
 	// 이부분을 어떻게 처리하지
 	// login sucess canvas
@@ -276,8 +298,8 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinControlObject);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
-	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("exitJoin.png");
-	exitJoinBtn->GetTransform()->SetPosition(960.f, 740.f, 0.f);
+	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
+	exitJoinBtn->GetTransform()->SetPosition(1300.f, 200.f, 0.f);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
