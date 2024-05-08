@@ -1,11 +1,10 @@
 ﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
+#include "FadeInOut.h"
 
 #include "../HODOengine/AudioSource.h"
-
 #include "BtnScript.h"
-
 
 MainMenuScene::MainMenuScene()
 	:_menuManager(MenuManager::Instance())
@@ -188,7 +187,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", setRoomCanvas);
 	roomSetBtn->GetTransform()->SetPosition(960.0f, 840.0f, 0.f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.63f);
 	roomSetBtn->AddComponent<BtnScript>();
 	HDData::GameObject* setRoomText = API::CreateTextbox(_scene, "setRoomText", roomSetBtn);
 	setRoomText->GetTransform()->SetPosition(roomSetBtn->GetTransform()->GetPosition());
@@ -215,7 +214,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", tempBtn);
 	tempText->GetTransform()->SetPosition(tempBtn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	tempText->GetComponent<HDData::TextUI>()->SetText("TEMP");
+	tempText->GetComponent<HDData::TextUI>()->SetText("FADE");
 
 	// Exit button
 	//HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
@@ -368,6 +367,18 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
+	tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			if (FadeInOut::Instance().GetComplete())
+			{
+				FadeInOut::Instance().FadeOut();
+			}else
+			{
+				FadeInOut::Instance().FadeIn();
+			}
+		}
+	);
 
 }
 
