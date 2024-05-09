@@ -94,7 +94,7 @@ namespace HDData
 
 	Matrix Transform::GetLocalTM() const
 	{
-		Matrix result;
+		Matrix result = Matrix::Identity;
 		result *= Matrix::CreateScale(_scale);
 		result *= Matrix::CreateFromQuaternion(_rotation);
 		result *= Matrix::CreateTranslation(_position);
@@ -128,12 +128,37 @@ namespace HDData
 
 	Vector3 Transform::GetNodePosition() const
 	{
-		return _nodeTransform->_position;
+		//return _nodeTransform->_position;
+
+		if (GetGameObject()->GetParentGameObject() == nullptr)
+		{
+			return _nodeTransform->_position;
+		}
+
+		Vector3 parentPos = GetGameObject()->GetParentGameObject()->GetTransform()->GetNodePosition();
+		Quaternion parentRot = GetGameObject()->GetParentGameObject()->GetTransform()->GetNodeRotation();
+		Vector3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetNodeScale();
+
+		Matrix parentMatrix = Matrix::Identity;
+		parentMatrix *= Matrix::CreateScale(parentScale);
+		parentMatrix *= Matrix::CreateFromQuaternion(parentRot);
+		parentMatrix *= Matrix::CreateTranslation(parentPos);
+
+		return Vector3::Transform(_position, parentMatrix);
 	}
 
 	Quaternion Transform::GetNodeRotation() const
 	{
-		return _nodeTransform->_rotation;
+		//return _nodeTransform->_rotation;
+
+		if (GetGameObject()->GetParentGameObject() == nullptr)
+		{
+			return _nodeTransform->_rotation;
+		}
+
+		Quaternion parentQuat = GetGameObject()->GetParentGameObject()->GetTransform()->GetNodeRotation();
+
+		return Quaternion::Concatenate(_nodeTransform->_rotation, parentQuat);
 	}
 
 	Vector3 Transform::GetNodeScale() const

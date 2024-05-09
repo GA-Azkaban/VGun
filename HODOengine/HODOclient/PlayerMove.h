@@ -45,6 +45,7 @@ private:
 	void Pitch(float rotationValue);
 
 	void AniCol();
+	void UpdateToPhysics();
 
 	// 사격 관련
 private:

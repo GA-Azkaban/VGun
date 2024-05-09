@@ -157,15 +157,16 @@ void HODOengine::Run()
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
 
-	// physicsUpdate, temporary location
-	_physicsSystem.Update();
-
 	_eventSystem.InvokeEvent();
 	_objectSystem.UpdateDisableList();
 	_objectSystem.UpdateEnableList();
 	// refresh input for next frame
 	_inputSystem.Flush();
 	_tweenSystem.Update();
+
+	// physicsUpdate, temporary location
+	_physicsSystem.Update();
+
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

@@ -119,9 +119,29 @@ void HDData::DynamicCollider::SetPose(Vector3 pos)
 	_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z));
 }
 
+void HDData::DynamicCollider::ApplyNodeInfo()
+{
+	Transform* transform = GetTransform();
+
+	Vector3 pos = transform->GetNodePosition();
+	Quaternion rot = transform->GetNodeRotation();
+
+	//transform->SetLocalPosition(pos);
+	//transform->SetLocalRotation(rot);
+
+	_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+	//_physXRigid->setCMassLocalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+
+
+}
+
 void HDData::DynamicCollider::UpdateToPhysics()
 {
+	Transform* transform = GetTransform();
+	Vector3 pos = transform->GetPosition();
+	Quaternion rot = transform->GetRotation();
 
+	_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
 }
 
 void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)

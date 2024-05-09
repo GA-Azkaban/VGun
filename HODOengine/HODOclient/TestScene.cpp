@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "../HODOengine/ObjectSystem.h"
 #include "../HODOengine/GameObject.h"
 #include "../HODOengine/Component.h"
@@ -75,6 +75,7 @@ TestScene::TestScene()
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 1.0f, 0.0f });
+	playerTest->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
 	playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
@@ -211,11 +212,11 @@ TestScene::TestScene()
 
 	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
 	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);
-	plLeftUpperArm->GetTransform()->SetScale(1.0f, 1.0f, 1.0f);
-	//plLeftUpperArm->SetParentObject(playerTest);
-	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::StaticBoxCollider>(0.2f, 0.5f, 0.2f);
+	plLeftUpperArm->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
+	plLeftUpperArm->SetParentObject(playerTest);
+	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f);
 
-	//playerLUCollider->SetParentCollider(playerBodyCollider);
+	playerLUCollider->SetParentCollider(playerBodyCollider);
 
 
 	auto temp = static_cast<RocketCore::Graphics::SkinningMeshObject*>(meshComp->_skinnedMesh);

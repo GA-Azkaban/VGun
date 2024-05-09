@@ -90,6 +90,8 @@ void PlayerMove::Update()
 	
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
+	//UpdateToPhysics();
+
 	UpdatePlayerPositionDebug();
 }
 
@@ -272,6 +274,13 @@ void PlayerMove::Move(int direction)
 	{
 		_playerCollider->Move(DecideDisplacement(_moveDirection), _moveSpeed);
 	}
+
+	//GetTransform()->Translate(DecideDisplacement(_moveDirection));
+	
+	//for (auto& child : _playerCollider->GetChildColliderVec())
+	//{
+	//	static_cast<HDData::DynamicCollider*>(child)->GetTransform()->Translate(DecideDisplacement(_moveDirection));
+	//}
 
 	_prevDirection = _moveDirection;
 }
@@ -717,7 +726,28 @@ void PlayerMove::AniCol()
 	//_playerCollider->Move(currentNodePos - _prevNodePos, 1.0f);
 	//_prevNodePos = currentNodePos;
 
+	//Vector3 pos = _playerCollider->GetTransform()->GetNodePosition();
+	//Quaternion rot = _playerCollider->GetTransform()->GetNodeRotation();
+	//Vector3 scale = _playerCollider->GetTransform()->GetNodeScale();
 
+	//_playerCollider->SetPose(pos);
+
+	_playerCollider->ApplyNodeInfo();
+
+	for (auto& child : _playerCollider->GetChildColliderVec())
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->ApplyNodeInfo();
+	}
+}
+
+void PlayerMove::UpdateToPhysics()
+{
+	_playerCollider->UpdateToPhysics();
+	
+	for (auto& child : _playerCollider->GetChildColliderVec())
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->ApplyNodeInfo();
+	}
 }
 
 void PlayerMove::SwitchCamera()

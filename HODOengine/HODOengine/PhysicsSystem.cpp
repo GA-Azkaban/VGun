@@ -57,6 +57,11 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		//for (auto& rigid : _rigidDynamics)
+		//{
+		//	static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateToPhysics();
+		//}
+
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
 
