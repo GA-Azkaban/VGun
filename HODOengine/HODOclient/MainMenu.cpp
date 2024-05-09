@@ -92,7 +92,7 @@ void MainMenuScene::MainMenu()
 	roomListCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.0f);
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	roomListCanvas->SetSelfActive(false);
-	MenuManager::Instance().SetRoomList(roomListCanvas);
+	//MenuManager::Instance().SetRoomList(roomListCanvas);
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
 	roomMakeBtn->GetTransform()->SetPosition(365.f, 290.f, 0.6f);
@@ -196,7 +196,7 @@ void MainMenuScene::MainMenu()
 
 	// Training Btn
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "trainingBtn", mainControlObject);
-	trainingBtn->GetTransform()->SetPosition(150.0f,310.0f,0.f);
+	trainingBtn->GetTransform()->SetPosition(150.0f, 310.0f, 0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	trainingBtn->AddComponent<BtnScript>();
@@ -276,6 +276,8 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
+			MenuManager::Instance().GetRoomList();
+
 			if (!roomListCanvas->GetSelfActive())
 			{
 				roomListCanvas->SetSelfActive(true);
@@ -285,7 +287,7 @@ void MainMenuScene::MainMenu()
 				roomListCanvas->SetSelfActive(false);
 			}
 
-			if(setRoomCanvas->GetSelfActive())
+			if (setRoomCanvas->GetSelfActive())
 			{
 				setRoomCanvas->SetSelfActive(false);
 			}
@@ -373,7 +375,8 @@ void MainMenuScene::MainMenu()
 			if (FadeInOut::Instance().GetComplete())
 			{
 				FadeInOut::Instance().FadeOut();
-			}else
+			}
+			else
 			{
 				FadeInOut::Instance().FadeIn();
 			}
@@ -381,4 +384,3 @@ void MainMenuScene::MainMenu()
 	);
 
 }
-

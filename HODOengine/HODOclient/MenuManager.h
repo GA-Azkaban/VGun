@@ -22,6 +22,7 @@ public:
 	void RoomEneter(Protocol::RoomInfo);
 	void SetRoom(Protocol::RoomInfo);
 	void ShowRoomList();
+	void GetRoomList();
 	void RoomExit();
 
 	void OtherPlayerEnter();
