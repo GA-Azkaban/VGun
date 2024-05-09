@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Struct.pb.h"
 #include "GameStruct.h"
 #include "../HODOengine/HODO_API.h"
@@ -31,9 +31,10 @@ public:
 public:
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 
-	void RoomEnter();
-	void SetRoom();
-	void ShowRoomListCanvas(bool isShow);
+	void RoomEneter(Protocol::RoomInfo);
+	void SetRoom(Protocol::RoomInfo);
+	void ShowRoomList();
+	void GetRoomList();
 	void RoomExit();
 
 	void OtherPlayerEnter();
