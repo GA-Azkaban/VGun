@@ -19,6 +19,7 @@ namespace RocketCore::Graphics
 		virtual HDEngine::SpherePrimitive* CreateSpherePrimitive() override;
 		virtual HDEngine::CylinderPrimitive* CreateCylinderPrimitive() override;
 		virtual HDEngine::CapsulePrimitive* CreateCapsulePrimitive() override;
+		virtual HDEngine::IParticle* CreateParticle() override;
 	};
 }
 

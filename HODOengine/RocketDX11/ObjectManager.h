@@ -25,6 +25,7 @@ namespace RocketCore::Graphics
 	class ImageRenderer;
 	class LineRenderer;
 	class Material;
+	class Particle;
 
 	class ObjectManager : public Singleton<ObjectManager>
 	{
@@ -55,6 +56,7 @@ namespace RocketCore::Graphics
 		ImageRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
 		Material* CreateMaterial(HDEngine::MaterialDesc desc);
+		Particle* CreateParticle();
 
 		HDEngine::CubePrimitive* CreateCubePrimitive();
 		HDEngine::SpherePrimitive* CreateSpherePrimitive();

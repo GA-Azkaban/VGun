@@ -71,6 +71,7 @@ namespace RocketCore::Graphics
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
 
 		_world = XMMatrixIdentity();
+		//_world = XMMatrixRotationX(90.0f * 0.0174532925f);
 
 		// atan2 함수를 통해 빌보드 모델에 적용될 회전값을 계산한다.
 		XMFLOAT3 cameraPosition = Camera::GetMainCamera()->GetPosition();

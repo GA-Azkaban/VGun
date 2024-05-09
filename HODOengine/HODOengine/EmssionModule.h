@@ -7,17 +7,24 @@ namespace HDData
 	{
 	public:
 		EmissionModule()
+			: burst(0.0f, 30), enabled(true), rateOverTime(10), rateOverDistance(0)
 		{
-			burst = Burst(0.0f, 30);
+			
 		}
 
-		Burst GetBurst();
-		void SetBurst(Burst burst);
+		Burst GetBurst() const
+		{
+			return burst;
+		}
+		void SetBurst(const Burst& burst)
+		{
+			this->burst = burst;
+		}
 
 	public:
 		bool enabled;
-		float rateOverTime;
-		float rateOverDistance;
+		int rateOverTime;
+		int rateOverDistance;
 
 	private:
 		Burst burst;

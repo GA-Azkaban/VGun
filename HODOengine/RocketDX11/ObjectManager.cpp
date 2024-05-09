@@ -14,6 +14,7 @@
 #include "ResourceManager.h"
 #include "LineRenderer.h"
 #include "Material.h"
+#include "Particle.h"
 
 namespace RocketCore::Graphics
 {
@@ -113,6 +114,11 @@ namespace RocketCore::Graphics
 		materialList.insert(std::make_pair(matName, newMaterial));
 
 		return newMaterial;
+	}
+
+	RocketCore::Graphics::Particle* ObjectManager::CreateParticle()
+	{
+		return Particle* newParticle = new Particle();
 	}
 
 	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()

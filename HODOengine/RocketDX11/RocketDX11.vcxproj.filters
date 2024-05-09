@@ -353,6 +353,9 @@
     <ClInclude Include="ParticlePass.h">
       <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Object\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">

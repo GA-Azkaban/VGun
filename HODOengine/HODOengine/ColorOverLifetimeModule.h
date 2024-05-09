@@ -3,10 +3,10 @@
 
 namespace HDData
 {
-	class ColorOverLifetime
+	class ColorOverLifetimeModule
 	{
 	public:
 		Gradient color;
-		bool enabled = true;
+		bool enabled = false;
 	};
 }

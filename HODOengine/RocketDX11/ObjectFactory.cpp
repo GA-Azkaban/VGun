@@ -96,4 +96,9 @@ namespace RocketCore::Graphics
 		return ObjectManager::Instance().CreateCapsulePrimitive();
 	}
 
+	HDEngine::IParticle* ObjectFactory::CreateParticle()
+	{
+		return 
+	}
+
 }
