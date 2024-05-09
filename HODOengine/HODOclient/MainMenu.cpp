@@ -228,7 +228,7 @@ void MainMenuScene::MainMenu()
 
 	// Training Btn
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "trainingBtn", mainControlObject);
-	trainingBtn->GetTransform()->SetPosition(150.0f,310.0f,0.f);
+	trainingBtn->GetTransform()->SetPosition(150.0f, 310.0f, 0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	trainingBtn->AddComponent<BtnScript>();
@@ -403,5 +403,18 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
+	tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			if (FadeInOut::Instance().GetComplete())
+			{
+				FadeInOut::Instance().FadeOut();
+			}
+			else
+			{
+				FadeInOut::Instance().FadeIn();
+			}
+		}
+	);
 
 }
