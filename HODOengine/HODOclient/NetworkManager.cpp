@@ -8,6 +8,7 @@
 #include "RoundManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
+#include "GameStruct.h"
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -71,6 +72,9 @@ void NetworkManager::RecvFail(int32 errorCode)
 	// Todo
 	// 로그인에 실패했을때 모든 처리를 여기서
 	LobbyManager::Instance().LoginFAIL(errorCode);
+
+	// 방 입장에 실패했을 때
+	LobbyManager::Instance().RoomEnterFAIL(errorCode);
 }
 
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
@@ -95,19 +99,24 @@ void NetworkManager::SendRoomListRequest()
 
 void NetworkManager::RecvRoomList(Protocol::S_ROOM_LIST roomList)
 {
-	// vector처럼 사용가능
-	for (auto room : roomList.roominfo())
+	auto& list = MenuManager::Instance().GetRoomList();
+
+	list.clear();
+
+	for (auto& room : roomList.roominfo())
 	{
-		auto id = room.roomid();
-		auto name = room.roomname();
-		auto maxPlayerCount = room.maxplayercount();
-		auto currentPlayerCount = room.currentplayercount();
+		roominfo* info = new roominfo;
 
-		auto isPrivate = room.isprivate();
-		auto isTeam = room.isteam();
+		info->id = room.roomid();
+		info->name = room.roomname();
+		info->maxPlayerCount = room.maxplayercount();
+		info->currentPlayerCount = room.currentplayercount();
+
+		info->isPrivate = room.isprivate();
+		info->isTeam = room.isteam();
+
+		list.push_back(info);
 	}
-
-	// Todo 방 리스트 처리
 }
 
 void NetworkManager::SendRoomEnter(std::string roomCode)
@@ -130,13 +139,35 @@ void NetworkManager::SendRoomLeave()
 void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
 	// Todo RoomInfo 설정
+	auto info = LobbyManager::Instance().GetRoomData();
+	
+	info->roomid = roomInfo.roomid();
 
+	info->isPrivate = roomInfo.isprivate();
+
+	info->roomName = roomInfo.roomname();
+	info->password = roomInfo.password();
+
+	info->currentPlayerCount = roomInfo.currentplayercount();
+
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.id());
+		one->SetNickName(player.nickname());
+		
+		// 플레이어 정보 받기	
+	
+		info->_players.push_back(one);
+	}
+
+	LobbyManager::Instance().RoomEnterSUCCESS();
 }
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
 	// Todo 
-
+	roomInfo.roomid();
 }
 
 void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
@@ -149,12 +180,34 @@ void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 {
+	auto info = LobbyManager::Instance().GetRoomData();
 
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.id());
+		one->SetNickName(player.nickname());
+
+		// 플레이어 정보 받기	
+
+		info->_players.push_back(one);
+	}
 }
 
 void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 {
+	auto info = LobbyManager::Instance().GetRoomData();
 
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.id());
+		one->SetNickName(player.nickname());
+
+		// 플레이어 정보 받기	
+
+		info->_players.push_back(one);
+	}
 }
 
 void NetworkManager::SendGameStart()
@@ -175,7 +228,6 @@ void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
 	Protocol::C_PLAY_UPDATE packet;
 
 	// Todo PlayerData 설정
-
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);

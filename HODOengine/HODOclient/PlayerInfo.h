@@ -27,25 +27,44 @@ public:
 		bool damageArmlegs;
 
 		int bulletCount;
-	
-		// 
 
 		HDData::Transform transform;
 		ePlayerState state;
 	};
 
 public:
+	void SetPlayerID(std::string id);
+	void PlayerIndex(int index);
+	void SetTeamID(eTeam team);
+	void SetIsHost(bool isHost);
+	void SetNickName(std::string nickName);
+
 	void SetCurrentHP(int hp);
+	void SetCurrentKill(int killCount);
+	void SetCurrentDeath(int deathCount);
+	void SetIsDie(bool isDie);
 	void SetCurrentState(ePlayerState state);
 
-	bool GetIsDie();
+	void SetCurrentBulletCount(int Count);
+
+	std::string GetPlayerID();
 	int GetPlayerIndex();
+	eTeam GetPlayerTeam();
+	bool GetPlayerDie();
+	std::string GetPlayerNickName();
+
+	int GetPlayerHP();
+	int GetPlayerKillCount();
+	int GetPlayerDeathCount();
+	bool GetIsDie();
+	ePlayerState GetPlayerState();
+
 
 private:
 	// player info
-	int _playerID;
+	std::string _playerID;
 	int _playerIndex;
-	int _teamID;
+	eTeam _teamID;
 	bool _isHost = false;
 	std::string _playerNickname;
 

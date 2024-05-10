@@ -14,6 +14,7 @@ public:
 	~LobbySceneView();
 
 	void Initialize();
+	HDData::Scene* GetThisScene();
 
 private:
 	HDData::Scene* _scene;

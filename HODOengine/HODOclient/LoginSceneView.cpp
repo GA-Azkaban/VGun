@@ -1,4 +1,4 @@
-#include "LoginSceneView.h"
+﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
 
@@ -212,7 +212,7 @@ void LoginSceneView::LoginView()
 		{
 			LobbyManager::Instance().showOff(loginSucess);
 			// load main menu scene
-			FadeInOut::Instance().FadeIn();
+			//FadeInOut::Instance().FadeIn();
 			API::LoadSceneByName("MainMenu");
 		}
 	);

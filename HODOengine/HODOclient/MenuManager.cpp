@@ -28,20 +28,28 @@ void MenuManager::SetMainMenuCanvas(HDData::GameObject* mainCanvas)
 	_mainMenuCanvas = mainCanvas;
 }
 
-void MenuManager::RoomEneter(Protocol::RoomInfo)
+void MenuManager::RoomEnter()
 {
-	Protocol::RoomInfo temp;
-	NetworkManager::Instance().RecvRoomEnter(temp);
+
 }
 
-void MenuManager::SetRoom(Protocol::RoomInfo roomInfo)
+void MenuManager::SetRoom()
 {
-	NetworkManager::Instance().SetRoom(roomInfo);
+	
 }
 
-void MenuManager::ShowRoomList()
+void MenuManager::ShowRoomListCanvas(bool isShow)
 {
-	_roomList->OnEnable();
+	_roomListCanvas->SetSelfActive(isShow);
+
+	if (!isShow) return;
+
+	NetworkManager::Instance().SendRoomListRequest();
+
+	for (auto& data : _roomList)
+	{
+
+	}
 }
 
 void MenuManager::RoomExit()
@@ -62,8 +70,13 @@ void MenuManager::OtherPlayerExit()
 	NetworkManager::Instance().RecvAnotherPlayerLeave(temp);
 }
 
-void MenuManager::SetRoomList(HDData::GameObject* roomListCanvas)
+std::vector<roominfo*>& MenuManager::GetRoomList()
 {
-	_roomList = roomListCanvas;
+	return _roomList;
+}
+
+void MenuManager::SetRoomListCanvas(HDData::GameObject* obj)
+{
+	_roomListCanvas = obj;
 }
 

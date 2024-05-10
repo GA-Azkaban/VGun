@@ -1,4 +1,4 @@
-#include "HODO_API.h"
+﻿#include "HODO_API.h"
 
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
@@ -290,9 +290,9 @@ namespace API
 			return HDEngine::MaterialManager::Instance().GetMaterial(materialName);
 		}
 
-		HODO_API void LoadSceneByName(std::string scene)
+		HODO_API HDData::Scene* LoadSceneByName(std::string scene)
 		{
-			HDEngine::SceneSystem::Instance().LoadScene(scene);
+			return HDEngine::SceneSystem::Instance().LoadScene(scene);
 		}
 
 		HODO_API HDData::Tween* CreateTween()

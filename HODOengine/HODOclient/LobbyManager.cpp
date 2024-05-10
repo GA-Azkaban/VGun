@@ -1,4 +1,5 @@
-﻿#include "pch.h"
+﻿#include <algorithm>
+#include "pch.h"
 #include "Types.h"
 #include "LobbyManager.h"
 #include "NetworkManager.h"
@@ -20,11 +21,18 @@ LobbyManager* LobbyManager::_instance = nullptr;
 LobbyManager::LobbyManager()
 {
 	API::CreateStaticComponent(this);
+
+	_roomData = new RoomData;
 }
 
 void LobbyManager::Start()
 {
-	int a = 0;
+
+}
+
+void LobbyManager::Update()
+{
+
 }
 
 void LobbyManager::Login(std::string id, std::string password)
@@ -130,12 +138,138 @@ void LobbyManager::SetFailCanvas(HDData::GameObject* failCanvas)
 	_loginFailCanvas = failCanvas;
 }
 
-void LobbyManager::Test()
+RoomData* LobbyManager::GetRoomData()
 {
-	API::LoadSceneByName("ALT");
+	return _roomData;
 }
 
-void LobbyManager::Test2()
+void LobbyManager::RoomEnter()
 {
-	API::LoadSceneByName("MainLobby");
+	NetworkManager::Instance().SendRoomEnter("room");
 }
+
+void LobbyManager::RoomEnterFAIL(int errorCode)
+{
+	switch (errorCode)
+	{
+		case 1:
+		{
+			_roomEnterFailCanvas->SetSelfActive(true);
+		}
+		break;
+		case 2:
+		{
+			_roomPasswordFailCanvas->SetSelfActive(true);
+		}
+		break;
+		default:
+			break;
+	}
+}
+
+void LobbyManager::RoomEnterSUCCESS()
+{
+	HDData::Scene* room = API::LoadSceneByName("Lobby");
+
+	_players = _roomData->_players;
+
+	int count = _roomData->currentPlayerCount;
+
+	for (int i = 0; i < count; ++i)
+	{
+		_playerObjs[i]->SetSelfActive(true);
+		_nickNameIndex[i]->SetSelfActive(true);
+		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+	}
+}
+
+// TODO) 새로운 플레이어가 들어오거나 나갈 때, 기존 애니메이션이 끊기지 않으면 좋다.
+// 하지만 지금은 작업 효율을 위해 일단 벡터를 갈아끼운다.
+void LobbyManager::OtherPlayerEnter()
+{
+	_players = _roomData->_players;
+
+	int count = _roomData->currentPlayerCount;
+
+	for (int i = 0; i < count; ++i)
+	{
+		_playerObjs[i]->SetSelfActive(true);
+		_nickNameIndex[i]->SetSelfActive(true);
+		SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
+		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+	}
+}
+
+void LobbyManager::OtherPlayerExit()
+{
+	_players = _roomData->_players;
+
+	int count = _roomData->currentPlayerCount;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		_playerObjs[i]->SetSelfActive(false);
+		_nickNameIndex[i]->SetSelfActive(false);
+	}
+
+	 for (int i = 0; i < count; ++i)
+	 {
+		 _playerObjs[i]->SetSelfActive(true);
+		 SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
+		 _nickNameIndex[i]->SetSelfActive(true);
+		 _nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+	 }
+
+}
+
+void LobbyManager::SetPlayerTeam(eTeam team, HDData::GameObject* obj)
+{
+	auto mesh = obj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+
+	switch (team)
+	{
+		case eTeam::R:
+		{
+			auto mat = API::GetMaterial("TP_Red");
+			mesh->LoadMaterial(mat, 0);
+			mesh->LoadMaterial(mat, 1);
+			mesh->LoadMaterial(mat, 2);
+			mesh->LoadMaterial(mat, 3);
+			mesh->LoadMaterial(mat, 4);
+		}
+		break;
+		case eTeam::G:
+		{
+			auto mat = API::GetMaterial("TP_Green");
+			mesh->LoadMaterial(mat, 0);
+			mesh->LoadMaterial(mat, 1);
+			mesh->LoadMaterial(mat, 2);
+			mesh->LoadMaterial(mat, 3);
+			mesh->LoadMaterial(mat, 4);
+		}
+		break;
+		case eTeam::B:
+		{
+			auto mat = API::GetMaterial("TP_Blue");
+			mesh->LoadMaterial(mat, 0);
+			mesh->LoadMaterial(mat, 1);
+			mesh->LoadMaterial(mat, 2);
+			mesh->LoadMaterial(mat, 3);
+			mesh->LoadMaterial(mat, 4);
+		}
+		break;
+		default:
+			break;
+	}
+}
+
+std::vector<HDData::GameObject*> LobbyManager::GetPlayerObjects()
+{
+	return _playerObjs;
+}
+
+std::vector<HDData::GameObject*> LobbyManager::GetNickNameObjects()
+{
+	return _nickNameIndex;
+}
+

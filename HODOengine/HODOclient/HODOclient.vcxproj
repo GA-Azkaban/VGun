@@ -225,7 +225,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
   <ItemGroup>
     <ClInclude Include="AnimationLoaderTest.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="B.h" />
     <ClInclude Include="BtnScript.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
@@ -233,6 +232,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="FPAniScript.h" />
     <ClInclude Include="FSMtestScript.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameStruct.h" />
     <ClInclude Include="LobbySceneView.h" />
     <ClInclude Include="RoundManager.h" />
     <ClInclude Include="InGameSceneView.h" />
@@ -269,6 +270,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="FPAniScript.cpp" />
     <ClCompile Include="FSMtestScript.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="LobbySceneView.cpp" />
     <ClCompile Include="RoundManager.cpp" />
     <ClCompile Include="InGameSceneView.cpp" />

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Struct.pb.h"
+#include "GameStruct.h"
 #include "../HODOengine/HODO_API.h"
 
 class MenuManager : public HDData::Script
@@ -19,15 +20,16 @@ public:
 public:
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 
-	void RoomEneter(Protocol::RoomInfo);
-	void SetRoom(Protocol::RoomInfo);
-	void ShowRoomList();
+	void RoomEnter();
+	void SetRoom();
+	void ShowRoomListCanvas(bool isShow);
 	void RoomExit();
 
 	void OtherPlayerEnter();
 	void OtherPlayerExit();
 
-	void SetRoomList(HDData::GameObject* roomListCanvas);
+	std::vector<roominfo*>& GetRoomList();
+	void SetRoomListCanvas(HDData::GameObject* obj);
 public:
 	// canvas
 	HDData::GameObject* _mainMenuCanvas = nullptr;
@@ -38,6 +40,7 @@ public:
 	HDData::GameObject* _exitbtn = nullptr;
 
 	// RoomList
-	HDData::GameObject* _roomList = nullptr;
+	HDData::GameObject* _roomListCanvas = nullptr;
+	std::vector<roominfo*> _roomList;
 };
 

@@ -302,6 +302,15 @@ namespace HDData
 
 	void Transform::Translate(const Vector3& position)
 	{
+		//Vector3 delta;
+		//delta.x = GetRight().x * position.x + GetForward().x * position.z;
+		//delta.z = GetForward().z * position.z + GetRight().z * position.x;
+		//delta.y = position.y;
+
+		//_transform->_position.x = delta.x;
+		//_transform->_position.y = delta.y;
+		//_transform->_position.z = delta.z;
+
 		_transform->_position.x += position.x;
 		_transform->_position.y += position.y;
 		_transform->_position.z += position.z;
@@ -309,9 +318,14 @@ namespace HDData
 
 	void Transform::Translate(float x, float y, float z)
 	{
-		_transform->_position.x += x;
-		_transform->_position.y += y;
-		_transform->_position.z += z;
+		Vector3 delta;
+		delta.x = GetRight().x * x + GetForward().x * z;
+		delta.z = GetForward().z * z + GetRight().z * x;
+		delta.y = y;
+
+		_transform->_position.x = delta.x;
+		_transform->_position.y = delta.y;
+		_transform->_position.z = delta.z;
 	}
 
 	void Transform::Rotate(float angleX, float angleY, float angleZ)

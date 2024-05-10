@@ -35,18 +35,20 @@ namespace HDEngine
 		return scene;
 	}
 
-	void SceneSystem::LoadScene(std::string sceneName)
+	HDData::Scene* SceneSystem::LoadScene(std::string sceneName)
 	{
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{
-			return;
+			return nullptr;
 		}
 
 		_prevScene = _currentScene;
 		_currentScene = sceneIter->second;
 
 		UISystem::Instance().SetChangedScene(_currentScene);
+
+		return _currentScene;
 	}
 
 	void SceneSystem::LoadScene(HDData::Scene* scene)

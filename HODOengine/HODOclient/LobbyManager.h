@@ -1,5 +1,8 @@
 ﻿#pragma once
+#include <vector>
 #include "../HODOengine/HODO_API.h"
+#include "PlayerInfo.h"
+#include "LobbySceneView.h"
 
 enum errorNum
 {
@@ -7,6 +10,20 @@ enum errorNum
 	ID_DUPLICATION = 1002,
 	NICKNAME_DUPLICATION = 1003,
 	SIGNUP_FAIL = 1004,
+};
+
+struct RoomData
+{
+	int roomid;
+	
+	bool isPrivate;
+
+	std::string roomName;
+	std::string password;
+
+	int currentPlayerCount;
+
+	std::vector<PlayerInfo*> _players;
 };
 
 class LobbyManager : public HDData::Script
@@ -23,6 +40,7 @@ private:
 
 public:
 	void Start() override;
+	void Update() override;
 
 public:
 	// 로그인 화면 기능
@@ -70,9 +88,35 @@ private:
 	HDData::GameObject* _quitButton;
 	HDData::GameObject* _logoImage;
 
-
-	/// test
 public:
-	void Test();
-	void Test2();
+	RoomData* GetRoomData();
+	void RoomEnter();
+	void RoomEnterFAIL(int errorCode);
+	void RoomEnterSUCCESS();
+
+private:
+	RoomData* _roomData;
+
+	HDData::GameObject* _roomEnterFailCanvas;
+	HDData::GameObject* _roomPasswordFailCanvas;
+
+public:
+	// 방 내부의 플레이어 정보를 관리
+	void OtherPlayerEnter();
+	void OtherPlayerExit();
+	void SetPlayerTeam(eTeam team, HDData::GameObject* obj);
+
+private:
+	std::vector<PlayerInfo*> _players;
+
+public:
+	std::vector<HDData::GameObject*> GetPlayerObjects();
+	std::vector<HDData::GameObject*> GetNickNameObjects();
+
+private:
+	// 씬 내부에 계속 존재하는 오브젝트들
+	std::vector<HDData::GameObject*> _playerObjs;
+	std::vector<HDData::GameObject*> _nickNameIndex;
+	std::vector<Vector3> positions;
+
 };

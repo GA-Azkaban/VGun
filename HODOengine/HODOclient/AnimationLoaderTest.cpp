@@ -49,7 +49,7 @@ void AnimationLoaderTest::Start()
 	test2->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()
 		{
-			LobbyManager::Instance().Test2();
+			//LobbyManager::Instance().Test2();
 		}
 	);
 }
