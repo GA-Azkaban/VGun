@@ -12,7 +12,7 @@ namespace HDData
 			
 		}
 
-		Burst GetBurst() const
+		Burst& GetBurst()
 		{
 			return burst;
 		}

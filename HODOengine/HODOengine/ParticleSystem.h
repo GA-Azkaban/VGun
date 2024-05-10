@@ -10,7 +10,6 @@
 #include <DirectXMath.h>
 #include <functional>
 #include <string>
-#include <map>
 #include <vector>
 #include "../HODO3DGraphicsInterface/IParticle.h"
 
@@ -27,6 +26,7 @@ namespace HDData
 		~ParticleSystem();
 
 		void Play();
+		void Stop();
 		void Clear();
 
 	protected:
@@ -44,6 +44,11 @@ namespace HDData
 		float time;
 
 	private:
-		ParticleSystemRenderer* renderer;
+		ParticleSystemRenderer* _renderer;
+		bool _isPlaying;
+		float _accumulatedDeltaTime;
+
+		std::vector<HDEngine::IParticle*> _activatedParticles;
 	};
+
 }

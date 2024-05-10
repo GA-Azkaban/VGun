@@ -219,6 +219,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClCompile Include="LightAdapter.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="OutlinePass.cpp" />
+    <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticlePass.cpp" />
     <ClCompile Include="ShadowMapPass.cpp" />
     <ClCompile Include="SkyboxPass.cpp" />

@@ -98,7 +98,7 @@ namespace RocketCore::Graphics
 
 	HDEngine::IParticle* ObjectFactory::CreateParticle()
 	{
-		return 
+		return ObjectManager::Instance().CreateParticle();
 	}
 
 }

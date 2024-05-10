@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-namespace HDData
+namespace HDEngine
 {
 	enum class ParticleSystemRenderMode
 	{

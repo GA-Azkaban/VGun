@@ -127,5 +127,8 @@
     <ClInclude Include="IParticle.h">
       <Filter>Particle</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystemRenderMode.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

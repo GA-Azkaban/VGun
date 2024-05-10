@@ -3,6 +3,7 @@
 
 #include "Singleton.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
+#include "../HODO3DGraphicsInterface/IParticle.h"
 
 
 namespace HDEngine
@@ -25,7 +26,7 @@ namespace RocketCore::Graphics
 	class ImageRenderer;
 	class LineRenderer;
 	class Material;
-	class Particle;
+	
 
 	class ObjectManager : public Singleton<ObjectManager>
 	{
@@ -56,7 +57,7 @@ namespace RocketCore::Graphics
 		ImageRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
 		Material* CreateMaterial(HDEngine::MaterialDesc desc);
-		Particle* CreateParticle();
+		HDEngine::IParticle* CreateParticle();
 
 		HDEngine::CubePrimitive* CreateCubePrimitive();
 		HDEngine::SpherePrimitive* CreateSpherePrimitive();

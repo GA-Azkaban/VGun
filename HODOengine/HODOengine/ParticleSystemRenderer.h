@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "ParticleSystemRenderMode.h"
+#include "../HODO3DGraphicsInterface/ParticleSystemRenderMode.h"
 #include "HDMaterial.h"
 #include <string>
 
@@ -15,11 +15,9 @@ namespace HDData
 
 	protected:
 		virtual void Update() override;
-		virtual void OnEnable() override;
-		virtual void OnDisable() override;
 
 	public:
-		ParticleSystemRenderMode renderMode;
+		HDEngine::ParticleSystemRenderMode renderMode;
 		HDData::Material* material;
 		std::string mesh;
 		float minParticleSize;

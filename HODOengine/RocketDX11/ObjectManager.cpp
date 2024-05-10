@@ -116,9 +116,10 @@ namespace RocketCore::Graphics
 		return newMaterial;
 	}
 
-	RocketCore::Graphics::Particle* ObjectManager::CreateParticle()
+	HDEngine::IParticle* ObjectManager::CreateParticle()
 	{
-		return Particle* newParticle = new Particle();
+		Particle* newParticle = new Particle();
+		return newParticle;
 	}
 
 	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()

@@ -201,6 +201,9 @@
     <ClCompile Include="ParticlePass.cpp">
       <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Object\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">

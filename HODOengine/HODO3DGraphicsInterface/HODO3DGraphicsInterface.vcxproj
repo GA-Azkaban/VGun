@@ -31,6 +31,7 @@
     <ClInclude Include="ILight.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="IParticle.h" />
+    <ClInclude Include="ParticleSystemRenderMode.h" />
     <ClInclude Include="PrimitiveHeader.h" />
     <ClInclude Include="IDebugCube.h" />
     <ClInclude Include="IDebugObject.h" />

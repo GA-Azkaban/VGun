@@ -191,6 +191,12 @@
     <ClCompile Include="Gradient.cpp">
       <Filter>05_Component\ParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystemRenderer.cpp">
+      <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePool.cpp">
+      <Filter>ParticlePool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -443,8 +449,8 @@
     <ClInclude Include="ParticleSystemRenderer.h">
       <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystemRenderMode.h">
-      <Filter>05_Component\ParticleSystem</Filter>
+    <ClInclude Include="ParticlePool.h">
+      <Filter>ParticlePool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -624,9 +630,6 @@
     <Filter Include="05_Component\Collider\Collision">
       <UniqueIdentifier>{56a9c51c-472b-4ec2-81b7-76abe8fa59e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\Collider\Particle">
-      <UniqueIdentifier>{0bf802f5-6f43-4f75-8589-8ba81a4118b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Animation\Animator">
       <UniqueIdentifier>{0d2c3228-48e0-4ff8-a1dd-4b70a61800eb}</UniqueIdentifier>
     </Filter>
@@ -659,6 +662,9 @@
     </Filter>
     <Filter Include="05_Component\Renderer\ParticleSystemRenderer">
       <UniqueIdentifier>{441fa4c9-4d99-4a88-add4-7c32475b8188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticlePool">
+      <UniqueIdentifier>{05b6e1e4-9fdf-49e6-81c7-f134ab84fd39}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
