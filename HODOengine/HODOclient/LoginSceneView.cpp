@@ -77,7 +77,7 @@ void LoginSceneView::LoginView()
 	FadeInOut::Instance().FadeOut();
 
 	// login Control Object
-	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "l oginControlObject");
+	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
 	loginControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 	loginControlObject->SetSelfActive(true);
 	_lobbyManager.SetLobbyMainCanvas(loginControlObject);
