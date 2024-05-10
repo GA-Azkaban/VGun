@@ -10,7 +10,7 @@
 #include <DirectXMath.h>
 #include <functional>
 #include <string>
-#include <vector>
+#include <unordered_set>
 #include "../HODO3DGraphicsInterface/IParticle.h"
 
 namespace HDData
@@ -48,7 +48,7 @@ namespace HDData
 		bool _isPlaying;
 		float _accumulatedDeltaTime;
 
-		std::vector<HDEngine::IParticle*> _activatedParticles;
+		std::unordered_set<HDEngine::IParticle*> _activatedParticles;
 	};
 
 }

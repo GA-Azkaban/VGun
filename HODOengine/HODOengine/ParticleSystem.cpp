@@ -35,7 +35,7 @@ namespace HDData
 
 	void ParticleSystem::Clear()
 	{
-
+		_activatedParticles.clear();
 	}
 
 	void ParticleSystem::Update()
@@ -51,14 +51,35 @@ namespace HDData
 		{
 			if (emission.GetBurst().currentCycleCount < emission.GetBurst().cycleCount)
 			{
-				// 파티쿨 풀에서 가져오기
-				HDEngine::IParticle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
+				if (emission.GetBurst().count > -1)
+				{
+					for (int i = 0; i < emission.GetBurst().count; ++i)
+					{
+						// 파티쿨 풀에서 가져오기
+						HDEngine::IParticle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
+						// 파티클 정보 세팅
 
+						_activatedParticles.insert(particle);
+					}
+				}
+				else
+				{
+					int randomCount = 
+					for (int i = 0; i < emission.GetBurst().count; ++i)
+					{
+						// 파티쿨 풀에서 가져오기
+						HDEngine::IParticle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
+						// 파티클 정보 세팅
+
+						_activatedParticles.insert(particle);
+					}
+				}
 				++(emission.GetBurst().currentCycleCount);
 			}
 		}
 
-		_accumulatedDeltaTime += HDEngine::TimeSystem::Instance().GetDeltaTime();
+		// 활성화 되어있는 파티클들 정보 업데이트
+
 
 		if (_accumulatedDeltaTime > main.duration)
 		{
@@ -69,8 +90,17 @@ namespace HDData
 			else
 			{
 				_isPlaying = false;
+				// 활성화 되어 있던 파티클 삭제
+				for (auto iter = _activatedParticles.begin(); iter != _activatedParticles.end(); ++iter)
+				{
+					HDEngine::ParticlePool::Instance().Retrieve(*iter);
+				}
+				_activatedParticles.clear();
 			}
 		}
+
+		_accumulatedDeltaTime += HDEngine::TimeSystem::Instance().GetDeltaTime();
+		particleCount = _activatedParticles.size();
 	}
 
 }
