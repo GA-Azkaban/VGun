@@ -4,7 +4,8 @@
 namespace HDData
 {
 	Transform::Transform()
-		: _nodeTransform(new HDCommon::Transform())
+		: _nodeTransform(new HDCommon::Transform()),
+		_position(), _rotation(), _scale(Vector3::One)
 	{
 
 	}
