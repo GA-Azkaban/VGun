@@ -10,23 +10,24 @@ enum : uint16
 	PKT_S_TEST = 1001,
 	PKT_C_MOVE = 1002,
 	PKT_S_ERROR = 1003,
-	PKT_C_SIGNIN = 1004,
-	PKT_S_SIGNIN_OK = 1005,
-	PKT_C_SIGNUP = 1006,
-	PKT_S_SIGNUP_OK = 1007,
-	PKT_C_ROOM_CREATE = 1008,
-	PKT_C_ROOM_ENTER = 1009,
-	PKT_S_ROOM_ENTER = 1010,
-	PKT_C_ROOM_LEAVE = 1011,
-	PKT_S_ROOM_LEAVE = 1012,
-	PKT_S_ANOTHER_ENTER_ROOM = 1013,
-	PKT_S_ANOTHER_LEAVE_ROOM = 1014,
-	PKT_C_ROOM_START = 1015,
-	PKT_S_ROOM_START = 1016,
-	PKT_C_PLAY_UPDATE = 1017,
-	PKT_S_PLAY_UPDATE = 1018,
-	PKT_C_ROOM_LIST_REQUEST = 1019,
-	PKT_S_ROOM_LIST = 1020,
+	PKT_C_AUTOLOGIN = 1004,
+	PKT_C_SIGNIN = 1005,
+	PKT_S_SIGNIN_OK = 1006,
+	PKT_C_SIGNUP = 1007,
+	PKT_S_SIGNUP_OK = 1008,
+	PKT_C_ROOM_CREATE = 1009,
+	PKT_C_ROOM_ENTER = 1010,
+	PKT_S_ROOM_ENTER = 1011,
+	PKT_C_ROOM_LEAVE = 1012,
+	PKT_S_ROOM_LEAVE = 1013,
+	PKT_S_ANOTHER_ENTER_ROOM = 1014,
+	PKT_S_ANOTHER_LEAVE_ROOM = 1015,
+	PKT_C_ROOM_START = 1016,
+	PKT_S_ROOM_START = 1017,
+	PKT_C_PLAY_UPDATE = 1018,
+	PKT_S_PLAY_UPDATE = 1019,
+	PKT_C_ROOM_LIST_REQUEST = 1020,
+	PKT_S_ROOM_LIST = 1021,
 };
 
 // Custom Handlers
@@ -70,6 +71,7 @@ public:
 	}
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_TEST& pkt) { return MakeSendBuffer(pkt, PKT_C_TEST); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_C_MOVE); }
+	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_AUTOLOGIN& pkt) { return MakeSendBuffer(pkt, PKT_C_AUTOLOGIN); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_SIGNIN& pkt) { return MakeSendBuffer(pkt, PKT_C_SIGNIN); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_SIGNUP& pkt) { return MakeSendBuffer(pkt, PKT_C_SIGNUP); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_CREATE& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_CREATE); }

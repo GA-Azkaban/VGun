@@ -28,6 +28,11 @@ namespace HDData
 		Vector3 GetForward() const;				// world 기준
 		Vector3 GetUp() const;					// world 기준
 		Vector3 GetRight() const;				// world 기준
+
+		Vector3 GetNodePosition() const;
+		Quaternion GetNodeRotation() const;
+		Vector3 GetNodeScale() const;
+
 		void SetWorldTM(const Matrix& worldTM);
 		void SetLocalTM(const Matrix& localTM);
 		void SetPosition(const Vector3& position);
@@ -51,7 +56,10 @@ namespace HDData
 		void Rotate(const Quaternion& quaternion);
 
 	private:
-		HDCommon::Transform* _transform;
+		Vector3 _position;	// Local position of gameobject
+		Quaternion _rotation;	// Local rotation of gameobject
+		Vector3 _scale;	// Local scale of gameobject
+		HDCommon::Transform* _nodeTransform;
 	};
 }
 

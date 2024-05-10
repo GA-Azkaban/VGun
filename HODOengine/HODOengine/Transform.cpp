@@ -1,10 +1,10 @@
-﻿#include "Transform.h"
+#include "Transform.h"
 #include "GameObject.h"
 
 namespace HDData
 {
 	Transform::Transform()
-		: _transform(new HDCommon::Transform())
+		: _nodeTransform(new HDCommon::Transform())
 	{
 
 	}
@@ -15,12 +15,12 @@ namespace HDData
 		// 내 로컬 포지션에 부모의 월드 트랜스폼을 반영해 내 월드 포지션을 구한다.
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _transform->_position;
+			return _position;
 		}
 
 		Matrix parentMatrix = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldTM();
 
-		return Vector3::Transform(_transform->_position, parentMatrix);
+		return Vector3::Transform(_position, parentMatrix);
 
 		// 		Vector3 parentPosition = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldPosition();
 		// 		Quaternion parentRotation = GetGameObject()->GetParentGameObject()->GetTransform()->GetWorldRotation();
@@ -33,7 +33,7 @@ namespace HDData
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _transform->_position;
+			return _position;
 		}
 	}
 
@@ -41,24 +41,24 @@ namespace HDData
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _transform->_rotation;
+			return _rotation;
 		}
 
 		Quaternion parentQuat = GetGameObject()->GetParentGameObject()->GetTransform()->GetRotation();
 
-		return Quaternion::Concatenate(_transform->_rotation, parentQuat);
+		return Quaternion::Concatenate(_rotation, parentQuat);
 	}
 
 	Vector3 Transform::GetScale() const
 	{
 		if (GetGameObject()->GetParentGameObject() == nullptr)
 		{
-			return _transform->_scale;
+			return _scale;
 		}
 
 		Vector3 parentScale = GetGameObject()->GetParentGameObject()->GetTransform()->GetScale();
 		Vector3 result = { 1.f, 1.f, 1.f };
-		result *= _transform->_scale;
+		result *= _scale;
 		result *= parentScale;
 
 		return result;
@@ -66,17 +66,17 @@ namespace HDData
 
 	Vector3 Transform::GetLocalPosition() const
 	{
-		return _transform->_position;
+		return _position;
 	}
 
 	Quaternion Transform::GetLocalRotation() const
 	{
-		return _transform->_rotation;
+		return _rotation;
 	}
 
 	Vector3 Transform::GetLocalScale() const
 	{
-		return _transform->_scale;
+		return _scale;
 	}
 
 	Matrix Transform::GetWorldTM() const
@@ -95,9 +95,9 @@ namespace HDData
 	Matrix Transform::GetLocalTM() const
 	{
 		Matrix result;
-		result *= Matrix::CreateScale(_transform->_scale);
-		result *= Matrix::CreateFromQuaternion(_transform->_rotation);
-		result *= Matrix::CreateTranslation(_transform->_position);
+		result *= Matrix::CreateScale(_scale);
+		result *= Matrix::CreateFromQuaternion(_rotation);
+		result *= Matrix::CreateTranslation(_position);
 
 		return result;
 	}
@@ -124,6 +124,21 @@ namespace HDData
 		rotMatrix = Matrix::CreateFromQuaternion(GetRotation());
 
 		return Vector3::Transform(Vector3(1.0f, 0.0f, 0.0f), rotMatrix);
+	}
+
+	Vector3 Transform::GetNodePosition() const
+	{
+		return _nodeTransform->_position;
+	}
+
+	Quaternion Transform::GetNodeRotation() const
+	{
+		return _nodeTransform->_rotation;
+	}
+
+	Vector3 Transform::GetNodeScale() const
+	{
+		return _nodeTransform->_scale;
 	}
 
 	void Transform::SetWorldTM(const Matrix& worldTM)
@@ -163,7 +178,7 @@ namespace HDData
 			result = Vector3::Transform(result, parent->GetTransform()->GetWorldTM().Invert());
 		}
 
-		_transform->_position = result;
+		_position = result;
 
 		// 		else
 // 		{
@@ -203,7 +218,7 @@ namespace HDData
 			result = Quaternion::Concatenate(result, parentRot);
 		}
 
-		_transform->_rotation = result;
+		_rotation = result;
 	}
 
 	void Transform::SetScale(const Vector3& scale)
@@ -226,7 +241,7 @@ namespace HDData
 			result *= inverseScale;
 		}
 
-		_transform->_scale = result;
+		_scale = result;
 
 		// 		else
 		// 		{
@@ -239,27 +254,27 @@ namespace HDData
 
 	void Transform::SetLocalPosition(const Vector3& position)
 	{
-		_transform->_position = position;
+		_position = position;
 	}
 
 	void Transform::SetLocalPosition(float x, float y, float z)
 	{
-		_transform->_position.x = x;
-		_transform->_position.y = y;
-		_transform->_position.z = z;
+		_position.x = x;
+		_position.y = y;
+		_position.z = z;
 	}
 
 	void Transform::SetLocalRotation(const Quaternion& rotation)
 	{
-		_transform->_rotation = rotation;
+		_rotation = rotation;
 	}
 
 	void Transform::SetLocalRotation(float x, float y, float z, float w)
 	{
-		_transform->_rotation.x = x;
-		_transform->_rotation.y = y;
-		_transform->_rotation.z = z;
-		_transform->_rotation.w = w;
+		_rotation.x = x;
+		_rotation.y = y;
+		_rotation.z = z;
+		_rotation.w = w;
 	}
 
 	void Transform::SetLocalRotationEuler(Vector3 eulerAngle)
@@ -281,39 +296,30 @@ namespace HDData
 		float cos_half_radianY = cos(half_radianY);
 		float cos_half_radianZ = cos(half_radianZ);
 
-		_transform->_rotation.w = cos_half_radianX * cos_half_radianY * cos_half_radianZ - sin_half_radianX * sin_half_radianY * sin_half_radianZ;
-		_transform->_rotation.x = sin_half_radianX * cos_half_radianY * cos_half_radianZ + cos_half_radianX * sin_half_radianY * sin_half_radianZ;
-		_transform->_rotation.y = cos_half_radianX * sin_half_radianY * cos_half_radianZ - sin_half_radianX * cos_half_radianY * sin_half_radianZ;
-		_transform->_rotation.z = cos_half_radianX * cos_half_radianY * sin_half_radianZ + sin_half_radianX * sin_half_radianY * cos_half_radianZ;
+		_rotation.w = cos_half_radianX * cos_half_radianY * cos_half_radianZ - sin_half_radianX * sin_half_radianY * sin_half_radianZ;
+		_rotation.x = sin_half_radianX * cos_half_radianY * cos_half_radianZ + cos_half_radianX * sin_half_radianY * sin_half_radianZ;
+		_rotation.y = cos_half_radianX * sin_half_radianY * cos_half_radianZ - sin_half_radianX * cos_half_radianY * sin_half_radianZ;
+		_rotation.z = cos_half_radianX * cos_half_radianY * sin_half_radianZ + sin_half_radianX * sin_half_radianY * cos_half_radianZ;
 
 	}
 
 	void Transform::SetLocalScale(const Vector3& scale)
 	{
-		_transform->_scale = scale;
+		_scale = scale;
 	}
 
 	void Transform::SetLocalScale(float x, float y, float z)
 	{
-		_transform->_scale.x = x;
-		_transform->_scale.y = y;
-		_transform->_scale.z = z;
+		_scale.x = x;
+		_scale.y = y;
+		_scale.z = z;
 	}
 
 	void Transform::Translate(const Vector3& position)
 	{
-		//Vector3 delta;
-		//delta.x = GetRight().x * position.x + GetForward().x * position.z;
-		//delta.z = GetForward().z * position.z + GetRight().z * position.x;
-		//delta.y = position.y;
-
-		//_transform->_position.x = delta.x;
-		//_transform->_position.y = delta.y;
-		//_transform->_position.z = delta.z;
-
-		_transform->_position.x += position.x;
-		_transform->_position.y += position.y;
-		_transform->_position.z += position.z;
+		_position.x += position.x;
+		_position.y += position.y;
+		_position.z += position.z;
 	}
 
 	void Transform::Translate(float x, float y, float z)
@@ -336,7 +342,7 @@ namespace HDData
 
 		Quaternion rotQuat = Quaternion::CreateFromYawPitchRoll({ x,y,z });
 
-		_transform->_rotation = Quaternion::Concatenate(_transform->_rotation, rotQuat);
+		_rotation = Quaternion::Concatenate(_rotation, rotQuat);
 		// 
 		// 		float radianX = HDMath::ToRadian(angleX);
 		// 		float radianY = HDMath::ToRadian(angleY);
@@ -375,7 +381,7 @@ namespace HDData
 
 	void Transform::Rotate(const Quaternion& quaternion)
 	{
-		_transform->_rotation = Quaternion::Concatenate(_transform->_rotation, quaternion);
+		_rotation = Quaternion::Concatenate(_rotation, quaternion);
 	}
 
 }

@@ -110,6 +110,33 @@ inline bool eRoomState_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eRoomState>(
     eRoomState_descriptor(), name, value);
 }
+enum eTeamColor : int {
+  TEAM_COLOR_NONE = 0,
+  TEAM_COLOR_RED = 1,
+  TEAM_COLOR_GREEN = 2,
+  TEAM_COLOR_BLUE = 3,
+  eTeamColor_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eTeamColor_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eTeamColor_IsValid(int value);
+constexpr eTeamColor eTeamColor_MIN = TEAM_COLOR_NONE;
+constexpr eTeamColor eTeamColor_MAX = TEAM_COLOR_BLUE;
+constexpr int eTeamColor_ARRAYSIZE = eTeamColor_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eTeamColor_descriptor();
+template<typename T>
+inline const std::string& eTeamColor_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eTeamColor>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eTeamColor_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eTeamColor_descriptor(), enum_t_value);
+}
+inline bool eTeamColor_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eTeamColor* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eTeamColor>(
+    eTeamColor_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -141,6 +168,11 @@ template <> struct is_proto_enum< ::Protocol::eRoomState> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eRoomState>() {
   return ::Protocol::eRoomState_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eTeamColor> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eTeamColor>() {
+  return ::Protocol::eTeamColor_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

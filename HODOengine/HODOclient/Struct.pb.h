@@ -377,22 +377,22 @@ class RoomInfo final :
     kIsPrivateFieldNumber = 9,
     kIsTeamFieldNumber = 10,
   };
-  // repeated .Protocol.UserInfo users = 4;
+  // repeated .Protocol.PlayerData users = 4;
   int users_size() const;
   private:
   int _internal_users_size() const;
   public:
   void clear_users();
-  ::Protocol::UserInfo* mutable_users(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo >*
+  ::Protocol::PlayerData* mutable_users(int index);
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerData >*
       mutable_users();
   private:
-  const ::Protocol::UserInfo& _internal_users(int index) const;
-  ::Protocol::UserInfo* _internal_add_users();
+  const ::Protocol::PlayerData& _internal_users(int index) const;
+  ::Protocol::PlayerData* _internal_add_users();
   public:
-  const ::Protocol::UserInfo& users(int index) const;
-  ::Protocol::UserInfo* add_users();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo >&
+  const ::Protocol::PlayerData& users(int index) const;
+  ::Protocol::PlayerData* add_users();
+  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerData >&
       users() const;
 
   // string roomCode = 2;
@@ -498,7 +498,7 @@ class RoomInfo final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo > users_;
+  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerData > users_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr roomcode_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr roomname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
@@ -1101,23 +1101,10 @@ class UserInfo final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kNickNameFieldNumber = 1,
     kIdFieldNumber = 2,
+    kNickNameFieldNumber = 3,
+    kUidFieldNumber = 1,
   };
-  // string nickName = 1;
-  void clear_nickname();
-  const std::string& nickname() const;
-  template <typename ArgT0 = const std::string&, typename... ArgT>
-  void set_nickname(ArgT0&& arg0, ArgT... args);
-  std::string* mutable_nickname();
-  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_nickname();
-  void set_allocated_nickname(std::string* nickname);
-  private:
-  const std::string& _internal_nickname() const;
-  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
-  std::string* _internal_mutable_nickname();
-  public:
-
   // string id = 2;
   void clear_id();
   const std::string& id() const;
@@ -1132,6 +1119,29 @@ class UserInfo final :
   std::string* _internal_mutable_id();
   public:
 
+  // string nickName = 3;
+  void clear_nickname();
+  const std::string& nickname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_nickname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_nickname();
+  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_nickname();
+  void set_allocated_nickname(std::string* nickname);
+  private:
+  const std::string& _internal_nickname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_nickname(const std::string& value);
+  std::string* _internal_mutable_nickname();
+  public:
+
+  // int32 uid = 1;
+  void clear_uid();
+  ::PROTOBUF_NAMESPACE_ID::int32 uid() const;
+  void set_uid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_uid() const;
+  void _internal_set_uid(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.UserInfo)
  private:
   class _Internal;
@@ -1139,8 +1149,9 @@ class UserInfo final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr id_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr nickname_;
+  ::PROTOBUF_NAMESPACE_ID::int32 uid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1558,7 +1569,7 @@ inline void RoomInfo::set_state(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:Protocol.RoomInfo.state)
 }
 
-// repeated .Protocol.UserInfo users = 4;
+// repeated .Protocol.PlayerData users = 4;
 inline int RoomInfo::_internal_users_size() const {
   return users_.size();
 }
@@ -1568,30 +1579,30 @@ inline int RoomInfo::users_size() const {
 inline void RoomInfo::clear_users() {
   users_.Clear();
 }
-inline ::Protocol::UserInfo* RoomInfo::mutable_users(int index) {
+inline ::Protocol::PlayerData* RoomInfo::mutable_users(int index) {
   // @@protoc_insertion_point(field_mutable:Protocol.RoomInfo.users)
   return users_.Mutable(index);
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo >*
+inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerData >*
 RoomInfo::mutable_users() {
   // @@protoc_insertion_point(field_mutable_list:Protocol.RoomInfo.users)
   return &users_;
 }
-inline const ::Protocol::UserInfo& RoomInfo::_internal_users(int index) const {
+inline const ::Protocol::PlayerData& RoomInfo::_internal_users(int index) const {
   return users_.Get(index);
 }
-inline const ::Protocol::UserInfo& RoomInfo::users(int index) const {
+inline const ::Protocol::PlayerData& RoomInfo::users(int index) const {
   // @@protoc_insertion_point(field_get:Protocol.RoomInfo.users)
   return _internal_users(index);
 }
-inline ::Protocol::UserInfo* RoomInfo::_internal_add_users() {
+inline ::Protocol::PlayerData* RoomInfo::_internal_add_users() {
   return users_.Add();
 }
-inline ::Protocol::UserInfo* RoomInfo::add_users() {
+inline ::Protocol::PlayerData* RoomInfo::add_users() {
   // @@protoc_insertion_point(field_add:Protocol.RoomInfo.users)
   return _internal_add_users();
 }
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::UserInfo >&
+inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::PlayerData >&
 RoomInfo::users() const {
   // @@protoc_insertion_point(field_list:Protocol.RoomInfo.users)
   return users_;
@@ -2089,49 +2100,24 @@ inline void Transform::set_allocated_quaternion(::Protocol::Quaternion* quaterni
 
 // UserInfo
 
-// string nickName = 1;
-inline void UserInfo::clear_nickname() {
-  nickname_.ClearToEmpty();
+// int32 uid = 1;
+inline void UserInfo::clear_uid() {
+  uid_ = 0;
 }
-inline const std::string& UserInfo::nickname() const {
-  // @@protoc_insertion_point(field_get:Protocol.UserInfo.nickName)
-  return _internal_nickname();
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserInfo::_internal_uid() const {
+  return uid_;
 }
-template <typename ArgT0, typename... ArgT>
-inline PROTOBUF_ALWAYS_INLINE
-void UserInfo::set_nickname(ArgT0&& arg0, ArgT... args) {
- 
- nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set:Protocol.UserInfo.nickName)
+inline ::PROTOBUF_NAMESPACE_ID::int32 UserInfo::uid() const {
+  // @@protoc_insertion_point(field_get:Protocol.UserInfo.uid)
+  return _internal_uid();
 }
-inline std::string* UserInfo::mutable_nickname() {
-  // @@protoc_insertion_point(field_mutable:Protocol.UserInfo.nickName)
-  return _internal_mutable_nickname();
-}
-inline const std::string& UserInfo::_internal_nickname() const {
-  return nickname_.Get();
-}
-inline void UserInfo::_internal_set_nickname(const std::string& value) {
+inline void UserInfo::_internal_set_uid(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+  uid_ = value;
 }
-inline std::string* UserInfo::_internal_mutable_nickname() {
-  
-  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
-}
-inline std::string* UserInfo::release_nickname() {
-  // @@protoc_insertion_point(field_release:Protocol.UserInfo.nickName)
-  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
-}
-inline void UserInfo::set_allocated_nickname(std::string* nickname) {
-  if (nickname != nullptr) {
-    
-  } else {
-    
-  }
-  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
-      GetArenaForAllocation());
-  // @@protoc_insertion_point(field_set_allocated:Protocol.UserInfo.nickName)
+inline void UserInfo::set_uid(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_uid(value);
+  // @@protoc_insertion_point(field_set:Protocol.UserInfo.uid)
 }
 
 // string id = 2;
@@ -2177,6 +2163,51 @@ inline void UserInfo::set_allocated_id(std::string* id) {
   id_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), id,
       GetArenaForAllocation());
   // @@protoc_insertion_point(field_set_allocated:Protocol.UserInfo.id)
+}
+
+// string nickName = 3;
+inline void UserInfo::clear_nickname() {
+  nickname_.ClearToEmpty();
+}
+inline const std::string& UserInfo::nickname() const {
+  // @@protoc_insertion_point(field_get:Protocol.UserInfo.nickName)
+  return _internal_nickname();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void UserInfo::set_nickname(ArgT0&& arg0, ArgT... args) {
+ 
+ nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.UserInfo.nickName)
+}
+inline std::string* UserInfo::mutable_nickname() {
+  // @@protoc_insertion_point(field_mutable:Protocol.UserInfo.nickName)
+  return _internal_mutable_nickname();
+}
+inline const std::string& UserInfo::_internal_nickname() const {
+  return nickname_.Get();
+}
+inline void UserInfo::_internal_set_nickname(const std::string& value) {
+  
+  nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* UserInfo::_internal_mutable_nickname() {
+  
+  return nickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* UserInfo::release_nickname() {
+  // @@protoc_insertion_point(field_release:Protocol.UserInfo.nickName)
+  return nickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void UserInfo::set_allocated_nickname(std::string* nickname) {
+  if (nickname != nullptr) {
+    
+  } else {
+    
+  }
+  nickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), nickname,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:Protocol.UserInfo.nickName)
 }
 
 // -------------------------------------------------------------------
