@@ -73,6 +73,14 @@ void NetworkManager::RecvFail(int32 errorCode)
 	LobbyManager::Instance().LoginFAIL(errorCode);
 }
 
+void NetworkManager::SendAutoLogin()
+{
+	Protocol::C_AUTOLOGIN packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
 void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 {
 	// remove pyramid
@@ -110,10 +118,11 @@ void NetworkManager::RecvRoomList(Protocol::S_ROOM_LIST roomList)
 	// Todo 방 리스트 처리
 }
 
-void NetworkManager::SendRoomEnter(std::string roomCode)
+void NetworkManager::SendRoomEnter(std::string roomCode, std::string password /*= ""*/)
 {
 	Protocol::C_ROOM_ENTER packet;
 	packet.set_roomcode(roomCode);
+	packet.set_password(password);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);

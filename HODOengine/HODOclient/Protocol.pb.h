@@ -48,7 +48,7 @@ struct TableStruct_Protocol_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[21]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[22]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -56,6 +56,9 @@ struct TableStruct_Protocol_2eproto {
 };
 extern const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto;
 namespace Protocol {
+class C_AUTOLOGIN;
+struct C_AUTOLOGINDefaultTypeInternal;
+extern C_AUTOLOGINDefaultTypeInternal _C_AUTOLOGIN_default_instance_;
 class C_MOVE;
 struct C_MOVEDefaultTypeInternal;
 extern C_MOVEDefaultTypeInternal _C_MOVE_default_instance_;
@@ -121,6 +124,7 @@ struct S_TESTDefaultTypeInternal;
 extern S_TESTDefaultTypeInternal _S_TEST_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
+template<> ::Protocol::C_AUTOLOGIN* Arena::CreateMaybeMessage<::Protocol::C_AUTOLOGIN>(Arena*);
 template<> ::Protocol::C_MOVE* Arena::CreateMaybeMessage<::Protocol::C_MOVE>(Arena*);
 template<> ::Protocol::C_PLAY_UPDATE* Arena::CreateMaybeMessage<::Protocol::C_PLAY_UPDATE>(Arena*);
 template<> ::Protocol::C_ROOM_CREATE* Arena::CreateMaybeMessage<::Protocol::C_ROOM_CREATE>(Arena*);
@@ -686,6 +690,125 @@ class S_ERROR final :
 };
 // -------------------------------------------------------------------
 
+class C_AUTOLOGIN final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.C_AUTOLOGIN) */ {
+ public:
+  inline C_AUTOLOGIN() : C_AUTOLOGIN(nullptr) {}
+  ~C_AUTOLOGIN() override;
+  explicit constexpr C_AUTOLOGIN(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  C_AUTOLOGIN(const C_AUTOLOGIN& from);
+  C_AUTOLOGIN(C_AUTOLOGIN&& from) noexcept
+    : C_AUTOLOGIN() {
+    *this = ::std::move(from);
+  }
+
+  inline C_AUTOLOGIN& operator=(const C_AUTOLOGIN& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline C_AUTOLOGIN& operator=(C_AUTOLOGIN&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const C_AUTOLOGIN& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const C_AUTOLOGIN* internal_default_instance() {
+    return reinterpret_cast<const C_AUTOLOGIN*>(
+               &_C_AUTOLOGIN_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  friend void swap(C_AUTOLOGIN& a, C_AUTOLOGIN& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(C_AUTOLOGIN* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(C_AUTOLOGIN* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline C_AUTOLOGIN* New() const final {
+    return new C_AUTOLOGIN();
+  }
+
+  C_AUTOLOGIN* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<C_AUTOLOGIN>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const C_AUTOLOGIN& from);
+  void MergeFrom(const C_AUTOLOGIN& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(C_AUTOLOGIN* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.C_AUTOLOGIN";
+  }
+  protected:
+  explicit C_AUTOLOGIN(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // @@protoc_insertion_point(class_scope:Protocol.C_AUTOLOGIN)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
 class C_SIGNIN final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.C_SIGNIN) */ {
  public:
@@ -730,7 +853,7 @@ class C_SIGNIN final :
                &_C_SIGNIN_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   friend void swap(C_SIGNIN& a, C_SIGNIN& b) {
     a.Swap(&b);
@@ -883,7 +1006,7 @@ class S_SIGNIN_OK final :
                &_S_SIGNIN_OK_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    5;
+    6;
 
   friend void swap(S_SIGNIN_OK& a, S_SIGNIN_OK& b) {
     a.Swap(&b);
@@ -1031,7 +1154,7 @@ class C_SIGNUP final :
                &_C_SIGNUP_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    7;
 
   friend void swap(C_SIGNUP& a, C_SIGNUP& b) {
     a.Swap(&b);
@@ -1200,7 +1323,7 @@ class S_SIGNUP_OK final :
                &_S_SIGNUP_OK_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    7;
+    8;
 
   friend void swap(S_SIGNUP_OK& a, S_SIGNUP_OK& b) {
     a.Swap(&b);
@@ -1319,7 +1442,7 @@ class C_ROOM_CREATE final :
                &_C_ROOM_CREATE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    8;
+    9;
 
   friend void swap(C_ROOM_CREATE& a, C_ROOM_CREATE& b) {
     a.Swap(&b);
@@ -1505,7 +1628,7 @@ class C_ROOM_ENTER final :
                &_C_ROOM_ENTER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    9;
+    10;
 
   friend void swap(C_ROOM_ENTER& a, C_ROOM_ENTER& b) {
     a.Swap(&b);
@@ -1570,6 +1693,7 @@ class C_ROOM_ENTER final :
 
   enum : int {
     kRoomCodeFieldNumber = 1,
+    kPasswordFieldNumber = 2,
   };
   // string roomCode = 1;
   void clear_roomcode();
@@ -1585,6 +1709,20 @@ class C_ROOM_ENTER final :
   std::string* _internal_mutable_roomcode();
   public:
 
+  // string password = 2;
+  void clear_password();
+  const std::string& password() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_password(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_password();
+  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_password();
+  void set_allocated_password(std::string* password);
+  private:
+  const std::string& _internal_password() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_password(const std::string& value);
+  std::string* _internal_mutable_password();
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.C_ROOM_ENTER)
  private:
   class _Internal;
@@ -1593,6 +1731,7 @@ class C_ROOM_ENTER final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr roomcode_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr password_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -1642,7 +1781,7 @@ class S_ROOM_ENTER final :
                &_S_ROOM_ENTER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    10;
+    11;
 
   friend void swap(S_ROOM_ENTER& a, S_ROOM_ENTER& b) {
     a.Swap(&b);
@@ -1783,7 +1922,7 @@ class C_ROOM_LEAVE final :
                &_C_ROOM_LEAVE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    11;
+    12;
 
   friend void swap(C_ROOM_LEAVE& a, C_ROOM_LEAVE& b) {
     a.Swap(&b);
@@ -1902,7 +2041,7 @@ class S_ROOM_LEAVE final :
                &_S_ROOM_LEAVE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    12;
+    13;
 
   friend void swap(S_ROOM_LEAVE& a, S_ROOM_LEAVE& b) {
     a.Swap(&b);
@@ -2043,7 +2182,7 @@ class S_ANOTHER_ENTER_ROOM final :
                &_S_ANOTHER_ENTER_ROOM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    13;
+    14;
 
   friend void swap(S_ANOTHER_ENTER_ROOM& a, S_ANOTHER_ENTER_ROOM& b) {
     a.Swap(&b);
@@ -2184,7 +2323,7 @@ class S_ANOTHER_LEAVE_ROOM final :
                &_S_ANOTHER_LEAVE_ROOM_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    14;
+    15;
 
   friend void swap(S_ANOTHER_LEAVE_ROOM& a, S_ANOTHER_LEAVE_ROOM& b) {
     a.Swap(&b);
@@ -2325,7 +2464,7 @@ class C_ROOM_START final :
                &_C_ROOM_START_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    15;
+    16;
 
   friend void swap(C_ROOM_START& a, C_ROOM_START& b) {
     a.Swap(&b);
@@ -2444,7 +2583,7 @@ class S_ROOM_START final :
                &_S_ROOM_START_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    17;
 
   friend void swap(S_ROOM_START& a, S_ROOM_START& b) {
     a.Swap(&b);
@@ -2585,7 +2724,7 @@ class C_PLAY_UPDATE final :
                &_C_PLAY_UPDATE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    18;
 
   friend void swap(C_PLAY_UPDATE& a, C_PLAY_UPDATE& b) {
     a.Swap(&b);
@@ -2726,7 +2865,7 @@ class S_PLAY_UPDATE final :
                &_S_PLAY_UPDATE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    19;
 
   friend void swap(S_PLAY_UPDATE& a, S_PLAY_UPDATE& b) {
     a.Swap(&b);
@@ -2887,7 +3026,7 @@ class C_ROOM_LIST_REQUEST final :
                &_C_ROOM_LIST_REQUEST_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    20;
 
   friend void swap(C_ROOM_LIST_REQUEST& a, C_ROOM_LIST_REQUEST& b) {
     a.Swap(&b);
@@ -3006,7 +3145,7 @@ class S_ROOM_LIST final :
                &_S_ROOM_LIST_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    21;
 
   friend void swap(S_ROOM_LIST& a, S_ROOM_LIST& b) {
     a.Swap(&b);
@@ -3223,6 +3362,10 @@ inline void S_ERROR::set_errorcode(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_errorcode(value);
   // @@protoc_insertion_point(field_set:Protocol.S_ERROR.errorCode)
 }
+
+// -------------------------------------------------------------------
+
+// C_AUTOLOGIN
 
 // -------------------------------------------------------------------
 
@@ -3731,6 +3874,51 @@ inline void C_ROOM_ENTER::set_allocated_roomcode(std::string* roomcode) {
   roomcode_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), roomcode,
       GetArenaForAllocation());
   // @@protoc_insertion_point(field_set_allocated:Protocol.C_ROOM_ENTER.roomCode)
+}
+
+// string password = 2;
+inline void C_ROOM_ENTER::clear_password() {
+  password_.ClearToEmpty();
+}
+inline const std::string& C_ROOM_ENTER::password() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_ROOM_ENTER.password)
+  return _internal_password();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void C_ROOM_ENTER::set_password(ArgT0&& arg0, ArgT... args) {
+ 
+ password_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.C_ROOM_ENTER.password)
+}
+inline std::string* C_ROOM_ENTER::mutable_password() {
+  // @@protoc_insertion_point(field_mutable:Protocol.C_ROOM_ENTER.password)
+  return _internal_mutable_password();
+}
+inline const std::string& C_ROOM_ENTER::_internal_password() const {
+  return password_.Get();
+}
+inline void C_ROOM_ENTER::_internal_set_password(const std::string& value) {
+  
+  password_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* C_ROOM_ENTER::_internal_mutable_password() {
+  
+  return password_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* C_ROOM_ENTER::release_password() {
+  // @@protoc_insertion_point(field_release:Protocol.C_ROOM_ENTER.password)
+  return password_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void C_ROOM_ENTER::set_allocated_password(std::string* password) {
+  if (password != nullptr) {
+    
+  } else {
+    
+  }
+  password_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), password,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_ROOM_ENTER.password)
 }
 
 // -------------------------------------------------------------------
@@ -4405,6 +4593,8 @@ S_ROOM_LIST::roominfo() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
