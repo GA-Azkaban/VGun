@@ -7,11 +7,12 @@
 #include "LimitVelocityOverLifetimeModule.h"
 #include "SizeOverLifetimeModule.h"
 #include "RotationOverLifetimeModule.h"
+#include "../HODO3DGraphicsInterface/IParticle.h"
 #include <DirectXMath.h>
 #include <functional>
 #include <string>
 #include <unordered_set>
-#include "../HODO3DGraphicsInterface/IParticle.h"
+#include <random>
 
 namespace HDData
 {
@@ -40,8 +41,8 @@ namespace HDData
 		SizeOverLifetimeModule sizeOverLifetime;
 		RotationOverLifetimeModule rotationOverLifetime;
 		bool useAutoRandomSeed;
-		int particleCount;
 		float time;
+		//int particleCount;
 
 	private:
 		ParticleSystemRenderer* _renderer;
@@ -49,6 +50,10 @@ namespace HDData
 		float _accumulatedDeltaTime;
 
 		std::unordered_set<HDEngine::IParticle*> _activatedParticles;
+
+		// random		
+		std::random_device rd;
+		std::mt19937 gen;
 	};
 
 }

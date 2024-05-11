@@ -13,14 +13,25 @@ namespace HDData
 		ParticleSystemRenderer();
 		~ParticleSystemRenderer();
 
+		HDEngine::ParticleSystemRenderMode GetRenderMode() const;
+		HDData::Material* GetMaterial() const;
+		std::string GetMesh() const;
+		float GetMinParticleSize() const;
+		float GetMaxParticleSize() const;
+
+		void SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode);
+		void SetMaterial(HDData::Material* material);
+		void SetMesh(std::string meshName);
+		void SetParticleSize(float minSize, float maxSize);
+
 	protected:
 		virtual void Update() override;
 
-	public:
-		HDEngine::ParticleSystemRenderMode renderMode;
-		HDData::Material* material;
-		std::string mesh;
-		float minParticleSize;
-		float maxParticleSize;
+	private:
+		HDEngine::ParticleSystemRenderMode _renderMode;
+		HDData::Material* _material;
+		std::string _mesh;
+		float _minParticleSize;
+		float _maxParticleSize;
 	};
 }

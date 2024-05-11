@@ -10,8 +10,9 @@ namespace HDData
 	ParticleSystem::ParticleSystem()
 		: main(), colorOverLifetime(), emission(),
 		limitVelocityOverLifetime(), sizeOverLifetime(), rotationOverLifetime(),
-		useAutoRandomSeed(true), particleCount(0), time(0.0f),
-		_isPlaying(false), _accumulatedDeltaTime(0.0f)
+		useAutoRandomSeed(true),time(0.0f),
+		_isPlaying(false), _accumulatedDeltaTime(0.0f),
+		rd(), gen(rd)
 	{
 		_renderer = GetGameObject()->AddComponent<ParticleSystemRenderer>();
 	}
@@ -45,15 +46,17 @@ namespace HDData
 			return;
 		}
 
+
 		// emission의 지정된 시간에 지정된 개수만큼 파티클 생성
 		// 파티클은 풀에서 꺼내온다
-		if (_accumulatedDeltaTime >= emission.GetBurst().time)
+		Burst& burst = emission.GetBurst();
+		if (_accumulatedDeltaTime >= burst.time)
 		{
-			if (emission.GetBurst().currentCycleCount < emission.GetBurst().cycleCount)
+			if (burst.currentCycleCount < burst.cycleCount)
 			{
-				if (emission.GetBurst().count > -1)
+				if (burst.count > -1)
 				{
-					for (int i = 0; i < emission.GetBurst().count; ++i)
+					for (int i = 0; i < burst.count; ++i)
 					{
 						// 파티쿨 풀에서 가져오기
 						HDEngine::IParticle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
@@ -64,22 +67,33 @@ namespace HDData
 				}
 				else
 				{
-					int randomCount = 
-					for (int i = 0; i < emission.GetBurst().count; ++i)
+					std::uniform_int_distribution dist(burst.minCount, burst.maxCount);
+					int randomCount = dist(gen);
+					for (int i = 0; i < randomCount; ++i)
 					{
-						// 파티쿨 풀에서 가져오기
+						// 파티클 풀에서 가져오기
 						HDEngine::IParticle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
 						// 파티클 정보 세팅
-
+						std::string mesh = _renderer->GetMesh();
+						if (mesh != "")
+						{
+							particle->SetMesh(mesh);
+						}
+						particle->SetMaterial(_renderer->GetMaterial()->_material);
+						particle->SetRenderMode(_renderer->GetRenderMode());
 						_activatedParticles.insert(particle);
 					}
 				}
-				++(emission.GetBurst().currentCycleCount);
+				++(burst.currentCycleCount);
 			}
 		}
 
 		// 활성화 되어있는 파티클들 정보 업데이트
-
+		for (auto iter = _activatedParticles.begin(); iter != _activatedParticles.end(); ++iter)
+		{
+			iter->SetColor(colorOverLifetime.color.Evaluate(_accumulatedDeltaTime));
+		}
+		
 
 		if (_accumulatedDeltaTime > main.duration)
 		{
@@ -100,7 +114,6 @@ namespace HDData
 		}
 
 		_accumulatedDeltaTime += HDEngine::TimeSystem::Instance().GetDeltaTime();
-		particleCount = _activatedParticles.size();
 	}
 
 }

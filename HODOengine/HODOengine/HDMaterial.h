@@ -15,6 +15,7 @@ namespace HDData
 		friend HDEngine::MaterialManager;
 		friend class MeshRenderer;
 		friend class SkinnedMeshRenderer;
+		friend class ParticleSystem;
 		Material() = delete;
 		~Material();
 		void SetMaterialName(const std::string& materialName);
