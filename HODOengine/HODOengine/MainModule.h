@@ -8,7 +8,7 @@ namespace HDData
 	public:
 		float duration;
 		bool loop;
-		float startDelay;
+		//float startDelay;
 		float minStartLifetime;
 		float maxStartLifetime;
 		float minStartSpeed;

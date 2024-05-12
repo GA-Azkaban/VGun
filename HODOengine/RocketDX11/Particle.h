@@ -14,6 +14,7 @@ namespace RocketCore::Graphics
 		virtual void SetActive(bool isActive) override;
 		virtual void SetMesh(const std::string& meshName) override;
 		virtual void SetMaterial(HDEngine::IMaterial* material) override;
+		virtual void SetColor(DirectX::XMINT4 color) override;
 		virtual void SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode) override;
 
 		void Update(float deltaTime);

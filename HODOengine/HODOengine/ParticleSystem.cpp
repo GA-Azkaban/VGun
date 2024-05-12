@@ -46,7 +46,6 @@ namespace HDData
 			return;
 		}
 
-
 		// emission의 지정된 시간에 지정된 개수만큼 파티클 생성
 		// 파티클은 풀에서 꺼내온다
 		Burst& burst = emission.GetBurst();
@@ -54,6 +53,7 @@ namespace HDData
 		{
 			if (burst.currentCycleCount < burst.cycleCount)
 			{
+				std::uniform_real_distribution distribution(main.minStartLifetime, main.maxStartLifetime);
 				if (burst.count > -1)
 				{
 					for (int i = 0; i < burst.count; ++i)
@@ -61,8 +61,15 @@ namespace HDData
 						// 파티쿨 풀에서 가져오기
 						HDEngine::IParticle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
 						// 파티클 정보 세팅
-
-						_activatedParticles.insert(particle);
+						std::string mesh = _renderer->GetMesh();
+						if (mesh != "")
+						{
+							particle->SetMesh(mesh);
+						}
+						particle->SetMaterial(_renderer->GetMaterial()->_material);
+						particle->SetRenderMode(_renderer->GetRenderMode());
+						float randomLifetime = distribution(gen);
+						_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
 					}
 				}
 				else
@@ -81,7 +88,8 @@ namespace HDData
 						}
 						particle->SetMaterial(_renderer->GetMaterial()->_material);
 						particle->SetRenderMode(_renderer->GetRenderMode());
-						_activatedParticles.insert(particle);
+						float randomLifetime = distribution(gen);
+						_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
 					}
 				}
 				++(burst.currentCycleCount);
@@ -89,11 +97,12 @@ namespace HDData
 		}
 
 		// 활성화 되어있는 파티클들 정보 업데이트
-		for (auto iter = _activatedParticles.begin(); iter != _activatedParticles.end(); ++iter)
+		for (auto& p : _activatedParticles)
 		{
-			iter->SetColor(colorOverLifetime.color.Evaluate(_accumulatedDeltaTime));
+			p.first->SetColor(colorOverLifetime.color.Evaluate(_accumulatedDeltaTime));
+			/// TODO) 파티클의 라이프타임과 누적 델타타임을 비교해서 시간이 다 된 파티클을 지워준다
+			p.second.second += HDEngine::TimeSystem::Instance().GetDeltaTime();
 		}
-		
 
 		if (_accumulatedDeltaTime > main.duration)
 		{
@@ -107,7 +116,7 @@ namespace HDData
 				// 활성화 되어 있던 파티클 삭제
 				for (auto iter = _activatedParticles.begin(); iter != _activatedParticles.end(); ++iter)
 				{
-					HDEngine::ParticlePool::Instance().Retrieve(*iter);
+					HDEngine::ParticlePool::Instance().Retrieve(iter->first);
 				}
 				_activatedParticles.clear();
 			}

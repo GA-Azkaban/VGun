@@ -23,6 +23,11 @@ namespace RocketCore::Graphics
 
 	}
 
+	void Particle::SetColor(DirectX::XMINT4 color)
+	{
+
+	}
+
 	void Particle::SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode)
 	{
 		_renderMode = renderMode;

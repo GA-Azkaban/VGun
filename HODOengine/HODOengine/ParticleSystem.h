@@ -11,8 +11,9 @@
 #include <DirectXMath.h>
 #include <functional>
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 #include <random>
+#include <utility>
 
 namespace HDData
 {
@@ -49,7 +50,8 @@ namespace HDData
 		bool _isPlaying;
 		float _accumulatedDeltaTime;
 
-		std::unordered_set<HDEngine::IParticle*> _activatedParticles;
+		// <Particle, <lifetime, accumulateDeltaTime>>
+		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>> _activatedParticles;
 
 		// random		
 		std::random_device rd;
