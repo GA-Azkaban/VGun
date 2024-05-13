@@ -29,6 +29,7 @@ namespace HDData
 		void SetIgnoreFocus(bool isIgnore);
 
 		void SetColor(DirectX::FXMVECTOR color);
+		void SetDefaultColor(DirectX::FXMVECTOR color);
 		void ReturnDefaultColor();
 
 

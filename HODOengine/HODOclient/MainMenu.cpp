@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -232,25 +232,26 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
 	preferencesBtn->GetTransform()->SetPosition(1875.f, 30.f, 0.f);
 	preferencesBtn->AddComponent<BtnHoveringScript>();
-	preferencesBtn->GetComponent<HDData::Button>()->SetColor(DirectX::Colors::Blue);
 	preferencesBtn->GetComponent<HDData::Button>()->SetImage("icon_cog.png");
 	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	// ex)해상도, BGM 볼륨, 환경볼륨, 마우스 감도
 
 	HDData::GameObject* settingControlObject = API::CreateImageBox(_scene, "settingControlObject");
 	settingControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 	settingControlObject->SetSelfActive(false);
 
-	HDData::GameObject* displaySetting = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
-	displaySetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	displaySetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
-	displaySetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	displaySetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	HDData::GameObject* preferencesCanvas = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
+	preferencesCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
+	//preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("temp1.png");
+	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
-	//HDData::GameObject* audioSetting = API::CreateImageBox(_scene, "audioSetting", settingControlObject);
-	//audioSetting->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	//audioSetting->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
-	//audioSetting->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	//audioSetting->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+	HDData::GameObject* preferencesCanvas2 = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
+	preferencesCanvas2->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	preferencesCanvas2->GetComponent<HDData::ImageUI>()->SetImage("temp123.png");
+	preferencesCanvas2->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	preferencesCanvas2->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	// event
 	// game play btn

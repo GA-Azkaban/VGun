@@ -1,4 +1,4 @@
-#include "LoginSceneView.h"
+﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
 
@@ -21,7 +21,6 @@ void LoginSceneView::Initialize()
 {
 	// Create Scene
 	_scene = API::CreateScene("MainLobby");
-
 
 	LoginView();
 
