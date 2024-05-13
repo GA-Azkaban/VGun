@@ -1,4 +1,4 @@
-﻿#include "LoginSceneView.h"
+#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
 
@@ -141,8 +141,7 @@ void LoginSceneView::LoginView()
 	//signup Btn
 	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn",loginControlObject);
 	joinBtn->GetTransform()->SetPosition(1055.f, 640.f, 0.f);
-	//joinBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
-	joinBtn->GetComponent<HDData::Button>()->SetImage("glassPanel_cornerTR.png");
+	joinBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
 	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	joinBtn->SetSelfActive(true);
 	joinBtn->AddComponent<BtnScript>();
