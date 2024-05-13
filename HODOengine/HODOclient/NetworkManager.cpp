@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "NetworkManager.h"
 
 #include "Service.h"
@@ -194,7 +194,6 @@ void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 	roomInfo.roomid();
 }
 
-void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
 {
 	Protocol::C_ROOM_CREATE packet;

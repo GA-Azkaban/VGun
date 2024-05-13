@@ -345,16 +345,17 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
-			Protocol::RoomInfo info;
-			info.set_roomname(roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			info.set_isprivate(privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn());
 
-			if (info.isprivate())
+			std::string roomName = roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
+			bool isPrivate = privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn();
+			std::string password = "";
+
+			if (isPrivate)
 			{
-				info.set_password(roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
+				password = roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
 			}
 
-			NetworkManager::Instance().SetRoom(info);
+			NetworkManager::Instance().SendRoomCreate(roomName, password, 6, isPrivate, true);
 		}
 	);
 
