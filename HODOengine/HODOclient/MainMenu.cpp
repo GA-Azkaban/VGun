@@ -5,6 +5,7 @@
 
 #include "../HODOengine/AudioSource.h"
 #include "BtnScript.h"
+#include "BtnHoveringScript.h"
 
 MainMenuScene::MainMenuScene()
 	:_menuManager(MenuManager::Instance())
@@ -230,6 +231,8 @@ void MainMenuScene::MainMenu()
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
 	preferencesBtn->GetTransform()->SetPosition(1875.f, 30.f, 0.f);
+	preferencesBtn->AddComponent<BtnHoveringScript>();
+	preferencesBtn->GetComponent<HDData::Button>()->SetColor(DirectX::Colors::Blue);
 	preferencesBtn->GetComponent<HDData::Button>()->SetImage("icon_cog.png");
 	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 

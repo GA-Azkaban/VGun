@@ -87,7 +87,12 @@
     <ClCompile Include="FadeInOut.cpp">
       <Filter>04_SceneView\FadeInOut</Filter>
     </ClCompile>
-    <ClCompile Include="BtnScript.cpp" />
+    <ClCompile Include="BtnScript.cpp">
+      <Filter>GameScript\TextScript</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnHoveringScript.cpp">
+      <Filter>GameScript\ButtonScript</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -147,7 +152,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="A.h" />
     <ClInclude Include="B.h" />
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
@@ -163,7 +167,6 @@
     <ClInclude Include="FadeInOut.h">
       <Filter>04_SceneView\FadeInOut</Filter>
     </ClInclude>
-    <ClInclude Include="BtnScript.h" />
     <ClInclude Include="TestScene.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
@@ -196,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="PlayerState.h">
       <Filter>03_Manager\GameManager\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnScript.h">
+      <Filter>GameScript\TextScript</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnHoveringScript.h">
+      <Filter>GameScript\ButtonScript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +296,15 @@
     </Filter>
     <Filter Include="04_SceneView\FadeInOut">
       <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScript">
+      <UniqueIdentifier>{ef0be1a9-d055-4c19-af9e-566ca7710276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScript\TextScript">
+      <UniqueIdentifier>{fb8b271c-0c2e-440a-b783-d04736d94db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScript\ButtonScript">
+      <UniqueIdentifier>{f79ac5cb-0ffd-4cb6-b845-794c6ce5da10}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
