@@ -135,6 +135,9 @@
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
+    <ClInclude Include="ErrorCode.h">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

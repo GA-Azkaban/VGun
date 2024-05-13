@@ -44,6 +44,7 @@ public: // 방 관련
 	void RecvRoomEnter(Protocol::RoomInfo roomInfo);
 	void RecvRoomLeave(Protocol::RoomInfo roomInfo);
 
+	void SendRoomCreate(std::string roomName, std::string password = "", int32 maxPlayerCount = 6, bool isPrivate = false, bool isTeam = true);
 	void SetRoom();
 
 public:
