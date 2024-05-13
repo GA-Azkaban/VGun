@@ -19,6 +19,8 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_sortOrder()
 {
 	_color = DirectX::Colors::White;
+	_defalutcolor = DirectX::Colors::White;
+
 }
 
 RocketCore::Graphics::ImageRenderer::~ImageRenderer()
@@ -238,3 +240,13 @@ bool RocketCore::Graphics::ImageRenderer::GetComplete()
 	return _isComplete;
 }
 
+void RocketCore::Graphics::ImageRenderer::SetDefalutColor(DirectX::FXMVECTOR color)
+{
+	_defalutcolor = color;
+}
+
+void RocketCore::Graphics::ImageRenderer::RetunDefalutColor()
+{
+	_color = _defalutcolor;
+}
+ 

@@ -23,6 +23,6 @@ void BtnHoveringScript::Update()
 	}
 	else
 	{
-		_btnObject->GetComponent<HDData::Button>()->SetColor(DirectX::Colors::White);
+		_btnObject->GetComponent<HDData::Button>()->ReturnDefaultColor();
 	}
 }

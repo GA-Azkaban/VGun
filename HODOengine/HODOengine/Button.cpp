@@ -63,9 +63,14 @@ namespace HDData
 		_button->SetColor(color);
 	}
 
+	void Button::SetDefaultColor(DirectX::FXMVECTOR color)
+	{
+		_button->SetDefaultColor(color);
+	}
+
 	void Button::ReturnDefaultColor()
 	{
-		//_button->
+		_button->RetunDefaultColor();
 	}
 
 	HDData::ImageUI* Button::GetButtonComp()
