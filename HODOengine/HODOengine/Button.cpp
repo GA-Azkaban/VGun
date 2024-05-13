@@ -58,6 +58,16 @@ namespace HDData
 		_button->SetIsIgnoreFocus(isIgnore);
 	}
 
+	void Button::SetColor(DirectX::FXMVECTOR color)
+	{
+		_button->SetColor(color);
+	}
+
+	void Button::ReturnDefaultColor()
+	{
+		//_button->
+	}
+
 	HDData::ImageUI* Button::GetButtonComp()
 	{
 		return _button;

@@ -56,5 +56,4 @@ namespace HDData
 	{
 		return _textUI->GetText();
 	}
-
 }

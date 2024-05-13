@@ -51,6 +51,11 @@ namespace HDData
 		return _imageUI->SetColor(color);
 	}
 
+	void ImageUI::RetunDefaultColor()
+	{
+		
+	}
+
 	float ImageUI::GetImageWidth()
 	{
 		return _imageUI->GetWidth();
