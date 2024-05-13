@@ -8,6 +8,7 @@
 #include "GameManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
+#include "ErrorCode.h"
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -147,6 +148,20 @@ void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
 	// Todo 
 
+}
+
+void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
+{
+	Protocol::C_ROOM_CREATE packet;
+
+	packet.set_roomname(roomName);
+	packet.set_password(password);
+	packet.set_maxplayercount(maxPlayerCount);
+	packet.set_isprivate(isPrivate);
+	packet.set_isteam(isTeam);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
 }
 
 void NetworkManager::SetRoom()

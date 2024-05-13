@@ -228,6 +228,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LobbyManager.h" />
