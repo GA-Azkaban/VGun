@@ -23,18 +23,19 @@ namespace HDEngine
 	public:
 
 		HDData::Scene* CreateScene(std::string sceneName = "");
-		void LoadScene(std::string sceneName);
+		HDData::Scene* LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);
 		void LoadNextScene(std::string sceneName);
 
 		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();
+		HDData::Scene* GetPrevScene();
 
 
 	private:
 		std::unordered_map<std::string, HDData::Scene*> _sceneList;
 		HDData::Scene* _currentScene;
-		HDData::Scene* _nextScene;
+		HDData::Scene* _prevScene;
 	};
 
 }

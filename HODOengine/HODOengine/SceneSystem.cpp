@@ -16,13 +16,6 @@ namespace HDEngine
 
 	}
 
-	void SceneSystem::UpdateNextScene()
-	{
-		if (_nextScene == nullptr) return;
-
-		_currentScene = _nextScene;
-	}
-
 	HDData::Scene* SceneSystem::CreateScene(std::string sceneName)
 	{
 		auto iter = _sceneList.find(sceneName);
@@ -42,32 +35,28 @@ namespace HDEngine
 		return scene;
 	}
 
-	void SceneSystem::LoadScene(std::string sceneName)
+	HDData::Scene* SceneSystem::LoadScene(std::string sceneName)
 	{
 		auto sceneIter = _sceneList.find(sceneName);
 		if (sceneIter == _sceneList.end())
 		{
-			return;
+			return nullptr;
 		}
+
+		_prevScene = _currentScene;
 		_currentScene = sceneIter->second;
 
 		UISystem::Instance().SetChangedScene(_currentScene);
+
+		return _currentScene;
 	}
 
 	void SceneSystem::LoadScene(HDData::Scene* scene)
 	{
+		_prevScene = _currentScene;
 		_currentScene = scene;
-		UISystem::Instance().SetChangedScene(_currentScene);
-	}
 
-	void SceneSystem::LoadNextScene(std::string sceneName)
-	{
-		auto sceneIter = _sceneList.find(sceneName);
-		if (sceneIter == _sceneList.end())
-		{
-			return;
-		}
-		_nextScene = sceneIter->second;
+		UISystem::Instance().SetChangedScene(_currentScene);
 	}
 
 	std::unordered_map<std::string, HDData::Scene*>& SceneSystem::GetAllScenes()
@@ -79,4 +68,10 @@ namespace HDEngine
 	{
 		return _currentScene;
 	}
+
+	HDData::Scene* SceneSystem::GetPrevScene()
+	{
+		return _prevScene;
+	}
+
 }

@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "UIBase.h"
 #include "InputSystem.h"
+#include "SceneSystem.h"
 
 
 #include <algorithm>
@@ -27,6 +28,15 @@ namespace HDEngine
 
 	void UISystem::SetChangedScene(HDData::Scene* currentScene)
 	{
+		for (auto* ui : _uiList)
+		{
+			ui->SetIsClicked(false);
+			ui->SetIsHovering(false);
+			ui->SetIsGrabbing(false);
+		}
+
+		_uiList.clear();
+
 		for (const auto& obj : currentScene->GetGameObjectList())
 		{
 			for (const auto& comp : obj->GetAllComponents())
@@ -37,6 +47,18 @@ namespace HDEngine
 				}
 			}
 		}
+
+		for (const auto& obj : currentScene->GetRunningObjectList())
+		{
+			for (const auto& comp : obj->GetAllComponents())
+			{
+				if (HDData::UIBase* one = dynamic_cast<HDData::UIBase*>(comp))
+				{
+					_uiList.push_back(one);
+				}
+			}
+		}
+
 		// 한 번만 정렬하면 되기 때문에 std::set 보다는 벡터로 만든 뒤 정렬한다.
 		std::sort(_uiList.begin(), _uiList.end(), CompareSortOrder);
 	}
@@ -50,7 +72,7 @@ namespace HDEngine
 	{
 		for (const auto& ui : _uiList)
 		{
-			if (!ui->GetGameObject()->GetParentActive())
+			if (!ui->GetGameObject()->GetParentActive() || !ui->GetGameObject()->GetSelfActive())
 			{
 				continue;
 			}

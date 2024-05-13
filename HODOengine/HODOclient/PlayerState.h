@@ -16,3 +16,10 @@ enum class ePlayerState
 
 	LAST
 };
+
+enum class eTeam
+{
+	R,
+	G,
+	B
+};

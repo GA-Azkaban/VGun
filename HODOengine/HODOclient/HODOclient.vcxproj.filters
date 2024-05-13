@@ -13,17 +13,14 @@
     <ClCompile Include="PlayerMove.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>02_Client\TestScene\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
     <ClCompile Include="LoginSceneView.cpp">
       <Filter>04_SceneView\Login</Filter>
     </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>03_Manager\GameManager</Filter>
+    <ClCompile Include="RoundManager.cpp">
+      <Filter>03_Manager\RoundManager</Filter>
     </ClCompile>
     <ClCompile Include="LobbyManager.cpp">
       <Filter>03_Manager\LobbyManager</Filter>
@@ -65,9 +62,6 @@
     <ClCompile Include="AnimationLoaderTest.cpp">
       <Filter>02_Client\TestScene\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="FSMtestScript.cpp">
-      <Filter>02_Client\TestScene\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="UnitySceneLoaderTest.cpp">
       <Filter>02_Client\TestScene\SceneLoader</Filter>
     </ClCompile>
@@ -80,6 +74,9 @@
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>03_Manager\GameManager\PlayerInfo</Filter>
     </ClCompile>
+    <ClCompile Include="LobbySceneView.cpp">
+      <Filter>04_SceneView\Lobby</Filter>
+    </ClCompile>
     <ClCompile Include="FSMtestScript.cpp" />
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>04_SceneView\SoundPlayer</Filter>
@@ -88,6 +85,12 @@
       <Filter>04_SceneView\FadeInOut</Filter>
     </ClCompile>
     <ClCompile Include="BtnScript.cpp" />
+    <ClCompile Include="FSMtestScript.cpp">
+      <Filter>02_Client\TestScene\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>03_Manager\GameManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -105,9 +108,6 @@
     <ClInclude Include="PlayerMove.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>02_Client\TestScene\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Client.h">
       <Filter>01_Entry</Filter>
     </ClInclude>
@@ -117,8 +117,8 @@
     <ClInclude Include="LoginSceneView.h">
       <Filter>04_SceneView\Login</Filter>
     </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>03_Manager\GameManager</Filter>
+    <ClInclude Include="RoundManager.h">
+      <Filter>03_Manager\RoundManager</Filter>
     </ClInclude>
     <ClInclude Include="LobbyManager.h">
       <Filter>03_Manager\LobbyManager</Filter>
@@ -147,8 +147,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="A.h" />
-    <ClInclude Include="B.h" />
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MenuManager.h">
@@ -196,6 +194,15 @@
     </ClInclude>
     <ClInclude Include="PlayerState.h">
       <Filter>03_Manager\GameManager\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbySceneView.h">
+      <Filter>04_SceneView\Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>03_Manager\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStruct.h">
+      <Filter>03_Manager\GameManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,9 +253,6 @@
     <Filter Include="03_Manager\LobbyManager">
       <UniqueIdentifier>{6cc71ee5-77d6-4520-adb9-643ce13ccc65}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03_Manager\GameManager">
-      <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03_Manager\NetworkManager">
       <UniqueIdentifier>{bb6cabb6-1ab9-4f86-83fe-c31ee701f7a3}</UniqueIdentifier>
     </Filter>
@@ -276,17 +280,23 @@
     <Filter Include="02_Client\TestScene\SceneLoader">
       <UniqueIdentifier>{84041ead-e90d-49f3-8dce-9afc738d60c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03_Manager\GameManager\PlayerInfo">
-      <UniqueIdentifier>{3fd426df-0e08-4a6c-a6df-2b67ce877b2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03_Manager\GameManager\PlayerState">
-      <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
+    <Filter Include="03_Manager\RoundManager">
+      <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
     </Filter>
     <Filter Include="04_SceneView\SoundPlayer">
       <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
     </Filter>
     <Filter Include="04_SceneView\FadeInOut">
       <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\GameManager">
+      <UniqueIdentifier>{3e6093fd-b3ec-48df-b5cc-994a84f99236}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\GameManager\PlayerInfo">
+      <UniqueIdentifier>{3fd426df-0e08-4a6c-a6df-2b67ce877b2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\GameManager\PlayerState">
+      <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

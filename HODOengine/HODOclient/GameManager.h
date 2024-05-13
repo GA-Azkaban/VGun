@@ -1,29 +1,22 @@
 ﻿#pragma once
-#include <unordered_map>
+#include "PlayerInfo.h"
+#include "PlayerState.h"
 
-#include "../HODOengine/HODO_API.h"
-#include "Weapon.h"
-
-class GameManager : public HDData::Script
+class GameManager
 {
 public:
-	GameManager* GetInstance();
+	static GameManager* Instance();
 
 private:
-	static GameManager* instance;
+	static GameManager* _instance;
 	GameManager();
-	~GameManager() = default;
+	~GameManager();
 
 public:
-	void Start() override;
-	void Update() override;
+	void SetMyInfo(PlayerInfo* info);
+	PlayerInfo* GetMyInfo();
 
-public:
-	void InitGame();
-	void EndGame();
-
-public:
-	void InitRound();
-	void UpdateRound();
+private:
+	PlayerInfo* _myInfo;
 };
 

@@ -115,6 +115,13 @@ namespace HDData
 		_handle->SetImage(fileName);
 	}
 
+	void SliderUI::SetSortOrder(float value)
+	{
+		_background->SetSortOrder(value);
+		_handle->SetSortOrder(value + 0.1f);
+		_value->SetSortOrder(value);
+	}
+
 	void SliderUI::SetValueText(std::string val)
 	{
 		_value->SetText(val);

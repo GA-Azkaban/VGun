@@ -1,6 +1,18 @@
 ﻿#pragma once
 #include "Struct.pb.h"
+#include "GameStruct.h"
 #include "../HODOengine/HODO_API.h"
+
+struct roomInfoObj
+{
+	HDData::GameObject* id;
+	HDData::GameObject* title;
+	HDData::GameObject* maxCount;
+	HDData::GameObject* currentCount;
+	HDData::GameObject* isPrivate;
+	HDData::GameObject* isTeam;
+};
+
 
 class MenuManager : public HDData::Script
 {
@@ -19,15 +31,22 @@ public:
 public:
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 
-	void RoomEneter(Protocol::RoomInfo);
-	void SetRoom(Protocol::RoomInfo);
-	void ShowRoomList();
+	void RoomEnter();
+	void SetRoom();
+	void ShowRoomListCanvas(bool isShow);
 	void RoomExit();
 
 	void OtherPlayerEnter();
 	void OtherPlayerExit();
 
-	void SetRoomList(HDData::GameObject* roomListCanvas);
+	std::vector<roominfo*>& GetRoomList();
+	void SetRoomListCanvas(HDData::GameObject* obj);
+
+public:
+	std::string GetNumberImage(int num);
+	std::string GetIsPrivateImage(bool isPrivate);
+	std::string GetIsTeamImage(bool isTeam);
+
 public:
 	// canvas
 	HDData::GameObject* _mainMenuCanvas = nullptr;
@@ -38,6 +57,12 @@ public:
 	HDData::GameObject* _exitbtn = nullptr;
 
 	// RoomList
-	HDData::GameObject* _roomList = nullptr;
+	HDData::GameObject* _roomListCanvas = nullptr;
+
+public:
+
+public:
+	roomInfoObj rooms[4];
+	std::vector<roominfo*> _roomList;
 };
 

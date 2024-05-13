@@ -1,10 +1,15 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
 #include "AnimationLoaderTest.h"
 #include "InGameSceneView.h"
+#include "LobbySceneView.h"
+
+#include "NetworkManager.h"
+#include "LobbyManager.h"
+#include "MenuManager.h"
 
 Client::Client()
 {
@@ -18,16 +23,18 @@ Client::~Client()
 
 void Client::Initialize()
 {
-	//NetworkManager::Instance();
+	NetworkManager::Instance();
+	LobbyManager::Instance();
+	MenuManager::Instance();
 
 	TestScene test;
 	test.Start();
 
-	//LoginSceneView login;
-	//login.Initialize();
+	LoginSceneView login;
+	login.Initialize();
 
-	//MainMenuScene menu;
-	//menu.Initalize();
+	MainMenuScene menu;
+	menu.Initalize();
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -35,11 +42,11 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	//API::LoadSceneByName("MainLobby");
-	//API::LoadSceneByName("ALT");
-
 	//InGameSceneView inGame;
 	//inGame.Initialize();
 
-	//API::LoadSceneByName("InGameScene");
+	LobbySceneView lobby;
+	lobby.Initialize();
+
+	API::LoadSceneByName("Test Scene");
 }

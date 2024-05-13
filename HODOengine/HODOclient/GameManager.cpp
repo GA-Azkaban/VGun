@@ -1,61 +1,34 @@
 ﻿#include "GameManager.h"
 
-GameManager* GameManager::GetInstance()
+GameManager* GameManager::Instance()
 {
-	if (instance == nullptr)
+	if (_instance == nullptr)
 	{
-		instance = new GameManager;
+		_instance = new GameManager;
 	}
 
-	return instance;
+	return _instance;
 }
 
-GameManager* GameManager::instance = nullptr;
+GameManager* GameManager::_instance = nullptr;
 
 GameManager::GameManager()
 {
-
+	_myInfo = new PlayerInfo;
 }
 
-void GameManager::Start()
+GameManager::~GameManager()
 {
-
+	delete _instance;
 }
 
-void GameManager::Update()
+void GameManager::SetMyInfo(PlayerInfo* info)
 {
-
+	_myInfo = info;
 }
 
-void GameManager::InitGame()
+PlayerInfo* GameManager::GetMyInfo()
 {
-	// 라운드 초기화
-	InitRound();
-
-
-}
-
-void GameManager::EndGame()
-{
-
-}
-
-void GameManager::InitRound()
-{
-	// 타이머 초기화
-	// 각 팀당 킬카운트 초기화
-
-	// 플레이어 정보 초기화
-}
-
-void GameManager::UpdateRound()
-{
-	// 플레이어 transform 정보 갱신
-
-	// 플레이어 state 정보 갱신
-
-	// 플레이어 killcount, time 갱신
-
-	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
+	return _myInfo;
 }
 

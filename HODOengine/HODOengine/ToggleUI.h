@@ -1,4 +1,6 @@
-#pragma once
+﻿#pragma once
+#include <functional>
+
 #include "Component.h"
 
 namespace HDEngine
@@ -18,7 +20,10 @@ namespace HDData
 	public:
 		void Start() override;
 		void Update() override;
-		void OnClickEvent(); 
+		void SetToggleOnEvent(std::function<void()> event);
+		void SetToggleOffEvent(std::function<void()> event);
+		void CallToggleOnEvent();
+		void CallToggleOffEvent();
 		void SetSortOrder(float ord);
 
 	public:
@@ -29,13 +34,18 @@ namespace HDData
 	public:
 		void SetOnComp(ImageUI* comp);
 		void SetOffComp(ImageUI* comp);
-
+		ImageUI* GetOnComp();
+		ImageUI* GetOffComp();
+		bool GetIsOn();
 
 	private:
 		ImageUI* _toggleOn;
 		ImageUI* _toggleOff;
 
 		bool _isToggleOn;
+
+		std::function<void()> _toggleOnEvent;
+		std::function<void()> _toggleOffEvent;
 	};
 }
 
