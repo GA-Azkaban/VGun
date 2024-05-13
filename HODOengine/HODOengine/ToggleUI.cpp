@@ -7,7 +7,7 @@
 #include "InputSystem.h"
 
 HDData::ToggleUI::ToggleUI()
-	: _isToggleOn(true),
+	: _isToggleOn(false),
 	_toggleOn(nullptr), _toggleOff(nullptr)
 {
 
@@ -21,12 +21,35 @@ void HDData::ToggleUI::Start()
 
 void HDData::ToggleUI::Update()
 {
-	if (_toggleOff->GetIsClicked())
+	if (_toggleOn->GetIsClicked())
 	{
 		_isToggleOn = !_isToggleOn;
 		_toggleOff->SetActive(!_isToggleOn);
 		_toggleOn->SetActive(_isToggleOn);
+
+		if (_isToggleOn) { CallToggleOnEvent(); }
+		else { CallToggleOffEvent(); }
 	}
+}
+
+void HDData::ToggleUI::SetToggleOnEvent(std::function<void()> event)
+{
+	_toggleOnEvent = event;
+}
+
+void HDData::ToggleUI::SetToggleOffEvent(std::function<void()> event)
+{
+	_toggleOffEvent = event;
+}
+
+void HDData::ToggleUI::CallToggleOnEvent()
+{
+	_toggleOnEvent();
+}
+
+void HDData::ToggleUI::CallToggleOffEvent()
+{
+	_toggleOffEvent();
 }
 
 void HDData::ToggleUI::SetActive(bool active)
@@ -57,9 +80,19 @@ void HDData::ToggleUI::SetOffComp(ImageUI* comp)
 	_toggleOff = comp;
 }
 
-void HDData::ToggleUI::OnClickEvent()
+HDData::ImageUI* HDData::ToggleUI::GetOnComp()
 {
+	return _toggleOn;
+}
 
+HDData::ImageUI* HDData::ToggleUI::GetOffComp()
+{
+	return _toggleOff;
+}
+
+bool HDData::ToggleUI::GetIsOn()
+{
+	return _isToggleOn;
 }
 
 void HDData::ToggleUI::SetSortOrder(float ord)

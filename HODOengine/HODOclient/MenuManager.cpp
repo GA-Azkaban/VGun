@@ -45,11 +45,6 @@ void MenuManager::ShowRoomListCanvas(bool isShow)
 	if (!isShow) return;
 
 	NetworkManager::Instance().SendRoomListRequest();
-
-	for (auto& data : _roomList)
-	{
-
-	}
 }
 
 void MenuManager::RoomExit()
@@ -78,5 +73,30 @@ std::vector<roominfo*>& MenuManager::GetRoomList()
 void MenuManager::SetRoomListCanvas(HDData::GameObject* obj)
 {
 	_roomListCanvas = obj;
+}
+
+std::string MenuManager::GetNumberImage(int num)
+{
+	switch (num)
+	{
+		case 1: {return "flair_number_1_outline.png";} break;
+		case 2: {return "flair_number_2_outline.png";} break;
+		case 3: {return "flair_number_3_outline.png";} break;
+		case 4: {return "flair_number_4_outline.png";} break;
+		case 5: {return "flair_number_5_outline.png";} break;
+		case 6: {return "flair_number_6_outline.png";} break;
+		default:
+			break;
+	}
+}
+
+std::string MenuManager::GetIsPrivateImage(bool isPrivate)
+{
+	return "icon_user_filled.png";
+}
+
+std::string MenuManager::GetIsTeamImage(bool isTeam)
+{
+	return "icon_user_filled.png";
 }
 

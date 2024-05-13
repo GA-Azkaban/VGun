@@ -3,7 +3,7 @@
 struct roominfo
 {
 	int id;
-	std::string name;
+	std::string title;
 	int maxPlayerCount;
 	int currentPlayerCount;
 

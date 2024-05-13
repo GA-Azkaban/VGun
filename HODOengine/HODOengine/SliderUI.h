@@ -30,6 +30,8 @@ namespace HDData
 		void SetSliderFillImage(const char* fileName);
 		void SetSliderHandleImage(const char* fileName);
 
+		void SetSortOrder(float value);
+
 		void SetValueText(std::string val);
 		float GetValueText();
 

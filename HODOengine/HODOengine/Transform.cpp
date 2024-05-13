@@ -1,4 +1,4 @@
-#include "Transform.h"
+﻿#include "Transform.h"
 #include "GameObject.h"
 
 namespace HDData
@@ -330,9 +330,9 @@ namespace HDData
 		delta.z = GetForward().z * z + GetRight().z * x;
 		delta.y = y;
 
-		_transform->_position.x = delta.x;
-		_transform->_position.y = delta.y;
-		_transform->_position.z = delta.z;
+		_position.x = delta.x;
+		_position.y = delta.y;
+		_position.z = delta.z;
 	}
 
 	void Transform::Rotate(float angleX, float angleY, float angleZ)

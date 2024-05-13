@@ -116,7 +116,7 @@ void NetworkManager::RecvRoomList(Protocol::S_ROOM_LIST roomList)
 		roominfo* info = new roominfo;
 
 		info->id = room.roomid();
-		info->name = room.roomname();
+		info->title = room.roomname();
 		info->maxPlayerCount = room.maxplayercount();
 		info->currentPlayerCount = room.currentplayercount();
 
@@ -124,6 +124,20 @@ void NetworkManager::RecvRoomList(Protocol::S_ROOM_LIST roomList)
 		info->isTeam = room.isteam();
 
 		list.push_back(info);
+	}
+
+	int dataIndex = 0;
+	int banner = 0;
+
+	for (int i = dataIndex; i < dataIndex + 4; ++i)
+	{
+		MenuManager::Instance().rooms[banner].id->GetComponent<HDData::TextUI>()->SetText(std::to_string(MenuManager::Instance()._roomList[i]->id));
+		MenuManager::Instance().rooms[banner].title->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance()._roomList[i]->title);
+		MenuManager::Instance().rooms[banner].maxCount->GetComponent<HDData::ImageUI>()->SetImage(MenuManager::Instance().GetNumberImage(MenuManager::Instance()._roomList[i]->maxPlayerCount));
+		MenuManager::Instance().rooms[banner].currentCount->GetComponent<HDData::ImageUI>()->SetImage(MenuManager::Instance().GetNumberImage(MenuManager::Instance()._roomList[i]->currentPlayerCount));
+		MenuManager::Instance().rooms[banner].isPrivate->GetComponent<HDData::ImageUI>()->SetImage(MenuManager::Instance().GetIsPrivateImage(MenuManager::Instance()._roomList[i]->isPrivate));
+		MenuManager::Instance().rooms[banner].isTeam->GetComponent<HDData::ImageUI>()->SetImage(MenuManager::Instance().GetIsTeamImage(MenuManager::Instance()._roomList[i]->isTeam));
+		banner++;
 	}
 }
 
@@ -162,8 +176,8 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.id());
-		one->SetNickName(player.nickname());
+		/*one->SetPlayerID(player.id());
+		one->SetNickName(player.nickname());*/
 		
 		// 플레이어 정보 받기	
 	
@@ -191,32 +205,32 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 {
 	auto info = LobbyManager::Instance().GetRoomData();
 
-	for (auto& player : roomInfo.users())
-	{
-		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.id());
-		one->SetNickName(player.nickname());
+	//for (auto& player : roomInfo.users())
+	//{
+	//	PlayerInfo* one = new PlayerInfo;
+	//	one->SetPlayerID(player.id());
+	//	one->SetNickName(player.nickname());
 
-		// 플레이어 정보 받기	
+	//	// 플레이어 정보 받기	
 
-		info->_players.push_back(one);
-	}
+	//	info->_players.push_back(one);
+	//}
 }
 
 void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 {
 	auto info = LobbyManager::Instance().GetRoomData();
 
-	for (auto& player : roomInfo.users())
-	{
-		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.id());
-		one->SetNickName(player.nickname());
+	//for (auto& player : roomInfo.users())
+	//{
+	//	PlayerInfo* one = new PlayerInfo;
+	//	one->SetPlayerID(player.id());
+	//	one->SetNickName(player.nickname());
 
-		// 플레이어 정보 받기	
+	//	// 플레이어 정보 받기	
 
-		info->_players.push_back(one);
-	}
+	//	info->_players.push_back(one);
+	//}
 }
 
 void NetworkManager::SendGameStart()

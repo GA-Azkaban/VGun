@@ -1,6 +1,7 @@
 ﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
+#include "NetworkManager.h"
 
 LoginSceneView::LoginSceneView()
 	: _lobbyManager(LobbyManager::Instance()),
@@ -119,9 +120,10 @@ void LoginSceneView::LoginView()
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[id, pw]()
 		{
-			std::string ID = id->GetCurrentText();
-			std::string password = pw->GetCurrentText();
-			LobbyManager::Instance().Login(ID, password);
+			NetworkManager::Instance().SendAutoLogin();
+			//std::string ID = id->GetCurrentText();
+			//std::string password = pw->GetCurrentText();
+			//LobbyManager::Instance().Login(ID, password);
 		}
 	);
 
@@ -220,7 +222,7 @@ void LoginSceneView::LoginView()
 	///login fail canvas
 	HDData::GameObject* loginFail = API::CreateButton(_scene, "failImg");
 	loginFail->GetComponent<HDData::Button>()->SetImage("Login_Fail.png");
-	loginFail->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	loginFail->GetComponent<HDData::Button>()->SetSortOrder(0.4f);
 	loginFail->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	loginFail->SetSelfActive(false);
 	_lobbyManager.SetFailCanvas(loginFail);
@@ -234,7 +236,7 @@ void LoginSceneView::LoginView()
 	// id duplication
 	HDData::GameObject* idDupl = API::CreateButton(_scene, "idDupl");
 	idDupl->GetComponent<HDData::Button>()->SetImage("ID_Duplication.png");
-	idDupl->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	idDupl->GetComponent<HDData::Button>()->SetSortOrder(0.4f);
 	idDupl->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	idDupl->SetSelfActive(false);
 
@@ -249,7 +251,7 @@ void LoginSceneView::LoginView()
 	// name duplication
 	HDData::GameObject* nameDupl = API::CreateButton(_scene, "nameDupl");
 	nameDupl->GetComponent<HDData::Button>()->SetImage("name_Duplication.png");
-	nameDupl->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	nameDupl->GetComponent<HDData::Button>()->SetSortOrder(0.4f);
 	nameDupl->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	nameDupl->SetSelfActive(false);
 	_lobbyManager.SetnameDule(nameDupl);
@@ -263,7 +265,7 @@ void LoginSceneView::LoginView()
 	// signup fail
 	HDData::GameObject* signupFail = API::CreateButton(_scene, "signup");
 	signupFail->GetComponent<HDData::Button>()->SetImage("Signup_Fail.png");
-	signupFail->GetComponent<HDData::Button>()->SetSortOrder(0.3f);
+	signupFail->GetComponent<HDData::Button>()->SetSortOrder(0.4f);
 	signupFail->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	signupFail->SetSelfActive(false);
 	_lobbyManager.SetSignupFail(signupFail);

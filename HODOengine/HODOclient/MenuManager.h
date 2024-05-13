@@ -3,6 +3,17 @@
 #include "GameStruct.h"
 #include "../HODOengine/HODO_API.h"
 
+struct roomInfoObj
+{
+	HDData::GameObject* id;
+	HDData::GameObject* title;
+	HDData::GameObject* maxCount;
+	HDData::GameObject* currentCount;
+	HDData::GameObject* isPrivate;
+	HDData::GameObject* isTeam;
+};
+
+
 class MenuManager : public HDData::Script
 {
 public:
@@ -30,6 +41,12 @@ public:
 
 	std::vector<roominfo*>& GetRoomList();
 	void SetRoomListCanvas(HDData::GameObject* obj);
+
+public:
+	std::string GetNumberImage(int num);
+	std::string GetIsPrivateImage(bool isPrivate);
+	std::string GetIsTeamImage(bool isTeam);
+
 public:
 	// canvas
 	HDData::GameObject* _mainMenuCanvas = nullptr;
@@ -41,6 +58,11 @@ public:
 
 	// RoomList
 	HDData::GameObject* _roomListCanvas = nullptr;
+
+public:
+
+public:
+	roomInfoObj rooms[4];
 	std::vector<roominfo*> _roomList;
 };
 
