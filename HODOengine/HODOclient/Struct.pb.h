@@ -376,6 +376,7 @@ class RoomInfo final :
     kCurrentPlayerCountFieldNumber = 8,
     kIsPrivateFieldNumber = 9,
     kIsTeamFieldNumber = 10,
+    kMapFieldNumber = 11,
   };
   // repeated .Protocol.PlayerData users = 4;
   int users_size() const;
@@ -491,6 +492,15 @@ class RoomInfo final :
   void _internal_set_isteam(bool value);
   public:
 
+  // int32 map = 11;
+  void clear_map();
+  ::PROTOBUF_NAMESPACE_ID::int32 map() const;
+  void set_map(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_map() const;
+  void _internal_set_map(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.RoomInfo)
  private:
   class _Internal;
@@ -508,6 +518,7 @@ class RoomInfo final :
   ::PROTOBUF_NAMESPACE_ID::int32 currentplayercount_;
   bool isprivate_;
   bool isteam_;
+  ::PROTOBUF_NAMESPACE_ID::int32 map_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1776,6 +1787,26 @@ inline void RoomInfo::_internal_set_isteam(bool value) {
 inline void RoomInfo::set_isteam(bool value) {
   _internal_set_isteam(value);
   // @@protoc_insertion_point(field_set:Protocol.RoomInfo.isTeam)
+}
+
+// int32 map = 11;
+inline void RoomInfo::clear_map() {
+  map_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_map() const {
+  return map_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::map() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.map)
+  return _internal_map();
+}
+inline void RoomInfo::_internal_set_map(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  map_ = value;
+}
+inline void RoomInfo::set_map(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_map(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.map)
 }
 
 // -------------------------------------------------------------------

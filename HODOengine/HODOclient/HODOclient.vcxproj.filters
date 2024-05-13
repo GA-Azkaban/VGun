@@ -204,6 +204,9 @@
     <ClInclude Include="GameStruct.h">
       <Filter>03_Manager\GameManager</Filter>
     </ClInclude>
+    <ClInclude Include="ErrorCode.h">
+      <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

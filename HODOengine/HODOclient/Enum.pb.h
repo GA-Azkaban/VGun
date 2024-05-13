@@ -137,6 +137,32 @@ inline bool eTeamColor_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eTeamColor>(
     eTeamColor_descriptor(), name, value);
 }
+enum eRGBMap : int {
+  NONE = 0,
+  RANDOM = 1,
+  DESERT = 2,
+  eRGBMap_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eRGBMap_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eRGBMap_IsValid(int value);
+constexpr eRGBMap eRGBMap_MIN = NONE;
+constexpr eRGBMap eRGBMap_MAX = DESERT;
+constexpr int eRGBMap_ARRAYSIZE = eRGBMap_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eRGBMap_descriptor();
+template<typename T>
+inline const std::string& eRGBMap_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eRGBMap>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eRGBMap_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eRGBMap_descriptor(), enum_t_value);
+}
+inline bool eRGBMap_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eRGBMap* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eRGBMap>(
+    eRGBMap_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -173,6 +199,11 @@ template <> struct is_proto_enum< ::Protocol::eTeamColor> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eTeamColor>() {
   return ::Protocol::eTeamColor_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eRGBMap> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eRGBMap>() {
+  return ::Protocol::eRGBMap_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
