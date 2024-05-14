@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "NetworkManager.h"
 
 #include "Service.h"
@@ -45,6 +45,30 @@ void NetworkManager::Start()
 void NetworkManager::Update()
 {
 	_service->GetIocpCore()->Dispatch(0);
+}
+
+void NetworkManager::Connected()
+{
+	_isConnect = true;
+
+#if _DEBUG
+	FILE* pFile = nullptr;
+
+	if (AllocConsole())
+		freopen_s(&pFile, "CONOUT$", "w", stdout);
+	else
+		ASSERT_CRASH(false);
+
+	std::cout << "Connect" << std::endl;
+#endif
+
+
+}
+
+void NetworkManager::Disconnected()
+{
+	_isConnect = false;
+	std::cout << "Disconnect" << std::endl;
 }
 
 void NetworkManager::SendLogin(std::string id, std::string password)
@@ -164,7 +188,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
 	// Todo RoomInfo 설정
 	auto info = LobbyManager::Instance().GetRoomData();
-	
+
 	info->roomid = roomInfo.roomid();
 
 	info->isPrivate = roomInfo.isprivate();
@@ -179,9 +203,9 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		/*one->SetPlayerID(player.id());
 		one->SetNickName(player.nickname());*/
-		
+
 		// 플레이어 정보 받기	
-	
+
 		info->_players.push_back(one);
 	}
 
@@ -247,6 +271,21 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 
 	//	info->_players.push_back(one);
 	//}
+}
+
+void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor)
+{
+	Protocol::C_ROOM_CHANGE_TEAM packet;
+
+	packet.set_teamcolor(teamColor);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
+{
+
 }
 
 void NetworkManager::SendGameStart()
