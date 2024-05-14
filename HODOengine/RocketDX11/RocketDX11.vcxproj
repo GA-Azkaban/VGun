@@ -221,6 +221,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClCompile Include="OutlinePass.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticlePass.cpp" />
+    <ClCompile Include="ParticlePool.cpp" />
     <ClCompile Include="ShadowMapPass.cpp" />
     <ClCompile Include="SkyboxPass.cpp" />
     <ClCompile Include="CubeMesh.cpp" />
@@ -266,6 +267,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClInclude Include="OutlinePass.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticlePass.h" />
+    <ClInclude Include="ParticlePool.h" />
     <ClInclude Include="ShadowMapPass.h" />
     <ClInclude Include="SkyboxPass.h" />
     <ClInclude Include="CubeMesh.h" />

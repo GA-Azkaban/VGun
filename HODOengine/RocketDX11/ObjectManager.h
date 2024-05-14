@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <vector>
+#include <unordered_set>
 
 #include "Singleton.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
@@ -58,6 +59,7 @@ namespace RocketCore::Graphics
 		LineRenderer* CreateLineRenderer();
 		Material* CreateMaterial(HDEngine::MaterialDesc desc);
 		HDEngine::IParticle* CreateParticle();
+		void DestroyParticle(HDEngine::IParticle* particle);
 
 		HDEngine::CubePrimitive* CreateCubePrimitive();
 		HDEngine::SpherePrimitive* CreateSpherePrimitive();
@@ -76,5 +78,6 @@ namespace RocketCore::Graphics
 		std::vector<HDEngine::SpherePrimitive*> _spherePrimitiveList;
 		std::vector<HDEngine::CylinderPrimitive*> _cylinderPrimitiveList;
 		std::vector<HDEngine::CapsulePrimitive*> _capsulePrimitiveList;
+		std::unordered_set<HDEngine::IParticle*> _particleRenderList;
 	};
 }

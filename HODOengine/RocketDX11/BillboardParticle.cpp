@@ -42,6 +42,8 @@ namespace RocketCore::Graphics
 		}
 
 		_mesh = new Mesh(&vertices[0], 6, &indices[0], 6);
+
+		ResourceManager::Instance().GetLoadedMaterials();
 		HDEngine::MaterialDesc desc;
 		desc.materialName = "BillboardMat";
 		desc.albedo = "T_Sparks_D.png";

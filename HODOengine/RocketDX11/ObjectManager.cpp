@@ -14,7 +14,7 @@
 #include "ResourceManager.h"
 #include "LineRenderer.h"
 #include "Material.h"
-#include "Particle.h"
+#include "ParticlePool.h"
 
 namespace RocketCore::Graphics
 {
@@ -118,8 +118,22 @@ namespace RocketCore::Graphics
 
 	HDEngine::IParticle* ObjectManager::CreateParticle()
 	{
-		Particle* newParticle = new Particle();
+		HDEngine::IParticle* newParticle = ParticlePool::Instance().SummonParticle();
+		_particleRenderList.insert(newParticle);
 		return newParticle;
+	}
+
+	void ObjectManager::DestroyParticle(HDEngine::IParticle* particle)
+	{
+		if (particle != nullptr)
+		{
+			auto iter = _particleRenderList.find(particle);
+			if (iter != _particleRenderList.end())
+			{
+				ParticlePool::Instance().Retrieve(particle);
+				_particleRenderList.erase(iter);
+			}
+		}
 	}
 
 	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()
@@ -152,6 +166,17 @@ namespace RocketCore::Graphics
 		capsule->isWire = true;
 		_capsulePrimitiveList.emplace_back(capsule);
 		return capsule;
+	}
+
+	void ObjectManager::InsertOnParticleList(HDEngine::IParticle* particle)
+	{
+
+		_particleList.insert();
+	}
+
+	void ObjectManager::EraseFromParticleList(HDEngine::IParticle* particle)
+	{
+
 	}
 
 	TextRenderer* ObjectManager::CreateText()

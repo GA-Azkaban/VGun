@@ -1,11 +1,17 @@
 ﻿#pragma once
+#include "MinMaxCurve.h"
 
 namespace HDData
 {
 	class RotationOverLifetimeModule
 	{
 	public:
-		bool enabled = false;
-		float angularVelocity = 45.0f;
+		RotationOverLifetimeModule()
+			: angularVelocity(45.0f), enabled(false)
+		{
+
+		}
+		bool enabled;
+		MinMaxCurve angularVelocity;
 	};
 }

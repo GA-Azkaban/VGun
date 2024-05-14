@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "Singleton.h"
+#include "Particle.h"
 #include <vector>
 
 namespace HDEngine
 {
-	class IParticle;
-
 	class ParticlePool : public Singleton<ParticlePool>
 	{
 	public:
@@ -13,10 +12,10 @@ namespace HDEngine
 
 		ParticlePool();
 
-		HDEngine::IParticle* SummonParticle();
-		void Retrieve(HDEngine::IParticle* particle);
+		HDData::Particle* SummonParticle();
+		void Retrieve(HDData::Particle* particle);
 
 	private:
-		std::vector<HDEngine::IParticle*> _particles;
+		std::vector<HDData::Particle*> _particles;
 	};
 }

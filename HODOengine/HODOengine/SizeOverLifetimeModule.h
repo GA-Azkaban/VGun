@@ -1,13 +1,18 @@
 ﻿#pragma once
-#include <map>
-#include <functional>
+#include "MinMaxCurve.h"
 
 namespace HDData
 {
 	class SizeOverLifetimeModule
 	{
 	public:
-		bool enabled = false;
-		std::map<float, std::function<float(float)>> size;
+		SizeOverLifetimeModule()
+			: size(1.0f), enabled(false)
+		{
+
+		}
+
+		bool enabled;
+		MinMaxCurve size;
 	};
 }

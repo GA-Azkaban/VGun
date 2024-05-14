@@ -7,11 +7,12 @@
 #include "LimitVelocityOverLifetimeModule.h"
 #include "SizeOverLifetimeModule.h"
 #include "RotationOverLifetimeModule.h"
-#include "../HODO3DGraphicsInterface/IParticle.h"
+#include "RendererModule.h"
 #include <DirectXMath.h>
 #include <functional>
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include <random>
 #include <utility>
 
@@ -19,6 +20,7 @@ namespace HDData
 {
 
 	class Material;
+	class Particle;
 	class ParticleSystemRenderer;
 
 	class HODO_API ParticleSystem : public Component
@@ -31,6 +33,8 @@ namespace HDData
 		void Stop();
 		void Clear();
 
+		std::unordered_map<HDData::Particle*, std::pair<float, float>>& GetActivatedParticleList();
+
 	protected:
 		virtual void Update() override;
 
@@ -38,20 +42,22 @@ namespace HDData
 		MainModule main;
 		ColorOverLifetimeModule colorOverLifetime;
 		EmissionModule emission;
-		LimitVelocityOverLifetimeModule limitVelocityOverLifetime;
+		//LimitVelocityOverLifetimeModule limitVelocityOverLifetime;
 		SizeOverLifetimeModule sizeOverLifetime;
 		RotationOverLifetimeModule rotationOverLifetime;
+		RendererModule rendererModule;
 		bool useAutoRandomSeed;
 		float time;
 		//int particleCount;
 
 	private:
-		ParticleSystemRenderer* _renderer;
 		bool _isPlaying;
 		float _accumulatedDeltaTime;
 
 		// <Particle, <lifetime, accumulateDeltaTime>>
-		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>> _activatedParticles;
+		std::unordered_map<HDData::Particle*, std::pair<float, float>> _activatedParticles;
+
+		std::vector<HDData::Particle*> _lifeOverParticles;
 
 		// random		
 		std::random_device rd;

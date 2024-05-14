@@ -188,14 +188,17 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>05_Component\ParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="Gradient.cpp">
-      <Filter>05_Component\ParticleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystemRenderer.cpp">
       <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>05_Component\ParticleSystem\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Gradient.cpp">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClCompile>
     <ClCompile Include="ParticlePool.cpp">
-      <Filter>ParticlePool</Filter>
+      <Filter>05_Component\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -422,9 +425,6 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>05_Component\ParticleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Gradient.h">
-      <Filter>05_Component\ParticleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="MainModule.h">
       <Filter>05_Component\ParticleSystem\Module</Filter>
     </ClInclude>
@@ -433,9 +433,6 @@
     </ClInclude>
     <ClInclude Include="ColorOverLifetimeModule.h">
       <Filter>05_Component\ParticleSystem\Module</Filter>
-    </ClInclude>
-    <ClInclude Include="Burst.h">
-      <Filter>05_Component\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="LimitVelocityOverLifetimeModule.h">
       <Filter>05_Component\ParticleSystem\Module</Filter>
@@ -449,8 +446,26 @@
     <ClInclude Include="ParticleSystemRenderer.h">
       <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>05_Component\ParticleSystem\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Gradient.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationCurve.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Burst.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="MinMaxCurve.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
     <ClInclude Include="ParticlePool.h">
-      <Filter>ParticlePool</Filter>
+      <Filter>05_Component\ParticleSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -663,8 +678,11 @@
     <Filter Include="05_Component\Renderer\ParticleSystemRenderer">
       <UniqueIdentifier>{441fa4c9-4d99-4a88-add4-7c32475b8188}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ParticlePool">
-      <UniqueIdentifier>{05b6e1e4-9fdf-49e6-81c7-f134ab84fd39}</UniqueIdentifier>
+    <Filter Include="05_Component\ParticleSystem\Particle">
+      <UniqueIdentifier>{a7c4dd96-3f32-4c83-88d4-2a2c2c1971a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem\Module\Struct">
+      <UniqueIdentifier>{126ecc75-2feb-465a-8c6a-08eb4e312700}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

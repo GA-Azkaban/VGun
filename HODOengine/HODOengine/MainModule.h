@@ -19,6 +19,6 @@ namespace HDData
 		float maxStartRotation;
 		DirectX::XMINT4 minStartColor;
 		DirectX::XMINT4 maxStartColor;
-		unsigned int maxParticles;
+		//unsigned int maxParticles;
 	};
 }

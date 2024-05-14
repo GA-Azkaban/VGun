@@ -1,35 +1,40 @@
 ﻿#include "ParticlePool.h"
-#include "../HODO3DGraphicsInterface/IParticle.h"
+#include "Particle.h"
 #include "GraphicsObjFactory.h"
 
 namespace HDEngine
 {
-	
+
 	ParticlePool::ParticlePool()
 	{
 		for (int i = 0; i < 20; ++i)
 		{
-			IParticle* newParticle = GraphicsObjFactory::Instance().GetFactory()->CreateParticle();
+			HDData::Particle* newParticle = new HDData::Particle();
 			_particles.push_back(newParticle);
 		}
 	}
 
-	HDEngine::IParticle* ParticlePool::SummonParticle()
+	HDData::Particle* ParticlePool::SummonParticle()
 	{
 		if (_particles.empty())
-		{	
-			IParticle* newParticle = GraphicsObjFactory::Instance().GetFactory()->CreateParticle();
-			_particles.push_back(newParticle);		
+		{
+			for (int i = 0; i < 10; ++i)
+			{
+				HDData::Particle* newParticle = new HDData::Particle();
+				_particles.push_back(newParticle);
+			}
 		}
-		IParticle* ret = _particles.back();
+
+		HDData::Particle* ret = _particles.back();
 		_particles.pop_back();
 		return ret;
 	}
 
-	void ParticlePool::Retrieve(HDEngine::IParticle* particle)
+	void ParticlePool::Retrieve(HDData::Particle* particle)
 	{
 		if (particle != nullptr)
 		{
+			HDEngine::GraphicsObjFactory::Instance().GetFactory()->DestroyParticle(&(particle->Get()));
 			_particles.push_back(particle);
 		}
 	}

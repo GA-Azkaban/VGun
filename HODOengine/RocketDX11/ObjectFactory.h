@@ -15,11 +15,13 @@ namespace RocketCore::Graphics
 		virtual HDEngine::ILight* CreateLight() override;
 		virtual HDEngine::ILineRenderer* CreateLineRenderer() override;
 		virtual HDEngine::IMaterial* CreateMaterial(const HDEngine::MaterialDesc& desc) override;
+		virtual HDEngine::IMaterial* GetMaterial(const std::string& name) override;
 		virtual HDEngine::CubePrimitive* CreateCubePrimitive() override;
 		virtual HDEngine::SpherePrimitive* CreateSpherePrimitive() override;
 		virtual HDEngine::CylinderPrimitive* CreateCylinderPrimitive() override;
 		virtual HDEngine::CapsulePrimitive* CreateCapsulePrimitive() override;
 		virtual HDEngine::IParticle* CreateParticle() override;
+		virtual void DestroyParticle(HDEngine::IParticle* particle) override;
 	};
 }
 

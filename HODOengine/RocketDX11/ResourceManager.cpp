@@ -63,6 +63,11 @@ namespace RocketCore::Graphics
 		CreateRasterizerStates();
 		CreateSamplerStates();
 		CreatePrimitiveMeshes();
+
+		HDEngine::MaterialDesc defaultParticleDesc;
+		defaultParticleDesc.materialName = "Default-ParticleSystem";
+		defaultParticleDesc.color = { 255, 0, 255, 255 };
+		ObjectManager::Instance().CreateMaterial(defaultParticleDesc);
 	}
 
 	void ResourceManager::LoadFBXFile(std::string path)
@@ -645,6 +650,31 @@ namespace RocketCore::Graphics
 		_sphereMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
 		_sphereMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
 		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
+
+		// 쿼드 메쉬
+		std::vector<Vertex> vertices(6);
+		std::vector<UINT> indices(6);
+
+		Vertex v1(XMFLOAT3{ -1, 1, 0 }, XMFLOAT2{ 0, 0 });
+		vertices[0] = v1;
+		Vertex v2(XMFLOAT3{ 1, 1, 0 }, XMFLOAT2{ 1, 0 });
+		vertices[1] = v2;
+		Vertex v3(XMFLOAT3{ -1, -1, 0 }, XMFLOAT2{ 0, 1 });
+		vertices[2] = v3;
+		Vertex v4(XMFLOAT3{ -1, -1, 0 }, XMFLOAT2{ 0, 1 });
+		vertices[3] = v4;
+		Vertex v5(XMFLOAT3{ 1, 1, 0 }, XMFLOAT2{ 1, 0 });
+		vertices[4] = v5;
+		Vertex v6(XMFLOAT3{ 1, -1, 0 }, XMFLOAT2{ 1, 1 });
+		vertices[5] = v6;
+
+		for (UINT i = 0; i < 6; ++i)
+		{
+			indices[i] = i;
+		}
+
+		Mesh* quadMesh = new Mesh(&vertices[0], 6, &indices[0], 6);
+		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);
 
 		// 디버그 메쉬
 		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);

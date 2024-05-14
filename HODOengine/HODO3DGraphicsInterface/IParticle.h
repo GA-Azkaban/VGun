@@ -5,7 +5,7 @@
 
 namespace HDEngine
 {
-	class IParticle : IRenderable
+	class IParticle : public IRenderable
 	{
 	public:
 		virtual ~IParticle() {}
@@ -13,5 +13,8 @@ namespace HDEngine
 		virtual void SetMaterial(HDEngine::IMaterial* material) = 0;
 		virtual void SetColor(DirectX::XMINT4 color) = 0;
 		virtual void SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode) = 0;
+		
+	protected:
+		virtual void Render() = 0;
 	};
 }

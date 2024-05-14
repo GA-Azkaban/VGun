@@ -204,6 +204,9 @@
     <ClCompile Include="Particle.cpp">
       <Filter>Object\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="ParticlePool.cpp">
+      <Filter>Object\Particle\ParticlePool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -358,6 +361,9 @@
     </ClInclude>
     <ClInclude Include="Particle.h">
       <Filter>Object\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePool.h">
+      <Filter>Object\Particle\ParticlePool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -576,6 +582,9 @@
     </Filter>
     <Filter Include="Object\Particle\Mesh">
       <UniqueIdentifier>{b9ba8f41-c321-4aba-989e-c5b89d9be47f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle\ParticlePool">
+      <UniqueIdentifier>{efa6de55-2b1c-4dd8-ab1c-914388191068}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
