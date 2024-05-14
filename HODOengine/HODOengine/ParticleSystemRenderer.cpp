@@ -34,6 +34,15 @@ namespace HDData
 			e.first->SetRotation(Quaternion::Concatenate(e.first->GetRotation(), rot));
 			// 위치값 갱신
 			// forward 방향으로 speed * deltaTime 만큼 이동
+			// TODO) GetForward() 함수 내용 넣고 delta.z구해서 _position.z에 더한다
+			Vector3 delta;
+			delta.x = GetRight().x * x + GetForward().x * z;
+			delta.z = GetForward().z * z + GetRight().z * x;
+			delta.y = y;
+
+			_position.x = delta.x;
+			_position.y = delta.y;
+			_position.z = delta.z;
 			// 스케일값 갱신
 			// 빌보드일 경우 카메라 방향을 바라보게 회전
 			// worldTM 정보 넘겨주기
