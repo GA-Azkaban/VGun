@@ -153,6 +153,10 @@ void HODOengine::Run()
 
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
+
+	// physicsUpdate, temporary location
+	_physicsSystem.Update();
+
 	// draw
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
@@ -164,8 +168,6 @@ void HODOengine::Run()
 	_inputSystem.Flush();
 	_tweenSystem.Update();
 
-	// physicsUpdate, temporary location
-	_physicsSystem.Update();
 
 }
 

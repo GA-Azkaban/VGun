@@ -47,6 +47,8 @@ private:
 	void AniCol();
 	void UpdateToPhysics();
 
+	void EveryMove();
+
 	// 사격 관련
 private:
 	void ShootGun();

@@ -199,10 +199,14 @@ TestScene::TestScene()
 
 
 	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
-	playerTestHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
+	playerTestHead->GetTransform()->SetLocalScale(0.5f, 0.5f, 0.5f);
+	//playerTestHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
 	playerTestHead->SetParentObject(playerTest);
+	
 	auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
 	playerHeadCollider->SetParentCollider(playerBodyCollider);
+	playerHeadCollider->SetPositionOffset(Vector3(0.0f, 1.0f, 0.0f));
+	
 
 	auto headCamObj = API::CreateObject(_scene, "headCamObj");
 	headCamObj->SetParentObject(playerTestHead);
@@ -211,73 +215,90 @@ TestScene::TestScene()
 	playerMove->SetHeadCam(headCam);
 
 	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
-	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);
-	plLeftUpperArm->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
+	//plLeftUpperArm->GetTransform()->SetLocalPosition(-0.5f, 0.2f, 0.0f);
+	plLeftUpperArm->GetTransform()->SetLocalScale(0.5f, 0.5f, 0.5f);
 	plLeftUpperArm->SetParentObject(playerTest);
-	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f);
 
-	playerLUCollider->SetParentCollider(playerBodyCollider);
+	auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f, 3);
+	LUArmCollider->SetParentCollider(playerBodyCollider);
+	LUArmCollider->SetPositionOffset(Vector3(-0.5f, 0.2f, 0.0f));
 
+	//auto temp = static_cast<RocketCore::Graphics::SkinningMeshObject*>(meshComp->_skinnedMesh);
+	//playerMove->SetMeshObj(temp);
 
-	auto temp = static_cast<RocketCore::Graphics::SkinningMeshObject*>(meshComp->_skinnedMesh);
-	playerMove->SetMeshObj(temp);
+	//playerBodyCollider->GetReady();
+	//playerHeadCollider->GetReady();
+	//LUArmCollider->GetReady();
 
-
-	auto triggerTest = API::CreateObject(_scene);
-	triggerTest->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
+	//auto triggerTest = API::CreateObject(_scene);
+	//triggerTest->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
 	//auto triggerBoxCol = triggerTest->AddComponent<HDData::TriggerBoxCollider>(1.0f, 1.0f, 1.0f);
 
-	//auto plLeftForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_l");
-	//plLeftForeArm->SetParentObject(plLeftUpperArm);
+	auto plLeftForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_l");
+	plLeftForeArm->SetParentObject(plLeftUpperArm);
 	//plLeftForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
-	//auto LFArmCollider = plLeftForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
-	//LFArmCollider->SetParentCollider(LUArmCollider);
+	plLeftForeArm->GetTransform()->SetLocalScale(0.5f, 0.5f, 0.5f);
+	auto LFArmCollider = plLeftForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
+	LFArmCollider->SetParentCollider(LUArmCollider);
+	LFArmCollider->SetPositionOffset(Vector3(0.0f, -0.8f, 0.0f));
 
-	//auto plRightUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_r");
-	//plRightUpperArm->SetParentObject(playerTest);
-	//plRightUpperArm->GetTransform()->SetLocalPosition(Vector3{ 0.65f, 0.2f, 0.0f });
-	//auto RUArmCollider = plRightUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
-	//RUArmCollider->SetParentCollider(playerCollider);
+	auto plRightUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_r");
+	plRightUpperArm->SetParentObject(playerTest);
+	//plRightUpperArm->GetTransform()->SetLocalPosition(Vector3{ 0.5f, 0.2f, 0.0f });
+	plRightUpperArm->GetTransform()->SetLocalScale(0.5f, 0.5f, 0.5f);
+	auto RUArmCollider = plRightUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f, 2);
+	RUArmCollider->SetParentCollider(playerBodyCollider);
+	RUArmCollider->SetPositionOffset(Vector3(0.5f, 0.2f, 0.0f));
 
-	//auto plRightForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_r");
-	//plRightForeArm->SetParentObject(plRightUpperArm);
+	auto plRightForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_r");
+	plRightForeArm->SetParentObject(plRightUpperArm);
 	//plRightForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
-	//auto RFArmCollider = plRightForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
-	//RFArmCollider->SetParentCollider(RUArmCollider);
+	plRightForeArm->GetTransform()->SetLocalScale(0.5f, 0.5f, 0.5f);
+	auto RFArmCollider = plRightForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
+	RFArmCollider->SetParentCollider(RUArmCollider);
+	RFArmCollider->SetPositionOffset(Vector3(0.0f, -0.8f, 0.0f));
 
 	//auto plLeftThigh = playerTest->GetGameObjectByNameInChildren("thigh_l");
 	//plLeftThigh->SetParentObject(playerTest);
-	//plLeftThigh->GetTransform()->SetLocalPosition(Vector3{ -0.3f, -0.95f, 0.0f });
+	////plLeftThigh->GetTransform()->SetLocalPosition(Vector3{ -0.3f, -0.95f, 0.0f });
+	//plLeftThigh->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
 	//auto LThighCollider = plLeftThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	//LThighCollider->SetParentCollider(playerCollider);
+	//LThighCollider->SetParentCollider(playerBodyCollider);
+	//LThighCollider->SetPositionOffset(Vector3(-0.3f, -0.95f, 0.0f));
 
 	//auto plLeftLowerLeg = playerTest->GetGameObjectByNameInChildren("calf_l");
 	//plLeftLowerLeg->SetParentObject(plLeftThigh);
-	//plLeftLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
+	////plLeftLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
+	//plLeftLowerLeg->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
 	//auto LLLegCollider = plLeftLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
 	//LLLegCollider->SetParentCollider(LThighCollider);
+	//LLLegCollider->SetPositionOffset(Vector3(0.0f, -0.7f, 0.0f));
 
 	//auto plLeftFoot = playerTest->GetGameObjectByNameInChildren("foot_l");
 	//plLeftFoot->SetParentObject(plLeftLowerLeg);
 	//plLeftFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
+	//plLeftFoot->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
 	//auto LFootCollider = plLeftFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
 	//LFootCollider->SetParentCollider(LLLegCollider);
 
 	//auto plRightThigh = playerTest->GetGameObjectByNameInChildren("thigh_r");
 	//plRightThigh->SetParentObject(playerTest);
 	//plRightThigh->GetTransform()->SetLocalPosition(Vector3{ 0.3f, -0.95f, 0.0f });
+	//plRightThigh->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
 	//auto RThighCollider = plRightThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	//RThighCollider->SetParentCollider(playerCollider);
+	//RThighCollider->SetParentCollider(playerBodyCollider);
 
 	//auto plRightLowerLeg = playerTest->GetGameObjectByNameInChildren("calf_r");
 	//plRightLowerLeg->SetParentObject(plRightThigh);
 	//plRightLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
+	//plRightLowerLeg->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
 	//auto RLLegCollider = plRightLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
 	//RLLegCollider->SetParentCollider(RThighCollider);
 
 	//auto plRightFoot = playerTest->GetGameObjectByNameInChildren("foot_r");
 	//plRightFoot->SetParentObject(plRightLowerLeg);
 	//plRightFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
+	//plRightFoot->GetTransform()->SetLocalScale(1.0f, 1.0f, 1.0f);
 	//auto RFootCollider = plRightFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
 	//RFootCollider->SetParentCollider(RLLegCollider);
 

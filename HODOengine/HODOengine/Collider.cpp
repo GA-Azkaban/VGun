@@ -45,6 +45,22 @@ namespace HDData
 		return _scaleOffset;
 	}
 
+	Vector3 Collider::GetPositionOffsetTotal()
+	{
+		Vector3 result = _positionOffset;
+
+		if (_parentCollider != nullptr)
+		{
+			// 일단은 그냥 pos만 더하는걸로. 추후 TM 곱으로 변경?
+			result += _parentCollider->GetPositionOffsetTotal();
+		}
+		else
+		{
+			return _positionOffset;
+		}
+		return result;
+	}
+
 	Matrix Collider::GetTranslateMatrix()
 	{
 		Matrix translateMatrix =

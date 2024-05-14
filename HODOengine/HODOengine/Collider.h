@@ -29,6 +29,7 @@ namespace HDData
 		Vector3 GetPositionOffset();
 		Quaternion GetRotationOffset();
 		Vector3 GetScaleOffset();
+		Vector3 GetPositionOffsetTotal();
 
 		Matrix GetTranslateMatrix();
 		Matrix GetRotationMatrix();

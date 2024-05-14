@@ -27,10 +27,11 @@ namespace HDData
 		void LockPlayerRotation();
 		void SetParentCollider(HDData::DynamicCollider* col);
 		void SetChildCollider(HDData::DynamicCollider* childCol);
+		void GetReady();
 
 	// Move and Control
 	public:
-		void Move(Vector3 moveStep, float speed);
+		void Move(Vector3 moveStep, float speed = 1.0f);
 		void RotateY(float rotationAmount);
 		void RotateOnAxis(float rotationAmount, Vector3 axis);
 		void SetColliderRotation(Quaternion rot);
@@ -41,6 +42,7 @@ namespace HDData
 		void AdjustVelocity(float ratio);
 		void SetPose(Vector3 pos);
 		void ApplyNodeInfo();
+		void EveryMove(Vector3 moveStep, Matrix parentTM);
 
 	public:
 		// PhysX 씬과 데이터를 주고받는 함수
@@ -61,6 +63,8 @@ namespace HDData
 		bool _isJumping;
 		bool _isCollided;
 		bool _isOnGround;
+		Vector3 _prevPos;
+		Quaternion _prevRot;
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;
