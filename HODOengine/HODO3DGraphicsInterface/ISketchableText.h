@@ -18,6 +18,9 @@ namespace HDEngine
 		virtual void SetActive(bool active) = 0;
 		virtual bool GetActive() = 0;
 
+		virtual void SetDefaultColor(DirectX::FXMVECTOR color) = 0;
+		virtual void ReturnDefaultColor() = 0;
+
 		virtual void SetWorldSpace() = 0;
 
 		virtual const std::string GetText() = 0;
