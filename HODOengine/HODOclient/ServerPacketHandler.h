@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Protocol.pb.h"
 
 using PacketHandlerFunc = std::function<bool(Horang::PacketSessionRef&, BYTE*, int32)>;
@@ -10,33 +10,30 @@ enum : uint16
 	PKT_S_TEST = 1001,
 	PKT_C_MOVE = 1002,
 	PKT_S_ERROR = 1003,
-	PKT_S_CONNECTED = 1004,
-	PKT_C_AUTOLOGIN = 1005,
-	PKT_C_SIGNIN = 1006,
-	PKT_S_SIGNIN_OK = 1007,
-	PKT_C_SIGNUP = 1008,
-	PKT_S_SIGNUP_OK = 1009,
-	PKT_C_ROOM_CREATE = 1010,
-	PKT_C_ROOM_SETTING = 1011,
-	PKT_C_ROOM_ENTER = 1012,
-	PKT_S_ROOM_ENTER = 1013,
-	PKT_C_ROOM_LEAVE = 1014,
-	PKT_S_ROOM_LEAVE = 1015,
-	PKT_S_ANOTHER_ENTER_ROOM = 1016,
-	PKT_S_ANOTHER_LEAVE_ROOM = 1017,
-	PKT_C_ROOM_START = 1018,
-	PKT_S_ROOM_START = 1019,
-	PKT_C_PLAY_UPDATE = 1020,
-	PKT_S_PLAY_UPDATE = 1021,
-	PKT_C_ROOM_LIST_REQUEST = 1022,
-	PKT_S_ROOM_LIST = 1023,
+	PKT_C_AUTOLOGIN = 1004,
+	PKT_C_SIGNIN = 1005,
+	PKT_S_SIGNIN_OK = 1006,
+	PKT_C_SIGNUP = 1007,
+	PKT_S_SIGNUP_OK = 1008,
+	PKT_C_ROOM_CREATE = 1009,
+	PKT_C_ROOM_ENTER = 1010,
+	PKT_S_ROOM_ENTER = 1011,
+	PKT_C_ROOM_LEAVE = 1012,
+	PKT_S_ROOM_LEAVE = 1013,
+	PKT_S_ANOTHER_ENTER_ROOM = 1014,
+	PKT_S_ANOTHER_LEAVE_ROOM = 1015,
+	PKT_C_ROOM_START = 1016,
+	PKT_S_ROOM_START = 1017,
+	PKT_C_PLAY_UPDATE = 1018,
+	PKT_S_PLAY_UPDATE = 1019,
+	PKT_C_ROOM_LIST_REQUEST = 1020,
+	PKT_S_ROOM_LIST = 1021,
 };
 
 // Custom Handlers
 bool Handle_INVALID(Horang::PacketSessionRef& session, BYTE* buffer, int32 len);
 bool Handle_S_TEST(Horang::PacketSessionRef& session, Protocol::S_TEST& pkt);
 bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt);
-bool Handle_S_CONNECTED(Horang::PacketSessionRef& session, Protocol::S_CONNECTED& pkt);
 bool Handle_S_SIGNIN_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNIN_OK& pkt);
 bool Handle_S_SIGNUP_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNUP_OK& pkt);
 bool Handle_S_ROOM_ENTER(Horang::PacketSessionRef& session, Protocol::S_ROOM_ENTER& pkt);
@@ -56,7 +53,6 @@ public:
 			GPacketHandler[i] = Handle_INVALID;
 		GPacketHandler[PKT_S_TEST] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_TEST>(Handle_S_TEST, session, buffer, len); };
 		GPacketHandler[PKT_S_ERROR] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ERROR>(Handle_S_ERROR, session, buffer, len); };
-		GPacketHandler[PKT_S_CONNECTED] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CONNECTED>(Handle_S_CONNECTED, session, buffer, len); };
 		GPacketHandler[PKT_S_SIGNIN_OK] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_SIGNIN_OK>(Handle_S_SIGNIN_OK, session, buffer, len); };
 		GPacketHandler[PKT_S_SIGNUP_OK] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_SIGNUP_OK>(Handle_S_SIGNUP_OK, session, buffer, len); };
 		GPacketHandler[PKT_S_ROOM_ENTER] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ROOM_ENTER>(Handle_S_ROOM_ENTER, session, buffer, len); };
@@ -79,7 +75,6 @@ public:
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_SIGNIN& pkt) { return MakeSendBuffer(pkt, PKT_C_SIGNIN); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_SIGNUP& pkt) { return MakeSendBuffer(pkt, PKT_C_SIGNUP); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_CREATE& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_CREATE); }
-	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_SETTING& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_SETTING); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_ENTER& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_ENTER); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_LEAVE& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_LEAVE); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_START& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_START); }
