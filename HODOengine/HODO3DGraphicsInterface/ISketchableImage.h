@@ -16,6 +16,9 @@ namespace HDEngine
 		virtual float GetHeight() override = 0;
 		virtual void ChangeScale(float x, float y) = 0;
 
+		virtual void SetDefalutColor(DirectX::FXMVECTOR color) = 0;
+		virtual	void RetunDefalutColor() = 0;
+
 		virtual void FadeIn() override = 0;
 		virtual void FadeOut() override = 0;
 		virtual bool GetFadeMode() override = 0;

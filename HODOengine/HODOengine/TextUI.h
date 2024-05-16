@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "dllExporter.h"
 
 #include "UIBase.h"
@@ -19,6 +19,10 @@ namespace HDData
 		void SetFont(const std::string& str);
 		void SetColor(DirectX::FXMVECTOR color);
 		void SetText(const std::string& str);
+
+		void SetDefaultColor(DirectX::FXMVECTOR color);
+		void ReturnDefaultColor();
+
 		std::string GetText();
 
 	private:

@@ -1,4 +1,4 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
@@ -114,7 +114,10 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 				_fadeAlpha = 1.0f;
 				_isComplete = true;
 			}
-			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
+			//_color = DirectX::XMVECTOR{_color.x,_color.y,_color.z,_fadeAlpha };
+			// _color의 RGB 채널을 유지하면서 알파 채널을 _fadeAlpha 값으로 변경
+			_color = DirectX::XMVectorSetW(_color, _fadeAlpha);
+
 		}
 	}
 	else
@@ -127,7 +130,10 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 				_fadeAlpha = 0.0f;
 				_isComplete = false;
 			}
-			_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
+			//_color = DirectX::XMVECTOR{ 1.0f,1.0f,1.0f,_fadeAlpha };
+			// _color의 RGB 채널을 유지하면서 알파 채널을 _fadeAlpha 값으로 변경
+			_color = DirectX::XMVectorSetW(_color, _fadeAlpha);
+
 		}
 	}
 
@@ -277,3 +283,13 @@ bool RocketCore::Graphics::ImageRenderer::GetComplete()
 	return _isComplete;
 }
 
+void RocketCore::Graphics::ImageRenderer::SetDefalutColor(DirectX::FXMVECTOR color)
+{
+	_defalutcolor = color;
+}
+
+void RocketCore::Graphics::ImageRenderer::RetunDefalutColor()
+{
+	_color = _defalutcolor;
+}
+ 

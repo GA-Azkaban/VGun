@@ -48,7 +48,8 @@ namespace RocketCore::Graphics
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }
 
-
+		virtual void SetDefalutColor(DirectX::FXMVECTOR color)override;
+		virtual void RetunDefalutColor()override;
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
@@ -66,6 +67,7 @@ namespace RocketCore::Graphics
 		// 내부 변수들
 		std::string _str;
 		DirectX::XMVECTOR _color;
+		DirectX::XMVECTOR _defalutcolor;
 		float _xlocation;
 		float _ylocation;
 		float _scaleX;

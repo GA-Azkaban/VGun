@@ -45,7 +45,7 @@ public: // 방 관련
 	void RecvRoomLeave(Protocol::RoomInfo roomInfo);
 
 	void SendRoomCreate(std::string roomName, std::string password = "", int32 maxPlayerCount = 6, bool isPrivate = false, bool isTeam = true);
-	void SetRoom();
+	void SetRoom(Protocol::RoomInfo roomInfo);
 
 public: // 다른 플레이어
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);
@@ -68,6 +68,7 @@ public: // 동작
 	// Todo
 
 public:
+	void SetConnect(bool isConnect);
 	void Connected();
 	void Disconnected();
 	bool IsConnected();

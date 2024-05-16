@@ -19,6 +19,8 @@ namespace HDData
 		float GetScreenSpacePositionY();
 
 		DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color);
+		void SetDefaultColor(DirectX::FXMVECTOR color);
+		void RetunDefaultColor();
 
 		float GetImageWidth();
 		float GetImageHeight();

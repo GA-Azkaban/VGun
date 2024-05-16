@@ -51,6 +51,16 @@ namespace HDData
 		return _imageUI->SetColor(color);
 	}
 
+	void ImageUI::SetDefaultColor(DirectX::FXMVECTOR color)
+	{
+		_imageUI->SetDefalutColor(color);
+	}
+
+	void ImageUI::RetunDefaultColor()
+	{
+		_imageUI->RetunDefalutColor();
+	}
+
 	float ImageUI::GetImageWidth()
 	{
 		return _imageUI->GetWidth();

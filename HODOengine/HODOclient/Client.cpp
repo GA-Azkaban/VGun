@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -27,8 +27,8 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 
-	TestScene test;
-	test.Start();
+	//TestScene test;
+	//test.Start();
 
 	LoginSceneView login;
 	login.Initialize();

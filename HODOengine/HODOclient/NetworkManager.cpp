@@ -221,7 +221,7 @@ void NetworkManager::SendRoomCreate(std::string roomName, std::string password /
 	this->_service->BroadCast(sendBuffer);
 }
 
-void NetworkManager::SetRoom()
+void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 {
 	Protocol::C_ROOM_CREATE packet;
 
