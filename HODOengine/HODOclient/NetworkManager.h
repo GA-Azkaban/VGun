@@ -44,11 +44,16 @@ public: // 방 관련
 	void RecvRoomEnter(Protocol::RoomInfo roomInfo);
 	void RecvRoomLeave(Protocol::RoomInfo roomInfo);
 
-	void SetRoom(Protocol::RoomInfo);
+	void SendRoomCreate(std::string roomName, std::string password = "", int32 maxPlayerCount = 6, bool isPrivate = false, bool isTeam = true);
+	void SetRoom();
 
-public:
+public: // 다른 플레이어
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);
 	void RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo);
+
+public: // 팀 색상 변경
+	void SendChangeTeamColor(Protocol::eTeamColor teamColor);
+	void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);
 
 public: // 게임 관련
 	void SendGameStart();
@@ -63,8 +68,9 @@ public: // 동작
 	// Todo
 
 public:
+	void Connected();
+	void Disconnected();
 	bool IsConnected();
-	void SetConnect(bool isConnect);
 
 private:
 	Horang::ClientServiceRef _service;

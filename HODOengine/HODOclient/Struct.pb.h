@@ -376,6 +376,7 @@ class RoomInfo final :
     kCurrentPlayerCountFieldNumber = 8,
     kIsPrivateFieldNumber = 9,
     kIsTeamFieldNumber = 10,
+    kMapFieldNumber = 11,
   };
   // repeated .Protocol.PlayerData users = 4;
   int users_size() const;
@@ -491,6 +492,15 @@ class RoomInfo final :
   void _internal_set_isteam(bool value);
   public:
 
+  // int32 map = 11;
+  void clear_map();
+  ::PROTOBUF_NAMESPACE_ID::int32 map() const;
+  void set_map(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_map() const;
+  void _internal_set_map(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.RoomInfo)
  private:
   class _Internal;
@@ -508,6 +518,7 @@ class RoomInfo final :
   ::PROTOBUF_NAMESPACE_ID::int32 currentplayercount_;
   bool isprivate_;
   bool isteam_;
+  ::PROTOBUF_NAMESPACE_ID::int32 map_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1310,13 +1321,13 @@ class PlayerData final :
       ::Protocol::Transform* transform);
   ::Protocol::Transform* unsafe_arena_release_transform();
 
-  // int32 team = 3;
+  // .Protocol.eTeamColor team = 3;
   void clear_team();
-  ::PROTOBUF_NAMESPACE_ID::int32 team() const;
-  void set_team(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::Protocol::eTeamColor team() const;
+  void set_team(::Protocol::eTeamColor value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_team() const;
-  void _internal_set_team(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::Protocol::eTeamColor _internal_team() const;
+  void _internal_set_team(::Protocol::eTeamColor value);
   public:
 
   // float hp = 5;
@@ -1373,7 +1384,7 @@ class PlayerData final :
   typedef void DestructorSkippable_;
   ::Protocol::UserInfo* userinfo_;
   ::Protocol::Transform* transform_;
-  ::PROTOBUF_NAMESPACE_ID::int32 team_;
+  int team_;
   float hp_;
   bool host_;
   bool issitting_;
@@ -1776,6 +1787,26 @@ inline void RoomInfo::_internal_set_isteam(bool value) {
 inline void RoomInfo::set_isteam(bool value) {
   _internal_set_isteam(value);
   // @@protoc_insertion_point(field_set:Protocol.RoomInfo.isTeam)
+}
+
+// int32 map = 11;
+inline void RoomInfo::clear_map() {
+  map_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::_internal_map() const {
+  return map_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 RoomInfo::map() const {
+  // @@protoc_insertion_point(field_get:Protocol.RoomInfo.map)
+  return _internal_map();
+}
+inline void RoomInfo::_internal_set_map(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  map_ = value;
+}
+inline void RoomInfo::set_map(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_map(value);
+  // @@protoc_insertion_point(field_set:Protocol.RoomInfo.map)
 }
 
 // -------------------------------------------------------------------
@@ -2317,22 +2348,22 @@ inline void PlayerData::set_host(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.host)
 }
 
-// int32 team = 3;
+// .Protocol.eTeamColor team = 3;
 inline void PlayerData::clear_team() {
   team_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::_internal_team() const {
-  return team_;
+inline ::Protocol::eTeamColor PlayerData::_internal_team() const {
+  return static_cast< ::Protocol::eTeamColor >(team_);
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::team() const {
+inline ::Protocol::eTeamColor PlayerData::team() const {
   // @@protoc_insertion_point(field_get:Protocol.PlayerData.team)
   return _internal_team();
 }
-inline void PlayerData::_internal_set_team(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PlayerData::_internal_set_team(::Protocol::eTeamColor value) {
   
   team_ = value;
 }
-inline void PlayerData::set_team(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PlayerData::set_team(::Protocol::eTeamColor value) {
   _internal_set_team(value);
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.team)
 }

@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "ServerPacketHandler.h"
 
 #include "../HODOengine/ObjectSystem.h"
@@ -119,6 +119,13 @@ bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_
 bool Handle_S_ROOM_START(Horang::PacketSessionRef& session, Protocol::S_ROOM_START& pkt)
 {
 	NetworkManager::Instance().RecvGameStart();
+
+	return true;
+}
+
+bool Handle_S_ROOM_CHANGE_TEAM(Horang::PacketSessionRef& session, Protocol::S_ROOM_CHANGE_TEAM& pkt)
+{
+	NetworkManager::Instance().RecvChangeTeamColor(pkt.roominfo());
 
 	return true;
 }
