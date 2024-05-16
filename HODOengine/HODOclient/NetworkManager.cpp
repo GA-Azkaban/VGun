@@ -190,11 +190,10 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		/*one->SetPlayerID(player.id());
-		one->SetNickName(player.nickname());*/
+		one->SetPlayerID(player.userinfo().id());
+		one->SetNickName(player.userinfo().nickname());
 
 		// 플레이어 정보 받기	
-
 		info->_players.push_back(one);
 	}
 
