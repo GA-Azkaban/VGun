@@ -20,8 +20,8 @@ void LobbySceneView::Initialize()
 
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
-	mainCam->GetGameObject()->GetTransform()->SetPosition(-24.41, 0.3, 2.56);
-	mainCam->GetGameObject()->GetTransform()->Rotate(-10, -124, 0);
+	mainCam->GetGameObject()->GetTransform()->SetPosition(2.62, 0.57, -5.48);
+	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
 	// 백그라운드
 	//HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
@@ -76,39 +76,39 @@ void LobbySceneView::Initialize()
 		auto img = defaultCanvas->GetComponent<HDData::ImageUI>();
 		img->SetImage("settingCanvas.png");
 
-		auto teamSelectSubCanvas = API::CreateImageBox(_scene, "teamSelectSubCanvas", defaultCanvas);
-		teamSelectSubCanvas->GetComponent<HDData::ImageUI>()->SetImage("subCanvas_alpha.png");
-		teamSelectSubCanvas->GetTransform()->SetPosition(defaultX, 800, 0);
+		auto subCanvas = API::CreateImageBox(_scene, "subCanvas", defaultCanvas);
+		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
+		subCanvas->GetTransform()->SetPosition(defaultX, 800, 0);
 
-		auto QuitMemberButton = API::CreateButton(_scene, "QuitButton", defaultCanvas);
+		auto QuitMemberButton = API::CreateButton(_scene, "QuitButton", subCanvas);
 		QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
 		QuitMemberButton->GetTransform()->SetPosition(defaultX, 60, 0);
 
-		auto rButton = API::CreateButton(_scene, "R", teamSelectSubCanvas);
+		auto rButton = API::CreateButton(_scene, "R", subCanvas);
 		auto rBtn = rButton->GetComponent<HDData::Button>();
 		rBtn->SetSortOrder(0.3);
 		rButton->GetTransform()->SetPosition(r, 800, 0);
-		rBtn->SetImage("icon_group_cog.png");
+		rBtn->SetImage("r.png");
 		rBtn->SetOnClickEvent([]()
 			{
 				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::R);
 			});
 
-		auto gButton = API::CreateButton(_scene, "G", teamSelectSubCanvas);
+		auto gButton = API::CreateButton(_scene, "G", subCanvas);
 		auto gBtn = gButton->GetComponent<HDData::Button>();
 		gBtn->SetSortOrder(0.3);
 		gButton->GetTransform()->SetPosition(g, 800, 0);
-		gBtn->SetImage("icon_group_cog.png");
+		gBtn->SetImage("g.png");
 		gBtn->SetOnClickEvent([]()
 			{
 				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::G);
 			});
 
-		auto bButton = API::CreateButton(_scene, "B", teamSelectSubCanvas);
+		auto bButton = API::CreateButton(_scene, "B", subCanvas);
 		auto bBtn = bButton->GetComponent<HDData::Button>();
 		bBtn->SetSortOrder(0.3);
 		bButton->GetTransform()->SetPosition(b, 800, 0);
-		bBtn->SetImage("icon_group_cog.png");
+		bBtn->SetImage("b.png");
 		bBtn->SetOnClickEvent([]()
 			{
 				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::B);
@@ -118,6 +118,8 @@ void LobbySceneView::Initialize()
 		r -= 315;
 		g -= 315;
 		b -= 315;
+
+		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
 	}
 
 	// player rendering
