@@ -1321,13 +1321,13 @@ class PlayerData final :
       ::Protocol::Transform* transform);
   ::Protocol::Transform* unsafe_arena_release_transform();
 
-  // int32 team = 3;
+  // .Protocol.eTeamColor team = 3;
   void clear_team();
-  ::PROTOBUF_NAMESPACE_ID::int32 team() const;
-  void set_team(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::Protocol::eTeamColor team() const;
+  void set_team(::Protocol::eTeamColor value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_team() const;
-  void _internal_set_team(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::Protocol::eTeamColor _internal_team() const;
+  void _internal_set_team(::Protocol::eTeamColor value);
   public:
 
   // float hp = 5;
@@ -1384,7 +1384,7 @@ class PlayerData final :
   typedef void DestructorSkippable_;
   ::Protocol::UserInfo* userinfo_;
   ::Protocol::Transform* transform_;
-  ::PROTOBUF_NAMESPACE_ID::int32 team_;
+  int team_;
   float hp_;
   bool host_;
   bool issitting_;
@@ -2348,22 +2348,22 @@ inline void PlayerData::set_host(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.host)
 }
 
-// int32 team = 3;
+// .Protocol.eTeamColor team = 3;
 inline void PlayerData::clear_team() {
   team_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::_internal_team() const {
-  return team_;
+inline ::Protocol::eTeamColor PlayerData::_internal_team() const {
+  return static_cast< ::Protocol::eTeamColor >(team_);
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::team() const {
+inline ::Protocol::eTeamColor PlayerData::team() const {
   // @@protoc_insertion_point(field_get:Protocol.PlayerData.team)
   return _internal_team();
 }
-inline void PlayerData::_internal_set_team(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PlayerData::_internal_set_team(::Protocol::eTeamColor value) {
   
   team_ = value;
 }
-inline void PlayerData::set_team(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void PlayerData::set_team(::Protocol::eTeamColor value) {
   _internal_set_team(value);
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.team)
 }
