@@ -316,8 +316,3 @@ bool NetworkManager::IsConnected()
 {
 	return _isConnect;
 }
-
-void NetworkManager::SetConnect(bool isConnect)
-{
-	this->_isConnect = isConnect;
-}
