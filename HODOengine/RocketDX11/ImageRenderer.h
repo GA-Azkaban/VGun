@@ -92,5 +92,7 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
 
 		float _sortOrder;
+
+		bool _isInWorldSpace;
 	};
 }
