@@ -2,7 +2,6 @@
 
 #include <d3d11.h>
 #include <memory>
-//#include <vector>
 #include <DXTK\\SpriteBatch.h>
 #include <DXTK\\WICTextureLoader.h>
 #include <wrl\client.h>
@@ -14,6 +13,9 @@
 
 namespace RocketCore::Graphics
 {
+	class Mesh;
+	class Material;
+
 	class ImageRenderer : public HDEngine::ISketchableImage
 	{
 	public:
@@ -94,5 +96,8 @@ namespace RocketCore::Graphics
 		float _sortOrder;
 
 		bool _isInWorldSpace;
+		DirectX::XMMATRIX _world;
+		Mesh* _mesh;
+		Material* _material;
 	};
 }

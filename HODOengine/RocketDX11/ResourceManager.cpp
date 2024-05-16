@@ -586,7 +586,7 @@ namespace RocketCore::Graphics
 
 		VertexShader* billboardVS = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (billboardVS->LoadShaderFile(L"Resources/Shaders/BillboardVertexShader.cso"))
-			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS));
+			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS)); 
 
 		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
