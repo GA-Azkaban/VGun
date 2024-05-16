@@ -4,8 +4,11 @@
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
+#include "Camera.h"
 
 #define FILEPATH "Resources/UI/"
+
+using namespace DirectX;
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
@@ -16,7 +19,8 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_imageHeight(),
 	_active(true),
 	_receiveTMInfoFlag(false),
-	_sortOrder()
+	_sortOrder(),
+	_isInWorldSpace(false)
 {
 	_color = DirectX::Colors::White;
 }
@@ -87,7 +91,7 @@ void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float 
 
 void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 {
-
+	_isInWorldSpace = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
@@ -147,14 +151,30 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 {
-	_xlocation = worldTM._41;
-	_ylocation = worldTM._42;
+	if (_isInWorldSpace)
+	{
+		// 카메라 방향으로 회전해준다
+		XMFLOAT3 cameraPosition = Camera::GetMainCamera()->GetPosition();
+		float radian = std::atan2(0.0 - cameraPosition.x, 0.0 - cameraPosition.z);
+		XMVECTOR translate;
+		XMVECTOR rotation;
+		XMVECTOR scale;
+		XMMatrixDecompose(&scale, &rotation, &translate, worldTM);
+		XMMATRIX rotToCamMat = XMMatrixScalingFromVector(scale) * XMMatrixRotationRollPitchYawFromVector(rotation)* XMMatrixRotationY(radian)* XMMatrixTranslationFromVector(translate);
+		_xlocation = rotToCamMat.r[3].m128_f32[0];
+		_ylocation = rotToCamMat.r[3].m128_f32[1];
+	}
+	else
+	{
+		_xlocation = worldTM._41;
+		_ylocation = worldTM._42;
+	}
 	_receiveTMInfoFlag = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpace()
 {
-
+	_isInWorldSpace = false;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetActive(bool isActive)
