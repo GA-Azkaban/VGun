@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "ServerPacketHandler.h"
 
 #include "../HODOengine/ObjectSystem.h"
@@ -58,12 +58,6 @@ bool Handle_S_ERROR(Horang::PacketSessionRef& session, Protocol::S_ERROR& pkt)
 	}
 
 	NetworkManager::Instance().RecvFail(pkt.errorcode());
-
-	return true;
-}
-
-bool Handle_S_CONNECTED(Horang::PacketSessionRef& session, Protocol::S_CONNECTED& pkt)
-{
 
 	return true;
 }

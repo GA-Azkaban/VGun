@@ -172,15 +172,6 @@ void LobbyManager::RoomEnterSUCCESS()
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
 
 	_players = _roomData->_players;
-
-	int count = _roomData->currentPlayerCount;
-
-	for (int i = 0; i < count; ++i)
-	{
-		_playerObjs[i]->SetSelfActive(true);
-		_nickNameIndex[i]->SetSelfActive(true);
-		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
-	}
 }
 
 // TODO) 새로운 플레이어가 들어오거나 나갈 때, 기존 애니메이션이 끊기지 않으면 좋다.
@@ -191,12 +182,19 @@ void LobbyManager::OtherPlayerEnter()
 
 	int count = _roomData->currentPlayerCount;
 
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
-		_playerObjs[i]->SetSelfActive(true);
-		_nickNameIndex[i]->SetSelfActive(true);
-		SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
-		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+		//if (i < count)
+		//{
+		//	_playerObjs[i]->SetSelfActive(true);
+		//	_nickNameIndex[i]->SetSelfActive(true);
+		//	_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+		//}
+		//else
+		//{
+		//	_playerObjs[i]->SetSelfActive(false);
+		//	_nickNameIndex[i]->SetSelfActive(false);
+		//}
 	}
 }
 
@@ -212,13 +210,13 @@ void LobbyManager::OtherPlayerExit()
 		_nickNameIndex[i]->SetSelfActive(false);
 	}
 
-	 for (int i = 0; i < count; ++i)
-	 {
-		 _playerObjs[i]->SetSelfActive(true);
-		 SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
-		 _nickNameIndex[i]->SetSelfActive(true);
-		 _nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
-	 }
+	for (int i = 0; i < count; ++i)
+	{
+		_playerObjs[i]->SetSelfActive(true);
+		SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
+		_nickNameIndex[i]->SetSelfActive(true);
+		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+	}
 
 }
 
@@ -263,13 +261,18 @@ void LobbyManager::SetPlayerTeam(eTeam team, HDData::GameObject* obj)
 	}
 }
 
-std::vector<HDData::GameObject*> LobbyManager::GetPlayerObjects()
+std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 {
 	return _playerObjs;
 }
 
-std::vector<HDData::GameObject*> LobbyManager::GetNickNameObjects()
+std::vector<HDData::GameObject*>& LobbyManager::GetNickNameObjects()
 {
 	return _nickNameIndex;
+}
+
+std::vector<HDData::GameObject*>& LobbyManager::GetTeamButtonObjects()
+{
+	return _teamButton;
 }
 

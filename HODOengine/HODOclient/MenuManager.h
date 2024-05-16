@@ -5,12 +5,13 @@
 
 struct roomInfoObj
 {
-	HDData::GameObject* id;
-	HDData::GameObject* title;
-	HDData::GameObject* maxCount;
-	HDData::GameObject* currentCount;
-	HDData::GameObject* isPrivate;
-	HDData::GameObject* isTeam;
+	HDData::Button* btn;
+	HDData::TextUI* id;
+	HDData::TextUI* title;
+	HDData::ImageUI* maxCount;
+	HDData::ImageUI* currentCount;
+	HDData::ImageUI* isPrivate;
+	HDData::ImageUI* isTeam;
 };
 
 
@@ -56,13 +57,17 @@ public:
 	HDData::GameObject* _preferencesBtn = nullptr;	// 환경설정 버튼
 	HDData::GameObject* _exitbtn = nullptr;
 
-	// RoomList
-	HDData::GameObject* _roomListCanvas = nullptr;
+public:
+	void RenderRoomList();
 
 public:
-
-public:
-	roomInfoObj rooms[4];
+	// room data
 	std::vector<roominfo*> _roomList;
+
+	// room obj
+	int pageCount = 1;
+	int currentPage = 1;
+	HDData::GameObject* _roomListCanvas = nullptr;
+	roomInfoObj _roomObject[5];
 };
 

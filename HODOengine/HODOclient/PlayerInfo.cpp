@@ -17,7 +17,7 @@ void PlayerInfo::Update()
 
 void PlayerInfo::Init()
 {
-	this-> _HP = 100;
+	this-> _maxHP = 100;
 	this-> _kill = 0;
 	this-> _death = 0;
 	this->_isDie = false;
@@ -32,12 +32,12 @@ void PlayerInfo::SetPlayerID(std::string id)
 
 void PlayerInfo::PlayerIndex(int index)
 {
-
+	_playerIndex = index;
 }
 
 void PlayerInfo::SetCurrentHP(int hp)
 {
-	this->_HP = hp;
+	_currentHP = hp;
 }
 
 void PlayerInfo::SetCurrentKill(int killCount)
@@ -85,6 +85,11 @@ void PlayerInfo::SetNickName(std::string nickName)
 	_playerNickname = nickName;
 }
 
+void PlayerInfo::SetMaxHP(int hp)
+{
+	_maxHP = hp;
+}
+
 bool PlayerInfo::GetIsDie()
 {
 	return _isDie;
@@ -115,9 +120,14 @@ std::string PlayerInfo::GetPlayerNickName()
 	return _playerNickname;
 }
 
-int PlayerInfo::GetPlayerHP()
+int PlayerInfo::GetPlayerMaxHP()
 {
-	return _HP;
+	return _maxHP;
+}
+
+int PlayerInfo::GetPlayerCurrentHP()
+{
+	return _currentHP;
 }
 
 int PlayerInfo::GetPlayerKillCount()
