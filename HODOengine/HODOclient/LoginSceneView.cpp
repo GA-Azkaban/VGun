@@ -1,4 +1,4 @@
-﻿#include "LoginSceneView.h"
+#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
 #include "NetworkManager.h"

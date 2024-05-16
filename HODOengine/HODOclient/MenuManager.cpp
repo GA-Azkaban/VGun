@@ -57,6 +57,11 @@ void MenuManager::GetRoomList()
 	NetworkManager::Instance().SendRoomListRequest();
 }
 
+void MenuManager::GetRoomList()
+{
+	NetworkManager::Instance().SendRoomListRequest();
+}
+
 void MenuManager::RoomExit()
 {
 	Protocol::RoomInfo temp;
