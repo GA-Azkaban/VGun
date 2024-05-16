@@ -4,7 +4,7 @@ using Horang::Log;
 
 namespace Horang
 {
-	enum class Color
+	enum class LogColor
 	{
 		BLACK,
 		WHITE,
@@ -17,7 +17,7 @@ namespace Horang
 	class LogStream
 	{
 	public:
-		LogStream(Color color = Color::WHITE)
+		LogStream(LogColor color = LogColor::WHITE)
 			: _color(color) {}
 
 		template<typename Arg>
@@ -28,10 +28,10 @@ namespace Horang
 		}
 
 	private:
-		Color _color;
+		LogColor _color;
 	};
 
-	LogStream DebugLog(Color color = Color::WHITE);
+	LogStream DebugLog(LogColor color = LogColor::WHITE);
 
 	class Log
 	{
@@ -44,13 +44,13 @@ namespace Horang
 		static void DebugLog(const Arg& arg, Args&&... args)
 		{
 			if constexpr (sizeof...(args) == 0)
-				DebugLog(L"", Color::WHITE, arg);
+				DebugLog(L"", LogColor::WHITE, arg);
 			else
-				DebugLog(arg, Color::WHITE, std::forward<Args>(args)...);
+				DebugLog(arg, LogColor::WHITE, std::forward<Args>(args)...);
 		}
 
 		template<typename... Args>
-		static void DebugLog(Horang::Color color, Args&&... args)
+		static void DebugLog(Horang::LogColor color, Args&&... args)
 		{
 			DebugLog(L"", color, std::forward<Args>(args)...);
 		}
@@ -58,11 +58,11 @@ namespace Horang
 		template<typename... Args>
 		static void DebugLog(Args&&... args)
 		{
-			DebugLog(L"", Color::WHITE, std::forward<Args>(args)...);
+			DebugLog(L"", LogColor::WHITE, std::forward<Args>(args)...);
 		}
 
 		template<typename T, typename... Args>
-		static void DebugLog(const T& delimiter, Color color, Args&&... args)
+		static void DebugLog(const T& delimiter, LogColor color, Args&&... args)
 		{
 			SetColor(color);
 			size_t count = sizeof...(args);
@@ -89,15 +89,15 @@ namespace Horang
 		static void DebugLog(const T& delimiter, size_t count)
 		{
 			std::wcout << std::endl;
-			Log::SetColor(Horang::Color::WHITE);
+			Log::SetColor(Horang::LogColor::WHITE);
 		}
 
 	private:
-		static void SetColor(Color color);
+		static void SetColor(LogColor color);
 
 	private:
 		static HANDLE _stdOut;
 	};
 };
 
-using Horang::Color;
+using Horang::LogColor;

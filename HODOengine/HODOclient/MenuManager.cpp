@@ -137,8 +137,8 @@ void MenuManager::RenderRoomList()
 			_roomObject[i - 1].isPrivate->SetImage("no_private.png");
 		}
 
-		_roomObject[i - 1].maxCount->SetImage(GetNumberImage(_roomList[i]->maxPlayerCount));
-		_roomObject[i - 1].currentCount->SetImage(GetNumberImage(_roomList[i]->currentPlayerCount));
+		_roomObject[i - 1].maxCount->SetImage(GetNumberImage(_roomList[i - 1]->maxPlayerCount));
+		_roomObject[i - 1].currentCount->SetImage(GetNumberImage(_roomList[i - 1]->currentPlayerCount));
 					
 		_roomObject[i - 1].id->GetGameObject()->SetSelfActive(true);
 		_roomObject[i - 1].title->GetGameObject()->SetSelfActive(true);

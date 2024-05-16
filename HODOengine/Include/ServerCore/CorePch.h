@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Types.h"
 #include "CoreMacro.h"
@@ -24,5 +24,3 @@
 #include "Session.h"
 
 #include "JobQueue.h"
-
-#include "Log.h"
