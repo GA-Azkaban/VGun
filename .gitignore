@@ -489,3 +489,5 @@ HODOengine/Resources/Models/SM/SM_renameRecur.bat
 HODOengine/HODOclient/Client.cpp
 
 HODOengine/Include/RapidJson/
+
+HODOengine/Resources/SceneData/lobbyData.json

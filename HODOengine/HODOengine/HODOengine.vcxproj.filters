@@ -104,10 +104,10 @@
       <Filter>05_Component\EventHandler</Filter>
     </ClCompile>
     <ClCompile Include="SkinnedMeshRenderer.cpp">
-      <Filter>05_Component\Renderer\BaseClass\SkinnedMeshRenderer</Filter>
+      <Filter>05_Component\Renderer\SkinnedMeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="MeshRenderer.cpp">
-      <Filter>05_Component\Renderer\BaseClass\MeshRenderer</Filter>
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem.cpp">
       <Filter>06_System\InputSystem</Filter>
@@ -128,7 +128,7 @@
       <Filter>01_EngineProcess</Filter>
     </ClCompile>
     <ClCompile Include="CubeMapRenderer.cpp">
-      <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
+      <Filter>05_Component\Renderer\CubeMapRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
       <Filter>05_Component\Light</Filter>
@@ -184,6 +184,21 @@
     </ClCompile>
     <ClCompile Include="StaticSphereCollider.cpp">
       <Filter>05_Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemRenderer.cpp">
+      <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>05_Component\ParticleSystem\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="Gradient.cpp">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePool.cpp">
+      <Filter>05_Component\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -302,13 +317,13 @@
       <Filter>05_Component\EventHandler</Filter>
     </ClInclude>
     <ClInclude Include="SkinnedMeshRenderer.h">
-      <Filter>05_Component\Renderer\BaseClass\SkinnedMeshRenderer</Filter>
+      <Filter>05_Component\Renderer\SkinnedMeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="RendererBase.h">
       <Filter>05_Component\Renderer\BaseClass</Filter>
     </ClInclude>
     <ClInclude Include="MeshRenderer.h">
-      <Filter>05_Component\Renderer\BaseClass\MeshRenderer</Filter>
+      <Filter>05_Component\Renderer\MeshRenderer</Filter>
     </ClInclude>
     <ClInclude Include="InputSystem.h">
       <Filter>06_System\InputSystem</Filter>
@@ -347,7 +362,7 @@
       <Filter>05_Component\UserInterface\TextInputBoxUI</Filter>
     </ClInclude>
     <ClInclude Include="CubeMapRenderer.h">
-      <Filter>05_Component\Renderer\BaseClass\CubeMapRenderer</Filter>
+      <Filter>05_Component\Renderer\CubeMapRenderer</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
       <Filter>05_Component\Light</Filter>
@@ -406,6 +421,51 @@
     </ClInclude>
     <ClInclude Include="StaticSphereCollider.h">
       <Filter>05_Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>05_Component\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MainModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="EmssionModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorOverLifetimeModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="LimitVelocityOverLifetimeModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="SizeOverLifetimeModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationOverLifetimeModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemRenderer.h">
+      <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>05_Component\ParticleSystem\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Gradient.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationCurve.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Burst.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="MinMaxCurve.h">
+      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="RendererModule.h">
+      <Filter>05_Component\ParticleSystem\Module</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePool.h">
+      <Filter>05_Component\ParticleSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -467,15 +527,6 @@
     </Filter>
     <Filter Include="05_Component\Renderer\BaseClass">
       <UniqueIdentifier>{87d9b437-26ba-489d-88f8-2d808a193fd6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderer\BaseClass\CubeMapRenderer">
-      <UniqueIdentifier>{255d77c9-16d1-4569-a81f-835883e2ca39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderer\BaseClass\MeshRenderer">
-      <UniqueIdentifier>{cf65765f-4895-406f-9847-15ddb86fdb59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Renderer\BaseClass\SkinnedMeshRenderer">
-      <UniqueIdentifier>{945ada7e-9b4b-41ab-a032-b76e70d53b29}</UniqueIdentifier>
     </Filter>
     <Filter Include="05_Component\Script">
       <UniqueIdentifier>{8d6ca424-4ab7-4bd0-8a6b-652cb37b19f2}</UniqueIdentifier>
@@ -594,9 +645,6 @@
     <Filter Include="05_Component\Collider\Collision">
       <UniqueIdentifier>{56a9c51c-472b-4ec2-81b7-76abe8fa59e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\Collider\Particle">
-      <UniqueIdentifier>{0bf802f5-6f43-4f75-8589-8ba81a4118b9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05_Component\Animation\Animator">
       <UniqueIdentifier>{0d2c3228-48e0-4ff8-a1dd-4b70a61800eb}</UniqueIdentifier>
     </Filter>
@@ -611,6 +659,30 @@
     </Filter>
     <Filter Include="05_Component\Animation\Animator\All">
       <UniqueIdentifier>{28d27115-eb4f-48cf-b5a0-ebb7a7ca5fa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem">
+      <UniqueIdentifier>{f75cfae9-5f0d-42b4-b5e9-94843a4009a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem\Module">
+      <UniqueIdentifier>{5db337a4-c348-4d41-b2bd-d388db46a219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\CubeMapRenderer">
+      <UniqueIdentifier>{255d77c9-16d1-4569-a81f-835883e2ca39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\SkinnedMeshRenderer">
+      <UniqueIdentifier>{945ada7e-9b4b-41ab-a032-b76e70d53b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{cf65765f-4895-406f-9847-15ddb86fdb59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\ParticleSystemRenderer">
+      <UniqueIdentifier>{441fa4c9-4d99-4a88-add4-7c32475b8188}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem\Particle">
+      <UniqueIdentifier>{a7c4dd96-3f32-4c83-88d4-2a2c2c1971a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem\Module\Struct">
+      <UniqueIdentifier>{126ecc75-2feb-465a-8c6a-08eb4e312700}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

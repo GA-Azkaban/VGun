@@ -10,6 +10,12 @@ namespace HDData
 
 	}
 
+	Material::Material(HDEngine::IMaterial* mat)
+		: _material(mat)
+	{
+
+	}
+
 	Material::~Material()
 	{
 		delete _material;
@@ -108,6 +114,11 @@ namespace HDData
 	float Material::GetRoughnessValue() const
 	{
 		return _material->GetRoughnessValue();
+	}
+
+	HDEngine::IMaterial* Material::Get() const
+	{
+		return _material;
 	}
 
 }

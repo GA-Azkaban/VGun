@@ -234,10 +234,10 @@ namespace RocketCore::Graphics
 		Cubemap::Instance().SetEnvLightIntensity(0.8f);
 
 		/// DEBUG Obejct
-		//HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
-		//grid->LoadMesh("grid");
-		//HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
-		//axis->LoadMesh("axis");
+		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
+		grid->LoadMesh("grid");
+		HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
+		axis->LoadMesh("axis");
 
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
@@ -366,7 +366,6 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_toneMapPass->Render();
 		_spritePass->Render();
-
 		//_particlePass->Render();
 
 		_deviceContext->RSSetViewports(1, &_viewport);

@@ -24,7 +24,7 @@ namespace HDData
 
 	void MeshRenderer::LoadMaterial(HDData::Material* material, unsigned int element /*= 0*/)
 	{
-		_staticMesh->LoadMaterial(material->_material, element);
+		_staticMesh->LoadMaterial(material->Get(), element);
 	}
 
 	void MeshRenderer::LoadNormalMap(const std::string& fileName, unsigned int element /* = 0 */)

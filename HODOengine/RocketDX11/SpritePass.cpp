@@ -4,6 +4,9 @@
 #include "ObjectManager.h"
 #include "ImageRenderer.h"
 #include "TextRenderer.h"
+#include "VertexShader.h"
+#include "Camera.h"
+#include <DirectXMath.h>
 
 namespace RocketCore::Graphics
 {
@@ -23,6 +26,11 @@ namespace RocketCore::Graphics
 	void SpritePass::Render()
 	{
 		_toneMapBuffer->SetRenderTargets();
+
+		DirectX::XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+		DirectX::XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+		VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
+		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
 		_spriteBatch->Begin(DirectX::DX11::SpriteSortMode_FrontToBack);
 		RenderImage();

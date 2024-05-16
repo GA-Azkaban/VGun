@@ -15,6 +15,8 @@ namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
+	class VertexShader;
+	class PixelShader;
 
 	class ImageRenderer : public HDEngine::ISketchableImage
 	{
@@ -97,9 +99,12 @@ namespace RocketCore::Graphics
 
 		float _sortOrder;
 
+		// world space UI
 		bool _isInWorldSpace;
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _rasterizerState;
 		DirectX::XMMATRIX _world;
 		Mesh* _mesh;
-		Material* _material;
+		VertexShader* _vertexShader;
+		PixelShader* _pixelShader;
 	};
 }

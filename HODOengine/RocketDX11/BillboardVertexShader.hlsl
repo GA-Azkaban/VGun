@@ -3,13 +3,15 @@
 struct VertexShaderInput
 {
     float3 position : POSITION;
+    float3 normal   : NORMAL;
+    float3 tangent  : TANGENT;
     float2 uv       : TEXCOORD;
 };
 
 struct VertexToPixel
 {
     float4 position : SV_POSITION; // vertex position
-    float2 uv : TEXCOORD;
+    float2 uv       : TEXCOORD;
 };
 
 VertexToPixel main(VertexShaderInput input)

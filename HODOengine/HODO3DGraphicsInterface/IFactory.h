@@ -16,6 +16,7 @@ namespace HDEngine
 	class ILight;
 	class ILineRenderer;
 	class IMaterial;
+	class IParticle;
 	struct MaterialDesc;
 	struct CubePrimitive;
 	struct SpherePrimitive;
@@ -34,10 +35,13 @@ namespace HDEngine
 		virtual ILight* CreateLight() = 0;
 		virtual ILineRenderer* CreateLineRenderer() = 0;
 		virtual IMaterial* CreateMaterial(const MaterialDesc& desc) = 0;
+		virtual IMaterial* GetMaterial(const std::string& name) = 0;
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() = 0;
 		virtual CapsulePrimitive* CreateCapsulePrimitive() = 0;
+		virtual IParticle* CreateParticle() = 0;
+		virtual void DestroyParticle(IParticle* particle) = 0;
 	};
 
 	/// dllexport 하는 오브젝트팩토리를 반환하는 팩토리 함수.

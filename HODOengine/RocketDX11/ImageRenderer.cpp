@@ -1,10 +1,13 @@
-#include <locale>
+﻿#include <locale>
 #include <codecvt>
 //#include <SimpleMath.h>
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 #include "Camera.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+#include "Mesh.h"
 
 #define FILEPATH "Resources/UI/"
 
@@ -28,6 +31,7 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 	_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
+	_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
 }
 
 RocketCore::Graphics::ImageRenderer::~ImageRenderer()
@@ -147,18 +151,18 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 		if (_isInWorldSpace)
 		{
 			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			ResourceManager::Instance().GetDeviceContext()->RSSetState(m_rasterizerState.Get());
+			ResourceManager::Instance().GetDeviceContext()->RSSetState(_rasterizerState.Get());
 
-			m_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(_world));
+			_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(_world));
 
-			m_vertexShader->CopyAllBufferData();
-			m_vertexShader->SetShader();
+			_vertexShader->CopyAllBufferData();
+			_vertexShader->SetShader();
 
-			m_pixelShader->SetShaderResourceView("Albedo", m_materials[i]->GetAlbedoMap());
-			m_pixelShader->SetFloat4("albedoColor", m_materials[i]->GetColorFloat4());
+			_pixelShader->SetShaderResourceView("Albedo", _imagerSRV.Get());
+			_pixelShader->SetFloat4("albedoColor", XMFLOAT4{1.0f, 1.0f, 1.0f, 1.0f});
 
-			m_pixelShader->CopyAllBufferData();
-			m_pixelShader->SetShader();
+			_pixelShader->CopyAllBufferData();
+			_pixelShader->SetShader();
 
 			_mesh->BindBuffers();
 			_mesh->Draw();
@@ -218,7 +222,6 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 	_device = device;
 	_deviceContext = deviceContext;
 }
-
 
 void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 {

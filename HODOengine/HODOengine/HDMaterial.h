@@ -13,8 +13,7 @@ namespace HDData
 	{
 	public:
 		friend HDEngine::MaterialManager;
-		friend class MeshRenderer;
-		friend class SkinnedMeshRenderer;
+		
 		Material() = delete;
 		~Material();
 		void SetMaterialName(const std::string& materialName);
@@ -38,8 +37,11 @@ namespace HDData
 		float GetMetallicValue() const;
 		float GetRoughnessValue() const;
 
+		HDEngine::IMaterial* Get() const;
+
 	private:
 		Material(const HDEngine::MaterialDesc& desc);
+		Material(HDEngine::IMaterial* mat);
 
 	private:
 		HDEngine::IMaterial* _material;
