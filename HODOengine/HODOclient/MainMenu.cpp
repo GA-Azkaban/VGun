@@ -95,69 +95,131 @@ void MainMenuScene::MainMenu()
 	roomListCanvas->SetSelfActive(false);
 	MenuManager::Instance().SetRoomListCanvas(roomListCanvas);
 
-	// room
-	// 한 페이지당 네 개의 방 표시
+	// page move button
+	HDData::GameObject* pageLeftButton = API::CreateButton(_scene, "pageLeft", roomListCanvas);
+	pageLeftButton->GetTransform()->SetLocalPosition(-500, 0, 0);
+	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
+	lBtn->SetImage("left.png");
+	lBtn->SetSortOrder(0.6f);
+	lBtn->SetOnClickEvent([]() {
+		if (MenuManager::Instance().currentPage > 1)	MenuManager::Instance().currentPage--;
+		});
 
+	HDData::GameObject* pageRightButton = API::CreateButton(_scene, "pageRight", roomListCanvas);
+	pageRightButton->GetTransform()->SetLocalPosition(500, 0, 0);
+	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
+	rBtn->SetImage("right.png");
+	rBtn->SetSortOrder(0.6f);
+	rBtn->SetOnClickEvent([]() {
+		if (MenuManager::Instance().currentPage < MenuManager::Instance().pageCount) MenuManager::Instance().currentPage++;
+		});
+
+	// room enter check button
+	HDData::GameObject* enterCheckCanvas = API::CreateImageBox(_scene, "enterCheck", roomListCanvas);
+	enterCheckCanvas->GetTransform()->SetPosition(960, 540, 0);
+	auto enterCheckImg = enterCheckCanvas->GetComponent<HDData::ImageUI>();
+	enterCheckImg->SetImage("enterCheckCanvas.png");
+	enterCheckImg->SetSortOrder(0.9);
+	enterCheckCanvas->SetSelfActive(false);
+
+	HDData::GameObject* enterCheckText = API::CreateTextbox(_scene, "enterCheckText", enterCheckCanvas);
+	enterCheckText->GetTransform()->SetLocalPosition(0, -30, 0);
+	auto enterText = enterCheckText->GetComponent<HDData::TextUI>();
+	enterText->SetText("Join?");
+	enterText->SetSortOrder(0.91);
+
+	HDData::GameObject* enterCheckExitButton = API::CreateButton(_scene, "enterCheckExit", enterCheckCanvas);
+	enterCheckExitButton->GetTransform()->SetLocalPosition(-100, 80, 0);
+	auto enterCheckexitImg = enterCheckExitButton->GetComponent<HDData::Button>();
+	enterCheckexitImg->SetImage("cancelButton.png");
+	enterCheckexitImg->SetSortOrder(0.91);
+
+	HDData::GameObject* enterButton = API::CreateButton(_scene, "enterButton", enterCheckCanvas);
+	enterButton->GetTransform()->SetLocalPosition(100, 80, 0);
+	auto enterImg = enterButton->GetComponent<HDData::Button>();
+	enterImg->SetImage("enterButton.png");
+	enterImg->SetSortOrder(0.91);
+
+	// room
 	float posY = 230.f;
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		HDData::GameObject* room = API::CreateButton(_scene, "room", roomListCanvas);
 		room->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
 		room->GetTransform()->SetPosition(960, posY, 0);
 		room->GetComponent<HDData::Button>()->SetSortOrder(0.8);
 
+		MenuManager::Instance()._roomObject[i].btn = room->GetComponent<HDData::Button>();
+
+		room->GetComponent<HDData::Button>()->SetOnClickEvent([=]()
+			{
+				enterCheckCanvas->SetSelfActive(true);
+			});
+
 		HDData::GameObject* roomTitle = API::CreateTextbox(_scene, "title", room);
 		roomTitle->GetTransform()->SetLocalPosition(-80, 0, 0);
 		auto roomT = roomTitle->GetComponent<HDData::TextUI>();
 		roomT->SetText("Title");
-		roomT->SetSortOrder(0.9);
+		roomT->SetSortOrder(0.81);
 		roomT->SetColor(DirectX::Colors::OrangeRed);
 
-		MenuManager::Instance().rooms[i].title = roomTitle;
+		roomTitle->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].title = roomT;
 
 		HDData::GameObject* roomID = API::CreateTextbox(_scene, "roomID", room);
 		roomID->GetTransform()->SetLocalPosition(-200, 0, 0);
 		auto roomid = roomID->GetComponent<HDData::TextUI>();
 		roomid->SetText("ID");
 		roomid->SetColor(DirectX::Colors::OrangeRed);
-		roomid->SetSortOrder(0.9);
-		
-		MenuManager::Instance().rooms[i].id = roomID;
+		roomid->SetSortOrder(0.81);
+
+		roomID->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].id = roomid;
 
 		HDData::GameObject* roomMaxCount = API::CreateImageBox(_scene, "maxCount", room);
 		roomMaxCount->GetTransform()->SetLocalPosition(280, 0, 0);
 		auto max = roomMaxCount->GetComponent<HDData::ImageUI>();
 		max->SetImage("flair_number_6_outline.png");
-		max->SetSortOrder(0.8);
+		max->SetSortOrder(0.81);
 
-		MenuManager::Instance().rooms[i].maxCount = roomMaxCount;
+		roomMaxCount->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].maxCount = max;
 
 		HDData::GameObject* roomCurrentCount = API::CreateImageBox(_scene, "currentCount", room);
 		roomCurrentCount->GetTransform()->SetLocalPosition(320, 0, 0);
 		auto current = roomCurrentCount->GetComponent<HDData::ImageUI>();
 		current->SetImage("flair_number_2_outline.png");
-		current->SetSortOrder(0.8);
+		current->SetSortOrder(0.81);
 
-		MenuManager::Instance().rooms[i].currentCount = roomCurrentCount;
+		roomCurrentCount->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].currentCount = current;
 
 		HDData::GameObject* isPrivateImage = API::CreateImageBox(_scene, "isLock", room);
 		isPrivateImage->GetTransform()->SetLocalPosition(100, 0, 0);
 		auto isP = isPrivateImage->GetComponent<HDData::ImageUI>();
 		isP->SetImage("icon_user_filled.png");
-		isP->SetSortOrder(0.9f);
+		isP->SetSortOrder(0.82);
 
-		MenuManager::Instance().rooms[i].isPrivate = isPrivateImage;
+		isPrivateImage->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].isPrivate = isP;
 
 		HDData::GameObject* isTeamImage = API::CreateImageBox(_scene, "isTeam", room);
 		isTeamImage->GetTransform()->SetLocalPosition(150, 0, 0);
 		auto isT = isTeamImage->GetComponent<HDData::ImageUI>();
 		isT->SetImage("icon_user_filled.png");
-		isT->SetSortOrder(0.9);
+		isT->SetSortOrder(0.82);
 
-		MenuManager::Instance().rooms[i].isTeam = isTeamImage;
+		isTeamImage->SetSelfActive(false);
 
-		posY += 200;
+		MenuManager::Instance()._roomObject[i].isTeam = isT;
+
+		posY += 150;
 	}
 
 	HDData::GameObject* roomMakeBtn = API::CreateButton(_scene, "roomMake", playBtn);
@@ -228,7 +290,7 @@ void MainMenuScene::MainMenu()
 
 	// Training Btn
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
-	trainingBtn->GetTransform()->SetPosition(130.0f,400.0f,0.f);
+	trainingBtn->GetTransform()->SetPosition(130.0f, 400.0f, 0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	trainingBtn->AddComponent<BtnScript>();
@@ -345,16 +407,16 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
-			Protocol::RoomInfo info;
-			info.set_roomname(roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			info.set_isprivate(privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn());
+			//Protocol::RoomInfo info;
+			//info.set_roomname(roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
+			//info.set_isprivate(privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn());
 
-			if (info.isprivate())
-			{
-				info.set_password(roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			}
+			//if (info.isprivate())
+			//{
+			//	info.set_password(roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
+			//}
 
-			NetworkManager::Instance().SetRoom(info);
+			//NetworkManager::Instance().SetRoom(info);
 		}
 	);
 
