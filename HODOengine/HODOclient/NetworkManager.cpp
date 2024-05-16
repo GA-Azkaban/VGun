@@ -241,7 +241,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
@@ -262,7 +261,6 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
