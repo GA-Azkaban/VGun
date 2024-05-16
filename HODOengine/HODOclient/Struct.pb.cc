@@ -115,6 +115,7 @@ constexpr PlayerData::PlayerData(
   : userinfo_(nullptr)
   , transform_(nullptr)
   , team_(0)
+
   , hp_(0)
   , host_(false)
   , issitting_(false)
@@ -240,19 +241,19 @@ const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "\n\tTransform\022\"\n\007vector3\030\001 \001(\0132\021.Protocol."
   "Vector3\022(\n\nquaternion\030\002 \001(\0132\024.Protocol.Q"
   "uaternion\"5\n\010UserInfo\022\013\n\003uid\030\001 \001(\005\022\n\n\002id"
-  "\030\002 \001(\t\022\020\n\010nickName\030\003 \001(\t\"\264\001\n\nPlayerData\022"
+  "\030\002 \001(\t\022\020\n\010nickName\030\003 \001(\t\"\312\001\n\nPlayerData\022"
   "$\n\010userInfo\030\001 \001(\0132\022.Protocol.UserInfo\022\014\n"
-  "\004host\030\002 \001(\010\022\014\n\004team\030\003 \001(\005\022&\n\ttransform\030\004"
-  " \001(\0132\023.Protocol.Transform\022\n\n\002hp\030\005 \001(\002\022\r\n"
-  "\005maxHp\030\006 \001(\002\022\021\n\tisSitting\030\007 \001(\010\022\016\n\006isDea"
-  "d\030\010 \001(\010b\006proto3"
+  "\004host\030\002 \001(\010\022\"\n\004team\030\003 \001(\0162\024.Protocol.eTe"
+  "amColor\022&\n\ttransform\030\004 \001(\0132\023.Protocol.Tr"
+  "ansform\022\n\n\002hp\030\005 \001(\002\022\r\n\005maxHp\030\006 \001(\002\022\021\n\tis"
+  "Sitting\030\007 \001(\010\022\016\n\006isDead\030\010 \001(\010b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Struct_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto = {
-  false, false, 775, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
+  false, false, 797, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
   &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 7,
   schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
   file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto, file_level_service_descriptors_Struct_2eproto,
@@ -2163,11 +2164,12 @@ const char* PlayerData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 team = 3;
+      // .Protocol.eTeamColor team = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
-          team_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
+          _internal_set_team(static_cast<::Protocol::eTeamColor>(val));
         } else goto handle_unusual;
         continue;
       // .Protocol.Transform transform = 4;
@@ -2248,10 +2250,11 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_host(), target);
   }
 
-  // int32 team = 3;
+  // .Protocol.eTeamColor team = 3;
   if (this->team() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_team(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      3, this->_internal_team(), target);
   }
 
   // .Protocol.Transform transform = 4;
@@ -2316,11 +2319,10 @@ size_t PlayerData::ByteSizeLong() const {
         *transform_);
   }
 
-  // int32 team = 3;
+  // .Protocol.eTeamColor team = 3;
   if (this->team() != 0) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_team());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_team());
   }
 
   // float hp = 5;
