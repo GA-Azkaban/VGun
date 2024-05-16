@@ -655,17 +655,17 @@ namespace RocketCore::Graphics
 		std::vector<Vertex> vertices(6);
 		std::vector<UINT> indices(6);
 
-		Vertex v1(XMFLOAT3{ -1, 1, 0 }, XMFLOAT2{ 0, 0 });
+		Vertex v1(XMFLOAT3{ -0.1, 0.1, 0 }, XMFLOAT2{ 0, 0 });
 		vertices[0] = v1;
-		Vertex v2(XMFLOAT3{ 1, 1, 0 }, XMFLOAT2{ 1, 0 });
+		Vertex v2(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
 		vertices[1] = v2;
-		Vertex v3(XMFLOAT3{ -1, -1, 0 }, XMFLOAT2{ 0, 1 });
+		Vertex v3(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
 		vertices[2] = v3;
-		Vertex v4(XMFLOAT3{ -1, -1, 0 }, XMFLOAT2{ 0, 1 });
+		Vertex v4(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
 		vertices[3] = v4;
-		Vertex v5(XMFLOAT3{ 1, 1, 0 }, XMFLOAT2{ 1, 0 });
+		Vertex v5(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
 		vertices[4] = v5;
-		Vertex v6(XMFLOAT3{ 1, -1, 0 }, XMFLOAT2{ 1, 1 });
+		Vertex v6(XMFLOAT3{ 0.1, -0.1, 0 }, XMFLOAT2{ 1, 1 });
 		vertices[5] = v6;
 
 		for (UINT i = 0; i < 6; ++i)

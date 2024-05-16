@@ -31,6 +31,7 @@ namespace HDData
 		void SetSize(float size);
 		void SetAngle(float angle);
 		void SetPosition(float x, float y, float z);
+		void SetPosition(Vector3 v);
 		void SetRotation(float x, float y, float z, float w);
 		void SetRotation(Quaternion q);
 		void SetScale(float x, float y, float z);

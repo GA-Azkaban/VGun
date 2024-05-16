@@ -21,13 +21,7 @@ namespace RocketCore::Graphics
 		virtual void SetMaterial(HDEngine::IMaterial* material) override;
 		virtual void SetColor(DirectX::XMINT4 color) override;
 		virtual void SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode) override;
-		virtual void SetPosition(float x, float y, float z) override;
-		virtual void SetAngle(float angle) override;
-		virtual void SetSize(float size) override;
-		virtual void RegisterOnRenderList() override;
-		virtual void DeleteFromRenderList() override;
 
-		void Update(float deltaTime);
 		void Render();
 
 	private:
@@ -37,8 +31,5 @@ namespace RocketCore::Graphics
 		Material* _material;
 		bool _isActive;
 		HDEngine::ParticleSystemRenderMode _renderMode;
-		float _speed;
-		float _size;
-		float _angle;
 	};
 }

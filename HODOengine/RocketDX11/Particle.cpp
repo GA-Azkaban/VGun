@@ -12,7 +12,6 @@ namespace RocketCore::Graphics
 	Particle::Particle()
 		: _world(DirectX::XMMatrixIdentity()), _mesh(nullptr), _material(nullptr),
 		_isActive(true), _renderMode(HDEngine::ParticleSystemRenderMode::Billboard),
-		_speed(0.0f), _size(1.0f), _angle(0.0f)
 	{
 		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 
@@ -51,7 +50,7 @@ namespace RocketCore::Graphics
 			_material = newMat;
 			if (_renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
 			{
-				_material->SetVertexShader()
+				//_material->SetVertexShader()
 			}
 		}
 	}
@@ -71,27 +70,9 @@ namespace RocketCore::Graphics
 		if (renderMode == HDEngine::ParticleSystemRenderMode::Billboard)
 		{
 			_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
+			_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso"));
+			_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso"));
 		}
-	}
-
-	void Particle::SetSpeed(float speed)
-	{
-		_speed = speed;
-	}
-
-	void Particle::SetSize(float size)
-	{
-		_size = size;
-	}
-
-	void Particle::SetRotation(float angle)
-	{
-		_angle = angle;
-	}
-
-	void Particle::Update(float deltaTime)
-	{
-
 	}
 
 	void Particle::Render()

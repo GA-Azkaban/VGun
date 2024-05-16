@@ -8,7 +8,7 @@ namespace HDData
 		: _particle(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateParticle()),
 		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard),
 		_mesh(""), _material(nullptr), _color{1.0f, 1.0f, 1.0f, 1.0f},
-		_speed(0.0f), _size(1.0f), _angle(0.0f),
+		_speed(5.0f), _size(1.0f), _angle(0.0f),
 		_position{0.0f, 0.0f, 0.0f}, _rotation{0.0f, 0.0f, 0.0f, 1.0f}, _scale{1.0f, 1.0f, 1.0f}
 	{
 
@@ -109,6 +109,11 @@ namespace HDData
 		_position.x = x;
 		_position.y = y;
 		_position.z = z;
+	}
+
+	void Particle::SetPosition(Vector3 v)
+	{
+		_position = v;
 	}
 
 	void Particle::SetRotation(float x, float y, float z, float w)
