@@ -14,7 +14,7 @@ namespace HDData
 		sizeOverLifetime(), rotationOverLifetime(),
 		useAutoRandomSeed(true), time(0.0f),
 		_isPlaying(false), _accumulatedDeltaTime(0.0f),
-		rd(), gen(rd)
+		rd(), gen(rd())
 	{
 		GetGameObject()->AddComponent<ParticleSystemRenderer>();
 	}

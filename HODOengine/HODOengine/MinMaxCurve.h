@@ -46,8 +46,10 @@ namespace HDData
 					ret = _curve.Evaluate(time);
 					break;
 				case HDData::ParticleSystemCurveMode::TwoConstants:
+				{
 					std::uniform_real_distribution dist(_constantMin, _constantMax);
 					ret = dist(gen);
+				}
 					break;
 				default:
 					break;

@@ -7,7 +7,7 @@ namespace HDData
 	Particle::Particle()
 		: _particle(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateParticle()),
 		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard),
-		_mesh(""), _material(nullptr), _color{1.0f, 1.0f, 1.0f, 1.0f},
+		_mesh(""), _material(nullptr), _color{255, 255, 255, 255},
 		_speed(5.0f), _size(1.0f), _angle(0.0f),
 		_position{0.0f, 0.0f, 0.0f}, _rotation{0.0f, 0.0f, 0.0f, 1.0f}, _scale{1.0f, 1.0f, 1.0f}
 	{

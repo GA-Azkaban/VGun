@@ -652,28 +652,28 @@ namespace RocketCore::Graphics
 		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
 
 		// 쿼드 메쉬
-		std::vector<Vertex> vertices(6);
-		std::vector<UINT> indices(6);
+		std::vector<Vertex> quadVertices(6);
+		std::vector<UINT> quadIndices(6);
 
 		Vertex v1(XMFLOAT3{ -0.1, 0.1, 0 }, XMFLOAT2{ 0, 0 });
-		vertices[0] = v1;
+		quadVertices[0] = v1;
 		Vertex v2(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
-		vertices[1] = v2;
+		quadVertices[1] = v2;
 		Vertex v3(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
-		vertices[2] = v3;
+		quadVertices[2] = v3;
 		Vertex v4(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
-		vertices[3] = v4;
+		quadVertices[3] = v4;
 		Vertex v5(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
-		vertices[4] = v5;
+		quadVertices[4] = v5;
 		Vertex v6(XMFLOAT3{ 0.1, -0.1, 0 }, XMFLOAT2{ 1, 1 });
-		vertices[5] = v6;
+		quadVertices[5] = v6;
 
 		for (UINT i = 0; i < 6; ++i)
 		{
-			indices[i] = i;
+			quadIndices[i] = i;
 		}
 
-		Mesh* quadMesh = new Mesh(&vertices[0], 6, &indices[0], 6);
+		Mesh* quadMesh = new Mesh(&quadVertices[0], 6, &quadIndices[0], 6);
 		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);
 
 		// 디버그 메쉬

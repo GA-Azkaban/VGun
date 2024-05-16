@@ -168,17 +168,6 @@ namespace RocketCore::Graphics
 		return capsule;
 	}
 
-	void ObjectManager::InsertOnParticleList(HDEngine::IParticle* particle)
-	{
-
-		_particleList.insert();
-	}
-
-	void ObjectManager::EraseFromParticleList(HDEngine::IParticle* particle)
-	{
-
-	}
-
 	TextRenderer* ObjectManager::CreateText()
 	{
 		TextRenderer* TextObject = new TextRenderer();
