@@ -26,6 +26,13 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
+	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
+	mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("arrowLeft.png");
+	mainCanvas->GetComponent<HDData::ImageUI>()->SetWorldSpace();
+	mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
+	mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	mainCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
+
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
 	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();

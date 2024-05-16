@@ -4,8 +4,11 @@
 
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
+#include "Camera.h"
 
 #define FILEPATH "Resources/UI/"
+
+using namespace DirectX;
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
@@ -151,11 +154,21 @@ void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 	if (_isInWorldSpace)
 	{
 		// 카메라 방향으로 회전해준다
-
+		XMFLOAT3 cameraPosition = Camera::GetMainCamera()->GetPosition();
+		float radian = std::atan2(0.0 - cameraPosition.x, 0.0 - cameraPosition.z);
+		XMVECTOR translate;
+		XMVECTOR rotation;
+		XMVECTOR scale;
+		XMMatrixDecompose(&scale, &rotation, &translate, worldTM);
+		XMMATRIX rotToCamMat = XMMatrixScalingFromVector(scale) * XMMatrixRotationRollPitchYawFromVector(rotation)* XMMatrixRotationY(radian)* XMMatrixTranslationFromVector(translate);
+		_xlocation = rotToCamMat.r[3].m128_f32[0];
+		_ylocation = rotToCamMat.r[3].m128_f32[1];
 	}
-
-	_xlocation = worldTM._41;
-	_ylocation = worldTM._42;
+	else
+	{
+		_xlocation = worldTM._41;
+		_ylocation = worldTM._42;
+	}
 	_receiveTMInfoFlag = true;
 }
 
