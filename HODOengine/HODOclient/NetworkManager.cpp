@@ -218,7 +218,6 @@ void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 	roomInfo.roomid();
 }
 
-void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
 {
 	Protocol::C_ROOM_CREATE packet;
@@ -233,7 +232,7 @@ void NetworkManager::SendRoomCreate(std::string roomName, std::string password /
 	this->_service->BroadCast(sendBuffer);
 }
 
-void NetworkManager::SetRoom()
+void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 {
 	Protocol::C_ROOM_CREATE packet;
 

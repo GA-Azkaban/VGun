@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Struct.pb.h"
 #include "GameStruct.h"
 #include "../HODOengine/HODO_API.h"
@@ -34,7 +34,7 @@ public:
 	void RoomEneter(Protocol::RoomInfo);
 	void SetRoom(Protocol::RoomInfo);
 	void ShowRoomList();
-	void GetRoomList();
+	void GetRoomListFromServer();
 	void RoomExit();
 
 	void OtherPlayerEnter();
@@ -42,6 +42,8 @@ public:
 
 	std::vector<roominfo*>& GetRoomList();
 	void SetRoomListCanvas(HDData::GameObject* obj);
+
+	void ShowRoomListCanvas(bool isShow);
 
 public:
 	std::string GetNumberImage(int num);

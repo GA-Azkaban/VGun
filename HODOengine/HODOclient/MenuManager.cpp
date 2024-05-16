@@ -28,14 +28,25 @@ void MenuManager::SetMainMenuCanvas(HDData::GameObject* mainCanvas)
 	_mainMenuCanvas = mainCanvas;
 }
 
-void MenuManager::RoomEnter()
+void MenuManager::RoomEneter(Protocol::RoomInfo)
 {
 
 }
 
-void MenuManager::SetRoom()
+void MenuManager::SetRoom(Protocol::RoomInfo)
 {
 	
+}
+
+void MenuManager::ShowRoomList()
+{
+
+}
+
+void MenuManager::GetRoomListFromServer()
+{
+	NetworkManager::Instance().SendRoomListRequest();
+
 }
 
 void MenuManager::ShowRoomListCanvas(bool isShow)
@@ -44,21 +55,6 @@ void MenuManager::ShowRoomListCanvas(bool isShow)
 
 	if (!isShow) return;
 
-	NetworkManager::Instance().SendRoomListRequest();
-}
-
-void MenuManager::GetRoomList()
-{
-	NetworkManager::Instance().SendRoomListRequest();
-}
-
-void MenuManager::GetRoomList()
-{
-	NetworkManager::Instance().SendRoomListRequest();
-}
-
-void MenuManager::GetRoomList()
-{
 	NetworkManager::Instance().SendRoomListRequest();
 }
 

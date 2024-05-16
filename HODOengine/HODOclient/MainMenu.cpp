@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -201,7 +201,7 @@ void MainMenuScene::MainMenu()
 
 	// privateCheckBox
 	HDData::GameObject* privateCheckBox = API::CreateToggle(_scene, "privateCheckBox", setRoomCanvas);
-	privateCheckBox->GetComponent<HDData::ToggleUI>()->GetOnComp()->SetImage("checkBox.png");
+	privateCheckBox->GetComponent<HDData::ToggleUI>()->GetOnComp()->SetImage("checkbox_background.png");
 	privateCheckBox->GetComponent<HDData::ToggleUI>()->GetOffComp()->SetImage("checkbox_cross.png");
 	privateCheckBox->GetTransform()->SetPosition(1200.0f, 240.0f, 0.0f);
 	privateCheckBox->GetComponent<HDData::ToggleUI>()->SetSortOrder(0.75f);
@@ -274,15 +274,8 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* preferencesCanvas = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
 	preferencesCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
-	//preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("temp1.png");
 	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
-
-	HDData::GameObject* preferencesCanvas2 = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
-	preferencesCanvas2->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	preferencesCanvas2->GetComponent<HDData::ImageUI>()->SetImage("temp123.png");
-	preferencesCanvas2->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	preferencesCanvas2->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	// event
 	// game play btn
@@ -361,7 +354,6 @@ void MainMenuScene::MainMenu()
 			}
 		}
 	);
-
 
 	roomSetBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
