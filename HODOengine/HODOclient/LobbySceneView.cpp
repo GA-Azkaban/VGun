@@ -74,7 +74,8 @@ void LobbySceneView::Initialize()
 		auto defaultCanvas = API::CreateImageBox(_scene, "defaultCanvas");
 		defaultCanvas->GetTransform()->SetPosition(defaultX, 450, 0);
 		auto img = defaultCanvas->GetComponent<HDData::ImageUI>();
-		img->SetImage("settingCanvas.png");
+		//img->SetImage("settingCanvas.png");
+		img->SetImage("alphaRefCanvas2.png");
 
 		auto subCanvas = API::CreateImageBox(_scene, "subCanvas", defaultCanvas);
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");

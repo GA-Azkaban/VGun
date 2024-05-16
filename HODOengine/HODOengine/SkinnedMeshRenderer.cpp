@@ -30,7 +30,7 @@ namespace HDData
 	
 	void SkinnedMeshRenderer::LoadMaterial(HDData::Material* material, unsigned int element /*= 0*/)
 	{
-		_skinnedMesh->LoadMaterial(material->_material, element);
+		_skinnedMesh->LoadMaterial(material->Get(), element);
 	}
 
 	void SkinnedMeshRenderer::LoadNormalMap(const std::string& fileName, unsigned int element /* = 0 */)

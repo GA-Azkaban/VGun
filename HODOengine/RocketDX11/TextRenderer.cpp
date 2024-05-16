@@ -22,6 +22,7 @@ namespace RocketCore::Graphics
 		_font = ResourceManager::Instance().GetDefaultFont();
 		_str = "Default Text";
 		_color = DirectX::Colors::White;
+		_defaultColor = DirectX::Colors::White;
 	}
 
 	TextRenderer::~TextRenderer()
@@ -173,6 +174,16 @@ namespace RocketCore::Graphics
 	void TextRenderer::SetFont(const std::string& str)
 	{
 		_font = ResourceManager::Instance().SetFont(str);
+	}
+
+	void TextRenderer::SetDefaultColor(DirectX::FXMVECTOR color)
+	{
+		_defaultColor = color;
+	}
+
+	void TextRenderer::ReturnDefaultColor()
+	{
+		_color = _defaultColor;
 	}
 
 }

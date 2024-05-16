@@ -1,4 +1,4 @@
-﻿#include "TextUI.h"
+#include "TextUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
@@ -42,9 +42,18 @@ namespace HDData
 		_textUI->SetText(str);
 	}
 
+	void TextUI::SetDefaultColor(DirectX::FXMVECTOR color)
+	{
+		_textUI->SetDefaultColor(color);
+	}
+
+	void TextUI::ReturnDefaultColor()
+	{
+		_textUI->ReturnDefaultColor();
+	}
+
 	std::string TextUI::GetText()
 	{
 		return _textUI->GetText();
 	}
-
 }

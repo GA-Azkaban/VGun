@@ -30,7 +30,7 @@ TestScene::TestScene()
 	mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("arrowLeft.png");
 	mainCanvas->GetComponent<HDData::ImageUI>()->SetWorldSpace();
 	mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
-	mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	mainCanvas->GetTransform()->SetPosition(0.f, 0.f, 0.f);
 	mainCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
 
 	//auto testBox1 = API::CreateObject(_scene);
@@ -38,6 +38,16 @@ TestScene::TestScene()
 	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	//boxRender1->LoadMesh("primitiveCube");
 	////
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.5f, 0.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("primitiveCube");
+	HDEngine::MaterialDesc boxMat1;
+	boxMat1.materialName = "boxMat";
+	boxMat1.color = { 111,91,72,255 };
+	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
+	boxRender1->LoadMaterial(newBoxMat1, 0);
+	
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
 	//auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();

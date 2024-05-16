@@ -41,10 +41,6 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
-
-
-
-
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 		m_node = ResourceManager::Instance().GetNode(fileName);
 	}

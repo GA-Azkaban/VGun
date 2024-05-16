@@ -62,6 +62,9 @@
     <Filter Include="Header">
       <UniqueIdentifier>{b02baf03-ea33-4b33-8ca3-2c4eab4f9399}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{a7a8edbf-e147-4ac0-a5f6-9c00d8539a7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -119,6 +122,12 @@
       <Filter>Light</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IParticle.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemRenderMode.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -32,9 +32,10 @@ public:
 public:
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 
-	void RoomEnter();
-	void SetRoom();
-	void ShowRoomListCanvas(bool isShow);
+	void RoomEneter(Protocol::RoomInfo);
+	void SetRoom(Protocol::RoomInfo);
+	void ShowRoomList();
+	void GetRoomListFromServer();
 	void RoomExit();
 
 	void OtherPlayerEnter();
@@ -42,6 +43,8 @@ public:
 
 	std::vector<roominfo*>& GetRoomList();
 	void SetRoomListCanvas(HDData::GameObject* obj);
+
+	void ShowRoomListCanvas(bool isShow);
 
 public:
 	std::string GetNumberImage(int num);

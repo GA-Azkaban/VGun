@@ -2,7 +2,6 @@
 
 #include <d3d11.h>
 #include <memory>
-//#include <vector>
 #include <DXTK\\SpriteBatch.h>
 #include <DXTK\\WICTextureLoader.h>
 #include <wrl\client.h>
@@ -14,6 +13,11 @@
 
 namespace RocketCore::Graphics
 {
+	class Mesh;
+	class Material;
+	class VertexShader;
+	class PixelShader;
+
 	class ImageRenderer : public HDEngine::ISketchableImage
 	{
 	public:
@@ -46,7 +50,8 @@ namespace RocketCore::Graphics
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }
 
-
+		virtual void SetDefalutColor(DirectX::FXMVECTOR color)override;
+		virtual void RetunDefalutColor()override;
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
@@ -64,6 +69,7 @@ namespace RocketCore::Graphics
 		// 내부 변수들
 		std::string _str;
 		DirectX::XMVECTOR _color;
+		DirectX::XMVECTOR _defalutcolor;
 		float _xlocation;
 		float _ylocation;
 		float _scaleX;
@@ -93,6 +99,12 @@ namespace RocketCore::Graphics
 
 		float _sortOrder;
 
+		// world space UI
 		bool _isInWorldSpace;
+		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _rasterizerState;
+		DirectX::XMMATRIX _world;
+		Mesh* _mesh;
+		VertexShader* _vertexShader;
+		PixelShader* _pixelShader;
 	};
 }
