@@ -16,7 +16,8 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_imageHeight(),
 	_active(true),
 	_receiveTMInfoFlag(false),
-	_sortOrder()
+	_sortOrder(),
+	_isInWorldSpace(false)
 {
 	_color = DirectX::Colors::White;
 }
@@ -87,7 +88,7 @@ void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float 
 
 void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
 {
-
+	_isInWorldSpace = true;
 }
 
 void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBatch)
@@ -147,6 +148,12 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 
 void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 {
+	if (_isInWorldSpace)
+	{
+		// 카메라 방향으로 회전해준다
+
+	}
+
 	_xlocation = worldTM._41;
 	_ylocation = worldTM._42;
 	_receiveTMInfoFlag = true;
@@ -154,7 +161,7 @@ void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpace()
 {
-
+	_isInWorldSpace = false;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetActive(bool isActive)
