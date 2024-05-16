@@ -1,6 +1,7 @@
 #pragma once
 
-namespace Horang {
+namespace Horang
+{
 	class ThreadManager;
 	class Memory;
 	class SendBufferManager;
