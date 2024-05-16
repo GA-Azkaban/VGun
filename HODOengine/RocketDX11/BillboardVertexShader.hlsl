@@ -20,8 +20,7 @@ VertexToPixel main(VertexShaderInput input)
 
     float4 pos = mul(float4(input.position, 1.0f), world);
     output.position = mul(pos, viewProjection);
-    output.uv.x = input.uv.x / tiling.x;
-    output.uv.y = input.uv.y / tiling.y;
+    output.uv = input.uv;
 
     return output;
 }

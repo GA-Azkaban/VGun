@@ -11,12 +11,12 @@ namespace RocketCore::Graphics
 
 	Particle::Particle()
 		: _world(DirectX::XMMatrixIdentity()), _mesh(nullptr), _material(nullptr),
-		_isActive(true), _renderMode(HDEngine::ParticleSystemRenderMode::Billboard),
+		_isActive(true), _renderMode(HDEngine::ParticleSystemRenderMode::Billboard)
 	{
 		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 
 		_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
-		_material = ResourceManager::Instance().GetLoadedMaterial("Default");
+		_material = ResourceManager::Instance().GetLoadedMaterial("Default-ParticleSystem");
 		_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso"));
 		_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso"));
 	}
@@ -81,6 +81,8 @@ namespace RocketCore::Graphics
 		{
 			return;
 		}
+
+
 	}
 
 }
