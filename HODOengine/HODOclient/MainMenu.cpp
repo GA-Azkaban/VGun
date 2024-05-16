@@ -407,16 +407,16 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
-			Protocol::RoomInfo info;
-			info.set_roomname(roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			info.set_isprivate(privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn());
+			//Protocol::RoomInfo info;
+			//info.set_roomname(roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
+			//info.set_isprivate(privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn());
 
-			if (info.isprivate())
-			{
-				info.set_password(roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			}
+			//if (info.isprivate())
+			//{
+			//	info.set_password(roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
+			//}
 
-			NetworkManager::Instance().SetRoom(info);
+			//NetworkManager::Instance().SetRoom(info);
 		}
 	);
 
