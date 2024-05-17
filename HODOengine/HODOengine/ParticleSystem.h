@@ -13,8 +13,12 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <random>
-//#include <utility>
+
+namespace HDEngine
+{
+	class IParticle;
+	class IParticleSystem;
+}
 
 namespace HDData
 {
@@ -33,9 +37,10 @@ namespace HDData
 		void Stop();
 		void Clear();
 
-		std::unordered_map<HDData::Particle*, std::pair<float, float>>& GetActivatedParticleList();
+		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>>& GetActivatedParticleList();
 
 	protected:
+		virtual void Start() override;
 		virtual void Update() override;
 
 	public:
@@ -48,19 +53,16 @@ namespace HDData
 		RendererModule rendererModule;
 		bool useAutoRandomSeed;
 		float time;
-		//int particleCount;
 
 	private:
+		HDEngine::IParticleSystem* _particleSystem;
 		bool _isPlaying;
 		float _accumulatedDeltaTime;
-
 		// <Particle, <lifetime, accumulateDeltaTime>>
-		std::unordered_map<HDData::Particle*, std::pair<float, float>> _activatedParticles;
+		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>> _activatedParticles;
+		std::vector<HDEngine::IParticle*> _lifeOverParticles;
 
-		std::vector<HDData::Particle*> _lifeOverParticles;
-
-		// random		
-		std::random_device rd;
+		// random
 		std::mt19937 gen;
 	};
 

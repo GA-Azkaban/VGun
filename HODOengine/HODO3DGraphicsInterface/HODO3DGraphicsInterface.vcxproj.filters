@@ -65,6 +65,9 @@
     <Filter Include="Particle">
       <UniqueIdentifier>{a7a8edbf-e147-4ac0-a5f6-9c00d8539a7b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ParticleSystem">
+      <UniqueIdentifier>{5ef433ab-69ff-41fd-8302-32f05ef15182}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -129,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystemRenderMode.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IParticleSystem.h">
+      <Filter>ParticleSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,9 +2,10 @@
 #include "GameObject.h"
 #include "ParticleSystemRenderer.h"
 #include "TimeSystem.h"
-#include "Particle.h"
-#include "ParticlePool.h"
 #include "GraphicsObjFactory.h"
+#include "RandomGenerator.h"
+#include "../HODO3DGraphicsInterface/IParticle.h"
+#include "../HODO3DGraphicsInterface/IParticleSystem.h"
 
 namespace HDData
 {
@@ -14,9 +15,9 @@ namespace HDData
 		sizeOverLifetime(), rotationOverLifetime(),
 		useAutoRandomSeed(true), time(0.0f),
 		_isPlaying(false), _accumulatedDeltaTime(0.0f),
-		rd(), gen(rd())
+		_particleSystem(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateParticleSystem())
 	{
-		GetGameObject()->AddComponent<ParticleSystemRenderer>();
+		gen = HDEngine::RandomGenerator::Instance().MersenneTwiste();
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -45,14 +46,23 @@ namespace HDData
 	{
 		for (auto& e : _activatedParticles)
 		{
-			HDEngine::ParticlePool::Instance().Retrieve(e.first);
+			//HDEngine::ParticlePool::Instance().Retrieve(e.first);
+			_particleSystem->DestroyParticle(e.first);
 		}
 		_activatedParticles.clear();
 	}
 
-	std::unordered_map<HDData::Particle*, std::pair<float, float>>& ParticleSystem::GetActivatedParticleList()
+	std::unordered_map<HDEngine::IParticle*, std::pair<float, float>>& ParticleSystem::GetActivatedParticleList()
 	{
 		return _activatedParticles;
+	}
+
+	void ParticleSystem::Start()
+	{
+		GetGameObject()->AddComponent<ParticleSystemRenderer>();
+		_particleSystem->SetMesh(rendererModule.mesh);
+		_particleSystem->SetMaterial(rendererModule.material->Get());
+		_particleSystem->SetRenderMode(rendererModule.renderMode);
 	}
 
 	void ParticleSystem::Update()
@@ -77,11 +87,9 @@ namespace HDData
 					for (int i = 0; i < burst.count; ++i)
 					{
 						// 파티쿨 풀에서 가져오기
-						HDData::Particle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
+						//HDData::Particle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
+						HDEngine::IParticle* particle = _particleSystem->SummonParticle();
 						// 파티클 정보 세팅
-						particle->SetMesh(rendererModule.mesh);
-						particle->SetMaterial(rendererModule.material);
-						particle->SetRenderMode(rendererModule.renderMode);
 						std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
 						std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
 						std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
@@ -111,11 +119,8 @@ namespace HDData
 					for (int i = 0; i < randomCount; ++i)
 					{
 						// 파티클 풀에서 가져오기
-						HDData::Particle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
-						// 파티클 정보 세팅
-						particle->SetMesh(rendererModule.mesh);
-						particle->SetMaterial(rendererModule.material);
-						particle->SetRenderMode(rendererModule.renderMode);
+						//HDData::Particle* particle = HDEngine::ParticlePool::Instance().SummonParticle();
+						HDEngine::IParticle* particle = _particleSystem->SummonParticle();
 						std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
 						std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
 						std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
@@ -172,7 +177,8 @@ namespace HDData
 			auto iter = _activatedParticles.find(_lifeOverParticles[i]);
 			if (iter != _activatedParticles.end())
 			{
-				HDEngine::ParticlePool::Instance().Retrieve(iter->first);
+				//HDEngine::ParticlePool::Instance().Retrieve(iter->first);
+				_particleSystem->DestroyParticle(iter->first);
 				_activatedParticles.erase(iter);
 			}
 		}
@@ -190,7 +196,8 @@ namespace HDData
 				// 활성화 되어 있던 파티클 삭제
 				for (auto iter = _activatedParticles.begin(); iter != _activatedParticles.end(); ++iter)
 				{
-					HDEngine::ParticlePool::Instance().Retrieve(iter->first);
+					//HDEngine::ParticlePool::Instance().Retrieve(iter->first);
+					_particleSystem->DestroyParticle(iter->first);
 				}
 				_activatedParticles.clear();
 			}

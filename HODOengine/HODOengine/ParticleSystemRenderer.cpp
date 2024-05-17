@@ -15,12 +15,17 @@ namespace HDData
 
 	ParticleSystemRenderer::ParticleSystemRenderer()
 	{
-		_particleSystem = GetGameObject()->GetComponent<HDData::ParticleSystem>();
+		
 	}
 
 	ParticleSystemRenderer::~ParticleSystemRenderer()
 	{
 		_particleSystem = nullptr;
+	}
+
+	void ParticleSystemRenderer::Start()
+	{
+		_particleSystem = GetGameObject()->GetComponent<HDData::ParticleSystem>();
 	}
 
 	void ParticleSystemRenderer::Update()
@@ -43,7 +48,7 @@ namespace HDData
 			Vector3 currentPos = e.first->GetPosition();
 			e.first->SetPosition(delta + currentPos);
 			// 빌보드일 경우 카메라 방향을 바라보게 회전
-			if (e.first->GetRenderMode() == HDEngine::ParticleSystemRenderMode::Billboard)
+			if (_particleSystem->rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Billboard)
 			{		
 				HDData::Camera* mainCam = HDEngine::SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
 				Vector3 cameraPosition = mainCam->GetTransform()->GetPosition();
@@ -53,17 +58,14 @@ namespace HDData
 			}
 			// 스케일값 갱신
 			float scale = e.first->GetSize();
-			e.first->SetScale(scale, scale, scale);
+			e.first->SetScale({scale, scale, scale});
 			// worldTM 정보 넘겨주기
 			// 파티클의 localTM을 구해서 파티클렌더러의 worldTM과 곱해서 넘겨준다.
 			Matrix localTM;
 			localTM *= Matrix::CreateScale(e.first->GetScale());
 			localTM *= Matrix::CreateFromQuaternion(e.first->GetRotation());
 			localTM *= Matrix::CreateTranslation(e.first->GetPosition());
-			e.first->Get().SetWorldTM(DirectX::XMMatrixMultiply(localTM, worldTM));
-			// 컬러값 갱신
-			e.first->Get().SetColor(e.first->GetColor());
-			// 메쉬, 매터리얼 갱신은 어떻게 할까?
+			e.first->SetWorldTM(DirectX::XMMatrixMultiply(localTM, worldTM));
 		}
 	}
 

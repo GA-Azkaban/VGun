@@ -1,16 +1,17 @@
 ﻿#include "ParticlePass.h"
+#include "DeferredBuffers.h"
 #include "QuadBuffer.h"
-#include "BillboardParticle.h"
 #include "ResourceManager.h"
+#include "ObjectManager.h"
+#include "ParticleSystem.h"
+#include <vector>
 
 namespace RocketCore::Graphics
 {
 
-	ParticlePass::ParticlePass(QuadBuffer* toneMapBuffer)
-		: _toneMapBuffer(toneMapBuffer)
+	ParticlePass::ParticlePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer)
+		: _deferredBuffers(deferredBuffers), _quadBuffer(quadBuffer)
 	{
-		_billboard = new BillboardParticle();
-
 		D3D11_BLEND_DESC blendDesc;
 		blendDesc.AlphaToCoverageEnable = false;
 		blendDesc.IndependentBlendEnable = false;
@@ -32,14 +33,23 @@ namespace RocketCore::Graphics
 
 	ParticlePass::~ParticlePass()
 	{
-		_toneMapBuffer = nullptr;
+		delete _deferredBuffers;
+		delete _quadBuffer;
 	}
 
 	void ParticlePass::Render()
 	{
-		_toneMapBuffer->SetRenderTargets();
+		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 		ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(_blendState.Get(), _blendFactor, 0xFFFFFFFF);
-		_billboard->Render();
+
+		// 같은 메쉬, 같은 매터리얼끼리 모아둔 벡터
+		// 돌면서 각 파티클의 월드 매트릭스 갱신
+		// 그린다.
+		std::vector<ParticleSystem*>& psList = ObjectManager::Instance().GetParticleSystemList();
+		for (int i = 0; i < psList.size(); ++i)
+		{
+			psList[i]->Render();
+		}
 
 		ID3D11ShaderResourceView* nullSRV = nullptr;
 		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);

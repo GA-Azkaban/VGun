@@ -239,10 +239,9 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="LowerAnimator.h" />
     <ClInclude Include="MainModule.h" />
     <ClInclude Include="MinMaxCurve.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticlePool.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="ParticleSystemRenderer.h" />
+    <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="RendererModule.h" />
     <ClInclude Include="RotationOverLifetimeModule.h" />
     <ClInclude Include="SizeOverLifetimeModule.h" />
@@ -344,8 +343,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Gradient.cpp" />
     <ClCompile Include="LowerAnimator.cpp" />
-    <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticlePool.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleSystemRenderer.cpp" />
     <ClCompile Include="StaticSphereCollider.cpp" />

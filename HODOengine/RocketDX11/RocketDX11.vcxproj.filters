@@ -207,6 +207,9 @@
     <ClCompile Include="ParticlePool.cpp">
       <Filter>Object\Particle\ParticlePool</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Object\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="ParticlePool.h">
       <Filter>Object\Particle\ParticlePool</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Object\Particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
