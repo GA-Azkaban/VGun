@@ -71,7 +71,7 @@ namespace HDData
 		{
 			if (burst.currentCycleCount < burst.cycleCount)
 			{
-				std::uniform_real_distribution real_dist(main.minStartLifetime, main.maxStartLifetime);
+				std::uniform_real_distribution<float> real_dist(main.minStartLifetime, main.maxStartLifetime);
 				if (burst.count > -1)
 				{
 					for (int i = 0; i < burst.count; ++i)
@@ -82,22 +82,22 @@ namespace HDData
 						particle->SetMesh(rendererModule.mesh);
 						particle->SetMaterial(rendererModule.material);
 						particle->SetRenderMode(rendererModule.renderMode);
-						std::uniform_int_distribution color_dist_r(main.minStartColor.x, main.maxStartColor.x);
-						std::uniform_int_distribution color_dist_g(main.minStartColor.y, main.maxStartColor.y);
-						std::uniform_int_distribution color_dist_b(main.minStartColor.z, main.maxStartColor.z);
-						std::uniform_int_distribution color_dist_a(main.minStartColor.w, main.maxStartColor.w);
+						std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
+						std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
+						std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
+						std::uniform_int_distribution<> color_dist_a(main.minStartColor.w, main.maxStartColor.w);
 						int r = color_dist_r(gen);
 						int g = color_dist_g(gen);
 						int b = color_dist_b(gen);
 						int a = color_dist_a(gen);
 						particle->SetColor(DirectX::XMINT4{ r, g, b, a });
-						std::uniform_real_distribution speed_dist(main.minStartSpeed, main.maxStartSpeed);
+						std::uniform_real_distribution<float> speed_dist(main.minStartSpeed, main.maxStartSpeed);
 						float speed = speed_dist(gen);
 						particle->SetSpeed(speed);
-						std::uniform_real_distribution size_dist(main.minStartSize, main.maxStartSize);
+						std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
 						float size = size_dist(gen);
 						particle->SetSize(size);
-						std::uniform_real_distribution rotation_dist(main.minStartRotation, main.maxStartRotation);
+						std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
 						float angle = rotation_dist(gen);
 						particle->SetAngle(angle);
 						float randomLifetime = real_dist(gen);
@@ -106,7 +106,7 @@ namespace HDData
 				}
 				else
 				{
-					std::uniform_int_distribution int_dist(burst.minCount, burst.maxCount);
+					std::uniform_int_distribution<> int_dist(burst.minCount, burst.maxCount);
 					int randomCount = int_dist(gen);
 					for (int i = 0; i < randomCount; ++i)
 					{
@@ -116,22 +116,22 @@ namespace HDData
 						particle->SetMesh(rendererModule.mesh);
 						particle->SetMaterial(rendererModule.material);
 						particle->SetRenderMode(rendererModule.renderMode);
-						std::uniform_int_distribution color_dist_r(main.minStartColor.x, main.maxStartColor.x);
-						std::uniform_int_distribution color_dist_g(main.minStartColor.y, main.maxStartColor.y);
-						std::uniform_int_distribution color_dist_b(main.minStartColor.z, main.maxStartColor.z);
-						std::uniform_int_distribution color_dist_a(main.minStartColor.w, main.maxStartColor.w);
+						std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
+						std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
+						std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
+						std::uniform_int_distribution<> color_dist_a(main.minStartColor.w, main.maxStartColor.w);
 						int r = color_dist_r(gen);
 						int g = color_dist_g(gen);
 						int b = color_dist_b(gen);
 						int a = color_dist_a(gen);
 						particle->SetColor(DirectX::XMINT4{ r, g, b, a });
-						std::uniform_real_distribution speed_dist(main.minStartSpeed, main.maxStartSpeed);
+						std::uniform_real_distribution<float> speed_dist(main.minStartSpeed, main.maxStartSpeed);
 						float speed = speed_dist(gen);
 						particle->SetSpeed(speed);
-						std::uniform_real_distribution size_dist(main.minStartSize, main.maxStartSize);
+						std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
 						float size = size_dist(gen);
 						particle->SetSize(size);
-						std::uniform_real_distribution rotation_dist(main.minStartRotation, main.maxStartRotation);
+						std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
 						float angle = rotation_dist(gen);
 						particle->SetAngle(angle);
 						float randomLifetime = real_dist(gen);

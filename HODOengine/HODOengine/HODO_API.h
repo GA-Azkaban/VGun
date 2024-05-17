@@ -49,6 +49,7 @@
 #include "HDMaterial.h"
 #include "MaterialManager.h"
 #include "Tween.h"
+#include "ParticleSystem.h"
 
 
 #include "ObjectSystem.h"

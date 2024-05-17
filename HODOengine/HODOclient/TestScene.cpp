@@ -36,6 +36,9 @@ TestScene::TestScene()
 	boxMat1.color = { 111,91,72,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
+
+	auto particleSystem = API::CreateObject(_scene);
+	particleSystem->AddComponent<HDData::ParticleSystem>();
 	
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
