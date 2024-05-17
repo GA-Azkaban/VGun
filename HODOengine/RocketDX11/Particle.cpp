@@ -15,7 +15,7 @@ namespace RocketCore::Graphics
 	{
 		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 
-		_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
+		_mesh = ResourceManager::Instance().GetMeshes("billboardMesh")[0];
 		_material = ResourceManager::Instance().GetLoadedMaterial("Default-ParticleSystem");
 		_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso"));
 		_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso"));
@@ -69,7 +69,7 @@ namespace RocketCore::Graphics
 
 		if (renderMode == HDEngine::ParticleSystemRenderMode::Billboard)
 		{
-			_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
+			_mesh = ResourceManager::Instance().GetMeshes("billboardMesh")[0];
 			_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso"));
 			_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso"));
 		}

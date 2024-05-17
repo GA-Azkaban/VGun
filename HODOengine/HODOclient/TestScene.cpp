@@ -26,19 +26,23 @@ TestScene::TestScene()
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
-	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
-	mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("arrowLeft.png");
-	mainCanvas->GetComponent<HDData::ImageUI>()->SetWorldSpace();
-	mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
-	mainCanvas->GetTransform()->SetPosition(0.f, 0.f, 0.f);
-	mainCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 1.0f, 1.0f);
+	testBox1->GetComponent<HDData::Transform>()->SetScale(1.0f, 1.5f, 1.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("primitiveQuad");
+	HDEngine::MaterialDesc quadDesc;
+	quadDesc.materialName = "QuadBlue";
+	quadDesc.color = { 100, 0, 200, 255 };
+	HDData::Material* newQuadMat = API::CreateMaterial(quadDesc);
+	boxRender1->LoadMaterial(newQuadMat, 0);
 
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
 	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	//boxRender1->LoadMesh("primitiveCube");
-	////
-	auto testBox1 = API::CreateObject(_scene);
+	
+	/*auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.5f, 0.0f);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->LoadMesh("primitiveCube");
@@ -46,7 +50,7 @@ TestScene::TestScene()
 	boxMat1.materialName = "boxMat";
 	boxMat1.color = { 111,91,72,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
-	boxRender1->LoadMaterial(newBoxMat1, 0);
+	boxRender1->LoadMaterial(newBoxMat1, 0);*/
 	
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
@@ -88,35 +92,34 @@ TestScene::TestScene()
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
 
 	// 플레이어 테스트
-	//auto playerTest = API::CreateObject(_scene, "player");
-	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	////playerTest->AddComponent<Player>();
-	//// 확장자 포함한 파일이름을 넣어준다. 
-	//// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
-	//// 메쉬와 노드를 불러와 적용시킨다.
-	//// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	////playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
-	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	auto playerTest = API::CreateObject(_scene, "player");
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	//playerTest->AddComponent<Player>();
+	// 확장자 포함한 파일이름을 넣어준다. 
+	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
+	// 메쉬와 노드를 불러와 적용시킨다.
+	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
+	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
-	//// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
-	//// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
+	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
+	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	////meshComp->SetActive(false);
 	////meshComp->SetFillModeWireFrame(true);
-	//HDEngine::MaterialDesc desc;
-	//desc.materialName = "TP_Red";
-	//desc.albedo = "TP_Red_B.png";
-	//HDData::Material* newMat = API::CreateMaterial(desc);
-	//meshComp->LoadMaterial(newMat, 0);
-	//meshComp->LoadMaterial(newMat, 1);
-	//meshComp->LoadMaterial(newMat, 2);
-	//meshComp->LoadMaterial(newMat, 3);
-	//meshComp->LoadMaterial(newMat, 4);
+	HDEngine::MaterialDesc desc;
+	desc.materialName = "TP_Red";
+	desc.albedo = "TP_Red_B.png";
+	HDData::Material* newMat = API::CreateMaterial(desc);
+	meshComp->LoadMaterial(newMat, 0);
+	meshComp->LoadMaterial(newMat, 1);
+	meshComp->LoadMaterial(newMat, 2);
+	meshComp->LoadMaterial(newMat, 3);
+	meshComp->LoadMaterial(newMat, 4);
 	////meshComp->PlayAnimationUpper("AR_fire", true);
 	////meshComp->PlayAnimationLower("AR_fire", true);
 	////meshComp->PlayAnimationUpper("AR_crouchFire", true);
 	////meshComp->PlayAnimationLower("AR_crouchWalk_F", true);
-	//meshComp->PlayAnimation("AR_crouchWalk_L", true);
+	meshComp->PlayAnimation("AR_idle", true);
 	////meshComp->SetOutlineActive(true);
 
 	//// 오른손 노드의 오브젝트를 가져와서

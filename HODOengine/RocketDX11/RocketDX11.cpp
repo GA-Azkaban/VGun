@@ -216,7 +216,7 @@ namespace RocketCore::Graphics
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
 		_stencilEnableBuffer->Initialize(_screenWidth, _screenHeight);
 		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
-
+		
 		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_SSAOPass = new SSAOPass(_deferredBuffers);
@@ -359,6 +359,7 @@ namespace RocketCore::Graphics
 		_debugMeshPass->Render();
 		RenderLine();
 #endif
+
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();

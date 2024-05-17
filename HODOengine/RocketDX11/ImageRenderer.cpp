@@ -31,7 +31,7 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 	_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
-	_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
+	_mesh = ResourceManager::Instance().GetMeshes("billboardMesh")[0];
 }
 
 RocketCore::Graphics::ImageRenderer::~ImageRenderer()

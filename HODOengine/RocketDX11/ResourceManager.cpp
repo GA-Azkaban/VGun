@@ -634,7 +634,7 @@ namespace RocketCore::Graphics
 		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size(), true);
 		_loadedFileInfo["primitiveCube"].loadedMeshes.push_back(_cube);
 		HDEngine::MaterialDesc cubeDesc;
-		skyboxDesc.materialName = "cubeMaterial";
+		cubeDesc.materialName = "cubeMaterial";
 		Material* _cubeMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
 		_cubeMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
 		_cubeMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
@@ -651,7 +651,18 @@ namespace RocketCore::Graphics
 		_sphereMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
 		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
 
-		// 쿼드 메쉬
+		// 쿼드 모양 메쉬
+		GeometryGenerator::MeshData quad;
+		_geometryGen->CreateFullscreenQuad(quad);
+
+		Mesh* _quad = new Mesh(&quad.Vertices[0], quad.Vertices.size(), &quad.Indices[0], quad.Indices.size(), true);
+		_loadedFileInfo["primitiveQuad"].loadedMeshes.push_back(_quad);
+		Material* _quadMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_quadMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_quadMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveQuad"].loadedMaterials.push_back(_quadMaterial);
+
+		// 빌보드 파티클 메쉬
 		std::vector<Vertex> quadVertices(6);
 		std::vector<UINT> quadIndices(6);
 
@@ -673,8 +684,8 @@ namespace RocketCore::Graphics
 			quadIndices[i] = i;
 		}
 
-		Mesh* quadMesh = new Mesh(&quadVertices[0], 6, &quadIndices[0], 6);
-		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);
+		Mesh* billboardMesh = new Mesh(&quadVertices[0], 6, &quadIndices[0], 6);
+		_loadedFileInfo["billboardMesh"].loadedMeshes.push_back(billboardMesh);
 
 		// 디버그 메쉬
 		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);
