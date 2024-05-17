@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -90,25 +90,44 @@ void MainMenuScene::MainMenu()
 	// room List Canvas
 	HDData::GameObject* roomListCanvas = API::CreateImageBox(_scene, "roomListCanvas", roomEnterBtn);
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
-	roomListCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.0f);
+	roomListCanvas->GetTransform()->SetPosition(1000.0f, 540.0f, 0.0f);
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	roomListCanvas->SetSelfActive(false);
 	MenuManager::Instance().SetRoomListCanvas(roomListCanvas);
 
+	// Refresh btn
+	HDData::GameObject* refreshButton = API::CreateButton(_scene,"refreshBtn",roomListCanvas);
+	refreshButton->GetTransform()->SetLocalPosition(330,-330,0);
+	refreshButton->AddComponent<BtnHoveringScript>();
+	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
+	freshBtn->SetDefaultColor(DirectX::Colors::White);
+	freshBtn->SetImage("flair_arrow_3.png");
+	freshBtn->SetSortOrder(0.6f);
+	freshBtn->SetOnClickEvent(
+		[freshBtn]()
+		{
+			MenuManager::Instance().GetRoomListFromServer();
+			//MenuManager::Instance().GetRoomList();
+		}
+
+	);
+
 	// page move button
 	HDData::GameObject* pageLeftButton = API::CreateButton(_scene, "pageLeft", roomListCanvas);
-	pageLeftButton->GetTransform()->SetLocalPosition(-500, 0, 0);
+	pageLeftButton->GetTransform()->SetLocalPosition(-300, 0, 0);
+	pageLeftButton->AddComponent<BtnHoveringScript>();
 	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
-	lBtn->SetImage("left.png");
+	lBtn->SetImage("leftArrow.png");
 	lBtn->SetSortOrder(0.6f);
 	lBtn->SetOnClickEvent([]() {
 		if (MenuManager::Instance().currentPage > 1)	MenuManager::Instance().currentPage--;
 		});
 
 	HDData::GameObject* pageRightButton = API::CreateButton(_scene, "pageRight", roomListCanvas);
-	pageRightButton->GetTransform()->SetLocalPosition(500, 0, 0);
+	pageRightButton->GetTransform()->SetLocalPosition(300, 0, 0);
+	pageRightButton->AddComponent<BtnHoveringScript>();
 	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
-	rBtn->SetImage("right.png");
+	rBtn->SetImage("rightArrow.png");
 	rBtn->SetSortOrder(0.6f);
 	rBtn->SetOnClickEvent([]() {
 		if (MenuManager::Instance().currentPage < MenuManager::Instance().pageCount) MenuManager::Instance().currentPage++;
@@ -288,9 +307,10 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
 	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.8f);
 
+
 	// Training Btn
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
-	trainingBtn->GetTransform()->SetPosition(130.0f, 400.0f, 0.f);
+	trainingBtn->GetTransform()->SetPosition(150.0f, 330.0f, 0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	trainingBtn->AddComponent<BtnScript>();
@@ -299,16 +319,16 @@ void MainMenuScene::MainMenu()
 	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
 
-	//temp Btn
+	//EXIT Btn
 	HDData::GameObject* tempBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
-	tempBtn->GetTransform()->SetPosition(150.0f, 355.0f, 0.f);
+	tempBtn->GetTransform()->SetPosition(100.0f, 400.0f, 0.f);
 	tempBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	tempBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	tempBtn->AddComponent<BtnScript>();
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", tempBtn);
 	tempText->GetTransform()->SetPosition(tempBtn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	tempText->GetComponent<HDData::TextUI>()->SetText("FADE");
+	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
 
 	// Exit button
 	//HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
