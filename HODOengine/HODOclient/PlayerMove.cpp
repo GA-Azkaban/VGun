@@ -81,11 +81,16 @@ void PlayerMove::Update()
 	_headCam->ShakeCamera(_deltaTime);
 
 	// 임시 애니콜
-	//AniCol();
+	AniCol();
 
-	// 이동, 회전
-	//Move(_moveDirection);
-	EveryMove();
+	//EveryMove();
+
+		// 이동, 회전
+	Move(_moveDirection);
+
+	UpdateToPhysics();
+
+
 
 	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 	
@@ -745,10 +750,10 @@ void PlayerMove::UpdateToPhysics()
 {
 	_playerCollider->UpdateToPhysics();
 	
-	for (auto& child : _playerCollider->GetChildColliderVec())
-	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->ApplyNodeInfo();
-	}
+	//for (auto& child : _playerCollider->GetChildColliderVec())
+	//{
+	//	dynamic_cast<HDData::DynamicCollider*>(child)->UpdateToPhysics();
+	//}
 }
 
 void PlayerMove::EveryMove()

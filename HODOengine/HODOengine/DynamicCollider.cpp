@@ -39,25 +39,26 @@ void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol
 
 void HDData::DynamicCollider::GetReady()
 {
-	_prevPos = GetTransform()->GetNodePosition();
+	_prevPos = GetTransform()->GetPosition();
 }
 
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed /*= 1.0f*/)
 {
-	//_physXRigid->wakeUp();
-	physx::PxTransform playerPos = _physXRigid->getGlobalPose();
+	//physx::PxTransform playerPos = _physXRigid->getGlobalPose();
 
-	playerPos.p.x += moveStep.x;
-	playerPos.p.z += moveStep.z;
+	//playerPos.p.x += moveStep.x;
+	//playerPos.p.z += moveStep.z;
 
-	_physXRigid->setGlobalPose(playerPos);
-	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
+	//_physXRigid->setGlobalPose(playerPos);
+	////_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 
 
-	for (auto& child : _childColliders)
-	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed);
-	}
+	//for (auto& child : _childColliders)
+	//{
+	//	dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed);
+	//}
+
+	GetTransform()->Translate(moveStep);
 }
 
 void HDData::DynamicCollider::RotateY(float rotationAmount)
@@ -129,31 +130,40 @@ void HDData::DynamicCollider::SetPose(Vector3 pos)
 
 void HDData::DynamicCollider::ApplyNodeInfo()
 {
-	Transform* transform = GetTransform();
+	//Transform* transform = GetTransform();
 
-	Vector3 pos = transform->GetNodePosition();
-	Quaternion rot = transform->GetNodeRotation();
+	//Vector3 pos = transform->GetNodePosition();
+	//Quaternion rot = transform->GetNodeRotation();
 
-	physx::PxTransform playerPos = _physXRigid->getGlobalPose();
+	//physx::PxTransform playerPos = _physXRigid->getGlobalPose();
 
-	Vector3 posOffset = GetPositionOffset();
+	//Vector3 posOffset = GetPositionOffset();
 
-	//playerPos.p.x += (pos.x - _prevPos.x);
-	playerPos.p.x = pos.x;
-	playerPos.p.y = pos.y;
-	playerPos.p.z = pos.z;
-	playerPos.q.x = rot.x;
-	playerPos.q.y = rot.y;
-	playerPos.q.z = rot.z;
-	playerPos.q.w = rot.w;
-	//transform->SetLocalPosition(pos);
-	//transform->SetLocalRotation(rot);
+	////playerPos.p.x += (pos.x - _prevPos.x);
+	//playerPos.p.x = pos.x;
+	//playerPos.p.y = pos.y;
+	//playerPos.p.z = pos.z;
+	//playerPos.q.x = rot.x;
+	//playerPos.q.y = rot.y;
+	//playerPos.q.z = rot.z;
+	//playerPos.q.w = rot.w;
+	////transform->SetLocalPosition(pos);
+	////transform->SetLocalRotation(rot);
 
-	_prevPos = pos;
+	//_prevPos = pos;
 
-	//_physXRigid->setGlobalPose(playerPos);
-	_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
-	//_physXRigid->setCMassLocalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+	////_physXRigid->setGlobalPose(playerPos);
+	//_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+	////_physXRigid->setCMassLocalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+
+	HDData::Transform* transform = GetTransform();
+	Vector3 nodePos = transform->GetNodePosition();
+	Vector3 posDelta = nodePos - _prevPos;
+	_prevPos = nodePos;
+	//transform->SetLocalPosition(transform->GetLocalPosition() + posDelta);
+	transform->SetLocalPosition(nodePos + GetPositionOffset());
+	transform->SetLocalRotation(transform->GetNodeRotation());
+	//transform->SetLocalPosition(GetPositionOffset());
 
 	for (auto& child : _childColliders)
 	{
@@ -316,6 +326,7 @@ void HDData::DynamicCollider::EveryMove(Vector3 moveStep, Matrix parentTM = Matr
 	playerPos.p.x += nodeTM._41;
 	playerPos.p.y += nodeTM._42;
 	playerPos.p.z += nodeTM._43;
+	// 추후엔 회전도 복합연산 해줘야 함.
 	playerPos.q.x = quat.x;
 	playerPos.q.y = quat.y;
 	playerPos.q.z = quat.z;
@@ -337,12 +348,18 @@ void HDData::DynamicCollider::UpdateToPhysics()
 	Quaternion rot = transform->GetRotation();
 
 	_physXRigid->setGlobalPose(physx::PxTransform(pos.x, pos.y, pos.z, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->UpdateToPhysics();
+	}
 }
 
 void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 {
 	GetTransform()->SetPosition(pos.x, pos.y, pos.z);
 	GetTransform()->SetRotation(quat);
+	//GetTransform()->SetScale(Vector3(1.0f, 1.0f, 1.0f));
 }
 
 void HDData::DynamicCollider::DrawDebug()

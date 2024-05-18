@@ -54,10 +54,7 @@ namespace HDData
 			// 일단은 그냥 pos만 더하는걸로. 추후 TM 곱으로 변경?
 			result += _parentCollider->GetPositionOffsetTotal();
 		}
-		else
-		{
-			return _positionOffset;
-		}
+
 		return result;
 	}
 

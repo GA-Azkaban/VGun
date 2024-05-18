@@ -495,3 +495,7 @@ HODOengine/Include/DXTK/BinaryReader.h
 HODOengine/Resources/AnimationData/lowerdata.json
 
 HODOengine/Resources/AnimationData/upperdata.json
+
+HODOengine/Resources/SceneData/lobbyData.json
+
+HODOengine/Resources/UI/test.jpg

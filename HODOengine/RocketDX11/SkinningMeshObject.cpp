@@ -473,9 +473,9 @@ namespace RocketCore::Graphics
 			if (node->nodeTransform != nullptr)
 			{
 				node->nodeTransform->_position = position;
-				node->nodeTransform->_position = Vector3(-1.0f, 0.0f, 0.0f);
+				//node->nodeTransform->_position = Vector3(-1.0f, 0.0f, 0.0f);
 				node->nodeTransform->_rotation = rotation;
-				node->nodeTransform->_scale = scale;
+				//node->nodeTransform->_scale = scale;
 			}
 
 		}
