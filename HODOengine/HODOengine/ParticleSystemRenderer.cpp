@@ -43,13 +43,14 @@ namespace HDData
 			// 위치값 갱신
 			// forward 방향으로 speed * deltaTime 만큼 이동
 			Matrix rotationMat = Matrix::CreateFromQuaternion(e.first->GetRotation());
+			//Vector3 forward{ 0.0f, 0.0f, 1.0f };
 			Vector3 forward = Vector3::Transform(Vector3(0.0f, 0.0f, 1.0f), rotationMat);
 			Vector3 right = Vector3::Transform(Vector3(1.0f, 0.0f, 0.0f), rotationMat);
 			Vector3 up = Vector3::Transform(Vector3(0.0f, 1.0f, 0.0f), rotationMat);
 			Vector3 delta{ 0.0f, 0.0f, 0.0f };
 			float speed = e.first->GetSpeed();
-			delta.x = (right.x + up.x) * speed * deltaTime;
-			delta.y = (right.y + up.y) * speed * deltaTime;
+			delta.x = (right.x) * speed * deltaTime;
+			delta.y = (up.y) * speed * deltaTime;
 			delta.z = (forward.z) * speed * deltaTime;
 			Vector3 currentPos = e.first->GetPosition();
 			e.first->SetPosition(delta + currentPos);

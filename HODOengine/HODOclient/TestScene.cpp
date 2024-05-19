@@ -34,9 +34,9 @@ TestScene::TestScene()
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 
-	/*auto particleSystemObj = API::CreateObject(_scene);
+	auto particleSystemObj = API::CreateObject(_scene);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
-	particleSystem->main.duration = 1.0f;
+	particleSystem->main.duration = 0.2f;
 	particleSystem->main.loop = true;
 	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
 	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
@@ -62,26 +62,30 @@ TestScene::TestScene()
 	HDData::Material* flashMat = API::CreateMaterial(flashMatDesc);
 	particleSystem->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
 	particleSystem->rendererModule.material = flashMat;
-	particleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";*/
+	particleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
 
-	//auto particleSystemObj2 = API::CreateObject(_scene, "particleSystem2", particleSystemObj);
-	auto particleSystemObj2 = API::CreateObject(_scene);
+	auto particleSystemObj2 = API::CreateObject(_scene, "particleSystem2", particleSystemObj);
+	//auto particleSystemObj2 = API::CreateObject(_scene);
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
-	particleSystem2->main.duration = 1.0f;
+	particleSystem2->main.duration = 0.2f;
 	particleSystem2->main.loop = true;
 	particleSystem2->main.minStartColor = { 255, 113, 36, 255 };
 	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
-	particleSystem2->main.minStartLifetime = 0.5f;
-	particleSystem2->main.maxStartLifetime = 1.0f;
+	particleSystem2->main.minStartLifetime = 0.001f;
+	particleSystem2->main.maxStartLifetime = 0.1f;
 	particleSystem2->main.minStartRotation = -250.0f;
 	particleSystem2->main.maxStartRotation = 250.0f;
 	particleSystem2->main.minStartSize = 0.1f;
 	particleSystem2->main.maxStartSize = 0.2f;
-	particleSystem2->main.minStartSpeed = 25.0f;
-	particleSystem2->main.maxStartSpeed = 50.0f;
+	particleSystem2->main.minStartSpeed = 10.0f;
+	particleSystem2->main.maxStartSpeed = 15.0f;
 	particleSystem2->emission.enabled = true;
 	HDData::Burst newBurst2(0.0f, 2, 8);
 	particleSystem2->emission.SetBurst(newBurst2);
+	particleSystem2->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve2;
+	curve2.AddKey(0.0f, 1.0f, [](float t) { return -0.6 * t * t + 0.6 * t; });
+	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
 	particleSystem2->rotationOverLifetime.enabled = true;
 	particleSystem2->rotationOverLifetime.angularVelocity = 750.0f;
 	HDEngine::MaterialDesc particleMatDesc;
@@ -111,7 +115,7 @@ TestScene::TestScene()
 	ak.push_back(alphaKey2);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
 
-	particleSystem2->Play();
+	particleSystem->Play();
 
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);

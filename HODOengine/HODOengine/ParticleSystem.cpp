@@ -40,6 +40,7 @@ namespace HDData
 	void ParticleSystem::Stop()
 	{
 		_isPlaying = false;
+		Clear();
 	}
 
 	void ParticleSystem::Clear()
@@ -125,10 +126,20 @@ namespace HDData
 							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
 							float angle = rotation_dist(_gen);
 							particle->SetAngle(0.0f);
-							float radian = DirectX::XMConvertToRadians(angle);
-							Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
-							particle->SetRotation(rot);
-							particle->SetPosition(0.0f, 0.0f, 0.0f);
+							if (rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
+							{
+								float radian = DirectX::XMConvertToRadians(angle);
+								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
+								particle->SetRotation(rot);
+								particle->SetPosition(0.0f, 0.0f, 0.0f);
+							}
+							else
+							{
+								float radian = DirectX::XMConvertToRadians(angle);
+								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
+								particle->SetRotation(rot);
+								particle->SetPosition(0.0f, 0.0f, 0.0f);
+							}
 							float randomLifetime = real_dist(_gen);
 							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
 						}
@@ -143,7 +154,7 @@ namespace HDData
 						// 파티클 풀에서 가져오기
 						HDEngine::IParticle* particle = _particleSystem->SummonParticle();
 						if (particle != nullptr)
-						{	
+						{
 							std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
 							std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
 							std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
@@ -162,10 +173,20 @@ namespace HDData
 							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
 							float angle = rotation_dist(_gen);
 							particle->SetAngle(0.0f);
-							float radian = DirectX::XMConvertToRadians(angle);
-							Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
-							particle->SetRotation(rot);
-							particle->SetPosition(0.0f, 0.0f, 0.0f);
+							if (rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
+							{
+								float radian = DirectX::XMConvertToRadians(angle);
+								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
+								particle->SetRotation(rot);
+								particle->SetPosition(0.0f, 0.0f, 0.0f);
+							}
+							else
+							{
+								float radian = DirectX::XMConvertToRadians(angle);
+								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
+								particle->SetRotation(rot);
+								particle->SetPosition(0.0f, 0.0f, 0.0f);
+							}
 							float randomLifetime = real_dist(_gen);
 							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
 						}
