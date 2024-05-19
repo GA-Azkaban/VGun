@@ -589,13 +589,13 @@ namespace RocketCore::Graphics
 		if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
 
-		VertexShader* billboardVS = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (billboardVS->LoadShaderFile(L"Resources/Shaders/BillboardVertexShader.cso"))
-			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS));
+		VertexShader* paricleVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (paricleVS->LoadShaderFile(L"Resources/Shaders/ParticleVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("ParticleVertexShader.cso", paricleVS));
 
-		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
-			_pixelShaders.insert(std::make_pair("BillboardPixelShader.cso", billboardPS));
+		PixelShader* pariclePS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (pariclePS->LoadShaderFile(L"Resources/Shaders/ParticlePixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("ParticlePixelShader.cso", pariclePS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
@@ -652,7 +652,17 @@ namespace RocketCore::Graphics
 		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
 
 		// 쿼드 메쉬
-		std::vector<Vertex> quadVertices(6);
+		GeometryGenerator::MeshData quad;
+		_geometryGen->CreateFullscreenQuad(quad);
+
+		Mesh* _quad = new Mesh(&quad.Vertices[0], quad.Vertices.size(), &quad.Indices[0], quad.Indices.size(), true);
+		_loadedFileInfo["primitiveQuad"].loadedMeshes.push_back(_quad);
+		Material* _quadMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_quadMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_quadMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveQuad"].loadedMaterials.push_back(_quadMaterial);
+		// 쿼드 메쉬
+		/*std::vector<Vertex> quadVertices(6);
 		std::vector<UINT> quadIndices(6);
 
 		Vertex v1(XMFLOAT3{ -0.1, 0.1, 0 }, XMFLOAT2{ 0, 0 });
@@ -674,7 +684,7 @@ namespace RocketCore::Graphics
 		}
 
 		Mesh* quadMesh = new Mesh(&quadVertices[0], 6, &quadIndices[0], 6);
-		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);
+		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);*/
 
 		// 디버그 메쉬
 		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);

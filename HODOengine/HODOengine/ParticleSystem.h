@@ -36,10 +36,13 @@ namespace HDData
 		void Play();
 		void Stop();
 		void Clear();
+		bool IsPlaying() const;
 
 		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>>& GetActivatedParticleList();
 
 	protected:
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
 		virtual void Start() override;
 		virtual void Update() override;
 
@@ -63,7 +66,8 @@ namespace HDData
 		std::vector<HDEngine::IParticle*> _lifeOverParticles;
 
 		// random
-		std::mt19937 gen;
+		std::mt19937 _gen;
+
 	};
 
 }

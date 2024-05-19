@@ -20,6 +20,7 @@ namespace HDEngine
 
 		virtual DirectX::XMMATRIX GetWorldTM() const = 0;
 		virtual DirectX::XMINT4 GetColor() const = 0;
+		virtual DirectX::XMFLOAT4 GetColorFloat4() const = 0;
 		virtual float GetSpeed() const = 0;
 		virtual float GetSize() const = 0;
 		virtual float GetAngle() const = 0;

@@ -1,7 +1,10 @@
 ﻿#pragma once
 #include "../HODO3DGraphicsInterface/IParticleSystem.h"
+#include <d3d11.h>
 #include <wrl.h>
 #include <unordered_set>
+#include <array>
+#include <DirectXMath.h>
 
 namespace RocketCore::Graphics
 {
@@ -31,5 +34,9 @@ namespace RocketCore::Graphics
 		bool _isActive;
 
 		std::unordered_set<HDEngine::IParticle*> _activatedParticles;
+
+		static constexpr unsigned int maxParticleCount = 512;
+		static std::array<DirectX::XMMATRIX, maxParticleCount> particleTransforms;
+		static std::array<DirectX::XMFLOAT4, maxParticleCount> particleColors;
 	};
 }

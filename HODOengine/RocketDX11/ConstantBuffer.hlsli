@@ -78,4 +78,10 @@ cbuffer PostProcessData : register(b7)
 	float ssaoPower;
 }
 
+cbuffer ParticleData : register(b8)
+{
+    float4x4 particleTransforms[512];
+    float4 particleColors[512];
+}
+
 #endif

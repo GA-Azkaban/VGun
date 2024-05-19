@@ -13,6 +13,7 @@ namespace RocketCore::Graphics
 
 		virtual DirectX::XMMATRIX GetWorldTM() const override;
 		virtual DirectX::XMINT4 GetColor() const override;
+		virtual DirectX::XMFLOAT4 GetColorFloat4() const override;
 		virtual float GetSpeed() const override;
 		virtual float GetSize() const override;
 		virtual float GetAngle() const override;

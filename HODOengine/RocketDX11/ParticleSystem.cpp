@@ -5,19 +5,22 @@
 #include "ParticlePool.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
+	std::array<DirectX::XMMATRIX, ParticleSystem::maxParticleCount> ParticleSystem::particleTransforms;
+	std::array<DirectX::XMFLOAT4, ParticleSystem::maxParticleCount> ParticleSystem::particleColors;
 
 	ParticleSystem::ParticleSystem()
 		: _mesh(nullptr), _material(nullptr),
-		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard)
+		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard), _isActive(true)
 	{
 		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
-		_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
+		_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
 		_material = ResourceManager::Instance().GetLoadedMaterial("Default-ParticleSystem");
-		_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso"));
-		_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso"));
+		_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("ParticleVertexShader.cso"));
+		_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("ParticlePixelShader.cso"));
 	}
 
 	ParticleSystem::~ParticleSystem()
@@ -33,7 +36,10 @@ namespace RocketCore::Graphics
 
 	void ParticleSystem::SetMesh(const std::string& meshName)
 	{
-		_mesh = ResourceManager::Instance().GetMeshes(meshName)[0];
+		if (meshName != "")
+		{
+			_mesh = ResourceManager::Instance().GetMeshes(meshName)[0];
+		}
 	}
 
 	void ParticleSystem::SetMaterial(HDEngine::IMaterial* material)
@@ -42,6 +48,8 @@ namespace RocketCore::Graphics
 		if (newMat != nullptr)
 		{
 			_material = newMat;
+			_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("ParticleVertexShader.cso"));
+			_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("ParticlePixelShader.cso"));
 		}
 	}
 
@@ -51,9 +59,7 @@ namespace RocketCore::Graphics
 
 		if (renderMode == HDEngine::ParticleSystemRenderMode::Billboard)
 		{
-			_mesh = ResourceManager::Instance().GetMeshes("quadMesh")[0];
-			_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso"));
-			_material->SetPixelShader(ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso"));
+			_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
 		}
 		//else if (_renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
 		//{
@@ -63,9 +69,13 @@ namespace RocketCore::Graphics
 
 	HDEngine::IParticle* ParticleSystem::SummonParticle()
 	{
-		HDEngine::IParticle* newParticle = ParticlePool::Instance().SummonParticle();
-		_activatedParticles.insert(newParticle);
-		return newParticle;
+		if (_activatedParticles.size() <= maxParticleCount)
+		{
+			HDEngine::IParticle* newParticle = ParticlePool::Instance().SummonParticle();
+			_activatedParticles.insert(newParticle);
+			return newParticle;
+		}
+		return nullptr;
 	}
 
 	void ParticleSystem::DestroyParticle(HDEngine::IParticle* particle)
@@ -94,23 +104,27 @@ namespace RocketCore::Graphics
 		VertexShader* vs = _material->GetVertexShader();
 		PixelShader* ps = _material->GetPixelShader();
 
+		int index = 0;
 		for (auto e : _activatedParticles)
 		{
-			vs->SetMatrix4x4("world", XMMatrixTranspose(e->GetWorldTM()));
-			//_vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
-
-			vs->CopyAllBufferData();
-			vs->SetShader();
-
-			ps->SetShaderResourceView("Albedo", _material->GetAlbedoMap());
-			ps->SetFloat4("albedoColor", _material->GetColorFloat4());
-
-			ps->CopyAllBufferData();
-			ps->SetShader();
-
-			_mesh->BindBuffers();
-			_mesh->Draw();
+			particleTransforms[index] = XMMatrixTranspose(e->GetWorldTM());
+			particleColors[index] = e->GetColorFloat4();
+			++index;
 		}
+		
+		vs->SetMatrix4x4Array("particleTransforms", &particleTransforms[0], maxParticleCount);
+		vs->SetFloat4Array("particleColors", &particleColors[0], maxParticleCount);
+		vs->CopyAllBufferData();
+		vs->SetShader();
+
+		ps->SetShaderResourceView("Albedo", _material->GetAlbedoMap());
+		ps->SetFloat4("albedoColor", _material->GetColorFloat4()); 
+
+		ps->CopyAllBufferData();
+		ps->SetShader();
+
+		_mesh->BindBuffers();
+		_mesh->DrawInstanced(_activatedParticles.size());
 	}
 
 }

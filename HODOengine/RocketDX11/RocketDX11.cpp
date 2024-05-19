@@ -353,7 +353,7 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_SSAOPass->Render();
 		_deferredPass->Render();
-		_particlePass->Render();
+		//_particlePass->Render();
 		_outlinePass->Render();
 
 #ifdef _DEBUG
@@ -363,6 +363,9 @@ namespace RocketCore::Graphics
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
+
+		SetDepthStencilState(_depthStencilStateEnable.Get());
+		_particlePass->Render();
 
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_toneMapPass->Render();

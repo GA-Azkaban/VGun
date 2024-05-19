@@ -79,6 +79,12 @@
     <FxCompile Include="BillboardPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\Billboard</Filter>
     </FxCompile>
+    <FxCompile Include="ParticleVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticlePixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Particle</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -586,11 +592,11 @@
     <Filter Include="Object\Particle\Billboard">
       <UniqueIdentifier>{85c54b1c-5cf4-4dcc-9a3a-e8a4c8ad4b4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Particle\Mesh">
-      <UniqueIdentifier>{b9ba8f41-c321-4aba-989e-c5b89d9be47f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object\Particle\ParticlePool">
       <UniqueIdentifier>{efa6de55-2b1c-4dd8-ab1c-914388191068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Particle">
+      <UniqueIdentifier>{94c2e166-e9b5-4cfd-9116-3f9445c5face}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

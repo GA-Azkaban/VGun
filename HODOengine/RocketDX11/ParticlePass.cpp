@@ -4,7 +4,12 @@
 #include "ResourceManager.h"
 #include "ObjectManager.h"
 #include "ParticleSystem.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+#include "Camera.h"
 #include <vector>
+#include <DirectXMath.h>
+using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
@@ -42,19 +47,21 @@ namespace RocketCore::Graphics
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 		ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(_blendState.Get(), _blendFactor, 0xFFFFFFFF);
 
-		// 같은 메쉬, 같은 매터리얼끼리 모아둔 벡터
-		// 돌면서 각 파티클의 월드 매트릭스 갱신
-		// 그린다.
+		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+		VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("ParticleVertexShader.cso");
+		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
+
 		std::vector<ParticleSystem*>& psList = ObjectManager::Instance().GetParticleSystemList();
 		for (int i = 0; i < psList.size(); ++i)
 		{
 			psList[i]->Render();
 		}
 
-		ID3D11ShaderResourceView* nullSRV = nullptr;
-		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
-		ID3D11BlendState* nullBlend = nullptr;
-		ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(nullBlend, _blendFactor, 0xFFFFFFFF);
+		//ID3D11ShaderResourceView* nullSRV = nullptr;
+		//ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
+		//ID3D11BlendState* nullBlend = nullptr;
+		//ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(nullBlend, _blendFactor, 0xFFFFFFFF);
 	}
 
 }

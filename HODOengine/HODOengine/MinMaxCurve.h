@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "dllExporter.h"
 #include "AnimationCurve.h"
 #include "RandomGenerator.h"
 #include <random>
@@ -13,7 +14,7 @@ namespace HDData
 		TwoConstants
 	};
 
-	class MinMaxCurve
+	class HODO_API MinMaxCurve
 	{
 	public:
 		MinMaxCurve(float constant)

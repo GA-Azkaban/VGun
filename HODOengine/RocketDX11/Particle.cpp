@@ -29,6 +29,11 @@ namespace RocketCore::Graphics
 		return _color;
 	}
 
+	DirectX::XMFLOAT4 Particle::GetColorFloat4() const
+	{
+		return DirectX::XMFLOAT4{ _color.x / 255.0f, _color.y / 255.0f, _color.z / 255.0f, _color.w / 255.0f };
+	}
+
 	float Particle::GetSpeed() const
 	{
 		return _speed;
