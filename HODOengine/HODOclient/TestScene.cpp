@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -156,43 +156,39 @@ TestScene::TestScene()
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
 
 	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	//auto playerTest = API::CreateObject(_scene, "player");
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	//playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다. 
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	////meshComp->SetActive(false);
 	////meshComp->SetFillModeWireFrame(true);
-	HDEngine::MaterialDesc desc;
-	desc.materialName = "TP_Red";
-	desc.albedo = "TP_Red_B.png";
-	HDData::Material* newMat = API::CreateMaterial(desc);
-	meshComp->LoadMaterial(newMat, 0);
-	meshComp->LoadMaterial(newMat, 1);
-	meshComp->LoadMaterial(newMat, 2);
-	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);
-	////meshComp->PlayAnimationUpper("AR_fire", true);
-	////meshComp->PlayAnimationLower("AR_fire", true);
-	////meshComp->PlayAnimationUpper("AR_crouchFire", true);
-	////meshComp->PlayAnimationLower("AR_crouchWalk_F", true);
-	meshComp->PlayAnimation("AR_idle", true);
-	////meshComp->SetOutlineActive(true);
+	//HDEngine::MaterialDesc desc;
+	//desc.materialName = "TP_Red";
+	//desc.albedo = "TP_Red_B.png";
+	//HDData::Material* newMat = API::CreateMaterial(desc);
+	//meshComp->LoadMaterial(newMat, 0);
+	//meshComp->LoadMaterial(newMat, 1);
+	//meshComp->LoadMaterial(newMat, 2);
+	//meshComp->LoadMaterial(newMat, 3);
+	//meshComp->LoadMaterial(newMat, 4);
+	//meshComp->PlayAnimation("AR_idle", true);
+	//meshComp->SetOutlineActive(true);
 
-	//// 오른손 노드의 오브젝트를 가져와서
-	//// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	////auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	// 오른손 노드의 오브젝트를 가져와서
+	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
+	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
 	//auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
 	//auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	////weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
-	////weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
+	//weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
 	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-13.0f, -10.0f, 0.0f);
 	//weaponTest->GetComponent<HDData::Transform>()->Rotate(-45.0f, -40.0f, -15.0f);
 	//auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();

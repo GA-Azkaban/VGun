@@ -1,4 +1,4 @@
-#include "ResourceManager.h"
+﻿#include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "Mesh.h"
 #include "Material.h"
@@ -596,6 +596,14 @@ namespace RocketCore::Graphics
 		PixelShader* pariclePS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (pariclePS->LoadShaderFile(L"Resources/Shaders/ParticlePixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("ParticlePixelShader.cso", pariclePS));
+
+		VertexShader* billboardVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (billboardVS->LoadShaderFile(L"Resources/Shaders/BillboardVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS));
+
+		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("BillboardPixelShader.cso", billboardPS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
