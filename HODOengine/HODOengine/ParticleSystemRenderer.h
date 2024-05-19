@@ -12,6 +12,7 @@ namespace HDData
 		~ParticleSystemRenderer();
 
 	protected:
+		virtual void Start() override;
 		virtual void Update() override;
 
 	private:

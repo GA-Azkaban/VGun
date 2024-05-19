@@ -1,4 +1,4 @@
-﻿#include <cassert>
+#include <cassert>
 #include <windows.h>
 
 #include "RocketDX11.h"
@@ -226,7 +226,7 @@ namespace RocketCore::Graphics
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
-		_particlePass = new ParticlePass(_toneMapBuffer);
+		_particlePass = new ParticlePass(_deferredBuffers, _quadBuffer);
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
@@ -353,6 +353,7 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_SSAOPass->Render();
 		_deferredPass->Render();
+		//_particlePass->Render();
 		_outlinePass->Render();
 
 #ifdef _DEBUG
@@ -364,10 +365,12 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
 
+		SetDepthStencilState(_depthStencilStateEnable.Get());
+		_particlePass->Render();
+
 		SetDepthStencilState(_depthStencilStateDisable.Get());
 		_toneMapPass->Render();
 		_spritePass->Render();
-		//_particlePass->Render();
 
 		_deviceContext->RSSetViewports(1, &_viewport);
 		_blitPass->Render();

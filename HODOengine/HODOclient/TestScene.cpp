@@ -1,8 +1,4 @@
-﻿#include "TestScene.h"
-#include "../HODOengine/ObjectSystem.h"
-#include "../HODOengine/GameObject.h"
-#include "../HODOengine/Component.h"
-#include "../HODOengine/AudioSource.h"
+#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -27,31 +23,99 @@ TestScene::TestScene()
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
 	auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 1.0f, 1.0f);
-	testBox1->GetComponent<HDData::Transform>()->SetScale(1.0f, 1.5f, 1.0f);
-	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	boxRender1->LoadMesh("primitiveQuad");
-	HDEngine::MaterialDesc quadDesc;
-	quadDesc.materialName = "QuadBlue";
-	quadDesc.color = { 100, 0, 200, 255 };
-	HDData::Material* newQuadMat = API::CreateMaterial(quadDesc);
-	boxRender1->LoadMaterial(newQuadMat, 0);
-
-	//auto testBox1 = API::CreateObject(_scene);
-	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.0f, 0.0f);
-	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	//boxRender1->LoadMesh("primitiveCube");
-	
-	/*auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.5f, 0.0f);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
+	testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->LoadMesh("primitiveCube");
 	HDEngine::MaterialDesc boxMat1;
 	boxMat1.materialName = "boxMat";
 	boxMat1.color = { 111,91,72,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
-	boxRender1->LoadMaterial(newBoxMat1, 0);*/
-	
+	boxRender1->LoadMaterial(newBoxMat1, 0);
+
+	auto particleSystemObj = API::CreateObject(_scene);
+	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
+	particleSystem->main.duration = 0.2f;
+	particleSystem->main.loop = true;
+	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
+	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem->main.minStartLifetime = 0.025f;
+	particleSystem->main.maxStartLifetime = 0.05f;
+	particleSystem->main.minStartRotation = -90.0f;
+	particleSystem->main.maxStartRotation = -90.0f;
+	particleSystem->main.minStartSize = 0.025f;
+	particleSystem->main.maxStartSize = 0.1f;
+	particleSystem->main.minStartSpeed = 0.0f;
+	particleSystem->main.maxStartSpeed = 0.0f;
+	particleSystem->emission.enabled = true;
+	HDData::Burst newBurst(0.0f, 1);
+	particleSystem->emission.SetBurst(newBurst);
+	particleSystem->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve;
+	curve.AddKey(0.0f, 0.654f, [](float t) { return -0.934 * t * t + 0.611 * t; });
+	particleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve);
+	HDEngine::MaterialDesc flashMatDesc;
+	flashMatDesc.materialName = "muzzleFlash";
+	flashMatDesc.albedo = "T_MuzzleFlash_D.png";
+	flashMatDesc.color = { 255, 140, 85, 255 };
+	HDData::Material* flashMat = API::CreateMaterial(flashMatDesc);
+	particleSystem->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem->rendererModule.material = flashMat;
+	particleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
+
+	auto particleSystemObj2 = API::CreateObject(_scene, "particleSystem2", particleSystemObj);
+	//auto particleSystemObj2 = API::CreateObject(_scene);
+	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
+	particleSystem2->main.duration = 0.2f;
+	particleSystem2->main.loop = true;
+	particleSystem2->main.minStartColor = { 255, 113, 36, 255 };
+	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem2->main.minStartLifetime = 0.001f;
+	particleSystem2->main.maxStartLifetime = 0.1f;
+	particleSystem2->main.minStartRotation = -250.0f;
+	particleSystem2->main.maxStartRotation = 250.0f;
+	particleSystem2->main.minStartSize = 0.1f;
+	particleSystem2->main.maxStartSize = 0.2f;
+	particleSystem2->main.minStartSpeed = 10.0f;
+	particleSystem2->main.maxStartSpeed = 15.0f;
+	particleSystem2->emission.enabled = true;
+	HDData::Burst newBurst2(0.0f, 2, 8);
+	particleSystem2->emission.SetBurst(newBurst2);
+	particleSystem2->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve2;
+	curve2.AddKey(0.0f, 1.0f, [](float t) { return -0.6 * t * t + 0.6 * t; });
+	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+	particleSystem2->rotationOverLifetime.enabled = true;
+	particleSystem2->rotationOverLifetime.angularVelocity = 750.0f;
+	HDEngine::MaterialDesc particleMatDesc;
+	particleMatDesc.materialName = "particleMat";
+	particleMatDesc.albedo = "T_Sparks_D.png";
+	HDData::Material* particleMat = API::CreateMaterial(particleMatDesc);
+	particleSystem2->rendererModule.material = particleMat;
+	particleSystem2->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck;
+	std::vector<HDData::GradientAlphaKey> ak;
+	HDData::GradientColorKey colorkey1;
+	colorkey1.color = { 255, 255, 255 };
+	colorkey1.time = 0.556f;
+	ck.push_back(colorkey1);
+	HDData::GradientColorKey colorkey2;
+	colorkey2.color = { 255, 79, 0 };
+	colorkey2.time = 1.0f;
+	ck.push_back(colorkey2);
+	HDData::GradientAlphaKey alphaKey1;
+	alphaKey1.alpha = 255;
+	alphaKey1.time = 0.0f;
+	ak.push_back(alphaKey1);
+	HDData::GradientAlphaKey alphaKey2;
+	alphaKey2.alpha = 255;
+	alphaKey2.time = 1.0f;
+	ak.push_back(alphaKey2);
+	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
+
+	particleSystem->Play();
+
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
 	//auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();

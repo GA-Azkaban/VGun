@@ -137,19 +137,19 @@
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClCompile>
     <ClCompile Include="HDMaterial.cpp">
-      <Filter>Material</Filter>
+      <Filter>05_Component\07_Resource\Material</Filter>
     </ClCompile>
     <ClCompile Include="MaterialManager.cpp">
-      <Filter>Material\Manager</Filter>
+      <Filter>05_Component\07_Resource\Material\Manager</Filter>
     </ClCompile>
     <ClCompile Include="SceneLoader.cpp">
-      <Filter>Tool\SceneLoader</Filter>
+      <Filter>08_Utility\Tool\SceneLoader</Filter>
     </ClCompile>
     <ClCompile Include="AnimationLoader.cpp">
-      <Filter>Tool\AnimationLoader</Filter>
+      <Filter>08_Utility\Tool\AnimationLoader</Filter>
     </ClCompile>
     <ClCompile Include="MaterialLoader.cpp">
-      <Filter>Tool\MaterialLoader</Filter>
+      <Filter>08_Utility\Tool\MaterialLoader</Filter>
     </ClCompile>
     <ClCompile Include="TweenSystem.cpp">
       <Filter>06_System\TweenSystem</Filter>
@@ -185,20 +185,14 @@
     <ClCompile Include="StaticSphereCollider.cpp">
       <Filter>05_Component\Collider</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>05_Component\ParticleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystemRenderer.cpp">
       <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="Particle.cpp">
-      <Filter>05_Component\ParticleSystem\Particle</Filter>
-    </ClCompile>
     <ClCompile Include="Gradient.cpp">
-      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+      <Filter>05_Component\ParticleSystem\Struct</Filter>
     </ClCompile>
-    <ClCompile Include="ParticlePool.cpp">
-      <Filter>05_Component\ParticleSystem</Filter>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>05_Component\ParticleSystem\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,19 +365,19 @@
       <Filter>05_Component\Animation\AnimationController</Filter>
     </ClInclude>
     <ClInclude Include="HDMaterial.h">
-      <Filter>Material</Filter>
+      <Filter>05_Component\07_Resource\Material</Filter>
     </ClInclude>
     <ClInclude Include="MaterialManager.h">
-      <Filter>Material\Manager</Filter>
+      <Filter>05_Component\07_Resource\Material\Manager</Filter>
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
-      <Filter>Tool\SceneLoader</Filter>
+      <Filter>08_Utility\Tool\SceneLoader</Filter>
     </ClInclude>
     <ClInclude Include="AnimationLoader.h">
-      <Filter>Tool\AnimationLoader</Filter>
+      <Filter>08_Utility\Tool\AnimationLoader</Filter>
     </ClInclude>
     <ClInclude Include="MaterialLoader.h">
-      <Filter>Tool\MaterialLoader</Filter>
+      <Filter>08_Utility\Tool\MaterialLoader</Filter>
     </ClInclude>
     <ClInclude Include="TweenSystem.h">
       <Filter>06_System\TweenSystem</Filter>
@@ -422,9 +416,6 @@
     <ClInclude Include="StaticSphereCollider.h">
       <Filter>05_Component\Collider</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>05_Component\ParticleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="MainModule.h">
       <Filter>05_Component\ParticleSystem\Module</Filter>
     </ClInclude>
@@ -446,26 +437,26 @@
     <ClInclude Include="ParticleSystemRenderer.h">
       <Filter>05_Component\Renderer\ParticleSystemRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="Particle.h">
-      <Filter>05_Component\ParticleSystem\Particle</Filter>
-    </ClInclude>
     <ClInclude Include="Gradient.h">
-      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+      <Filter>05_Component\ParticleSystem\Struct</Filter>
     </ClInclude>
     <ClInclude Include="AnimationCurve.h">
-      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+      <Filter>05_Component\ParticleSystem\Struct</Filter>
     </ClInclude>
     <ClInclude Include="Burst.h">
-      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+      <Filter>05_Component\ParticleSystem\Struct</Filter>
     </ClInclude>
     <ClInclude Include="MinMaxCurve.h">
-      <Filter>05_Component\ParticleSystem\Module\Struct</Filter>
+      <Filter>05_Component\ParticleSystem\Struct</Filter>
     </ClInclude>
     <ClInclude Include="RendererModule.h">
       <Filter>05_Component\ParticleSystem\Module</Filter>
     </ClInclude>
-    <ClInclude Include="ParticlePool.h">
-      <Filter>05_Component\ParticleSystem</Filter>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>05_Component\ParticleSystem\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomGenerator.h">
+      <Filter>08_Utility\RandomGenerator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -615,24 +606,6 @@
     <Filter Include="05_Component\Animation\AnimationController">
       <UniqueIdentifier>{aee8b258-77bb-4ff6-a3a7-ac3c24b27496}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Material">
-      <UniqueIdentifier>{a56b84f3-d710-470d-b6e5-e5f8202cb90d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Material\Manager">
-      <UniqueIdentifier>{26ace45d-b426-41d8-a28b-fe16775dda3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tool">
-      <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tool\SceneLoader">
-      <UniqueIdentifier>{5abae1ce-b5ca-4024-9a4c-e9989aafdfac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tool\AnimationLoader">
-      <UniqueIdentifier>{1739c00a-28cf-4249-802c-bd34c3152418}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Tool\MaterialLoader">
-      <UniqueIdentifier>{756d0c09-65ff-4e46-92c3-4987e8bdc108}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06_System\TweenSystem">
       <UniqueIdentifier>{a59cd445-6728-4672-bfe7-d80efada5d05}</UniqueIdentifier>
     </Filter>
@@ -678,11 +651,38 @@
     <Filter Include="05_Component\Renderer\ParticleSystemRenderer">
       <UniqueIdentifier>{441fa4c9-4d99-4a88-add4-7c32475b8188}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05_Component\ParticleSystem\Particle">
-      <UniqueIdentifier>{a7c4dd96-3f32-4c83-88d4-2a2c2c1971a0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\ParticleSystem\Module\Struct">
+    <Filter Include="05_Component\ParticleSystem\Struct">
       <UniqueIdentifier>{126ecc75-2feb-465a-8c6a-08eb4e312700}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\ParticleSystem\Component">
+      <UniqueIdentifier>{1e7d18f3-1708-497d-91c8-a6ecfa7f4d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\07_Resource">
+      <UniqueIdentifier>{8d237eb3-d157-4599-ac8e-1cb2ebb40f23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\07_Resource\Material">
+      <UniqueIdentifier>{a56b84f3-d710-470d-b6e5-e5f8202cb90d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\07_Resource\Material\Manager">
+      <UniqueIdentifier>{26ace45d-b426-41d8-a28b-fe16775dda3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Utility">
+      <UniqueIdentifier>{7e88ad66-eb78-4b3a-9bda-03394197fee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Utility\Tool">
+      <UniqueIdentifier>{0d796e3f-514a-4b91-b321-cac4ff9cccd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Utility\Tool\SceneLoader">
+      <UniqueIdentifier>{5abae1ce-b5ca-4024-9a4c-e9989aafdfac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Utility\Tool\AnimationLoader">
+      <UniqueIdentifier>{1739c00a-28cf-4249-802c-bd34c3152418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Utility\Tool\MaterialLoader">
+      <UniqueIdentifier>{756d0c09-65ff-4e46-92c3-4987e8bdc108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08_Utility\RandomGenerator">
+      <UniqueIdentifier>{be1c96c9-ab29-4ab7-9d23-525928072f4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

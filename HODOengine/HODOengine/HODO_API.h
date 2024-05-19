@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 /// <summary>
@@ -49,6 +49,7 @@
 #include "HDMaterial.h"
 #include "MaterialManager.h"
 #include "Tween.h"
+#include "ParticleSystem.h"
 #include "TriggerBoxCollider.h"
 
 

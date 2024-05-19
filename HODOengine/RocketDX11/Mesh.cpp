@@ -108,6 +108,11 @@ namespace RocketCore::Graphics
 		m_deviceContext->DrawIndexed(m_numIndices, 0, 0);
 	}
 
+	void Mesh::DrawInstanced(UINT instanceCount)
+	{
+		m_deviceContext->DrawIndexedInstanced(m_numIndices, instanceCount, 0, 0, 0);
+	}
+
 	// Calculates the tangents of the vertices in a mesh
 	// Code adapted from: http://www.terathon.com/code/tangent.html
 	// https://scahp.tistory.com/13

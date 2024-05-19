@@ -4,22 +4,22 @@
 
 namespace RocketCore::Graphics
 {
+	class DeferredBuffers;
 	class QuadBuffer;
-	class BillboardParticle;
+	class Particle;
 
 	class ParticlePass
 	{
 	public:
-		ParticlePass(QuadBuffer* toneMapBuffer);
+		ParticlePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
 		~ParticlePass();
 
 		void Render();
 
 	private:
-		QuadBuffer* _toneMapBuffer;
+		DeferredBuffers* _deferredBuffers;
+		QuadBuffer* _quadBuffer;
 		Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
-		// 임시
-		BillboardParticle* _billboard;
 		const float _blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	};
 }

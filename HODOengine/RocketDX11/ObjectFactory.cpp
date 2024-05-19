@@ -81,6 +81,11 @@ namespace RocketCore::Graphics
 		return ResourceManager::Instance().GetLoadedMaterial(name);
 	}
 
+	HDEngine::IParticleSystem* ObjectFactory::CreateParticleSystem()
+	{
+		return ObjectManager::Instance().CreateParticleSystem();
+	}
+
 	HDEngine::CubePrimitive* ObjectFactory::CreateCubePrimitive()
 	{
 		return ObjectManager::Instance().CreateCubePrimitive();
@@ -99,16 +104,6 @@ namespace RocketCore::Graphics
 	HDEngine::CapsulePrimitive* ObjectFactory::CreateCapsulePrimitive()
 	{
 		return ObjectManager::Instance().CreateCapsulePrimitive();
-	}
-
-	HDEngine::IParticle* ObjectFactory::CreateParticle()
-	{
-		return ObjectManager::Instance().CreateParticle();
-	}
-
-	void ObjectFactory::DestroyParticle(HDEngine::IParticle* particle)
-	{
-		ObjectManager::Instance().DestroyParticle(particle);
 	}
 
 }

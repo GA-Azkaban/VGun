@@ -1,10 +1,11 @@
 ﻿#pragma once
+#include "dllExporter.h"
 #include <map>
 #include <functional>
 
 namespace HDData
 {
-	class AnimationCurve
+	class HODO_API AnimationCurve
 	{
 	public:
 		void AddKey(float startTime, float endTime, std::function<float(float)> function)
@@ -19,15 +20,31 @@ namespace HDData
 				return time;
 			}
 			
+			auto currentKey = keys.end();
 			for (auto iter = keys.begin(); iter != keys.end(); ++iter)
 			{
-				if (iter->first.second <= time)
+				if (iter->first.first <= time && iter->first.second >= time)
 				{
-					return iter->second(time);
+					currentKey = iter;
+					break;
 				}
 			}
 
-			// keys에 등록되지 않은 시간이 매개변수로 들어왔을 때의 처리는 나중에 추가한다.
+			if (currentKey == keys.end())
+			{
+				if (keys.begin()->first.first >= time)
+				{
+					return keys.begin()->second(keys.begin()->first.first);
+				}
+				else
+				{
+					return keys.rbegin()->second(keys.rbegin()->first.second);
+				}
+			}
+			else
+			{
+				return currentKey->second(time);
+			}
 		}
 
 	private:

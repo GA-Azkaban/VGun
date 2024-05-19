@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Component.h"
 #include "dllExporter.h"
 #include "MainModule.h"
@@ -13,8 +13,12 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <utility>
-#include <random>
+
+namespace HDEngine
+{
+	class IParticle;
+	class IParticleSystem;
+}
 
 namespace HDData
 {
@@ -32,10 +36,14 @@ namespace HDData
 		void Play();
 		void Stop();
 		void Clear();
+		bool IsPlaying() const;
 
-		std::unordered_map<HDData::Particle*, std::pair<float, float>>& GetActivatedParticleList();
+		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>>& GetActivatedParticleList();
 
 	protected:
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
+		virtual void Start() override;
 		virtual void Update() override;
 
 	public:
@@ -48,20 +56,18 @@ namespace HDData
 		RendererModule rendererModule;
 		bool useAutoRandomSeed;
 		float time;
-		//int particleCount;
 
 	private:
+		HDEngine::IParticleSystem* _particleSystem;
 		bool _isPlaying;
 		float _accumulatedDeltaTime;
-
 		// <Particle, <lifetime, accumulateDeltaTime>>
-		std::unordered_map<HDData::Particle*, std::pair<float, float>> _activatedParticles;
+		std::unordered_map<HDEngine::IParticle*, std::pair<float, float>> _activatedParticles;
+		std::vector<HDEngine::IParticle*> _lifeOverParticles;
 
-		std::vector<HDData::Particle*> _lifeOverParticles;
+		// random
+		std::mt19937 _gen;
 
-		// random		
-		//std::random_device rd;
-		//std::mt19937 gen;
 	};
 
 }
