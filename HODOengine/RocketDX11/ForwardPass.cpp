@@ -25,8 +25,8 @@ namespace RocketCore::Graphics
 	void ForwardPass::Render()
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
-		_quadBuffer->ClearRenderTargets();
-		_deferredBuffers->ClearDepthStencil();
+		//_quadBuffer->ClearRenderTargets();
+		//_deferredBuffers->ClearDepthStencil();
 
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		ResourceManager::Instance().GetDeviceContext()->RSSetState(ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID));

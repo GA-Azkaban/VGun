@@ -89,8 +89,6 @@ namespace RocketCore::Graphics
 			}
 		}
 
-		_deferredBuffers->ClearDepthStencil();
-
 		/// TODO
 		// forward pass mesh에 대한 그림자 처리가 필요하다.
 	}

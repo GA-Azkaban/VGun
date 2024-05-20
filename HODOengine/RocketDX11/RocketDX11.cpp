@@ -362,7 +362,6 @@ namespace RocketCore::Graphics
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_SSAOPass->Render();
 		_deferredPass->Render();
-		//_particlePass->Render();
 		_outlinePass->Render();
 
 #ifdef _DEBUG
