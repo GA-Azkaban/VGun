@@ -23,14 +23,18 @@ void LobbySceneView::Initialize()
 	mainCam->GetGameObject()->GetTransform()->SetPosition(2.62, 0.57, -5.48);
 	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
+	auto mainLight = _scene->GetMainLight();
+	mainLight->SetDirection(Vector4{1, 2, 3, 0});
+
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.5f, 0.0f);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
+	testBox1->GetTransform()->SetScale(4, 4, 4);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->LoadMesh("primitiveQuad");
 	HDEngine::MaterialDesc boxMat1;
 	boxMat1.materialName = "_blur_background_image";
-	boxMat1.albedo = "_blur_background_image.png";
+	boxMat1.albedo = "button.png";
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 
@@ -74,7 +78,7 @@ void LobbySceneView::Initialize()
 
 	HDData::Material* M_Blue = API::CreateMaterial(blue);
 
-	float defaultX = 1740;
+	float defaultX = 165;
 	float r = 1660;
 	float g = 1740;
 	float b = 1820;
@@ -125,7 +129,7 @@ void LobbySceneView::Initialize()
 				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::B);
 			});
 
-		defaultX -= 315;
+		defaultX += 315;
 		r -= 315;
 		g -= 315;
 		b -= 315;
@@ -136,7 +140,7 @@ void LobbySceneView::Initialize()
 	// player rendering
 
 	float posX = 0;
-	float posT = 1740;
+	float posT = 165;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -157,14 +161,14 @@ void LobbySceneView::Initialize()
 
 		HDData::GameObject* text = API::CreateTextbox(_scene, "player" + std::to_string(i), player);
 		text->GetTransform()->SetPosition(player->GetTransform()->GetPosition());
-		text->GetTransform()->SetPosition(posX, 0, 0);
+		text->GetTransform()->SetPosition(posT, 30, 0);
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
-		//player->SetSelfActive(false);
+		player->SetSelfActive(false);
 
 		posX += 1;
-		posT -= 315;
+		posT += 315;
 	}
 
 }

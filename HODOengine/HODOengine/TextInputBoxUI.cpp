@@ -84,8 +84,8 @@ namespace HDData
 	void TextInputBoxUI::SetSortOrder(float value)
 	{
 		_background->SetSortOrder(value);
-		_cursor->SetSortOrder(value + 0.1f);
-		_text->SetSortOrder(value + 0.2f);
+		_cursor->SetSortOrder(value + 0.01f);
+		_text->SetSortOrder(value + 0.02f);
 	}
 
 }

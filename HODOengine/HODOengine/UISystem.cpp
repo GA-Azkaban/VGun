@@ -85,6 +85,7 @@ namespace HDEngine
 				if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
 				{
 					_focusedUI->SetIsClicked(true);
+					auto test = _focusedUI->GetGameObject();
 					_focusedUI->SetIsGrabbing(true);
 					_focusedUI->OnClickEvent();
 					auto one = _focusedUI->GetSortOrder();

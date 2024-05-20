@@ -9,6 +9,7 @@ namespace HDData
 {
 	class GameObject;
 	class Camera;
+	class Light;
 
 	class HODO_API Scene
 	{
@@ -45,9 +46,12 @@ namespace HDData
 	public:
 		Camera* GetMainCamera();
 		void SetMainCamera(Camera* camera);
+		Light* GetMainLight();
+		void SetMainLight(Light* light);
 
 	private:
 		Camera* _mainCamera;
+		Light* _mainLight;
 	};
 }
 

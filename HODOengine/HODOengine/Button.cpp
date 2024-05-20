@@ -11,6 +11,7 @@
 namespace HDData
 {
 	Button::Button()
+		: _onClickEvent(nullptr)
 	{
 
 	}
@@ -50,6 +51,8 @@ namespace HDData
 
 	void Button::CallClickEvent()
 	{
+		if (_onClickEvent == nullptr) return;
+
 		_onClickEvent();
 	}
 
