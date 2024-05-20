@@ -3115,8 +3115,23 @@ class C_ROOM_CHANGE_TEAM final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kTargetNickNameFieldNumber = 2,
     kTeamColorFieldNumber = 1,
   };
+  // string targetNickName = 2;
+  void clear_targetnickname();
+  const std::string& targetnickname() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_targetnickname(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_targetnickname();
+  PROTOBUF_FUTURE_MUST_USE_RESULT std::string* release_targetnickname();
+  void set_allocated_targetnickname(std::string* targetnickname);
+  private:
+  const std::string& _internal_targetnickname() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_targetnickname(const std::string& value);
+  std::string* _internal_mutable_targetnickname();
+  public:
+
   // .Protocol.eTeamColor teamColor = 1;
   void clear_teamcolor();
   ::Protocol::eTeamColor teamcolor() const;
@@ -3133,6 +3148,7 @@ class C_ROOM_CHANGE_TEAM final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr targetnickname_;
   int teamcolor_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -5119,6 +5135,51 @@ inline void C_ROOM_CHANGE_TEAM::_internal_set_teamcolor(::Protocol::eTeamColor v
 inline void C_ROOM_CHANGE_TEAM::set_teamcolor(::Protocol::eTeamColor value) {
   _internal_set_teamcolor(value);
   // @@protoc_insertion_point(field_set:Protocol.C_ROOM_CHANGE_TEAM.teamColor)
+}
+
+// string targetNickName = 2;
+inline void C_ROOM_CHANGE_TEAM::clear_targetnickname() {
+  targetnickname_.ClearToEmpty();
+}
+inline const std::string& C_ROOM_CHANGE_TEAM::targetnickname() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_ROOM_CHANGE_TEAM.targetNickName)
+  return _internal_targetnickname();
+}
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void C_ROOM_CHANGE_TEAM::set_targetnickname(ArgT0&& arg0, ArgT... args) {
+ 
+ targetnickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:Protocol.C_ROOM_CHANGE_TEAM.targetNickName)
+}
+inline std::string* C_ROOM_CHANGE_TEAM::mutable_targetnickname() {
+  // @@protoc_insertion_point(field_mutable:Protocol.C_ROOM_CHANGE_TEAM.targetNickName)
+  return _internal_mutable_targetnickname();
+}
+inline const std::string& C_ROOM_CHANGE_TEAM::_internal_targetnickname() const {
+  return targetnickname_.Get();
+}
+inline void C_ROOM_CHANGE_TEAM::_internal_set_targetnickname(const std::string& value) {
+  
+  targetnickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArenaForAllocation());
+}
+inline std::string* C_ROOM_CHANGE_TEAM::_internal_mutable_targetnickname() {
+  
+  return targetnickname_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArenaForAllocation());
+}
+inline std::string* C_ROOM_CHANGE_TEAM::release_targetnickname() {
+  // @@protoc_insertion_point(field_release:Protocol.C_ROOM_CHANGE_TEAM.targetNickName)
+  return targetnickname_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArenaForAllocation());
+}
+inline void C_ROOM_CHANGE_TEAM::set_allocated_targetnickname(std::string* targetnickname) {
+  if (targetnickname != nullptr) {
+    
+  } else {
+    
+  }
+  targetnickname_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), targetnickname,
+      GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set_allocated:Protocol.C_ROOM_CHANGE_TEAM.targetNickName)
 }
 
 // -------------------------------------------------------------------

@@ -16,3 +16,20 @@ enum eRoomState
 	ROOM_STATE_PLAY = 2;
 	ROOM_STATE_END = 3;
 }
+
+enum eTeamColor
+{
+	TEAM_COLOR_NONE = 0;
+	TEAM_COLOR_RED = 1;
+	TEAM_COLOR_GREEN = 2;
+	TEAM_COLOR_BLUE = 3;
+}
+
+enum eRGBMap
+{
+	NONE = 0;
+	RANDOM = 1;
+	DESERT = 2;
+
+
+}

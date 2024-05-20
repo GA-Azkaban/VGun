@@ -59,7 +59,7 @@ void NetworkManager::Connected()
 	else
 		ASSERT_CRASH(false);
 
-	std::cout << "Connect" << std::endl;
+	std::cout << "Connected" << std::endl;
 #endif
 
 
@@ -269,11 +269,12 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 	}
 }
 
-void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor)
+void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
 {
 	Protocol::C_ROOM_CHANGE_TEAM packet;
 
 	packet.set_teamcolor(teamColor);
+	packet.set_targetnickname(targetNickName);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
