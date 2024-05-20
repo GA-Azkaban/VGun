@@ -14,6 +14,13 @@ struct roomInfoObj
 	HDData::ImageUI* isTeam;
 };
 
+enum screenSize
+{
+	option1 = 1,	// default	1920x1080
+	option2 = 2,	// 1600x900
+	option3 = 3,
+	option4 = 4,
+};
 
 class MenuManager : public HDData::Script
 {
@@ -57,6 +64,10 @@ public:
 	std::string GetIsTeamImage(bool isTeam);
 
 public:
+	void SetScreenSize(int optionNum);
+	std::string& GetScreenSize();
+
+public:
 	// canvas
 	HDData::GameObject* _mainMenuCanvas = nullptr;
 	HDData::GameObject* _checkEnterCanvas = nullptr;
@@ -82,5 +93,8 @@ public:
 	roominfo* selectedRoomInfo = nullptr;
 	HDData::GameObject* _roomListCanvas = nullptr;
 	roomInfoObj _roomObject[5];
+
+	// screenSize
+	std::string _screenSize = ("1920x1080(60Hz)");
 };
 

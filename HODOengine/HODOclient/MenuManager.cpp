@@ -131,6 +131,26 @@ std::string MenuManager::GetIsTeamImage(bool isTeam)
 	return "icon_user_filled.png";
 }
 
+void MenuManager::SetScreenSize(int OptionNum)
+{
+	switch (OptionNum)
+	{
+		case option1:
+			_screenSize = ("1920x1080(60Hz)");
+		case option2:
+			_screenSize = ("1600x900(60Hz)");
+		case option3:
+			_screenSize = ("2550x1440(60Hz)");
+		default:
+			break;
+	}
+}
+
+std::string& MenuManager::GetScreenSize()
+{
+	return _screenSize;
+}
+
 void MenuManager::RenderRoomList()
 {
 	if (_roomList.size() == 0) return;

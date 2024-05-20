@@ -1,4 +1,4 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -9,6 +9,8 @@
 #include "Material.h"
 #include "ObjectManager.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
+
+#define FILEPATH "Resources/Textures/UI/"
 
 using namespace DirectX;
 
