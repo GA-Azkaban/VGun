@@ -1,15 +1,14 @@
 ﻿#include <locale>
 #include <codecvt>
-//#include <SimpleMath.h>
-
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 #include "Camera.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
 #include "Mesh.h"
-
-#define FILEPATH "Resources/UI/"
+#include "Material.h"
+#include "ObjectManager.h"
+#include "../HODO3DGraphicsInterface/IMaterial.h"
 
 using namespace DirectX;
 
@@ -32,6 +31,11 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 	_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
 	_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
+	HDEngine::MaterialDesc desc;
+	desc.materialName = "UIImage";
+	_material = ObjectManager::Instance().CreateMaterial(desc);
+	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
+	_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
 }
 
 RocketCore::Graphics::ImageRenderer::~ImageRenderer()
@@ -41,45 +45,12 @@ RocketCore::Graphics::ImageRenderer::~ImageRenderer()
 
 void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 {
-	std::string basePath = FILEPATH;
-
-	std::string fullPath = basePath + filePath;
-
-	std::wstring wideFilePath;
-
-	// std::wstring_convert 대신 MultiByteToWideChar() 사용
-	int requiredSize = MultiByteToWideChar(
-		CP_UTF8,             // 문자열의 인코딩 방식 (UTF-8)
-		0,                   // 플래그 (여기서는 0 사용)
-		fullPath.c_str(),    // 변환할 문자열
-		-1,                  // 변환할 문자열의 길이 (-1이면 널 종료 문자까지 변환)
-		nullptr,             // 출력 버퍼 (크기 계산을 위해 nullptr 전달)
-		0                    // 출력 버퍼의 크기 (0이면 크기 계산만 수행)
-	);
-
-	if (requiredSize > 0)
-	{
-		wideFilePath.resize(requiredSize);
-		MultiByteToWideChar(
-			CP_UTF8,
-			0,
-			fullPath.c_str(),
-			-1,
-			&wideFilePath[0],
-			requiredSize
-		);
-	}
-
-	DirectX::CreateWICTextureFromFile(
-		_device,
-		_deviceContext,
-		wideFilePath.c_str(),
-		nullptr,
-		_imagerSRV.GetAddressOf());
+	_material->LoadAlbedoTexture(filePath);
 
 	D3D11_TEXTURE2D_DESC textureDesc;
 	ID3D11Resource* resource;
-	_imagerSRV->GetResource(&resource);
+	_material->GetAlbedoMap()->GetResource(&resource);
+	//_imagerSRV->GetResource(&resource);
 	ID3D11Texture2D* texture2D = static_cast<ID3D11Texture2D*>(resource);
 	texture2D->GetDesc(&textureDesc);
 
@@ -158,7 +129,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			_vertexShader->CopyAllBufferData();
 			_vertexShader->SetShader();
 
-			_pixelShader->SetShaderResourceView("Albedo", _imagerSRV.Get());
+			_pixelShader->SetShaderResourceView("Albedo", _material->GetAlbedoMap());
 			_pixelShader->SetFloat4("albedoColor", XMFLOAT4{1.0f, 1.0f, 1.0f, 1.0f});
 
 			_pixelShader->CopyAllBufferData();
@@ -170,7 +141,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 		else
 		{
 			spriteBatch->Draw(
-				_imagerSRV.Get(),
+				_material->GetAlbedoMap(),
 				DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
 				nullptr,
 				_color,

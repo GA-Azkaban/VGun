@@ -1,4 +1,4 @@
-#include "ParticleSystem.h"
+﻿#include "ParticleSystem.h"
 #include "GameObject.h"
 #include "ParticleSystemRenderer.h"
 #include "TimeSystem.h"
@@ -123,6 +123,7 @@ namespace HDData
 							std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
 							float size = size_dist(_gen);
 							particle->SetSize(size);
+							particle->SetScale(size, size, size);
 							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
 							float angle = rotation_dist(_gen);
 							particle->SetAngle(0.0f);
@@ -170,6 +171,7 @@ namespace HDData
 							std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
 							float size = size_dist(_gen);
 							particle->SetSize(size);
+							particle->SetScale(size, size, size);
 							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
 							float angle = rotation_dist(_gen);
 							particle->SetAngle(0.0f);

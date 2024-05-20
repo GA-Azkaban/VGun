@@ -74,6 +74,7 @@ namespace RocketCore::Graphics
 
 		void LoadFBXFile(std::string path);
 		void LoadTextureFile(std::string path);
+		void LoadUITextureFile(std::string path);
 		void LoadCubeMapTextureFile(std::string fileName);
 
 		/// <summary>

@@ -95,7 +95,7 @@ namespace RocketCore::Graphics
 		ID3D11DeviceContext* _deviceContext;
 
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _imagerSRV;
-		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
+		//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _textureSRV;
 
 		float _sortOrder;
 
@@ -104,6 +104,7 @@ namespace RocketCore::Graphics
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _rasterizerState;
 		DirectX::XMMATRIX _world;
 		Mesh* _mesh;
+		Material* _material;
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
 	};
