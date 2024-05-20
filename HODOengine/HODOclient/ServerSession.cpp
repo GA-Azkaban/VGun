@@ -5,7 +5,7 @@
 
 void ServerSession::OnConnected()
 {
-	NetworkManager::Instance().Connected();
+	
 }
 
 void ServerSession::OnRecvPacket(BYTE* buffer, int32 len)

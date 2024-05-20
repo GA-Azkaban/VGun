@@ -52,7 +52,7 @@ public: // 다른 플레이어
 	void RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo);
 
 public: // 팀 색상 변경
-	void SendChangeTeamColor(Protocol::eTeamColor teamColor);
+	void SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName = "");
 	void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);
 
 public: // 게임 관련
