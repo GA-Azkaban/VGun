@@ -47,12 +47,12 @@ namespace RocketCore::Graphics
 		_deferredBuffers->SetRenderTargets();
 		_deferredBuffers->ClearRenderTargets();
 
-		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
-		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
-		VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
-		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
-		vertexShader = ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso");
-		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
+		//XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
+		//XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
+		//VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
+		//vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
+		//VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("SkeletonVertexShader.cso");
+		//vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{

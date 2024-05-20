@@ -24,6 +24,7 @@ namespace HDData
 		void SetRoughnessValue(float value, unsigned int element = 0);
 		void SetMetallicValue(float value, unsigned int element = 0);
 		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
+		void SetUseLight(bool useLight);
 
 	protected:
 		virtual void Update() override;
