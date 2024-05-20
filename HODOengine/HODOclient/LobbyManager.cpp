@@ -181,6 +181,11 @@ void LobbyManager::RoomEnterSUCCESS()
 		
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
+			_teamButton[i]->SetSelfActive(true);
+		}
+		else if(_players[i]->GetPlayerID() == GameManager::Instance()->GetMyInfo()->GetPlayerID())
+		{
+			_teamButton[i]->SetSelfActive(true);
 		}
 	}
 	

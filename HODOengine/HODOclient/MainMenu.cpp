@@ -106,8 +106,7 @@ void MainMenuScene::MainMenu()
 	freshBtn->SetOnClickEvent(
 		[freshBtn]()
 		{
-			MenuManager::Instance().GetRoomListFromServer();
-			//MenuManager::Instance().GetRoomList();
+			NetworkManager::Instance().SendRoomListRequest();
 		}
 
 	);

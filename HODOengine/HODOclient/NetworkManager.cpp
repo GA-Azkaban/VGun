@@ -79,6 +79,11 @@ void NetworkManager::SendLogin(std::string id, std::string password)
 	packet.set_id(id);
 	packet.set_password(password);
 
+	PlayerInfo* player = new PlayerInfo;
+	player->SetPlayerID(id);
+
+	GameManager::Instance()->SetMyInfo(player);
+
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -118,11 +123,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	// 로그인이 성공했을때 처리
 	LobbyManager::Instance().LoginSucess(uid, nickName);
 
-	PlayerInfo* player = new PlayerInfo;
-	player->SetPlayerID(uid);
-	player->SetNickName(nickName);
-
-	GameManager::Instance()->SetMyInfo(player);
+	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 
 	API::LoadSceneByName("MainMenu");
 }
@@ -196,21 +197,21 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 	info->currentPlayerCount = roomInfo.currentplayercount();
 
-	PlayerInfo* one = new PlayerInfo;
-	one = GameManager::Instance()->GetMyInfo();
-	info->_players.push_back(one);
-
 	if (roomInfo.users().empty())
 	{
-		LobbyManager::Instance().RoomEnterSUCCESS();
 		return;
 	}
 
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(std::stoi(player.userinfo().id()));
+
 		one->SetNickName(player.userinfo().nickname());
+		one->SetIsHost(player.host());
+		
+		SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
+
+		one->SetTeamID(eTeam::R);
 
 		// 플레이어 정보 받기	
 		info->_players.push_back(one);
@@ -256,7 +257,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(std::stoi(player.userinfo().id()));
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
@@ -276,7 +276,6 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(std::stoi(player.userinfo().id()));
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());

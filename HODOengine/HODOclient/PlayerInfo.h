@@ -33,7 +33,8 @@ public:
 	};
 
 public:
-	void SetPlayerID(int id);
+	void SetPlayerUID(int uid);
+	void SetPlayerID(std::string id);
 	void PlayerIndex(int index);
 	void SetTeamID(eTeam team);
 	void SetIsHost(bool isHost);
@@ -48,7 +49,8 @@ public:
 
 	void SetCurrentBulletCount(int Count);
 
-	int GetPlayerID();
+	int GetPlayerUID();
+	std::string GetPlayerID();
 	bool GetIsHost();
 	int GetPlayerIndex();
 	eTeam GetPlayerTeam();
@@ -65,7 +67,8 @@ public:
 
 private:
 	// player info
-	int _playerID;
+	int _playerUID;
+	std::string _playerID;
 	int _playerIndex;
 	eTeam _teamID;
 	bool _isHost = false;

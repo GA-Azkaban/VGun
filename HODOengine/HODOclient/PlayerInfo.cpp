@@ -25,7 +25,12 @@ void PlayerInfo::Init()
 	this->_state = ePlayerState::IDLE;
 }
 
-void PlayerInfo::SetPlayerID(int id)
+void PlayerInfo::SetPlayerUID(int uid)
+{
+	_playerUID = uid;
+}
+
+void PlayerInfo::SetPlayerID(std::string id)
 {
 	_playerID = id;
 }
@@ -65,7 +70,12 @@ void PlayerInfo::SetCurrentBulletCount(int count)
 	_bulletCount = count;
 }
 
-int PlayerInfo::GetPlayerID()
+int PlayerInfo::GetPlayerUID()
+{
+	return _playerUID;
+}
+
+std::string PlayerInfo::GetPlayerID()
 {
 	return _playerID;
 }
