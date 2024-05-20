@@ -3,6 +3,7 @@
 #include "PlayerInfo.h"
 #include "LobbyManager.h"
 #include "GameManager.h"
+#include "NetworkManager.h"
 
 LobbySceneView::LobbySceneView()
 {
@@ -106,7 +107,7 @@ void LobbySceneView::Initialize()
 		rBtn->SetImage("r.png");
 		rBtn->SetOnClickEvent([]()
 			{
-				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::R);
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
 			});
 
 		auto gButton = API::CreateButton(_scene, "G", subCanvas);
@@ -116,7 +117,7 @@ void LobbySceneView::Initialize()
 		gBtn->SetImage("g.png");
 		gBtn->SetOnClickEvent([]()
 			{
-				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::G);
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_GREEN);
 			});
 
 		auto bButton = API::CreateButton(_scene, "B", subCanvas);
@@ -126,7 +127,7 @@ void LobbySceneView::Initialize()
 		bBtn->SetImage("b.png");
 		bBtn->SetOnClickEvent([]()
 			{
-				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::B);
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE);
 			});
 
 		defaultX += 315;

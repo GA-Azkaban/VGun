@@ -263,8 +263,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 
 		info->_players.push_back(one);
 	}
-
-	LobbyManager::Instance().OtherPlayerEnter();
 }
 
 void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
@@ -296,7 +294,31 @@ void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor)
 
 void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 {
+	auto info = LobbyManager::Instance().GetRoomData();
 
+	for (int i = 0; i < roomInfo.users().size(); ++i)
+	{
+		switch (roomInfo.users()[i].team())
+		{
+			case Protocol::TEAM_COLOR_RED :
+			{
+				LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[i].userinfo().nickname());
+			}
+			break;
+			case Protocol::TEAM_COLOR_GREEN:
+			{
+				LobbyManager::Instance().SetPlayerTeam(eTeam::G, roomInfo.users()[i].userinfo().nickname());
+			}
+			break;
+			case Protocol::TEAM_COLOR_BLUE:
+			{
+				LobbyManager::Instance().SetPlayerTeam(eTeam::B, roomInfo.users()[i].userinfo().nickname());
+			}
+			break;
+			default:
+				break;
+		}
+	}
 }
 
 void NetworkManager::SendGameStart()

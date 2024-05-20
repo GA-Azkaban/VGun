@@ -191,55 +191,28 @@ void LobbyManager::RoomEnterSUCCESS()
 	
 }
 
-// TODO) 새로운 플레이어가 들어오거나 나갈 때, 기존 애니메이션이 끊기지 않으면 좋다.
-// 하지만 지금은 작업 효율을 위해 일단 벡터를 갈아끼운다.
-void LobbyManager::OtherPlayerEnter()
+
+void LobbyManager::RefreshRoom()
 {
-	_players = _roomData->_players;
-
-	int count = _roomData->currentPlayerCount;
-
-	for (int i = 0; i < 6; ++i)
-	{
-		//if (i < count)
-		//{
-		//	_playerObjs[i]->SetSelfActive(true);
-		//	_nickNameIndex[i]->SetSelfActive(true);
-		//	_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
-		//}
-		//else
-		//{
-		//	_playerObjs[i]->SetSelfActive(false);
-		//	_nickNameIndex[i]->SetSelfActive(false);
-		//}
-	}
-}
-
-void LobbyManager::OtherPlayerExit()
-{
-	_players = _roomData->_players;
-
-	int count = _roomData->currentPlayerCount;
-
 	for (int i = 0; i < 6; ++i)
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
+		_teamButton[i]->SetSelfActive(false);
 	}
-
-	for (int i = 0; i < count; ++i)
-	{
-		_playerObjs[i]->SetSelfActive(true);
-		SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
-		_nickNameIndex[i]->SetSelfActive(true);
-		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
-	}
-
 }
 
-void LobbyManager::SetPlayerTeam(eTeam team, HDData::GameObject* obj)
+void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 {
-	auto mesh = obj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	HDData::SkinnedMeshRenderer* mesh = nullptr;
+
+	for (int i = 0; i < _players.size(); ++i)
+	{
+		if (nickName == _players[i]->GetPlayerNickName())
+		{
+			mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		}
+	}
 
 	switch (team)
 	{
