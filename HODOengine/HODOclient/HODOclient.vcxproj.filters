@@ -84,9 +84,6 @@
     <ClCompile Include="FadeInOut.cpp">
       <Filter>04_SceneView\FadeInOut</Filter>
     </ClCompile>
-    <ClCompile Include="BtnScript.cpp">
-      <Filter>GameScript\TextScript</Filter>
-    </ClCompile>
     <ClCompile Include="BtnHoveringScript.cpp">
       <Filter>GameScript\ButtonScript</Filter>
     </ClCompile>
@@ -96,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>03_Manager\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnScript.cpp">
+      <Filter>GameScript\TextScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

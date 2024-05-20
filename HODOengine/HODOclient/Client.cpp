@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -30,10 +30,10 @@ void Client::Initialize()
 	//TestScene test;
 	//test.Start();
 
-	LoginSceneView login;
-	login.Initialize();
+	//LoginSceneView login;		//Scene Name : Login
+	//login.Initialize();
 
-	MainMenuScene menu;
+	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();
 
 	//UnitySceneLoaderTest unity;
@@ -45,8 +45,8 @@ void Client::Initialize()
 	//InGameSceneView inGame;
 	//inGame.Initialize();
 
-	LobbySceneView lobby;
-	lobby.Initialize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
 	API::LoadSceneByName("Lobby");
 }

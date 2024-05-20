@@ -1,4 +1,4 @@
-﻿#include "MainMenu.h"
+#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -88,18 +88,36 @@ void MainMenuScene::MainMenu()
 	main_enterText->GetComponent<HDData::TextUI>()->SetText("Enter");
 
 	// room List Canvas
-	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas", main_enterBtn);
-	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
-	enter_roomLstCanvas->GetTransform()->SetPosition(960.0f, 540.0f, 0.0f);
-	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	enter_roomLstCanvas->SetSelfActive(false);
-	MenuManager::Instance().SetRoomListCanvas(enter_roomLstCanvas);
+	HDData::GameObject* roomListCanvas = API::CreateImageBox(_scene, "roomListCanvas", roomEnterBtn);
+	roomListCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
+	roomListCanvas->GetTransform()->SetPosition(1000.0f, 540.0f, 0.0f);
+	roomListCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	roomListCanvas->SetSelfActive(false);
+	MenuManager::Instance().SetRoomListCanvas(roomListCanvas);
+
+	// Refresh btn
+	HDData::GameObject* refreshButton = API::CreateButton(_scene,"refreshBtn",roomListCanvas);
+	refreshButton->GetTransform()->SetLocalPosition(330,-330,0);
+	refreshButton->AddComponent<BtnHoveringScript>();
+	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
+	freshBtn->SetDefaultColor(DirectX::Colors::White);
+	freshBtn->SetImage("flair_arrow_3.png");
+	freshBtn->SetSortOrder(0.6f);
+	freshBtn->SetOnClickEvent(
+		[freshBtn]()
+		{
+			MenuManager::Instance().GetRoomListFromServer();
+			//MenuManager::Instance().GetRoomList();
+		}
+
+	);
 
 	// page move button
-	HDData::GameObject* enter_pageLeftBtn = API::CreateButton(_scene, "pageLeft", enter_roomLstCanvas);
-	enter_pageLeftBtn->GetTransform()->SetLocalPosition(-500, 0, 0);
-	auto lBtn = enter_pageLeftBtn->GetComponent<HDData::Button>();
-	lBtn->SetImage("left.png");
+	HDData::GameObject* pageLeftButton = API::CreateButton(_scene, "pageLeft", roomListCanvas);
+	pageLeftButton->GetTransform()->SetLocalPosition(-300, 0, 0);
+	pageLeftButton->AddComponent<BtnHoveringScript>();
+	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
+	lBtn->SetImage("leftArrow.png");
 	lBtn->SetSortOrder(0.6f);
 	lBtn->SetOnClickEvent([]() {
 		if (MenuManager::Instance().currentPage > 1)
@@ -109,10 +127,11 @@ void MainMenuScene::MainMenu()
 		}
 		});
 
-	HDData::GameObject* enter_pageRightBtn = API::CreateButton(_scene, "pageRight", enter_roomLstCanvas);
-	enter_pageRightBtn->GetTransform()->SetLocalPosition(500, 0, 0);
-	auto rBtn = enter_pageRightBtn->GetComponent<HDData::Button>();
-	rBtn->SetImage("right.png");
+	HDData::GameObject* pageRightButton = API::CreateButton(_scene, "pageRight", roomListCanvas);
+	pageRightButton->GetTransform()->SetLocalPosition(300, 0, 0);
+	pageRightButton->AddComponent<BtnHoveringScript>();
+	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
+	rBtn->SetImage("rightArrow.png");
 	rBtn->SetSortOrder(0.6f);
 	rBtn->SetOnClickEvent([]() {
 		if (MenuManager::Instance().currentPage < MenuManager::Instance().pageCount)
@@ -363,7 +382,10 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
 	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.8f);
 
+
 	// Training Btn
+	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
+	trainingBtn->GetTransform()->SetPosition(150.0f, 330.0f, 0.f);
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
 	trainingBtn->GetTransform()->SetPosition(130.0f, 400.0f, 0.f);
 	trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
