@@ -9,7 +9,7 @@
 #include "PixelShader.h"
 #include "Mesh.h"
 
-#define FILEPATH "Resources/UI/"
+#define FILEPATH "Resources/Textures/UI/"
 
 using namespace DirectX;
 

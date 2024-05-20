@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -358,7 +358,7 @@ void MainMenuScene::MainMenu()
 
 	// privateCheckBox
 	HDData::GameObject* make_isPrivateCheck = API::CreateToggle(_scene, "privateCheckBox", make_canvas);
-	make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->GetOnComp()->SetImage("checkBox.png");
+	make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->GetOnComp()->SetImage("checkbox_background.png");
 	make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->GetOffComp()->SetImage("checkbox_cross.png");
 	make_isPrivateCheck->GetTransform()->SetPosition(1200.0f, 240.0f, 0.0f);
 	make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->SetSortOrder(0.75f);
@@ -634,19 +634,19 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			if (FadeInOut::Instance().GetComplete())
-			{
-				FadeInOut::Instance().FadeOut();
-			}
-			else
-			{
-				FadeInOut::Instance().FadeIn();
-			}
-		}
-	);	
+	//tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+	//	[=]()
+	//	{
+	//		if (FadeInOut::Instance().GetComplete())
+	//		{
+	//			FadeInOut::Instance().FadeOut();
+	//		}
+	//		else
+	//		{
+	//			FadeInOut::Instance().FadeIn();
+	//		}
+	//	}
+	//);	
 	
 	resolutionBtn1->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
