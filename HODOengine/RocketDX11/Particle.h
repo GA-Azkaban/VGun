@@ -16,6 +16,7 @@ namespace RocketCore::Graphics
 		virtual DirectX::XMFLOAT4 GetColorFloat4() const override;
 		virtual float GetSpeed() const override;
 		virtual float GetSize() const override;
+		virtual float GetStartSize() const override;
 		virtual float GetAngle() const override;
 		virtual DirectX::XMFLOAT3 GetPosition() const override;
 		virtual DirectX::XMFLOAT4 GetRotation() const override;
@@ -26,6 +27,7 @@ namespace RocketCore::Graphics
 		virtual void SetColor(DirectX::XMINT4 color) override;
 		virtual void SetSpeed(float speed) override;
 		virtual void SetSize(float size) override;
+		virtual void SetStartSize(float size) override;
 		virtual void SetAngle(float angle) override;
 		virtual void SetPosition(float x, float y, float z) override;
 		virtual void SetPosition(DirectX::XMFLOAT3 pos) override;
@@ -41,6 +43,7 @@ namespace RocketCore::Graphics
 		DirectX::XMINT4 _color;
 		float _speed;
 		float _size;
+		float _startSize;
 		float _angle;
 
 		DirectX::XMFLOAT3 _position;

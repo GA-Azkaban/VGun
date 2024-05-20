@@ -306,7 +306,7 @@ void UnitySceneLoaderTest::Start()
 	particleSystemObj->GetComponent<HDData::Transform>()->SetPosition(0.0f, 3.0f, 0.0f);
 	particleSystemObj->GetComponent<HDData::Transform>()->Rotate(0.0f, 90.0f, 0.0f);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
-	particleSystem->main.duration = 0.2f;
+	particleSystem->main.duration = 0.15f;
 	particleSystem->main.loop = true;
 	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
 	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
@@ -314,8 +314,8 @@ void UnitySceneLoaderTest::Start()
 	particleSystem->main.maxStartLifetime = 0.05f;
 	particleSystem->main.minStartRotation = -90.0f;
 	particleSystem->main.maxStartRotation = -90.0f;
-	particleSystem->main.minStartSize = 0.025f;
-	particleSystem->main.maxStartSize = 0.1f;
+	particleSystem->main.minStartSize = 0.0025f;
+	particleSystem->main.maxStartSize = 0.01f;
 	particleSystem->main.minStartSpeed = 0.0f;
 	particleSystem->main.maxStartSpeed = 0.0f;
 	particleSystem->emission.enabled = true;
@@ -323,7 +323,7 @@ void UnitySceneLoaderTest::Start()
 	particleSystem->emission.SetBurst(newBurst);
 	particleSystem->sizeOverLifetime.enabled = true;
 	HDData::AnimationCurve curve;
-	curve.AddKey(0.0f, 0.654f, [](float t) { return -0.0934 * t * t + 0.0611 * t; });
+	curve.AddKey(0.0f, 0.654f, [](float t) { return -9.34 * t * t + 6.11 * t; });
 	particleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve);
 	HDEngine::MaterialDesc flashMatDesc;
 	flashMatDesc.materialName = "muzzleFlash";
@@ -336,7 +336,7 @@ void UnitySceneLoaderTest::Start()
 
 	auto particleSystemObj2 = API::CreateObject(_scene, "particleSystem2", particleSystemObj);
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
-	particleSystem2->main.duration = 0.2f;
+	particleSystem2->main.duration = 0.15f;
 	particleSystem2->main.loop = true;
 	particleSystem2->main.minStartColor = { 255, 113, 36, 255 };
 	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
@@ -345,7 +345,7 @@ void UnitySceneLoaderTest::Start()
 	particleSystem2->main.minStartRotation = -250.0f;
 	particleSystem2->main.maxStartRotation = 250.0f;
 	particleSystem2->main.minStartSize = 0.1f;
-	particleSystem2->main.maxStartSize = 0.15f;
+	particleSystem2->main.maxStartSize = 0.2f;
 	particleSystem2->main.minStartSpeed = 10.0f;
 	particleSystem2->main.maxStartSpeed = 15.0f;
 	particleSystem2->emission.enabled = true;

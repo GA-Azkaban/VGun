@@ -122,6 +122,7 @@ namespace HDData
 							particle->SetSpeed(speed);
 							std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
 							float size = size_dist(_gen);
+							particle->SetStartSize(size);
 							particle->SetSize(size);
 							particle->SetScale(size, size, size);
 							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
@@ -136,10 +137,10 @@ namespace HDData
 							}
 							else
 							{
-								float radian = DirectX::XMConvertToRadians(angle);
-								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
-								particle->SetRotation(rot);
-								particle->SetPosition(0.0f, 0.0f, 0.0f);
+								//float radian = DirectX::XMConvertToRadians(angle);
+								//Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
+								//particle->SetRotation(rot);
+								//particle->SetPosition(0.0f, 0.0f, 0.0f);
 							}
 							float randomLifetime = real_dist(_gen);
 							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
@@ -170,6 +171,7 @@ namespace HDData
 							particle->SetSpeed(speed);
 							std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
 							float size = size_dist(_gen);
+							particle->SetStartSize(size);
 							particle->SetSize(size);
 							particle->SetScale(size, size, size);
 							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
@@ -207,7 +209,7 @@ namespace HDData
 			}
 			if (sizeOverLifetime.enabled)
 			{
-				p.first->SetSize(sizeOverLifetime.size.Evaluate(_accumulatedDeltaTime / main.duration));
+				p.first->SetSize(p.first->GetStartSize() * sizeOverLifetime.size.Evaluate(_accumulatedDeltaTime / main.duration));
 			}
 			if (rotationOverLifetime.enabled)
 			{

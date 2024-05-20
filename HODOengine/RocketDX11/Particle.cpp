@@ -1,4 +1,4 @@
-#include "Particle.h"
+﻿#include "Particle.h"
 
 using namespace DirectX;
 
@@ -8,7 +8,7 @@ namespace RocketCore::Graphics
 	Particle::Particle()
 		: _world(DirectX::XMMatrixIdentity()), _isActive(true),
 		_color{ 255, 255, 255, 255 }, _speed(5.0f),
-		_size(1.0f), _angle(0.0f),
+		_size(1.0f), _startSize(1.0f), _angle(0.0f),
 		_position{0.0f, 0.0f, 0.0f}, _rotation{0.0f, 0.0f, 0.0f, 1.0f}, _scale{1.0f, 1.0f, 1.0f}
 	{
 		
@@ -42,6 +42,11 @@ namespace RocketCore::Graphics
 	float Particle::GetSize() const
 	{
 		return _size;
+	}
+
+	float Particle::GetStartSize() const
+	{
+		return _startSize;
 	}
 
 	float Particle::GetAngle() const
@@ -87,6 +92,11 @@ namespace RocketCore::Graphics
 	void Particle::SetSize(float size)
 	{
 		_size = size;
+	}
+
+	void Particle::SetStartSize(float size)
+	{
+		_startSize = size;
 	}
 
 	void Particle::SetAngle(float angle)
