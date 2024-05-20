@@ -18,7 +18,10 @@ public:
 
 	std::string imgName;
 
-	HDData::GameObject* _childObject;
+	HDData::GameObject* _childTextObject;
+	bool textFlag = false;
+	HDData::GameObject* _childImageObject;
+	bool imageFlag = false;
 
 };
 

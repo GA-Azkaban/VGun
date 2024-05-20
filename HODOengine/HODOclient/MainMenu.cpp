@@ -90,7 +90,7 @@ void MainMenuScene::MainMenu()
 	// room List Canvas
 	HDData::GameObject* roomListCanvas = API::CreateImageBox(_scene, "roomListCanvas", roomEnterBtn);
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
-	roomListCanvas->GetTransform()->SetPosition(1000.0f, 540.0f, 0.0f);
+	roomListCanvas->GetTransform()->SetPosition(950.0f, 540.0f, 0.0f);
 	roomListCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	roomListCanvas->SetSelfActive(false);
 	MenuManager::Instance().SetRoomListCanvas(roomListCanvas);
@@ -307,7 +307,6 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
 	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.8f);
 
-
 	// Training Btn
 	HDData::GameObject* trainingBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
 	trainingBtn->GetTransform()->SetPosition(150.0f, 330.0f, 0.f);
@@ -330,34 +329,121 @@ void MainMenuScene::MainMenu()
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
 
-	// Exit button
-	//HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", mainControlObject);
-	//exitBtn->GetTransform()->SetPosition(100.f, 370.0f, 0.6f); // y += 160
-	//exitBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	//exitBtn->AddComponent<BtnScript>();
-	//HDData::GameObject* exitText = API::CreateTextbox(_scene, "exitText", exitBtn);
-	//exitText->GetTransform()->SetPosition(exitBtn->GetTransform()->GetPosition());
-	//exitText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	//exitText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::DarkRed);
-	//exitText->GetComponent<HDData::TextUI>()->SetText("EXIT");
-
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
 	preferencesBtn->GetTransform()->SetPosition(1875.f, 30.f, 0.f);
 	preferencesBtn->AddComponent<BtnHoveringScript>();
-	preferencesBtn->GetComponent<HDData::Button>()->SetImage("icon_cog.png");
-	preferencesBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
-	// ex)해상도, BGM 볼륨, 환경볼륨, 마우스 감도
+	auto prefBtn = preferencesBtn->GetComponent<HDData::Button>();
+	prefBtn->SetImage("icon_cog.png");
+	prefBtn->SetSortOrder(0.6f);
 
+	// ex)해상도, BGM 볼륨, 환경볼륨, 마우스 감도
 	HDData::GameObject* settingControlObject = API::CreateImageBox(_scene, "settingControlObject");
 	settingControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 	settingControlObject->SetSelfActive(false);
 
-	HDData::GameObject* preferencesCanvas = API::CreateImageBox(_scene, "displaySetting", settingControlObject);
+	HDData::GameObject* preferencesCanvas = API::CreateImageBox(_scene, "Setting", settingControlObject);
 	preferencesCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
 	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+
+	// 해상도
+	// default 1920x1080
+	HDData::GameObject* resolutionText = API::CreateTextbox(_scene, "resolutionText", preferencesCanvas);
+	resolutionText->GetTransform()->SetPosition(300.0f,250.0f,0.f);
+	resolutionText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
+	resolutionText->GetComponent<HDData::TextUI>()->SetText("Resolution");
+	resolutionText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* resolutionBtn1 = API::CreateButton(_scene, "resolutionBtn", preferencesCanvas);
+	resolutionBtn1->GetTransform()->SetPosition(1350.0f, 240.0f, 0.f);
+	resolutionBtn1->AddComponent<BtnScript>();
+	resolutionBtn1->AddComponent<BtnHoveringScript>();
+	resolutionBtn1->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	resolutionBtn1->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	HDData::GameObject* screenSizeStat = API::CreateTextbox(_scene, "screenStat", resolutionBtn1);
+	screenSizeStat->GetTransform()->SetPosition(1350.0f, 245.0f, 0.f);
+	screenSizeStat->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	screenSizeStat->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
+	HDData::GameObject* resolutionCanvas = API::CreateImageBox(_scene, "resolutionCanvas", preferencesCanvas);
+	resolutionCanvas->GetTransform()->SetPosition(960.f, 240.0f, 0.f);
+	resolutionCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
+	resolutionCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* resolutionToggleArrow = API::CreateImageBox(_scene, "resolutionToggleArrow", resolutionBtn1);
+	resolutionToggleArrow->GetTransform()->SetPosition(1650.f, 240.f, 0.f);
+	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetImage("downArrow.png");
+	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
+	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2");
+	resolutionBtn2->GetTransform()->SetPosition(1350.0f, 330.0f, 0.f);
+	resolutionBtn2->AddComponent<BtnScript>();
+	resolutionBtn2->AddComponent<BtnHoveringScript>();
+	resolutionBtn2->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	resolutionBtn2->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	resolutionBtn2->SetSelfActive(false);
+	HDData::GameObject* resolutionText2 = API::CreateTextbox(_scene, "screenStat", resolutionBtn2);
+	resolutionText2->GetTransform()->SetPosition(1350.0f, 335.0f, 0.f);
+	resolutionText2->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	resolutionText2->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
+	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
+
+	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3");
+	resolutionBtn3->GetTransform()->SetPosition(1350.0f, 420.0f, 0.f);
+	resolutionBtn3->AddComponent<BtnScript>();
+	resolutionBtn3->AddComponent<BtnHoveringScript>();
+	resolutionBtn3->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	resolutionBtn3->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	resolutionBtn3->SetSelfActive(false);
+	HDData::GameObject* resolutionText3 = API::CreateTextbox(_scene, "screenStat", resolutionBtn3);
+	resolutionText3->GetTransform()->SetPosition(1350.0f, 425.0f, 0.f);
+	resolutionText3->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	resolutionText3->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
+	resolutionText3->GetComponent<HDData::TextUI>()->SetText("1600x900(60Hz)");
+
+	// BGM Volume
+	HDData::GameObject* BGMVolumeText = API::CreateTextbox(_scene, "BGMVolumeText", preferencesCanvas);
+	BGMVolumeText->GetTransform()->SetPosition(305.0f, 350.0f, 0.f);
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetText("BGM Volume");
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* BGMVolumeCanvas = API::CreateImageBox(_scene, "BGMVolumeCanvas", preferencesCanvas);
+	BGMVolumeCanvas->GetTransform()->SetPosition(960.f, 340.0f, 0.f);
+	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
+	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
+	// Environment Volume
+	HDData::GameObject* EnvironmentVolumeText = API::CreateTextbox(_scene, "EnvironmentVolumeText", preferencesCanvas);
+	EnvironmentVolumeText->GetTransform()->SetPosition(390.0f, 450.0f, 0.f);
+	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
+	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetText("Environment Volume");
+	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* EnvironmentVolumeCanvas = API::CreateImageBox(_scene, "EnvironmentVolumeCanvas", preferencesCanvas);
+	EnvironmentVolumeCanvas->GetTransform()->SetPosition(960.f, 440.0f, 0.f);
+	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
+	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
+	// Mouse Sensitivity
+	HDData::GameObject* MouseSensitivityText = API::CreateTextbox(_scene, "MouseSensitivityText", preferencesCanvas);
+	MouseSensitivityText->GetTransform()->SetPosition(365.0f, 550.0f, 0.f);
+	MouseSensitivityText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
+	MouseSensitivityText->GetComponent<HDData::TextUI>()->SetText("Mouse Sensitivity");
+	MouseSensitivityText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* MouseSensitivityCanvas = API::CreateImageBox(_scene, "MouseSensitivityCanvas", preferencesCanvas);
+	MouseSensitivityCanvas->GetTransform()->SetPosition(960.f, 540.0f, 0.f);
+	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
+	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
+	// 가로줄
+	//HDData::GameObject* tempHorizonLine = API::CreateImageBox(_scene, "tempHorizonLine", preferencesCanvas);
+	//tempHorizonLine->GetTransform()->SetPosition(960.f, 590.f, 0.f);
+	//tempHorizonLine->GetComponent<HDData::ImageUI>()->SetImage("white_line_temp.png");
+	//tempHorizonLine->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+	// 세로줄
+	//HDData::GameObject* tempVerticalLine = API::CreateImageBox(_scene, "tempVerticalLine", preferencesCanvas);
+	//tempVerticalLine->GetTransform()->SetPosition(650.f, 540, 0.f);
+	//tempVerticalLine->GetComponent<HDData::ImageUI>()->SetImage("white_line_vertical.png");
+	//tempVerticalLine->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 
 	// event
 	// game play btn
@@ -441,16 +527,7 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
-			//Protocol::RoomInfo info;
-			//info.set_roomname(roomNameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			//info.set_isprivate(privateCheckBox->GetComponent<HDData::ToggleUI>()->GetIsOn());
 
-			//if (info.isprivate())
-			//{
-			//	info.set_password(roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText());
-			//}
-
-			//NetworkManager::Instance().SetRoom(info);
 		}
 	);
 
@@ -488,6 +565,22 @@ void MainMenuScene::MainMenu()
 			else
 			{
 				FadeInOut::Instance().FadeIn();
+			}
+		}
+	);	
+	
+	resolutionBtn1->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			if (!resolutionBtn2->GetSelfActive())
+			{
+				resolutionBtn2->SetSelfActive(true);
+				resolutionBtn3->SetSelfActive(true);
+			}
+			else if (resolutionBtn2->GetSelfActive())
+			{
+				resolutionBtn2->SetSelfActive(false);
+				resolutionBtn3->SetSelfActive(false);
 			}
 		}
 	);
