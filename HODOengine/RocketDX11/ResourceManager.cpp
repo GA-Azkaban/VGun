@@ -181,6 +181,37 @@ namespace RocketCore::Graphics
 		_loadedTextureFiles.insert(std::make_pair(fileName, srv));
 	}
 
+	void ResourceManager::LoadUITextureFile(std::string path)
+	{
+		// 경로를 제외한 파일 이름만 들고 있는다. 확장자는 포함해서 들고 있는다.
+		std::string fileName = path;
+		UINT slashIndex = fileName.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
+		{
+			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+		}
+		ID3D11ShaderResourceView* srv;
+		std::string filePath = std::string(TEXTURES_DIRECTORY_NAME) + path;
+		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
+		std::wstring pathWS = std::wstring(filePath.begin(), filePath.end());
+
+		HRESULT hr = S_FALSE;
+
+		if (extension == "dds")
+		{
+			hr = CreateDDSTextureFromFile(_device.Get(), pathWS.c_str(), nullptr, &srv);
+		}
+		else
+		{
+			//hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			hr = CreateWICTextureFromFileEx(_device.Get(), _deviceContext.Get(),
+				pathWS.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE,
+				0, 0, WIC_LOADER_IGNORE_SRGB, nullptr, &srv);
+		}
+
+		_loadedTextureFiles.insert(std::make_pair(fileName, srv));
+	}
+
 	void ResourceManager::LoadCubeMapTextureFile(std::string fileName)
 	{
 		UINT slashIndex = fileName.find_last_of("/\\");

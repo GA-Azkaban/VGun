@@ -24,12 +24,13 @@ TestScene::TestScene()
 
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
-	testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
+	//testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	boxRender1->LoadMesh("primitiveCube");
+	boxRender1->LoadMesh("primitiveQuad");
 	HDEngine::MaterialDesc boxMat1;
 	boxMat1.materialName = "boxMat";
-	boxMat1.color = { 111,91,72,255 };
+	boxMat1.albedo = "button.png";
+	//boxMat1.color = { 111,91,72,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 

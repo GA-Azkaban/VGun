@@ -1,4 +1,4 @@
-#include <cassert>
+﻿#include <cassert>
 #include <windows.h>
 
 #include "RocketDX11.h"
@@ -177,6 +177,13 @@ namespace RocketCore::Graphics
 		for (int i = 0; i < PCtextures.size(); ++i)
 		{
 			_resourceManager.LoadTextureFile("Particles/" + PCtextures[i]);
+		}
+
+		// load all UI texture
+		const auto& UItextures = GetEveryTextureFileNamesInFolder("Textures/UI");
+		for (int i = 0; i < UItextures.size(); ++i)
+		{
+			_resourceManager.LoadUITextureFile("UI/" + UItextures[i]);
 		}
 
 		// load all skybox texture
@@ -499,6 +506,7 @@ namespace RocketCore::Graphics
 	std::vector<std::string>& RocketDX11::GetEveryTextureFileNamesInFolder(const std::string filePath)
 	{
 		std::string searchPath = "Resources/" + filePath + "/*.*";
+		//if(searchPath.find_last_of("."))
 		WIN32_FIND_DATAA fileData;
 		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &fileData);
 		if (hFind != INVALID_HANDLE_VALUE)
@@ -507,7 +515,12 @@ namespace RocketCore::Graphics
 			{
 				if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 				{
-					_fileNames.push_back(fileData.cFileName);
+					std::string fileExtension = std::string(fileData.cFileName);
+					fileExtension = fileExtension.substr(fileExtension.find_last_of(".") + 1, fileExtension.length() - fileExtension.find_last_of("."));
+					if (fileExtension == "png" || fileExtension == "dds" || fileExtension == "fbx")
+					{
+						_fileNames.push_back(fileData.cFileName);
+					}
 				}
 			} while (FindNextFileA(hFind, &fileData));
 			FindClose(hFind);
