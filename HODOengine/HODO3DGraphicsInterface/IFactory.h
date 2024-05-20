@@ -16,6 +16,7 @@ namespace HDEngine
 	class ILight;
 	class ILineRenderer;
 	class IMaterial;
+	class IParticleSystem;
 	struct MaterialDesc;
 	struct CubePrimitive;
 	struct SpherePrimitive;
@@ -34,6 +35,8 @@ namespace HDEngine
 		virtual ILight* CreateLight() = 0;
 		virtual ILineRenderer* CreateLineRenderer() = 0;
 		virtual IMaterial* CreateMaterial(const MaterialDesc& desc) = 0;
+		virtual IMaterial* GetMaterial(const std::string& name) = 0;
+		virtual IParticleSystem* CreateParticleSystem() = 0;
 		virtual CubePrimitive* CreateCubePrimitive() = 0;
 		virtual SpherePrimitive* CreateSpherePrimitive() = 0;
 		virtual CylinderPrimitive* CreateCylinderPrimitive() = 0;

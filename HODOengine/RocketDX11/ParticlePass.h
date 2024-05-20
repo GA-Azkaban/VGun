@@ -1,22 +1,25 @@
 ﻿#pragma once
+#include <d3d11.h>
+#include <wrl.h>
 
 namespace RocketCore::Graphics
 {
+	class DeferredBuffers;
 	class QuadBuffer;
-	class BillboardObject;
+	class Particle;
 
 	class ParticlePass
 	{
 	public:
-		ParticlePass(QuadBuffer* toneMapBuffer);
+		ParticlePass(DeferredBuffers* deferredBuffers, QuadBuffer* quadBuffer);
 		~ParticlePass();
 
 		void Render();
 
 	private:
-		QuadBuffer* _toneMapBuffer;
-
-		// 임시
-		BillboardObject* _billboard;
+		DeferredBuffers* _deferredBuffers;
+		QuadBuffer* _quadBuffer;
+		Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
+		const float _blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	};
 }

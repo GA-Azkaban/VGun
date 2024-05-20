@@ -76,6 +76,16 @@ namespace RocketCore::Graphics
 		return ObjectManager::Instance().CreateMaterial(desc);
 	}
 
+	HDEngine::IMaterial* ObjectFactory::GetMaterial(const std::string& name)
+	{
+		return ResourceManager::Instance().GetLoadedMaterial(name);
+	}
+
+	HDEngine::IParticleSystem* ObjectFactory::CreateParticleSystem()
+	{
+		return ObjectManager::Instance().CreateParticleSystem();
+	}
+
 	HDEngine::CubePrimitive* ObjectFactory::CreateCubePrimitive()
 	{
 		return ObjectManager::Instance().CreateCubePrimitive();

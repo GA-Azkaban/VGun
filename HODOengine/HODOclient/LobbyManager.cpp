@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "LobbyManager.h"
 #include "NetworkManager.h"
+#include "GameManager.h"
 #include "../HODOengine/TweenTimer.h"
 
 
@@ -172,6 +173,17 @@ void LobbyManager::RoomEnterSUCCESS()
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
 
 	_players = _roomData->_players;
+
+	for (int i = 0; i < _players.size(); ++i)
+	{
+		_playerObjs[i]->SetSelfActive(true);
+		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+		
+		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+		{
+		}
+	}
+	
 }
 
 // TODO) 새로운 플레이어가 들어오거나 나갈 때, 기존 애니메이션이 끊기지 않으면 좋다.

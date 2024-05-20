@@ -5,6 +5,9 @@
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 #include "Camera.h"
+#include "VertexShader.h"
+#include "PixelShader.h"
+#include "Mesh.h"
 
 #define FILEPATH "Resources/UI/"
 
@@ -20,11 +23,15 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_active(true),
 	_receiveTMInfoFlag(false),
 	_sortOrder(),
-	_isInWorldSpace(false)
+	_isInWorldSpace(false),
+	_world(XMMatrixIdentity())
 {
 	_color = DirectX::Colors::White;
-	_defalutcolor = DirectX::Colors::White;
 
+	_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
+	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
+	_pixelShader = ResourceManager::Instance().GetPixelShader("BillboardPixelShader.cso");
+	_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
 }
 
 RocketCore::Graphics::ImageRenderer::~ImageRenderer()
@@ -141,17 +148,39 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 
 	if (_receiveTMInfoFlag)
 	{
-		spriteBatch->Draw(
-			_imagerSRV.Get(),
-			DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
-			nullptr,
-			_color,
-			0.0f,										//회전 각도
-			DirectX::XMFLOAT2(0.5f, 0.5f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
-			DirectX::XMFLOAT2(_scaleX, _scaleY),		// 이미지 스케일
-			DirectX::DX11::SpriteEffects_None,
-			_sortOrder
-		);
+		if (_isInWorldSpace)
+		{
+			ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			ResourceManager::Instance().GetDeviceContext()->RSSetState(_rasterizerState.Get());
+
+			_vertexShader->SetMatrix4x4("world", XMMatrixTranspose(_world));
+
+			_vertexShader->CopyAllBufferData();
+			_vertexShader->SetShader();
+
+			_pixelShader->SetShaderResourceView("Albedo", _imagerSRV.Get());
+			_pixelShader->SetFloat4("albedoColor", XMFLOAT4{1.0f, 1.0f, 1.0f, 1.0f});
+
+			_pixelShader->CopyAllBufferData();
+			_pixelShader->SetShader();
+
+			_mesh->BindBuffers();
+			_mesh->Draw();
+		}
+		else
+		{
+			spriteBatch->Draw(
+				_imagerSRV.Get(),
+				DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
+				nullptr,
+				_color,
+				0.0f,										//회전 각도
+				DirectX::XMFLOAT2(0.5f, 0.5f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
+				DirectX::XMFLOAT2(_scaleX, _scaleY),		// 이미지 스케일
+				DirectX::DX11::SpriteEffects_None,
+				_sortOrder
+			);
+		}
 	}
 
 	_receiveTMInfoFlag = false;
@@ -168,9 +197,7 @@ void RocketCore::Graphics::ImageRenderer::SetWorldTM(const Matrix& worldTM)
 		XMVECTOR rotation;
 		XMVECTOR scale;
 		XMMatrixDecompose(&scale, &rotation, &translate, worldTM);
-		XMMATRIX rotToCamMat = XMMatrixScalingFromVector(scale) * XMMatrixRotationRollPitchYawFromVector(rotation)* XMMatrixRotationY(radian)* XMMatrixTranslationFromVector(translate);
-		_xlocation = rotToCamMat.r[3].m128_f32[0];
-		_ylocation = rotToCamMat.r[3].m128_f32[1];
+		_world = XMMatrixScalingFromVector(scale) * XMMatrixRotationRollPitchYawFromVector(rotation) * XMMatrixRotationY(radian) * XMMatrixTranslationFromVector(translate);
 	}
 	else
 	{
@@ -195,7 +222,6 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 	_device = device;
 	_deviceContext = deviceContext;
 }
-
 
 void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 {

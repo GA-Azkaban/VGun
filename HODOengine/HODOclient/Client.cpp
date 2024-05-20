@@ -30,8 +30,8 @@ void Client::Initialize()
 	//TestScene test;
 	//test.Start();
 
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 
 	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();
@@ -45,9 +45,8 @@ void Client::Initialize()
 	//InGameSceneView inGame;
 	//inGame.Initialize();
 
-	//LobbySceneView lobby;
-	//lobby.Initialize();
+	LobbySceneView lobby;
+	lobby.Initialize();
 
-	//API::LoadSceneByName("Login");
-	API::LoadSceneByName("MainMenu");
+	API::LoadSceneByName("Login");
 }

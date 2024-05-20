@@ -48,6 +48,7 @@ namespace RocketCore::Graphics
 
 		void BindBuffers();
 		void Draw();
+		void DrawInstanced(UINT instanceCount);
 
 	private:
 		void CalculateTangents(Vertex* vertex, int vertexNum, unsigned int* indices, int indicesNum);

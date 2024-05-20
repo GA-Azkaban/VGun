@@ -228,9 +228,23 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
   <ItemGroup>
     <ClInclude Include="AllAnimator.h" />
     <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationCurve.h" />
     <ClInclude Include="AnimationLoader.h" />
     <ClInclude Include="Animator.h" />
+    <ClInclude Include="Burst.h" />
+    <ClInclude Include="ColorOverLifetimeModule.h" />
+    <ClInclude Include="EmssionModule.h" />
+    <ClInclude Include="Gradient.h" />
+    <ClInclude Include="LimitVelocityOverLifetimeModule.h" />
     <ClInclude Include="LowerAnimator.h" />
+    <ClInclude Include="MainModule.h" />
+    <ClInclude Include="MinMaxCurve.h" />
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="ParticleSystemRenderer.h" />
+    <ClInclude Include="RandomGenerator.h" />
+    <ClInclude Include="RendererModule.h" />
+    <ClInclude Include="RotationOverLifetimeModule.h" />
+    <ClInclude Include="SizeOverLifetimeModule.h" />
     <ClInclude Include="StaticSphereCollider.h" />
     <ClInclude Include="UpperAnimator.h" />
     <ClInclude Include="AudioClip.h" />
@@ -327,7 +341,10 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationLoader.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="Gradient.cpp" />
     <ClCompile Include="LowerAnimator.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="ParticleSystemRenderer.cpp" />
     <ClCompile Include="StaticSphereCollider.cpp" />
     <ClCompile Include="UpperAnimator.cpp" />
     <ClCompile Include="AudioSource.cpp" />

@@ -57,8 +57,6 @@ cbuffer MaterialData : register(b5)
 	float metallicValue;
 	float roughnessValue;
 	
-    int2 tiling;
-	
 	int useAlbedo;
 	int useNormalMap;
 	int useOccMetalRough;
@@ -78,6 +76,12 @@ cbuffer PostProcessData : register(b7)
 	float2 ssaoNoiseScale;
 	float ssaoRadius;
 	float ssaoPower;
+}
+
+cbuffer ParticleData : register(b8)
+{
+    float4x4 particleTransforms[512];
+    float4 particleColors[512];
 }
 
 #endif

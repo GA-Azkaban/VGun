@@ -25,7 +25,7 @@ void PlayerInfo::Init()
 	this->_state = ePlayerState::IDLE;
 }
 
-void PlayerInfo::SetPlayerID(std::string id)
+void PlayerInfo::SetPlayerID(int id)
 {
 	_playerID = id;
 }
@@ -65,9 +65,14 @@ void PlayerInfo::SetCurrentBulletCount(int count)
 	_bulletCount = count;
 }
 
-std::string PlayerInfo::GetPlayerID()
+int PlayerInfo::GetPlayerID()
 {
 	return _playerID;
+}
+
+bool PlayerInfo::GetIsHost()
+{
+	return _isHost;
 }
 
 void PlayerInfo::SetTeamID(eTeam team)

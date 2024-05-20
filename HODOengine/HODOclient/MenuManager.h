@@ -81,6 +81,7 @@ public:
 	// room obj
 	int pageCount = 1;
 	int currentPage = 1;
+	roominfo* selectedRoomInfo = nullptr;
 	HDData::GameObject* _roomListCanvas = nullptr;
 	roomInfoObj _roomObject[5];
 

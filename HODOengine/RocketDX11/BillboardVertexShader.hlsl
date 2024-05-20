@@ -3,13 +3,15 @@
 struct VertexShaderInput
 {
     float3 position : POSITION;
+    float3 normal   : NORMAL;
+    float3 tangent  : TANGENT;
     float2 uv       : TEXCOORD;
 };
 
 struct VertexToPixel
 {
     float4 position : SV_POSITION; // vertex position
-    float2 uv : TEXCOORD;
+    float2 uv       : TEXCOORD;
 };
 
 VertexToPixel main(VertexShaderInput input)
@@ -18,8 +20,7 @@ VertexToPixel main(VertexShaderInput input)
 
     float4 pos = mul(float4(input.position, 1.0f), world);
     output.position = mul(pos, viewProjection);
-    output.uv.x = input.uv.x / tiling.x;
-    output.uv.y = input.uv.y / tiling.y;
+    output.uv = input.uv;
 
     return output;
 }

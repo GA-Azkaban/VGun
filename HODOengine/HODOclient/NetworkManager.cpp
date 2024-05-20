@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include <string>
 #include "NetworkManager.h"
 
 #include "Service.h"
@@ -7,6 +8,7 @@
 
 #include "RoundManager.h"
 #include "LobbyManager.h"
+#include "GameManager.h"
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
@@ -115,6 +117,13 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	// remove pyramid
 	// 로그인이 성공했을때 처리
 	LobbyManager::Instance().LoginSucess(uid, nickName);
+
+	PlayerInfo* player = new PlayerInfo;
+	player->SetPlayerID(uid);
+	player->SetNickName(nickName);
+
+	GameManager::Instance()->SetMyInfo(player);
+
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -187,14 +196,23 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 	info->currentPlayerCount = roomInfo.currentplayercount();
 
+	PlayerInfo* one = new PlayerInfo;
+	one = GameManager::Instance()->GetMyInfo();
+	info->_players.push_back(one);
+
+	if (roomInfo.users().empty())
+	{
+		LobbyManager::Instance().RoomEnterSUCCESS();
+		return;
+	}
+
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		/*one->SetPlayerID(player.id());
-		one->SetNickName(player.nickname());*/
+		one->SetPlayerID(std::stoi(player.userinfo().id()));
+		one->SetNickName(player.userinfo().nickname());
 
 		// 플레이어 정보 받기	
-
 		info->_players.push_back(one);
 	}
 
@@ -238,7 +256,7 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
+		one->SetPlayerID(std::stoi(player.userinfo().id()));
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
@@ -258,7 +276,7 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
+		one->SetPlayerID(std::stoi(player.userinfo().id()));
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
