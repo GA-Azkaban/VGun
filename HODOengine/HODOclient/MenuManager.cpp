@@ -46,7 +46,6 @@ void MenuManager::ShowRoomList()
 void MenuManager::GetRoomListFromServer()
 {
 	NetworkManager::Instance().SendRoomListRequest();
-
 }
 
 void MenuManager::ShowRoomListCanvas(bool isShow)
