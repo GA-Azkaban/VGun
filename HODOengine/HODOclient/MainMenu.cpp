@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -122,40 +122,49 @@ void MainMenuScene::MainMenu()
 		}
 		});
 
-	/// input room password canvas
-	HDData::GameObject* enter_inputPasswordCanvas = API::CreateImageBox(_scene, "enter_inputPasswordCanvas", enter_roomLstCanvas);
-	enter_inputPasswordCanvas->GetTransform()->SetPosition(960, 540, 0);
-	auto enter_psswordCanvasImg = enter_inputPasswordCanvas->GetComponent<HDData::ImageUI>();
-	enter_psswordCanvasImg->SetImage("enterCheckCanvas.png");
-	enter_psswordCanvasImg->SetSortOrder(0.9);
-	enter_inputPasswordCanvas->SetSelfActive(false);
-
-	HDData::GameObject* inputPW_Text = API::CreateTextbox(_scene, "inputPW_Text", enter_inputPasswordCanvas);
-	inputPW_Text->GetTransform()->SetLocalPosition(0, -80, 0);
-	auto inputPW_Texttxt = inputPW_Text->GetComponent<HDData::TextUI>();
-	inputPW_Texttxt->SetSortOrder(0.91);
-	inputPW_Texttxt->SetText("Enter your password");
-
-	HDData::GameObject* inputPW_inputBox = API::CreateTextInputBox(_scene, "inputPW_inputBox", enter_inputPasswordCanvas);
-	inputPW_inputBox->GetTransform()->SetLocalPosition(0, 0, 0);
-	auto inputPW_inputBoxComp = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>();
-	inputPW_inputBoxComp->SetSortOrder(0.91);
-
-	HDData::GameObject* inputPW_enter = API::CreateButton(_scene, "inputPW_enter", enter_inputPasswordCanvas);
-	inputPW_enter->GetTransform()->SetLocalPosition(-100, 130, 0);
-	auto inputPW_enterbtn = inputPW_enter->GetComponent<HDData::Button>();
-	inputPW_enterbtn->SetImage("enterButton.png");
-	inputPW_enterbtn->SetSortOrder(0.91);
-
-	HDData::GameObject* inputPW_exit = API::CreateButton(_scene, "inputPW_exit", enter_inputPasswordCanvas);
-	inputPW_exit->GetTransform()->SetLocalPosition(-100, 130, 0);
-	auto inputPW_exitbtn = inputPW_exit->GetComponent<HDData::Button>();
-	inputPW_exitbtn->SetImage("cancelButton.png");
-	inputPW_exitbtn->SetSortOrder(0.91);
-	inputPW_exitbtn->SetOnClickEvent([=]() 
-		{
-		enter_inputPasswordCanvas->SetSelfActive(false);
+	HDData::GameObject* enter_renewRoomLstBtn = API::CreateButton(_scene, "reNewRoomLstBtn", enter_roomLstCanvas);
+	enter_renewRoomLstBtn->GetTransform()->SetLocalPosition(500, -500, 0);
+	auto renewComp = enter_renewRoomLstBtn->GetComponent<HDData::Button>();
+	renewComp->SetSortOrder(0.9);
+	renewComp->SetOnClickEvent([=]() {
+		NetworkManager::Instance().SendRoomListRequest();
 		});
+
+	/// input room password canvas
+	//HDData::GameObject* enter_inputPasswordCanvas = API::CreateImageBox(_scene, "enter_inputPasswordCanvas", enter_roomLstCanvas);
+	//enter_inputPasswordCanvas->GetTransform()->SetPosition(960, 540, 0);
+	//auto enter_psswordCanvasImg = enter_inputPasswordCanvas->GetComponent<HDData::ImageUI>();
+	//enter_psswordCanvasImg->SetImage("enterCheckCanvas.png");
+	//enter_psswordCanvasImg->SetSortOrder(0.9);
+	//enter_inputPasswordCanvas->SetSelfActive(false);
+
+	//HDData::GameObject* inputPW_Text = API::CreateTextbox(_scene, "inputPW_Text", enter_inputPasswordCanvas);
+	//inputPW_Text->GetTransform()->SetLocalPosition(0, -80, 0);
+	//auto inputPW_Texttxt = inputPW_Text->GetComponent<HDData::TextUI>();
+	//inputPW_Texttxt->SetSortOrder(0.91);
+	//inputPW_Texttxt->SetText("Enter your password");
+
+	//HDData::GameObject* inputPW_inputBox = API::CreateTextInputBox(_scene, "inputPW_inputBox", enter_inputPasswordCanvas);
+	//inputPW_inputBox->GetTransform()->SetLocalPosition(0, 0, 0);
+	//auto inputPW_inputBoxComp = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>();
+	//inputPW_inputBoxComp->SetSortOrder(0.91);
+
+	//HDData::GameObject* inputPW_enter = API::CreateButton(_scene, "inputPW_enter", enter_inputPasswordCanvas);
+	//inputPW_enter->GetTransform()->SetLocalPosition(-100, 130, 0);
+	//auto inputPW_enterbtn = inputPW_enter->GetComponent<HDData::Button>();
+	//inputPW_enterbtn->SetImage("enterButton.png");
+	//inputPW_enterbtn->SetSortOrder(0.91);
+
+	//HDData::GameObject* inputPW_exit = API::CreateButton(_scene, "inputPW_exit", enter_inputPasswordCanvas);
+	//inputPW_exit->GetTransform()->SetLocalPosition(-100, 130, 0);
+	//auto inputPW_exitbtn = inputPW_exit->GetComponent<HDData::Button>();
+	//inputPW_exitbtn->SetImage("cancelButton.png");
+	//inputPW_exitbtn->SetSortOrder(0.91);
+	//inputPW_exitbtn->SetOnClickEvent([=]() 
+	//	{
+	//	enter_inputPasswordCanvas->SetSelfActive(false);
+	//	});
+
 
 	/// room enter check button
 	HDData::GameObject* enter_enterCheckCanvas = API::CreateImageBox(_scene, "enterCheck", enter_roomLstCanvas);
@@ -277,7 +286,7 @@ void MainMenuScene::MainMenu()
 
 				if (MenuManager::Instance().selectedRoomInfo->isPrivate)
 				{
-					enter_inputPasswordCanvas->SetSelfActive(true);
+					//enter_inputPasswordCanvas->SetSelfActive(true);
 				}
 				else
 				{
@@ -366,7 +375,7 @@ void MainMenuScene::MainMenu()
 	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
 
 	//temp Btn
-	HDData::GameObject* tempBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
+/*	HDData::GameObject* tempBtn = API::CreateButton(_scene, "TestingBtn", mainControlObject);
 	tempBtn->GetTransform()->SetPosition(150.0f, 355.0f, 0.f);
 	tempBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	tempBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
@@ -374,7 +383,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", tempBtn);
 	tempText->GetTransform()->SetPosition(tempBtn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	tempText->GetComponent<HDData::TextUI>()->SetText("FADE");
+	tempText->GetComponent<HDData::TextUI>()->SetText("FADE")*/;
 
 	// Exit button
 	HDData::GameObject* exitBtn = API::CreateButton(_scene, "extiBtn", main_controlCanvas);
@@ -516,18 +525,18 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			if (FadeInOut::Instance().GetComplete())
-			{
-				FadeInOut::Instance().FadeOut();
-			}
-			else
-			{
-				FadeInOut::Instance().FadeIn();
-			}
-		}
-	);
+	//tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+	//	[=]()
+	//	{
+	//		if (FadeInOut::Instance().GetComplete())
+	//		{
+	//			FadeInOut::Instance().FadeOut();
+	//		}
+	//		else
+	//		{
+	//			FadeInOut::Instance().FadeIn();
+	//		}
+	//	}
+	//);
 
 }

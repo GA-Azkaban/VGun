@@ -24,6 +24,16 @@ void LobbySceneView::Initialize()
 	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
 	// 백그라운드
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, -1.5f, 0.0f);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("primitiveQuad");
+	HDEngine::MaterialDesc boxMat1;
+	boxMat1.materialName = "_blur_background_image";
+	boxMat1.albedo = "_blur_background_image.png";
+	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
+	boxRender1->LoadMaterial(newBoxMat1, 0);
+
 	//HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	//mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
 	//mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
@@ -74,8 +84,8 @@ void LobbySceneView::Initialize()
 		auto defaultCanvas = API::CreateImageBox(_scene, "defaultCanvas");
 		defaultCanvas->GetTransform()->SetPosition(defaultX, 450, 0);
 		auto img = defaultCanvas->GetComponent<HDData::ImageUI>();
-		//img->SetImage("settingCanvas.png");
-		img->SetImage("alphaRefCanvas2.png");
+		img->SetImage("back_char.png");
+		img->SetWorldSpace();
 
 		auto subCanvas = API::CreateImageBox(_scene, "subCanvas", defaultCanvas);
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
@@ -126,6 +136,7 @@ void LobbySceneView::Initialize()
 	// player rendering
 
 	float posX = 0;
+	float posT = 1740;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -150,7 +161,10 @@ void LobbySceneView::Initialize()
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
+		//player->SetSelfActive(false);
+
 		posX += 1;
+		posT -= 315;
 	}
 
 }
