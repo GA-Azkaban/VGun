@@ -269,7 +269,8 @@ struct S_ROOM_STARTDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT S_ROOM_STARTDefaultTypeInternal _S_ROOM_START_default_instance_;
 constexpr C_ROOM_CHANGE_TEAM::C_ROOM_CHANGE_TEAM(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : teamcolor_(0)
+  : targetnickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  , teamcolor_(0)
 {}
 struct C_ROOM_CHANGE_TEAMDefaultTypeInternal {
   constexpr C_ROOM_CHANGE_TEAMDefaultTypeInternal()
@@ -482,6 +483,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_ROOM_CHANGE_TEAM, teamcolor_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_ROOM_CHANGE_TEAM, targetnickname_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOM_CHANGE_TEAM, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -535,11 +537,11 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 119, -1, sizeof(::Protocol::C_ROOM_START)},
   { 124, -1, sizeof(::Protocol::S_ROOM_START)},
   { 130, -1, sizeof(::Protocol::C_ROOM_CHANGE_TEAM)},
-  { 136, -1, sizeof(::Protocol::S_ROOM_CHANGE_TEAM)},
-  { 142, -1, sizeof(::Protocol::C_PLAY_UPDATE)},
-  { 148, -1, sizeof(::Protocol::S_PLAY_UPDATE)},
-  { 155, -1, sizeof(::Protocol::C_ROOM_LIST_REQUEST)},
-  { 160, -1, sizeof(::Protocol::S_ROOM_LIST)},
+  { 137, -1, sizeof(::Protocol::S_ROOM_CHANGE_TEAM)},
+  { 143, -1, sizeof(::Protocol::C_PLAY_UPDATE)},
+  { 149, -1, sizeof(::Protocol::S_PLAY_UPDATE)},
+  { 156, -1, sizeof(::Protocol::C_ROOM_LIST_REQUEST)},
+  { 161, -1, sizeof(::Protocol::S_ROOM_LIST)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -596,16 +598,16 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "_LEAVE_ROOM\022$\n\010roomInfo\030\001 \001(\0132\022.Protocol"
   ".RoomInfo\"\016\n\014C_ROOM_START\"4\n\014S_ROOM_STAR"
   "T\022$\n\010roomInfo\030\001 \001(\0132\022.Protocol.RoomInfo\""
-  "=\n\022C_ROOM_CHANGE_TEAM\022\'\n\tteamColor\030\001 \001(\016"
-  "2\024.Protocol.eTeamColor\":\n\022S_ROOM_CHANGE_"
-  "TEAM\022$\n\010roomInfo\030\001 \001(\0132\022.Protocol.RoomIn"
-  "fo\"9\n\rC_PLAY_UPDATE\022(\n\nplayerData\030\001 \001(\0132"
-  "\024.Protocol.PlayerData\"_\n\rS_PLAY_UPDATE\022$"
-  "\n\010roomInfo\030\001 \001(\0132\022.Protocol.RoomInfo\022(\n\n"
-  "playerData\030\002 \003(\0132\024.Protocol.PlayerData\"\025"
-  "\n\023C_ROOM_LIST_REQUEST\"3\n\013S_ROOM_LIST\022$\n\010"
-  "roomInfo\030\001 \003(\0132\022.Protocol.RoomInfob\006prot"
-  "o3"
+  "U\n\022C_ROOM_CHANGE_TEAM\022\'\n\tteamColor\030\001 \001(\016"
+  "2\024.Protocol.eTeamColor\022\026\n\016targetNickName"
+  "\030\002 \001(\t\":\n\022S_ROOM_CHANGE_TEAM\022$\n\010roomInfo"
+  "\030\001 \001(\0132\022.Protocol.RoomInfo\"9\n\rC_PLAY_UPD"
+  "ATE\022(\n\nplayerData\030\001 \001(\0132\024.Protocol.Playe"
+  "rData\"_\n\rS_PLAY_UPDATE\022$\n\010roomInfo\030\001 \001(\013"
+  "2\022.Protocol.RoomInfo\022(\n\nplayerData\030\002 \003(\013"
+  "2\024.Protocol.PlayerData\"\025\n\023C_ROOM_LIST_RE"
+  "QUEST\"3\n\013S_ROOM_LIST\022$\n\010roomInfo\030\001 \003(\0132\022"
+  ".Protocol.RoomInfob\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -613,7 +615,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 1322, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 1346, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 26,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -4956,11 +4958,17 @@ C_ROOM_CHANGE_TEAM::C_ROOM_CHANGE_TEAM(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 C_ROOM_CHANGE_TEAM::C_ROOM_CHANGE_TEAM(const C_ROOM_CHANGE_TEAM& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  targetnickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_targetnickname().empty()) {
+    targetnickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_targetnickname(), 
+      GetArenaForAllocation());
+  }
   teamcolor_ = from.teamcolor_;
   // @@protoc_insertion_point(copy_constructor:Protocol.C_ROOM_CHANGE_TEAM)
 }
 
 void C_ROOM_CHANGE_TEAM::SharedCtor() {
+targetnickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 teamcolor_ = 0;
 }
 
@@ -4972,6 +4980,7 @@ C_ROOM_CHANGE_TEAM::~C_ROOM_CHANGE_TEAM() {
 
 void C_ROOM_CHANGE_TEAM::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  targetnickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void C_ROOM_CHANGE_TEAM::ArenaDtor(void* object) {
@@ -4990,6 +4999,7 @@ void C_ROOM_CHANGE_TEAM::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
+  targetnickname_.ClearToEmpty();
   teamcolor_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -5006,6 +5016,15 @@ const char* C_ROOM_CHANGE_TEAM::_InternalParse(const char* ptr, ::PROTOBUF_NAMES
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_teamcolor(static_cast<::Protocol::eTeamColor>(val));
+        } else goto handle_unusual;
+        continue;
+      // string targetNickName = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_targetnickname();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.C_ROOM_CHANGE_TEAM.targetNickName"));
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -5044,6 +5063,16 @@ failure:
       1, this->_internal_teamcolor(), target);
   }
 
+  // string targetNickName = 2;
+  if (!this->targetnickname().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_targetnickname().data(), static_cast<int>(this->_internal_targetnickname().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Protocol.C_ROOM_CHANGE_TEAM.targetNickName");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_targetnickname(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -5059,6 +5088,13 @@ size_t C_ROOM_CHANGE_TEAM::ByteSizeLong() const {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
+
+  // string targetNickName = 2;
+  if (!this->targetnickname().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_targetnickname());
+  }
 
   // .Protocol.eTeamColor teamColor = 1;
   if (this->teamcolor() != 0) {
@@ -5097,6 +5133,9 @@ void C_ROOM_CHANGE_TEAM::MergeFrom(const C_ROOM_CHANGE_TEAM& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
+  if (!from.targetnickname().empty()) {
+    _internal_set_targetnickname(from._internal_targetnickname());
+  }
   if (from.teamcolor() != 0) {
     _internal_set_teamcolor(from._internal_teamcolor());
   }
@@ -5123,6 +5162,11 @@ bool C_ROOM_CHANGE_TEAM::IsInitialized() const {
 void C_ROOM_CHANGE_TEAM::InternalSwap(C_ROOM_CHANGE_TEAM* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      &targetnickname_, GetArenaForAllocation(),
+      &other->targetnickname_, other->GetArenaForAllocation()
+  );
   swap(teamcolor_, other->teamcolor_);
 }
 

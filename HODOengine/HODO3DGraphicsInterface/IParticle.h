@@ -10,6 +10,7 @@ namespace HDEngine
 		virtual void SetColor(DirectX::XMINT4 color) = 0;
 		virtual void SetSpeed(float speed) = 0;
 		virtual void SetSize(float size) = 0;
+		virtual void SetStartSize(float size) = 0;
 		virtual void SetAngle(float angle) = 0;
 		virtual void SetPosition(float x, float y, float z) = 0;
 		virtual void SetPosition(DirectX::XMFLOAT3 pos) = 0;
@@ -23,6 +24,7 @@ namespace HDEngine
 		virtual DirectX::XMFLOAT4 GetColorFloat4() const = 0;
 		virtual float GetSpeed() const = 0;
 		virtual float GetSize() const = 0;
+		virtual float GetStartSize() const = 0;
 		virtual float GetAngle() const = 0;
 		virtual DirectX::XMFLOAT3 GetPosition() const = 0;
 		virtual DirectX::XMFLOAT4 GetRotation() const = 0;
