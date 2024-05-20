@@ -57,6 +57,26 @@ void MenuManager::ShowRoomListCanvas(bool isShow)
 	NetworkManager::Instance().SendRoomListRequest();
 }
 
+void MenuManager::ShowCheckEnterCanvas(bool isShow)
+{
+	_checkEnterCanvas->SetSelfActive(isShow);
+}
+
+void MenuManager::ShowCheckPasswordCanvas(bool isShow)
+{
+	_checkPasswordCanvas->SetSelfActive(isShow);
+}
+
+void MenuManager::SetCheckEnterCanvas(HDData::GameObject* canvas)
+{
+	_checkEnterCanvas = canvas;
+}
+
+void MenuManager::SetInputRoomPasswordCanvas(HDData::GameObject* canvas)
+{
+	_checkPasswordCanvas = canvas;
+}
+
 void MenuManager::RoomExit()
 {
 	Protocol::RoomInfo temp;

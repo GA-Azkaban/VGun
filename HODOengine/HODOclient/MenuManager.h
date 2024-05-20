@@ -45,6 +45,11 @@ public:
 	void SetRoomListCanvas(HDData::GameObject* obj);
 
 	void ShowRoomListCanvas(bool isShow);
+	void ShowCheckEnterCanvas(bool isShow);
+	void ShowCheckPasswordCanvas(bool isShow);
+
+	void SetCheckEnterCanvas(HDData::GameObject* canvas);
+	void SetInputRoomPasswordCanvas(HDData::GameObject* canvas);
 
 public:
 	std::string GetNumberImage(int num);
@@ -54,11 +59,15 @@ public:
 public:
 	// canvas
 	HDData::GameObject* _mainMenuCanvas = nullptr;
+	HDData::GameObject* _checkEnterCanvas = nullptr;
+	HDData::GameObject* _checkPasswordCanvas = nullptr;
 
 	// btn
 	HDData::GameObject* _playBtn = nullptr;
 	HDData::GameObject* _preferencesBtn = nullptr;	// 환경설정 버튼
 	HDData::GameObject* _exitbtn = nullptr;
+
+	
 
 public:
 	void RenderRoomList();

@@ -251,6 +251,7 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 	}
 }
 
+
 std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 {
 	return _playerObjs;

@@ -105,6 +105,9 @@ public:
 	void RefreshRoom();
 	void SetPlayerTeam(eTeam team, std::string nickName = "");
 
+	// test
+	void SetPlayerTeam(eTeam team, int index);
+
 private:
 	std::vector<PlayerInfo*> _players;
 

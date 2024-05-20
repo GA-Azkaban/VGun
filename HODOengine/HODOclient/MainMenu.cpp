@@ -96,8 +96,8 @@ void MainMenuScene::MainMenu()
 	MenuManager::Instance().SetRoomListCanvas(enter_roomLstCanvas);
 
 	// Refresh btn
-	HDData::GameObject* refreshButton = API::CreateButton(_scene,"refreshBtn", enter_roomLstCanvas);
-	refreshButton->GetTransform()->SetLocalPosition(330,-330,0);
+	HDData::GameObject* refreshButton = API::CreateButton(_scene, "refreshBtn", enter_roomLstCanvas);
+	refreshButton->GetTransform()->SetLocalPosition(330, -330, 0);
 	refreshButton->AddComponent<BtnHoveringScript>();
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
@@ -164,6 +164,11 @@ void MainMenuScene::MainMenu()
 	auto inputPW_enterbtn = inputPW_enter->GetComponent<HDData::Button>();
 	inputPW_enterbtn->SetImage("enterButton.png");
 	inputPW_enterbtn->SetSortOrder(0.93);
+	inputPW_enterbtn->SetOnClickEvent([&]()
+		{
+			auto input = inputPW_enter->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
+			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id), input);
+		});
 
 	HDData::GameObject* inputPW_exit = API::CreateButton(_scene, "inputPW_exit", enter_inputPasswordCanvas);
 	inputPW_exit->GetTransform()->SetLocalPosition(100, 110, 0);
@@ -198,9 +203,10 @@ void MainMenuScene::MainMenu()
 	enter_exitImg->SetSortOrder(0.91);
 	enter_exitImg->SetOnClickEvent([=]()
 		{
-			enter_enterCheckCanvas->SetSelfActive(false);
+			MenuManager::Instance().ShowCheckEnterCanvas(false);
 		});
-
+	MenuManager::Instance().SetCheckEnterCanvas(enter_enterCheckCanvas);
+	
 	HDData::GameObject* enter_enterBtn = API::CreateButton(_scene, "enterButton", enter_enterCheckCanvas);
 	enter_enterBtn->GetTransform()->SetLocalPosition(100, 80, 0);
 	auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
@@ -299,7 +305,7 @@ void MainMenuScene::MainMenu()
 				}
 				else
 				{
-					enter_enterCheckCanvas->SetSelfActive(true);
+					MenuManager::Instance().ShowCheckEnterCanvas(true);
 				}
 			});
 	}

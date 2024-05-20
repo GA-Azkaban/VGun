@@ -80,9 +80,9 @@ void LobbySceneView::Initialize()
 	HDData::Material* M_Blue = API::CreateMaterial(blue);
 
 	float defaultX = 165;
-	float r = 1660;
-	float g = 1740;
-	float b = 1820;
+	float r = 85;
+	float g = 165;
+	float b = 245;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -105,9 +105,10 @@ void LobbySceneView::Initialize()
 		rBtn->SetSortOrder(0.3);
 		rButton->GetTransform()->SetPosition(r, 800, 0);
 		rBtn->SetImage("r.png");
-		rBtn->SetOnClickEvent([]()
+		rBtn->SetOnClickEvent([=]()
 			{
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
+				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_RED, nick);
 			});
 
 		auto gButton = API::CreateButton(_scene, "G", subCanvas);
@@ -115,9 +116,10 @@ void LobbySceneView::Initialize()
 		gBtn->SetSortOrder(0.3);
 		gButton->GetTransform()->SetPosition(g, 800, 0);
 		gBtn->SetImage("g.png");
-		gBtn->SetOnClickEvent([]()
+		gBtn->SetOnClickEvent([=]()
 			{
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_GREEN);
+				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_GREEN, nick);
 			});
 
 		auto bButton = API::CreateButton(_scene, "B", subCanvas);
@@ -125,17 +127,19 @@ void LobbySceneView::Initialize()
 		bBtn->SetSortOrder(0.3);
 		bButton->GetTransform()->SetPosition(b, 800, 0);
 		bBtn->SetImage("b.png");
-		bBtn->SetOnClickEvent([]()
+		bBtn->SetOnClickEvent([=]()
 			{
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE);
+				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE, nick);
 			});
 
 		defaultX += 315;
-		r -= 315;
-		g -= 315;
-		b -= 315;
+		r += 315;
+		g += 315;
+		b += 315;
 
 		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
+		subCanvas->SetSelfActive(false);
 	}
 
 	// player rendering
