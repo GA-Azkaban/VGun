@@ -589,9 +589,17 @@ namespace RocketCore::Graphics
 		if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
 
+		VertexShader* paricleVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (paricleVS->LoadShaderFile(L"Resources/Shaders/ParticleVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("ParticleVertexShader.cso", paricleVS));
+
+		PixelShader* pariclePS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (pariclePS->LoadShaderFile(L"Resources/Shaders/ParticlePixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("ParticlePixelShader.cso", pariclePS));
+
 		VertexShader* billboardVS = new VertexShader(_device.Get(), _deviceContext.Get());
 		if (billboardVS->LoadShaderFile(L"Resources/Shaders/BillboardVertexShader.cso"))
-			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS)); 
+			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS));
 
 		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
@@ -634,7 +642,7 @@ namespace RocketCore::Graphics
 		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size(), true);
 		_loadedFileInfo["primitiveCube"].loadedMeshes.push_back(_cube);
 		HDEngine::MaterialDesc cubeDesc;
-		skyboxDesc.materialName = "cubeMaterial";
+		cubeDesc.materialName = "cubeMaterial";
 		Material* _cubeMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
 		_cubeMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
 		_cubeMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
@@ -652,6 +660,33 @@ namespace RocketCore::Graphics
 		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
 
 		// 쿼드 메쉬
+		GeometryGenerator::MeshData quad;
+		_geometryGen->CreateFullscreenQuad(quad);
+
+		Mesh* _quad = new Mesh(&quad.Vertices[0], quad.Vertices.size(), &quad.Indices[0], quad.Indices.size(), true);
+		_loadedFileInfo["primitiveQuad"].loadedMeshes.push_back(_quad);
+		Material* _quadMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_quadMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_quadMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveQuad"].loadedMaterials.push_back(_quadMaterial);
+		// 쿼드 메쉬
+		/*std::vector<Vertex> quadVertices(6);
+		std::vector<UINT> quadIndices(6);
+
+		Vertex v1(XMFLOAT3{ -0.1, 0.1, 0 }, XMFLOAT2{ 0, 0 });
+		quadVertices[0] = v1;
+		Vertex v2(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
+		quadVertices[1] = v2;
+		Vertex v3(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
+		quadVertices[2] = v3;
+		Vertex v4(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
+		quadVertices[3] = v4;
+		Vertex v5(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
+		quadVertices[4] = v5;
+		Vertex v6(XMFLOAT3{ 0.1, -0.1, 0 }, XMFLOAT2{ 1, 1 });
+		quadVertices[5] = v6;
+
+		// 빌보드 파티클 메쉬
 		std::vector<Vertex> quadVertices(6);
 		std::vector<UINT> quadIndices(6);
 
@@ -674,7 +709,7 @@ namespace RocketCore::Graphics
 		}
 
 		Mesh* quadMesh = new Mesh(&quadVertices[0], 6, &quadIndices[0], 6);
-		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);
+		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);*/
 
 		// 디버그 메쉬
 		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);

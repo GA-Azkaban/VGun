@@ -239,18 +239,9 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="LowerAnimator.h" />
     <ClInclude Include="MainModule.h" />
     <ClInclude Include="MinMaxCurve.h" />
-    <ClInclude Include="Particle.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="ParticlePool.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="ParticleSystemRenderer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="ParticleSystem.h" />
+    <ClInclude Include="ParticleSystemRenderer.h" />
+    <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="RendererModule.h" />
     <ClInclude Include="RotationOverLifetimeModule.h" />
     <ClInclude Include="SizeOverLifetimeModule.h" />
@@ -352,18 +343,8 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Gradient.cpp" />
     <ClCompile Include="LowerAnimator.cpp" />
-    <ClCompile Include="Particle.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ParticlePool.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="ParticleSystemRenderer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="ParticleSystemRenderer.cpp" />
     <ClCompile Include="StaticSphereCollider.cpp" />
     <ClCompile Include="UpperAnimator.cpp" />
     <ClCompile Include="AudioSource.cpp" />

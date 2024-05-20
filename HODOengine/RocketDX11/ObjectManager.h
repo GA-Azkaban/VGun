@@ -9,6 +9,7 @@
 
 namespace HDEngine
 {
+	class IParticleSystem;
 	struct CubePrimitive;
 	struct SpherePrimitive;
 	struct CylinderPrimitive;
@@ -27,7 +28,7 @@ namespace RocketCore::Graphics
 	class ImageRenderer;
 	class LineRenderer;
 	class Material;
-	
+	class ParticleSystem;
 
 	class ObjectManager : public Singleton<ObjectManager>
 	{
@@ -39,6 +40,7 @@ namespace RocketCore::Graphics
 		std::vector<HelperObject*>& GetHelperObjList();
 		std::vector<StaticMeshObject*>& GetStaticMeshObjList();
 		std::vector<SkinningMeshObject*>& GetSkinningMeshObjList();
+		std::vector<ParticleSystem*>& GetParticleSystemList();
 		std::vector<TextRenderer*>& GetTextList();
 		std::vector<ImageRenderer*>& GetImageList();
 		LineRenderer* GetLineRenderer();
@@ -58,8 +60,7 @@ namespace RocketCore::Graphics
 		ImageRenderer* CreateImage();
 		LineRenderer* CreateLineRenderer();
 		Material* CreateMaterial(HDEngine::MaterialDesc desc);
-		HDEngine::IParticle* CreateParticle();
-		void DestroyParticle(HDEngine::IParticle* particle);
+		HDEngine::IParticleSystem* CreateParticleSystem();
 
 		HDEngine::CubePrimitive* CreateCubePrimitive();
 		HDEngine::SpherePrimitive* CreateSpherePrimitive();
@@ -78,6 +79,6 @@ namespace RocketCore::Graphics
 		std::vector<HDEngine::SpherePrimitive*> _spherePrimitiveList;
 		std::vector<HDEngine::CylinderPrimitive*> _cylinderPrimitiveList;
 		std::vector<HDEngine::CapsulePrimitive*> _capsulePrimitiveList;
-		std::unordered_set<HDEngine::IParticle*> _particleRenderList;
+		std::vector<ParticleSystem*> _particleSystemList;
 	};
 }

@@ -2,25 +2,25 @@
 #include <map>
 #include <vector>
 #include <DirectXMath.h>
+#include "dllExporter.h"
 
 namespace HDData
 {
 	struct GradientColorKey
 	{
-		DirectX::XMINT3 color;
+		DirectX::XMINT3 color; // 0 ~ 255
 		float time; // 0.0 ~ 1.0
 	};
 
 	struct GradientAlphaKey
 	{
-		float alpha; // 0.0 ~ 1.0
+		int alpha; // 0 ~ 255
 		float time; // 0.0 ~ 1.0
 	};
 
-	class Gradient
+	class HODO_API Gradient
 	{
 	public:
-		friend class ColorOverLifetime;
 		Gradient();
 		~Gradient();
 

@@ -15,6 +15,7 @@
 #include "LineRenderer.h"
 #include "Material.h"
 #include "ParticlePool.h"
+#include "ParticleSystem.h"
 
 namespace RocketCore::Graphics
 {
@@ -116,24 +117,11 @@ namespace RocketCore::Graphics
 		return newMaterial;
 	}
 
-	HDEngine::IParticle* ObjectManager::CreateParticle()
+	HDEngine::IParticleSystem* ObjectManager::CreateParticleSystem()
 	{
-		HDEngine::IParticle* newParticle = ParticlePool::Instance().SummonParticle();
-		_particleRenderList.insert(newParticle);
-		return newParticle;
-	}
-
-	void ObjectManager::DestroyParticle(HDEngine::IParticle* particle)
-	{
-		if (particle != nullptr)
-		{
-			auto iter = _particleRenderList.find(particle);
-			if (iter != _particleRenderList.end())
-			{
-				ParticlePool::Instance().Retrieve(particle);
-				_particleRenderList.erase(iter);
-			}
-		}
+		ParticleSystem* ps = new ParticleSystem();
+		_particleSystemList.push_back(ps);
+		return ps;
 	}
 
 	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()
@@ -188,6 +176,11 @@ namespace RocketCore::Graphics
 	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
 	{
 		return _skinningMeshObjectList;
+	}
+
+	std::vector<ParticleSystem*>& ObjectManager::GetParticleSystemList()
+	{
+		return _particleSystemList;
 	}
 
 	std::vector<TextRenderer*>& ObjectManager::GetTextList()
