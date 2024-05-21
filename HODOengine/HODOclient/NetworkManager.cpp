@@ -209,6 +209,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 
 		one->SetNickName(player.userinfo().nickname());
+		auto t = player.host();
 		one->SetIsHost(player.host());
 		
 		SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
@@ -340,7 +341,8 @@ void NetworkManager::SendGameStart()
 
 void NetworkManager::RecvGameStart()
 {
-	// Todo 게임 시작 수신
+	RoundManager::Instance()->Start();
+	API::LoadSceneByName("InGame");
 }
 
 void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)

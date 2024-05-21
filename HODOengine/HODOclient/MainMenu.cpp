@@ -234,7 +234,7 @@ void MainMenuScene::MainMenu()
 		auto roomT = enter_roomTitle->GetComponent<HDData::TextUI>();
 		roomT->SetText("Title");
 		roomT->SetSortOrder(0.81);
-		roomT->SetColor(DirectX::Colors::OrangeRed);
+		roomT->SetColor(DirectX::Colors::BlanchedAlmond);
 
 		enter_roomTitle->SetSelfActive(false);
 
@@ -244,7 +244,7 @@ void MainMenuScene::MainMenu()
 		enter_roomID->GetTransform()->SetLocalPosition(-200, 0, 0);
 		auto roomid = enter_roomID->GetComponent<HDData::TextUI>();
 		roomid->SetText("ID");
-		roomid->SetColor(DirectX::Colors::OrangeRed);
+		roomid->SetColor(DirectX::Colors::BlanchedAlmond);
 		roomid->SetSortOrder(0.81);
 
 		enter_roomID->SetSelfActive(false);
@@ -596,7 +596,7 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
-
+			NetworkManager::Instance().SendRoomCreate(newRoomName->GetCurrentText(), "", 6, false);
 		}
 	);
 

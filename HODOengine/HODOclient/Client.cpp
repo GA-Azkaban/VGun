@@ -42,11 +42,12 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	//InGameSceneView inGame;
-	//inGame.Initialize();
 
 	LobbySceneView lobby;
 	lobby.Initialize();
+
+	InGameSceneView inGame;
+	inGame.Initialize();
 
 	API::LoadSceneByName("Login");
 }
