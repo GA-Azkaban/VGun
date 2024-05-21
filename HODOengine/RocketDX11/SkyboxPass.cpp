@@ -3,6 +3,7 @@
 #include "QuadBuffer.h"
 #include "ObjectManager.h"
 #include "Cubemap.h"
+#include "ResourceManager.h"
 
 namespace RocketCore::Graphics
 {
@@ -23,5 +24,8 @@ namespace RocketCore::Graphics
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
 
 		Cubemap::Instance().Render();
+
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
 	}
 }

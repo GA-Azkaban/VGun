@@ -14,6 +14,10 @@ struct VertexToPixel
 
 float4 main(VertexToPixel input) : SV_Target
 {
-	float4 textureColor = Albedo.Sample(LinearWrapSampler, input.uv);   
+    float4 textureColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    if (useAlbedo)
+    {
+        textureColor = Albedo.Sample(LinearWrapSampler, input.uv);
+    }
     return textureColor * albedoColor;
 }
