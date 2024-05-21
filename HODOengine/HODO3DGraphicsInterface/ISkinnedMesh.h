@@ -34,5 +34,6 @@ namespace HDEngine
 		virtual bool IsLowerAnimationEnd() = 0;
 		virtual Node* GetNode() = 0;
 		virtual void SetFillModeWireFrame(bool setWireFrame) = 0;
+		virtual void SetMeshActive(bool isActive, unsigned int index) = 0;
 	};
 }

@@ -51,6 +51,10 @@ public: // 다른 플레이어
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);
 	void RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo);
 
+public: // 강퇴
+	void SendKickPlayer(std::string targetNickName);
+	void RecvKickPlayer(Protocol::RoomInfo roomInfo);
+
 public: // 팀 색상 변경
 	void SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName = "");
 	void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);

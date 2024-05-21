@@ -170,6 +170,7 @@ namespace HDData
 				if (obj == this) return scene.second;
 			}
 		}
+		return nullptr;
 	}
 
 	void GameObject::SetParentObject(GameObject* parentObject)

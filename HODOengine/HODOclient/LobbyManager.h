@@ -67,6 +67,9 @@ public:
 	void SetSucessCanvas(HDData::GameObject* sucessCanvas);
 	void SetFailCanvas(HDData::GameObject* failCanvas);
 
+	void SetInGameStartButton(HDData::GameObject* button);
+	//void SetInGameReadyButton(HDData::GameObject* button);
+
 private:
 	// 메인 화면
 	HDData::GameObject* _mainCanvas;
@@ -87,6 +90,10 @@ private:
 	HDData::GameObject* _settingButton;
 	HDData::GameObject* _quitButton;
 	HDData::GameObject* _logoImage;
+
+	// 인게임 로비
+	HDData::GameObject* _inGameStartButton;
+	//HDData::GameObject* _inGameReadyButton;
 
 public:
 	RoomData* GetRoomData();
@@ -109,6 +116,7 @@ private:
 	std::vector<PlayerInfo*> _players;
 
 public:
+	std::vector<PlayerInfo*>& GetAllPlayerInfo();
 	std::vector<HDData::GameObject*>& GetPlayerObjects();
 	std::vector<HDData::GameObject*>& GetNickNameObjects();
 	std::vector<HDData::GameObject*>& GetTeamButtonObjects();

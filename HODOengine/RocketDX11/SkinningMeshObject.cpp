@@ -1446,4 +1446,13 @@ namespace RocketCore::Graphics
 		}
 	}
 
+	void SkinningMeshObject::SetMeshActive(bool isActive, unsigned int index)
+	{
+		if (index >= m_meshes.size())
+		{
+			return;
+		}
+		m_meshes[index]->SetActive(isActive);
+	}
+
 }

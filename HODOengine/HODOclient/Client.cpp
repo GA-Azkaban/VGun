@@ -10,6 +10,7 @@
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
+#include "RoundManager.h"
 
 Client::Client()
 {
@@ -26,6 +27,7 @@ void Client::Initialize()
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();
+	RoundManager::Instance();
 
 	//TestScene test;
 	//test.Start();
@@ -42,11 +44,12 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	//InGameSceneView inGame;
-	//inGame.Initialize();
 
 	LobbySceneView lobby;
 	lobby.Initialize();
+
+	InGameSceneView inGame;
+	inGame.Initialize();
 
 	API::LoadSceneByName("Login");
 }
