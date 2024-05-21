@@ -32,24 +32,23 @@ void Client::Initialize()
 	//TestScene test;
 	//test.Start();
 
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();
 
-	UnitySceneLoaderTest unity;
-	unity.Start();
+	//UnitySceneLoaderTest unity;
+	//unity.Start();
 
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
+	//InGameSceneView inGame;
+	//inGame.Initialize();
 
-	//LobbySceneView lobby;
-	//lobby.Initialize();
-
-	InGameSceneView inGame;
-	inGame.Initialize();
+	LobbySceneView lobby;
+	lobby.Initialize();
 
 	API::LoadSceneByName("Login");
 }
