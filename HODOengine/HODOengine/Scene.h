@@ -10,6 +10,7 @@ namespace HDData
 	class GameObject;
 	class Camera;
 	class Light;
+	class TextUI;
 
 	class HODO_API Scene
 	{
@@ -52,6 +53,8 @@ namespace HDData
 	private:
 		Camera* _mainCamera;
 		Light* _mainLight;
+
+		HDData::TextUI* _fpsText;
 	};
 }
 

@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -25,13 +25,14 @@ TestScene::TestScene()
 
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
+	testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
 	//testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->LoadMesh("primitiveQuad");
 	HDEngine::MaterialDesc boxMat1;
 	boxMat1.materialName = "boxMat";
-	boxMat1.albedo = "button.png";
-	//boxMat1.color = { 111,91,72,255 };
+	//boxMat1.albedo = "button.png";
+	boxMat1.color = { 10,10,10,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 	boxRender1->SetUseLight(false);
@@ -46,8 +47,8 @@ TestScene::TestScene()
 	particleSystem->main.maxStartLifetime = 0.05f;
 	particleSystem->main.minStartRotation = -90.0f;
 	particleSystem->main.maxStartRotation = -90.0f;
-	particleSystem->main.minStartSize = 0.025f;
-	particleSystem->main.maxStartSize = 0.1f;
+	particleSystem->main.minStartSize = 0.05f;
+	particleSystem->main.maxStartSize = 0.075f;
 	particleSystem->main.minStartSpeed = 0.0f;
 	particleSystem->main.maxStartSpeed = 0.0f;
 	particleSystem->emission.enabled = true;
@@ -55,7 +56,7 @@ TestScene::TestScene()
 	particleSystem->emission.SetBurst(newBurst);
 	particleSystem->sizeOverLifetime.enabled = true;
 	HDData::AnimationCurve curve;
-	curve.AddKey(0.0f, 0.654f, [](float t) { return -0.934 * t * t + 0.611 * t; });
+	curve.AddKey(0.0f, 0.654f, [](float t) { return -9.34 * t * t + 6.11 * t; });
 	particleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve);
 	HDEngine::MaterialDesc flashMatDesc;
 	flashMatDesc.materialName = "muzzleFlash";
@@ -77,8 +78,8 @@ TestScene::TestScene()
 	particleSystem2->main.maxStartLifetime = 0.1f;
 	particleSystem2->main.minStartRotation = -250.0f;
 	particleSystem2->main.maxStartRotation = 250.0f;
-	particleSystem2->main.minStartSize = 0.1f;
-	particleSystem2->main.maxStartSize = 0.2f;
+	particleSystem2->main.minStartSize = 0.08f;
+	particleSystem2->main.maxStartSize = 0.12f;
 	particleSystem2->main.minStartSpeed = 10.0f;
 	particleSystem2->main.maxStartSpeed = 15.0f;
 	particleSystem2->emission.enabled = true;
@@ -86,7 +87,7 @@ TestScene::TestScene()
 	particleSystem2->emission.SetBurst(newBurst2);
 	particleSystem2->sizeOverLifetime.enabled = true;
 	HDData::AnimationCurve curve2;
-	curve2.AddKey(0.0f, 1.0f, [](float t) { return -0.6 * t * t + 0.6 * t; });
+	curve2.AddKey(0.0f, 1.0f, [](float t) { return -6 * t * t + 6 * t; });
 	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
 	particleSystem2->rotationOverLifetime.enabled = true;
 	particleSystem2->rotationOverLifetime.angularVelocity = 750.0f;
@@ -118,6 +119,63 @@ TestScene::TestScene()
 	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
 
 	particleSystem->Play();
+
+	//auto particleSystemObj2 = API::CreateObject(_scene, "particleSystem2", particleSystemObj);
+	//auto particleSystemObj2 = API::CreateObject(_scene);
+	//particleSystemObj2->GetComponent<HDData::Transform>()->Rotate(-90.0f, 0.0f, 0.0f);
+	//auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
+	//particleSystem2->main.duration = 0.2f;
+	//particleSystem2->main.loop = true;
+	//particleSystem2->main.minStartColor = { 255, 93, 36, 255 };
+	//particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
+	//particleSystem2->main.minStartLifetime = 0.25f;
+	//particleSystem2->main.maxStartLifetime = 0.75f;
+	//particleSystem2->main.minStartRotation = -250.0f;
+	//particleSystem2->main.maxStartRotation = 250.0f;
+	//particleSystem2->main.minStartSize = 0.1f;
+	//particleSystem2->main.maxStartSize = 0.2f;
+	//particleSystem2->main.minStartSpeed = 10.0f;
+	//particleSystem2->main.maxStartSpeed = 15.0f;
+	//particleSystem2->emission.enabled = true;
+	////HDData::Burst newBurst2(0.0f, 4, 16);
+	//HDData::Burst newBurst2(0.0f, 4, 16, 2, 0.1);
+	//particleSystem2->emission.SetBurst(newBurst2);
+	//particleSystem2->sizeOverLifetime.enabled = true;
+	//HDData::AnimationCurve curve2;
+	//curve2.AddKey(0.0f, 1.0f, [](float t) { return -0.6 * t * t + 0.6 * t; });
+	//particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+	//particleSystem2->rotationOverLifetime.enabled = true;
+	//particleSystem2->rotationOverLifetime.angularVelocity = 750.0f;
+	//HDEngine::MaterialDesc particleMatDesc;
+	//particleMatDesc.materialName = "particleMat";
+	////particleMatDesc.albedo = "T_Ember_D.png";
+	//particleMatDesc.color = { 255, 90, 0, 255 };
+	//HDData::Material* particleMat = API::CreateMaterial(particleMatDesc);
+	//particleSystem2->rendererModule.material = particleMat;
+	//particleSystem2->rendererModule.mesh = "primitiveSphere";
+	//particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	//particleSystem2->colorOverLifetime.enabled = true;
+	//// colorKey, alphaKey 생성
+	//std::vector<HDData::GradientColorKey> ck;
+	//std::vector<HDData::GradientAlphaKey> ak;
+	//HDData::GradientColorKey colorkey1;
+	//colorkey1.color = { 255, 255, 255 };
+	//colorkey1.time = 0.556f;
+	//ck.push_back(colorkey1);
+	//HDData::GradientColorKey colorkey2;
+	//colorkey2.color = { 80, 70, 60 };
+	//colorkey2.time = 1.0f;
+	//ck.push_back(colorkey2);
+	//HDData::GradientAlphaKey alphaKey1;
+	//alphaKey1.alpha = 255;
+	//alphaKey1.time = 0.0f;
+	//ak.push_back(alphaKey1);
+	//HDData::GradientAlphaKey alphaKey2;
+	//alphaKey2.alpha = 255;
+	//alphaKey2.time = 1.0f;
+	//ak.push_back(alphaKey2);
+	//particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
+	//particleSystem2->Play();
 
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
@@ -159,32 +217,31 @@ TestScene::TestScene()
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
 
 	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	//auto playerTest = API::CreateObject(_scene, "player");
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	//playerTest->AddComponent<Player>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	////meshComp->SetActive(false);
 	////meshComp->SetFillModeWireFrame(true);
-	HDEngine::MaterialDesc desc;
-	desc.materialName = "TP_Red";
-	desc.albedo = "TP_Red_B.png";
-	HDData::Material* newMat = API::CreateMaterial(desc);
-	meshComp->LoadMaterial(newMat, 0);
-	meshComp->LoadMaterial(newMat, 1);
-	meshComp->LoadMaterial(newMat, 2);
-	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);
-	meshComp->PlayAnimation("AR_idle", true);
-	meshComp->SetOutlineActive(true);
-	meshComp->SetMeshActive(false, 1);
+	//HDEngine::MaterialDesc desc;
+	//desc.materialName = "TP_Red";
+	//desc.albedo = "TP_Red_B.png";
+	//HDData::Material* newMat = API::CreateMaterial(desc);
+	//meshComp->LoadMaterial(newMat, 0);
+	//meshComp->LoadMaterial(newMat, 1);
+	//meshComp->LoadMaterial(newMat, 2);
+	//meshComp->LoadMaterial(newMat, 3);
+	//meshComp->LoadMaterial(newMat, 4);
+	//meshComp->PlayAnimation("AR_idle", true);
+	//meshComp->SetOutlineActive(true);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
@@ -389,10 +446,10 @@ TestScene::TestScene()
 
 	//API::LoadScene(_scene);
 
-	//HDData::GameObject* obj = API::CreateSlider(_scene, 50);
-	//obj->GetTransform()->SetPosition(300, 100, 0);
-	//obj->AddComponent<SliderSoundScript>();
-	//obj->AddComponent<HDData::AudioSource>();
+	HDData::GameObject* obj = API::CreateSlider(_scene, 50);
+	obj->GetTransform()->SetPosition(300, 100, 0);
+	obj->AddComponent<SliderSoundScript>();
+	obj->AddComponent<HDData::AudioSource>();
 
 	_scene = API::CreateScene("Test Scene");
 

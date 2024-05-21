@@ -88,11 +88,11 @@ namespace RocketCore::Graphics
 		_upperAnimationNodes.insert("neck_01");
 		_upperAnimationNodes.insert("head");
 
-		//_lowerAnimationNodes.insert("root");
+		_lowerAnimationNodes.insert("root");
 		_lowerAnimationNodes.insert("ik_foot_root");
 		_lowerAnimationNodes.insert("ik_foot_l");
 		_lowerAnimationNodes.insert("ik_foot_r");
-		//_lowerAnimationNodes.insert("pelvis");
+		_lowerAnimationNodes.insert("pelvis");
 		_lowerAnimationNodes.insert("thigh_l");
 		_lowerAnimationNodes.insert("calf_l");
 		_lowerAnimationNodes.insert("calf_twist_01_l");

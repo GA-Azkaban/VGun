@@ -5,8 +5,10 @@
 #include "Camera.h"
 #include "AudioListener.h"
 #include "Light.h"
+#include "TextUI.h"
 
 #include "ObjectSystem.h"
+#include "TimeSystem.h"
 #include <algorithm>
 
 namespace HDData
@@ -31,8 +33,15 @@ namespace HDData
 		dirLightComp->SetColor(Vector4(1.0f, 244/255.0f, 214/255.0f, 1.0f));
 		//dirLightComp->SetColor(Vector4(4.365f, 4.164f, 3.774f, 1.0f));
 		dirLightComp->SetLightType(Light::DirectionalLight);
-
 		SetMainLight(dirLightComp);
+
+		// 임시
+		// fps debugging text
+		auto fpsTextObj = CreateObject("fpsText");
+		fpsTextObj->GetTransform()->SetPosition(Vector3(100.0f, 20.0f, 50.0f));
+		_fpsText = fpsTextObj->AddComponent<HDData::TextUI>();
+		_fpsText->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 1.0f, 1.0f });
+		_fpsText->SetText("");
 	}
 
 	Scene::~Scene()
@@ -91,6 +100,10 @@ namespace HDData
  				gameObject->Update();
 			}
 		}
+
+#ifdef _DEBUG
+		_fpsText->SetText("FPS: " + std::to_string(HDEngine::TimeSystem::Instance().GetFramePerSecond()));
+#endif
 	}
 
 	void Scene::LateUpdate()

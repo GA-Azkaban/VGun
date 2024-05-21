@@ -71,6 +71,6 @@ namespace HDEngine
 		//std::vector<HDData::RendererBase*> _rendererList;
 		//std::vector<HDData::UIBase*> _uiList;
 		std::vector<HDData::Collider*> _colliderList;
-		ILineRenderer* _lineRenderer;
+		ILineRenderer* _lineRenderer;		
 	};
 };

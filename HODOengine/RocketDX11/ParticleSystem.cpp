@@ -117,7 +117,15 @@ namespace RocketCore::Graphics
 		vs->CopyAllBufferData();
 		vs->SetShader();
 
-		ps->SetShaderResourceView("Albedo", _material->GetAlbedoMap());
+		if (_material->GetAlbedoMap())
+		{
+			ps->SetInt("useAlbedo", 1);
+			ps->SetShaderResourceView("Albedo", _material->GetAlbedoMap());
+		}
+		else
+		{
+			ps->SetInt("useAlbedo", 0);
+		}
 		ps->SetFloat4("albedoColor", _material->GetColorFloat4()); 
 
 		ps->CopyAllBufferData();
@@ -125,6 +133,10 @@ namespace RocketCore::Graphics
 
 		_mesh->BindBuffers();
 		_mesh->DrawInstanced(_activatedParticles.size());
+
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
 	}
+
 
 }
