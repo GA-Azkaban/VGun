@@ -446,7 +446,7 @@ void MainMenuScene::MainMenu()
 	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetImage("downArrow.png");
 	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 
-	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2");
+	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2", preferencesCanvas);
 	resolutionBtn2->GetTransform()->SetPosition(1350.0f, 330.0f, 0.f);
 	resolutionBtn2->AddComponent<BtnScript>();
 	resolutionBtn2->AddComponent<BtnHoveringScript>();
@@ -459,7 +459,7 @@ void MainMenuScene::MainMenu()
 	resolutionText2->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
 	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
 
-	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3");
+	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
 	resolutionBtn3->GetTransform()->SetPosition(1350.0f, 420.0f, 0.f);
 	resolutionBtn3->AddComponent<BtnScript>();
 	resolutionBtn3->AddComponent<BtnHoveringScript>();
