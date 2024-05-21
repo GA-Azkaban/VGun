@@ -132,7 +132,9 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 			_vertexShader->SetShader();
 
 			_pixelShader->SetShaderResourceView("Albedo", _material->GetAlbedoMap());
-			_pixelShader->SetFloat4("albedoColor", XMFLOAT4{1.0f, 1.0f, 1.0f, 1.0f});
+			XMFLOAT4 albedoColor; 
+			XMStoreFloat4(&albedoColor, _color);
+			_pixelShader->SetFloat4("albedoColor", albedoColor);
 
 			_pixelShader->CopyAllBufferData();
 			_pixelShader->SetShader();

@@ -58,10 +58,10 @@ namespace RocketCore::Graphics
 			psList[i]->Render();
 		}
 
-		//ID3D11ShaderResourceView* nullSRV = nullptr;
-		//ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
-		//ID3D11BlendState* nullBlend = nullptr;
-		//ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(nullBlend, _blendFactor, 0xFFFFFFFF);
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
+		ID3D11BlendState* nullBlend = nullptr;
+		ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(nullBlend, _blendFactor, 0xFFFFFFFF);
 	}
 
 }

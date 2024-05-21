@@ -39,6 +39,7 @@ namespace RocketCore::Graphics
 	public:
 		std::vector<HelperObject*>& GetHelperObjList();
 		std::vector<StaticMeshObject*>& GetStaticMeshObjList();
+		std::vector<StaticMeshObject*>& GetFowardStaticMeshObjList();
 		std::vector<SkinningMeshObject*>& GetSkinningMeshObjList();
 		std::vector<ParticleSystem*>& GetParticleSystemList();
 		std::vector<TextRenderer*>& GetTextList();
@@ -71,6 +72,7 @@ namespace RocketCore::Graphics
 		std::vector<Camera*> _cameraList;
 		std::vector<HelperObject*> _helperObjectList;
 		std::vector<StaticMeshObject*> _staticMeshObjectList;
+		std::vector<StaticMeshObject*> _forwardStaticMeshObjectList;
 		std::vector<SkinningMeshObject*> _skinningMeshObjectList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<ImageRenderer*> _ImageList;
