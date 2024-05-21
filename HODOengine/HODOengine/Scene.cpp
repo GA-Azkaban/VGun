@@ -31,6 +31,8 @@ namespace HDData
 		dirLightComp->SetColor(Vector4(1.0f, 244/255.0f, 214/255.0f, 1.0f));
 		//dirLightComp->SetColor(Vector4(4.365f, 4.164f, 3.774f, 1.0f));
 		dirLightComp->SetLightType(Light::DirectionalLight);
+
+		SetMainLight(dirLightComp);
 	}
 
 	Scene::~Scene()
@@ -149,4 +151,15 @@ namespace HDData
 		_mainCamera = camera;
 		_mainCamera->SetAsMainCamera();
 	}
+
+	HDData::Light* Scene::GetMainLight()
+	{
+		return _mainLight;
+	}
+
+	void Scene::SetMainLight(Light* light)
+	{
+		_mainLight = light;
+	}
+
 }

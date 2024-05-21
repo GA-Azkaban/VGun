@@ -102,9 +102,8 @@ private:
 
 public:
 	// 방 내부의 플레이어 정보를 관리
-	void OtherPlayerEnter();
-	void OtherPlayerExit();
-	void SetPlayerTeam(eTeam team, HDData::GameObject* obj);
+	void RefreshRoom();
+	void SetPlayerTeam(eTeam team, std::string nickName = "");
 
 private:
 	std::vector<PlayerInfo*> _players;

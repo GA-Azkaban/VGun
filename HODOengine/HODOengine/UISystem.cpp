@@ -74,6 +74,9 @@ namespace HDEngine
 		{
 			if (!ui->GetGameObject()->GetParentActive() || !ui->GetGameObject()->GetSelfActive())
 			{
+				ui->SetIsHovering(false);
+				ui->SetIsClicked(false);
+				ui->SetIsGrabbing(false);
 				continue;
 			}
 

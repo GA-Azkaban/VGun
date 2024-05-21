@@ -46,7 +46,6 @@ void MenuManager::ShowRoomList()
 void MenuManager::GetRoomListFromServer()
 {
 	NetworkManager::Instance().SendRoomListRequest();
-
 }
 
 void MenuManager::ShowRoomListCanvas(bool isShow)
@@ -56,6 +55,26 @@ void MenuManager::ShowRoomListCanvas(bool isShow)
 	if (!isShow) return;
 
 	NetworkManager::Instance().SendRoomListRequest();
+}
+
+void MenuManager::ShowCheckEnterCanvas(bool isShow)
+{
+	_checkEnterCanvas->SetSelfActive(isShow);
+}
+
+void MenuManager::ShowCheckPasswordCanvas(bool isShow)
+{
+	_checkPasswordCanvas->SetSelfActive(isShow);
+}
+
+void MenuManager::SetCheckEnterCanvas(HDData::GameObject* canvas)
+{
+	_checkEnterCanvas = canvas;
+}
+
+void MenuManager::SetInputRoomPasswordCanvas(HDData::GameObject* canvas)
+{
+	_checkPasswordCanvas = canvas;
 }
 
 void MenuManager::RoomExit()
@@ -110,6 +129,26 @@ std::string MenuManager::GetIsPrivateImage(bool isPrivate)
 std::string MenuManager::GetIsTeamImage(bool isTeam)
 {
 	return "icon_user_filled.png";
+}
+
+void MenuManager::SetScreenSize(int OptionNum)
+{
+	switch (OptionNum)
+	{
+		case option1:
+			_screenSize = ("1920x1080(60Hz)");
+		case option2:
+			_screenSize = ("1600x900(60Hz)");
+		case option3:
+			_screenSize = ("2550x1440(60Hz)");
+		default:
+			break;
+	}
+}
+
+std::string& MenuManager::GetScreenSize()
+{
+	return _screenSize;
 }
 
 void MenuManager::RenderRoomList()

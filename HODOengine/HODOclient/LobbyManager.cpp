@@ -3,6 +3,7 @@
 #include "Types.h"
 #include "LobbyManager.h"
 #include "NetworkManager.h"
+#include "GameManager.h"
 #include "../HODOengine/TweenTimer.h"
 
 
@@ -172,57 +173,86 @@ void LobbyManager::RoomEnterSUCCESS()
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
 
 	_players = _roomData->_players;
-}
 
-// TODO) 새로운 플레이어가 들어오거나 나갈 때, 기존 애니메이션이 끊기지 않으면 좋다.
-// 하지만 지금은 작업 효율을 위해 일단 벡터를 갈아끼운다.
-void LobbyManager::OtherPlayerEnter()
-{
-	_players = _roomData->_players;
-
-	int count = _roomData->currentPlayerCount;
-
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < _players.size(); ++i)
 	{
-		//if (i < count)
-		//{
-		//	_playerObjs[i]->SetSelfActive(true);
-		//	_nickNameIndex[i]->SetSelfActive(true);
-		//	_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
-		//}
-		//else
-		//{
-		//	_playerObjs[i]->SetSelfActive(false);
-		//	_nickNameIndex[i]->SetSelfActive(false);
-		//}
+		_playerObjs[i]->SetSelfActive(true);
+		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+		
+		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+		{
+			_teamButton[i]->SetSelfActive(true);
+		}
+		else if(_players[i]->GetPlayerID() == GameManager::Instance()->GetMyInfo()->GetPlayerID())
+		{
+			_teamButton[i]->SetSelfActive(true);
+		}
 	}
+	
 }
 
-void LobbyManager::OtherPlayerExit()
+
+void LobbyManager::RefreshRoom()
 {
-	_players = _roomData->_players;
-
-	int count = _roomData->currentPlayerCount;
-
 	for (int i = 0; i < 6; ++i)
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
+		_teamButton[i]->SetSelfActive(false);
 	}
 
-	for (int i = 0; i < count; ++i)
+	_players = _roomData->_players;
+
+	for (int i = 0; i < _players.size(); ++i)
 	{
 		_playerObjs[i]->SetSelfActive(true);
-		SetPlayerTeam(_players[i]->GetPlayerTeam(), _playerObjs[i]);
+		
+		switch (_players[i]->GetPlayerTeam())
+		{
+			case eTeam::R :
+			{
+				SetPlayerTeam(eTeam::R, _players[i]->GetPlayerNickName());
+			}
+			break;
+			case eTeam::G:
+			{
+				SetPlayerTeam(eTeam::G, _players[i]->GetPlayerNickName());
+			}
+			break;
+			case eTeam::B:
+			{
+				SetPlayerTeam(eTeam::B, _players[i]->GetPlayerNickName());
+			}
+			break;
+			default:
+				break;
+		}
+
 		_nickNameIndex[i]->SetSelfActive(true);
 		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
-	}
 
+		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+		{
+			_teamButton[i]->SetSelfActive(true);
+		}
+		else if (_players[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+		{
+			_teamButton[i]->SetSelfActive(true);
+		}
+	}
 }
 
-void LobbyManager::SetPlayerTeam(eTeam team, HDData::GameObject* obj)
+void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 {
-	auto mesh = obj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	HDData::SkinnedMeshRenderer* mesh = nullptr;
+
+	for (int i = 0; i < _players.size(); ++i)
+	{
+		if (nickName == _players[i]->GetPlayerNickName())
+		{
+			mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		}
+	}
 
 	switch (team)
 	{
@@ -260,6 +290,7 @@ void LobbyManager::SetPlayerTeam(eTeam team, HDData::GameObject* obj)
 			break;
 	}
 }
+
 
 std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 {
