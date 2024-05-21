@@ -39,12 +39,6 @@ void LobbySceneView::Initialize()
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 
-	//HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
-	//mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
-	//mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
-	//mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	//mainCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
-
 	// MAP SELECT
 
 
@@ -59,6 +53,15 @@ void LobbySceneView::Initialize()
 	sTex->SetText("GAME START");
 	sTex->SetColor(DirectX::Colors::OrangeRed);
 	startText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+
+	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
+	quitButton->GetTransform()->SetPosition(200, 950, 0);
+	auto qBtn = quitButton->GetComponent<HDData::Button>();
+	qBtn->GetButtonComp()->SetImage("exitRoom.png");
+	qBtn->SetOnClickEvent([]()
+		{
+			NetworkManager::Instance().SendRoomLeave();
+		});
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;

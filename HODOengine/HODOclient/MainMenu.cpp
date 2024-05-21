@@ -164,9 +164,9 @@ void MainMenuScene::MainMenu()
 	auto inputPW_enterbtn = inputPW_enter->GetComponent<HDData::Button>();
 	inputPW_enterbtn->SetImage("enterButton.png");
 	inputPW_enterbtn->SetSortOrder(0.93);
-	inputPW_enterbtn->SetOnClickEvent([&]()
+	inputPW_enterbtn->SetOnClickEvent([=]()
 		{
-			auto input = inputPW_enter->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
+			std::string input = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
 			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id), input);
 		});
 
