@@ -141,7 +141,10 @@ namespace HDEngine
 		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
 		_pxScene->addActor(*groundPlane);
 
-		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
+		//const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
+
+		const auto& allScenes = SceneSystem::Instance().GetAllScenes();
+		const auto& sceneIter = allScenes.find("InGame")->second;
 
 		for (auto& object : sceneIter->GetGameObjectList())
 		{
