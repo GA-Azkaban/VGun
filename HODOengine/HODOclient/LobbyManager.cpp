@@ -193,6 +193,7 @@ void LobbyManager::RoomEnterSUCCESS()
 		{
 			_teamButton[i]->SetSelfActive(true);
 			_quitButtons[i]->SetSelfActive(true);
+			_inGameStartButton->SetSelfActive(true);
 		}
 		else if(_players[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
@@ -248,6 +249,7 @@ void LobbyManager::RefreshRoom()
 		{
 			_teamButton[i]->SetSelfActive(true);
 			_quitButtons[i]->SetSelfActive(true);
+			_inGameStartButton->SetSelfActive(true);
 		}
 		else if (_players[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
