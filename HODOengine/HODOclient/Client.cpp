@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -23,28 +23,28 @@ Client::~Client()
 
 void Client::Initialize()
 {
-	NetworkManager::Instance();
-	LobbyManager::Instance();
-	MenuManager::Instance();
+	//NetworkManager::Instance();
+	//LobbyManager::Instance();
+	//MenuManager::Instance();
 
 	//TestScene test;
 	//test.Start();
 
-	LoginSceneView login;		//Scene Name : Login
-	login.Initialize();
+	//LoginSceneView login;		//Scene Name : Login
+	//login.Initialize();
 
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();
+	//MainMenuScene menu;			//Scene Name : MainMenu
+	//menu.Initalize();
 
-	//UnitySceneLoaderTest unity;
-	//unity.Start();
+	UnitySceneLoaderTest unity;
+	unity.Start();
 
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
 
-	LobbySceneView lobby;
-	lobby.Initialize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
 	InGameSceneView inGame;
 	inGame.Initialize();
