@@ -1,4 +1,4 @@
-﻿#include "MainMenu.h"
+#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -459,7 +459,7 @@ void MainMenuScene::MainMenu()
 	resolutionText2->GetTransform()->SetPosition(1350.0f, 335.0f, 0.f);
 	resolutionText2->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	resolutionText2->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
-	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1600x900(60Hz)");
+	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
 
 	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
 	resolutionBtn3->GetTransform()->SetPosition(1350.0f, 420.0f, 0.f);
@@ -472,7 +472,7 @@ void MainMenuScene::MainMenu()
 	resolutionText3->GetTransform()->SetPosition(1350.0f, 425.0f, 0.f);
 	resolutionText3->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	resolutionText3->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
-	resolutionText3->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
+	resolutionText3->GetComponent<HDData::TextUI>()->SetText("1600x900(60Hz)");
 
 	HDData::GameObject* resolutionBtn4 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
 	resolutionBtn4->GetTransform()->SetPosition(1350.0f, 510.0f, 0.f);
@@ -660,39 +660,13 @@ void MainMenuScene::MainMenu()
 			{
 				resolutionBtn2->SetSelfActive(true);
 				resolutionBtn3->SetSelfActive(true);
-				resolutionBtn4->SetSelfActive(true);
 			}
 			else if (resolutionBtn2->GetSelfActive())
 			{
 				resolutionBtn2->SetSelfActive(false);
 				resolutionBtn3->SetSelfActive(false);
-				resolutionBtn4->SetSelfActive(false);
 			}
 		}
 	);
-
-	resolutionBtn2->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			MenuManager::Instance().SetScreenSize(1);
-			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
-		}
-	);
-
-	resolutionBtn3->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			MenuManager::Instance().SetScreenSize(2);
-			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
-		}
-	);
-	resolutionBtn4->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			MenuManager::Instance().SetScreenSize(3);
-			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
-		}
-	);
-
 
 }

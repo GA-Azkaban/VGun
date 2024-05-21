@@ -299,12 +299,7 @@ namespace API
 		{
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
-
-		HODO_API void Resize(int width, int height)
-		{
-			HDEngine::RenderSystem::Instance().OnResize(width, height);
-		}
-
 	}
+
 
 }
