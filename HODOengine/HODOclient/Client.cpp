@@ -43,8 +43,8 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	//InGameSceneView inGame;
-	//inGame.Initialize();
+	InGameSceneView inGame;
+	inGame.Initialize();
 
 	//LobbySceneView lobby;
 	//lobby.Initialize();
