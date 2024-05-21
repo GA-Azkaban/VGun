@@ -16,7 +16,8 @@ namespace HDData
 		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera()),
 		_isShakingCamera(false),
 		_shakeDuration(0.1f),
-		_distYOnShoot(0.0f)
+		_distYOnShoot(0.0f),
+		_distYOnShootEnd(0.0f)
 	{
 
 	}
@@ -136,22 +137,25 @@ namespace HDData
 		}
 
 		float shakeIntensity = 0.03f;
-		float shakeFrequency = 90.0f;
+		float shakeFrequency = 3600.0f;
 
 		if (_shakeDuration > 0.0f)
 		{
-			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
+			//_distYOnShootEnd -= _distYOnShoot;
 			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeDuration);
-			GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
+			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			_distYOnShootEnd += _distYOnShoot;
 
 			_shakeDuration -= deltaTime;
 		}
 		else
 		{
-			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
+			GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShootEnd, 0.0f);
 			_shakeDuration = 0.1f;
 			_isShakingCamera = false;
 			_distYOnShoot = 0.0f;
+			_distYOnShootEnd = 0.0f;
 		}
 	}
 

@@ -3,7 +3,9 @@
 BtnScript::BtnScript(std::string Name)
 	:imgName(Name),
 	_childTextObject(nullptr),
-	_childImageObject(nullptr)
+	_childImageObject(nullptr),
+	_currentCursor(nullptr)
+	
 {
 
 }
@@ -20,12 +22,12 @@ void BtnScript::Start()
 	{
 		if (obj->GetComponent<HDData::TextUI>())
 		{
-			textFlag = true;
+			_textFlag = true;
 			_childTextObject = obj;
 		}
 		else if (obj->GetComponent<HDData::ImageUI>())
 		{
-			imageFlag = true;
+			_imageFlag = true;
 			_childImageObject = obj;
 		}
 	}
@@ -34,26 +36,34 @@ void BtnScript::Start()
 void BtnScript::Update()
 {
 	auto button = GetGameObject()->GetComponent<HDData::Button>();
+	HCURSOR newCursor = LoadCursor(NULL, IDC_ARROW);
 	if (button && button->GetButtonComp()->GetIsHovering())
 	{
-		if (textFlag)
+		newCursor = SetCursor(LoadCursor(NULL, IDC_HAND));
+		if (_textFlag)
 		{
 			_childTextObject->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
 		}
-		if (imageFlag)
+		if (_imageFlag)
 		{
 			_childImageObject->GetComponent<HDData::ImageUI>()->SetColor(DirectX::Colors::Aqua);
 		}
 	}
 	else
 	{
-		if (textFlag)
+		if (_textFlag)
 		{
 			_childTextObject->GetComponent<HDData::TextUI>()->ReturnDefaultColor();
 		}
-		if (imageFlag)
+		if (_imageFlag)
 		{
 			_childImageObject->GetComponent<HDData::ImageUI>()->SetColor(DirectX::Colors::White);
 		}
+	}
+
+	if (_currentCursor != newCursor)
+	{
+		_currentCursor = newCursor;
+		SetCursor(newCursor);
 	}
 }

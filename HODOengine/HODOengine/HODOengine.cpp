@@ -166,6 +166,7 @@ void HODOengine::Run()
 	// refresh input for next frame
 	_inputSystem.Flush();
 	_tweenSystem.Update();
+
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

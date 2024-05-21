@@ -44,7 +44,7 @@ void LoginSceneView::LoginView()
 
 	auto skybox = API::CreateObject(_scene);
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
 	/// main canvas
 

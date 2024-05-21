@@ -47,9 +47,9 @@ namespace HDData
 	public:
 		void UpdateRenderData();
 		//virtual void Update() override;
+		void SetAsMainCamera();	// main 카메라로 바꾸는 함수. Scene에서만 호출했으면 좋겠음.
 
 	private:
-		void SetAsMainCamera();	// main 카메라로 바꾸는 함수. Scene에서만 호출했으면 좋겠음.
 
 	// behavior functions
 	public:
@@ -74,5 +74,6 @@ namespace HDData
 		bool _isShakingCamera;
 		float _shakeDuration;
 		float _distYOnShoot;
+		float _distYOnShootEnd;
 	};
 }

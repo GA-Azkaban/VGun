@@ -193,7 +193,7 @@ namespace HDEngine
 				Vector3 scale = object->GetTransform()->GetScale();
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
-
+				shape->userData = box;
 				// TODO : 여기 작업하고 있었음.
 				Vector3 position = object->GetTransform()->GetPosition();
 
@@ -250,6 +250,7 @@ namespace HDEngine
 				// switch material if player
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_playerMaterial);
 				//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+				shape->userData = box;
 
 				physx::PxFilterData playerFilterData;
 				playerFilterData.word0 = collider->GetColGroup();
@@ -319,6 +320,7 @@ namespace HDEngine
 				HDData::DynamicSphereCollider* sphere = dynamic_cast<HDData::DynamicSphereCollider*>(collider);
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
+				shape->userData = sphere;
 
 				if (collider->GetIsPlayer() == true)
 				{
@@ -358,6 +360,7 @@ namespace HDEngine
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
 				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 				shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
+				shape->userData = box;
 
 				// TODO : 여기 작업하고 있었음.
 				Vector3 position = object->GetTransform()->GetPosition();

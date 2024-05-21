@@ -283,6 +283,11 @@ void UnitySceneLoaderTest::Start()
 	playerCenter->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 	playerMove->SetHeadCam(headCam);
 
+	auto triggerTest = API::CreateObject(_scene, "triggerTest");
+	triggerTest->GetTransform()->SetPosition(Vector3(3.0f, 1.0f, -3.0f));
+	auto triggerCol = triggerTest->AddComponent<HDData::TriggerBoxCollider>();
+
+
 	// 피격 표시 particle
 	std::vector<HDData::ParticleSphereCollider*> particleContainer;
 	particleContainer.reserve(30);
@@ -297,9 +302,13 @@ void UnitySceneLoaderTest::Start()
 
 	// sound 추가
 	HDData::AudioSource* playerSound = playerCenter->AddComponent<HDData::AudioSource>();
-	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("hit", "./Resources/Sound/Hit/hit_water.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
 
 	// Particle System
 	auto particleSystemObj = API::CreateObject(_scene);

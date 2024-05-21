@@ -32,10 +32,11 @@ void LobbySceneView::Initialize()
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
 	testBox1->GetTransform()->SetScale(4, 4, 4);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->SetUseLight(false);
 	boxRender1->LoadMesh("primitiveQuad");
 	HDEngine::MaterialDesc boxMat1;
 	boxMat1.materialName = "_blur_background_image";
-	boxMat1.albedo = "button.png";
+	boxMat1.albedo = "_blur_background_image.png";
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 
@@ -48,11 +49,32 @@ void LobbySceneView::Initialize()
 	startButton->GetTransform()->SetPosition(1600, 950, 0);
 
 	auto startText = API::CreateTextbox(_scene, "gameStartText", startButton);
-	auto sTex = startText->GetComponent<HDData::TextUI>();
 	startText->GetTransform()->SetPosition(1600, 950, 0);
+	auto sTex = startText->GetComponent<HDData::TextUI>();
 	sTex->SetText("GAME START");
 	sTex->SetColor(DirectX::Colors::OrangeRed);
-	startText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	sTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+
+	LobbyManager::Instance().SetInGameStartButton(startButton);
+
+	startButton->SetSelfActive(false);
+
+	//// game ready button
+	//auto readyButton = API::CreateButton(_scene, "gameReadyButton");
+	//readyButton->GetComponent<HDData::Button>()->SetImage("ready.png");
+	//readyButton->GetTransform()->SetPosition(1600, 950, 0);
+
+	//auto readyText = API::CreateTextbox(_scene, "gameStartText", readyButton);
+	//readyText->GetTransform()->SetPosition(1600, 950, 0);
+	//auto rTex = readyText->GetComponent<HDData::TextUI>();
+	//rTex->SetText("GAME READY");
+	//rTex->SetColor(DirectX::Colors::OrangeRed);
+	//rTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+
+	//LobbyManager::Instance().SetInGameReadyButton(readyButton);
+
+	//readyButton->SetSelfActive(false);
+
 
 	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
 	quitButton->GetTransform()->SetPosition(200, 950, 0);
@@ -178,6 +200,11 @@ void LobbySceneView::Initialize()
 		posX += 1;
 		posT += 315;
 	}
+
+
+	startButton->GetComponent<HDData::Button>()->SetOnClickEvent([]() {
+		NetworkManager::Instance().SendGameStart();
+		});
 
 }
 

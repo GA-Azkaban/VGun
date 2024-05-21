@@ -1,5 +1,6 @@
 ﻿#include "RoundManager.h"
 #include "NetworkManager.h"
+#include "LobbyManager.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -25,16 +26,16 @@ void RoundManager::Start()
 
 void RoundManager::Update()
 {
-
+	//NetworkManager::Instance().SendPlayUpdate();
 }
 
 void RoundManager::InitGame()
 {
 	// 라운드 초기화
-	InitRound();
-	InitRandomSpawn();
-	NetworkManager::Instance().SendGameStart();
+	_playerInfo = LobbyManager::Instance().GetAllPlayerInfo();
 
+	InitRound();
+	//InitRandomSpawn();
 }
 
 void RoundManager::EndGame()
@@ -52,6 +53,51 @@ void RoundManager::InitRound()
 	{
 		player->Init();
 	}
+
+	for (int i = 0; i < _playerInfo.size(); ++i)
+	{
+		_playerObjs[i]->SetSelfActive(true);
+
+		auto mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+
+		switch (_playerInfo[i]->GetPlayerTeam())
+		{
+			case eTeam::R:
+			{
+				auto mat = API::GetMaterial("TP_Red");
+				mesh->LoadMaterial(mat, 0);
+				mesh->LoadMaterial(mat, 1);
+				mesh->LoadMaterial(mat, 2);
+				mesh->LoadMaterial(mat, 3);
+				mesh->LoadMaterial(mat, 4);
+			}
+			break;
+			case eTeam::G:
+			{
+				auto mat = API::GetMaterial("TP_Green");
+				mesh->LoadMaterial(mat, 0);
+				mesh->LoadMaterial(mat, 1);
+				mesh->LoadMaterial(mat, 2);
+				mesh->LoadMaterial(mat, 3);
+				mesh->LoadMaterial(mat, 4);
+			}
+			break;
+			case eTeam::B:
+			{
+				auto mat = API::GetMaterial("TP_Blue");
+				mesh->LoadMaterial(mat, 0);
+				mesh->LoadMaterial(mat, 1);
+				mesh->LoadMaterial(mat, 2);
+				mesh->LoadMaterial(mat, 3);
+				mesh->LoadMaterial(mat, 4);
+			}
+			break;
+			default:
+				break;
+		}
+
+		
+	}
 }
 
 void RoundManager::UpdateRound()
@@ -64,6 +110,11 @@ void RoundManager::UpdateRound()
 	// 플레이어 killcount, time 갱신
 
 	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
+}
+
+std::vector<HDData::GameObject*>& RoundManager::GetPlayerObjs()
+{
+	return _playerObjs;
 }
 
 void RoundManager::InitRandomSpawn()

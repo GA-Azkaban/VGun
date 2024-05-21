@@ -148,8 +148,7 @@ namespace HDData
 
 	void Scene::SetMainCamera(Camera* camera)
 	{
-		_mainCamera = camera;
-		_mainCamera->SetAsMainCamera();
+		this->_mainCamera = camera;
 	}
 
 	HDData::Light* Scene::GetMainLight()
