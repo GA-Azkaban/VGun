@@ -88,7 +88,7 @@ void MainMenuScene::MainMenu()
 	main_enterText->GetComponent<HDData::TextUI>()->SetText("Enter");
 
 	// room List Canvas
-	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas");
+	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas",main_enterBtn);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
 	enter_roomLstCanvas->GetTransform()->SetPosition(1000.0f, 540.0f, 0.0f);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
