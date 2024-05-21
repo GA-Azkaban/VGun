@@ -10,6 +10,7 @@
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
+#include "RoundManager.h"
 
 Client::Client()
 {
@@ -26,6 +27,7 @@ void Client::Initialize()
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();
+	RoundManager::Instance();
 
 	//TestScene test;
 	//test.Start();

@@ -303,6 +303,11 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 }
 
 
+std::vector<PlayerInfo*>& LobbyManager::GetAllPlayerInfo()
+{
+	return _players;
+}
+
 std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 {
 	return _playerObjs;
