@@ -173,6 +173,11 @@ namespace RocketCore::Graphics
 		return _staticMeshObjectList;
 	}
 
+	std::vector<StaticMeshObject*>& ObjectManager::GetFowardStaticMeshObjList()
+	{
+		return _forwardStaticMeshObjectList;
+	}
+
 	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
 	{
 		return _skinningMeshObjectList;

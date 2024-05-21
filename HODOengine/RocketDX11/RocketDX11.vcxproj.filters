@@ -85,6 +85,9 @@
     <FxCompile Include="ParticlePixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\Particle</Filter>
     </FxCompile>
+    <FxCompile Include="ForwardPixelShaderNoLight.hlsl">
+      <Filter>Resource\Shader\HLSL\Forward</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -215,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Object\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Object\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardPass.h">
+      <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -597,6 +606,12 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\Particle">
       <UniqueIdentifier>{94c2e166-e9b5-4cfd-9116-3f9445c5face}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Forward">
+      <UniqueIdentifier>{c9118d53-19ff-4a72-8647-7694ba6581b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ForwardPass">
+      <UniqueIdentifier>{fa17eb72-e773-473a-a0b8-f2625807947d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

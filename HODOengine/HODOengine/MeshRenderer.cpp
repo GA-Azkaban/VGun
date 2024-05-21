@@ -67,6 +67,11 @@ namespace HDData
 		_staticMesh->SetAlbedoColor(r, g, b, a, element);
 	}
 
+	void MeshRenderer::SetUseLight(bool useLight)
+	{
+		_staticMesh->SetUseLight(useLight);
+	}
+
 	void MeshRenderer::Update()
 	{
 		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());

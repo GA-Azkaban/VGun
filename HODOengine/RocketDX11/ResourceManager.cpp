@@ -635,6 +635,10 @@ namespace RocketCore::Graphics
 		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("BillboardPixelShader.cso", billboardPS));
+		
+		PixelShader* forwardNoLightPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (forwardNoLightPS->LoadShaderFile(L"Resources/Shaders/ForwardPixelShaderNoLight.cso"))
+			_pixelShaders.insert(std::make_pair("ForwardPixelShaderNoLight.cso", forwardNoLightPS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
