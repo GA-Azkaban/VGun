@@ -138,6 +138,16 @@ message S_ROOM_CHANGE_TEAM
 	RoomInfo roomInfo = 1;
 }
 
+message C_ROOM_KICK
+{
+	string targetNickName = 1;
+}
+
+message S_ROOM_KICK
+{
+	RoomInfo roomInfo = 1;
+}
+
 message C_PLAY_UPDATE
 {
 	PlayerData playerData = 1;
