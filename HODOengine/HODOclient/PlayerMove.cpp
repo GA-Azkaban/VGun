@@ -4,8 +4,12 @@
 PlayerMove::PlayerMove()
 	: _particleIndex(0),
 	_shootCooldown(0.0f),
+	_jumpCooldown(0.0f),
 	_shootCount(0),
-	_sprayPattern(),
+	_bulletCount(30),
+	_reloadTimer(0.0f),
+	_isReloading(false),
+	_isRunning(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f)
 {
 
@@ -17,7 +21,8 @@ void PlayerMove::Start()
 	_moveSpeed = 3.0f;
 
 	_isOnGround = false;
-	_isJumping = true;
+	//_isJumping = true;
+	_isJumping = false;
 
 	_playerCollider->LockPlayerRotation();
 
@@ -37,6 +42,15 @@ void PlayerMove::Update()
 		CheckIsOnGround();
 	}
 
+	if (_jumpCooldown >= 0.0f)
+	{
+		_jumpCooldown -= _deltaTime;
+	}
+	else
+	{
+		_isJumping = false;
+	}
+
 	//if (API::GetMouseDown(MOUSE_LEFT))
 	//{
 	//	ShootGun();
@@ -53,9 +67,14 @@ void PlayerMove::Update()
 		//_hitParticles[i]->CheckTimer(_deltaTime);
 	}
 
+	// 탄창 비었는데 쏘면 딸깍소리
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
+		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
+		if (_bulletCount <= 0)
+		{
+			_playerAudio->PlayOnce("empty");
+		}
 	}
 
 	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
@@ -65,9 +84,21 @@ void PlayerMove::Update()
 
 	if (API::GetMouseUp(MOUSE_LEFT))
 	{
+		// 반동 리셋
 		_shootCount = 0;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.12f, 0.2f));
+		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.12f, 0.2f));
 	}
+
+	if (API::GetKeyDown(DIK_R))
+	{
+		if (_isReloading == false && _bulletCount < 30)
+		{
+			// 여기에 재장전 애니메이션과 소리 넣기
+			_playerAudio->PlayOnce("reload");
+			_isReloading = true;
+		}
+	}
+	Reload();
 
 	// 마우스에 따른 플레이어 회전 체크
 	CheckLookDirection();
@@ -195,11 +226,13 @@ void PlayerMove::CheckMoveInfo()
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
 		//_playerCollider->AdjustVelocity(2.0f);
+		_isRunning = true;
 		_moveSpeed = 6.0f;
 	}
 	if (API::GetKeyUp(DIK_LSHIFT))
 	{
 		//_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
+		_isRunning = false;
 		_moveSpeed = 3.0f;
 	}
 }
@@ -212,6 +245,7 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
+	/*
 	Vector3 pos = this->GetTransform()->GetPosition();
 	const float delta = 0.2f;
 	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
@@ -244,8 +278,11 @@ bool PlayerMove::CheckIsOnGround()
 		}
 	}
 	_isOnGround = false;
-
+	*/
 	return false;
+	
+
+
 }
 
 void PlayerMove::Move(int direction)
@@ -267,6 +304,18 @@ void PlayerMove::Move(int direction)
 	else
 	{
 		_playerCollider->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+
+		if (!(_playerAudio->IsSoundPlaying("walk") || _playerAudio->IsSoundPlaying("run") || _isJumping))
+		{
+			if (_isRunning)
+			{
+				_playerAudio->PlayOnce("run");
+			}
+			else
+			{
+				_playerAudio->PlayOnce("walk");
+			}
+		}
 	}
 
 	_prevDirection = _moveDirection;
@@ -295,15 +344,17 @@ void PlayerMove::ShootGun()
 
 void PlayerMove::ShootGunDdabal()
 {
-	if (_shootCount >= 30)	// 장탄수를 임시로 30발로 제한
+	if (_bulletCount <= 0)	// 장탄수를 임시로 30발로 제한
 	{
 		return;
 	}
 
 	// 총기 반동
 	ApplyRecoil();
+	_headCam->EnableCameraShake();
 
 	++_shootCount;
+	--_bulletCount;
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
@@ -332,6 +383,21 @@ void PlayerMove::ShootGunDdabal()
 	}
 
 	_shootCooldown = 0.1f;
+}
+
+void PlayerMove::Reload()
+{
+	// 2초간 장전
+	if (_isReloading == true)
+	{
+		_reloadTimer += _deltaTime;
+		if (_reloadTimer >= 2.0f)
+		{
+			_bulletCount = 30;
+			_isReloading = false;
+			_reloadTimer = 0.0f;
+		}
+	}
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -434,10 +500,14 @@ void PlayerMove::Jump()
 
 	//if ((!_isJumping) && (_isOnGround))
 		//if (!_isJumping)
+	if(!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
+		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
+
+		_jumpCooldown = 0.8f;
 		//_isOnGround = false;
 	}
 }
@@ -738,8 +808,8 @@ void PlayerMove::CameraMove()
 	//// Pitch in closed angle
 	//Pitch(mouseDelta.y * 0.1f);
 
-	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.002f);
-	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.002f);
+	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.001f);
+	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.001f);
 
 
 	//if (_rotAngleY >= 3.14159265358979f)
