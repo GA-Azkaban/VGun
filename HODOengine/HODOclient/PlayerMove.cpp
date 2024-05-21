@@ -4,10 +4,12 @@
 PlayerMove::PlayerMove()
 	: _particleIndex(0),
 	_shootCooldown(0.0f),
+	_jumpCooldown(0.0f),
 	_shootCount(0),
 	_bulletCount(30),
 	_reloadTimer(0.0f),
 	_isReloading(false),
+	_isRunning(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f)
 {
 
@@ -19,7 +21,8 @@ void PlayerMove::Start()
 	_moveSpeed = 3.0f;
 
 	_isOnGround = false;
-	_isJumping = true;
+	//_isJumping = true;
+	_isJumping = false;
 
 	_playerCollider->LockPlayerRotation();
 
@@ -39,6 +42,15 @@ void PlayerMove::Update()
 		CheckIsOnGround();
 	}
 
+	if (_jumpCooldown >= 0.0f)
+	{
+		_jumpCooldown -= _deltaTime;
+	}
+	else
+	{
+		_isJumping = false;
+	}
+
 	//if (API::GetMouseDown(MOUSE_LEFT))
 	//{
 	//	ShootGun();
@@ -55,9 +67,14 @@ void PlayerMove::Update()
 		//_hitParticles[i]->CheckTimer(_deltaTime);
 	}
 
+	// 탄창 비었는데 쏘면 딸깍소리
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
 		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
+		if (_bulletCount <= 0)
+		{
+			_playerAudio->PlayOnce("empty");
+		}
 	}
 
 	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
@@ -209,11 +226,13 @@ void PlayerMove::CheckMoveInfo()
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
 		//_playerCollider->AdjustVelocity(2.0f);
+		_isRunning = true;
 		_moveSpeed = 6.0f;
 	}
 	if (API::GetKeyUp(DIK_LSHIFT))
 	{
 		//_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
+		_isRunning = false;
 		_moveSpeed = 3.0f;
 	}
 }
@@ -285,6 +304,18 @@ void PlayerMove::Move(int direction)
 	else
 	{
 		_playerCollider->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+
+		if (!(_playerAudio->IsSoundPlaying("walk") || _playerAudio->IsSoundPlaying("run") || _isJumping))
+		{
+			if (_isRunning)
+			{
+				_playerAudio->PlayOnce("run");
+			}
+			else
+			{
+				_playerAudio->PlayOnce("walk");
+			}
+		}
 	}
 
 	_prevDirection = _moveDirection;
@@ -320,6 +351,7 @@ void PlayerMove::ShootGunDdabal()
 
 	// 총기 반동
 	ApplyRecoil();
+	_headCam->EnableCameraShake();
 
 	++_shootCount;
 	--_bulletCount;
@@ -468,10 +500,14 @@ void PlayerMove::Jump()
 
 	//if ((!_isJumping) && (_isOnGround))
 		//if (!_isJumping)
+	if(!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
+		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
+
+		_jumpCooldown = 0.8f;
 		//_isOnGround = false;
 	}
 }

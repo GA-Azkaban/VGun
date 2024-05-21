@@ -84,10 +84,12 @@ private:
 
 	int _particleIndex;
 	float _shootCooldown;
+	float _jumpCooldown;
 	int _shootCount;
 	int _bulletCount;
 	float _reloadTimer;
 	bool _isReloading;
+	bool _isRunning;
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
 };
