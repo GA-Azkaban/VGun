@@ -1,4 +1,4 @@
-#include <locale>
+﻿#include <locale>
 #include <codecvt>
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -28,6 +28,7 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_world(XMMatrixIdentity())
 {
 	_color = DirectX::Colors::White;
+	_defalutcolor = DirectX::Colors::White;
 
 	_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
