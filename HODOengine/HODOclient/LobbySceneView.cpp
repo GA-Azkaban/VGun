@@ -173,7 +173,7 @@ void LobbySceneView::Initialize()
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
-		//player->SetSelfActive(false);
+		player->SetSelfActive(false);
 
 		posX += 1;
 		posT += 315;

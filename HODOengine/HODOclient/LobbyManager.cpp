@@ -200,6 +200,46 @@ void LobbyManager::RefreshRoom()
 		_nickNameIndex[i]->SetSelfActive(false);
 		_teamButton[i]->SetSelfActive(false);
 	}
+
+	_players = _roomData->_players;
+
+	for (int i = 0; i < _players.size(); ++i)
+	{
+		_playerObjs[i]->SetSelfActive(true);
+		
+		switch (_players[i]->GetPlayerTeam())
+		{
+			case eTeam::R :
+			{
+				SetPlayerTeam(eTeam::R, _players[i]->GetPlayerNickName());
+			}
+			break;
+			case eTeam::G:
+			{
+				SetPlayerTeam(eTeam::G, _players[i]->GetPlayerNickName());
+			}
+			break;
+			case eTeam::B:
+			{
+				SetPlayerTeam(eTeam::B, _players[i]->GetPlayerNickName());
+			}
+			break;
+			default:
+				break;
+		}
+
+		_nickNameIndex[i]->SetSelfActive(true);
+		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
+
+		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+		{
+			_teamButton[i]->SetSelfActive(true);
+		}
+		else if (_players[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+		{
+			_teamButton[i]->SetSelfActive(true);
+		}
+	}
 }
 
 void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)

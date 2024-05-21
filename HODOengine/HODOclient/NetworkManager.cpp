@@ -264,6 +264,8 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 
 		info->_players.push_back(one);
 	}
+
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
@@ -281,6 +283,8 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 
 		info->_players.push_back(one);
 	}
+
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
@@ -300,10 +304,13 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 
 	for (int i = 0; i < roomInfo.users().size(); ++i)
 	{
+		auto t = roomInfo.users()[i];
+
 		switch (roomInfo.users()[i].team())
 		{
 			case Protocol::TEAM_COLOR_RED :
 			{
+				std::string test = roomInfo.users()[i].userinfo().nickname();
 				LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[i].userinfo().nickname());
 			}
 			break;
