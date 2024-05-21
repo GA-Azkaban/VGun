@@ -116,6 +116,7 @@ private:
 	std::vector<PlayerInfo*> _players;
 
 public:
+	std::vector<PlayerInfo*>& GetAllPlayerInfo();
 	std::vector<HDData::GameObject*>& GetPlayerObjects();
 	std::vector<HDData::GameObject*>& GetNickNameObjects();
 	std::vector<HDData::GameObject*>& GetTeamButtonObjects();

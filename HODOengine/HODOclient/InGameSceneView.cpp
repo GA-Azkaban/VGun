@@ -2,6 +2,7 @@
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
+#include "RoundManager.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -20,59 +21,39 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
 
-	 //플레이어 테스트
-	/*auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
+	// 플레이어 여섯 명 렌더링
 
-	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc;
-	desc.materialName = "TP_Red";
-	desc.albedo = "TP_Red_B.png";
-	HDData::Material* newMat = API::CreateMaterial(desc);
-	meshComp->LoadMaterial(newMat, 0);
-	meshComp->LoadMaterial(newMat, 1);
-	meshComp->LoadMaterial(newMat, 2);
-	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);
+	float posX = 0;
+	float posT = 165;
 
-	playerTest->AddComponent<HDData::Animator>();
-	API::LoadUpperAnimationFromData(playerTest, "upperdata.json");
-	API::LoadLowerAnimationFromData(playerTest, "lowerdata.json");
+	HDEngine::MaterialDesc red;
+	red.materialName = "TP_Red";
+	red.albedo = "TP_Red_B.png";
 
-	playerTest->AddComponent<FSMtestScript>();
+	HDData::Material* M_Red = API::CreateMaterial(red);
 
-	auto playerBodyCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.0f, 0.5f, 1);
-	auto playerMove = playerTest->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(_scene->GetMainCamera());
+	for (int i = 0; i < 6; ++i)
+	{
+		HDData::GameObject* player = API::CreateObject(_scene, "player");
+		player->LoadFBXFile("SKM_TP_X_Default.fbx");
+		player->GetTransform()->SetPosition(posX, 0, 0);
 
-	auto playerPosText = API::CreateTextbox(_scene);
-	playerPosText->GetTransform()->SetPosition(Vector3(1700.0f, 40.0f, 50.0f));
-	playerPosText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
-	auto aimText = API::CreateTextbox(_scene);
-	aimText->GetTransform()->SetPosition(Vector3(950.0f, 520.0f, 50.0f));
-	aimText->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 0.0f, 1.0f });
-	aimText->GetComponent<HDData::TextUI>()->SetText("");
-	playerMove->SetPlayerText(playerPosText->GetComponent<HDData::TextUI>(), aimText->GetComponent<HDData::TextUI>());
+		auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		meshComp->LoadMaterial(M_Red, 0);
+		meshComp->LoadMaterial(M_Red, 1);
+		meshComp->LoadMaterial(M_Red, 2);
+		meshComp->LoadMaterial(M_Red, 3);
+		meshComp->LoadMaterial(M_Red, 4);
 
+		meshComp->PlayAnimation("AR_idle", true);
 
-	auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
-	playerTestHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
-	playerTestHead->SetParentObject(playerTest);
-	auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
-	playerHeadCollider->SetParentCollider(playerBodyCollider);
+		RoundManager::Instance()->_playerObjs.push_back(player);
 
-	auto headCamObj = API::CreateObject(_scene, "headCamObj");
-	headCamObj->SetParentObject(playerTestHead);
-	headCamObj->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.12f, 0.2f });
-	auto headCam = headCamObj->AddComponent<HDData::Camera>();
-	playerMove->SetHeadCam(headCam);
+		player->SetSelfActive(false);
 
-	auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
-	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);
-	plLeftUpperArm->SetParentObject(playerTest);
-	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f, 1);
-	playerLUCollider->SetParentCollider(playerBodyCollider);*/
+		posX += 1;
+		posT += 315;
+	}
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
