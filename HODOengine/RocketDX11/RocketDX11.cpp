@@ -365,8 +365,8 @@ namespace RocketCore::Graphics
 		_outlinePass->Render();
 
 #ifdef _DEBUG
-		_debugMeshPass->Render();
-		RenderLine();
+		//_debugMeshPass->Render();
+		//RenderLine();
 #endif
 
 
