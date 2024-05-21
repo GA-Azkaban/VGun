@@ -274,6 +274,16 @@ namespace RocketCore::Graphics
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
 
+		// 윈도우의 중앙 좌표 계산
+		//int centerX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
+		//int centerY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+
+		int centerX = screenWidth / 2;
+		int centerY = screenHeight / 2;
+
+		//SetWindowPos(_hWnd, nullptr, centerX, centerY, screenWidth, screenHeight, SWP_NOMOVE | SWP_NOZORDER);
+		SetWindowPos(_hWnd, nullptr, centerX, centerY, screenWidth, screenHeight, SWP_NOZORDER);
+
 		// 투영 행렬 재계산
 		Camera::GetMainCamera()->SetAspect(static_cast<float>(_screenWidth / _screenHeight));
 		Camera::GetMainCamera()->UpdateProjectionMatrix();
