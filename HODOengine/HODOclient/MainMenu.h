@@ -8,6 +8,14 @@
 
 class MenuManager;
 
+//enum screenSizetemp
+//{
+//	option1600 = 1,	// default	1600x900
+//	option1920 = 2,	// 1920x1080
+//	option2550 = 3,	// 2550x1440
+//	option4 = 4,
+//};
+
 class MainMenuScene
 {
 public:
