@@ -183,6 +183,7 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 4);
 	meshComp->PlayAnimation("AR_idle", true);
 	meshComp->SetOutlineActive(true);
+	meshComp->SetMeshActive(false, 1);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.

@@ -37,6 +37,7 @@ namespace HDData
 		bool IsLowerAnimationEnd();
 		void SetOutlineActive(bool isActive);
 		void SetFillModeWireFrame(bool setWireFrame);
+		void SetMeshActive(bool isActive, unsigned int index);
 		Node* GetNode();
 
 	protected:

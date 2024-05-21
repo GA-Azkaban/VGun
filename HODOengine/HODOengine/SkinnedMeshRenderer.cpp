@@ -128,6 +128,11 @@ namespace HDData
 		_skinnedMesh->SetFillModeWireFrame(setWireFrame);
 	}
 
+	void SkinnedMeshRenderer::SetMeshActive(bool isActive, unsigned int index)
+	{
+		_skinnedMesh->SetMeshActive(isActive, index);
+	}
+
 	Node* SkinnedMeshRenderer::GetNode()
 	{
 		return _skinnedMesh->GetNode();

@@ -66,6 +66,8 @@ namespace RocketCore::Graphics
 		virtual void SetOutlineActive(bool isActive) override;
 		virtual void SetFillModeWireFrame(bool setWireFrame) override;
 
+		virtual void SetMeshActive(bool isActive, unsigned int index) override;
+
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		std::vector<Material*>& GetMaterials() { return m_materials; }
 		DirectX::XMMATRIX GetWorldTM();
