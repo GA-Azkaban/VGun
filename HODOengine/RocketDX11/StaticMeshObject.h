@@ -37,6 +37,7 @@ namespace RocketCore::Graphics
 		virtual void SetRoughnessValue(float value, unsigned int element = 0) override;
 		virtual void SetMetallicValue(float value, unsigned int element = 0) override;
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
+		virtual void SetUseLight(bool useLight) override;
 
 	public:
 		void Render();
@@ -60,5 +61,7 @@ namespace RocketCore::Graphics
 
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
+
+		bool m_useLight;
 	};
 }

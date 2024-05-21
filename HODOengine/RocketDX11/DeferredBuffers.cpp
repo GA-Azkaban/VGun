@@ -264,8 +264,6 @@ namespace RocketCore::Graphics
 		{
 			_deviceContext->ClearRenderTargetView(_renderTargetViews[iTextureIndex].Get(), reinterpret_cast<const float*>(&color));
 		}
-
-		ClearDepthStencil();
 	}
 
 	void DeferredBuffers::ClearDepthStencil()

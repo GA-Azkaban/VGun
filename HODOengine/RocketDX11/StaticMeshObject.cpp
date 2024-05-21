@@ -9,12 +9,14 @@
 #include "OutlinePass.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "ObjectManager.h"
+#include <algorithm>
 using namespace DirectX;
 
 namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
-		: m_isActive(true), m_receiveTMInfoFlag(false),
+		: m_isActive(true), m_receiveTMInfoFlag(false), m_useLight(true),
 		m_world{ XMMatrixIdentity() }
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
@@ -131,6 +133,41 @@ namespace RocketCore::Graphics
 		if (element >= m_materials.size())
 			return;
 		m_materials[element]->SetColor(r, g, b, a);
+	}
+
+	void StaticMeshObject::SetUseLight(bool useLight)
+	{
+		m_useLight = useLight;
+		if (useLight)
+		{
+			std::vector<StaticMeshObject*>& staticMeshList = ObjectManager::Instance().GetStaticMeshObjList();
+			if (std::find(staticMeshList.begin(), staticMeshList.end(), this) == staticMeshList.end())
+			{
+				staticMeshList.push_back(this);
+			}
+			std::vector<StaticMeshObject*>& forwardStaticMeshList = ObjectManager::Instance().GetFowardStaticMeshObjList();
+			auto iter = std::find(forwardStaticMeshList.begin(), forwardStaticMeshList.end(), this);
+			if (iter != forwardStaticMeshList.end())
+			{
+				forwardStaticMeshList.erase(iter);
+			}
+			m_pixelShader = ResourceManager::Instance().GetPixelShader("PixelShader.cso");
+		}
+		else
+		{
+			std::vector<StaticMeshObject*>& staticMeshList = ObjectManager::Instance().GetStaticMeshObjList();
+			auto iter = std::find(staticMeshList.begin(), staticMeshList.end(), this);
+			if (iter != staticMeshList.end())
+			{
+				staticMeshList.erase(iter);
+			}
+			std::vector<StaticMeshObject*>& forwardStaticMeshList = ObjectManager::Instance().GetFowardStaticMeshObjList();
+			if (std::find(forwardStaticMeshList.begin(), forwardStaticMeshList.end(), this) == forwardStaticMeshList.end())
+			{
+				forwardStaticMeshList.push_back(this);
+			}
+			m_pixelShader = ResourceManager::Instance().GetPixelShader("ForwardPixelShaderNoLight.cso");
+		}
 	}
 
 	void StaticMeshObject::Render()
