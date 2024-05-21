@@ -10,6 +10,8 @@
 #include "ObjectManager.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
 
+#define FILEPATH "Resources/Textures/UI/"
+
 using namespace DirectX;
 
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
@@ -26,6 +28,7 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_world(XMMatrixIdentity())
 {
 	_color = DirectX::Colors::White;
+	_defalutcolor = DirectX::Colors::White;
 
 	_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 	_vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");

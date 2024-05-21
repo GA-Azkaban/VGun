@@ -1,4 +1,5 @@
 ﻿#include "pch.h"
+#include <string>
 #include "NetworkManager.h"
 
 #include "Service.h"
@@ -7,6 +8,7 @@
 
 #include "RoundManager.h"
 #include "LobbyManager.h"
+#include "GameManager.h"
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
@@ -77,6 +79,11 @@ void NetworkManager::SendLogin(std::string id, std::string password)
 	packet.set_id(id);
 	packet.set_password(password);
 
+	PlayerInfo* player = new PlayerInfo;
+	player->SetPlayerID(id);
+
+	GameManager::Instance()->SetMyInfo(player);
+
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -115,6 +122,9 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	// remove pyramid
 	// 로그인이 성공했을때 처리
 	LobbyManager::Instance().LoginSucess(uid, nickName);
+
+	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
+
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -178,6 +188,8 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 	// Todo RoomInfo 설정
 	auto info = LobbyManager::Instance().GetRoomData();
 
+	info->_players.clear();
+
 	info->roomid = roomInfo.roomid();
 
 	info->isPrivate = roomInfo.isprivate();
@@ -187,14 +199,23 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 	info->currentPlayerCount = roomInfo.currentplayercount();
 
+	if (roomInfo.users().empty())
+	{
+		return;
+	}
+
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		/*one->SetPlayerID(player.id());
-		one->SetNickName(player.nickname());*/
+
+		one->SetNickName(player.userinfo().nickname());
+		one->SetIsHost(player.host());
+		
+		SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
+
+		one->SetTeamID(eTeam::R);
 
 		// 플레이어 정보 받기	
-
 		info->_players.push_back(one);
 	}
 
@@ -203,8 +224,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
-	// Todo 
-	roomInfo.roomid();
+	API::LoadSceneByName("MainMenu");
 }
 
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
@@ -238,7 +258,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
@@ -246,7 +265,7 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		info->_players.push_back(one);
 	}
 
-	LobbyManager::Instance().OtherPlayerEnter();
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
@@ -258,13 +277,14 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
+
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
@@ -280,7 +300,34 @@ void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::st
 
 void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 {
+	auto info = LobbyManager::Instance().GetRoomData();
 
+	for (int i = 0; i < roomInfo.users().size(); ++i)
+	{
+		auto t = roomInfo.users()[i];
+
+		switch (roomInfo.users()[i].team())
+		{
+			case Protocol::TEAM_COLOR_RED :
+			{
+				std::string test = roomInfo.users()[i].userinfo().nickname();
+				LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[i].userinfo().nickname());
+			}
+			break;
+			case Protocol::TEAM_COLOR_GREEN:
+			{
+				LobbyManager::Instance().SetPlayerTeam(eTeam::G, roomInfo.users()[i].userinfo().nickname());
+			}
+			break;
+			case Protocol::TEAM_COLOR_BLUE:
+			{
+				LobbyManager::Instance().SetPlayerTeam(eTeam::B, roomInfo.users()[i].userinfo().nickname());
+			}
+			break;
+			default:
+				break;
+		}
+	}
 }
 
 void NetworkManager::SendGameStart()

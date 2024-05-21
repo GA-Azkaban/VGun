@@ -3,6 +3,7 @@
 #include "PlayerInfo.h"
 #include "LobbyManager.h"
 #include "GameManager.h"
+#include "NetworkManager.h"
 
 LobbySceneView::LobbySceneView()
 {
@@ -23,12 +24,20 @@ void LobbySceneView::Initialize()
 	mainCam->GetGameObject()->GetTransform()->SetPosition(2.62, 0.57, -5.48);
 	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
+	auto mainLight = _scene->GetMainLight();
+	mainLight->SetDirection(Vector4{1, 2, 3, 0});
+
 	// 백그라운드
-	//HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
-	//mainCanvas->GetComponent<HDData::ImageUI>()->SetImage("_blur_background_image.png");
-	//mainCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.0f);
-	//mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
-	//mainCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
+	auto testBox1 = API::CreateObject(_scene);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
+	testBox1->GetTransform()->SetScale(4, 4, 4);
+	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	boxRender1->LoadMesh("primitiveQuad");
+	HDEngine::MaterialDesc boxMat1;
+	boxMat1.materialName = "_blur_background_image";
+	boxMat1.albedo = "button.png";
+	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
+	boxRender1->LoadMaterial(newBoxMat1, 0);
 
 	// MAP SELECT
 
@@ -44,6 +53,15 @@ void LobbySceneView::Initialize()
 	sTex->SetText("GAME START");
 	sTex->SetColor(DirectX::Colors::OrangeRed);
 	startText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+
+	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
+	quitButton->GetTransform()->SetPosition(200, 950, 0);
+	auto qBtn = quitButton->GetComponent<HDData::Button>();
+	qBtn->GetButtonComp()->SetImage("exitRoom.png");
+	qBtn->SetOnClickEvent([]()
+		{
+			NetworkManager::Instance().SendRoomLeave();
+		});
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
@@ -64,18 +82,18 @@ void LobbySceneView::Initialize()
 
 	HDData::Material* M_Blue = API::CreateMaterial(blue);
 
-	float defaultX = 1740;
-	float r = 1660;
-	float g = 1740;
-	float b = 1820;
+	float defaultX = 165;
+	float r = 85;
+	float g = 165;
+	float b = 245;
 
 	for (int i = 0; i < 6; ++i)
 	{
 		auto defaultCanvas = API::CreateImageBox(_scene, "defaultCanvas");
 		defaultCanvas->GetTransform()->SetPosition(defaultX, 450, 0);
 		auto img = defaultCanvas->GetComponent<HDData::ImageUI>();
-		//img->SetImage("settingCanvas.png");
-		img->SetImage("alphaRefCanvas2.png");
+		img->SetImage("back_char.png");
+		img->SetWorldSpace();
 
 		auto subCanvas = API::CreateImageBox(_scene, "subCanvas", defaultCanvas);
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
@@ -90,9 +108,10 @@ void LobbySceneView::Initialize()
 		rBtn->SetSortOrder(0.3);
 		rButton->GetTransform()->SetPosition(r, 800, 0);
 		rBtn->SetImage("r.png");
-		rBtn->SetOnClickEvent([]()
+		rBtn->SetOnClickEvent([=]()
 			{
-				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::R);
+				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_RED, nick);
 			});
 
 		auto gButton = API::CreateButton(_scene, "G", subCanvas);
@@ -100,9 +119,10 @@ void LobbySceneView::Initialize()
 		gBtn->SetSortOrder(0.3);
 		gButton->GetTransform()->SetPosition(g, 800, 0);
 		gBtn->SetImage("g.png");
-		gBtn->SetOnClickEvent([]()
+		gBtn->SetOnClickEvent([=]()
 			{
-				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::G);
+				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_GREEN, nick);
 			});
 
 		auto bButton = API::CreateButton(_scene, "B", subCanvas);
@@ -110,26 +130,29 @@ void LobbySceneView::Initialize()
 		bBtn->SetSortOrder(0.3);
 		bButton->GetTransform()->SetPosition(b, 800, 0);
 		bBtn->SetImage("b.png");
-		bBtn->SetOnClickEvent([]()
+		bBtn->SetOnClickEvent([=]()
 			{
-				GameManager::Instance()->GetMyInfo()->SetTeamID(eTeam::B);
+				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
+				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE, nick);
 			});
 
-		defaultX -= 315;
-		r -= 315;
-		g -= 315;
-		b -= 315;
+		defaultX += 315;
+		r += 315;
+		g += 315;
+		b += 315;
 
 		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
+		subCanvas->SetSelfActive(false);
 	}
 
 	// player rendering
 
 	float posX = 0;
+	float posT = 165;
 
 	for (int i = 0; i < 6; ++i)
 	{
-		HDData::GameObject* player = API::CreateObject(_scene);
+		HDData::GameObject* player = API::CreateObject(_scene, "player");
 		player->LoadFBXFile("SKM_TP_X_Default.fbx");
 		player->GetTransform()->SetPosition(posX, 0, 0);
 
@@ -146,11 +169,14 @@ void LobbySceneView::Initialize()
 
 		HDData::GameObject* text = API::CreateTextbox(_scene, "player" + std::to_string(i), player);
 		text->GetTransform()->SetPosition(player->GetTransform()->GetPosition());
-		text->GetTransform()->SetPosition(posX, 0, 0);
+		text->GetTransform()->SetPosition(posT, 30, 0);
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
+		player->SetSelfActive(false);
+
 		posX += 1;
+		posT += 315;
 	}
 
 }

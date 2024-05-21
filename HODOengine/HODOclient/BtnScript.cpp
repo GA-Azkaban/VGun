@@ -2,7 +2,8 @@
 
 BtnScript::BtnScript(std::string Name)
 	:imgName(Name),
-	_childObject(nullptr)
+	_childTextObject(nullptr),
+	_childImageObject(nullptr)
 {
 
 }
@@ -17,21 +18,42 @@ void BtnScript::Start()
 	auto vec = this->GetGameObject()->GetChildGameObjects();
 	for (auto& obj : vec)
 	{
-		if(obj->GetComponent<HDData::TextUI>())
+		if (obj->GetComponent<HDData::TextUI>())
 		{
-			_childObject = obj;
+			textFlag = true;
+			_childTextObject = obj;
+		}
+		else if (obj->GetComponent<HDData::ImageUI>())
+		{
+			imageFlag = true;
+			_childImageObject = obj;
 		}
 	}
 }
 
 void BtnScript::Update()
 {
-	if (GetGameObject()->GetComponent<HDData::Button>()->GetButtonComp()->GetIsHovering())
+	auto button = GetGameObject()->GetComponent<HDData::Button>();
+	if (button && button->GetButtonComp()->GetIsHovering())
 	{
-		_childObject->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
+		if (textFlag)
+		{
+			_childTextObject->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
+		}
+		if (imageFlag)
+		{
+			_childImageObject->GetComponent<HDData::ImageUI>()->SetColor(DirectX::Colors::Aqua);
+		}
 	}
 	else
 	{
-		_childObject->GetComponent<HDData::TextUI>()->ReturnDefaultColor();
+		if (textFlag)
+		{
+			_childTextObject->GetComponent<HDData::TextUI>()->ReturnDefaultColor();
+		}
+		if (imageFlag)
+		{
+			_childImageObject->GetComponent<HDData::ImageUI>()->SetColor(DirectX::Colors::White);
+		}
 	}
 }

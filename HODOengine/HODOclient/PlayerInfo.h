@@ -33,6 +33,7 @@ public:
 	};
 
 public:
+	void SetPlayerUID(int uid);
 	void SetPlayerID(std::string id);
 	void PlayerIndex(int index);
 	void SetTeamID(eTeam team);
@@ -48,7 +49,9 @@ public:
 
 	void SetCurrentBulletCount(int Count);
 
+	int GetPlayerUID();
 	std::string GetPlayerID();
+	bool GetIsHost();
 	int GetPlayerIndex();
 	eTeam GetPlayerTeam();
 	bool GetPlayerDie();
@@ -64,6 +67,7 @@ public:
 
 private:
 	// player info
+	int _playerUID;
 	std::string _playerID;
 	int _playerIndex;
 	eTeam _teamID;

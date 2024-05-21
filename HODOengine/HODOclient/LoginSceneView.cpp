@@ -1,4 +1,4 @@
-#include "LoginSceneView.h"
+﻿#include "LoginSceneView.h"
 #include "LobbyManager.h"
 #include "FadeInOut.h"
 #include "NetworkManager.h"
@@ -114,13 +114,14 @@ void LoginSceneView::LoginView()
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// login button
-	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", loginControlObject);
+	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn");
 	loginBtn->GetTransform()->SetPosition(865.f, 640.f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.1f);
+	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.11f);
 	loginBtn->AddComponent<BtnScript>();
-	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[id, pw]()
+	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent
+	(
+		[=]()
 		{
 			NetworkManager::Instance().SendAutoLogin();
 			//std::string ID = id->GetCurrentText();
