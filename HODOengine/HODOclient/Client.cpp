@@ -48,5 +48,5 @@ void Client::Initialize()
 	LobbySceneView lobby;
 	lobby.Initialize();
 
-	API::LoadSceneByName("Lobby");
+	API::LoadSceneByName("Login");
 }
