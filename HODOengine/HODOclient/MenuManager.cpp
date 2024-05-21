@@ -1,6 +1,7 @@
 ﻿#include "MenuManager.h"
 #include "NetworkManager.h"
 
+
 MenuManager& MenuManager::Instance()
 {
 	if (_instance == nullptr)
@@ -35,7 +36,7 @@ void MenuManager::RoomEneter(Protocol::RoomInfo)
 
 void MenuManager::SetRoom(Protocol::RoomInfo)
 {
-	
+
 }
 
 void MenuManager::ShowRoomList()
@@ -109,15 +110,15 @@ std::string MenuManager::GetNumberImage(int num)
 {
 	switch (num)
 	{
-		case 0: {return "flair_number_0_outline.png"; } break;
-		case 1: {return "flair_number_1_outline.png";} break;
-		case 2: {return "flair_number_2_outline.png";} break;
-		case 3: {return "flair_number_3_outline.png";} break;
-		case 4: {return "flair_number_4_outline.png";} break;
-		case 5: {return "flair_number_5_outline.png";} break;
-		case 6: {return "flair_number_6_outline.png";} break;
-		default:
-			break;
+	case 0: { return "flair_number_0_outline.png"; } break;
+	case 1: { return "flair_number_1_outline.png"; } break;
+	case 2: { return "flair_number_2_outline.png"; } break;
+	case 3: { return "flair_number_3_outline.png"; } break;
+	case 4: { return "flair_number_4_outline.png"; } break;
+	case 5: { return "flair_number_5_outline.png"; } break;
+	case 6: { return "flair_number_6_outline.png"; } break;
+	default:
+		break;
 	}
 }
 
@@ -135,14 +136,20 @@ void MenuManager::SetScreenSize(int OptionNum)
 {
 	switch (OptionNum)
 	{
-		case option1:
-			_screenSize = ("1920x1080(60Hz)");
-		case option2:
-			_screenSize = ("1600x900(60Hz)");
-		case option3:
-			_screenSize = ("2550x1440(60Hz)");
-		default:
-			break;
+	case option1600:
+		_screenSize = ("1600x900(60Hz)");
+		API::Resize(1600, 900);
+		break;
+	case option1920:
+		_screenSize = ("1920x1080(60Hz)");
+		API::Resize(1920, 1080);
+		break;
+	case option2550:
+		_screenSize = ("2550x1440(60Hz)");
+		API::Resize(2550, 1440);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -168,7 +175,7 @@ void MenuManager::RenderRoomList()
 	{
 		_roomObject[i - 1].id->SetText(std::to_string(_roomList[i - 1]->id));
 		_roomObject[i - 1].title->SetText(_roomList[i - 1]->title);
-		
+
 		if (_roomList[i - 1]->isTeam)
 		{
 			_roomObject[i - 1].isTeam->SetImage("team.png");
@@ -189,7 +196,7 @@ void MenuManager::RenderRoomList()
 
 		_roomObject[i - 1].maxCount->SetImage(GetNumberImage(_roomList[i - 1]->maxPlayerCount));
 		_roomObject[i - 1].currentCount->SetImage(GetNumberImage(_roomList[i - 1]->currentPlayerCount));
-					
+
 		_roomObject[i - 1].id->GetGameObject()->SetSelfActive(true);
 		_roomObject[i - 1].title->GetGameObject()->SetSelfActive(true);
 		_roomObject[i - 1].isTeam->GetGameObject()->SetSelfActive(true);
