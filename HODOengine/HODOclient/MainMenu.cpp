@@ -4,7 +4,8 @@
 #include "FadeInOut.h"
 
 #include "../HODOengine/AudioSource.h"
-#include "BtnScript.h"
+#include "BtnTextScript.h"
+#include "BtnImageScript.h"
 #include "BtnHoveringScript.h"
 
 MainMenuScene::MainMenuScene()
@@ -68,7 +69,7 @@ void MainMenuScene::MainMenu()
 	main_playBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	main_playBtn->GetTransform()->SetPosition(130.f, 240.f, 0.6f);
 	main_playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
-	main_playBtn->AddComponent<BtnScript>();
+	main_playBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_playText = API::CreateTextbox(_scene, "playText", main_playBtn);
 	main_playText->GetTransform()->SetPosition(main_playBtn->GetTransform()->GetPosition());
 	main_playText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
@@ -81,7 +82,7 @@ void MainMenuScene::MainMenu()
 	main_enterBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	main_enterBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	main_enterBtn->SetSelfActive(false);
-	main_enterBtn->AddComponent<BtnScript>();
+	main_enterBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_enterText = API::CreateTextbox(_scene, "roomEnterText", main_enterBtn);
 	main_enterText->GetTransform()->SetPosition(main_enterBtn->GetTransform()->GetPosition());
 	main_enterText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
@@ -315,7 +316,7 @@ void MainMenuScene::MainMenu()
 	main_makeBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	main_makeBtn->GetComponent<HDData::Button>()->SetSortOrder(0.9f);
 	main_makeBtn->SetSelfActive(false);
-	main_makeBtn->AddComponent<BtnScript>();
+	main_makeBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_makeText = API::CreateTextbox(_scene, "setRoomText", main_makeBtn);
 	main_makeText->GetTransform()->SetPosition(main_makeBtn->GetTransform()->GetPosition());
 	main_makeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
@@ -370,7 +371,7 @@ void MainMenuScene::MainMenu()
 	roomSetBtn->GetTransform()->SetPosition(960.0f, 840.0f, 0.f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
-	roomSetBtn->AddComponent<BtnScript>();
+	roomSetBtn->AddComponent<BtnTextScript>();
 
 	HDData::GameObject* setRoomText = API::CreateTextbox(_scene, "setRoomText", roomSetBtn);
 	setRoomText->GetTransform()->SetPosition(roomSetBtn->GetTransform()->GetPosition());
@@ -383,7 +384,7 @@ void MainMenuScene::MainMenu()
 	main_trainingBtn->GetTransform()->SetPosition(150.0f, 330.0f, 0.f);
 	main_trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	main_trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
-	main_trainingBtn->AddComponent<BtnScript>();
+	main_trainingBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", main_trainingBtn);
 	trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
 	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
@@ -394,7 +395,7 @@ void MainMenuScene::MainMenu()
 	exit_Btn->GetTransform()->SetPosition(100.0f, 430.0f, 0.f);
 	exit_Btn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	exit_Btn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
-	exit_Btn->AddComponent<BtnScript>();
+	exit_Btn->AddComponent<BtnTextScript>();
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", exit_Btn);
 	tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
@@ -428,7 +429,8 @@ void MainMenuScene::MainMenu()
 	resolutionText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 	HDData::GameObject* resolutionBtn1 = API::CreateButton(_scene, "resolutionBtn", preferencesCanvas);
 	resolutionBtn1->GetTransform()->SetPosition(1350.0f, 240.0f, 0.f);
-	resolutionBtn1->AddComponent<BtnScript>();
+	resolutionBtn1->AddComponent<BtnTextScript>();
+	resolutionBtn1->AddComponent<BtnImageScript>();
 	resolutionBtn1->AddComponent<BtnHoveringScript>();
 	resolutionBtn1->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
 	resolutionBtn1->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
@@ -448,7 +450,7 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2", preferencesCanvas);
 	resolutionBtn2->GetTransform()->SetPosition(1350.0f, 330.0f, 0.f);
-	resolutionBtn2->AddComponent<BtnScript>();
+	resolutionBtn2->AddComponent<BtnTextScript>();
 	resolutionBtn2->AddComponent<BtnHoveringScript>();
 	resolutionBtn2->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
 	resolutionBtn2->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
@@ -461,7 +463,7 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
 	resolutionBtn3->GetTransform()->SetPosition(1350.0f, 420.0f, 0.f);
-	resolutionBtn3->AddComponent<BtnScript>();
+	resolutionBtn3->AddComponent<BtnTextScript>();
 	resolutionBtn3->AddComponent<BtnHoveringScript>();
 	resolutionBtn3->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
 	resolutionBtn3->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
@@ -474,7 +476,7 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* resolutionBtn4 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
 	resolutionBtn4->GetTransform()->SetPosition(1350.0f, 510.0f, 0.f);
-	resolutionBtn4->AddComponent<BtnScript>();
+	resolutionBtn4->AddComponent<BtnTextScript>();
 	resolutionBtn4->AddComponent<BtnHoveringScript>();
 	resolutionBtn4->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
 	resolutionBtn4->GetComponent<HDData::Button>()->SetSortOrder(0.62f);

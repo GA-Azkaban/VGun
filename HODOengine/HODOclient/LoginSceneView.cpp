@@ -4,7 +4,8 @@
 #include "NetworkManager.h"
 
 #include "../HODOengine/AudioSource.h"
-#include "BtnScript.h"
+#include "BtnTextScript.h"
+#include "BtnImageScript.h"
 #include "BtnHoveringScript.h"
 
 LoginSceneView::LoginSceneView()
@@ -119,7 +120,7 @@ void LoginSceneView::LoginView()
 	loginBtn->GetTransform()->SetPosition(865.f, 640.f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.11f);
-	loginBtn->AddComponent<BtnScript>();
+	loginBtn->AddComponent<BtnTextScript>();
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
 		[=]()
@@ -148,7 +149,7 @@ void LoginSceneView::LoginView()
 	joinBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
 	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	joinBtn->SetSelfActive(true);
-	joinBtn->AddComponent<BtnScript>();
+	joinBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* joinText = API::CreateTextbox(_scene, "joinText", joinBtn);
 	joinText->GetTransform()->SetPosition(joinBtn->GetTransform()->GetPosition());
 	joinText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
@@ -207,7 +208,7 @@ void LoginSceneView::LoginView()
 	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
 	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.21f);
 	makeAccountBtn->GetTransform()->SetPosition(960.f, 640.f, 0.f);
-	makeAccountBtn->AddComponent<BtnScript>();
+	makeAccountBtn->AddComponent<BtnTextScript>();
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
 		[=]()

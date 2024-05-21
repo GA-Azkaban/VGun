@@ -13,6 +13,9 @@
     <ClCompile Include="PlayerMove.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>01_Entry</Filter>
+    </ClCompile>
     <ClCompile Include="LoginSceneView.cpp">
       <Filter>04_SceneView\Login</Filter>
     </ClCompile>
@@ -84,7 +87,7 @@
     <ClCompile Include="BtnHoveringScript.cpp">
       <Filter>GameScript\ButtonScript</Filter>
     </ClCompile>
-    <ClCompile Include="BtnScript.cpp" />
+    <ClCompile Include="BtnTextScript.cpp" />
     <ClCompile Include="FSMtestScript.cpp">
       <Filter>02_Client\TestScene\Animation</Filter>
     </ClCompile>
@@ -94,8 +97,8 @@
     <ClCompile Include="BtnScript.cpp">
       <Filter>GameScript\TextScript</Filter>
     </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>01_Entry</Filter>
+    <ClCompile Include="BtnImageScript.cpp">
+      <Filter>GameScript\ImageScript</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,7 +204,7 @@
     <ClInclude Include="PlayerState.h">
       <Filter>03_Manager\GameManager\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="BtnScript.h">
+    <ClInclude Include="BtnTextScript.h">
       <Filter>GameScript\TextScript</Filter>
     </ClInclude>
     <ClInclude Include="BtnHoveringScript.h">
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="ErrorCode.h">
       <Filter>03_Manager\NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnImageScript.h">
+      <Filter>GameScript\ImageScript</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -321,6 +327,9 @@
     </Filter>
     <Filter Include="03_Manager\GameManager\PlayerState">
       <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScript\ImageScript">
+      <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

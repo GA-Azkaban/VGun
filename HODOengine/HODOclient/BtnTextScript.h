@@ -6,12 +6,12 @@ namespace HDData
 	class GameObject;
 }
 
-class BtnScript : public HDData::Script
+class BtnTextScript : public HDData::Script
 {
 public:
-	BtnScript() = default;
-	BtnScript(std::string Name);
-	virtual ~BtnScript();
+	BtnTextScript() = default;
+	BtnTextScript(std::string Name);
+	virtual ~BtnTextScript();
 
 	virtual void Start() override;
 	virtual void Update() override;
@@ -20,9 +20,6 @@ private:
 	std::string imgName;
 
 	HDData::GameObject* _childTextObject;
-	bool _textFlag = false;
-	HDData::GameObject* _childImageObject;
-	bool _imageFlag = false;
 
 	HCURSOR _currentCursor;
 };
