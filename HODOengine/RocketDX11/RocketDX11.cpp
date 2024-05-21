@@ -357,11 +357,11 @@ namespace RocketCore::Graphics
 		_shadowMapPass->Render();
 
 		SetDepthStencilState(_depthStencilStateEnable.Get());
-		_forwardPass->Render();
 		_GBufferPass->Render();
 		SetDepthStencilState(_depthStencilStateEnable.Get());
 		_SSAOPass->Render();
 		_deferredPass->Render();
+		_forwardPass->Render();
 		_outlinePass->Render();
 
 #ifdef _DEBUG

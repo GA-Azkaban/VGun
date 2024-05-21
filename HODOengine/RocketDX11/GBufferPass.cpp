@@ -46,6 +46,7 @@ namespace RocketCore::Graphics
 	{
 		_deferredBuffers->SetRenderTargets();
 		_deferredBuffers->ClearRenderTargets();
+		_deferredBuffers->ClearDepthStencil();
 
 		//XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		//XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
