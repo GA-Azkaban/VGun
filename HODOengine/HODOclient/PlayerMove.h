@@ -46,6 +46,7 @@ private:
 private:
 	void ShootGun();
 	void ShootGunDdabal();
+	void Reload();
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
 
@@ -84,5 +85,9 @@ private:
 	int _particleIndex;
 	float _shootCooldown;
 	int _shootCount;
+	int _bulletCount;
+	float _reloadTimer;
+	bool _isReloading;
 	std::pair<float, float> _sprayPattern[30];
+	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
 };

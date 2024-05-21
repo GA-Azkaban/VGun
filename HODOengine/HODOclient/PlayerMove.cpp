@@ -5,7 +5,9 @@ PlayerMove::PlayerMove()
 	: _particleIndex(0),
 	_shootCooldown(0.0f),
 	_shootCount(0),
-	_sprayPattern(),
+	_bulletCount(30),
+	_reloadTimer(0.0f),
+	_isReloading(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f)
 {
 
@@ -55,7 +57,7 @@ void PlayerMove::Update()
 
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
+		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
 	}
 
 	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
@@ -65,9 +67,21 @@ void PlayerMove::Update()
 
 	if (API::GetMouseUp(MOUSE_LEFT))
 	{
+		// 반동 리셋
 		_shootCount = 0;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.12f, 0.2f));
+		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.12f, 0.2f));
 	}
+
+	if (API::GetKeyDown(DIK_R))
+	{
+		if (_isReloading == false && _bulletCount < 30)
+		{
+			// 여기에 재장전 애니메이션과 소리 넣기
+			_playerAudio->PlayOnce("reload");
+			_isReloading = true;
+		}
+	}
+	Reload();
 
 	// 마우스에 따른 플레이어 회전 체크
 	CheckLookDirection();
@@ -212,6 +226,7 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
+	/*
 	Vector3 pos = this->GetTransform()->GetPosition();
 	const float delta = 0.2f;
 	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
@@ -244,8 +259,11 @@ bool PlayerMove::CheckIsOnGround()
 		}
 	}
 	_isOnGround = false;
-
+	*/
 	return false;
+	
+
+
 }
 
 void PlayerMove::Move(int direction)
@@ -295,7 +313,7 @@ void PlayerMove::ShootGun()
 
 void PlayerMove::ShootGunDdabal()
 {
-	if (_shootCount >= 30)	// 장탄수를 임시로 30발로 제한
+	if (_bulletCount <= 0)	// 장탄수를 임시로 30발로 제한
 	{
 		return;
 	}
@@ -304,6 +322,7 @@ void PlayerMove::ShootGunDdabal()
 	ApplyRecoil();
 
 	++_shootCount;
+	--_bulletCount;
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
@@ -332,6 +351,21 @@ void PlayerMove::ShootGunDdabal()
 	}
 
 	_shootCooldown = 0.1f;
+}
+
+void PlayerMove::Reload()
+{
+	// 2초간 장전
+	if (_isReloading == true)
+	{
+		_reloadTimer += _deltaTime;
+		if (_reloadTimer >= 2.0f)
+		{
+			_bulletCount = 30;
+			_isReloading = false;
+			_reloadTimer = 0.0f;
+		}
+	}
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -738,8 +772,8 @@ void PlayerMove::CameraMove()
 	//// Pitch in closed angle
 	//Pitch(mouseDelta.y * 0.1f);
 
-	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.002f);
-	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.002f);
+	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.001f);
+	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.001f);
 
 
 	//if (_rotAngleY >= 3.14159265358979f)

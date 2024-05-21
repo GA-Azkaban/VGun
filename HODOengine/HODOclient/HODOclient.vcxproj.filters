@@ -13,9 +13,6 @@
     <ClCompile Include="PlayerMove.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>01_Entry</Filter>
-    </ClCompile>
     <ClCompile Include="LoginSceneView.cpp">
       <Filter>04_SceneView\Login</Filter>
     </ClCompile>
@@ -96,6 +93,9 @@
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>03_Manager\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>01_Entry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
