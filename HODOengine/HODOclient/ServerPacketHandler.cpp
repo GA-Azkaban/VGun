@@ -137,6 +137,13 @@ bool Handle_S_ROOM_CHANGE_TEAM(Horang::PacketSessionRef& session, Protocol::S_RO
 	return true;
 }
 
+bool Handle_S_ROOM_KICK(Horang::PacketSessionRef& session, Protocol::S_ROOM_KICK& pkt)
+{
+	NetworkManager::Instance().RecvKickPlayer(pkt.roominfo());
+	
+	return true;
+}
+
 bool Handle_S_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::S_PLAY_UPDATE& pkt)
 {
 	NetworkManager::Instance().RecvPlayUpdate(pkt);
