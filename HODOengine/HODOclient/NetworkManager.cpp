@@ -303,21 +303,7 @@ void NetworkManager::SendKickPlayer(std::string targetNickName)
 
 void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 {
-	auto info = LobbyManager::Instance().GetRoomData();
-
-	info->_players.clear();
-
-	for (auto& player : roomInfo.users())
-	{
-		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
-		one->SetNickName(player.userinfo().nickname());
-		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
-		one->SetCurrentHP(player.hp());
-
-		info->_players.push_back(one);
-	}
+	API::LoadSceneByName("MainMenu");
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)

@@ -211,6 +211,7 @@ void LobbyManager::RefreshRoom()
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
 		_teamButton[i]->SetSelfActive(false);
+		_quitButtons[i]->SetSelfActive(false);
 	}
 
 	_players = _roomData->_players;
