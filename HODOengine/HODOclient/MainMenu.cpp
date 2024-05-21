@@ -88,7 +88,7 @@ void MainMenuScene::MainMenu()
 	main_enterText->GetComponent<HDData::TextUI>()->SetText("Enter");
 
 	// room List Canvas
-	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas");
+	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas",main_enterBtn);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
 	enter_roomLstCanvas->GetTransform()->SetPosition(1000.0f, 540.0f, 0.0f);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
@@ -234,7 +234,7 @@ void MainMenuScene::MainMenu()
 		auto roomT = enter_roomTitle->GetComponent<HDData::TextUI>();
 		roomT->SetText("Title");
 		roomT->SetSortOrder(0.81);
-		roomT->SetColor(DirectX::Colors::OrangeRed);
+		roomT->SetColor(DirectX::Colors::BlanchedAlmond);
 
 		enter_roomTitle->SetSelfActive(false);
 
@@ -244,7 +244,7 @@ void MainMenuScene::MainMenu()
 		enter_roomID->GetTransform()->SetLocalPosition(-200, 0, 0);
 		auto roomid = enter_roomID->GetComponent<HDData::TextUI>();
 		roomid->SetText("ID");
-		roomid->SetColor(DirectX::Colors::OrangeRed);
+		roomid->SetColor(DirectX::Colors::BlanchedAlmond);
 		roomid->SetSortOrder(0.81);
 
 		enter_roomID->SetSelfActive(false);
@@ -446,7 +446,7 @@ void MainMenuScene::MainMenu()
 	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetImage("downArrow.png");
 	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 
-	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2");
+	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2", preferencesCanvas);
 	resolutionBtn2->GetTransform()->SetPosition(1350.0f, 330.0f, 0.f);
 	resolutionBtn2->AddComponent<BtnScript>();
 	resolutionBtn2->AddComponent<BtnHoveringScript>();
@@ -459,7 +459,7 @@ void MainMenuScene::MainMenu()
 	resolutionText2->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
 	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
 
-	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3");
+	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
 	resolutionBtn3->GetTransform()->SetPosition(1350.0f, 420.0f, 0.f);
 	resolutionBtn3->AddComponent<BtnScript>();
 	resolutionBtn3->AddComponent<BtnHoveringScript>();
@@ -596,7 +596,7 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
-
+			NetworkManager::Instance().SendRoomCreate(newRoomName->GetCurrentText(), "", 6, false);
 		}
 	);
 

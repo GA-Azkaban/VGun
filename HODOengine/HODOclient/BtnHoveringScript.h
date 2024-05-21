@@ -17,5 +17,5 @@ public:
 	virtual void Update() override;
 
 	HDData::GameObject* _btnObject = nullptr;
-
+	HCURSOR _currentCursor = nullptr;
 };

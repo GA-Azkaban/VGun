@@ -20,8 +20,8 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
 
-	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene, "player");
+	 //플레이어 테스트
+	/*auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	playerTest->LoadFBXFile("SKM_TP_X_idle.fbx");
 
@@ -72,7 +72,7 @@ void InGameSceneView::Initialize()
 	plLeftUpperArm->GetTransform()->SetLocalPosition(-1.0f, 0.0f, 0.0f);
 	plLeftUpperArm->SetParentObject(playerTest);
 	auto playerLUCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.5f, 0.2f, 1);
-	playerLUCollider->SetParentCollider(playerBodyCollider);
+	playerLUCollider->SetParentCollider(playerBodyCollider);*/
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

@@ -2,10 +2,16 @@
 #include "UISystem.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "Camera.h"
 
 #include <cassert>
 
 #include "IDSystem.h"
+
+namespace HDData
+{
+	class Camera;
+}
 
 namespace HDEngine
 {
@@ -47,6 +53,8 @@ namespace HDEngine
 		_currentScene = sceneIter->second;
 
 		UISystem::Instance().SetChangedScene(_currentScene);
+
+		_currentScene->GetMainCamera()->SetAsMainCamera();
 
 		return _currentScene;
 	}
