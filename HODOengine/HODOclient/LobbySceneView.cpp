@@ -121,9 +121,15 @@ void LobbySceneView::Initialize()
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
 		subCanvas->GetTransform()->SetPosition(defaultX, 800, 0);
 
-		auto QuitMemberButton = API::CreateButton(_scene, "QuitButton", subCanvas);
+		auto QuitMemberButton = API::CreateButton(_scene, "QuitButton");
+		QuitMemberButton->GetComponent<HDData::Button>()->SetSortOrder(0.3);
 		QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
 		QuitMemberButton->GetTransform()->SetPosition(defaultX, 60, 0);
+		QuitMemberButton->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
+			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetAllPlayerInfo()[i]->GetPlayerNickName());
+			});
+		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
+		QuitMemberButton->SetSelfActive(false);
 
 		auto rButton = API::CreateButton(_scene, "R", subCanvas);
 		auto rBtn = rButton->GetComponent<HDData::Button>();

@@ -2,7 +2,8 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
-	: _particleIndex(0),
+	: _isMovable(false),
+	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
 	_shootCount(0),
@@ -33,6 +34,10 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
+	if (!_isMovable)
+	{
+		return;
+	}
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
@@ -117,7 +122,12 @@ void PlayerMove::Update()
 	
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
-	UpdatePlayerPositionDebug();
+	//UpdatePlayerPositionDebug();
+}
+
+void PlayerMove::SetMovable(bool movable)
+{
+	_isMovable = movable;
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -369,7 +379,7 @@ void PlayerMove::ShootGunDdabal()
 	if (hitCollider != nullptr)
 	{
 		_playerAudio->PlayOnce("hit");
-		SpawnParticle(hitPoint);
+		//SpawnParticle(hitPoint);
 	}
 
 	// 맞은 애가 dynamic이면 힘 가해주기
@@ -489,7 +499,7 @@ void PlayerMove::ToggleCam()
 	{
 		_prevCam = API::SetCurrentSceneMainCamera(_headCam);
 		_isHeadCam = true;
-		_aimText->SetText("O");
+		//_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
 	}
 }

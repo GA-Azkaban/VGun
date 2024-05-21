@@ -15,6 +15,7 @@ public:
 	void Update() override;
 
 public:
+	void SetMovable(bool movable);
 	void SetPlayerCamera(HDData::Camera* camera);
 	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim);
 	void SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec);
@@ -51,6 +52,7 @@ private:
 	void ApplyRecoil();
 
 private:
+	bool _isMovable;
 	bool _isJumping;
 	bool _isOnGround;
 	bool _isFirstPersonPerspective;
