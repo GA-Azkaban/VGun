@@ -28,9 +28,10 @@ public:
 	void UpdateRound();
 
 public:
-	std::vector<HDData::GameObject*> _playerObjs;
+	std::vector<HDData::GameObject*>& GetPlayerObjs();
 
 private:
+	std::vector<HDData::GameObject*> _playerObjs;
 	std::vector<PlayerInfo*> _playerInfo;
 
 private:

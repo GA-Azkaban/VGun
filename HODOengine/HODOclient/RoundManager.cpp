@@ -112,6 +112,11 @@ void RoundManager::UpdateRound()
 	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
 }
 
+std::vector<HDData::GameObject*>& RoundManager::GetPlayerObjs()
+{
+	return _playerObjs;
+}
+
 void RoundManager::InitRandomSpawn()
 {
 	auto spawn1 = API::CreateStaticObject();

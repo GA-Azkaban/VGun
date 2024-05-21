@@ -18,6 +18,10 @@ void InGameSceneView::Initialize()
 {
 	_scene = API::CreateScene("InGame");
 
+	auto skybox = API::CreateObject(_scene);
+	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
 
@@ -47,7 +51,7 @@ void InGameSceneView::Initialize()
 
 		meshComp->PlayAnimation("AR_idle", true);
 
-		RoundManager::Instance()->_playerObjs.push_back(player);
+		RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
 		player->SetSelfActive(false);
 
