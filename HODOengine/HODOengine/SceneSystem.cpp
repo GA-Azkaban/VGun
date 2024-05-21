@@ -65,6 +65,8 @@ namespace HDEngine
 		_currentScene = scene;
 
 		UISystem::Instance().SetChangedScene(_currentScene);
+
+		_currentScene->GetMainCamera()->SetAsMainCamera();
 	}
 
 	std::unordered_map<std::string, HDData::Scene*>& SceneSystem::GetAllScenes()

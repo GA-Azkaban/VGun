@@ -209,7 +209,6 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 
 		one->SetNickName(player.userinfo().nickname());
-		auto t = player.host();
 		one->SetIsHost(player.host());
 		
 		SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
@@ -261,6 +260,10 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+
+		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname())) 
+		{ GameManager::Instance()->GetMyInfo()->SetIsHost(true); }
+
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
@@ -300,21 +303,7 @@ void NetworkManager::SendKickPlayer(std::string targetNickName)
 
 void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 {
-	auto info = LobbyManager::Instance().GetRoomData();
-
-	info->_players.clear();
-
-	for (auto& player : roomInfo.users())
-	{
-		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
-		one->SetNickName(player.userinfo().nickname());
-		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
-		one->SetCurrentHP(player.hp());
-
-		info->_players.push_back(one);
-	}
+	API::LoadSceneByName("MainMenu");
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
@@ -334,29 +323,42 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 
 	for (int i = 0; i < roomInfo.users().size(); ++i)
 	{
-		auto t = roomInfo.users()[i];
+		std::string test = roomInfo.users()[i].userinfo().nickname();
 
-		switch (roomInfo.users()[i].team())
+		for (int j = 0; j < roomInfo.users().size(); ++j)
 		{
-			case Protocol::TEAM_COLOR_RED :
+
+			std::string test2 = LobbyManager::Instance().GetAllPlayerInfo()[j]->GetPlayerNickName();
+
+			if (roomInfo.users()[i].userinfo().nickname() == LobbyManager::Instance().GetAllPlayerInfo()[j]->GetPlayerNickName())
 			{
-				std::string test = roomInfo.users()[i].userinfo().nickname();
-				LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[i].userinfo().nickname());
+				switch (roomInfo.users()[i].team())
+				{
+					case Protocol::TEAM_COLOR_RED:
+					{
+						std::string test = roomInfo.users()[j].userinfo().nickname();
+						LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[j].userinfo().nickname());
+					}
+					break;
+					case Protocol::TEAM_COLOR_GREEN:
+					{
+						std::string test = roomInfo.users()[j].userinfo().nickname();
+						LobbyManager::Instance().SetPlayerTeam(eTeam::G, roomInfo.users()[j].userinfo().nickname());
+					}
+					break;
+					case Protocol::TEAM_COLOR_BLUE:
+					{
+						std::string test = roomInfo.users()[j].userinfo().nickname();
+						LobbyManager::Instance().SetPlayerTeam(eTeam::B, roomInfo.users()[j].userinfo().nickname());
+					}
+					break;
+					default:
+						break;
+				}
 			}
-			break;
-			case Protocol::TEAM_COLOR_GREEN:
-			{
-				LobbyManager::Instance().SetPlayerTeam(eTeam::G, roomInfo.users()[i].userinfo().nickname());
-			}
-			break;
-			case Protocol::TEAM_COLOR_BLUE:
-			{
-				LobbyManager::Instance().SetPlayerTeam(eTeam::B, roomInfo.users()[i].userinfo().nickname());
-			}
-			break;
-			default:
-				break;
 		}
+
+		
 	}
 }
 

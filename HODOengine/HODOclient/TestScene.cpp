@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -13,7 +13,6 @@ enum eColliderType
 
 TestScene::TestScene()
 {
-	/*
 	_scene = API::CreateScene("Test Scene");
 
 	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
@@ -22,7 +21,9 @@ TestScene::TestScene()
 	auto skybox = API::CreateObject(_scene);
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
 	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+	_scene = API::CreateScene("Test Scene");
 
+	/*
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
 	testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
@@ -444,21 +445,12 @@ TestScene::TestScene()
 	//		API::LoadSceneByName("B");
 	//	});
 
-	//API::LoadScene(_scene);
+	API::LoadScene(_scene);
 
-	HDData::GameObject* obj = API::CreateSlider(_scene, 50);
-	obj->GetTransform()->SetPosition(300, 100, 0);
-	obj->AddComponent<SliderSoundScript>();
-	obj->AddComponent<HDData::AudioSource>();
-
-	_scene = API::CreateScene("Test Scene");
-
-	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
-	mainCam->AddComponent<CameraMove>();
-
-	auto skybox = API::CreateObject(_scene);
-	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+	//HDData::GameObject* obj = API::CreateSlider(_scene, 50);
+	//obj->GetTransform()->SetPosition(300, 100, 0);
+	//obj->AddComponent<SliderSoundScript>();
+	//obj->AddComponent<HDData::AudioSource>();
 
 }
 
