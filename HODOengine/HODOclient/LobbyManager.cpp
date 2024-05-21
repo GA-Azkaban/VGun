@@ -139,6 +139,16 @@ void LobbyManager::SetFailCanvas(HDData::GameObject* failCanvas)
 	_loginFailCanvas = failCanvas;
 }
 
+void LobbyManager::SetInGameStartButton(HDData::GameObject* button)
+{
+	_inGameStartButton = button;
+}
+
+//void LobbyManager::SetInGameReadyButton(HDData::GameObject* button)
+//{
+//	_inGameReadyButton = button;
+//}
+
 RoomData* LobbyManager::GetRoomData()
 {
 	return _roomData;
@@ -179,9 +189,10 @@ void LobbyManager::RoomEnterSUCCESS()
 		_playerObjs[i]->SetSelfActive(true);
 		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(_players[i]->GetPlayerNickName());
 		
-		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+		if (_players[i]->GetIsHost())
 		{
 			_teamButton[i]->SetSelfActive(true);
+			_inGameStartButton->SetSelfActive(true);
 		}
 		else if(_players[i]->GetPlayerID() == GameManager::Instance()->GetMyInfo()->GetPlayerID())
 		{
@@ -291,6 +302,11 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 	}
 }
 
+
+std::vector<PlayerInfo*>& LobbyManager::GetAllPlayerInfo()
+{
+	return _players;
+}
 
 std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 {

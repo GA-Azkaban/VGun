@@ -209,6 +209,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 
 		one->SetNickName(player.userinfo().nickname());
+		auto t = player.host();
 		one->SetIsHost(player.host());
 		
 		SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
@@ -287,6 +288,35 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 	LobbyManager::Instance().RefreshRoom();
 }
 
+void NetworkManager::SendKickPlayer(std::string targetNickName)
+{
+	Protocol::C_ROOM_KICK packet;
+
+	packet.set_targetnickname(targetNickName);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
+{
+	auto info = LobbyManager::Instance().GetRoomData();
+
+	info->_players.clear();
+
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.userinfo().id());
+		one->SetNickName(player.userinfo().nickname());
+		one->SetIsHost(player.host());
+		one->SetMaxHP(player.maxhp());
+		one->SetCurrentHP(player.hp());
+
+		info->_players.push_back(one);
+	}
+}
+
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
 {
 	Protocol::C_ROOM_CHANGE_TEAM packet;
@@ -340,7 +370,8 @@ void NetworkManager::SendGameStart()
 
 void NetworkManager::RecvGameStart()
 {
-	// Todo 게임 시작 수신
+	RoundManager::Instance()->Start();
+	API::LoadSceneByName("InGame");
 }
 
 void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)

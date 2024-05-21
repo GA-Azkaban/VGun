@@ -16,12 +16,14 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
+private:
 	std::string imgName;
 
 	HDData::GameObject* _childTextObject;
-	bool textFlag = false;
+	bool _textFlag = false;
 	HDData::GameObject* _childImageObject;
-	bool imageFlag = false;
+	bool _imageFlag = false;
 
+	HCURSOR _currentCursor;
 };
 

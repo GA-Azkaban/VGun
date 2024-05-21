@@ -326,9 +326,9 @@ namespace HDData
 	void Transform::Translate(float x, float y, float z)
 	{
 		Vector3 delta;
-		delta.x = GetRight().x * x + GetForward().x * z;
-		delta.z = GetForward().z * z + GetRight().z * x;
-		delta.y = y;
+		delta.x = GetRight().x * x + GetForward().x * z + GetUp().x * y;
+		delta.z = GetForward().z * z + GetRight().z * x + GetUp().z * y;
+		delta.y = GetUp().y * y + GetForward().y * z + GetRight().y * x;
 
 		_position.x = delta.x;
 		_position.y = delta.y;

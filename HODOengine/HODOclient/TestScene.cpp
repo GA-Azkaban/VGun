@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -13,6 +13,7 @@ enum eColliderType
 
 TestScene::TestScene()
 {
+	/*
 	_scene = API::CreateScene("Test Scene");
 
 	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
@@ -194,7 +195,7 @@ TestScene::TestScene()
 	//auto testBox5 = API::CreateObject(_scene);
 	//testBox5->GetComponent<HDData::Transform>()->SetPosition(50.0f, -1.0f, -10.0f);
 	//auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
-	//boxRender5->LoadMesh("primitiveCube");	
+	//boxRender5->LoadMesh("primitiveCube");
 
 	//auto buildingTest1 = API::CreateObject(_scene);
 	//buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
@@ -219,7 +220,7 @@ TestScene::TestScene()
 	//auto playerTest = API::CreateObject(_scene, "player");
 	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	//playerTest->AddComponent<Player>();
-	// 확장자 포함한 파일이름을 넣어준다. 
+	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
@@ -366,6 +367,8 @@ TestScene::TestScene()
 	//auto RFootCollider = plRightFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
 	//RFootCollider->SetParentCollider(RLLegCollider);
 
+	*/
+
 	//-----------------------------------------
 	/*auto playerTest2 = API::CreateObject(_scene, "player2");
 	playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -20.0f, 0.5f, 0.0f });
@@ -447,6 +450,15 @@ TestScene::TestScene()
 	obj->GetTransform()->SetPosition(300, 100, 0);
 	obj->AddComponent<SliderSoundScript>();
 	obj->AddComponent<HDData::AudioSource>();
+
+	_scene = API::CreateScene("Test Scene");
+
+	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
+	mainCam->AddComponent<CameraMove>();
+
+	auto skybox = API::CreateObject(_scene);
+	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
 }
 

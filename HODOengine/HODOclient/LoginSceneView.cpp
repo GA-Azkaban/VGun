@@ -5,6 +5,7 @@
 
 #include "../HODOengine/AudioSource.h"
 #include "BtnScript.h"
+#include "BtnHoveringScript.h"
 
 LoginSceneView::LoginSceneView()
 	: _lobbyManager(LobbyManager::Instance()),
@@ -43,7 +44,7 @@ void LoginSceneView::LoginView()
 
 	auto skybox = API::CreateObject(_scene);
 	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("sunsetcube1024.dds");
+	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
 
 	/// main canvas
 
@@ -114,7 +115,7 @@ void LoginSceneView::LoginView()
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// login button
-	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn");
+	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn",loginControlObject);
 	loginBtn->GetTransform()->SetPosition(865.f, 640.f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.11f);
@@ -300,6 +301,7 @@ void LoginSceneView::LoginView()
 	);
 
 	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinControlObject);
+	exitJoinBtn->AddComponent<BtnHoveringScript>();
 	exitJoinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
 	exitJoinBtn->GetTransform()->SetPosition(1300.f, 200.f, 0.f);

@@ -10,6 +10,7 @@
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
+#include "RoundManager.h"
 
 Client::Client()
 {
@@ -42,8 +43,8 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	//InGameSceneView inGame;
-	//inGame.Initialize();
+	InGameSceneView inGame;
+	inGame.Initialize();
 
 	//LobbySceneView lobby;
 	//lobby.Initialize();
