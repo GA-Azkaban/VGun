@@ -81,7 +81,6 @@ void InGameSceneView::Initialize()
 
 		auto playerMove = playerCenter->AddComponent<PlayerMove>();
 		playerMove->SetPlayerCamera(_scene->GetMainCamera());
-		playerCenter->GetComponent<PlayerMove>()->SetPlayerCamera(_scene->GetMainCamera());
 		playerMove->SetHeadCam(headCam);
 
 		// sound 추가

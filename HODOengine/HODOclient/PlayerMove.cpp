@@ -2,7 +2,7 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
-	: _isMovable(false),
+	: _isMovable(true),
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
@@ -448,6 +448,11 @@ void PlayerMove::SetHeadCam(HDData::Camera* cam)
 	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
 }
 
+HDData::Camera* PlayerMove::GetHeadCam() const
+{
+	return _headCam;
+}
+
 void PlayerMove::PresetSprayPattern()
 {
 	float scale = 1.0f;
@@ -487,19 +492,24 @@ void PlayerMove::ToggleCam()
 {
 	HDData::Camera* nowCam = API::GetCurrenSceneMainCamera();
 
-	if (nowCam == _headCam)
+	//if (nowCam == _headCam)
+	if(_isHeadCam)
 	{
-		API::SetCurrentSceneMainCamera(_prevCam);
-		_prevCam = nullptr;
+		API::SetCurrentSceneMainCamera(_playerCamera);
+		_playerCamera->SetAsMainCamera();
+		//_prevCam = nullptr;
 		_isHeadCam = false;
-		_aimText->SetText("");
+		//_aimText->SetText("");
+		auto temp1 = _headCam->GetTransform();
 		_isFirstPersonPerspective = false;
 	}
 	else
 	{
-		_prevCam = API::SetCurrentSceneMainCamera(_headCam);
+		API::SetCurrentSceneMainCamera(_headCam);
+		_headCam->SetAsMainCamera();
 		_isHeadCam = true;
 		//_aimText->SetText("O");
+		auto temp2 = _headCam->GetTransform();
 		_isFirstPersonPerspective = true;
 	}
 }

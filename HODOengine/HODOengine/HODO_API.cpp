@@ -269,9 +269,8 @@ namespace API
 
 		HODO_API HDData::Camera* SetCurrentSceneMainCamera(HDData::Camera* camera)
 		{
-			HDData::Camera* prevCam = GetCurrenSceneMainCamera();
 			HDEngine::SceneSystem::Instance().GetCurrentScene()->SetMainCamera(camera);
-			return prevCam;
+			return GetCurrenSceneMainCamera();
 		}
 
 		HODO_API HDData::AnimationController* CreateAnimationController()

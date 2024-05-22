@@ -20,6 +20,7 @@ public:
 	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim);
 	void SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec);
 	void SetHeadCam(HDData::Camera* cam);
+	HDData::Camera* GetHeadCam() const;
 	void PresetSprayPattern();
 
 	// check ~~ series
