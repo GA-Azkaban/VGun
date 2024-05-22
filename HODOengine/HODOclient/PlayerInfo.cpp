@@ -154,3 +154,8 @@ int PlayerInfo::GetPlayerDeathCount()
 {
 	return _death;
 }
+
+int PlayerInfo::GetCurrentBulletCount()
+{
+	return _bulletCount;
+}

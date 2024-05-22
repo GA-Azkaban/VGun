@@ -4,6 +4,7 @@
 #include "LobbyManager.h"
 #include "GameManager.h"
 #include "NetworkManager.h"
+#include "FPAniScript.h"
 
 LobbySceneView::LobbySceneView()
 {
@@ -193,6 +194,10 @@ void LobbySceneView::Initialize()
 
 		meshComp->PlayAnimation("AR_idle", true);
 
+		player->AddComponent<HDData::Animator>();
+		API::LoadFPAnimationFromData(player, "FP_animation.json");
+		player->AddComponent<FPAniScript>();
+
 		LobbyManager::Instance().GetPlayerObjects().push_back(player);
 
 		HDData::GameObject* text = API::CreateTextbox(_scene, "player" + std::to_string(i), player);
@@ -201,7 +206,7 @@ void LobbySceneView::Initialize()
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
-		player->SetSelfActive(false);
+		//player->SetSelfActive(false);
 
 		posX += 1;
 		posT += 315;

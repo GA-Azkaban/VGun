@@ -1,4 +1,5 @@
 ﻿#include "FPAniScript.h"
+#include "GameManager.h"
 
 FPAniScript::FPAniScript()
 {
@@ -12,20 +13,38 @@ void FPAniScript::Start()
 
 void FPAniScript::Update()
 {
-	if (API::GetKeyPressing(DIK_I))
+	if (API::GetMouseHold(MOUSE_LEFT))
 	{
-		_animator->GetAllAC()->SetBool("isWalk", true);
+		int bullet = GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount();
+
+		if (bullet <= 0)
+		{
+			_animator->GetAllAC()->SetTrigger("isEmpty");
+		}
+		else
+		{
+			//_animator->GetAllAC()->SetBool("isFire", true);
+			//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", true, 0.1, false, 0.01);
+		}
 	}
-	if (API::GetKeyUp(DIK_I))
+	//if (API::GetMouseUp(MOUSE_LEFT))
+	//{
+	//	_animator->GetAllAC()->SetBool("isFire", false);
+	//}
+	if (API::GetKeyDown(DIK_R))
 	{
-		_animator->GetAllAC()->SetBool("isWalk", false);
+		//_animator->GetAllAC()->SetTrigger("isReload");
+		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_reload");
 	}
-	if (API::GetKeyPressing(DIK_SPACE))
+
+
+	// bullet
+	if (API::GetKeyDown(DIK_F1))
 	{
-		_animator->GetAllAC()->SetBool("isShoot", true);
+		GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(0);
 	}
-	if (API::GetKeyUp(DIK_SPACE))
+	if (API::GetKeyDown(DIK_F2))
 	{
-		_animator->GetAllAC()->SetBool("isShoot", false);
+		GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(30);
 	}
 }

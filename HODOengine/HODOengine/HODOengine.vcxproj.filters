@@ -170,12 +170,6 @@
       <Filter>05_Component\Collider\Collision</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSphereCollider.cpp" />
-    <ClCompile Include="UpperAnimator.cpp">
-      <Filter>05_Component\Animation\Animator\Upper</Filter>
-    </ClCompile>
-    <ClCompile Include="LowerAnimator.cpp">
-      <Filter>05_Component\Animation\Animator\Lower</Filter>
-    </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>05_Component\Animation\Animator\Base</Filter>
     </ClCompile>
@@ -401,12 +395,6 @@
       <Filter>05_Component\Collider\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSphereCollider.h" />
-    <ClInclude Include="UpperAnimator.h">
-      <Filter>05_Component\Animation\Animator\Upper</Filter>
-    </ClInclude>
-    <ClInclude Include="LowerAnimator.h">
-      <Filter>05_Component\Animation\Animator\Lower</Filter>
-    </ClInclude>
     <ClInclude Include="Animator.h">
       <Filter>05_Component\Animation\Animator\Base</Filter>
     </ClInclude>
@@ -620,12 +608,6 @@
     </Filter>
     <Filter Include="05_Component\Animation\Animator">
       <UniqueIdentifier>{0d2c3228-48e0-4ff8-a1dd-4b70a61800eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Animation\Animator\Upper">
-      <UniqueIdentifier>{0431d628-7103-48ee-bbb7-02daa223eb9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05_Component\Animation\Animator\Lower">
-      <UniqueIdentifier>{f6a74dc3-bd8d-45a9-9fa5-69a84a5375ba}</UniqueIdentifier>
     </Filter>
     <Filter Include="05_Component\Animation\Animator\Base">
       <UniqueIdentifier>{ab390f21-497f-42f2-ae64-81460e8bd14e}</UniqueIdentifier>

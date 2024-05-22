@@ -43,8 +43,6 @@
 #include "TextInputBoxUI.h"
 #include "UIBase.h"
 #include "Animator.h"
-#include "UpperAnimator.h"
-#include "LowerAnimator.h"
 #include "AnimationController.h"
 #include "HDMaterial.h"
 #include "MaterialManager.h"
@@ -69,8 +67,6 @@ namespace API
 		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
 
 		// 애니메이션 툴 데이터에서 FSM 로드
-		HODO_API void LoadUpperAnimationFromData(HDData::GameObject* gameobject, std::string data);
-		HODO_API void LoadLowerAnimationFromData(HDData::GameObject* gameobject, std::string data);
 		HODO_API void LoadFPAnimationFromData(HDData::GameObject* gameobject, std::string data);
 
 		// 각종 오브젝트 생성

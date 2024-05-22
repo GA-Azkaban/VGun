@@ -244,18 +244,6 @@ namespace API
 			HDEngine::SceneLoader::Instance().LoadUnityScene(fileName, scene);
 		}
 
-		HODO_API void LoadUpperAnimationFromData(HDData::GameObject* gameobject, std::string data)
-		{
-			auto animator = gameobject->GetComponent<HDData::Animator>();
-			animator->SetUpperAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
-		}
-
-		HODO_API void LoadLowerAnimationFromData(HDData::GameObject* gameobject, std::string data)
-		{
-			auto animator = gameobject->GetComponent<HDData::Animator>();
-			animator->SetLowerAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
-		}
-
 		HODO_API void LoadFPAnimationFromData(HDData::GameObject* gameobject, std::string data)
 		{
 			auto animator = gameobject->GetComponent<HDData::Animator>();

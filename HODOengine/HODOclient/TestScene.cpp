@@ -13,15 +13,15 @@ enum eColliderType
 
 TestScene::TestScene()
 {
-	_scene = API::CreateScene("Test Scene");
+	//_scene = API::CreateScene("Test");
 
-	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
-	mainCam->AddComponent<CameraMove>();
+	//auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
+	//mainCam->AddComponent<CameraMove>();
 
-	auto skybox = API::CreateObject(_scene);
-	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
-	_scene = API::CreateScene("Test Scene");
+	//auto skybox = API::CreateObject(_scene);
+	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
+	//skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
+	//_scene = API::CreateScene("Test Scene");
 
 	/*
 	auto testBox1 = API::CreateObject(_scene);
@@ -445,7 +445,7 @@ TestScene::TestScene()
 	//		API::LoadSceneByName("B");
 	//	});
 
-	API::LoadScene(_scene);
+	//API::LoadScene(_scene);
 
 	//HDData::GameObject* obj = API::CreateSlider(_scene, 50);
 	//obj->GetTransform()->SetPosition(300, 100, 0);
@@ -461,7 +461,35 @@ TestScene::~TestScene()
 
 void TestScene::Start()
 {
+	_scene = API::CreateScene("Test");
 
+	auto mainCam = _scene->GetMainCamera();
+	mainCam->GetGameObject()->AddComponent<CameraMove>();
+	mainCam->GetGameObject()->GetTransform()->SetPosition(0, 0, 0);
+	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
+
+	HDEngine::MaterialDesc red;
+	red.materialName = "TP_Red";
+	red.albedo = "TP_Red_B.png";
+
+	HDData::Material* M_Red = API::CreateMaterial(red);
+
+	HDData::GameObject* player = API::CreateObject(_scene, "player");
+	player->LoadFBXFile("SKM_TP_X_Default.fbx");
+	player->GetTransform()->SetPosition(0, 0, 0);
+
+	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadMaterial(M_Red, 0);
+	meshComp->LoadMaterial(M_Red, 1);
+	meshComp->LoadMaterial(M_Red, 2);
+	meshComp->LoadMaterial(M_Red, 3);
+	meshComp->LoadMaterial(M_Red, 4);
+
+	meshComp->PlayAnimation("AR_idle", true);
+
+	player->SetSelfActive(false);
+
+	
 }
 
 void TestScene::ClickEvent()

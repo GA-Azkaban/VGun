@@ -39,8 +39,6 @@ void AnimationLoaderTest::Start()
 	auto name = playerTP->GetThisObjectScene()->GetSceneName();
 
 	playerTP->AddComponent<HDData::Animator>();
-	API::LoadUpperAnimationFromData(playerTP, "upperdata.json");
-	API::LoadLowerAnimationFromData(playerTP, "lowerdata.json");
 
 	playerTP->AddComponent<FSMtestScript>();
 

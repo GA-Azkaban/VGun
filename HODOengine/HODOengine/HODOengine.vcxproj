@@ -236,7 +236,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="EmssionModule.h" />
     <ClInclude Include="Gradient.h" />
     <ClInclude Include="LimitVelocityOverLifetimeModule.h" />
-    <ClInclude Include="LowerAnimator.h" />
     <ClInclude Include="MainModule.h" />
     <ClInclude Include="MinMaxCurve.h" />
     <ClInclude Include="ParticleSystem.h" />
@@ -246,7 +245,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="RotationOverLifetimeModule.h" />
     <ClInclude Include="SizeOverLifetimeModule.h" />
     <ClInclude Include="StaticSphereCollider.h" />
-    <ClInclude Include="UpperAnimator.h" />
     <ClInclude Include="AudioClip.h" />
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="AudioSource.h" />
@@ -342,11 +340,9 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="AnimationLoader.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Gradient.cpp" />
-    <ClCompile Include="LowerAnimator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleSystemRenderer.cpp" />
     <ClCompile Include="StaticSphereCollider.cpp" />
-    <ClCompile Include="UpperAnimator.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
