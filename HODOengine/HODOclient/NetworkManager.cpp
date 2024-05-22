@@ -397,16 +397,6 @@ void NetworkManager::RecvGameStart()
 	API::LoadSceneByName("InGame");
 }
 
-void NetworkManager::SendPlayerTranform()
-{
-
-}
-
-void NetworkManager::RecvPlayerTranform()
-{
-
-}
-
 void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
 {
 	Protocol::C_PLAY_UPDATE packet;
