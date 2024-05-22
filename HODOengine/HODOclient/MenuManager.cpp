@@ -135,20 +135,51 @@ void MenuManager::SetScreenSize(int OptionNum)
 {
 	switch (OptionNum)
 	{
-		case option1:
-			_screenSize = ("1920x1080(60Hz)");
-		case option2:
-			_screenSize = ("1600x900(60Hz)");
-		case option3:
-			_screenSize = ("2550x1440(60Hz)");
-		default:
-			break;
+	case option1600:
+		_screenSize = ("1600x900(60Hz)");
+		API::Resize(1600, 900);
+		break;
+	case option1920:
+		_screenSize = ("1920x1080(60Hz)");
+		API::Resize(1920, 1080);
+		break;
+	case option2550:
+		_screenSize = ("2550x1440(60Hz)");
+		API::Resize(2550, 1440);
+		break;
+	default:
+		break;
+
 	}
 }
 
 std::string& MenuManager::GetScreenSize()
 {
 	return _screenSize;
+}
+
+void MenuManager::SetScreenMod(int OptionNum)
+{
+	// 기능 추가할 예정
+	switch (OptionNum)
+	{
+	case FULL_SCREEN:
+		_screenMod = ("FULLSCREEN");
+		break;
+	case BORDERLESS_SCREEN:
+		_screenMod = ("BORDERLESS");
+		break;
+	case WINDOWS_SCREEN:
+		_screenMod = (" WINDOWED ");
+		break;
+	default:
+		break;
+	}
+}
+
+std::string& MenuManager::GetScreenMod()
+{
+	return _screenMod;
 }
 
 void MenuManager::RenderRoomList()

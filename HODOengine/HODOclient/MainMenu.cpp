@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -449,7 +449,7 @@ void MainMenuScene::MainMenu()
 	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetImage("downArrow.png");
 	resolutionToggleArrow->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 
-	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2", preferencesCanvas);
+	HDData::GameObject* resolutionBtn2 = API::CreateButton(_scene, "resolutionBtn2", resolutionBtn1);
 	resolutionBtn2->GetTransform()->SetPosition(1350.0f, 330.0f, 0.f);
 	resolutionBtn2->AddComponent<BtnTextScript>();
 	resolutionBtn2->AddComponent<BtnHoveringScript>();
@@ -460,9 +460,9 @@ void MainMenuScene::MainMenu()
 	resolutionText2->GetTransform()->SetPosition(1350.0f, 335.0f, 0.f);
 	resolutionText2->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	resolutionText2->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
-	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
+	resolutionText2->GetComponent<HDData::TextUI>()->SetText("1600x900(60Hz)");
 
-	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
+	HDData::GameObject* resolutionBtn3 = API::CreateButton(_scene, "resolutionBtn3", resolutionBtn1);
 	resolutionBtn3->GetTransform()->SetPosition(1350.0f, 420.0f, 0.f);
 	resolutionBtn3->AddComponent<BtnTextScript>();
 	resolutionBtn3->AddComponent<BtnHoveringScript>();
@@ -473,9 +473,9 @@ void MainMenuScene::MainMenu()
 	resolutionText3->GetTransform()->SetPosition(1350.0f, 425.0f, 0.f);
 	resolutionText3->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	resolutionText3->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
-	resolutionText3->GetComponent<HDData::TextUI>()->SetText("1600x900(60Hz)");
+	resolutionText3->GetComponent<HDData::TextUI>()->SetText("1920x1080(60Hz)");
 
-	HDData::GameObject* resolutionBtn4 = API::CreateButton(_scene, "resolutionBtn3", preferencesCanvas);
+	HDData::GameObject* resolutionBtn4 = API::CreateButton(_scene, "resolutionBtn3", resolutionBtn1);
 	resolutionBtn4->GetTransform()->SetPosition(1350.0f, 510.0f, 0.f);
 	resolutionBtn4->AddComponent<BtnTextScript>();
 	resolutionBtn4->AddComponent<BtnHoveringScript>();
@@ -488,16 +488,71 @@ void MainMenuScene::MainMenu()
 	resolutionText4->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
 	resolutionText4->GetComponent<HDData::TextUI>()->SetText("2550x1440(60Hz)");
 
-	// BGM Volume
-	HDData::GameObject* BGMVolumeText = API::CreateTextbox(_scene, "BGMVolumeText", preferencesCanvas);
-	BGMVolumeText->GetTransform()->SetPosition(305.0f, 350.0f, 0.f);
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetText("BGM Volume");
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
-	HDData::GameObject* BGMVolumeCanvas = API::CreateImageBox(_scene, "BGMVolumeCanvas", preferencesCanvas);
-	BGMVolumeCanvas->GetTransform()->SetPosition(960.f, 340.0f, 0.f);
-	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
-	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+	// Screen Mode
+	HDData::GameObject* ScreenModText = API::CreateTextbox(_scene, "ScreenModText", preferencesCanvas);
+	ScreenModText->GetTransform()->SetPosition(305.0f, 350.0f, 0.f);
+	ScreenModText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
+	ScreenModText->GetComponent<HDData::TextUI>()->SetText("Screen Mod");
+	ScreenModText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* ScreenModBtn1 = API::CreateButton(_scene, "ScreenModBtn1", preferencesCanvas);
+	ScreenModBtn1->GetTransform()->SetPosition(1350.0f, 340.0f, 0.f);
+	ScreenModBtn1->AddComponent<BtnTextScript>();
+	ScreenModBtn1->AddComponent<BtnImageScript>();
+	ScreenModBtn1->AddComponent<BtnHoveringScript>();
+	ScreenModBtn1->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	ScreenModBtn1->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	HDData::GameObject* ScreenModStat = API::CreateTextbox(_scene, "ScreenModStat", ScreenModBtn1);
+	ScreenModStat->GetTransform()->SetPosition(1350.0f, 345.0f, 0.f);
+	ScreenModStat->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	ScreenModStat->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	ScreenModStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenMod());
+	HDData::GameObject* ScreenModCanvas = API::CreateImageBox(_scene, "ScreenModCanvas", preferencesCanvas);
+	ScreenModCanvas->GetTransform()->SetPosition(960.f, 340.0f, 0.f);
+	ScreenModCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
+	ScreenModCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* ScreenModArrow = API::CreateImageBox(_scene, "ScreenModArrow", ScreenModBtn1);
+	ScreenModArrow->GetTransform()->SetPosition(1650.f, 340.f, 0.f);
+	ScreenModArrow->GetComponent<HDData::ImageUI>()->SetImage("downArrow.png");
+	ScreenModArrow->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
+	HDData::GameObject* ScreenModBtn2 = API::CreateButton(_scene, "ScreenModBtn2", preferencesCanvas);
+	ScreenModBtn2->GetTransform()->SetPosition(1350.0f, 430.0f, 0.f);
+	ScreenModBtn2->AddComponent<BtnTextScript>();
+	ScreenModBtn2->AddComponent<BtnHoveringScript>();
+	ScreenModBtn2->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	ScreenModBtn2->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	ScreenModBtn2->SetSelfActive(false);
+	HDData::GameObject* ScreenModText2 = API::CreateTextbox(_scene, "screenStat", ScreenModBtn2);
+	ScreenModText2->GetTransform()->SetPosition(1350.0f, 435.0f, 0.f);
+	ScreenModText2->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	ScreenModText2->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
+	ScreenModText2->GetComponent<HDData::TextUI>()->SetText("FULLSCREEN");
+
+	HDData::GameObject* ScreenModBtn3 = API::CreateButton(_scene, "ScreenModBtn2", preferencesCanvas);
+	ScreenModBtn3->GetTransform()->SetPosition(1350.0f, 520.0f, 0.f);
+	ScreenModBtn3->AddComponent<BtnTextScript>();
+	ScreenModBtn3->AddComponent<BtnHoveringScript>();
+	ScreenModBtn3->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	ScreenModBtn3->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	ScreenModBtn3->SetSelfActive(false);
+	HDData::GameObject* ScreenModText3 = API::CreateTextbox(_scene, "screenStat", ScreenModBtn3);
+	ScreenModText3->GetTransform()->SetPosition(1350.0f, 525.0f, 0.f);
+	ScreenModText3->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	ScreenModText3->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
+	ScreenModText3->GetComponent<HDData::TextUI>()->SetText("BORDERLESS");
+
+	HDData::GameObject* ScreenModBtn4 = API::CreateButton(_scene, "ScreenModBtn2", preferencesCanvas);
+	ScreenModBtn4->GetTransform()->SetPosition(1350.0f, 610.0f, 0.f);
+	ScreenModBtn4->AddComponent<BtnTextScript>();
+	ScreenModBtn4->AddComponent<BtnHoveringScript>();
+	ScreenModBtn4->GetComponent<HDData::Button>()->SetImage("PrefLineBtn.png");
+	ScreenModBtn4->GetComponent<HDData::Button>()->SetSortOrder(0.62f);
+	ScreenModBtn4->SetSelfActive(false);
+	HDData::GameObject* ScreenModText4 = API::CreateTextbox(_scene, "screenStat", ScreenModBtn4);
+	ScreenModText4->GetTransform()->SetPosition(1350.0f, 615.0f, 0.f);
+	ScreenModText4->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	ScreenModText4->GetComponent<HDData::TextUI>()->SetSortOrder(0.62f);
+	ScreenModText4->GetComponent<HDData::TextUI>()->SetText("WINDOWED");
 
 	// Environment Volume
 	HDData::GameObject* EnvironmentVolumeText = API::CreateTextbox(_scene, "EnvironmentVolumeText", preferencesCanvas);
@@ -510,16 +565,28 @@ void MainMenuScene::MainMenu()
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 
+	// BGM Volume
+	HDData::GameObject* BGMVolumeText = API::CreateTextbox(_scene, "BGMVolumeText", preferencesCanvas);
+	BGMVolumeText->GetTransform()->SetPosition(305.0f, 550.0f, 0.f);
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetText("BGM Volume");
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
+	HDData::GameObject* BGMVolumeCanvas = API::CreateImageBox(_scene, "BGMVolumeCanvas", preferencesCanvas);
+	BGMVolumeCanvas->GetTransform()->SetPosition(960.f, 540.0f, 0.f);
+	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
+	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
 	// Mouse Sensitivity
 	HDData::GameObject* MouseSensitivityText = API::CreateTextbox(_scene, "MouseSensitivityText", preferencesCanvas);
-	MouseSensitivityText->GetTransform()->SetPosition(365.0f, 550.0f, 0.f);
+	MouseSensitivityText->GetTransform()->SetPosition(365.0f, 650.0f, 0.f);
 	MouseSensitivityText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	MouseSensitivityText->GetComponent<HDData::TextUI>()->SetText("Mouse Sensitivity");
 	MouseSensitivityText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 	HDData::GameObject* MouseSensitivityCanvas = API::CreateImageBox(_scene, "MouseSensitivityCanvas", preferencesCanvas);
-	MouseSensitivityCanvas->GetTransform()->SetPosition(960.f, 540.0f, 0.f);
+	MouseSensitivityCanvas->GetTransform()->SetPosition(960.f, 640.0f, 0.f);
 	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
 	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
+
 
 	// 가로줄
 	//HDData::GameObject* tempHorizonLine = API::CreateImageBox(_scene, "tempHorizonLine", preferencesCanvas);
@@ -657,15 +724,72 @@ void MainMenuScene::MainMenu()
 	resolutionBtn1->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			if (ScreenModBtn1->GetSelfActive())
+			{
+				ScreenModBtn1->SetSelfActive(false);
+			}
+			else
+			{
+				ScreenModBtn1->SetSelfActive(true);
+			}
+
 			if (!resolutionBtn2->GetSelfActive())
 			{
 				resolutionBtn2->SetSelfActive(true);
 				resolutionBtn3->SetSelfActive(true);
+				resolutionBtn4->SetSelfActive(true);
 			}
 			else if (resolutionBtn2->GetSelfActive())
 			{
 				resolutionBtn2->SetSelfActive(false);
 				resolutionBtn3->SetSelfActive(false);
+				resolutionBtn4->SetSelfActive(false);
+			}
+		}
+	);
+
+	resolutionBtn2->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			MenuManager::Instance().SetScreenSize(1);
+			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
+		}
+	);
+
+	resolutionBtn3->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			MenuManager::Instance().SetScreenSize(2);
+			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
+		}
+	);
+	resolutionBtn4->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			MenuManager::Instance().SetScreenSize(3);
+			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
+		}
+	);
+
+	ScreenModBtn1->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			if (resolutionBtn2->GetSelfActive())
+			{
+				resolutionBtn2->SetSelfActive(false);
+			}
+
+			if (!ScreenModBtn2->GetSelfActive())
+			{
+				ScreenModBtn2->SetSelfActive(true);
+				ScreenModBtn3->SetSelfActive(true);
+				ScreenModBtn4->SetSelfActive(true);
+			}
+			else if (ScreenModBtn2->GetSelfActive())
+			{
+				ScreenModBtn2->SetSelfActive(false);
+				ScreenModBtn3->SetSelfActive(false);
+				ScreenModBtn4->SetSelfActive(false);
 			}
 		}
 	);

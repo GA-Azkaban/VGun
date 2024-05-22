@@ -115,4 +115,13 @@ namespace HDEngine
 		_lineRenderer->DrawLine(start, direction, length, color);
 	}
 
+	void RenderSystem::OnResize(int screenWidth, int screenHeight)
+	{
+		_screenWidth = screenWidth;
+		_screenHeight = screenHeight;
+		_dx11Renderer->OnResize(screenWidth, screenHeight);
+	}
+
+
+
 }

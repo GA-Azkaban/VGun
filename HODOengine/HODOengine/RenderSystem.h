@@ -41,6 +41,8 @@ namespace HDEngine
 		void DrawLine(Vector3 start, Vector3 end, Vector4 color);
 		void DrawLine(Vector3 start, Vector3 direction, float length, Vector4 color);
 
+		//test
+		void OnResize(int screenWidth, int screenHeight);
 	private:
 		void UpdateRenderData();
 

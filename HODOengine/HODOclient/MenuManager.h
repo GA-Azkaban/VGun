@@ -16,10 +16,17 @@ struct roomInfoObj
 
 enum screenSize
 {
-	option1 = 1,	// default	1920x1080
-	option2 = 2,	// 1600x900
-	option3 = 3,
-	option4 = 4,
+	option1600 = 1,	// default	1600x900
+	option1920 = 2,	// 1920x1080
+	option2550 = 3,	// 2550x1440
+	option4 = 4
+};
+
+enum screenMode
+{
+	FULL_SCREEN = 1,
+	BORDERLESS_SCREEN,
+	WINDOWS_SCREEN
 };
 
 class MenuManager : public HDData::Script
@@ -67,6 +74,9 @@ public:
 	void SetScreenSize(int optionNum);
 	std::string& GetScreenSize();
 
+	void SetScreenMod(int optionNum);
+	std::string& GetScreenMod();
+
 public:
 	// canvas
 	HDData::GameObject* _mainMenuCanvas = nullptr;
@@ -77,8 +87,6 @@ public:
 	HDData::GameObject* _playBtn = nullptr;
 	HDData::GameObject* _preferencesBtn = nullptr;	// 환경설정 버튼
 	HDData::GameObject* _exitbtn = nullptr;
-
-	
 
 public:
 	void RenderRoomList();
@@ -95,6 +103,9 @@ public:
 	roomInfoObj _roomObject[5];
 
 	// screenSize
-	std::string _screenSize = ("1920x1080(60Hz)");
+	std::string _screenSize = ("1920x1080(60Hz)");	// default
+
+	// screenMod
+	std::string _screenMod = ("windowed");
 };
 

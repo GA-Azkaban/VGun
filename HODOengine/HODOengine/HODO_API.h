@@ -53,7 +53,7 @@
 #include "TriggerBoxCollider.h"
 #include "Light.h"
 
-
+#include "RenderSystem.h"
 #include "ObjectSystem.h"
 
 namespace API
@@ -122,6 +122,9 @@ namespace API
 		// Material
 		HODO_API HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc);
 		HODO_API HDData::Material* GetMaterial(const std::string materialName);
+
+		// Resize
+		HODO_API void Resize(int width, int height);
 	}
 }
 
