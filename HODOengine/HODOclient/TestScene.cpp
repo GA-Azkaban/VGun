@@ -4,6 +4,7 @@
 #include "TestSound.h"
 #include "SliderSoundScript.h"
 #include "NetworkManager.h"
+#include "PlayerTest.h"
 
 enum eColliderType
 {
@@ -215,33 +216,33 @@ TestScene::TestScene()
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5); */
 
 	// 플레이어 테스트
-	//auto playerTest = API::CreateObject(_scene, "player");
-	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	//playerTest->AddComponent<Player>();
+	auto playerTest = API::CreateObject(_scene, "player");
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	////meshComp->SetActive(false);
-	////meshComp->SetFillModeWireFrame(true);
-	//HDEngine::MaterialDesc desc;
-	//desc.materialName = "TP_Red";
-	//desc.albedo = "TP_Red_B.png";
-	//HDData::Material* newMat = API::CreateMaterial(desc);
-	//meshComp->LoadMaterial(newMat, 0);
-	//meshComp->LoadMaterial(newMat, 1);
-	//meshComp->LoadMaterial(newMat, 2);
-	//meshComp->LoadMaterial(newMat, 3);
-	//meshComp->LoadMaterial(newMat, 4);
-	//meshComp->PlayAnimation("AR_idle", true);
+	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//meshComp->SetActive(false);
+	//meshComp->SetFillModeWireFrame(true);
+	HDEngine::MaterialDesc desc;
+	desc.materialName = "TP_Red";
+	desc.albedo = "TP_Red_B.png";
+	HDData::Material* newMat = API::CreateMaterial(desc);
+	meshComp->LoadMaterial(newMat, 0);
+	meshComp->LoadMaterial(newMat, 1);
+	meshComp->LoadMaterial(newMat, 2);
+	meshComp->LoadMaterial(newMat, 3);
+	meshComp->LoadMaterial(newMat, 4);
+	meshComp->PlayAnimation("AR_idle", true);
 	//meshComp->SetOutlineActive(true);
 
 	// 오른손 노드의 오브젝트를 가져와서
@@ -367,8 +368,6 @@ TestScene::TestScene()
 	//plRightFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
 	//auto RFootCollider = plRightFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
 	//RFootCollider->SetParentCollider(RLLegCollider);
-
-	*/
 
 	//-----------------------------------------
 	/*auto playerTest2 = API::CreateObject(_scene, "player2");

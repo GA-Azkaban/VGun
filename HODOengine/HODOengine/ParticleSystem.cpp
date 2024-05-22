@@ -88,8 +88,7 @@ namespace HDData
 		}
 
 		float deltaTime = HDEngine::TimeSystem::Instance().GetDeltaTime();
-		std::random_device rd;
-		std::mt19937 gen(rd());
+
 		// emission의 지정된 시간에 지정된 개수만큼 파티클 생성
 		// 파티클은 풀에서 꺼내온다
 		Burst& burst = emission.GetBurst();
