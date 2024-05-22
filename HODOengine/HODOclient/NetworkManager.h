@@ -63,6 +63,11 @@ public: // 게임 관련
 	void SendGameStart();
 	void RecvGameStart();
 
+public: // 트랜스폼 동기화
+	void SendPlayerTranform();
+	void RecvPlayerTranform();
+
+
 public: // 업데이트
 	void SendPlayUpdate(Protocol::PlayerData playerData);
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);

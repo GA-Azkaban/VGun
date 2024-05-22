@@ -30,10 +30,13 @@ void PlayerMove::Start()
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
+
+	//StartRoundCam();
 }
 
 void PlayerMove::Update()
 {
+
 	if (!_isMovable)
 	{
 		return;
@@ -113,7 +116,7 @@ void PlayerMove::Update()
 
 	CameraControl();
 
-	_headCam->ShakeCamera(_deltaTime);
+	//_headCam->ShakeCamera(_deltaTime);
 
 	// 이동, 회전
 	Move(_moveDirection);
@@ -123,6 +126,11 @@ void PlayerMove::Update()
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 	//UpdatePlayerPositionDebug();
+	if (_tempFlag == 0)
+	{
+		ToggleCam();
+		_tempFlag = 1;
+	}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -448,6 +456,11 @@ void PlayerMove::SetHeadCam(HDData::Camera* cam)
 	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
 }
 
+HDData::Camera* PlayerMove::GetHeadCam() const
+{
+	return _headCam;
+}
+
 void PlayerMove::PresetSprayPattern()
 {
 	float scale = 1.0f;
@@ -483,24 +496,41 @@ void PlayerMove::PresetSprayPattern()
 	_sprayPattern[29] = std::make_pair(0.002f * scale, -0.2f * scale);
 }
 
+void PlayerMove::StartRoundCam()
+{
+	API::SetCurrentSceneMainCamera(_headCam);
+	_headCam->SetAsMainCamera();
+	_isHeadCam = true;
+	//_aimText->SetText("O");
+	auto temp2 = _headCam->GetTransform();
+	_isFirstPersonPerspective = true;
+	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
+}
+
 void PlayerMove::ToggleCam()
 {
 	HDData::Camera* nowCam = API::GetCurrenSceneMainCamera();
 
-	if (nowCam == _headCam)
+	//if (nowCam == _headCam)
+	if(_isHeadCam)
 	{
-		API::SetCurrentSceneMainCamera(_prevCam);
-		_prevCam = nullptr;
+		API::SetCurrentSceneMainCamera(_playerCamera);
+		_playerCamera->SetAsMainCamera();
+		//_prevCam = nullptr;
 		_isHeadCam = false;
-		_aimText->SetText("");
+		//_aimText->SetText("");
+		auto temp1 = _headCam->GetTransform();
 		_isFirstPersonPerspective = false;
 	}
 	else
 	{
-		_prevCam = API::SetCurrentSceneMainCamera(_headCam);
+		API::SetCurrentSceneMainCamera(_headCam);
+		_headCam->SetAsMainCamera();
 		_isHeadCam = true;
 		//_aimText->SetText("O");
+		auto temp2 = _headCam->GetTransform();
 		_isFirstPersonPerspective = true;
+		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 	}
 }
 
