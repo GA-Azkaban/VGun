@@ -130,7 +130,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 
 void NetworkManager::RecvCreateAccount()
 {
-	// 회원가입 성공 처리
+	LobbyManager::Instance().ShowSignSuccess();
 }
 
 void NetworkManager::SendRoomListRequest()

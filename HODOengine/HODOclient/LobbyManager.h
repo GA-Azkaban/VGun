@@ -63,9 +63,12 @@ public:
 
 	void SetidDupl(HDData::GameObject*);
 	void SetnameDule(HDData::GameObject*);
-	void SetSignupFail(HDData::GameObject*);
 	void SetSucessCanvas(HDData::GameObject* sucessCanvas);
 	void SetFailCanvas(HDData::GameObject* failCanvas);
+
+	void SetSignupSuccess(HDData::GameObject* obj);
+	void SetSignupFail(HDData::GameObject*);
+	void ShowSignSuccess();
 
 	void SetInGameStartButton(HDData::GameObject* button);
 	//void SetInGameReadyButton(HDData::GameObject* button);
@@ -83,6 +86,8 @@ private:
 
 	HDData::GameObject* _iddupl;
 	HDData::GameObject* _namedupl;
+
+	HDData::GameObject* _signupSuccess;
 	HDData::GameObject* _signupFail;
 
 	// 게임 로비

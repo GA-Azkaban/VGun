@@ -139,9 +139,19 @@ void LobbyManager::SetFailCanvas(HDData::GameObject* failCanvas)
 	_loginFailCanvas = failCanvas;
 }
 
+void LobbyManager::SetSignupSuccess(HDData::GameObject* obj)
+{
+	_signupSuccess = obj;
+}
+
 void LobbyManager::SetInGameStartButton(HDData::GameObject* button)
 {
 	_inGameStartButton = button;
+}
+
+void LobbyManager::ShowSignSuccess()
+{
+	_signupSuccess->SetSelfActive(true);
 }
 
 //void LobbyManager::SetInGameReadyButton(HDData::GameObject* button)

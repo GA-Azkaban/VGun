@@ -116,7 +116,7 @@ void LoginSceneView::LoginView()
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// login button
-	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn",loginControlObject);
+	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", loginControlObject);
 	loginBtn->GetTransform()->SetPosition(865.f, 640.f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.11f);
@@ -125,10 +125,16 @@ void LoginSceneView::LoginView()
 	(
 		[=]()
 		{
-			NetworkManager::Instance().SendAutoLogin();
-			//std::string ID = id->GetCurrentText();
-			//std::string password = pw->GetCurrentText();
-			//LobbyManager::Instance().Login(ID, password);
+			if ((id->GetCurrentText() == "") && (pw->GetCurrentText() == ""))
+			{
+				NetworkManager::Instance().SendAutoLogin();
+			}
+			else
+			{
+				std::string ID = id->GetCurrentText();
+				std::string password = pw->GetCurrentText();
+				LobbyManager::Instance().Login(ID, password);
+			}
 		}
 	);
 	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);
@@ -144,7 +150,7 @@ void LoginSceneView::LoginView()
 	_lobbyManager.SetJoinCanvas(joinControlObject);
 
 	//signup Btn
-	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn",loginControlObject);
+	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn", loginControlObject);
 	joinBtn->GetTransform()->SetPosition(1055.f, 640.f, 0.f);
 	joinBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
 	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
@@ -238,9 +244,6 @@ void LoginSceneView::LoginView()
 		[=]()
 		{
 			LobbyManager::Instance().showOff(loginSucess);
-			// load main menu scene
-			//FadeInOut::Instance().FadeIn();
-			API::LoadSceneByName("MainMenu");
 		}
 	);
 
@@ -300,6 +303,21 @@ void LoginSceneView::LoginView()
 			LobbyManager::Instance().showOff(nameDupl);
 		}
 	);
+
+	HDData::GameObject* signupSuccess = API::CreateButton(_scene, "signUpSUCC");
+	signupSuccess->GetComponent<HDData::Button>()->SetImage("signup_s.png");
+	signupSuccess->GetComponent<HDData::Button>()->SetSortOrder(0.4f);
+	signupSuccess->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	signupSuccess->SetSelfActive(false);
+	LobbyManager::Instance().SetSignupSuccess(signupSuccess);
+	signupSuccess->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			LobbyManager::Instance().showOff(signupSuccess);
+			LobbyManager::Instance().showOff(joinControlObject);
+			LobbyManager::Instance().showOn(loginControlObject);
+		}
+		);
 
 	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinControlObject);
 	exitJoinBtn->AddComponent<BtnHoveringScript>();
