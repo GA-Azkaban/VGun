@@ -369,7 +369,7 @@ void MainMenuScene::MainMenu()
 	// room setting
 	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", make_canvas);
 	roomSetBtn->GetTransform()->SetPosition(960.0f, 840.0f, 0.f);
-	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	roomSetBtn->AddComponent<BtnTextScript>();
