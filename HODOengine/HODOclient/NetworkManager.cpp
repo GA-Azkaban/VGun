@@ -211,9 +211,30 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		
-		SendChangeTeamColor(Protocol::TEAM_COLOR_RED);
-
-		one->SetTeamID(eTeam::R);
+		switch (player.team())
+		{
+			case Protocol::TEAM_COLOR_RED:
+			{
+				one->SetTeamID(eTeam::R);
+			}
+			break;
+			case Protocol::TEAM_COLOR_GREEN:
+			{
+				one->SetTeamID(eTeam::G);
+			}
+			break;
+			case Protocol::TEAM_COLOR_BLUE:
+			{
+				one->SetTeamID(eTeam::B);
+			}
+			break;
+			default:
+			{
+				one->SetTeamID(eTeam::R);
+				SendChangeTeamColor(Protocol::TEAM_COLOR_RED, player.userinfo().nickname());
+			}
+			break;
+		}
 
 		// 플레이어 정보 받기	
 		info->_players.push_back(one);
