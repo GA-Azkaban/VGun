@@ -11,7 +11,8 @@ PlayerMove::PlayerMove()
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),
-	_rotAngleX(0.0f), _rotAngleY(0.0f)
+	_rotAngleX(0.0f), _rotAngleY(0.0f),
+	_isFirstPersonPerspective(true)
 {
 
 }
@@ -36,7 +37,6 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-
 	if (!_isMovable)
 	{
 		return;
@@ -128,7 +128,13 @@ void PlayerMove::Update()
 	//UpdatePlayerPositionDebug();
 	if (_tempFlag == 0)
 	{
-		ToggleCam();
+		API::SetCurrentSceneMainCamera(_headCam);
+		_headCam->SetAsMainCamera();
+		_isHeadCam = true;
+		//_aimText->SetText("O");
+		_isFirstPersonPerspective = true;
+		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+
 		_tempFlag = 1;
 	}
 }
@@ -519,7 +525,6 @@ void PlayerMove::ToggleCam()
 		//_prevCam = nullptr;
 		_isHeadCam = false;
 		//_aimText->SetText("");
-		auto temp1 = _headCam->GetTransform();
 		_isFirstPersonPerspective = false;
 	}
 	else
@@ -528,7 +533,6 @@ void PlayerMove::ToggleCam()
 		_headCam->SetAsMainCamera();
 		_isHeadCam = true;
 		//_aimText->SetText("O");
-		auto temp2 = _headCam->GetTransform();
 		_isFirstPersonPerspective = true;
 		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 	}

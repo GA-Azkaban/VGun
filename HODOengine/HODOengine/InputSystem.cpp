@@ -67,6 +67,10 @@ namespace HDEngine
 		{
 			_isFirstPersonPerspective = !_isFirstPersonPerspective;
 		}
+		if (GetKeyDown(DIK_W))
+		{
+			_isFirstPersonPerspective = true; // 야매로
+		}
 	}
 
 	void InputSystem::Finalize()
