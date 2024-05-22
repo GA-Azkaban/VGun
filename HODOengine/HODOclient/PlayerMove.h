@@ -22,6 +22,7 @@ public:
 	void SetHeadCam(HDData::Camera* cam);
 	HDData::Camera* GetHeadCam() const;
 	void PresetSprayPattern();
+	void StartRoundCam();
 
 	// check ~~ series
 private:
@@ -93,6 +94,7 @@ private:
 	float _reloadTimer;
 	bool _isReloading;
 	bool _isRunning;
+	bool _tempFlag = 0;
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
 };

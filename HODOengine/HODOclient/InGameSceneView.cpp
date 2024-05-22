@@ -63,19 +63,20 @@ void InGameSceneView::Initialize()
 		std::string objName2 = "playerCenter" + std::to_string(i + 1);
 		auto playerCenter = API::CreateObject(_scene, objName2);
 		player->SetParentObject(playerCenter);
+		player->GetTransform()->SetLocalPosition(0.0f, -0.6f, 0.0f);
 		playerCenter->GetTransform()->SetPosition(0.0f, 3.0f, 0.0f);
-		auto playerBodyCollider = playerCenter->AddComponent<HDData::DynamicBoxCollider>(0.5f, 0.6f, 0.25f, 1);
+		auto playerBodyCollider = playerCenter->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
 
 		auto playerTestHead = player->GetGameObjectByNameInChildren("head");
 		playerTestHead->SetParentObject(playerCenter);
 		//playerTestHead->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.4f, 0.0f });
-		auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.2f, true);
+		auto playerHeadCollider = playerTestHead->AddComponent<HDData::DynamicSphereCollider>(0.1f, true);
 		playerHeadCollider->SetParentCollider(playerBodyCollider);
-		playerHeadCollider->SetPositionOffset(Vector3(0.0f, 0.4f, 0.0f));
+		playerHeadCollider->SetPositionOffset(Vector3(0.0f, 1.0f, 0.0f));
 
 		std::string objName3 = "headCamObj" + std::to_string(i + 1);
 		auto headCamObj = API::CreateObject(_scene, objName3);
-		headCamObj->SetParentObject(playerTestHead);
+		//headCamObj->SetParentObject(playerTestHead);
 		headCamObj->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.12f, 0.2f });
 		auto headCam = headCamObj->AddComponent<HDData::Camera>();
 

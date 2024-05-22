@@ -2,7 +2,7 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
-	: _isMovable(true),
+	: _isMovable(false),
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
@@ -30,10 +30,13 @@ void PlayerMove::Start()
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
+
+	//StartRoundCam();
 }
 
 void PlayerMove::Update()
 {
+
 	if (!_isMovable)
 	{
 		return;
@@ -113,7 +116,7 @@ void PlayerMove::Update()
 
 	CameraControl();
 
-	_headCam->ShakeCamera(_deltaTime);
+	//_headCam->ShakeCamera(_deltaTime);
 
 	// 이동, 회전
 	Move(_moveDirection);
@@ -123,6 +126,11 @@ void PlayerMove::Update()
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 	//UpdatePlayerPositionDebug();
+	if (_tempFlag == 0)
+	{
+		ToggleCam();
+		_tempFlag = 1;
+	}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -488,6 +496,17 @@ void PlayerMove::PresetSprayPattern()
 	_sprayPattern[29] = std::make_pair(0.002f * scale, -0.2f * scale);
 }
 
+void PlayerMove::StartRoundCam()
+{
+	API::SetCurrentSceneMainCamera(_headCam);
+	_headCam->SetAsMainCamera();
+	_isHeadCam = true;
+	//_aimText->SetText("O");
+	auto temp2 = _headCam->GetTransform();
+	_isFirstPersonPerspective = true;
+	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
+}
+
 void PlayerMove::ToggleCam()
 {
 	HDData::Camera* nowCam = API::GetCurrenSceneMainCamera();
@@ -511,6 +530,7 @@ void PlayerMove::ToggleCam()
 		//_aimText->SetText("O");
 		auto temp2 = _headCam->GetTransform();
 		_isFirstPersonPerspective = true;
+		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 	}
 }
 

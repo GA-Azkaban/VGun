@@ -104,6 +104,7 @@ void RoundManager::InitRound()
 			auto plMove = _playerObjs[i]->GetParentObject()->GetComponent<PlayerMove>();
 			plMove->SetMovable(true);
 			plMove->GetHeadCam()->GetGameObject()->SetParentObject(plMove->GetGameObject()->GetGameObjectByNameInChildren("head"));
+			//plMove->ToggleCam();
 		}
 	}
 }
