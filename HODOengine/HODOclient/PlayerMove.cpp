@@ -125,17 +125,17 @@ void PlayerMove::Update()
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 	//UpdatePlayerPositionDebug();
-	if (_tempFlag == 0)
-	{
-		API::SetCurrentSceneMainCamera(_headCam);
-		_headCam->SetAsMainCamera();
-		_isHeadCam = true;
-		//_aimText->SetText("O");
-		_isFirstPersonPerspective = true;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+	//if (_tempFlag == 0)
+	//{
+	//	API::SetCurrentSceneMainCamera(_headCam);
+	//	_headCam->SetAsMainCamera();
+	//	_isHeadCam = true;
+	//	//_aimText->SetText("O");
+	//	_isFirstPersonPerspective = true;
+	//	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 
-		_tempFlag = 1;
-	}
+	//	_tempFlag = 1;
+	//}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -457,8 +457,8 @@ void PlayerMove::UpdatePlayerPositionDebug()
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
 {
 	_headCam = cam;
-	HDData::Transform* headCamTransform = _headCam->GetTransform();
-	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
+	//HDData::Transform* headCamTransform = _headCam->GetTransform();
+	//headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
 }
 
 HDData::Camera* PlayerMove::GetHeadCam() const
@@ -509,7 +509,7 @@ void PlayerMove::StartRoundCam()
 	//_aimText->SetText("O");
 	auto temp2 = _headCam->GetTransform();
 	_isFirstPersonPerspective = true;
-	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
+	//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
 }
 
 void PlayerMove::ToggleCam()

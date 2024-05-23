@@ -21,7 +21,7 @@ void LobbySceneView::Initialize()
 	_scene = API::CreateScene("Lobby");
 
 	auto mainCam = _scene->GetMainCamera();
-	mainCam->GetGameObject()->AddComponent<CameraMove>();
+	//mainCam->GetGameObject()->AddComponent<CameraMove>();
 	mainCam->GetGameObject()->GetTransform()->SetPosition(2.62, 0.57, -5.48);
 	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 

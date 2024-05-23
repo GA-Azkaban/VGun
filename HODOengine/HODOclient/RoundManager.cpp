@@ -59,7 +59,6 @@ void RoundManager::InitRound()
 	for (int i = 0; i < _playerInfo.size(); ++i)
 	{
 		_playerObjs[i]->SetSelfActive(true);
-
 		auto mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 
 		switch (_playerInfo[i]->GetPlayerTeam())
@@ -101,9 +100,10 @@ void RoundManager::InitRound()
 		// playerMove를 활성화해주는 부분
 		if (_playerInfo[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			auto plMove = _playerObjs[i]->GetParentObject()->GetComponent<PlayerMove>();
+			auto plMove = _playerObjs[i]->GetComponent<PlayerMove>();
 			plMove->SetMovable(true);
-			plMove->GetHeadCam()->GetGameObject()->SetParentObject(plMove->GetGameObject()->GetGameObjectByNameInChildren("head"));
+			// TODO
+			// playerMove가 들고있는 HeadCam을 메인카메라로 세팅하는 로직이 필요하다
 		}
 	}
 }

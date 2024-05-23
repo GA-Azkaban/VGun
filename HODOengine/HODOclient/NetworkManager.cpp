@@ -394,7 +394,9 @@ void NetworkManager::SendGameStart()
 void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->Start();
-	API::LoadSceneByName("InGame");
+	auto currentScene = API::LoadSceneByName("InGame");
+	auto mainLight = currentScene->GetMainLight();
+	mainLight->SetDirection(Vector4{ -1, -3, -2, 0 });
 }
 
 void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
