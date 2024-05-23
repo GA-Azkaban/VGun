@@ -24,7 +24,6 @@ void FPAniScript::Update()
 		else
 		{
 			_animator->GetAllAC()->SetBool("isFire", true);
-			//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", true, 0.1, false, 0.01);
 		}
 	}
 	if (API::GetMouseUp(MOUSE_LEFT))
@@ -33,15 +32,20 @@ void FPAniScript::Update()
 	}
 	if (API::GetKeyDown(DIK_R))
 	{
-		//_animator->GetAllAC()->SetTrigger("isReload");
-		GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_reload");
+		int bullet = GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount();
+
+		if (bullet != 30)
+		{
+			_animator->GetAllAC()->SetTrigger("isReload");
+			GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(30);
+		}
 	}
 
 
 	// bullet
 	if (API::GetKeyDown(DIK_F1))
 	{
-		GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(0);
+		GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(10);
 	}
 	if (API::GetKeyDown(DIK_F2))
 	{

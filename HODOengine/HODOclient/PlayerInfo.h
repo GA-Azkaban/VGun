@@ -61,7 +61,7 @@ public:
 	int GetPlayerCurrentHP();
 	int GetPlayerKillCount();
 	int GetPlayerDeathCount();
-	int GetCurrentBulletCount();
+	int& GetCurrentBulletCount();
 	bool GetIsDie();
 	ePlayerState GetPlayerState();
 

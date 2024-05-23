@@ -226,7 +226,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
   <ItemGroup>
     <ClInclude Include="AnimationLoaderTest.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="B.h" />
     <ClInclude Include="BtnHoveringScript.h" />
     <ClInclude Include="BtnImageScript.h" />
     <ClInclude Include="BtnTextScript.h" />
@@ -256,6 +255,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
+    <ClInclude Include="SettingCanvas.h" />
     <ClInclude Include="SliderSoundScript.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="Struct.pb.h" />
@@ -295,6 +295,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="Protocol.pb.cc" />
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
+    <ClCompile Include="SettingCanvas.cpp" />
     <ClCompile Include="SliderSoundScript.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Struct.pb.cc" />

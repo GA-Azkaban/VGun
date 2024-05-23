@@ -16,9 +16,6 @@
     <ClCompile Include="Client.cpp">
       <Filter>01_Entry</Filter>
     </ClCompile>
-    <ClCompile Include="LoginSceneView.cpp">
-      <Filter>04_SceneView\Login</Filter>
-    </ClCompile>
     <ClCompile Include="RoundManager.cpp">
       <Filter>03_Manager\RoundManager</Filter>
     </ClCompile>
@@ -46,9 +43,6 @@
     <ClCompile Include="Protocol.pb.cc">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>04_SceneView\MainMenu</Filter>
-    </ClCompile>
     <ClCompile Include="MenuManager.cpp">
       <Filter>03_Manager\MenuManager</Filter>
     </ClCompile>
@@ -68,26 +62,16 @@
     <ClCompile Include="FPAniScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
-    <ClCompile Include="InGameSceneView.cpp">
-      <Filter>04_SceneView\InGame</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>03_Manager\GameManager\PlayerInfo</Filter>
     </ClCompile>
-    <ClCompile Include="LobbySceneView.cpp">
-      <Filter>04_SceneView\Lobby</Filter>
-    </ClCompile>
     <ClCompile Include="FSMtestScript.cpp" />
-    <ClCompile Include="SoundPlayer.cpp">
-      <Filter>04_SceneView\SoundPlayer</Filter>
-    </ClCompile>
     <ClCompile Include="FadeInOut.cpp">
-      <Filter>04_SceneView\FadeInOut</Filter>
+      <Filter>04_SceneView\02.StaticObj\FadeInOut</Filter>
     </ClCompile>
     <ClCompile Include="BtnHoveringScript.cpp">
-      <Filter>GameScript\ButtonScript</Filter>
+      <Filter>03.Script\ButtonScript</Filter>
     </ClCompile>
-    <ClCompile Include="BtnTextScript.cpp" />
     <ClCompile Include="FSMtestScript.cpp">
       <Filter>02_Client\TestScene\Animation</Filter>
     </ClCompile>
@@ -95,13 +79,34 @@
       <Filter>03_Manager\GameManager</Filter>
     </ClCompile>
     <ClCompile Include="BtnImageScript.cpp">
-      <Filter>GameScript\ImageScript</Filter>
+      <Filter>03.Script\ImageScript</Filter>
     </ClCompile>
     <ClCompile Include="PlayerTest.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
+    <ClCompile Include="InGameSceneView.cpp">
+      <Filter>04_SceneView\01.GameScene\InGame</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbySceneView.cpp">
+      <Filter>04_SceneView\01.GameScene\Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginSceneView.cpp">
+      <Filter>04_SceneView\01.GameScene\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>04_SceneView\01.GameScene\MainMenu</Filter>
+    </ClCompile>
     <ClCompile Include="TrainingSceneView.cpp">
-      <Filter>04_SceneView\Training</Filter>
+      <Filter>04_SceneView\01.GameScene\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>03.Script\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnTextScript.cpp">
+      <Filter>03.Script\TextScript</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingCanvas.cpp">
+      <Filter>04_SceneView\02.StaticObj\SettingCanvas</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +130,6 @@
     </ClInclude>
     <ClInclude Include="TestSound.h">
       <Filter>02_Client\TestScene\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginSceneView.h">
-      <Filter>04_SceneView\Login</Filter>
     </ClInclude>
     <ClInclude Include="RoundManager.h">
       <Filter>03_Manager\RoundManager</Filter>
@@ -159,20 +161,13 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="B.h" />
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MenuManager.h">
       <Filter>03_Manager\MenuManager</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
-      <Filter>04_SceneView\MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundPlayer.h">
-      <Filter>04_SceneView\SoundPlayer</Filter>
-    </ClInclude>
     <ClInclude Include="FadeInOut.h">
-      <Filter>04_SceneView\FadeInOut</Filter>
+      <Filter>04_SceneView\02.StaticObj\FadeInOut</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
       <Filter>02_Client\TestScene\test</Filter>
@@ -198,9 +193,6 @@
     <ClInclude Include="FPAniScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
-    <ClInclude Include="InGameSceneView.h">
-      <Filter>04_SceneView\InGame</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerInfo.h">
       <Filter>03_Manager\GameManager\PlayerInfo</Filter>
     </ClInclude>
@@ -208,13 +200,10 @@
       <Filter>03_Manager\GameManager\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="BtnTextScript.h">
-      <Filter>GameScript\TextScript</Filter>
+      <Filter>03.Script\TextScript</Filter>
     </ClInclude>
     <ClInclude Include="BtnHoveringScript.h">
-      <Filter>GameScript\ButtonScript</Filter>
-    </ClInclude>
-    <ClInclude Include="LobbySceneView.h">
-      <Filter>04_SceneView\Lobby</Filter>
+      <Filter>03.Script\ButtonScript</Filter>
     </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>03_Manager\GameManager</Filter>
@@ -226,13 +215,31 @@
       <Filter>03_Manager\NetworkManager</Filter>
     </ClInclude>
     <ClInclude Include="BtnImageScript.h">
-      <Filter>GameScript\ImageScript</Filter>
+      <Filter>03.Script\ImageScript</Filter>
     </ClInclude>
     <ClInclude Include="PlayerTest.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
+    <ClInclude Include="InGameSceneView.h">
+      <Filter>04_SceneView\01.GameScene\InGame</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginSceneView.h">
+      <Filter>04_SceneView\01.GameScene\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>04_SceneView\01.GameScene\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbySceneView.h">
+      <Filter>04_SceneView\01.GameScene\Lobby</Filter>
+    </ClInclude>
     <ClInclude Include="TrainingSceneView.h">
-      <Filter>04_SceneView\Training</Filter>
+      <Filter>04_SceneView\01.GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>03.Script\SoundPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingCanvas.h">
+      <Filter>04_SceneView\02.StaticObj\SettingCanvas</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -271,15 +278,6 @@
     <Filter Include="04_SceneView">
       <UniqueIdentifier>{78938400-a81c-486c-be6e-3a5260fff65a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_SceneView\Login">
-      <UniqueIdentifier>{2c023769-6516-4112-b946-88a4ff055bbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_SceneView\Lobby">
-      <UniqueIdentifier>{d4fe9301-7e7c-4f97-b4f1-ade435270749}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_SceneView\InGame">
-      <UniqueIdentifier>{3151c696-7a9f-4315-8832-050cff904af8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03_Manager\LobbyManager">
       <UniqueIdentifier>{6cc71ee5-77d6-4520-adb9-643ce13ccc65}</UniqueIdentifier>
     </Filter>
@@ -294,9 +292,6 @@
     </Filter>
     <Filter Include="03_Manager\NetworkManager\Network">
       <UniqueIdentifier>{456bbcca-cd0c-4578-9f4c-42c5856a56ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_SceneView\MainMenu">
-      <UniqueIdentifier>{238e91d1-d004-4082-a04b-b42823628fd1}</UniqueIdentifier>
     </Filter>
     <Filter Include="03_Manager\MenuManager">
       <UniqueIdentifier>{76b2ac2e-a96f-4c9f-a9be-c4305db62ff6}</UniqueIdentifier>
@@ -313,21 +308,6 @@
     <Filter Include="03_Manager\RoundManager">
       <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_SceneView\SoundPlayer">
-      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_SceneView\FadeInOut">
-      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript">
-      <UniqueIdentifier>{ef0be1a9-d055-4c19-af9e-566ca7710276}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript\TextScript">
-      <UniqueIdentifier>{fb8b271c-0c2e-440a-b783-d04736d94db8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript\ButtonScript">
-      <UniqueIdentifier>{f79ac5cb-0ffd-4cb6-b845-794c6ce5da10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03_Manager\GameManager">
       <UniqueIdentifier>{3e6093fd-b3ec-48df-b5cc-994a84f99236}</UniqueIdentifier>
     </Filter>
@@ -337,11 +317,47 @@
     <Filter Include="03_Manager\GameManager\PlayerState">
       <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameScript\ImageScript">
+    <Filter Include="04_SceneView\01.GameScene">
+      <UniqueIdentifier>{b26a34f1-83d8-4fb8-94fb-0e0d5cd18a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\01.GameScene\InGame">
+      <UniqueIdentifier>{3151c696-7a9f-4315-8832-050cff904af8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\01.GameScene\Lobby">
+      <UniqueIdentifier>{d4fe9301-7e7c-4f97-b4f1-ade435270749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\01.GameScene\Login">
+      <UniqueIdentifier>{2c023769-6516-4112-b946-88a4ff055bbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\01.GameScene\MainMenu">
+      <UniqueIdentifier>{238e91d1-d004-4082-a04b-b42823628fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\02.StaticObj">
+      <UniqueIdentifier>{e9e0cef5-9ce3-44cf-8feb-ff015b6c1488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\02.StaticObj\FadeInOut">
+      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\02.StaticObj\SettingCanvas">
+      <UniqueIdentifier>{ac818960-1e4a-4b62-ad38-e8811bfd54c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\01.GameScene\Training">
+      <UniqueIdentifier>{43c25499-4af9-4bd4-b584-35e92c7986ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Script">
+      <UniqueIdentifier>{ef0be1a9-d055-4c19-af9e-566ca7710276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Script\TextScript">
+      <UniqueIdentifier>{fb8b271c-0c2e-440a-b783-d04736d94db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Script\ButtonScript">
+      <UniqueIdentifier>{f79ac5cb-0ffd-4cb6-b845-794c6ce5da10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Script\ImageScript">
       <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04_SceneView\Training">
-      <UniqueIdentifier>{43c25499-4af9-4bd4-b584-35e92c7986ae}</UniqueIdentifier>
+    <Filter Include="03.Script\SoundPlayer">
+      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

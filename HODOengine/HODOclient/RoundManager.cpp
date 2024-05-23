@@ -101,7 +101,7 @@ void RoundManager::InitRound()
 		// playerMove를 활성화해주는 부분
 		if (_playerInfo[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			auto plMove = _playerObjs[i]->GetParentObject()->GetComponent<PlayerMove>();
+			auto plMove = _playerObjs[i]->GetComponent<PlayerMove>();
 			plMove->SetMovable(true);
 			plMove->GetHeadCam()->GetGameObject()->SetParentObject(plMove->GetGameObject()->GetGameObjectByNameInChildren("head"));
 		}

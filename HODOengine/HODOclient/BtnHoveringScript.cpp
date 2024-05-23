@@ -33,4 +33,9 @@ void BtnHoveringScript::Update()
 		_currentCursor = newCursor;
 		SetCursor(newCursor);
 	}
+
+	if (API::GetKeyDown(DIK_ESCAPE))
+	{
+		GetGameObject()->GetComponent<HDData::Button>()->CallClickEvent();
+	}
 }

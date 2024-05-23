@@ -1,6 +1,7 @@
 ﻿#include "TrainingSceneView.h"
 #include "CameraMove.h"
 #include "FPAniScript.h"
+#include "BtnHoveringScript.h"
 
 TrainingSceneView::TrainingSceneView()
 {
@@ -17,9 +18,33 @@ void TrainingSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
 
+	// setting Canvas
+	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
+	preferencesBtn->GetTransform()->SetPosition(1875.f, 30.f, 0.f);
+	preferencesBtn->AddComponent<BtnHoveringScript>();
+	auto prefBtn = preferencesBtn->GetComponent<HDData::Button>();
+	prefBtn->SetImage("icon_cog.png");
+	prefBtn->SetSortOrder(0.6f);
+	prefBtn->SetOnClickEvent(
+		[]() {
+
+		});
+
+	HDData::GameObject* settingControlObject = API::CreateImageBox(_scene, "settingControlObject");
+	settingControlObject->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
+	settingControlObject->SetSelfActive(false);
+
+	HDData::GameObject* preferencesCanvas = API::CreateImageBox(_scene, "Setting", settingControlObject);
+	preferencesCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
+	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
+	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+
+
+
 	HDData::GameObject* player = API::CreateObject(_scene, "player", mainCam->GetGameObject());
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetLocalPosition(1, 1, 0);
+	player->GetTransform()->SetPosition(0, 0.3, -9);
 	player->GetTransform()->Rotate(0, 180, 0);
 
 	auto material = API::GetMaterial("TP_Red");
