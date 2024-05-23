@@ -112,12 +112,13 @@ void InGameSceneView::Initialize()
 	meshComp->LoadMaterial(M_Red, 4);
 	meshComp->PlayAnimation("AR_idle", true);
 
-	//meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
+	meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 
 	RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
 	auto freeRoamingCamObj = API::CreateObject(_scene, "freeRoamingCam");
 	auto freeRoamingCam = freeRoamingCamObj->AddComponent<HDData::Camera>();
+	freeRoamingCamObj->GetTransform()->SetPosition(0.0f, 2.0f, -10.0f);
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.

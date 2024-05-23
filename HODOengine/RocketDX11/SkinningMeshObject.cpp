@@ -143,7 +143,7 @@ namespace RocketCore::Graphics
 				{
 					m_currentAnimation->accumulatedTime += deltaTime * m_currentAnimation->ticksPerSecond;
 
-					if (m_currentAnimation->accumulatedTime > (m_blendDuration * m_currentAnimation->ticksPerSecond))
+					if (m_currentAnimation->accumulatedTime > m_blendDuration)
 					{
 						m_blendFlag = false;
 						m_currentAnimation->accumulatedTime = 0.0f;
@@ -675,20 +675,20 @@ namespace RocketCore::Graphics
 			}
 		}
 
-		float blendDuration = m_blendDuration * m_currentAnimation->ticksPerSecond;
+		//float blendDuration = m_blendDuration * m_currentAnimation->ticksPerSecond;
 
 		if (prevAnim != nullptr && currAnim != nullptr)
 		{
 			// calculate interpolated position
-			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
+			DirectX::XMFLOAT3 position = CalcBlendedPosition(prevAnimationTime, animationTime, m_blendDuration, prevAnim, currAnim);
 			XMMATRIX trans = XMMatrixTranslation(position.x, position.y, position.z);
 
 			// calculate interpolated rotation
-			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
+			DirectX::XMFLOAT4 rotation = CalcBlendedRotation(prevAnimationTime, animationTime, m_blendDuration, prevAnim, currAnim);
 			DirectX::XMVECTOR r = XMLoadFloat4(&rotation);
 			DirectX::XMMATRIX rot = XMMatrixRotationQuaternion(r);
 
-			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, blendDuration, prevAnim, currAnim);
+			DirectX::XMFLOAT3 scale = CalcBlendedScaling(prevAnimationTime, animationTime, m_blendDuration, prevAnim, currAnim);
 			XMMATRIX sc = XMMatrixScaling(scale.x, scale.y, scale.z);
 
 			_nodeTransform = XMMatrixTranspose(sc * rot * trans);
