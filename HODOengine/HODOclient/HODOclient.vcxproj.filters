@@ -100,6 +100,9 @@
     <ClCompile Include="PlayerTest.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
+    <ClCompile Include="TrainingSceneView.cpp">
+      <Filter>04_SceneView\Training</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -228,6 +231,9 @@
     <ClInclude Include="PlayerTest.h">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
+    <ClInclude Include="TrainingSceneView.h">
+      <Filter>04_SceneView\Training</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -333,6 +339,9 @@
     </Filter>
     <Filter Include="GameScript\ImageScript">
       <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04_SceneView\Training">
+      <UniqueIdentifier>{43c25499-4af9-4bd4-b584-35e92c7986ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

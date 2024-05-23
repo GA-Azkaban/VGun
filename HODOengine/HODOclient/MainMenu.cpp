@@ -89,7 +89,7 @@ void MainMenuScene::MainMenu()
 	main_enterText->GetComponent<HDData::TextUI>()->SetText("Enter");
 
 	// room List Canvas
-	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas",main_enterBtn);
+	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas", main_enterBtn);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
 	enter_roomLstCanvas->GetTransform()->SetPosition(1000.0f, 540.0f, 0.0f);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
@@ -207,7 +207,7 @@ void MainMenuScene::MainMenu()
 			MenuManager::Instance().ShowCheckEnterCanvas(false);
 		});
 	MenuManager::Instance().SetCheckEnterCanvas(enter_enterCheckCanvas);
-	
+
 	HDData::GameObject* enter_enterBtn = API::CreateButton(_scene, "enterButton", enter_enterCheckCanvas);
 	enter_enterBtn->GetTransform()->SetLocalPosition(100, 80, 0);
 	auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
@@ -424,7 +424,7 @@ void MainMenuScene::MainMenu()
 	// 해상도
 	// default 1920x1080
 	HDData::GameObject* resolutionText = API::CreateTextbox(_scene, "resolutionText", preferencesCanvas);
-	resolutionText->GetTransform()->SetPosition(300.0f,250.0f,0.f);
+	resolutionText->GetTransform()->SetPosition(300.0f, 250.0f, 0.f);
 	resolutionText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	resolutionText->GetComponent<HDData::TextUI>()->SetText("Resolution");
 	resolutionText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
@@ -707,20 +707,6 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	//tempBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-	//	[=]()
-	//	{
-	//		if (FadeInOut::Instance().GetComplete())
-	//		{
-	//			FadeInOut::Instance().FadeOut();
-	//		}
-	//		else
-	//		{
-	//			FadeInOut::Instance().FadeIn();
-	//		}
-	//	}
-	//);	
-	
 	resolutionBtn1->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
@@ -793,5 +779,11 @@ void MainMenuScene::MainMenu()
 			}
 		}
 	);
+
+	main_trainingBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			API::LoadSceneByName("Training");
+		});
 
 }

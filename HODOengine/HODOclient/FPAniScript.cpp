@@ -23,14 +23,14 @@ void FPAniScript::Update()
 		}
 		else
 		{
-			//_animator->GetAllAC()->SetBool("isFire", true);
+			_animator->GetAllAC()->SetBool("isFire", true);
 			//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", true, 0.1, false, 0.01);
 		}
 	}
-	//if (API::GetMouseUp(MOUSE_LEFT))
-	//{
-	//	_animator->GetAllAC()->SetBool("isFire", false);
-	//}
+	if (API::GetMouseUp(MOUSE_LEFT))
+	{
+		_animator->GetAllAC()->SetBool("isFire", false);
+	}
 	if (API::GetKeyDown(DIK_R))
 	{
 		//_animator->GetAllAC()->SetTrigger("isReload");

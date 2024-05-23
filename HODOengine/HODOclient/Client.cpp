@@ -6,6 +6,7 @@
 #include "AnimationLoaderTest.h"
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
+#include "TrainingSceneView.h"
 
 #include "NetworkManager.h"
 #include "LobbyManager.h"
@@ -28,8 +29,8 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 
-	TestScene test;
-	test.Start();
+	//TestScene test;
+	//test.Start();
 
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
@@ -46,8 +47,11 @@ void Client::Initialize()
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
 
-	//LobbySceneView lobby;
-	//lobby.Initialize();
+	LobbySceneView lobby;
+	lobby.Initialize();
 
-	API::LoadSceneByName("Scene2");
+	TrainingSceneView train;
+	train.Initialize();
+
+	API::LoadSceneByName("Training");
 }
