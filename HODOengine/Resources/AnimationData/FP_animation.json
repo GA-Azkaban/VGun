@@ -1,0 +1,95 @@
+{
+  "Nodes": {
+    "Entry": {
+      "name": "Entry",
+      "FBX": ""
+    },
+    "Exit": {
+      "name": "Exit",
+      "FBX": ""
+    },
+    "IDLE": {
+      "name": "IDLE",
+      "FBX": "SKM_TP_AR_aim.fbx"
+    },
+    "FIRE": {
+      "name": "FIRE",
+      "FBX": "SKM_TP_AR_fire.fbx"
+    },
+    "RELOAD": {
+      "name": "RELOAD",
+      "FBX": "SKM_TP_AR_reload.fbx"
+    },
+    "EMPTY": {
+      "name": "EMPTY",
+      "FBX": "SKM_TP_AR_aim.fbx"
+    }
+  },
+  "Params": {
+    "isReload": {
+      "paramName": "isReload",
+      "type": 3,
+      "value": false
+    },
+    "isFire": {
+      "paramName": "isFire",
+      "type": 2,
+      "value": false
+    },
+    "isEmpty": {
+      "paramName": "isEmpty",
+      "type": 3,
+      "value": false
+    }
+  },
+  "Links": {
+    "link": {
+      "start": "Entry",
+      "end": "IDLE",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "IDLE",
+      "end": "FIRE",
+      "condition": "isFire",
+      "type": 2,
+      "value": "True",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "IDLE",
+      "end": "RELOAD",
+      "condition": "isReload",
+      "type": 3,
+      "value": "",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "RELOAD",
+      "end": "IDLE",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "IDLE",
+      "end": "EMPTY",
+      "condition": "isEmpty",
+      "type": 3,
+      "value": "",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "EMPTY",
+      "end": "IDLE",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "FIRE",
+      "end": "IDLE",
+      "condition": "isFire",
+      "type": 2,
+      "value": "False",
+      "transitionAnimation": ""
+    }
+  },
+  "EntryNode": "IDLE"
+}

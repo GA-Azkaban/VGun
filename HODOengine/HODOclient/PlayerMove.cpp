@@ -2,7 +2,7 @@
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
-	: _isMovable(false),
+	: _isMovable(true),
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
@@ -19,7 +19,8 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	_playerCollider = this->GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	
 	_moveSpeed = 3.0f;
 
 	_isOnGround = false;
@@ -875,6 +876,6 @@ void PlayerMove::CameraMove()
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerCollider->SetColliderRotation(rot);
 
-	Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
-	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
+	//Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
 }

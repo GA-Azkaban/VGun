@@ -94,11 +94,11 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>03_Manager\GameManager</Filter>
     </ClCompile>
-    <ClCompile Include="BtnScript.cpp">
-      <Filter>GameScript\TextScript</Filter>
-    </ClCompile>
     <ClCompile Include="BtnImageScript.cpp">
       <Filter>GameScript\ImageScript</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTest.cpp">
+      <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="BtnImageScript.h">
       <Filter>GameScript\ImageScript</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTest.h">
+      <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

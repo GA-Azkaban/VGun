@@ -143,18 +143,21 @@ namespace HDEngine
 
 		//const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
 
-		const auto& allScenes = SceneSystem::Instance().GetAllScenes();
-		const auto& sceneIter = allScenes.find("InGame")->second;
+		auto& allScenes = SceneSystem::Instance().GetAllScenes();
+		auto sceneIter = allScenes.find("InGame");
 
-		for (auto& object : sceneIter->GetGameObjectList())
+		if (sceneIter != allScenes.end())
 		{
-			CreateStaticPlaneCollider(object);
-			CreateStaticBoxCollider(object);
-			CreateDynamicBoxCollider(object);
-			CreateDynamicCapsuleCollider(object);
-			CreateDynamicSphereCollider(object);
-			CreateTriggerBoxCollider(object);
-			CreateParticleSphereCollider(object);
+			for (auto& object : sceneIter->second->GetGameObjectList())
+			{
+				CreateStaticPlaneCollider(object);
+				CreateStaticBoxCollider(object);
+				CreateDynamicBoxCollider(object);
+				CreateDynamicCapsuleCollider(object);
+				CreateDynamicSphereCollider(object);
+				CreateTriggerBoxCollider(object);
+				CreateParticleSphereCollider(object);
+			}
 		}
 	}
 

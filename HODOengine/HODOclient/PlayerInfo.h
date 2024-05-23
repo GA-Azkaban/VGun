@@ -61,6 +61,7 @@ public:
 	int GetPlayerCurrentHP();
 	int GetPlayerKillCount();
 	int GetPlayerDeathCount();
+	int GetCurrentBulletCount();
 	bool GetIsDie();
 	ePlayerState GetPlayerState();
 
@@ -84,6 +85,6 @@ private:
 
 	// weapon info
 	int _weaponType = 0;
-	int _bulletCount;
+	int _bulletCount = 30;
 };
 
