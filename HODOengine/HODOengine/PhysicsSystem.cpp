@@ -300,14 +300,15 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_material);
 				shape->userData = capsule;
+				
+				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
+				physx::PxTransform localTransform(physx::PxVec3(0.f, 0.f, 0.f), rotation);
+				shape->setLocalPose(localTransform);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
-				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
-				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
-				localTransform *= physx::PxTransform(rotation);
-					//physx::PxQuat(physx::PxPi / 4.0f, physx::PxVec3(0.0f, 0.0f, 1.0f)));
-				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(localTransform);
+				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
 				capsuleRigid->attachShape(*shape);
+
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
 				capsule->SetPhysXRigid(capsuleRigid);
