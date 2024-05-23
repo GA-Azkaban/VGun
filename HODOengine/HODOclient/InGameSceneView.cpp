@@ -101,7 +101,7 @@ void InGameSceneView::Initialize()
 
 	HDData::GameObject* player = API::CreateObject(_scene, "player1");
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(50, 50, 0);
+	player->GetTransform()->SetPosition(30, 5, 30);
 	//player->GetTransform()->SetLocalRotationEuler(Vector3(0.0f, 180.0f, 0.0f));
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -131,7 +131,8 @@ void InGameSceneView::Initialize()
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
 
-	player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+	//player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.5f, 0.4f);
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();

@@ -163,4 +163,15 @@ namespace HDData
 	{
 		_isShakingCamera = true;
 	}
+
+	void Camera::SetCamActive(bool active)
+{
+		_camActive = active;
+	}
+
+	bool Camera::GetCamActive() const
+{
+		return _camActive;
+	}
+
 }

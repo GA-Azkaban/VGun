@@ -19,7 +19,8 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	//_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	
 	_moveSpeed = 3.0f;
 
@@ -525,6 +526,7 @@ void PlayerMove::ToggleCam()
 		_isHeadCam = false;
 		//_aimText->SetText("");
 		_isFirstPersonPerspective = false;
+		_playerCamera->SetCamActive(true);
 	}
 	else
 	{
@@ -534,6 +536,7 @@ void PlayerMove::ToggleCam()
 		//_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
 		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+		_playerCamera->SetCamActive(false);
 	}
 }
 

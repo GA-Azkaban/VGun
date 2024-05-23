@@ -21,7 +21,10 @@ _parentCollider(nullptr)
 
 	void Collider::SetRotationOffset(float x, float y, float z)
 	{
-
+		float yaw = DirectX::XMConvertToRadians(y);
+		float pitch = DirectX::XMConvertToRadians(x);
+		float roll = DirectX::XMConvertToRadians(z);
+		_rotationOffset = Quaternion::CreateFromYawPitchRoll(yaw, pitch, roll);
 	}
 
 	void Collider::SetScaleOffset(Vector3 sca)
