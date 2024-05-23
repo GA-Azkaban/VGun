@@ -31,8 +31,6 @@ void PlayerMove::Start()
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
-
-	//StartRoundCam();
 }
 
 void PlayerMove::Update()
