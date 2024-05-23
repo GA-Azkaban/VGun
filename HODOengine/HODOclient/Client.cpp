@@ -28,8 +28,8 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 
-	TestScene test;
-	test.Start();
+	//TestScene test;
+	//test.Start();
 
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
@@ -43,11 +43,11 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	//InGameSceneView inGame;			//Scene Name : InGame
-	//inGame.Initialize();
+	InGameSceneView inGame;			//Scene Name : InGame
+	inGame.Initialize();
 
 	//LobbySceneView lobby;
 	//lobby.Initialize();
 
-	API::LoadSceneByName("Scene2");
+	API::LoadSceneByName("InGame");
 }

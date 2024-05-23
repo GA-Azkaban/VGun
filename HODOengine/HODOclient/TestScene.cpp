@@ -14,7 +14,7 @@ enum eColliderType
 
 TestScene::TestScene()
 {
-	//_scene = API::CreateScene("Test");
+	_scene = API::CreateScene("Test");
 
 	//auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
 	//mainCam->AddComponent<CameraMove>();
@@ -460,7 +460,7 @@ TestScene::~TestScene()
 
 void TestScene::Start()
 {
-	_scene = API::CreateScene("Test");
+	/*_scene = API::CreateScene("Test");
 
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
@@ -486,8 +486,7 @@ void TestScene::Start()
 
 	meshComp->PlayAnimation("AR_idle", true);
 
-	player->SetSelfActive(false);
-
+	player->SetSelfActive(false);*/
 	
 }
 
