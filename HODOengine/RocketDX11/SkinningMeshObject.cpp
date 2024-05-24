@@ -306,6 +306,11 @@ namespace RocketCore::Graphics
 
 			for (UINT i = 0; i < m_meshes.size(); ++i)
 			{
+				if (!m_meshesActive[i])
+				{
+					continue;
+				}
+
 				if (m_materials[i]->GetAlbedoMap())
 				{
 					m_pixelShader->SetInt("useAlbedo", 1);
@@ -1278,6 +1283,11 @@ namespace RocketCore::Graphics
 	void SkinningMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_meshesActive.resize(m_meshes.size());
+		for (int i = 0; i < m_meshesActive.size(); ++i)
+		{
+			m_meshesActive[i] = true;
+		}
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 	}
 
@@ -1452,7 +1462,7 @@ namespace RocketCore::Graphics
 		{
 			return;
 		}
-		m_meshes[index]->SetActive(isActive);
+		m_meshesActive[index] = isActive;
 	}
 
 }

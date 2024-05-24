@@ -42,7 +42,7 @@ void InGameSceneView::Initialize()
 	std::string objName1 = "player" + std::to_string(1);
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(posX, 3, 0);
+	player->GetTransform()->SetPosition(-10, 3, 0);
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMaterial(M_Red, 0);
@@ -50,9 +50,45 @@ void InGameSceneView::Initialize()
 	meshComp->LoadMaterial(M_Red, 2);
 	meshComp->LoadMaterial(M_Red, 3);
 	meshComp->LoadMaterial(M_Red, 4);
-	meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
+	meshComp->SetMeshActive(false, 0);
+	meshComp->SetMeshActive(false, 1);
+	meshComp->SetMeshActive(false, 3);
+	meshComp->SetMeshActive(false, 4);
 
-	meshComp->PlayAnimation("AR_idle", true);
+	meshComp->PlayAnimation("AR_aim", true);
+
+	// 총 생성
+	auto hand = player->GetGameObjectByNameInChildren("hand_r");
+	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
+	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	weaponComp->LoadMesh("SM_AR_01.fbx");
+	HDEngine::MaterialDesc weaponMatDesc;
+	weaponMatDesc.materialName = "M_WEP_Basic_039";
+	weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
+	weaponMatDesc.roughness = "T_WEP_Basic_R.png";
+	weaponMatDesc.metallicValue = 0.15;
+	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
+	HDEngine::MaterialDesc weaponMatDesc2;
+	weaponMatDesc2.materialName = "M_WEP_Camo_001";
+	weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
+	weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
+	weaponMatDesc2.metallicValue = 0.1f;
+	HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
+	HDEngine::MaterialDesc weaponMatDesc3;
+	weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
+	weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
+	weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
+	weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
+	weaponMatDesc3.metallicValue = 0.1f;
+	HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
+	weaponComp->LoadMaterial(weaponMat1, 0);
+	weaponComp->LoadMaterial(weaponMat2, 1);
+	weaponComp->LoadMaterial(weaponMat2, 3);
+	weaponComp->LoadMaterial(weaponMat2, 5);
+	weaponComp->LoadMaterial(weaponMat3, 2);
+	weaponComp->LoadMaterial(weaponMat3, 4);
 
 	RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
@@ -60,7 +96,7 @@ void InGameSceneView::Initialize()
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
-	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 0.12f, 0.2f });
+	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
 
 	auto playerMove = player->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(freeRoamingCam);
@@ -95,7 +131,6 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadMaterial(M_Red, 2);
 		otherMeshComp->LoadMaterial(M_Red, 3);
 		otherMeshComp->LoadMaterial(M_Red, 4);
-		otherMeshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 		
 		otherMeshComp->PlayAnimation("AR_idle", true);
 		

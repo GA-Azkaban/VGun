@@ -10,7 +10,7 @@ public:
 	void Update() override;
 
 private:
-	float angleX;
-	float angleY;
-	float angleZ;
+	//float angleX;
+	//float angleY;
+	//float angleZ;
 };

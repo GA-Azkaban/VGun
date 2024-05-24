@@ -232,6 +232,7 @@ TestScene::TestScene()
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
@@ -243,9 +244,7 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
-	//meshComp->PlayAnimation("AR_aim", true);
-	meshComp->PlayAnimationUpper("AR_aim", true);
-	meshComp->PlayAnimationLower("AR_aim", true);
+	meshComp->PlayAnimation("AR_aim", true);
 	//meshComp->SetOutlineActive(true);
 	//meshComp->SetMeshActive(false, 0);
 	//meshComp->SetMeshActive(false, 1);
@@ -258,11 +257,10 @@ TestScene::TestScene()
 	//auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->AddComponent<MeshTransformController>();
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(50.0f, 100.0f, -100.0f);
-	//weaponTest->GetComponent<HDData::Transform>()->Rotate(0.0f, -150.0f, 0.0f);
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-13.0f, -10.0f, 0.0f);
-	//weaponTest->GetComponent<HDData::Transform>()->Rotate(-45.0f, -40.0f, -15.0f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	//weaponComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	weaponComp->LoadMesh("SM_AR_01.fbx");
 	HDEngine::MaterialDesc weaponMatDesc;
 	weaponMatDesc.materialName = "M_WEP_Basic_039";
@@ -495,7 +493,7 @@ void TestScene::Start()
 	meshComp->PlayAnimation("AR_idle", true);
 
 	player->SetSelfActive(false);*/
-	
+
 }
 
 void TestScene::ClickEvent()

@@ -45,7 +45,6 @@ namespace RocketCore::Graphics
 		~Mesh();
 
 		UINT GetSingleVertexSize() { return m_singleVertexSize; }
-		void SetActive(bool isActive) { m_isActive = isActive; }
 
 		void BindBuffers();
 		void Draw();
@@ -66,7 +65,5 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11Buffer> m_indexBuffer;
 		UINT m_singleVertexSize;
 		int m_numIndices;
-
-		bool m_isActive;
 	};
 }

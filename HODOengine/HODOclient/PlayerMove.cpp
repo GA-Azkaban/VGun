@@ -18,7 +18,7 @@ PlayerMove::PlayerMove()
 }
 
 void PlayerMove::Start()
-{
+{	
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	
 	_moveSpeed = 3.0f;
@@ -32,6 +32,7 @@ void PlayerMove::Start()
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
+	StartRoundCam();
 }
 
 void PlayerMove::Update()
@@ -503,11 +504,11 @@ void PlayerMove::PresetSprayPattern()
 
 void PlayerMove::StartRoundCam()
 {
-	API::SetCurrentSceneMainCamera(_headCam);
-	_headCam->SetAsMainCamera();
+	//API::SetCurrentSceneMainCamera(_headCam);
+	//_headCam->SetAsMainCamera();
 	_isHeadCam = true;
 	//_aimText->SetText("O");
-	auto temp2 = _headCam->GetTransform();
+	//auto temp2 = _headCam->GetTransform();
 	_isFirstPersonPerspective = true;
 	//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
 }
