@@ -53,7 +53,7 @@ namespace RocketCore::Graphics
 
 	/// 2024.01.15 김민정
 	Mesh::Mesh(PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum)
-		: m_device(0), m_deviceContext(0), m_singleVertexSize(0), m_isActive(true)
+		: m_device(0), m_deviceContext(0), m_singleVertexSize(0)
 	{
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
@@ -61,7 +61,7 @@ namespace RocketCore::Graphics
 	}
 
 	Mesh::Mesh(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, bool tangentCalculated)
-		: m_device(0), m_deviceContext(0), m_singleVertexSize(0), m_isActive(true)
+		: m_device(0), m_deviceContext(0), m_singleVertexSize(0)
 	{
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
@@ -72,7 +72,7 @@ namespace RocketCore::Graphics
 	}
 
 	Mesh::Mesh(VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum)
-		: m_device(0), m_deviceContext(0), m_singleVertexSize(0), m_isActive(true)
+		: m_device(0), m_deviceContext(0), m_singleVertexSize(0)
 	{
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
@@ -82,7 +82,7 @@ namespace RocketCore::Graphics
 	}
 
 	Mesh::Mesh(const char* objFile)
-		: m_device(0), m_deviceContext(0), m_singleVertexSize(0), m_isActive(true)
+		: m_device(0), m_deviceContext(0), m_singleVertexSize(0)
 	{
 		m_device = ResourceManager::Instance().GetDevice();
 		m_deviceContext = ResourceManager::Instance().GetDeviceContext();
@@ -105,18 +105,13 @@ namespace RocketCore::Graphics
 
 	void Mesh::Draw()
 	{
-		if (m_isActive)
-		{
-			m_deviceContext->DrawIndexed(m_numIndices, 0, 0);
-		}
+		m_deviceContext->DrawIndexed(m_numIndices, 0, 0);
+
 	}
 
 	void Mesh::DrawInstanced(UINT instanceCount)
 	{
-		if (m_isActive)
-		{
-			m_deviceContext->DrawIndexedInstanced(m_numIndices, instanceCount, 0, 0, 0);
-		}
+		m_deviceContext->DrawIndexedInstanced(m_numIndices, instanceCount, 0, 0, 0);
 	}
 
 	// Calculates the tangents of the vertices in a mesh

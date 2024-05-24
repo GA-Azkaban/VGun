@@ -98,6 +98,7 @@ namespace RocketCore::Graphics
 
 	private:
 		std::vector<Mesh*> m_meshes;
+		std::vector<bool> m_meshesActive;
 		std::vector<Material*> m_materials;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
