@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
@@ -19,7 +19,8 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	//_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	
 	_moveSpeed = 3.0f;
 
@@ -124,7 +125,7 @@ void PlayerMove::Update()
 	
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
-	//UpdatePlayerPositionDebug();
+	////UpdatePlayerPositionDebug();
 	//if (_tempFlag == 0)
 	//{
 	//	API::SetCurrentSceneMainCamera(_headCam);
@@ -525,6 +526,7 @@ void PlayerMove::ToggleCam()
 		_isHeadCam = false;
 		//_aimText->SetText("");
 		_isFirstPersonPerspective = false;
+		_playerCamera->SetCamActive(true);
 	}
 	else
 	{
@@ -534,6 +536,7 @@ void PlayerMove::ToggleCam()
 		//_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
 		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+		_playerCamera->SetCamActive(false);
 	}
 }
 
@@ -875,7 +878,11 @@ void PlayerMove::CameraMove()
 
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerCollider->SetColliderRotation(rot);
-
+	
 	//Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
+
+	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
+	Quaternion rotX = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	_headCam->GetTransform()->SetRotation(rotX);
 }

@@ -67,7 +67,8 @@ private:
 	int _prevDirection;
 
 private:
-	HDData::DynamicBoxCollider* _playerCollider;
+	//HDData::DynamicBoxCollider* _playerCollider;
+	HDData::DynamicCapsuleCollider* _playerCollider;
 	HDData::Camera* _playerCamera;
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;

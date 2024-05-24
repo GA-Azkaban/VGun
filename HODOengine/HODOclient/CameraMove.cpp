@@ -9,6 +9,11 @@ CameraMove::CameraMove()
 
 void CameraMove::Update()
 {
+	_camera = GetGameObject()->GetComponent<HDData::Camera>();
+	if (!_camera->GetCamActive())
+	{
+		return;
+	}
 	//float deltaTime = rocket.GetDeltaTime();
 	float deltaTime = API::GetDeltaTime();
 	moveSpeed = 5.0f;
@@ -50,12 +55,12 @@ void CameraMove::Update()
 
 	if (API::GetKeyPressing(DIK_LEFTARROW))
 	{
-		RotateY(-rotateSpeed * deltaTime / 4);
+		Yaw(-rotateSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(DIK_RIGHTARROW))
 	{
-		RotateY(rotateSpeed * deltaTime / 4);
+		Yaw(rotateSpeed * deltaTime / 4);
 	}
 
 	if (API::GetKeyPressing(DIK_DOWNARROW))
@@ -67,22 +72,6 @@ void CameraMove::Update()
 	{
 		Pitch(-rotateSpeed * deltaTime * 10);
 	}
-
-
-	OnMouseMove();
-}
-
-void CameraMove::OnMouseMove()
-{
-	if (!API::GetKeyPressing(MOUSE_RIGHT))
-	{
-		return;
-	}
-
-// 	RocketEngine::RMFLOAT2 mouseDelta = RocketEngine::GetMouseDelta();
-// 	mouseDelta = mouseDelta * RocketEngine::GetDeltaTime();
-// 	_camera->Pitch(mouseDelta.y);
-// 	_camera->RotateY(mouseDelta.x);
 }
 
 void CameraMove::Strafe(float delta)
@@ -111,14 +100,20 @@ void CameraMove::WorldUpDown(float delta)
 	GetGameObject()->GetTransform()->Translate(worldUpDelta);
 }
 
-void CameraMove::Pitch(float angle)
-{
-	GetTransform()->Rotate(angle, 0.0f, 0.0f);
-}
-
-void CameraMove::RotateY(float angle)
+void CameraMove::Yaw(float angle)
 {
 	Quaternion rotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angle);
 	Quaternion result = Quaternion::Concatenate(rotQuat, GetGameObject()->GetTransform()->GetLocalRotation());
 	GetGameObject()->GetTransform()->SetLocalRotation(result);
 }
+
+void CameraMove::Pitch(float angle)
+{
+	GetTransform()->Rotate(angle, 0.0f, 0.0f);
+}
+
+void CameraMove::Roll(float angle)
+{
+	GetTransform()->Rotate(0.0f, 0.0f, angle);
+}
+

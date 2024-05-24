@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -66,7 +66,8 @@ void InGameSceneView::Initialize()
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
 
-	player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+	//player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.5f, 0.4f);
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
