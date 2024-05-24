@@ -125,18 +125,18 @@ void PlayerMove::Update()
 	
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
-	//UpdatePlayerPositionDebug();
-	if (_tempFlag == 0)
-	{
-		API::SetCurrentSceneMainCamera(_headCam);
-		_headCam->SetAsMainCamera();
-		_isHeadCam = true;
-		//_aimText->SetText("O");
-		_isFirstPersonPerspective = true;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+	////UpdatePlayerPositionDebug();
+	//if (_tempFlag == 0)
+	//{
+	//	API::SetCurrentSceneMainCamera(_headCam);
+	//	_headCam->SetAsMainCamera();
+	//	_isHeadCam = true;
+	//	//_aimText->SetText("O");
+	//	_isFirstPersonPerspective = true;
+	//	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 
-		_tempFlag = 1;
-	}
+	//	_tempFlag = 1;
+	//}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -878,7 +878,11 @@ void PlayerMove::CameraMove()
 
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerCollider->SetColliderRotation(rot);
-
+	
 	//Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
+
+	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
+	Quaternion rotX = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	_headCam->GetTransform()->SetRotation(rotX);
 }
