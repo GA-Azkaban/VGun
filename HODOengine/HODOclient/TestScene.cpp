@@ -17,8 +17,9 @@ TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
 
-	auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
+	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+	mainCam->SetSelfActive(true);
 
 	//auto skybox = API::CreateObject(_scene);
 	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
@@ -244,7 +245,9 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
-	meshComp->PlayAnimation("AR_aim", true);
+	//meshComp->PlayAnimation("AR_aim", true);
+	meshComp->PlayAnimationUpper("AR_reload", true);
+	meshComp->PlayAnimationLower("AR_run_F", true);
 	//meshComp->SetOutlineActive(true);
 	//meshComp->SetMeshActive(false, 0);
 	//meshComp->SetMeshActive(false, 1);
@@ -256,7 +259,7 @@ TestScene::TestScene()
 	auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
 	//auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->AddComponent<MeshTransformController>();
+	//weaponTest->AddComponent<MeshTransformController>();
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();

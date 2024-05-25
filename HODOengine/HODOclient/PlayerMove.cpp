@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 
 PlayerMove::PlayerMove()
@@ -148,6 +148,7 @@ void PlayerMove::SetMovable(bool movable)
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
 {
 	_playerCamera = camera;
+	camera->SetCamActive(false);
 }
 
 void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim)
