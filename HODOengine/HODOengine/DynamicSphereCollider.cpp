@@ -46,7 +46,7 @@ bool HDData::DynamicSphereCollider::GetIsPlayer() const
 	return _isPlayer;
 }
 
-void HDData::DynamicSphereCollider::DrawDebug()
+void HDData::DynamicSphereCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

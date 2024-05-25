@@ -15,7 +15,7 @@ namespace HDData
 
 		void SetRadius(float radius);
 
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 	private:
 		float _radius;

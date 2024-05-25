@@ -36,7 +36,7 @@ void HDData::ParticleSphereCollider::SetTimerActive()
 	_duration = 1.0f;
 }
 
-void HDData::ParticleSphereCollider::DrawDebug()
+void HDData::ParticleSphereCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

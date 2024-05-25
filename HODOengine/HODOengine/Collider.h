@@ -19,7 +19,7 @@ namespace HDData
 
 	public:
 		virtual void UpdateToPhysics() abstract;
-		virtual void DrawDebug() abstract;
+		//virtual void DrawDebug() abstract;
 
 	public:
 		void SetPositionOffset(Vector3 pos);

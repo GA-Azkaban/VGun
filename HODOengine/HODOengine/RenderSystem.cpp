@@ -54,11 +54,6 @@ namespace HDEngine
 
 	void RenderSystem::DrawProcess()
 	{
-		for (auto collider : _colliderList)
-		{
-			collider->DrawDebug();
-		}
-
 		_dx11Renderer->Render();
 	}
 
@@ -67,17 +62,6 @@ namespace HDEngine
 		HDData::Scene* currentScene = SceneSystem::Instance().GetCurrentScene();
 		HDData::Camera* mainCam = currentScene->GetMainCamera();
 		mainCam->UpdateRenderData();
-
-		/*for (auto rendererBase : _rendererList)
-		{
-			rendererBase->UpdateRenderData();
-		}*/
-
-		/*for (auto uiBase : _uiList)
-		{
-			uiBase->UpdateRenderData();
-		}*/
-
 	}
 
 	int RenderSystem::GetScreenWidth() const
@@ -88,21 +72,6 @@ namespace HDEngine
 	int RenderSystem::GetScreenHeight() const
 	{
 		return _screenHeight;
-	}
-
-	/*void RenderSystem::PushRenderComponent(HDData::RendererBase* comp)
-	{
-		_rendererList.emplace_back(comp);
-	}
-
-	void RenderSystem::PushSketchComponent(HDData::UIBase* comp)
-	{
-		_uiList.emplace_back(comp);
-	}*/
-
-	void RenderSystem::PushCollider(HDData::Collider* col)
-	{
-		_colliderList.emplace_back(col);
 	}
 
 	void RenderSystem::DrawLine(Vector3 start, Vector3 end, Vector4 color)

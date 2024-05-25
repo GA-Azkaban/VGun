@@ -16,7 +16,7 @@ namespace HDData
 		void CheckTimer(float deltaTime);
 		void SetTimerActive();
 
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 	private:
 		float _radius;

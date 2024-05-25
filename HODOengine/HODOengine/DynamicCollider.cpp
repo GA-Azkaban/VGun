@@ -125,7 +125,7 @@ void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 	GetTransform()->SetRotation(quat);
 }
 
-void HDData::DynamicCollider::DrawDebug()
+void HDData::DynamicCollider::Update()
 {
 
 }

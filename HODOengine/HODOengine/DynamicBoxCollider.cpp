@@ -41,7 +41,7 @@ float HDData::DynamicBoxCollider::GetDepth() const
 	return _depth;
 }
 
-void HDData::DynamicBoxCollider::DrawDebug()
+void HDData::DynamicBoxCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

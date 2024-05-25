@@ -11,7 +11,7 @@ namespace HDData
 , _scaleOffset(Vector3::One),
 _parentCollider(nullptr)
 	{
-		HDEngine::RenderSystem::Instance().PushCollider(this);
+		
 	}
 
 	void Collider::SetPositionOffset(Vector3 pos)

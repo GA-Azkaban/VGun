@@ -46,7 +46,7 @@ namespace HDData
 		void UpdateFromPhysics(Vector3 pos, Quaternion quat);
 
 	public:
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 	public:
 		void Collide();

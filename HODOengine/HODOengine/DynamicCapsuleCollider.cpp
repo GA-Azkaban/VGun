@@ -33,7 +33,7 @@ float HDData::DynamicCapsuleCollider::GetDepth() const
 	return (_radius + _halfHeight) * 2 * _scaleOffset.z * GetGameObject()->GetTransform()->GetScale().z;
 }
 
-void HDData::DynamicCapsuleCollider::DrawDebug()
+void HDData::DynamicCapsuleCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

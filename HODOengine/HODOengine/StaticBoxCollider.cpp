@@ -1,4 +1,4 @@
-#include "StaticBoxCollider.h"
+﻿#include "StaticBoxCollider.h"
 #include "PhysicsSystem.h"
 #include "GraphicsObjFactory.h"
 
@@ -48,7 +48,7 @@ void HDData::StaticBoxCollider::SetDepth(float val)
 	_depth = val;
 }
 
-void HDData::StaticBoxCollider::DrawDebug()
+void HDData::StaticBoxCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

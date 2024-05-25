@@ -45,7 +45,7 @@ void HDData::TriggerBoxCollider::SetDepth(float val)
 	_depth = val;
 }
 
-void HDData::TriggerBoxCollider::DrawDebug()
+void HDData::TriggerBoxCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();
