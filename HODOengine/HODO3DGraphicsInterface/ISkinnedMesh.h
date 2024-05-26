@@ -24,6 +24,7 @@ namespace HDEngine
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) = 0;
 		virtual void SetOutlineActive(bool isActive) = 0;
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) = 0;
+		virtual void PlayAnimationAtOnce(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) = 0;
 		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) = 0;
 		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) = 0;
 		virtual bool IsAnimationExitTimeElapsed() = 0 ;

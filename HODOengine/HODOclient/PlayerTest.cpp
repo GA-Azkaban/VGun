@@ -19,11 +19,11 @@ void PlayerTest::Update()
 
 	if (API::GetKeyDown(DIK_2))
 	{
-		_renderer->PlayAnimation("AR_run_F", true);
+		_renderer->PlayAnimationAtOnce("AR_dying", false, 0.1f, false);
 	}
 
 	if (API::GetKeyDown(DIK_3))
 	{
-		_renderer->PlayAnimation("AR_reload", true);
+		_renderer->PlayAnimation("AR_reload", false, 0.1f, false);
 	}
 }

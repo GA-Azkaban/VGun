@@ -52,6 +52,7 @@ namespace RocketCore::Graphics
 		virtual Node* GetNode() override;
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationAtOnce(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 

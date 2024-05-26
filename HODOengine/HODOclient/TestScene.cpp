@@ -19,7 +19,6 @@ TestScene::TestScene()
 
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
-	mainCam->SetSelfActive(true);
 
 	//auto skybox = API::CreateObject(_scene);
 	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
@@ -223,7 +222,7 @@ TestScene::TestScene()
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	//playerTest->AddComponent<PlayerTest>();
+	playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
@@ -245,9 +244,9 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
-	//meshComp->PlayAnimation("AR_aim", true);
-	meshComp->PlayAnimationUpper("AR_reload", true);
-	meshComp->PlayAnimationLower("AR_run_F", true);
+	meshComp->PlayAnimation("AR_aim", true);
+	//meshComp->PlayAnimationUpper("AR_reload", true);
+	//meshComp->PlayAnimationLower("AR_run_R", true);
 	//meshComp->SetOutlineActive(true);
 	//meshComp->SetMeshActive(false, 0);
 	//meshComp->SetMeshActive(false, 1);
