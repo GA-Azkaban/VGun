@@ -31,7 +31,7 @@ void InGameSceneView::Initialize()
 	// 그래픽스 디버깅용 카메라 생성
 	auto freeRoamingCamObj = API::CreateObject(_scene, "freeRoamingCam");
 	auto freeRoamingCam = freeRoamingCamObj->AddComponent<HDData::Camera>();
-	freeRoamingCamObj->GetTransform()->SetPosition(0.0f, 2.0f, -10.0f);
+	freeRoamingCamObj->GetTransform()->SetPosition(-5.0f, 2.0f, -10.0f);
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 내 캐릭터 생성
@@ -99,8 +99,8 @@ void InGameSceneView::Initialize()
 	playerMove->SetHeadCam(mainCam);
 
 	//player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.5f, 0.4f);
-	//playerCollider->SetPositionOffset({ 0.0f, -0.6f, 0.0f });
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.6f);
+	//playerCollider->SetPositionOffset({ 0.0f, 0.6f, 0.0f });
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
@@ -121,7 +121,7 @@ void InGameSceneView::Initialize()
 		std::string otherObjName = "player" + std::to_string(i + 1);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
-		otherPlayer->GetTransform()->SetPosition(posX, 3, 0);
+		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadMaterial(M_Red, 0);
@@ -132,7 +132,8 @@ void InGameSceneView::Initialize()
 		
 		otherMeshComp->PlayAnimation("AR_idle", true);
 		
-		otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+		auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+		boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
 
 		RoundManager::Instance()->GetPlayerObjs().push_back(otherPlayer);
 
