@@ -34,10 +34,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 		}
 	}
 	irradiance = PI * irradiance * (1.0 / float(nrSamples));
-    
-    irradiance.x *= 1.05f;
-    irradiance.y *= 0.965f;
-    irradiance.z *= 1.045f;
 	
 	return float4(irradiance, 1.0f);
 }

@@ -43,10 +43,6 @@ void LoginSceneView::LoginView()
 	mainCanvas->GetTransform()->SetPosition(960.f, 540.f, 0.f);
 	mainCanvas->GetComponent < HDData::ImageUI>()->SetActive(true);
 
-	auto skybox = API::CreateObject(_scene);
-	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
-
 	/// main canvas
 
 	// 임시 동작을 위한 큐브맵 나중에 지워야 함

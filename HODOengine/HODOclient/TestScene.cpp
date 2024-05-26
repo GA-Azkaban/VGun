@@ -20,11 +20,6 @@ TestScene::TestScene()
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	//auto skybox = API::CreateObject(_scene);
-	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	//skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
-	//_scene = API::CreateScene("Test Scene");
-
 	/*
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);

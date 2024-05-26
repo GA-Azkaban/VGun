@@ -18,10 +18,6 @@ void InGameSceneView::Initialize()
 {
 	_scene = API::CreateScene("InGame");
 
-	auto skybox = API::CreateObject(_scene);
-	auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
-
 	// 플레이어 여섯 명 렌더링
 	float posX = 0;
 	float posT = 165;

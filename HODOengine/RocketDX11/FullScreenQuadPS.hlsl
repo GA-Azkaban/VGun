@@ -72,7 +72,7 @@ float4 main(VertexToPixel input) : SV_TARGET
 		float denominator = 4.0 * saturate(surf.NdotV) * NdotL;
 		float3 specular = numerator / max(denominator, 0.001);
 
-		Lo += (kD * albedo / PI + specular) * light.color.rgb * 3.5f * li.attenuation * NdotL * li.shadowFactor;
+		Lo += (kD * albedo / PI + specular) * 3.0f * light.color.rgb * li.attenuation * NdotL * li.shadowFactor;
 	}
 
 	float3 ambient = globalAmbient.rgb * albedo;

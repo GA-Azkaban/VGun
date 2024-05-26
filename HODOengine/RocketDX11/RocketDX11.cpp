@@ -190,6 +190,7 @@ namespace RocketCore::Graphics
 		// load all skybox texture
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
 
 		/// fbx
 
@@ -239,7 +240,7 @@ namespace RocketCore::Graphics
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
-		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear.dds");
+		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 		Cubemap::Instance().SetEnvLightIntensity(0.8f);
 
 		/// DEBUG Obejct
