@@ -3,6 +3,7 @@
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
 #include "RoundManager.h"
+#include "../HODOEngine/CollisionCallback.h"
 
 InGameSceneView::InGameSceneView()
 {
