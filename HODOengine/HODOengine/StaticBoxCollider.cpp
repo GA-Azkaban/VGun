@@ -1,10 +1,9 @@
-﻿#include "StaticBoxCollider.h"
+#include "StaticBoxCollider.h"
 #include "PhysicsSystem.h"
 #include "GraphicsObjFactory.h"
 
 HDData::StaticBoxCollider::StaticBoxCollider()
 	: _width(1.0f), _height(1.0f), _depth(1.0f)
-	//: _width(0.01f), _height(0.01f), _depth(0.01f)
 {
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;

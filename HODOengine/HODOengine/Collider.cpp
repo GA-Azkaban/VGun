@@ -62,19 +62,6 @@ _parentCollider(nullptr)
 
 	Matrix Collider::GetRotationMatrix()
 	{
-		Matrix scaleMatrix =
-		{
-			_scaleOffset.x,		0,					0,					0,
-			0,					_scaleOffset.y,		0,					0,
-			0,					0,					_scaleOffset.z,		0,
-			0,					0,					0,					1
-		};
-
-		return scaleMatrix;
-	}
-
-	Matrix Collider::GetScaleMatrix()
-	{
 		Matrix rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
@@ -101,10 +88,23 @@ _parentCollider(nullptr)
 		return rotationMatrix;
 	}
 
+	Matrix Collider::GetScaleMatrix()
+	{		
+		Matrix scaleMatrix =
+		{
+			_scaleOffset.x,		0,					0,					0,
+			0,					_scaleOffset.y,		0,					0,
+			0,					0,					_scaleOffset.z,		0,
+			0,					0,					0,					1
+		};
+
+		return scaleMatrix;
+	}
+
 	Matrix Collider::GetTransformMatrix()
 	{
-		//Matrix result = Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
-		Matrix result = Matrix::Identity * GetTranslateMatrix()  * GetRotationMatrix() *GetScaleMatrix();
+		Matrix result = GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
+		//Matrix result = GetTranslateMatrix()  * GetRotationMatrix() * GetScaleMatrix();
 
 		if (_parentCollider != nullptr)
 		{

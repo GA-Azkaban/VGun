@@ -133,16 +133,14 @@ namespace HDEngine
 				{
 					auto col = object->AddComponent<HDData::StaticBoxCollider>();
 					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
-					col->SetWidth(info.boxColliderSize.x);
-					col->SetHeight(info.boxColliderSize.y);
-					col->SetDepth(info.boxColliderSize.z);
+					col->SetScaleOffset(info.boxColliderSize);
 				}
 				break;
 				case 2:	// sphere dynamic
 				{
 					auto col = object->AddComponent<HDData::DynamicSphereCollider>();
 					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
-					col->SetRadius(info.sphereColliderRadius);
+					col->SetScaleOffset({ info.sphereColliderRadius, info.sphereColliderRadius, info.sphereColliderRadius });
 				}
 				break;
 				default:
