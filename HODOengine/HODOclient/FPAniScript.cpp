@@ -1,4 +1,4 @@
-#include "FPAniScript.h"
+﻿#include "FPAniScript.h"
 #include "GameManager.h"
 
 FPAniScript::FPAniScript()
@@ -15,6 +15,7 @@ void FPAniScript::Update()
 {
 	if (API::GetMouseHold(MOUSE_LEFT))
 	{
+		//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", false, true, 0.1);
 		_animator->GetAllAC()->SetTrigger("isFire");
 	}
 	if (API::GetKeyDown(DIK_R))

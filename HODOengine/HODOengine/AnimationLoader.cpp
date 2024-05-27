@@ -1,4 +1,4 @@
-#include <fstream>
+﻿#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -215,7 +215,7 @@ namespace HDEngine
 				con->GetState(link.end)._isAnyState = true;
 				for (auto& [name, state] : con->GetAllStates())
 				{
-					state->MakeTransition(link.end).AddTrigger(link.end, link.param.paramName, link.param.t_value);
+					state->MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.b_value);
 				}
 				continue;
 			}

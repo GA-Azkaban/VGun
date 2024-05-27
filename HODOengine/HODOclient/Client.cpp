@@ -1,4 +1,4 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -46,10 +46,12 @@ void Client::Initialize()
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
+	*/
 
 	LobbySceneView lobby;
 	lobby.Initialize();
 
 	API::LoadSceneByName("Lobby");
+
 	//API::LoadSceneByName("InGame");
 }
