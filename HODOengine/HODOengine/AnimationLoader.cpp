@@ -210,13 +210,22 @@ namespace HDEngine
 	{
 		for (auto& link : _links)
 		{
+			if (link.start == "Any State")
+			{
+				con->GetState(link.end)._isAnyState = true;
+				for (auto& [name, state] : con->GetAllStates())
+				{
+					state->MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.b_value);
+				}
+				continue;
+			}
+			
 			switch (link.param.type)
 			{
 				case 0:
 				{
 					if (link.hasEngageMotion) con->GetState(link.start).MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.condition, link.param.f_value);
 					else con->GetState(link.start).MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.condition, link.param.f_value);
-					
 				}
 				break;
 				case 1:

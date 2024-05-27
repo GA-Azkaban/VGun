@@ -46,7 +46,11 @@ namespace HDData
 
 		if (_animationController->IsStateChange() && !_engageIng)
 		{
-			if (_animationController->GetCurrentState()->GetIsLoop() && _animationController->GetCurrentState()->_motion != "")
+			if (_animationController->GetCurrentState()->_isAnyState)
+			{
+				_meshRenderer->PlayAnimationAtOnce(_animationController->GetCurrentState()->_motion, false, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
+			}
+			else if (_animationController->GetCurrentState()->GetIsLoop() && _animationController->GetCurrentState()->_motion != "")
 			{
 				_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 			}

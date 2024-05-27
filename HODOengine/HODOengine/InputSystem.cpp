@@ -215,7 +215,7 @@ namespace HDEngine
 
 		if (_isFirstPersonPerspective)
 		{
-			RecursiveMouse();
+			//RecursiveMouse();
 		}
 	}
 
