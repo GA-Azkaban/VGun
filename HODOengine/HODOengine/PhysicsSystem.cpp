@@ -199,6 +199,7 @@ namespace HDEngine
 				Vector3 scale = object->GetTransform()->GetScale();
 
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_planeMaterial);
+				//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x * box->GetScaleOffset().x, box->GetHeight() / 2 * scale.y * box->GetScaleOffset().y, box->GetDepth() / 2 * scale.z * box->GetScaleOffset().z), *_planeMaterial);
 				shape->userData = box;
 				// TODO : 여기 작업하고 있었음.
 				Vector3 position = object->GetTransform()->GetPosition();
@@ -287,7 +288,8 @@ namespace HDEngine
 				shape->userData = capsule;
 				
 				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
-				physx::PxTransform localTransform(physx::PxVec3(0.f, 0.f, 0.f), rotation);
+				Vector3 posOffset = collider->GetPositionOffset();
+				physx::PxTransform localTransform(physx::PxVec3(posOffset.x, posOffset.y, posOffset.z), rotation);
 				shape->setLocalPose(localTransform);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());

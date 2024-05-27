@@ -20,7 +20,6 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	//_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	
 	_moveSpeed = 3.0f;

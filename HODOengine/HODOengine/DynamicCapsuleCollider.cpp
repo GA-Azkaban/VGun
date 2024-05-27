@@ -3,7 +3,7 @@
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
-	: _radius(1.0f), _halfHeight(2.0f)
+	: _radius(1.0f), _halfHeight(1.0f)
 {
 	_capsuleObject = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCapsulePrimitive();
 	_debugStruct = _capsuleObject;
@@ -37,6 +37,9 @@ void HDData::DynamicCapsuleCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();
+	colWorld._11 *= _radius;
+	colWorld._22 *= _halfHeight;
+	colWorld._33 *= _radius;
 	colWorld *= GetTransform()->GetWorldTM();
 	_debugStruct->worldTM = colWorld;
 	_debugStruct->color = { 0.0f, 1.0f, 0.0f, 1.0f };
