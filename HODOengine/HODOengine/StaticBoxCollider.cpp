@@ -1,4 +1,4 @@
-#include "StaticBoxCollider.h"
+﻿#include "StaticBoxCollider.h"
 #include "PhysicsSystem.h"
 #include "GraphicsObjFactory.h"
 
@@ -20,17 +20,20 @@ HDData::StaticBoxCollider::StaticBoxCollider(float width, float height, float de
 
 float HDData::StaticBoxCollider::GetHeight()
 {
-	return _height;
+	//return _height;
+	return _height * _scaleOffset.y * GetTransform()->GetScale().y;
 }
 
 float HDData::StaticBoxCollider::GetWidth()
 {
-	return _width;
+	//return _width;
+	return _width * _scaleOffset.x * GetTransform()->GetScale().x;
 }
 
 float HDData::StaticBoxCollider::GetDepth()
 {
-	return _depth;
+	//return _depth;
+	return _depth * _scaleOffset.z * GetTransform()->GetScale().z;
 }
 
 void HDData::StaticBoxCollider::SetHeight(float val)

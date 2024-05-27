@@ -227,21 +227,6 @@ namespace HDEngine
 		}
 	}
 
-	void PhysicsSystem::CreateStaticBoxCollider(float width, float height, float depth)
-	{
-		HDData::StaticBoxCollider* box = new HDData::StaticBoxCollider(width, height, depth);
-
-		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
-
-		physx::PxTransform localTransform(physx::PxVec3(0.0f, box->GetHeight() / 2, 0.0f));
-		physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
-		boxRigid->attachShape(*shape);
-
-		//_pxScene->addActor(*boxRigid);
-		_rigidStatics.push_back(boxRigid);
-		shape->release();
-	}
-
 	void PhysicsSystem::CreateDynamicBoxCollider(HDData::GameObject* object)
 	{
 		HDData::Collider* isCorrectType = object->GetComponent<HDData::DynamicBoxCollider>();

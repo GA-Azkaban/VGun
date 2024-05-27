@@ -25,20 +25,20 @@ void HDData::DynamicBoxCollider::SetVolume(float w, float h, float d)
 
 float HDData::DynamicBoxCollider::GetWidth() const
 {
-	//return _width * _scaleOffset.x * GetGameObject()->GetTransform()->GetWorldScale().x;
-	return _width;
+	return _width * _scaleOffset.x * GetTransform()->GetScale().x;
+	//return _width;
 }
 
 float HDData::DynamicBoxCollider::GetHeight() const
 {
-	//return _height * _scaleOffset.x * GetGameObject()->GetTransform()->GetWorldScale().y;
-	return _height;
+	return _height * _scaleOffset.x * GetTransform()->GetScale().y;
+	//return _height;
 }
 
 float HDData::DynamicBoxCollider::GetDepth() const
 {
-	//return _depth * _scaleOffset.x * GetGameObject()->GetTransform()->GetWorldScale().z;
-	return _depth;
+	return _depth * _scaleOffset.x * GetTransform()->GetScale().z;
+	//return _depth;
 }
 
 void HDData::DynamicBoxCollider::Update()

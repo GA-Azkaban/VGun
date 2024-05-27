@@ -101,7 +101,7 @@ void InGameSceneView::Initialize()
 
 	//player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
 	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.6f);
-	//playerCollider->SetPositionOffset({ 0.0f, 0.6f, 0.0f });
+	playerCollider->SetPositionOffset({ 0.0f, 0.9f, 0.0f });
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
