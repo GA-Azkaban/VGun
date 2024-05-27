@@ -12,7 +12,8 @@ PlayerMove::PlayerMove()
 	_isReloading(false),
 	_isRunning(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
-	_isFirstPersonPerspective(true)
+	_isFirstPersonPerspective(true),
+	_isJumping(true), _isOnGround(false)
 {
 
 }
@@ -23,10 +24,6 @@ void PlayerMove::Start()
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	
 	_moveSpeed = 3.0f;
-
-	_isOnGround = false;
-	//_isJumping = true;
-	_isJumping = false;
 
 	_playerCollider->LockPlayerRotation();
 
@@ -50,20 +47,30 @@ void PlayerMove::Update()
 	{
 		CheckIsOnGround();
 	}
+	//else
+	//{
+	//	_playerCollider->ClearVeloY();
+	//}
 
-	if (_jumpCooldown >= 0.0f)
-	{
-		_jumpCooldown -= _deltaTime;
-	}
-	else
-	{
-		_isJumping = false;
-	}
+	// 쿨타임 방식의 점프 관리
+	//if (_jumpCooldown >= 0.0f)
+	//{
+	//	_jumpCooldown -= _deltaTime;
+	//}
+	//else
+	//{
+	//	if (_isJumping)
+	//	{
+	//		_isJumping = false;
+	//		_playerCollider->ClearVeloY();
+	//	}
+	//}
 
 	//if (API::GetMouseDown(MOUSE_LEFT))
 	//{
 	//	ShootGun();
 	//}
+
 
 	// 발사 쿨타임 및 파티클 수명관리
 	if (_shootCooldown >= 0.0f)
@@ -305,9 +312,37 @@ bool PlayerMove::CheckIsOnGround()
 	}
 	_isOnGround = false;
 	*/
-	return false;
+	//return false;
 	
+	Vector3 pos = this->GetTransform()->GetPosition();
 
+		float halfHeight = _playerCollider->GetHeight() / 2.0f;
+		Vector3 rayOrigin = Vector3(pos.x, pos.y - halfHeight - 0.04f, pos.z);
+
+		int colliderType = 0;
+		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.08f, &colliderType);
+		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.08f, Vector4(1.f, 0.f, 0.f, 0.f));
+
+		if (opponentCollider)
+		{
+			// type 1이 rigidStatic.
+			if (colliderType == 1)
+			{
+				// 상태 변경 및 착지 Sound.
+				if (_isOnGround == false)
+				{
+					_isOnGround = true;
+					_isJumping = false;
+					_playerCollider->ClearVeloY();
+					//_playerAudio->Play3DOnce("landing");
+				}
+				return true;
+			}
+		}
+	
+	_isOnGround = false;
+
+	return false;
 
 }
 

@@ -114,6 +114,18 @@ void HDData::DynamicCollider::AdjustVelocity(float ratio)
 	_physXRigid->setLinearVelocity(_physXRigid->getLinearVelocity() * ratio);
 }
 
+void HDData::DynamicCollider::ClearVeloY()
+{
+	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
+	if (velo.y > 0.0f)
+	{
+		velo.y = 0.0f;
+	}
+	_physXRigid->clearForce();
+	_physXRigid->setLinearVelocity(velo);
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+}
+
 void HDData::DynamicCollider::UpdateToPhysics()
 {
 
