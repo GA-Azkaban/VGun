@@ -63,6 +63,8 @@ namespace HDData
 		bool _hasExitTime = false;
 		float _exitTime = 0.f;
 
+		bool _isAnyState = false;
+
 		std::unordered_map<std::string, std::vector<Transition*>> _transableStates;
 		std::string _motion;
 	};

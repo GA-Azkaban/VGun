@@ -8,9 +8,17 @@
       "name": "Exit",
       "FBX": ""
     },
+    "Any State": {
+      "name": "Any State",
+      "FBX": ""
+    },
     "IDLE": {
       "name": "IDLE",
       "FBX": "SKM_TP_AR_aim.fbx"
+    },
+    "DIE": {
+      "name": "DIE",
+      "FBX": "SKM_TP_AR_dying.fbx"
     },
     "FIRE": {
       "name": "FIRE",
@@ -19,25 +27,21 @@
     "RELOAD": {
       "name": "RELOAD",
       "FBX": "SKM_TP_AR_reload.fbx"
-    },
-    "EMPTY": {
-      "name": "EMPTY",
-      "FBX": "SKM_TP_AR_aim.fbx"
     }
   },
   "Params": {
-    "isReload": {
-      "paramName": "isReload",
-      "type": 3,
+    "isDie": {
+      "paramName": "isDie",
+      "type": 2,
       "value": false
     },
     "isFire": {
       "paramName": "isFire",
-      "type": 2,
+      "type": 3,
       "value": false
     },
-    "isEmpty": {
-      "paramName": "isEmpty",
+    "isReload": {
+      "paramName": "isReload",
       "type": 3,
       "value": false
     }
@@ -49,11 +53,24 @@
       "transitionAnimation": ""
     },
     "link": {
+      "start": "Any State",
+      "end": "DIE",
+      "condition": "isDie",
+      "type": 2,
+      "value": "True",
+      "transitionAnimation": ""
+    },
+    "link": {
       "start": "IDLE",
       "end": "FIRE",
       "condition": "isFire",
-      "type": 2,
-      "value": "True",
+      "type": 3,
+      "value": "",
+      "transitionAnimation": ""
+    },
+    "link": {
+      "start": "FIRE",
+      "end": "IDLE",
       "transitionAnimation": ""
     },
     "link": {
@@ -67,27 +84,6 @@
     "link": {
       "start": "RELOAD",
       "end": "IDLE",
-      "transitionAnimation": ""
-    },
-    "link": {
-      "start": "IDLE",
-      "end": "EMPTY",
-      "condition": "isEmpty",
-      "type": 3,
-      "value": "",
-      "transitionAnimation": ""
-    },
-    "link": {
-      "start": "EMPTY",
-      "end": "IDLE",
-      "transitionAnimation": ""
-    },
-    "link": {
-      "start": "FIRE",
-      "end": "IDLE",
-      "condition": "isFire",
-      "type": 2,
-      "value": "False",
       "transitionAnimation": ""
     }
   },

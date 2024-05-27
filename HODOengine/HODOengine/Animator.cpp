@@ -30,6 +30,7 @@ namespace HDData
 	{
 		_all->SetAnimationController(controller);
 	}
+
 	HDData::AllAnimator* Animator::GetAllAC()
 	{
 		return _all;
