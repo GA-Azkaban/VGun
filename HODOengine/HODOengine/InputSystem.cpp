@@ -227,23 +227,23 @@ namespace HDEngine
 		/// when cursor get out of the window
 		if (_mousePos.x >= _screenWidth)
 		{
-			_prevMousePos = { 0, _mousePos.y };
-			SetCursorPos(windowRect.left + 9, _mousePos.y + windowRect.top + _heightOffset);
+			_prevMousePos = { _screenWidth, _mousePos.y };
+			SetCursorPos(windowRect.left + 7, _mousePos.y);
 		}
 		else if (_mousePos.x <= 0)
 		{
-			_prevMousePos = { _screenWidth, _mousePos.y };
-			SetCursorPos(windowRect.right - 9, _mousePos.y + windowRect.top + _heightOffset);
+			_prevMousePos = { 0, _mousePos.y };
+			SetCursorPos(windowRect.right - 7, _mousePos.y);
 		}
 		if (_mousePos.y >= _screenHeight)
 		{
-			_prevMousePos = { _mousePos.x, _heightOffset - 1};
-			SetCursorPos(_mousePos.x + windowRect.left + 8, windowRect.top + _heightOffset + 1);
+			_prevMousePos = { _mousePos.x, _screenHeight};
+			SetCursorPos(_mousePos.x, windowRect.top + 10);
 		}
 		else if (_mousePos.y <= 0)
 		{
-			_prevMousePos = { _mousePos.x, _screenHeight };
-			SetCursorPos(_mousePos.x + windowRect.left + 8, windowRect.bottom - 9);
+			_prevMousePos = { _mousePos.x, 0 };
+			SetCursorPos(_mousePos.x, windowRect.bottom - 10);
 		}
 	}
 }
