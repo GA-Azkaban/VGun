@@ -123,8 +123,6 @@ void PlayerMove::Update()
 
 	CameraControl();
 
-	//_headCam->ShakeCamera(_deltaTime);
-
 	// 이동, 회전
 	Move(_moveDirection);
 
