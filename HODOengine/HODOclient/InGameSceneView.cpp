@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -47,10 +47,10 @@ void InGameSceneView::Initialize()
 	meshComp->LoadMaterial(M_Red, 2);
 	meshComp->LoadMaterial(M_Red, 3);
 	meshComp->LoadMaterial(M_Red, 4);
-	meshComp->SetMeshActive(false, 0);
-	meshComp->SetMeshActive(false, 1);
-	meshComp->SetMeshActive(false, 3);
-	meshComp->SetMeshActive(false, 4);
+	//meshComp->SetMeshActive(false, 0);
+	//meshComp->SetMeshActive(false, 1);
+	//meshComp->SetMeshActive(false, 3);
+	//meshComp->SetMeshActive(false, 4);
 
 	meshComp->PlayAnimation("AR_aim", true);
 
@@ -100,8 +100,8 @@ void InGameSceneView::Initialize()
 	playerMove->SetHeadCam(mainCam);
 
 	//player->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.6f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.9f, 0.0f });
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.875f);
+	playerCollider->SetPositionOffset({ 0.0f, 0.875f, 0.0f });
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();

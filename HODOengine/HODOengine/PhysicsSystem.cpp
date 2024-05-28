@@ -284,12 +284,14 @@ namespace HDEngine
 			{
 				HDData::DynamicCapsuleCollider* capsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(collider);
 
+				float r = capsule->GetRadius();
+				float h = capsule->GetHalfHeight();
 				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
 				shape->userData = capsule;
 				
 				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
 				Vector3 posOffset = collider->GetPositionOffset();
-				physx::PxTransform localTransform(physx::PxVec3(posOffset.x, posOffset.y, posOffset.z), rotation);
+				physx::PxTransform localTransform(physx::PxVec3(posOffset.x, posOffset.y + capsule->GetRadius(), posOffset.z), rotation);
 				shape->setLocalPose(localTransform);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
