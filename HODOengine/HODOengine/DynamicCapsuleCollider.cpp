@@ -1,4 +1,4 @@
-﻿#include "DynamicCapsuleCollider.h"
+#include "DynamicCapsuleCollider.h"
 #include "GameObject.h"
 #include "GraphicsObjFactory.h"
 
