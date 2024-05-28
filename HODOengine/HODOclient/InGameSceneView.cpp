@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -41,7 +41,7 @@ void InGameSceneView::Initialize()
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 
-	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	/*auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMaterial(M_Red, 0);
 	meshComp->LoadMaterial(M_Red, 1);
 	meshComp->LoadMaterial(M_Red, 2);
@@ -49,10 +49,11 @@ void InGameSceneView::Initialize()
 	meshComp->LoadMaterial(M_Red, 4);
 	meshComp->SetMeshActive(false, 0);
 	meshComp->SetMeshActive(false, 1);
+	meshComp->SetMeshActive(false, 2);
 	meshComp->SetMeshActive(false, 3);
 	meshComp->SetMeshActive(false, 4);
 
-	meshComp->PlayAnimation("AR_aim", true);
+	meshComp->PlayAnimation("AR_aim", true);*/
 
 	// 총 생성
 	auto hand = player->GetGameObjectByNameInChildren("hand_r");
@@ -94,6 +95,21 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
+	auto meshComp = mainCam->GetGameObject()->AddComponent<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadMesh("SKM_TP_X_Default.fbx");
+	meshComp->LoadNode("SKM_TP_X_Default.fbx");
+	meshComp->LoadMaterial(M_Red, 0);
+	meshComp->LoadMaterial(M_Red, 1);
+	meshComp->LoadMaterial(M_Red, 2);
+	meshComp->LoadMaterial(M_Red, 3);
+	meshComp->LoadMaterial(M_Red, 4);
+	meshComp->SetMeshActive(false, 0);
+	meshComp->SetMeshActive(false, 1);
+	//meshComp->SetMeshActive(false, 2);
+	meshComp->SetMeshActive(false, 3);
+	meshComp->SetMeshActive(false, 4);
+
+	meshComp->PlayAnimation("AR_aim", true);
 
 	auto playerMove = player->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(freeRoamingCam);
