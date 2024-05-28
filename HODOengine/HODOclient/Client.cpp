@@ -31,6 +31,7 @@ void Client::Initialize()
 	/*TestScene test;
 	test.Start();
 
+	API::LoadSceneByName("Test"); */
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -44,14 +45,12 @@ void Client::Initialize()
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();	
 
-	//InGameSceneView inGame;			//Scene Name : InGame
-	//inGame.Initialize();
-	*/
+	InGameSceneView inGame;			//Scene Name : InGame
+	inGame.Initialize();
 
-	LobbySceneView lobby;
-	lobby.Initialize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
-	API::LoadSceneByName("Lobby");
-
-	//API::LoadSceneByName("InGame");
+	//API::LoadSceneByName("Lobby");
+	API::LoadSceneByName("InGame");
 }
