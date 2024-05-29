@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -95,7 +95,11 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
-	auto meshComp = mainCam->GetGameObject()->AddComponent<HDData::SkinnedMeshRenderer>();
+	mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
+	auto camMeshObj = API::CreateObject(_scene, "camMesh", mainCam->GetGameObject());
+	auto meshComp = camMeshObj->AddComponent<HDData::SkinnedMeshRenderer>();
+	meshComp->GetTransform()->SetLocalPosition(0.0f, -1.75f, 0.5f);
+	meshComp->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	meshComp->LoadMesh("SKM_TP_X_Default.fbx");
 	meshComp->LoadNode("SKM_TP_X_Default.fbx");
 	meshComp->LoadMaterial(M_Red, 0);
