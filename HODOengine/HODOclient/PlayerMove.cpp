@@ -314,11 +314,11 @@ bool PlayerMove::CheckIsOnGround()
 	Vector3 pos = this->GetTransform()->GetPosition();
 
 		float halfHeight = _playerCollider->GetHeight() / 2.0f;
-		Vector3 rayOrigin = Vector3(pos.x, pos.y - halfHeight - 0.05f, pos.z);
+		Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
 
 		int colliderType = 0;
-		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.1f, &colliderType);
-		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.1f, Vector4(1.f, 0.f, 0.f, 0.f));
+		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.08f, &colliderType);
+		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.08f, Vector4(1.f, 0.f, 0.f, 0.f));
 
 		if (opponentCollider)
 		{
