@@ -427,7 +427,7 @@ void PlayerMove::ShootGunDdabal()
 	if (hitCollider != nullptr)
 	{
 		_playerAudio->PlayOnce("hit");
-		//SpawnParticle(hitPoint);
+		SpawnParticle(hitPoint);
 	}
 
 	// 맞은 애가 dynamic이면 힘 가해주기
@@ -569,7 +569,7 @@ void PlayerMove::ToggleCam()
 		_isHeadCam = true;
 		//_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 		_playerCamera->SetCamActive(false);
 	}
 }

@@ -108,6 +108,10 @@ namespace API
 		// 델타 타임
 		HODO_API float GetDeltaTime();
 
+		// Screen Size
+		HODO_API int GetScreenWidth();
+		HODO_API int GetScreenHeight();
+
 		/// physics stuff
 		HODO_API HDData::Collider* ShootRay(Vector3 origin, Vector3 direction, float length = 100.0f, int* type = nullptr);
 		HODO_API HDData::Collider* ShootRayHitPoint(Vector3 origin, Vector3 direction, Vector3& hitPoint, float length = 100.0f, int* type = nullptr);

@@ -24,7 +24,7 @@ namespace HDEngine
 		InputSystem() = default;
 
 	public:
-		void Initialize(HWND hWnd, HINSTANCE instance, int screenWidth, int screenHeight);
+		void Initialize(HWND hWnd, HINSTANCE instance);
 		void Update();
 		void Finalize();
 
@@ -57,8 +57,6 @@ namespace HDEngine
 
 		int						_screenWidth;
 		int						_screenHeight;
-		int						_widthOffset;
-		int						_heightOffset;
 
 		LPDIRECTINPUT8			_DI;
 		LPDIRECTINPUTDEVICE8	_keyboardDevice;

@@ -89,7 +89,7 @@ void HODOengine::Initialize()
 	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_timeSystem.Initialize();
-	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
+	_inputSystem.Initialize(_hWnd, ins);
 	_physicsSystem.Initialize();
 	_uiSystem.Initialize();
 	_materialLoader.LoadMaterialData("materialData.json");

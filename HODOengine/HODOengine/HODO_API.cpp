@@ -214,6 +214,16 @@ namespace API
 			return HDEngine::TimeSystem::Instance().GetDeltaTime();
 		}
 
+		HODO_API int GetScreenWidth()
+		{
+			return HDEngine::RenderSystem::Instance().GetScreenWidth();
+		}
+
+		HODO_API int GetScreenHeight()
+		{
+			return HDEngine::RenderSystem::Instance().GetScreenHeight();
+		}
+
 		HODO_API void DebugModeOn(int flag)
 		{
 			HDEngine::DebugSystem::Instance().SetDebugOn(flag);
