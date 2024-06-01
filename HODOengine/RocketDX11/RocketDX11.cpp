@@ -357,6 +357,7 @@ namespace RocketCore::Graphics
 	{
 		Camera::GetMainCamera()->UpdateViewMatrix();
 		LightManager::Instance().UpdateViewProj();
+		Camera::GetMainCamera()->FrustumCulling();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{

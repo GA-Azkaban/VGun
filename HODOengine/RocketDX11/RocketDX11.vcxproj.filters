@@ -386,6 +386,9 @@
     <ClInclude Include="ForwardPass.h">
       <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClInclude>
+    <ClInclude Include="BoundingVolumeHelper.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">

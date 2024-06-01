@@ -35,6 +35,13 @@ namespace RocketCore::Graphics
 		void Update(float deltaTime);
 		void Render();
 
+		// Frustum Culling
+		DirectX::BoundingBox GetBoundingBox();
+		bool IsCameraVisible();
+		bool IsLightVisible();
+		void SetCameraVisible(bool isVisible);
+		void SetLightVisible(bool isVisible);
+
 		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
@@ -154,6 +161,10 @@ namespace RocketCore::Graphics
 
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
+
+		DirectX::BoundingBox m_boundingBox;
+		bool m_cameraVisible;
+		bool m_lightVisible;
 
 		// 우리 게임에 사용하는 캐릭터 전용 노드 하드 코딩.
 		std::unordered_set<std::string> _upperAnimationNodes;

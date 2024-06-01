@@ -14,6 +14,7 @@
 
 #include "Singleton.h"
 #include "Animation.h"
+#include "BoundingVolumeHelper.h"
 
 #include "../HODO3DGraphicsInterface/IResourceManager.h"
 #include "../HODO3DGraphicsInterface/Node.h"
@@ -37,6 +38,9 @@ namespace RocketCore::Graphics
 		std::vector<Material*> loadedMaterials;
 		Node* node;
 		std::unordered_map<std::string, Animation*> loadedAnimation;	// <animName, animationInfo>
+		DirectX::BoundingBox boundingBox;
+		MinMaxElements minMaxElements;
+
 	};
 
 	struct Texture
@@ -116,6 +120,8 @@ namespace RocketCore::Graphics
 		/// ex)model1.fbx
 		/// <returns>animation name and animation infos of all animations in model file</returns>
 		std::unordered_map<std::string, Animation*>& GetAnimations(const std::string& fileName);
+
+		DirectX::BoundingBox GetBoundingBox(const std::string& fileName);
 		
 		/// <summary>
 		/// Get loaded material.
@@ -154,6 +160,7 @@ namespace RocketCore::Graphics
 		void ProcessMesh(aiMesh* mesh, const aiScene* scene);
 		void ProcessStaticMesh(aiMesh* mesh, const aiScene* scene);
 		void ProcessSkinningMesh(aiMesh* mesh, const aiScene* scene);
+		void ProcessBoundingBox();
 		void LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene, Material* outMaterial);
 		ID3D11ShaderResourceView* LoadEmbeddedTexture(const aiTexture* embeddedTexture);
 		void ReadNodeHierarchy(Node& nodeOutput, aiNode* node);

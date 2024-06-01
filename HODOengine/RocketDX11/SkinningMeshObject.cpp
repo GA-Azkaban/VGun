@@ -26,7 +26,8 @@ namespace RocketCore::Graphics
 		m_blendDuration(0.1f), m_blendDurationUpper(0.1f), m_blendDurationLower(0.1f),
 		m_hasExitTime(false), m_hasExitTimeUpper(false), m_hasExitTimeLower(false),
 		m_exitTime(0.0f), m_exitTimeUpper(0.0f), m_exitTimeLower(0.0f),
-		m_isExitTimeElapsed(true), m_isExitTimeUpperElapsed(true), m_isExitTimeLowerElapsed(true)
+		m_isExitTimeElapsed(true), m_isExitTimeUpperElapsed(true), m_isExitTimeLowerElapsed(true),
+		m_cameraVisible(true), m_lightVisible(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
@@ -376,6 +377,33 @@ namespace RocketCore::Graphics
 		}
 
 		m_receiveTMInfoFlag = false;
+	}
+
+	DirectX::BoundingBox SkinningMeshObject::GetBoundingBox()
+	{
+		BoundingBox bb = m_boundingBox;
+		bb.Transform(bb, m_node.rootNodeInvTransform * m_world);
+		return bb;
+	}
+
+	bool SkinningMeshObject::IsCameraVisible()
+	{
+		return m_cameraVisible;
+	}
+
+	bool SkinningMeshObject::IsLightVisible()
+	{
+		return m_lightVisible;
+	}
+
+	void SkinningMeshObject::SetCameraVisible(bool isVisible)
+	{
+		m_cameraVisible = isVisible;
+	}
+
+	void SkinningMeshObject::SetLightVisible(bool isVisible)
+	{
+		m_lightVisible = isVisible;
 	}
 
 	void SkinningMeshObject::SetWorldTM(const Matrix& worldTM)
@@ -1375,6 +1403,7 @@ namespace RocketCore::Graphics
 			m_meshesActive[i] = true;
 		}
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
+		m_boundingBox = ResourceManager::Instance().GetBoundingBox(fileName);
 	}
 
 	void SkinningMeshObject::LoadNode(const std::string& fileName)

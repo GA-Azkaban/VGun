@@ -11,7 +11,7 @@ namespace RocketCore::Graphics
 	LightManager::LightManager()
 		: _numLights(0)
 	{
-		//_lightProj = XMMatrixOrthographicLH(300, 300, 1, 600);
+		
 	}
 
 	LightManager::~LightManager()

@@ -42,6 +42,13 @@ namespace RocketCore::Graphics
 	public:
 		void Render();
 
+		// Frustum Culling
+		DirectX::BoundingBox GetBoundingBox();
+		bool IsCameraVisible();
+		bool IsLightVisible();
+		void SetCameraVisible(bool isVisible);
+		void SetLightVisible(bool isVisible);
+
 	public:		
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		std::vector<Material*>& GetMaterials() { return m_materials; }
@@ -63,5 +70,9 @@ namespace RocketCore::Graphics
 		PixelShader* m_pixelShader;
 
 		bool m_useLight;
+
+		DirectX::BoundingBox m_boundingBox;
+		bool m_cameraVisible; // camera culling
+		bool m_lightVisible; // light culling
 	};
 }

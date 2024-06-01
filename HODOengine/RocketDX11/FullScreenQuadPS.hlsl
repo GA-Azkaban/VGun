@@ -90,7 +90,6 @@ float4 main(VertexToPixel input) : SV_TARGET
 		float3 prefilteredColor = PrefilteredSpecMap.SampleLevel(LinearWrapSampler, R, roughness * 5.0).rgb;
 		float2 envBrdf = BrdfLUT.Sample(PointClampSampler, float2(saturate(surf.NdotV), roughness)).rg;
 		float3 specular = envLightIntensity * prefilteredColor * (kS * envBrdf.x + envBrdf.y);
-		//float3 specular = prefilteredColor * (kS * envBrdf.x + envBrdf.y);
 		ambient = (kD * diffuse + specular);
 	}
 

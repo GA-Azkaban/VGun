@@ -2,6 +2,10 @@
 #include "Camera.h"
 #include "MathHeader.h"
 #include "ResourceManager.h"
+#include "ObjectManager.h"
+#include "StaticMeshObject.h"
+#include "SkinningMeshObject.h"
+#include "Light.h"
 
 using namespace DirectX;
 
@@ -121,6 +125,46 @@ namespace RocketCore::Graphics
 		// 		right_.z,		up_.z,			look_.z,		0.0f,
 		// 		-position_.x,	-position_.y,	-position_.z,	1.0f
 		// 	};
+	}
+
+	void Camera::FrustumCulling()
+	{
+		BoundingFrustum frustum = _boundingFrustum;
+		frustum.Transform(frustum, XMMatrixInverse(nullptr, _viewMatrix));
+
+		XMMATRIX lightView = LightManager::Instance().GetLightView();
+		XMMATRIX lightProj = LightManager::Instance().GetLightProj();
+
+		BoundingFrustum lightFrustum(lightProj);
+		lightFrustum.Transform(lightFrustum, XMMatrixInverse(nullptr, lightView));
+
+		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
+		{
+			if (!staticMeshObj->IsActive())
+			{
+				staticMeshObj->SetCameraVisible(false);
+				staticMeshObj->SetLightVisible(false);
+				continue;
+			}
+			bool isInCameraFrustum = frustum.Intersects(staticMeshObj->GetBoundingBox());
+			staticMeshObj->SetCameraVisible(isInCameraFrustum);
+			bool isInLightFrustum = lightFrustum.Intersects(staticMeshObj->GetBoundingBox());
+			staticMeshObj->SetLightVisible(isInLightFrustum);
+		}
+
+		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
+		{
+			if (!skinningMeshObj->IsActive())
+			{
+				skinningMeshObj->SetCameraVisible(false);
+				skinningMeshObj->SetLightVisible(false);
+				continue;
+			}
+			bool isInCameraFrustum = frustum.Intersects(skinningMeshObj->GetBoundingBox());
+			skinningMeshObj->SetCameraVisible(isInCameraFrustum);
+			bool isInLightFrustum = lightFrustum.Intersects(skinningMeshObj->GetBoundingBox());
+			skinningMeshObj->SetLightVisible(isInLightFrustum);
+		}
 	}
 
 	DirectX::XMMATRIX Camera::GetViewMatrix() const
@@ -256,6 +300,7 @@ namespace RocketCore::Graphics
 	void Camera::UpdateProjectionMatrix()
 	{
 		_projectionMatrix = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
+		_boundingFrustum = DirectX::BoundingFrustum(_projectionMatrix);
 	}
 
 	void Camera::SetAsMainCamera()

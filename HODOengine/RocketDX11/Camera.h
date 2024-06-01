@@ -36,6 +36,8 @@ namespace RocketCore::Graphics
 		void UpdateProjectionMatrix();
 		void UpdateViewMatrix();
 
+		void FrustumCulling();
+
 		DirectX::XMMATRIX GetViewMatrix() const;				// 카메라의 로컬좌표'계'를 반환
 		DirectX::XMMATRIX GetProjectionMatrix() const;		// 카메라의 투영행렬을 반환
 		DirectX::XMMATRIX GetViewProjectionMatrix() const;	// 위의 두 행렬을 적절히 곱해서 반환(view의 역행렬을 곱해주겠지?)
@@ -66,6 +68,8 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX _worldMatrix;		// 카메라 worldTM
 		DirectX::XMMATRIX _viewMatrix;		// 카메라의 로컬좌표'계' 또는 카메라 worldTM의 역행렬
 		DirectX::XMMATRIX _projectionMatrix;	// 카메라의 투영 행렬
+
+		DirectX::BoundingFrustum _boundingFrustum;
 
 	public:
 		static Camera* GetMainCamera();
