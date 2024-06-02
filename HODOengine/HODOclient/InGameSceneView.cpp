@@ -4,6 +4,7 @@
 #include "FSMtestScript.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
+#include "MeshTransformController.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -62,14 +63,17 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
-	mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
-	auto camMeshObj = API::CreateObject(_scene, "camMesh", mainCam->GetGameObject());
-	camMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.75f, 0.15f);
-	camMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
-	auto fpMeshComp = camMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//fpMeshComp->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
-	//fpMeshComp->LoadMesh("SKM_TP_X_Default.fbx");
-	//fpMeshComp->LoadNode("SKM_TP_X_Default.fbx");
+	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
+	//camMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.75f, 0.15f);
+	//camMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	// 1인칭 메쉬 달 오브젝트
+	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
+	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", player);
+	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//auto fpMeshComp = camMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//fpMeshObj->AddComponent<MeshTransformController>();
+	fpMeshComp->GetGameObject()->GetTransform()->SetLocalPosition(-0.08f, 0.02f, 0.02f);
 	fpMeshComp->LoadMaterial(M_Red, 0);
 	fpMeshComp->LoadMaterial(M_Red, 1);
 	fpMeshComp->LoadMaterial(M_Red, 2);
@@ -84,10 +88,13 @@ void InGameSceneView::Initialize()
 	fpMeshComp->PlayAnimation("AR_aim", true);
 
 	// 총 생성
-	auto hand = camMeshObj->GetGameObjectByNameInChildren("hand_r");
+	auto hand = fpMeshObj->GetGameObjectByNameInChildren("hand_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
+	weaponTest->AddComponent<MeshTransformController>();
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.3601f, -12.3582f, -3.4213f);
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5409f, 0.5248f, -0.4279f, 0.4986f });
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");
 	HDEngine::MaterialDesc weaponMatDesc;

@@ -13,6 +13,7 @@ public:
 	CameraMove();
 
 public:
+	virtual void Start() override;
 	virtual void Update() override;
 
 public:

@@ -160,10 +160,10 @@ namespace RocketCore::Graphics
 				skinningMeshObj->SetLightVisible(false);
 				continue;
 			}
-			bool isInCameraFrustum = frustum.Intersects(skinningMeshObj->GetBoundingBox());
-			skinningMeshObj->SetCameraVisible(isInCameraFrustum);
-			bool isInLightFrustum = lightFrustum.Intersects(skinningMeshObj->GetBoundingBox());
-			skinningMeshObj->SetLightVisible(isInLightFrustum);
+			//bool isInCameraFrustum = frustum.Intersects(skinningMeshObj->GetBoundingBox());
+			//skinningMeshObj->SetCameraVisible(isInCameraFrustum);
+			//bool isInLightFrustum = lightFrustum.Intersects(skinningMeshObj->GetBoundingBox());
+			//skinningMeshObj->SetLightVisible(isInLightFrustum);
 		}
 	}
 
