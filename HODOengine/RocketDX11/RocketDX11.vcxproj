@@ -259,6 +259,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClInclude Include="AssimpMathConverter.h" />
     <ClInclude Include="BillboardParticle.h" />
     <ClInclude Include="BlitPass.h" />
+    <ClInclude Include="BoundingVolumeHelper.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Cubemap.h" />
     <ClInclude Include="DebugMeshPass.h" />

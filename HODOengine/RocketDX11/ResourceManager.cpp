@@ -142,6 +142,7 @@ namespace RocketCore::Graphics
 		{
 			ProcessNode(_scene->mRootNode, _scene);
 		}
+		ProcessBoundingBox();
 		LoadAnimation(_scene, animName);
 	}
 
@@ -451,6 +452,19 @@ namespace RocketCore::Graphics
 		return iter->second.loadedAnimation;
 	}
 
+	DirectX::BoundingBox ResourceManager::GetBoundingBox(const std::string& fileName)
+	{
+		std::string name = GetFileInfoKey(fileName);
+
+		// 엔진에 저장되어 있지 않다면
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
+		{
+			return DirectX::BoundingBox();
+		}
+		return iter->second.boundingBox;
+	}
+
 	Material* ResourceManager::GetLoadedMaterial(const std::string& materialName)
 	{
 		auto iter = _loadedMaterials.find(materialName);
@@ -673,6 +687,7 @@ namespace RocketCore::Graphics
 		// 큐브 모양 메쉬
 		GeometryGenerator::MeshData cube;
 		_geometryGen->CreateBox(10, 2, 10, cube);
+		_loadedFileInfo["primitiveCube"].boundingBox = BoundingBox({ 0,0,0 }, { 5,1,5 });
 
 		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size(), true);
 		_loadedFileInfo["primitiveCube"].loadedMeshes.push_back(_cube);
@@ -898,6 +913,34 @@ namespace RocketCore::Graphics
 			vertex.Position.y = mesh->mVertices[i].y;
 			vertex.Position.z = mesh->mVertices[i].z;
 
+			// get min max elements for calculate bounding box
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX > vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX = vertex.Position.x;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX < vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX = vertex.Position.x;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY > vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY = vertex.Position.y;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY < vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY = vertex.Position.y;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ > vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ = vertex.Position.z;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ < vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ = vertex.Position.z;
+			}
+
 			// process normal
 			vertex.Normal.x = mesh->mNormals[i].x;
 			vertex.Normal.y = mesh->mNormals[i].y;
@@ -1006,6 +1049,34 @@ namespace RocketCore::Graphics
 			vertex.Position.x = mesh->mVertices[i].x;
 			vertex.Position.y = mesh->mVertices[i].y;
 			vertex.Position.z = mesh->mVertices[i].z;
+
+			// get min max elements for calculate bounding box
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX > vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX = vertex.Position.x;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX < vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX = vertex.Position.x;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY > vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY = vertex.Position.y;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY < vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY = vertex.Position.y;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ > vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ = vertex.Position.z;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ < vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ = vertex.Position.z;
+			}
 
 			// process normal
 			vertex.Normal.x = mesh->mNormals[i].x;
@@ -1172,6 +1243,11 @@ namespace RocketCore::Graphics
 			newMaterial->SetMaterialName(matName);
 			_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 		}
+	}
+
+	void ResourceManager::ProcessBoundingBox()
+	{
+		_loadedFileInfo[_fileInfoKeyName].boundingBox = BoundingVolumeHelper::BoundingBoxFromRange(_loadedFileInfo[_fileInfoKeyName].minMaxElements);
 	}
 
 	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene, Material* outMaterial)

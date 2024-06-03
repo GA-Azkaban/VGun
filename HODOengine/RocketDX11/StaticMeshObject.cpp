@@ -17,7 +17,7 @@ namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false), m_useLight(true),
-		m_world{ XMMatrixIdentity() }
+		m_world{ XMMatrixIdentity() }, m_cameraVisible(true), m_lightVisible(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
@@ -45,6 +45,7 @@ namespace RocketCore::Graphics
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 		m_node = ResourceManager::Instance().GetNode(fileName);
+		m_boundingBox = ResourceManager::Instance().GetBoundingBox(fileName);
 	}
 
 	void StaticMeshObject::LoadMaterial(HDEngine::IMaterial* material, unsigned int element /*= 0*/)
@@ -257,6 +258,37 @@ namespace RocketCore::Graphics
 		}
 
 		m_receiveTMInfoFlag = false;
+	}
+
+	DirectX::BoundingBox StaticMeshObject::GetBoundingBox()
+	{
+		BoundingBox bb = m_boundingBox;
+
+		XMMATRIX world = m_world;
+		if (m_node != nullptr)
+			world = m_node->rootNodeInvTransform * m_world;
+		bb.Transform(bb, world);
+		return bb;
+	}
+
+	bool StaticMeshObject::IsCameraVisible()
+	{
+		return m_cameraVisible;
+	}
+
+	bool StaticMeshObject::IsLightVisible()
+	{
+		return m_lightVisible;
+	}
+
+	void StaticMeshObject::SetCameraVisible(bool isVisible)
+	{
+		m_cameraVisible = isVisible;
+	}
+
+	void StaticMeshObject::SetLightVisible(bool isVisible)
+	{
+		m_lightVisible = isVisible;
 	}
 
 	DirectX::XMMATRIX StaticMeshObject::GetWorldTM()

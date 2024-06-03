@@ -57,11 +57,15 @@ namespace RocketCore::Graphics
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
+			if (!staticMeshObj->IsCameraVisible())
+				continue;
 			staticMeshObj->Render();
 		}
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{
+			if (!skinningMeshObj->IsCameraVisible())
+				continue;
 			if(skinningMeshObj->IsOutlineActive())
 				continue;
 			skinningMeshObj->Render();

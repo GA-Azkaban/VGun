@@ -5,16 +5,10 @@
 
 namespace HDEngine
 {
-	void InputSystem::Initialize(HWND hWnd, HINSTANCE instance, int screenWidth, int screenHeight)
+	void InputSystem::Initialize(HWND hWnd, HINSTANCE instance)
 	{
 		_hWnd = hWnd;
 		_instance = instance;
-
-		_screenWidth = screenWidth;
-		_screenHeight = screenHeight;
-
-		_widthOffset = (screenWidth - 1920) / 2;
-		_heightOffset = GetSystemMetrics(SM_CYCAPTION) + 8;	// window title bar height. 24.1.31.AJY
 
 		_wheelMax = 500;
 		_wheelMin = -500;
@@ -55,13 +49,6 @@ namespace HDEngine
 		_mousePos.x += _DImouseState.lX;
 		_mousePos.y += _DImouseState.lY;
 		_mouseWheel += _DImouseState.lZ;
-
-		// 윈도우 벗어나는 경우 좌표값 보정
-		//if (_mousePos.x < 0 || _mousePos.x > _screenWidth || _mousePos.y < 0 || _mousePos.y > _screenHeight)
-		//{
-		//	_mousePos.x = 0;
-		//	_mousePos.y = 0;
-		//}
 
 		if (GetKeyDown(DIK_O))
 		{
@@ -215,35 +202,35 @@ namespace HDEngine
 
 		if (_isFirstPersonPerspective)
 		{
-			//RecursiveMouse();
+			RecursiveMouse();
 		}
 	}
 
 	void InputSystem::RecursiveMouse()
 	{
 		RECT windowRect;
-		GetWindowRect(_hWnd, &windowRect);
+		GetWindowRect(_hWnd, &windowRect);		
 
 		/// when cursor get out of the window
-		if (_mousePos.x >= _screenWidth)
+		if (_mousePos.x >= windowRect.right)
 		{
-			_prevMousePos = { 0, _mousePos.y };
-			SetCursorPos(windowRect.left + 9, _mousePos.y + windowRect.top + _heightOffset);
+			_prevMousePos = { windowRect.left, _mousePos.y };
+			SetCursorPos(windowRect.left + 7, _mousePos.y);
 		}
-		else if (_mousePos.x <= 0)
+		else if (_mousePos.x <= windowRect.left)
 		{
-			_prevMousePos = { _screenWidth, _mousePos.y };
-			SetCursorPos(windowRect.right - 9, _mousePos.y + windowRect.top + _heightOffset);
+			_prevMousePos = { windowRect.right, _mousePos.y };
+			SetCursorPos(windowRect.right - 7, _mousePos.y);
 		}
-		if (_mousePos.y >= _screenHeight)
+		if (_mousePos.y >= windowRect.bottom)
 		{
-			_prevMousePos = { _mousePos.x, _heightOffset - 1};
-			SetCursorPos(_mousePos.x + windowRect.left + 8, windowRect.top + _heightOffset + 1);
+			_prevMousePos = { _mousePos.x, windowRect.top};
+			SetCursorPos(_mousePos.x, windowRect.top + 10);
 		}
-		else if (_mousePos.y <= 0)
+		else if (_mousePos.y <= windowRect.top)
 		{
-			_prevMousePos = { _mousePos.x, _screenHeight };
-			SetCursorPos(_mousePos.x + windowRect.left + 8, windowRect.bottom - 9);
+			_prevMousePos = { _mousePos.x, windowRect.bottom };
+			SetCursorPos(_mousePos.x, windowRect.bottom - 10);
 		}
 	}
 }

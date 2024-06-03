@@ -82,11 +82,6 @@ void HODOengine::Initialize()
 	
 	HINSTANCE ins = GetModuleHandle(NULL);
 	WindowRegisterClass(ins);
-
-	// 임시로 스크린 폭과 높이를 직접 넣어주자. 24.1.23.AJY.
-	_screenWidth = 1920;
-	_screenHeight = 1080;
-
 	CreateWindows(ins);
 	_dllLoader->LoadDLL(GRAPHICSDLL_PATH);
 
@@ -94,7 +89,7 @@ void HODOengine::Initialize()
 	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_timeSystem.Initialize();
-	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
+	_inputSystem.Initialize(_hWnd, ins);
 	_physicsSystem.Initialize();
 	_uiSystem.Initialize();
 	_materialLoader.LoadMaterialData("materialData.json");
@@ -192,24 +187,46 @@ ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
 
 BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 {
-	// 임시로, 윈도우가 항상 가운데 위치하도록 계산하여 넣어보자. 24.1.23.AJY.
-	int winPosX = (GetSystemMetrics(SM_CXSCREEN) - _screenWidth) / 2; 
-	int winPosY = (GetSystemMetrics(SM_CYSCREEN) - _screenHeight) / 2;
+	//_screenWidth = GetSystemMetrics(SM_CXFULLSCREEN);
+	//_screenHeight = GetSystemMetrics(SM_CYFULLSCREEN);
 
-	_hWnd = CreateWindowW(_appName, _appName, WS_OVERLAPPEDWINDOW,
-		winPosX, winPosY, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
+	DEVMODE dmSettings;									// Device Mode variable - Needed to change modes
+	memset(&dmSettings, 0, sizeof(dmSettings));			// Makes Sure Memory's Cleared
+
+	// Get the current display settings.  This function fills our the settings.
+	if (!EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dmSettings))
+	{
+		// Display error message if we couldn't get display settings
+		MessageBox(NULL, L"Could Not Enum Display Settings", L"Error", MB_OK);
+		return FALSE;
+	}
+
+	//dmSettings.dmPelsWidth = _screenWidth;					// Set the desired Screen Width
+	//dmSettings.dmPelsHeight = _screenHeight;					// Set the desired Screen Height
+	//dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;	// Set the flags saying we're changing the Screen Width and Height
+
+	// This function actually changes the screen to full screen
+	// CDS_FULLSCREEN Gets Rid Of Start Bar.
+	// We always want to get a result from this function to check if we failed
+	int result = ChangeDisplaySettings(&dmSettings, CDS_FULLSCREEN);
+	// Check if we didn't receive a good return message From the function
+	if (result != DISP_CHANGE_SUCCESSFUL)
+	{
+		// Display the error message and quit the program
+		MessageBox(NULL, L"Display Mode Not Compatible", L"Error", MB_OK);
+		PostQuitMessage(0);
+	}
+
+	_screenWidth = dmSettings.dmPelsWidth;
+	_screenHeight = dmSettings.dmPelsHeight;
+	//_hWnd = CreateWindowExW(WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, _appName, _appName, WS_POPUP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), nullptr, nullptr, hInstance, nullptr);
+	_hWnd = CreateWindowW(_appName, _appName, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+		0, 0, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 
 	if (!_hWnd)
 	{
 		return FALSE;
 	}
-
-	RECT rect;
-
-	GetClientRect(_hWnd, &rect);
-
-	_screenWidth = rect.right - rect.left;
-	_screenHeight = rect.bottom - rect.top;
 
 	ShowWindow(_hWnd, SW_SHOWNORMAL);
 	UpdateWindow(_hWnd);

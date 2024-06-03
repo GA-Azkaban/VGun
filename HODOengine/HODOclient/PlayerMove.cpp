@@ -20,8 +20,9 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	//_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
+
+	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	
 	_moveSpeed = 3.0f;
 
@@ -123,8 +124,6 @@ void PlayerMove::Update()
 	CheckMoveInfo();
 
 	CameraControl();
-
-	//_headCam->ShakeCamera(_deltaTime);
 
 	// 이동, 회전
 	Move(_moveDirection);
@@ -254,6 +253,7 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
+		CheckIsOnGround();
 		Jump();
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
@@ -317,11 +317,11 @@ bool PlayerMove::CheckIsOnGround()
 	Vector3 pos = this->GetTransform()->GetPosition();
 
 		float halfHeight = _playerCollider->GetHeight() / 2.0f;
-		Vector3 rayOrigin = Vector3(pos.x, pos.y - halfHeight - 0.05f, pos.z);
+		Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
 
 		int colliderType = 0;
-		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.1f, &colliderType);
-		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.1f, Vector4(1.f, 0.f, 0.f, 0.f));
+		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.08f, &colliderType);
+		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.08f, Vector4(1.f, 0.f, 0.f, 0.f));
 
 		if (opponentCollider)
 		{
@@ -341,9 +341,7 @@ bool PlayerMove::CheckIsOnGround()
 		}
 	
 	_isOnGround = false;
-
 	return false;
-
 }
 
 void PlayerMove::Move(int direction)
@@ -430,7 +428,7 @@ void PlayerMove::ShootGunDdabal()
 	if (hitCollider != nullptr)
 	{
 		_playerAudio->PlayOnce("hit");
-		//SpawnParticle(hitPoint);
+		SpawnParticle(hitPoint);
 	}
 
 	// 맞은 애가 dynamic이면 힘 가해주기
@@ -495,8 +493,6 @@ void PlayerMove::UpdatePlayerPositionDebug()
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
 {
 	_headCam = cam;
-	//HDData::Transform* headCamTransform = _headCam->GetTransform();
-	//headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
 }
 
 HDData::Camera* PlayerMove::GetHeadCam() const
@@ -541,25 +537,16 @@ void PlayerMove::PresetSprayPattern()
 
 void PlayerMove::StartRoundCam()
 {
-	//API::SetCurrentSceneMainCamera(_headCam);
-	//_headCam->SetAsMainCamera();
 	_isHeadCam = true;
-	//_aimText->SetText("O");
-	//auto temp2 = _headCam->GetTransform();
 	_isFirstPersonPerspective = true;
-	//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
 }
 
 void PlayerMove::ToggleCam()
 {
-	HDData::Camera* nowCam = API::GetCurrenSceneMainCamera();
-
-	//if (nowCam == _headCam)
 	if(_isHeadCam)
 	{
 		API::SetCurrentSceneMainCamera(_playerCamera);
 		_playerCamera->SetAsMainCamera();
-		//_prevCam = nullptr;
 		_isHeadCam = false;
 		//_aimText->SetText("");
 		_isFirstPersonPerspective = false;
@@ -572,7 +559,6 @@ void PlayerMove::ToggleCam()
 		_isHeadCam = true;
 		//_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 		_playerCamera->SetCamActive(false);
 	}
 }
@@ -885,25 +871,15 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
-	//// RotateY
-	//_playerCollider->RotateY(mouseDelta.x * 0.002f);	// adjust sensitivity later (0.002f -> variable)
-
-	//// Pitch in closed angle
-	//Pitch(mouseDelta.y * 0.1f);
+	float angleX = 0.0f;
+	float angleY = 0.0f;
+	
+	angleX += mouseDelta.y * 0.001f;
+	angleY += mouseDelta.x * 0.001f;
 
 	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.001f);
 	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.001f);
-
-
-	//if (_rotAngleY >= 3.14159265358979f)
-	//{
-	//	_rotAngleY -= -3.14159265358979f;
-	//}
-	//if (_rotAngleY <= -3.14159265358979f)
-	//{
-	//	_rotAngleY += 3.14159265358979f;
-	//}
-
+	
 	if (_rotAngleX >= 1.5f)
 	{
 		_rotAngleX = 1.5f;
@@ -915,11 +891,24 @@ void PlayerMove::CameraMove()
 
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerCollider->SetColliderRotation(rot);
-	
-	//Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
-	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
 
 	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
-	Quaternion rotX = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
-	_headCam->GetTransform()->SetRotation(rotX);
+	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	_headCam->GetTransform()->SetRotation(pitchRotQuat);
+
+	//_playerCollider->SetColliderRotation({ 0, 0.7071068, 0, 0.7071068 });
+	//Quaternion yawRotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angleY);
+	//Quaternion result = Quaternion::Concatenate(rotX, _headCam->GetGameObject()->GetTransform()->GetLocalRotation());
+	//Quaternion rotX = Quaternion::CreateFromYawPitchRoll(0.0f, _rotAngleX, 0.0f);
+	//_headCam->GetTransform()->SetLocalRotation(rotX);
+
+	//Vector3 right = _headCam->GetTransform()->GetRight();
+	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
+	//_fpMeshObj->GetTransform()->Rotate(rotX);
+	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
+	//_fpMeshObj->GetTransform()->SetLocalPosition(Vector3(0.0f,0.0f,1.0f));
+
+
+	//Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
+	//_playerCollider->SetColliderRotation(rot);
 }

@@ -45,8 +45,8 @@ namespace RocketCore::Graphics
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
-			if(!staticMeshObj->IsActive())
-				continue;
+			//if(!staticMeshObj->IsLightVisible())
+			//	continue;
 
 			XMMATRIX world = staticMeshObj->GetWorldTM();
 
@@ -69,7 +69,7 @@ namespace RocketCore::Graphics
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{
-			if (!skinningMeshObj->IsActive())
+			if (!skinningMeshObj->IsLightVisible())
 				continue;
 
 			XMMATRIX world = skinningMeshObj->GetWorldTM();

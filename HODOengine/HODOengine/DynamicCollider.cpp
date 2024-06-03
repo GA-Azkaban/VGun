@@ -52,6 +52,18 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 	}
 }
 
+void HDData::DynamicCollider::Rotate(Quaternion rot)
+{
+	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
+	Quaternion result = Quaternion::Concatenate(rot, { currentTransform.q.x, currentTransform.q.y, currentTransform.q.z, currentTransform.q.w });
+	_physXRigid->setGlobalPose(physx::PxTransform(currentTransform.p, physx::PxQuat(result.x, result.y, result.z, result.w)));
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->Rotate(rot);
+	}
+}
+
 void HDData::DynamicCollider::RotateY(float rotationAmount)
 {
 	//_physXRigid->addTorque(physx::PxVec3(rotQuat.x, rotQuat.y, rotQuat.z), physx::PxForceMode::eVELOCITY_CHANGE);
@@ -90,7 +102,7 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 
 void HDData::DynamicCollider::Jump()
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 40.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 70.0f, 0.0f), physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
