@@ -5,6 +5,7 @@
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
 #include "MeshTransformController.h"
+#include "FPAniScript.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -79,6 +80,10 @@ void InGameSceneView::Initialize()
 	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	fpMeshObj->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
+	fpMeshObj->AddComponent<FPAniScript>();
+
 	fpMeshObj->GetTransform()->SetLocalPosition(0.05f, -1.7f, 0.45f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -0.05f, 1.1f);
