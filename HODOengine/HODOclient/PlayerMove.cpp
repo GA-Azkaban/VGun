@@ -21,8 +21,7 @@ PlayerMove::PlayerMove()
 void PlayerMove::Start()
 {
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
-	//_playerCollider->SetColliderRotation({ 0, 0.7071068, 0, 0.7071068 });
-	//_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("FPMesh");
+
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	
 	_moveSpeed = 3.0f;
@@ -254,6 +253,7 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
+		CheckIsOnGround();
 		Jump();
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
