@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -82,13 +82,10 @@ void InGameSceneView::Initialize()
 	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
-	fpMeshObj->GetTransform()->SetLocalPosition(Vector3(0.0f, -1.85f, 1.4f));
-	//auto fpMeshComp = camMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	fpMeshObj->GetTransform()->SetLocalPosition(0.05f, -1.7f, 0.45f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//fpMeshObj->AddComponent<MeshTransformController>();
 	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -0.05f, 1.1f);
-	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -1.7f, 1.125f);
-	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
+	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.5f, 0.0f));
 	fpMeshComp->LoadMaterial(M_Red, 0);
 	fpMeshComp->LoadMaterial(M_Red, 1);
 	fpMeshComp->LoadMaterial(M_Red, 2);
@@ -96,7 +93,6 @@ void InGameSceneView::Initialize()
 	fpMeshComp->LoadMaterial(M_Red, 4);
 	fpMeshComp->SetMeshActive(false, 0);
 	fpMeshComp->SetMeshActive(false, 1);
-	//fpMeshComp->SetMeshActive(false, 2);
 	fpMeshComp->SetMeshActive(false, 3);
 	fpMeshComp->SetMeshActive(false, 4);
 
@@ -106,9 +102,9 @@ void InGameSceneView::Initialize()
 	auto hand = fpMeshObj->GetGameObjectByNameInChildren("hand_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->AddComponent<MeshTransformController>();
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.3601f, -12.3582f, -3.4213f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-17.4141f, -5.2570f, -1.595f);
 	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5409f, 0.5248f, -0.4279f, 0.4986f });
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5467f, 0.5239f, -0.4370f, 0.4849f });
 	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
 	// AJY 24.6.3.
 	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
