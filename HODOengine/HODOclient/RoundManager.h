@@ -35,7 +35,9 @@ public:
 	void UpdateRound();
 
 public:
-	void SetPlayerNickName(HDData::TextUI* name);
+	void SetPlayerNickNameObj(HDData::TextUI* name);
+	void SetPlayerHealthObj(HDData::TextUI* point);
+	void SetPlayerBulletCountObj(HDData::TextUI* count);
 	bool _isRoundStart = false;
 
 private:

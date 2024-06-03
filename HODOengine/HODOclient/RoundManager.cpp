@@ -42,12 +42,12 @@ void RoundManager::Update()
 void RoundManager::InitTraining()
 {
 
-	_name->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 
 }
 
 void RoundManager::UpdateTraining()
 {
+	_name->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 	_health->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
 	_bulletCount->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()));
 }
@@ -141,9 +141,19 @@ void RoundManager::UpdateRound()
 	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
 }
 
-void RoundManager::SetPlayerNickName(HDData::TextUI* name)
+void RoundManager::SetPlayerNickNameObj(HDData::TextUI* name)
 {
+	_name = name;
+}
 
+void RoundManager::SetPlayerHealthObj(HDData::TextUI* point)
+{
+	_health = point;
+}
+
+void RoundManager::SetPlayerBulletCountObj(HDData::TextUI* count)
+{
+	_bulletCount = count;
 }
 
 std::vector<HDData::GameObject*>& RoundManager::GetPlayerObjs()

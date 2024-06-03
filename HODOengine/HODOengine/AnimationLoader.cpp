@@ -215,6 +215,7 @@ namespace HDEngine
 				con->GetState(link.end)._isAnyState = true;
 				for (auto& [name, state] : con->GetAllStates())
 				{
+					if(link.end == state->_stateName) continue;
 					state->MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.b_value);
 				}
 				continue;

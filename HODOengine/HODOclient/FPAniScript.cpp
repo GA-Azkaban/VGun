@@ -15,7 +15,7 @@ void FPAniScript::Update()
 {
 	if (API::GetMouseHold(MOUSE_LEFT))
 	{
-		//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", false, true, 0.1);
+		//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", false, 0.1, true, 0.1);
 		_animator->GetAllAC()->SetTrigger("isFire");
 	}
 	if (API::GetKeyDown(DIK_R))
@@ -27,6 +27,5 @@ void FPAniScript::Update()
 	if (API::GetKeyDown(DIK_F1))
 	{
 		_animator->GetAllAC()->SetBool("isDie", true);
-		//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimationAtOnce("AR_dying");
 	}
 }

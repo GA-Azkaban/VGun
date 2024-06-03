@@ -28,7 +28,7 @@ namespace HDData
 		std::string engageAction = "";
 		bool isEngageAction = false;
 
-		State* changeState = _currentState;
+		State* changeState = nullptr;
 		auto transable = _currentState->_transableStates;
 
 		for (auto& [name, state] : transable)
@@ -84,7 +84,7 @@ namespace HDData
 			}
 		}
 		
-		if (changeState != _currentState)
+		if (changeState != nullptr)
 		{
 			_prevState = _currentState;
 			_currentState = changeState;
