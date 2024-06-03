@@ -58,12 +58,14 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.875f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.875f, 0.0f });
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
+	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
-	//auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>();
-	//headCollider->SetParentCollider(playerCollider);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
+	headCollider->SetParentCollider(playerCollider);
+	headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
+	headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
