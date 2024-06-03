@@ -62,18 +62,23 @@ void InGameSceneView::Initialize()
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
-	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
+	//mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
+	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
 	//camMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.75f, 0.15f);
 	//camMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
-	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", player);
+	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
+	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
+	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
 	//auto fpMeshComp = camMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//fpMeshObj->AddComponent<MeshTransformController>();
-	fpMeshComp->GetGameObject()->GetTransform()->SetLocalPosition(-0.08f, 0.02f, 0.02f);
+	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -0.05f, 1.1f);
+	fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -1.7f, 1.125f);
+	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.5f, 0.0f));
 	fpMeshComp->LoadMaterial(M_Red, 0);
 	fpMeshComp->LoadMaterial(M_Red, 1);
 	fpMeshComp->LoadMaterial(M_Red, 2);

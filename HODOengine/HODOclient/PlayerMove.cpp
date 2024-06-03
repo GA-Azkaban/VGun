@@ -22,7 +22,8 @@ void PlayerMove::Start()
 {
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	//_playerCollider->SetColliderRotation({ 0, 0.7071068, 0, 0.7071068 });
-	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("FPMesh");
+	//_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("FPMesh");
+	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	
 	_moveSpeed = 3.0f;
 
@@ -905,6 +906,7 @@ void PlayerMove::CameraMove()
 	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
 	//_fpMeshObj->GetTransform()->Rotate(rotX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
+	//_fpMeshObj->GetTransform()->SetLocalPosition(Vector3(0.0f,0.0f,1.0f));
 
 
 	//Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
