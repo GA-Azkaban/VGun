@@ -7,14 +7,18 @@ CameraMove::CameraMove()
 	
 }
 
-void CameraMove::Update()
+void CameraMove::Start()
 {
 	_camera = GetGameObject()->GetComponent<HDData::Camera>();
+}
+
+void CameraMove::Update()
+{
 	if (!_camera->GetCamActive())
 	{
 		return;
 	}
-	//float deltaTime = rocket.GetDeltaTime();
+
 	float deltaTime = API::GetDeltaTime();
 	moveSpeed = 5.0f;
 

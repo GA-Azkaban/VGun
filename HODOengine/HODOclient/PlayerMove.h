@@ -72,6 +72,7 @@ private:
 	HDData::Camera* _playerCamera;
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;
+	HDData::GameObject* _fpMeshObj;
 	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
 
 private:
