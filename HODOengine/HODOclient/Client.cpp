@@ -12,6 +12,9 @@
 #include "MenuManager.h"
 #include "RoundManager.h"
 
+#define DEFAULTWIDTH 1920
+#define DEFAULTHEIGHT 1080
+
 Client::Client()
 {
 
@@ -24,10 +27,25 @@ Client::~Client()
 
 void Client::Initialize()
 {
+	// 사이즈 초기화
+	auto currentWidth = API::GetScreenWidth();
+	auto currentHeight = API::GetScreenHeight();
+
+	if (currentWidth != DEFAULTWIDTH)
+	{
+	}
+	if (currentHeight != DEFAULTHEIGHT)
+	{
+	}
+	
+
+	// 매니저 초기화
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();
 
+
+	// 씬 초기화
 	/*TestScene test;
 	test.Start();
 
@@ -39,11 +57,11 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 	
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();	
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();	
 
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
@@ -52,5 +70,5 @@ void Client::Initialize()
 	//lobby.Initialize();
 
 	//API::LoadSceneByName("Lobby");
-	API::LoadSceneByName("InGame");
+	API::LoadSceneByName("Login");
 }
