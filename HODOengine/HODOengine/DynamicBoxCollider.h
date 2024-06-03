@@ -15,7 +15,7 @@ namespace HDData
 		virtual float GetHeight() const override;
 		virtual float GetDepth() const override;
 
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 		int GetColGroup() const;
 

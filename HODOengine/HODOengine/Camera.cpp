@@ -17,7 +17,8 @@ namespace HDData
 		_isShakingCamera(false),
 		_shakeDuration(0.1f),
 		_distYOnShoot(0.0f),
-		_distYOnShootEnd(0.0f)
+		_distYOnShootEnd(0.0f),
+		_camActive(true)
 	{
 
 	}
@@ -163,4 +164,15 @@ namespace HDData
 	{
 		_isShakingCamera = true;
 	}
+
+	void Camera::SetCamActive(bool active)
+{
+		_camActive = active;
+	}
+
+	bool Camera::GetCamActive() const
+{
+		return _camActive;
+	}
+
 }

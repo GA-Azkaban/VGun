@@ -63,13 +63,9 @@ namespace HDEngine
 		//	_mousePos.y = 0;
 		//}
 
-		if (GetKeyDown(DIK_P))
+		if (GetKeyDown(DIK_O))
 		{
 			_isFirstPersonPerspective = !_isFirstPersonPerspective;
-		}
-		if (GetKeyDown(DIK_W))
-		{
-			_isFirstPersonPerspective = true; // 야매로
 		}
 	}
 

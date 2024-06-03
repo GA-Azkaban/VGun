@@ -5,6 +5,7 @@
 #include "SliderSoundScript.h"
 #include "NetworkManager.h"
 #include "PlayerTest.h"
+#include "MeshTransformController.h"
 
 enum eColliderType
 {
@@ -16,13 +17,8 @@ TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
 
-	//auto mainCam = API::GetCurrenSceneMainCamera()->GetGameObject();
-	//mainCam->AddComponent<CameraMove>();
-
-	//auto skybox = API::CreateObject(_scene);
-	//auto skyboxComp = skybox->AddComponent<HDData::CubeMapRenderer>();
-	//skyboxComp->LoadCubeMapTexture("Day Sun Peak Clear.dds");
-	//_scene = API::CreateScene("Test Scene");
+	auto mainCam = _scene->GetMainCamera()->GetGameObject();
+	mainCam->AddComponent<CameraMove>();
 
 	/*
 	auto testBox1 = API::CreateObject(_scene);
@@ -37,9 +33,9 @@ TestScene::TestScene()
 	boxMat1.color = { 10,10,10,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
-	boxRender1->SetUseLight(false);
+	boxRender1->SetUseLight(false); */
 
-	auto particleSystemObj = API::CreateObject(_scene);
+	/*auto particleSystemObj = API::CreateObject(_scene);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
 	particleSystem->main.duration = 0.2f;
 	particleSystem->main.loop = true;
@@ -231,6 +227,7 @@ TestScene::TestScene()
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
@@ -242,49 +239,55 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
-	meshComp->PlayAnimation("AR_idle", true);
+	meshComp->PlayAnimation("AR_aim", true);
+	//meshComp->PlayAnimationUpper("AR_reload", true);
+	//meshComp->PlayAnimationLower("AR_run_R", true);
 	//meshComp->SetOutlineActive(true);
+	//meshComp->SetMeshActive(false, 0);
+	//meshComp->SetMeshActive(false, 1);
+	//meshComp->SetMeshActive(false, 3);
+	//meshComp->SetMeshActive(false, 4);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
 	//auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
-	//auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.0f, -10.0f, 0.0f);
-	//weaponTest->GetComponent<HDData::Transform>()->Rotate(180.0f, 255.0f, 90.0f);
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-13.0f, -10.0f, 0.0f);
-	//weaponTest->GetComponent<HDData::Transform>()->Rotate(-45.0f, -40.0f, -15.0f);
-	//auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	//weaponComp->LoadMesh("SM_AR_01.fbx");
-	//HDEngine::MaterialDesc weaponMatDesc;
-	//weaponMatDesc.materialName = "M_WEP_Basic_039";
-	////weaponMatDesc.albedo = "T_WEP_Basic_039_D.png";
-	//weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
-	//weaponMatDesc.roughness = "T_WEP_Basic_R.png";
-	//weaponMatDesc.metallicValue = 0.15;
-	//HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
-	//HDEngine::MaterialDesc weaponMatDesc2;
-	//weaponMatDesc2.materialName = "M_WEP_Camo_001";
-	////weaponMatDesc2.albedo = "T_WEP_Camo_001_D.png";
-	//weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
-	////weaponMatDesc2.normalMap = "T_WEP_Camo_N.png";
-	////weaponMatDesc2.roughness = "T_WEP_Camo_001_R.png";
-	//weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
-	//weaponMatDesc2.metallicValue = 0.1f;
-	//HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
-	//HDEngine::MaterialDesc weaponMatDesc3;
-	//weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
-	//weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
-	//weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
-	//weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
-	//weaponMatDesc3.metallicValue = 0.1f;
-	//HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
-	//weaponComp->LoadMaterial(weaponMat1, 0);
-	//weaponComp->LoadMaterial(weaponMat2, 1);
-	//weaponComp->LoadMaterial(weaponMat2, 3);
-	//weaponComp->LoadMaterial(weaponMat2, 5);
-	//weaponComp->LoadMaterial(weaponMat3, 2);
-	//weaponComp->LoadMaterial(weaponMat3, 4);
+	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	//weaponTest->AddComponent<MeshTransformController>();
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
+	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	//weaponComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
+	weaponComp->LoadMesh("SM_AR_01.fbx");
+	HDEngine::MaterialDesc weaponMatDesc;
+	weaponMatDesc.materialName = "M_WEP_Basic_039";
+	//weaponMatDesc.albedo = "T_WEP_Basic_039_D.png";
+	weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
+	weaponMatDesc.roughness = "T_WEP_Basic_R.png";
+	weaponMatDesc.metallicValue = 0.15;
+	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
+	HDEngine::MaterialDesc weaponMatDesc2;
+	weaponMatDesc2.materialName = "M_WEP_Camo_001";
+	//weaponMatDesc2.albedo = "T_WEP_Camo_001_D.png";
+	weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
+	//weaponMatDesc2.normalMap = "T_WEP_Camo_N.png";
+	//weaponMatDesc2.roughness = "T_WEP_Camo_001_R.png";
+	weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
+	weaponMatDesc2.metallicValue = 0.1f;
+	HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
+	HDEngine::MaterialDesc weaponMatDesc3;
+	weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
+	weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
+	weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
+	weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
+	weaponMatDesc3.metallicValue = 0.1f;
+	HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
+	weaponComp->LoadMaterial(weaponMat1, 0);
+	weaponComp->LoadMaterial(weaponMat2, 1);
+	weaponComp->LoadMaterial(weaponMat2, 3);
+	weaponComp->LoadMaterial(weaponMat2, 5);
+	weaponComp->LoadMaterial(weaponMat3, 2);
+	weaponComp->LoadMaterial(weaponMat3, 4);
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
@@ -487,7 +490,7 @@ void TestScene::Start()
 	meshComp->PlayAnimation("AR_idle", true);
 
 	player->SetSelfActive(false);*/
-	
+
 }
 
 void TestScene::ClickEvent()

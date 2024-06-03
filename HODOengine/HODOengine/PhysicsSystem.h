@@ -42,7 +42,6 @@ namespace HDEngine
 	public:
 		void CreateStaticPlaneCollider(HDData::GameObject* object);
 		void CreateStaticBoxCollider(HDData::GameObject* object);
-		void CreateStaticBoxCollider(float width, float height, float depth);
 		void CreateDynamicBoxCollider(HDData::GameObject* object);
 		void CreateDynamicCapsuleCollider(HDData::GameObject* object);
 		void CreateDynamicSphereCollider(HDData::GameObject* object);

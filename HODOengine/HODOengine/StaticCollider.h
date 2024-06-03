@@ -17,7 +17,7 @@ namespace HDData
 	public:
 		void UpdateToPhysics() override;
 		void UpdateFromPhysics(Vector3 pos, Quaternion quat);
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 		void SetPhysXRigid(physx::PxRigidStatic* rigid);
 

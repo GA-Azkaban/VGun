@@ -1,10 +1,9 @@
-#include "StaticBoxCollider.h"
+﻿#include "StaticBoxCollider.h"
 #include "PhysicsSystem.h"
 #include "GraphicsObjFactory.h"
 
 HDData::StaticBoxCollider::StaticBoxCollider()
 	: _width(1.0f), _height(1.0f), _depth(1.0f)
-	//: _width(0.01f), _height(0.01f), _depth(0.01f)
 {
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;
@@ -14,23 +13,27 @@ HDData::StaticBoxCollider::StaticBoxCollider()
 HDData::StaticBoxCollider::StaticBoxCollider(float width, float height, float depth)
 	: _width(width), _height(height), _depth(depth)
 {
-	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
+	_debugStruct = _cubeDebugStruct;
 	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
 }
 
 float HDData::StaticBoxCollider::GetHeight()
 {
-	return _height;
+	//return _height;
+	return _height * _scaleOffset.y * GetTransform()->GetScale().y;
 }
 
 float HDData::StaticBoxCollider::GetWidth()
 {
-	return _width;
+	//return _width;
+	return _width * _scaleOffset.x * GetTransform()->GetScale().x;
 }
 
 float HDData::StaticBoxCollider::GetDepth()
 {
-	return _depth;
+	//return _depth;
+	return _depth * _scaleOffset.z * GetTransform()->GetScale().z;
 }
 
 void HDData::StaticBoxCollider::SetHeight(float val)
@@ -48,7 +51,7 @@ void HDData::StaticBoxCollider::SetDepth(float val)
 	_depth = val;
 }
 
-void HDData::StaticBoxCollider::DrawDebug()
+void HDData::StaticBoxCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

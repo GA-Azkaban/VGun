@@ -56,6 +56,10 @@ namespace HDData
 		void ShakeCamera(float deltaTime);
 		void EnableCameraShake();
 
+	public:
+		void SetCamActive(bool active);
+		bool GetCamActive() const;
+
 	private:
 		float _nearZ;				// frustum의 가까운 평면까지의 거리
 		float _farZ;				// frustum의 먼 평면까지의 거리
@@ -75,5 +79,6 @@ namespace HDData
 		float _shakeDuration;
 		float _distYOnShoot;
 		float _distYOnShootEnd;
+		bool _camActive;
 	};
 }

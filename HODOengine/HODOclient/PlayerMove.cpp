@@ -12,26 +12,25 @@ PlayerMove::PlayerMove()
 	_isReloading(false),
 	_isRunning(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
-	_isFirstPersonPerspective(true)
+	_isFirstPersonPerspective(true),
+	_isJumping(true), _isOnGround(false)
 {
 
 }
 
 void PlayerMove::Start()
 {
-	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	//_playerCollider = GetGameObject()->GetComponent<HDData::DynamicBoxCollider>();
+	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	
 	_moveSpeed = 3.0f;
-
-	_isOnGround = false;
-	//_isJumping = true;
-	_isJumping = false;
 
 	_playerCollider->LockPlayerRotation();
 
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
+	StartRoundCam();
 }
 
 void PlayerMove::Update()
@@ -48,20 +47,30 @@ void PlayerMove::Update()
 	{
 		CheckIsOnGround();
 	}
+	//else
+	//{
+	//	_playerCollider->ClearVeloY();
+	//}
 
-	if (_jumpCooldown >= 0.0f)
-	{
-		_jumpCooldown -= _deltaTime;
-	}
-	else
-	{
-		_isJumping = false;
-	}
+	// 쿨타임 방식의 점프 관리
+	//if (_jumpCooldown >= 0.0f)
+	//{
+	//	_jumpCooldown -= _deltaTime;
+	//}
+	//else
+	//{
+	//	if (_isJumping)
+	//	{
+	//		_isJumping = false;
+	//		_playerCollider->ClearVeloY();
+	//	}
+	//}
 
 	//if (API::GetMouseDown(MOUSE_LEFT))
 	//{
 	//	ShootGun();
 	//}
+
 
 	// 발사 쿨타임 및 파티클 수명관리
 	if (_shootCooldown >= 0.0f)
@@ -124,18 +133,18 @@ void PlayerMove::Update()
 	
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
-	//UpdatePlayerPositionDebug();
-	if (_tempFlag == 0)
-	{
-		API::SetCurrentSceneMainCamera(_headCam);
-		_headCam->SetAsMainCamera();
-		_isHeadCam = true;
-		//_aimText->SetText("O");
-		_isFirstPersonPerspective = true;
-		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+	////UpdatePlayerPositionDebug();
+	//if (_tempFlag == 0)
+	//{
+	//	API::SetCurrentSceneMainCamera(_headCam);
+	//	_headCam->SetAsMainCamera();
+	//	_isHeadCam = true;
+	//	//_aimText->SetText("O");
+	//	_isFirstPersonPerspective = true;
+	//	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
 
-		_tempFlag = 1;
-	}
+	//	_tempFlag = 1;
+	//}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -146,6 +155,7 @@ void PlayerMove::SetMovable(bool movable)
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
 {
 	_playerCamera = camera;
+	camera->SetCamActive(false);
 }
 
 void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim)
@@ -302,9 +312,37 @@ bool PlayerMove::CheckIsOnGround()
 	}
 	_isOnGround = false;
 	*/
-	return false;
+	//return false;
 	
+	Vector3 pos = this->GetTransform()->GetPosition();
 
+		float halfHeight = _playerCollider->GetHeight() / 2.0f;
+		Vector3 rayOrigin = Vector3(pos.x, pos.y - halfHeight - 0.05f, pos.z);
+
+		int colliderType = 0;
+		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.1f, &colliderType);
+		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.1f, Vector4(1.f, 0.f, 0.f, 0.f));
+
+		if (opponentCollider)
+		{
+			// type 1이 rigidStatic.
+			if (colliderType == 1)
+			{
+				// 상태 변경 및 착지 Sound.
+				if (_isOnGround == false)
+				{
+					_isOnGround = true;
+					_isJumping = false;
+					_playerCollider->ClearVeloY();
+					//_playerAudio->Play3DOnce("landing");
+				}
+				return true;
+			}
+		}
+	
+	_isOnGround = false;
+
+	return false;
 
 }
 
@@ -457,8 +495,8 @@ void PlayerMove::UpdatePlayerPositionDebug()
 void PlayerMove::SetHeadCam(HDData::Camera* cam)
 {
 	_headCam = cam;
-	HDData::Transform* headCamTransform = _headCam->GetTransform();
-	headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
+	//HDData::Transform* headCamTransform = _headCam->GetTransform();
+	//headCamTransform->SetLocalPosition(headCamTransform->GetLocalPosition() + headCamTransform->GetForward() * 0.3f);
 }
 
 HDData::Camera* PlayerMove::GetHeadCam() const
@@ -503,13 +541,13 @@ void PlayerMove::PresetSprayPattern()
 
 void PlayerMove::StartRoundCam()
 {
-	API::SetCurrentSceneMainCamera(_headCam);
-	_headCam->SetAsMainCamera();
+	//API::SetCurrentSceneMainCamera(_headCam);
+	//_headCam->SetAsMainCamera();
 	_isHeadCam = true;
 	//_aimText->SetText("O");
-	auto temp2 = _headCam->GetTransform();
+	//auto temp2 = _headCam->GetTransform();
 	_isFirstPersonPerspective = true;
-	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
+	//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.0f));
 }
 
 void PlayerMove::ToggleCam()
@@ -525,6 +563,7 @@ void PlayerMove::ToggleCam()
 		_isHeadCam = false;
 		//_aimText->SetText("");
 		_isFirstPersonPerspective = false;
+		_playerCamera->SetCamActive(true);
 	}
 	else
 	{
@@ -534,6 +573,7 @@ void PlayerMove::ToggleCam()
 		//_aimText->SetText("O");
 		_isFirstPersonPerspective = true;
 		_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
+		_playerCamera->SetCamActive(false);
 	}
 }
 
@@ -875,7 +915,11 @@ void PlayerMove::CameraMove()
 
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerCollider->SetColliderRotation(rot);
-
+	
 	//Quaternion rotHead = rot.CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->SetColliderRotation(rotHead);
+
+	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
+	Quaternion rotX = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	_headCam->GetTransform()->SetRotation(rotX);
 }

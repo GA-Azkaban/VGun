@@ -247,6 +247,7 @@ namespace HDData
 	{
 		Scene* currentScene = GetThisObjectScene();
 		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "mesh", this);
+		rendererObject->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 		auto rendererComp = rendererObject->AddComponent<SkinnedMeshRenderer>();
 		rendererComp->LoadNode(fileName);
 		rendererComp->LoadMesh(fileName);
@@ -263,6 +264,7 @@ namespace HDData
 		{
 			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "Armature", this);
 			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
+			newObject->GetTransform()->Rotate(0.0f, 0.0f, 180.0f);
 			Node* root = FindNodeByName(rendererNode, "root");			
 			if (root != nullptr)
 			{
@@ -295,7 +297,7 @@ namespace HDData
 		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(scene, node->name, parentObject);
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
 		node->nodeTransform = newObject->GetTransform()->_nodeTransform;
-		//newObject->AddComponent<StaticBoxCollider>();
+		newObject->AddComponent<StaticBoxCollider>();
 		
 		for (int i = 0; i < node->children.size(); ++i)
 		{

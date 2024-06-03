@@ -84,6 +84,9 @@
     <ClCompile Include="PlayerTest.cpp">
       <Filter>02_Client\TestScene\Player</Filter>
     </ClCompile>
+    <ClCompile Include="MeshTransformController.cpp">
+      <Filter>02_Client\TestScene\test</Filter>
+    </ClCompile>
     <ClCompile Include="InGameSceneView.cpp">
       <Filter>04_SceneView\01.GameScene\InGame</Filter>
     </ClCompile>
@@ -216,6 +219,9 @@
     </ClInclude>
     <ClInclude Include="PlayerTest.h">
       <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshTransformController.h">
+      <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
     <ClInclude Include="InGameSceneView.h">
       <Filter>04_SceneView\01.GameScene\InGame</Filter>

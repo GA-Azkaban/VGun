@@ -37,7 +37,7 @@ void HDData::StaticCollider::SetGlobalPosition(Vector3 pos)
 	_physXStatic->setGlobalPose(position);
 }
 
-void HDData::StaticCollider::DrawDebug()
+void HDData::StaticCollider::Update()
 {
 }
 

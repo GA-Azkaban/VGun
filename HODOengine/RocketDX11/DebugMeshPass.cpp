@@ -47,18 +47,18 @@ namespace RocketCore::Graphics
 
 		for (auto e : ObjectManager::Instance().GetCylinderPrimitiveList())
 		{
-			e->worldTM.m[0][0] *= e->diameter;
-			e->worldTM.m[1][1] *= e->height / 2;
-			e->worldTM.m[2][2] *= e->diameter;
+			//e->worldTM.m[0][0] *= e->diameter;
+			//e->worldTM.m[1][1] *= e->height / 2;
+			//e->worldTM.m[2][2] *= e->diameter;
 
 			ResourceManager::Instance().GetCylinderPrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}
 
 		for (auto& e : ObjectManager::Instance().GetCapsulePrimitiveList())
 		{
-			e->worldTM.m[0][0] *= e->diameter;
-			e->worldTM.m[1][1] *= e->height / 2;
-			e->worldTM.m[2][2] *= e->diameter;
+			//e->worldTM.m[0][0] *= e->diameter;
+			//e->worldTM.m[1][1] *= e->height / 2;
+			//e->worldTM.m[2][2] *= e->diameter;
 
 			ResourceManager::Instance().GetCapsulePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}

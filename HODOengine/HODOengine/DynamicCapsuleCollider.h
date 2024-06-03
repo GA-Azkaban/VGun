@@ -8,13 +8,14 @@ namespace HDData
 	{
 	public:
 		DynamicCapsuleCollider();
+		DynamicCapsuleCollider(float rad, float halfHeight);
 
 	public:
 		virtual float GetWidth() const override;
 		virtual float GetHeight() const override;
 		virtual float GetDepth() const override;
 
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 	public:
 		float GetRadius() const;

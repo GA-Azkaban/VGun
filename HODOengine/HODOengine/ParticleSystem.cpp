@@ -40,13 +40,17 @@ namespace HDData
 	{
 		_isPlaying = false;
 		Clear();
+		// 자식 오브젝트에 Particle System이 있다면 같이 멈춰야 한다.
+		for (auto e : GetGameObject()->GetChildGameObjects())
+		{
+			e->GetComponent<ParticleSystem>()->Stop();
+		}
 	}
 
 	void ParticleSystem::Clear()
 	{
 		for (auto& e : _activatedParticles)
 		{
-			//HDEngine::ParticlePool::Instance().Retrieve(e.first);
 			_particleSystem->DestroyParticle(e.first);
 		}
 		_activatedParticles.clear();

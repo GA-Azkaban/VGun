@@ -16,9 +16,6 @@ public:
 	virtual void Update() override;
 
 public:
-	void OnMouseMove();
-
-public:
 	void Strafe(float delta);
 	void Walk(float delta);
 	void WorldUpDown(float delta);
@@ -26,10 +23,11 @@ public:
 	void Yaw(float angle);
 	void Pitch(float angle);
 	void Roll(float angle);
-	void RotateY(float angle);
 
 public:
 	float moveSpeed;
 	float rotateSpeed;
 
+private:
+	HDData::Camera* _camera;
 };

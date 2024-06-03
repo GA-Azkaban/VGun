@@ -29,7 +29,7 @@ namespace HDData
 		_radius = radius;
 	}
 
-	void StaticSphereCollider::DrawDebug()
+	void StaticSphereCollider::Update()
 	{
 		Matrix colWorld = Matrix::Identity;
 		colWorld *= GetTransformMatrix();

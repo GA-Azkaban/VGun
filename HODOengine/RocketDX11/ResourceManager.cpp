@@ -704,47 +704,6 @@ namespace RocketCore::Graphics
 		_quadMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
 		_quadMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
 		_loadedFileInfo["primitiveQuad"].loadedMaterials.push_back(_quadMaterial);
-		// 쿼드 메쉬
-		/*std::vector<Vertex> quadVertices(6);
-		std::vector<UINT> quadIndices(6);
-
-		Vertex v1(XMFLOAT3{ -0.1, 0.1, 0 }, XMFLOAT2{ 0, 0 });
-		quadVertices[0] = v1;
-		Vertex v2(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
-		quadVertices[1] = v2;
-		Vertex v3(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
-		quadVertices[2] = v3;
-		Vertex v4(XMFLOAT3{ -0.1, -0.1, 0 }, XMFLOAT2{ 0, 1 });
-		quadVertices[3] = v4;
-		Vertex v5(XMFLOAT3{ 0.1, 0.1, 0 }, XMFLOAT2{ 1, 0 });
-		quadVertices[4] = v5;
-		Vertex v6(XMFLOAT3{ 0.1, -0.1, 0 }, XMFLOAT2{ 1, 1 });
-		quadVertices[5] = v6;
-
-		// 빌보드 파티클 메쉬
-		std::vector<Vertex> quadVertices(6);
-		std::vector<UINT> quadIndices(6);
-
-		Vertex v1(XMFLOAT3{ -1, 1, 0 }, XMFLOAT2{ 0, 0 });
-		quadVertices[0] = v1;
-		Vertex v2(XMFLOAT3{ 1, 1, 0 }, XMFLOAT2{ 1, 0 });
-		quadVertices[1] = v2;
-		Vertex v3(XMFLOAT3{ -1, -1, 0 }, XMFLOAT2{ 0, 1 });
-		quadVertices[2] = v3;
-		Vertex v4(XMFLOAT3{ -1, -1, 0 }, XMFLOAT2{ 0, 1 });
-		quadVertices[3] = v4;
-		Vertex v5(XMFLOAT3{ 1, 1, 0 }, XMFLOAT2{ 1, 0 });
-		quadVertices[4] = v5;
-		Vertex v6(XMFLOAT3{ 1, -1, 0 }, XMFLOAT2{ 1, 1 });
-		quadVertices[5] = v6;
-
-		for (UINT i = 0; i < 6; ++i)
-		{
-			quadIndices[i] = i;
-		}
-
-		Mesh* quadMesh = new Mesh(&quadVertices[0], 6, &quadIndices[0], 6);
-		_loadedFileInfo["quadMesh"].loadedMeshes.push_back(quadMesh);*/
 
 		// 디버그 메쉬
 		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);
@@ -1010,13 +969,7 @@ namespace RocketCore::Graphics
 			rightVec.z, upVec.z, forwardVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-		/*aiMatrix4x4 mat(
-			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
-			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
-			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f); */
-
-			// create node hierarchy
+		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);

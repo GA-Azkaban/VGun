@@ -306,6 +306,11 @@ namespace RocketCore::Graphics
 
 			for (UINT i = 0; i < m_meshes.size(); ++i)
 			{
+				if (!m_meshesActive[i])
+				{
+					continue;
+				}
+
 				if (m_materials[i]->GetAlbedoMap())
 				{
 					m_pixelShader->SetInt("useAlbedo", 1);
@@ -1069,6 +1074,92 @@ namespace RocketCore::Graphics
 		}
 	}
 
+	void SkinningMeshObject::PlayAnimationAtOnce(const std::string& animName, bool isLoop, float blendDuration, bool hasExitTime, float exitTime)
+	{
+		// 애니메이션 리스트에 없는 애니메이션은 재생할 수 없다.
+		auto animIter = m_animations.find(animName);
+		if (animIter == m_animations.end())
+		{
+			m_currentAnimation = nullptr;
+			return;
+		}
+
+		// 애니메이션 분리 여부 저장		
+		m_separateUpperAndLowerAnim = false;
+
+		// 현재 실행 중인 애니메이션이 있다면
+		// 그 애니메이션을 이전 애니메이션으로 저장해두고 다음 애니메이션으로 넘어간다.
+		if (m_currentAnimation != nullptr)
+		{
+			/// 중복 입력 버그가 있어 넣어두는 코드
+			// 현재 실행 중인 애니메이션과 실행시키려는 애니메이션 이름이 같다면
+			if (m_currentAnimation->animName == animIter->second->animName)
+			{
+				// 루프 여부 저장
+				m_currentAnimation->isLoop = isLoop;
+				// 루프가 true인 애니메이션은 실행하던 애니메이션을 바꾸지 않고 종료
+				if (m_currentAnimation->isLoop)
+				{
+					// 이전 애니메이션으로 저장해둔다.					
+					m_previousAnimation = m_currentAnimation;
+					// hasExitTime 여부와 exitTime 저장
+					m_hasExitTime = hasExitTime;
+					if (hasExitTime)
+					{
+						m_exitTime = exitTime * m_currentAnimation->ticksPerSecond;
+					}
+					return;
+				}
+			}
+
+			// 이전 애니메이션을 저장해둔다.
+			m_savedPreviousAnimation = *m_currentAnimation;
+			m_previousAnimation = &m_savedPreviousAnimation;
+		}
+		else
+		{
+			// 현재 애니메이션이 없다면 이전 애니메이션을 저장할 필요가 없다.
+			m_previousAnimation = nullptr;
+		}
+
+		// 애니메이션 전환
+		m_savedCurrentAnimation = *(animIter->second);
+		m_savedUpperCurrentAnimation = *(animIter->second);
+		m_savedLowerCurrentAnimation = *(animIter->second);
+		m_currentAnimation = &m_savedCurrentAnimation;
+		m_currentUpperAnimation = &m_savedUpperCurrentAnimation;
+		m_currentLowerAnimation = &m_savedLowerCurrentAnimation;
+
+		// hasExitTime 여부와 exitTime 저장
+		m_hasExitTime = hasExitTime;
+		if (hasExitTime)
+		{
+			m_exitTime = exitTime * m_currentAnimation->ticksPerSecond;
+		}
+		// 루프 여부 저장
+		m_currentAnimation->isLoop = isLoop;
+		// 애니메이션 실행 시간 초기화
+		m_currentAnimation->accumulatedTime = 0.0f;
+		m_currentAnimation->isEnd = false;
+		// 블렌딩 시간 저장
+		m_blendDuration = blendDuration * m_currentAnimation->ticksPerSecond;
+
+		if (m_exitTime <= 0.0f)
+		{
+			m_isExitTimeElapsed = true;
+		}
+		else
+		{
+			m_isExitTimeElapsed = false;
+		}
+
+		// 이전 애니메이션이 없다면 블렌딩 하지 않는다.
+		if (m_previousAnimation != nullptr)
+		{
+			m_blendFlag = true;
+		}
+	}
+
 	void SkinningMeshObject::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
 		// exitTime을 가지고 있는 경우
@@ -1278,6 +1369,11 @@ namespace RocketCore::Graphics
 	void SkinningMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_meshesActive.resize(m_meshes.size());
+		for (int i = 0; i < m_meshesActive.size(); ++i)
+		{
+			m_meshesActive[i] = true;
+		}
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 	}
 
@@ -1452,7 +1548,7 @@ namespace RocketCore::Graphics
 		{
 			return;
 		}
-		m_meshes[index]->SetActive(isActive);
+		m_meshesActive[index] = isActive;
 	}
 
 }

@@ -20,7 +20,7 @@ namespace HDData
 		void SetWidth(float val);
 		void SetDepth(float val);
 
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 	private:
 		float _width;

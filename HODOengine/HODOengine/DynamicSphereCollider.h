@@ -20,7 +20,7 @@ namespace HDData
 		void SetRadius(float radius);
 		bool GetIsPlayer() const;
 
-		virtual void DrawDebug() override;
+		virtual void Update() override;
 
 	private:
 		float _radius;

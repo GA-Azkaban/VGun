@@ -138,7 +138,7 @@ namespace HDEngine
 	void PhysicsSystem::CreateRigidBodies()
 	{
 		// fundamental ground
-		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_material);
+		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_planeMaterial);
 		_pxScene->addActor(*groundPlane);
 
 		//const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
@@ -198,7 +198,7 @@ namespace HDEngine
 				HDData::StaticBoxCollider* box = dynamic_cast<HDData::StaticBoxCollider*>(collider);
 				Vector3 scale = object->GetTransform()->GetScale();
 
-				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_planeMaterial);
 				shape->userData = box;
 				// TODO : 여기 작업하고 있었음.
 				Vector3 position = object->GetTransform()->GetPosition();
@@ -225,21 +225,6 @@ namespace HDEngine
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
 		}
-	}
-
-	void PhysicsSystem::CreateStaticBoxCollider(float width, float height, float depth)
-	{
-		HDData::StaticBoxCollider* box = new HDData::StaticBoxCollider(width, height, depth);
-
-		physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_material);
-
-		physx::PxTransform localTransform(physx::PxVec3(0.0f, box->GetHeight() / 2, 0.0f));
-		physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
-		boxRigid->attachShape(*shape);
-
-		//_pxScene->addActor(*boxRigid);
-		_rigidStatics.push_back(boxRigid);
-		shape->release();
 	}
 
 	void PhysicsSystem::CreateDynamicBoxCollider(HDData::GameObject* object)
@@ -298,15 +283,22 @@ namespace HDEngine
 			{
 				HDData::DynamicCapsuleCollider* capsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
+				shape->userData = capsule;
+				
+				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
+				physx::PxTransform localTransform(physx::PxVec3(0.f, 0.f, 0.f), rotation);
+				shape->setLocalPose(localTransform);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
-				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z),
-					physx::PxQuat(physx::PxPi / 2.0f, physx::PxVec3(0.0f, 0.0f, 1.0f)));
-				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(localTransform);
+				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
+				capsuleRigid->setMass(1.5f);
+				
 				capsuleRigid->attachShape(*shape);
+
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
+				capsule->SetPhysXRigid(capsuleRigid);
 				capsuleRigid->userData = capsule;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?

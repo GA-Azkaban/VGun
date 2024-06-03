@@ -52,6 +52,7 @@ namespace RocketCore::Graphics
 		virtual Node* GetNode() override;
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
+		virtual void PlayAnimationAtOnce(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 
@@ -98,6 +99,7 @@ namespace RocketCore::Graphics
 
 	private:
 		std::vector<Mesh*> m_meshes;
+		std::vector<bool> m_meshesActive;
 		std::vector<Material*> m_materials;
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;

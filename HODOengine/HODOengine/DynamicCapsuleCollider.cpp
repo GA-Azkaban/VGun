@@ -9,6 +9,15 @@ HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
 	_debugStruct = _capsuleObject;
 }
 
+HDData::DynamicCapsuleCollider::DynamicCapsuleCollider(float rad, float halfHeight)
+{
+	_radius = rad;
+	_halfHeight = halfHeight;
+
+	_capsuleObject = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCapsulePrimitive();
+	_debugStruct = _capsuleObject;
+}
+
 float HDData::DynamicCapsuleCollider::GetWidth() const
 {
 	return (_radius + _halfHeight) * 2 * _scaleOffset.y * GetGameObject()->GetTransform()->GetScale().y;
@@ -24,7 +33,7 @@ float HDData::DynamicCapsuleCollider::GetDepth() const
 	return (_radius + _halfHeight) * 2 * _scaleOffset.z * GetGameObject()->GetTransform()->GetScale().z;
 }
 
-void HDData::DynamicCapsuleCollider::DrawDebug()
+void HDData::DynamicCapsuleCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

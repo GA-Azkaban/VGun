@@ -90,7 +90,7 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 
 void HDData::DynamicCollider::Jump()
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 40.0f, 0.0f), physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
@@ -114,6 +114,18 @@ void HDData::DynamicCollider::AdjustVelocity(float ratio)
 	_physXRigid->setLinearVelocity(_physXRigid->getLinearVelocity() * ratio);
 }
 
+void HDData::DynamicCollider::ClearVeloY()
+{
+	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
+	if (velo.y > 0.0f)
+	{
+		velo.y = 0.0f;
+	}
+	_physXRigid->clearForce();
+	_physXRigid->setLinearVelocity(velo);
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+}
+
 void HDData::DynamicCollider::UpdateToPhysics()
 {
 
@@ -125,7 +137,7 @@ void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 	GetTransform()->SetRotation(quat);
 }
 
-void HDData::DynamicCollider::DrawDebug()
+void HDData::DynamicCollider::Update()
 {
 
 }

@@ -11,7 +11,7 @@ namespace HDData
 , _scaleOffset(Vector3::One),
 _parentCollider(nullptr)
 	{
-		HDEngine::RenderSystem::Instance().PushCollider(this);
+		
 	}
 
 	void Collider::SetPositionOffset(Vector3 pos)
@@ -21,7 +21,10 @@ _parentCollider(nullptr)
 
 	void Collider::SetRotationOffset(float x, float y, float z)
 	{
-
+		float yaw = DirectX::XMConvertToRadians(y);
+		float pitch = DirectX::XMConvertToRadians(x);
+		float roll = DirectX::XMConvertToRadians(z);
+		_rotationOffset = Quaternion::CreateFromYawPitchRoll(yaw, pitch, roll);
 	}
 
 	void Collider::SetScaleOffset(Vector3 sca)
@@ -59,19 +62,6 @@ _parentCollider(nullptr)
 
 	Matrix Collider::GetRotationMatrix()
 	{
-		Matrix scaleMatrix =
-		{
-			_scaleOffset.x,		0,					0,					0,
-			0,					_scaleOffset.y,		0,					0,
-			0,					0,					_scaleOffset.z,		0,
-			0,					0,					0,					1
-		};
-
-		return scaleMatrix;
-	}
-
-	Matrix Collider::GetScaleMatrix()
-	{
 		Matrix rotationMatrix =
 		{
 			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
@@ -98,10 +88,23 @@ _parentCollider(nullptr)
 		return rotationMatrix;
 	}
 
+	Matrix Collider::GetScaleMatrix()
+	{		
+		Matrix scaleMatrix =
+		{
+			_scaleOffset.x,		0,					0,					0,
+			0,					_scaleOffset.y,		0,					0,
+			0,					0,					_scaleOffset.z,		0,
+			0,					0,					0,					1
+		};
+
+		return scaleMatrix;
+	}
+
 	Matrix Collider::GetTransformMatrix()
 	{
-		//Matrix result = Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
-		Matrix result = Matrix::Identity * GetTranslateMatrix()  * GetRotationMatrix() *GetScaleMatrix();
+		Matrix result = GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
+		//Matrix result = GetTranslateMatrix()  * GetRotationMatrix() * GetScaleMatrix();
 
 		if (_parentCollider != nullptr)
 		{

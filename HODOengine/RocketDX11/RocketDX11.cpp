@@ -190,6 +190,7 @@ namespace RocketCore::Graphics
 		// load all skybox texture
 		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
 		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
 
 		/// fbx
 
@@ -224,7 +225,7 @@ namespace RocketCore::Graphics
 		_quadBuffer->Initialize(_screenWidth, _screenHeight);
 		_stencilEnableBuffer->Initialize(_screenWidth, _screenHeight);
 		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
-		
+
 		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
 		_forwardPass = new ForwardPass(_deferredBuffers, _quadBuffer);
 		_GBufferPass = new GBufferPass(_deferredBuffers);
@@ -239,7 +240,7 @@ namespace RocketCore::Graphics
 		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
-		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear.dds");
+		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 		Cubemap::Instance().SetEnvLightIntensity(0.8f);
 
 		/// DEBUG Obejct
@@ -376,10 +377,17 @@ namespace RocketCore::Graphics
 		_outlinePass->Render();
 
 #ifdef _DEBUG
-		//_debugMeshPass->Render();
-		//RenderLine();
+		static bool isDebugRender = true;
+		if (GetAsyncKeyState(VK_F1) & 0x8000)
+		{
+			isDebugRender = !isDebugRender;
+		}
+		if (isDebugRender)
+		{
+			_debugMeshPass->Render();
+			RenderLine();
+		}
 #endif
-
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();
