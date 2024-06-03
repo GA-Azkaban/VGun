@@ -254,6 +254,7 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
+		CheckIsOnGround();
 		Jump();
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))

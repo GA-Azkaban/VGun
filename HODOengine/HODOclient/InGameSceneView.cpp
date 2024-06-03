@@ -58,6 +58,15 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
+	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+	auto playerHead = API::CreateObject(_scene, "head", player);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
+	headCollider->SetParentCollider(playerCollider);
+	headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
+	headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
 	auto mainCam = _scene->GetMainCamera();
@@ -73,12 +82,13 @@ void InGameSceneView::Initialize()
 	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	fpMeshObj->GetTransform()->SetLocalPosition(Vector3(0.0f, -1.85f, 1.4f));
 	//auto fpMeshComp = camMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//fpMeshObj->AddComponent<MeshTransformController>();
 	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -0.05f, 1.1f);
-	fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -1.7f, 1.125f);
-	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.5f, 0.0f));
+	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -1.7f, 1.125f);
+	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(M_Red, 0);
 	fpMeshComp->LoadMaterial(M_Red, 1);
 	fpMeshComp->LoadMaterial(M_Red, 2);
@@ -96,10 +106,15 @@ void InGameSceneView::Initialize()
 	auto hand = fpMeshObj->GetGameObjectByNameInChildren("hand_r");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->AddComponent<MeshTransformController>();
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.3601f, -12.3582f, -3.4213f);
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-18.3601f, -12.3582f, -3.4213f);
 	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5409f, 0.5248f, -0.4279f, 0.4986f });
 	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
+	// AJY 24.6.3.
+	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
+	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
+	
+
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");
 	HDEngine::MaterialDesc weaponMatDesc;
@@ -131,6 +146,7 @@ void InGameSceneView::Initialize()
 	auto playerMove = player->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
+	playerMove->dataCheck = weaponTest;	// temp
 
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
@@ -140,9 +156,6 @@ void InGameSceneView::Initialize()
 		particleVec.push_back(particle);
 	}
 	playerMove->SetHitParticle(particleVec);
-
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.875f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.875f, 0.0f });
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();

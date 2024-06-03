@@ -495,3 +495,17 @@ HODOengine/Resources/SceneData/lobbyData.json
 HODOengine/Resources/UI/반투명캔버스만드는법.txt
 
 HODOengine/Resources/Textures/UI/반투명캔버스만드는법.txt
+
+HODOengine/Include/DXTK/SpriteFont.h
+
+HODOengine/Include/Protobuf/Enum.proto
+
+HODOengine/Include/Protobuf/Protocol.proto
+
+HODOengine/Include/Protobuf/Struct.proto
+
+HODOengine/Include/ServerCore/Log.h
+
+HODOengine/Include/
+
+HODOengine/Resources/
