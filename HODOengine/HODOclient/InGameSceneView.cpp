@@ -146,7 +146,6 @@ void InGameSceneView::Initialize()
 	auto playerMove = player->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
-	playerMove->dataCheck = weaponTest;	// temp
 
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
