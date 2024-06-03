@@ -70,5 +70,5 @@ void Client::Initialize()
 	//lobby.Initialize();
 
 	//API::LoadSceneByName("Lobby");
-	API::LoadSceneByName("Login");
+	API::LoadSceneByName("InGame");
 }

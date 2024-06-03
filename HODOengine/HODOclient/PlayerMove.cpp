@@ -1,5 +1,6 @@
 ﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
+#include "FPAniScript.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true),
@@ -15,11 +16,15 @@ PlayerMove::PlayerMove()
 	_isFirstPersonPerspective(true),
 	_isJumping(true), _isOnGround(false)
 {
-
+	
 }
 
 void PlayerMove::Start()
 {
+	_animator = GetGameObject()->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(GetGameObject(), "FP_animation.json");
+	GetGameObject()->AddComponent<FPAniScript>();
+
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
