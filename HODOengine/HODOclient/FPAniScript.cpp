@@ -1,4 +1,4 @@
-#include "FPAniScript.h"
+﻿#include "FPAniScript.h"
 #include "GameManager.h"
 
 FPAniScript::FPAniScript()

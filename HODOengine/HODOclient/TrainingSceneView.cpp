@@ -45,7 +45,6 @@ void TrainingSceneView::Initialize()
 	HDData::GameObject* player = API::CreateObject(_scene, "player", mainCam->GetGameObject());
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(0, 0.3, -9);
-	player->GetTransform()->Rotate(0, 180, 0);
 
 	auto material = API::GetMaterial("TP_Red");
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
