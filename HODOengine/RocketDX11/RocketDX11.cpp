@@ -167,6 +167,13 @@ namespace RocketCore::Graphics
 			_resourceManager.LoadTextureFile("Character/" + SKMtextures[i]);
 		}
 
+		// load all crosshair textures
+		const auto& crosshairTextures = GetEveryTextureFileNamesInFolder("Textures/Crosshair");
+		for (int i = 0; i < crosshairTextures.size(); ++i)
+		{
+			_resourceManager.LoadUITextureFile("Crosshair/" + crosshairTextures[i]);
+		}
+
 		// load all weapon texture
 		const auto& WPtextures = GetEveryTextureFileNamesInFolder("Textures/Weapons");
 		for (int i = 0; i < WPtextures.size(); ++i)
@@ -242,7 +249,7 @@ namespace RocketCore::Graphics
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
 		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
-		Cubemap::Instance().SetEnvLightIntensity(0.8f);
+		//Cubemap::Instance().SetEnvLightIntensity(0.8f);
 
 		/// DEBUG Obejct
 		//HelperObject* grid = ObjectManager::Instance().CreateHelperObject();

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <DXTK/SpriteBatch.h>
+#include <DXTK/CommonStates.h>
 
 namespace RocketCore::Graphics
 {
@@ -18,6 +19,7 @@ namespace RocketCore::Graphics
 
 	private:
 		DirectX::SpriteBatch* _spriteBatch;
+		DirectX::CommonStates* _states;
 		QuadBuffer* _toneMapBuffer;
 	};
 }

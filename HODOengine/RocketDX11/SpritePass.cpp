@@ -15,6 +15,7 @@ namespace RocketCore::Graphics
 		: _toneMapBuffer(toneMapBuffer)
 	{
 		_spriteBatch = new DirectX::SpriteBatch(ResourceManager::Instance().GetDeviceContext());
+		_states = new DirectX::CommonStates(ResourceManager::Instance().GetDevice());
 	}
 
 	SpritePass::~SpritePass()
@@ -32,7 +33,8 @@ namespace RocketCore::Graphics
 		VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
-		_spriteBatch->Begin(DirectX::DX11::SpriteSortMode_FrontToBack);
+		//_spriteBatch->Begin(DirectX::DX11::SpriteSortMode_FrontToBack);
+		_spriteBatch->Begin(DX11::SpriteSortMode_Deferred, _states->NonPremultiplied());
 		RenderImage();
 		RenderText();
 		_spriteBatch->End();
