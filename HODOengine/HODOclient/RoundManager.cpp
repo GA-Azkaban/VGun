@@ -23,12 +23,33 @@ RoundManager::RoundManager()
 
 void RoundManager::Start()
 {
+	InitTraining();
 	InitGame();
 }
 
 void RoundManager::Update()
 {
-	//NetworkManager::Instance().SendPlayUpdate();
+	if (_isTrainingStart)
+	{
+		UpdateTraining();
+	}
+	if (_isRoundStart)
+	{
+		UpdateRound();
+	}
+}
+
+void RoundManager::InitTraining()
+{
+
+	_name->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+
+}
+
+void RoundManager::UpdateTraining()
+{
+	_health->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
+	_bulletCount->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()));
 }
 
 void RoundManager::InitGame()
@@ -120,6 +141,11 @@ void RoundManager::UpdateRound()
 	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
 }
 
+void RoundManager::SetPlayerNickName(HDData::TextUI* name)
+{
+
+}
+
 std::vector<HDData::GameObject*>& RoundManager::GetPlayerObjs()
 {
 	return _playerObjs;
@@ -154,7 +180,7 @@ void RoundManager::InitRandomSpawn()
 	auto spawn9 = API::CreateStaticObject();
 	spawn9->GetTransform()->SetPosition(-11.98, 0, 0.3);
 
-	auto spawn10 =API::CreateStaticObject();
+	auto spawn10 = API::CreateStaticObject();
 	spawn10->GetTransform()->SetPosition(-4.69, 0, -19.01);
 
 	_randomSpawnPos.push_back(spawn1);
@@ -178,12 +204,12 @@ void RoundManager::SetPlayerSpawn(int playerIndex)
 {
 	for (auto& player : _playerInfo)
 	{
-		if(player->GetPlayerIndex() != playerIndex) continue;
+		if (player->GetPlayerIndex() != playerIndex) continue;
 
 		for (auto& spawn : _randomSpawnPos)
 		{
 			auto isCollided = spawn->GetComponent<HDData::TriggerBoxCollider>()->GetIsCollided();
-			
+
 			if (!isCollided)
 			{
 				player->GetTransform()->SetPosition(spawn->GetTransform()->GetPosition());

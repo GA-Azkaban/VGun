@@ -14,24 +14,6 @@ public:
 public:
 	void Init();
 
-	struct Stats 
-	{
-		// from server to client
-
-		int playerIndex;
-
-		int health;
-
-		bool damageHead;
-		bool damageBody;
-		bool damageArmlegs;
-
-		int bulletCount;
-
-		HDData::Transform transform;
-		ePlayerState state;
-	};
-
 public:
 	void SetPlayerUID(int uid);
 	void SetPlayerID(std::string id);
@@ -86,5 +68,6 @@ private:
 	// weapon info
 	int _weaponType = 0;
 	int _bulletCount = 30;
+	int _maxBulletCunt = 30;
 };
 

@@ -67,5 +67,28 @@ void TrainingSceneView::Initialize()
 	API::LoadFPAnimationFromData(player, "FP_animation.json");
 	player->AddComponent<FPAniScript>();
 
+	// print player info
+	auto playernameindex = API::CreateTextbox(_scene, "playerNickname");
+	playernameindex->GetTransform()->SetPosition(150, 800, 0);
+	playernameindex->GetComponent<HDData::TextUI>()->SetText("Nickname");
+	
+	auto playerHealthindex = API::CreateTextbox(_scene, "playerHealth");
+	playerHealthindex->GetTransform()->SetPosition(150, 850, 0);
+	playerHealthindex->GetComponent<HDData::TextUI>()->SetText("Health");
+
+	auto playerBulletCountindex = API::CreateTextbox(_scene, "playerBulletCount");
+	playerBulletCountindex->GetTransform()->SetPosition(150, 900, 0);
+	playerBulletCountindex->GetComponent<HDData::TextUI>()->SetText("Bullet");
+
+
+	auto playername = API::CreateTextbox(_scene, "playerNickname");
+	playername->GetTransform()->SetPosition(200, 800, 0);
+
+	auto playerHealth = API::CreateTextbox(_scene, "playerHealth");
+	playerHealth->GetTransform()->SetPosition(200, 850, 0);
+
+	auto playerBulletCount = API::CreateTextbox(_scene, "playerBulletCount");
+	playerBulletCount->GetTransform()->SetPosition(200, 900, 0);
+
 	API::LoadSceneFromData("lobbyData.json", _scene);
 }

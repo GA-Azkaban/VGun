@@ -53,5 +53,5 @@ void Client::Initialize()
 	TrainingSceneView train;
 	train.Initialize();
 
-	API::LoadSceneByName("Login");
+	API::LoadSceneByName("Training");
 }

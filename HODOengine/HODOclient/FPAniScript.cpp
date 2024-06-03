@@ -15,30 +15,16 @@ void FPAniScript::Update()
 {
 	if (API::GetMouseHold(MOUSE_LEFT))
 	{
-		int bullet = GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount();
-
-		if (bullet <= 0)
-		{
-			_animator->GetAllAC()->SetTrigger("isEmpty");
-		}
-		else
-		{
-			_animator->GetAllAC()->SetBool("isFire", true);
-		}
+		//GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("AR_fire", false, 0.1, true, 0.1);
+		_animator->GetAllAC()->SetTrigger("isFire");
 	}
-	if (API::GetMouseUp(MOUSE_LEFT))
-	{
-		_animator->GetAllAC()->SetBool("isFire", false);
-	}
+	//if (API::GetMouseUp(MOUSE_LEFT))
+	//{
+	//	_animator->GetAllAC()->SetBool("isFire", false);
+	//}
 	if (API::GetKeyDown(DIK_R))
 	{
-		int bullet = GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount();
-
-		if (bullet != 30)
-		{
-			_animator->GetAllAC()->SetTrigger("isReload");
-			GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(30);
-		}
+		_animator->GetAllAC()->SetTrigger("isReload");
 	}
 
 

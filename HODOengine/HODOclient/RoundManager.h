@@ -20,12 +20,28 @@ public:
 	void Update() override;
 
 public:
+	void InitTraining();
+	void UpdateTraining();
+
+public:
+	bool _isTrainingStart = false;
+
+public:
 	void InitGame();
 	void EndGame();
 
 public:
 	void InitRound();
 	void UpdateRound();
+
+public:
+	void SetPlayerNickName(HDData::TextUI* name);
+	bool _isRoundStart = false;
+
+private:
+	HDData::TextUI* _name;
+	HDData::TextUI* _health;
+	HDData::TextUI* _bulletCount;
 
 public:
 	std::vector<HDData::GameObject*>& GetPlayerObjs();
