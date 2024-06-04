@@ -102,7 +102,7 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 
 void HDData::DynamicCollider::Jump()
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 70.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
