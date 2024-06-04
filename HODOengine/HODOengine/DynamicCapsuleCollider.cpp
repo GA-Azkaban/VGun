@@ -1,4 +1,4 @@
-#include "DynamicCapsuleCollider.h"
+﻿#include "DynamicCapsuleCollider.h"
 #include "GameObject.h"
 #include "GraphicsObjFactory.h"
 
@@ -9,13 +9,15 @@ HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
 	_debugStruct = _capsuleObject;
 }
 
-HDData::DynamicCapsuleCollider::DynamicCapsuleCollider(float rad, float halfHeight)
+HDData::DynamicCapsuleCollider::DynamicCapsuleCollider(float rad, float halfHeight, int colFilterNum)
 {
 	_radius = rad;
 	_halfHeight = halfHeight;
 
 	_capsuleObject = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCapsulePrimitive();
 	_debugStruct = _capsuleObject;
+
+	_collisionFilterNum = colFilterNum;
 }
 
 float HDData::DynamicCapsuleCollider::GetWidth() const

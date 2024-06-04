@@ -63,7 +63,7 @@ void InGameSceneView::Initialize()
 	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
 	auto playerHead = API::CreateObject(_scene, "head", player);
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f);
 	headCollider->SetParentCollider(playerCollider);
 	headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
 	headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));

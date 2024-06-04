@@ -7,9 +7,10 @@ namespace HDData
 
 	Collider::Collider()
 		: _positionOffset(Vector3::Zero)
-, _rotationOffset(Quaternion::Identity)
-, _scaleOffset(Vector3::One),
-_parentCollider(nullptr)
+		, _rotationOffset(Quaternion::Identity)
+		, _scaleOffset(Vector3::One),
+		_parentCollider(nullptr),
+		_collisionFilterNum(0)
 	{
 		
 	}
@@ -133,6 +134,11 @@ _parentCollider(nullptr)
 	bool Collider::GetTrigger()
 	{
 		return _isTrigger;
+	}
+
+	int Collider::GetColFilterNum() const
+	{
+		return _collisionFilterNum;
 	}
 
 	void Collider::OnCollision(Collider* opponent, int actionType)

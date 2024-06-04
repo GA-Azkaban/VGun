@@ -8,7 +8,7 @@ namespace HDData
 	{
 	public:
 		DynamicCapsuleCollider();
-		DynamicCapsuleCollider(float rad, float halfHeight);
+		DynamicCapsuleCollider(float rad, float halfHeight, int colFilterNum = 0);
 
 	public:
 		virtual float GetWidth() const override;

@@ -36,8 +36,8 @@ namespace HDEngine
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.2f);
-		_playerMaterial = _physics->createMaterial(0.9f, 0.9f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.8f, 0.8f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.0f, 0.0f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.0f, 0.0f, 0.0f);
 
 		CollisionCallback* collisionCallback = new CollisionCallback();
 		_pxScene->setSimulationEventCallback(collisionCallback);
@@ -289,6 +289,10 @@ namespace HDEngine
 				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
 				shape->userData = capsule;
 				
+				physx::PxFilterData filterData;
+				filterData.word0 = capsule->GetColFilterNum();
+				shape->setSimulationFilterData(filterData);
+
 				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
 				Vector3 posOffset = collider->GetPositionOffset();
 				physx::PxTransform localTransform(physx::PxVec3(posOffset.x, posOffset.y + capsule->GetRadius(), posOffset.z), rotation);
@@ -321,15 +325,12 @@ namespace HDEngine
 			{
 				HDData::DynamicSphereCollider* sphere = dynamic_cast<HDData::DynamicSphereCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
+				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_playerMaterial);
 				shape->userData = sphere;
 
-				if (collider->GetIsPlayer() == true)
-				{
-					physx::PxFilterData headFilterData;
-					headFilterData.word0 = 2;
-					shape->setSimulationFilterData(headFilterData);
-				}
+				physx::PxFilterData headFilterData;
+				headFilterData.word0 = sphere->GetColFilterNum();
+				shape->setSimulationFilterData(headFilterData);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
