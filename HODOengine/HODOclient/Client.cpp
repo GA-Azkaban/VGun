@@ -59,16 +59,19 @@ void Client::Initialize()
 	
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
-	//
+	// 
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();	
 
-	InGameSceneView inGame;			//Scene Name : InGame
-	inGame.Initialize();
+	//InGameSceneView inGame;			//Scene Name : InGame
+	//inGame.Initialize();
 
 	//LobbySceneView lobby;
 	//lobby.Initialize();
 
 	//API::LoadSceneByName("Login");
+
+	InGameSceneView inGame;			//Scene Name : InGame
+	inGame.Initialize();
 	API::LoadSceneByName("InGame");
 }

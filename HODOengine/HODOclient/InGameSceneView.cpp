@@ -6,6 +6,7 @@
 #include "../HODOEngine/CollisionCallback.h"
 #include "MeshTransformController.h"
 #include "FPAniScript.h"
+#include "Crosshair.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -66,8 +67,8 @@ void InGameSceneView::Initialize()
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
 	headCollider->SetParentCollider(playerCollider);
-	//headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
-	headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+	headCollider->SetPositionOffset(Vector3(0.0f, 1.3f, 0.0f));
+	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
@@ -168,7 +169,7 @@ void InGameSceneView::Initialize()
 	posT += 315;
 
 	// 상대방 캐릭터 생성
-	for (int i = 1; i < 6; ++i)
+	for (int i = 1; i < 2; ++i)
 	{
 		std::string otherObjName = "player" + std::to_string(i + 1);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
@@ -181,7 +182,7 @@ void InGameSceneView::Initialize()
 		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
 		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.3f, 0.0f));
+		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, 0.0f, 0.0f));
 		ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -215,10 +216,8 @@ void InGameSceneView::Initialize()
 
 	// crosshair
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
-	auto crosshairImage = crosshairObj->AddComponent<HDData::ImageUI>();
-	crosshairImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
-	crosshairImage->SetImage("Crosshair15White.png");
-	crosshairImage->ChangeScale(0.25f, 0.25f);
+	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
+	crosshairComp->playerMove = playerMove;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
