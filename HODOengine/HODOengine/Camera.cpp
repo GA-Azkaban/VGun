@@ -15,7 +15,7 @@ namespace HDData
 		_farWindowHeight(),
 		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera()),
 		_isShakingCamera(false),
-		_shakeDuration(0.1f),
+		_shakeTime(0.1f),
 		_distYOnShoot(0.0f),
 		_distYOnShootEnd(0.0f),
 		_camActive(true)
@@ -137,32 +137,42 @@ namespace HDData
 			return;
 		}
 
-		float shakeIntensity = 0.03f;
-		float shakeFrequency = 3600.0f;
+		float shakeIntensity = 0.01f;
+		float shakeFrequency = 36.0f;
 
-		if (_shakeDuration > 0.0f)
+		if (_shakeTime < 0.2f)
 		{
+			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeTime);
+			float distX = shakeIntensity * cos(shakeFrequency*_shakeTime + 0.5f);
+
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(distX, 1.65f + _distYOnShoot, 0.175f));
+
 			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
 			//_distYOnShootEnd -= _distYOnShoot;
-			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeDuration);
-			GetGameObject()->GetTransform()->Translate(0.0f, -_distYOnShoot, 0.0f);
-			_distYOnShootEnd += _distYOnShoot;
+			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
+			//_distYOnShootEnd -= _distYOnShoot;
 
-			_shakeDuration -= deltaTime;
+			_shakeTime += deltaTime;
 		}
 		else
 		{
-			GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShootEnd, 0.0f);
-			_shakeDuration = 0.1f;
+			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShootEnd, 0.0f);
+			_shakeTime = 0.0f;
 			_isShakingCamera = false;
 			_distYOnShoot = 0.0f;
 			_distYOnShootEnd = 0.0f;
+			ResetCameraPos();
 		}
 	}
 
-	void Camera::EnableCameraShake()
+	void Camera::ToggleCameraShake(bool isShake)
+{
+		_isShakingCamera = isShake;
+	}
+
+	void Camera::ResetCameraPos()
 	{
-		_isShakingCamera = true;
+		GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	}
 
 	void Camera::SetCamActive(bool active)

@@ -108,7 +108,8 @@ void PlayerMove::Update()
 	{
 		// 반동 리셋
 		_shootCount = 0;
-		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.12f, 0.2f));
+		_headCam->ToggleCameraShake(false);
+		_headCam->ResetCameraPos();
 	}
 
 	if (API::GetKeyDown(DIK_R))
@@ -129,6 +130,7 @@ void PlayerMove::Update()
 	CheckMoveInfo();
 
 	CameraControl();
+	_headCam->ShakeCamera(_deltaTime);
 
 	// 이동, 회전
 	Move(_moveDirection);
@@ -387,7 +389,7 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::ShootGun()
 {
-	_headCam->EnableCameraShake();
+	_headCam->ToggleCameraShake(true);
 
 	HDData::Collider* hitCollider = nullptr;
 
@@ -410,12 +412,14 @@ void PlayerMove::ShootGunDdabal()
 {
 	if (_bulletCount <= 0)	// 장탄수를 임시로 30발로 제한
 	{
+		_headCam->ToggleCameraShake(false);
+		_headCam->ResetCameraPos();
 		return;
 	}
 
 	// 총기 반동
 	ApplyRecoil();
-	_headCam->EnableCameraShake();
+	_headCam->ToggleCameraShake(true);
 
 	++_shootCount;
 	--_bulletCount;
