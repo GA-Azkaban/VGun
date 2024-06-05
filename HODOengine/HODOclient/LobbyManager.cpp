@@ -154,11 +154,6 @@ void LobbyManager::ShowSignSuccess()
 	_signupSuccess->SetSelfActive(true);
 }
 
-//void LobbyManager::SetInGameReadyButton(HDData::GameObject* button)
-//{
-//	_inGameReadyButton = button;
-//}
-
 RoomData* LobbyManager::GetRoomData()
 {
 	return _roomData;
