@@ -53,10 +53,6 @@ namespace HDData
 		void UpdateFromPhysics(Vector3 pos, Quaternion quat);
 
 	public:
-		virtual void Update() override;
-		virtual void Start() override;
-
-	public:
 		void Collide();
 		bool GetIsCollided();
 		physx::PxRigidDynamic* GetPhysXRigid() const;
