@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -178,15 +178,15 @@ void InGameSceneView::Initialize()
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.7f, 0.9f);
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 3.2f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.3f, true);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.5f, 0.0f));
-		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
+		ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadMaterial(M_Red, 0);
@@ -195,23 +195,6 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadMaterial(M_Red, 3);
 		otherMeshComp->LoadMaterial(M_Red, 4);
 		otherMeshComp->PlayAnimation("AR_idle", true);
-		//otherMeshComp->SetMeshActive(false, 0);
-		//otherMeshComp->SetMeshActive(false, 1);
-		//otherMeshComp->SetMeshActive(false, 2);
-		//otherMeshComp->SetMeshActive(false, 3);
-		//otherMeshComp->SetMeshActive(false, 4);
-
-		//auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
-		//boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
-
-		auto capCol = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
-		capCol->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
-		auto otherHead = API::CreateObject(_scene, "head" + std::to_string(i + 1), otherPlayer);
-		otherHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
-		auto otherHeadCol = otherHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
-		otherHeadCol->SetParentCollider(capCol);
-		otherHeadCol->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
-		otherHeadCol->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		RoundManager::Instance()->GetPlayerObjs().push_back(otherPlayer);
 
