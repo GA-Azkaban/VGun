@@ -184,8 +184,17 @@ void InGameSceneView::Initialize()
 
 		otherMeshComp->PlayAnimation("AR_idle", true);
 
-		auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
-		boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
+		//auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+		//boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
+
+		auto capCol = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
+		capCol->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+		auto otherHead = API::CreateObject(_scene, "head" + std::to_string(i + 1), otherPlayer);
+		otherHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+		auto otherHeadCol = otherHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
+		otherHeadCol->SetParentCollider(capCol);
+		otherHeadCol->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
+		otherHeadCol->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		RoundManager::Instance()->GetPlayerObjs().push_back(otherPlayer);
 
