@@ -47,7 +47,7 @@ struct TableStruct_Struct_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[7]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[8]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -58,6 +58,9 @@ namespace Protocol {
 class BuffData;
 struct BuffDataDefaultTypeInternal;
 extern BuffDataDefaultTypeInternal _BuffData_default_instance_;
+class GameRule;
+struct GameRuleDefaultTypeInternal;
+extern GameRuleDefaultTypeInternal _GameRule_default_instance_;
 class PlayerData;
 struct PlayerDataDefaultTypeInternal;
 extern PlayerDataDefaultTypeInternal _PlayerData_default_instance_;
@@ -79,6 +82,7 @@ extern Vector3DefaultTypeInternal _Vector3_default_instance_;
 }  // namespace Protocol
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Protocol::BuffData* Arena::CreateMaybeMessage<::Protocol::BuffData>(Arena*);
+template<> ::Protocol::GameRule* Arena::CreateMaybeMessage<::Protocol::GameRule>(Arena*);
 template<> ::Protocol::PlayerData* Arena::CreateMaybeMessage<::Protocol::PlayerData>(Arena*);
 template<> ::Protocol::Quaternion* Arena::CreateMaybeMessage<::Protocol::Quaternion>(Arena*);
 template<> ::Protocol::RoomInfo* Arena::CreateMaybeMessage<::Protocol::RoomInfo>(Arena*);
@@ -1393,6 +1397,160 @@ class PlayerData final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
+// -------------------------------------------------------------------
+
+class GameRule final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.GameRule) */ {
+ public:
+  inline GameRule() : GameRule(nullptr) {}
+  ~GameRule() override;
+  explicit constexpr GameRule(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  GameRule(const GameRule& from);
+  GameRule(GameRule&& from) noexcept
+    : GameRule() {
+    *this = ::std::move(from);
+  }
+
+  inline GameRule& operator=(const GameRule& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline GameRule& operator=(GameRule&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const GameRule& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const GameRule* internal_default_instance() {
+    return reinterpret_cast<const GameRule*>(
+               &_GameRule_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    7;
+
+  friend void swap(GameRule& a, GameRule& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(GameRule* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(GameRule* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline GameRule* New() const final {
+    return new GameRule();
+  }
+
+  GameRule* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<GameRule>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const GameRule& from);
+  void MergeFrom(const GameRule& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(GameRule* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.GameRule";
+  }
+  protected:
+  explicit GameRule(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kGameTimeFieldNumber = 1,
+    kDesiredKillFieldNumber = 2,
+    kRespawnTimeFieldNumber = 3,
+  };
+  // int32 gameTime = 1;
+  void clear_gametime();
+  ::PROTOBUF_NAMESPACE_ID::int32 gametime() const;
+  void set_gametime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_gametime() const;
+  void _internal_set_gametime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 desiredKill = 2;
+  void clear_desiredkill();
+  ::PROTOBUF_NAMESPACE_ID::int32 desiredkill() const;
+  void set_desiredkill(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_desiredkill() const;
+  void _internal_set_desiredkill(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 respawnTime = 3;
+  void clear_respawntime();
+  ::PROTOBUF_NAMESPACE_ID::int32 respawntime() const;
+  void set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_respawntime() const;
+  void _internal_set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.GameRule)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::int32 gametime_;
+  ::PROTOBUF_NAMESPACE_ID::int32 desiredkill_;
+  ::PROTOBUF_NAMESPACE_ID::int32 respawntime_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Struct_2eproto;
+};
 // ===================================================================
 
 
@@ -2531,9 +2689,75 @@ inline void PlayerData::set_isdead(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.isDead)
 }
 
+// -------------------------------------------------------------------
+
+// GameRule
+
+// int32 gameTime = 1;
+inline void GameRule::clear_gametime() {
+  gametime_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_gametime() const {
+  return gametime_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::gametime() const {
+  // @@protoc_insertion_point(field_get:Protocol.GameRule.gameTime)
+  return _internal_gametime();
+}
+inline void GameRule::_internal_set_gametime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  gametime_ = value;
+}
+inline void GameRule::set_gametime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_gametime(value);
+  // @@protoc_insertion_point(field_set:Protocol.GameRule.gameTime)
+}
+
+// int32 desiredKill = 2;
+inline void GameRule::clear_desiredkill() {
+  desiredkill_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_desiredkill() const {
+  return desiredkill_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::desiredkill() const {
+  // @@protoc_insertion_point(field_get:Protocol.GameRule.desiredKill)
+  return _internal_desiredkill();
+}
+inline void GameRule::_internal_set_desiredkill(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  desiredkill_ = value;
+}
+inline void GameRule::set_desiredkill(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_desiredkill(value);
+  // @@protoc_insertion_point(field_set:Protocol.GameRule.desiredKill)
+}
+
+// int32 respawnTime = 3;
+inline void GameRule::clear_respawntime() {
+  respawntime_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_respawntime() const {
+  return respawntime_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::respawntime() const {
+  // @@protoc_insertion_point(field_get:Protocol.GameRule.respawnTime)
+  return _internal_respawntime();
+}
+inline void GameRule::_internal_set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  respawntime_ = value;
+}
+inline void GameRule::set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_respawntime(value);
+  // @@protoc_insertion_point(field_set:Protocol.GameRule.respawnTime)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
