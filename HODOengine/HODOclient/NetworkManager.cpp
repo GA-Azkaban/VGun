@@ -426,19 +426,23 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
 	auto& roominfo = playUpdate.roominfo();
 	auto& playerinfo = RoundManager::Instance()->GetPlayerObjs();
+	auto myNick = GameManager::Instance()->GetMyInfo()->GetPlayerNickName();
 
 	for (auto& player : roominfo.users())
 	{
 		auto& name = player.userinfo().nickname();
 
-		for (auto& obj : playerinfo)
+		for (int i = 0; i < 1; ++i)
 		{
-			if (obj->GetComponent<PlayerInfo>()->GetPlayerNickName() != name) continue;
+			auto nick = playerinfo[i]->GetComponent<PlayerInfo>()->GetPlayerNickName();
 
-			obj->GetTransform()->
+			if ((nick != name) ||
+				(nick == myNick)) continue;
+
+			playerinfo[i]->GetTransform()->
 				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());
 
-			obj->GetTransform()->
+			playerinfo[i]->GetTransform()->
 				SetRotation(player.transform().quaternion().w(), player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z());
 		}
 

@@ -205,6 +205,8 @@ void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 	_scaleY = y;
 	_imageWidth *= _scaleX;
 	_imageHeight *= _scaleY;
+	_centerX = _imageWidth / 2;
+	_centerY = _imageHeight / 2;
 }
 
 float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionX()

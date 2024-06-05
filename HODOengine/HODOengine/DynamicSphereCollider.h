@@ -8,7 +8,7 @@ namespace HDData
 	{
 	public:
 		DynamicSphereCollider();
-		DynamicSphereCollider(float rad, bool isPlayer);
+		DynamicSphereCollider(float rad, int colFilterNum = 0);
 
 	public:
 		virtual float GetWidth() const override;
@@ -18,13 +18,11 @@ namespace HDData
 	public:
 		float GetRadius() const;
 		void SetRadius(float radius);
-		bool GetIsPlayer() const;
 
 		virtual void Update() override;
 
 	private:
 		float _radius;
-		bool _isPlayer;
 		HDEngine::SpherePrimitive* _sphereDebugStruct;
 	};
 }

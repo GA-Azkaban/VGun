@@ -65,7 +65,7 @@ void InGameSceneView::Initialize()
 	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
 	auto playerHead = API::CreateObject(_scene, "head", player);
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f);
 	headCollider->SetParentCollider(playerCollider);
 	headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
 	headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
@@ -74,15 +74,12 @@ void InGameSceneView::Initialize()
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
-	//mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ -0.1f, 1.65f, -0.175f });
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
-	//camMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.75f, 0.15f);
-	//camMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
-	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
+	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
@@ -92,7 +89,7 @@ void InGameSceneView::Initialize()
 	fpMeshObj->GetTransform()->SetLocalPosition(0.05f, -1.7f, 0.45f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -0.05f, 1.1f);
-	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.5f, 0.0f));
+	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(M_Red, 0);
 	fpMeshComp->LoadMaterial(M_Red, 1);
 	fpMeshComp->LoadMaterial(M_Red, 2);
@@ -155,6 +152,7 @@ void InGameSceneView::Initialize()
 	{
 		auto particleObj = API::CreateObject(_scene);
 		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
+		particle->SetScaleOffset(Vector3(0.1f, 0.1f, 0.1f));
 		particleVec.push_back(particle);
 	}
 	playerMove->SetHitParticle(particleVec);
@@ -189,8 +187,17 @@ void InGameSceneView::Initialize()
 
 		otherMeshComp->PlayAnimation("AR_idle", true);
 
-		auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
-		boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
+		//auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
+		//boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
+
+		auto capCol = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
+		capCol->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+		auto otherHead = API::CreateObject(_scene, "head" + std::to_string(i + 1), otherPlayer);
+		otherHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+		auto otherHeadCol = otherHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
+		otherHeadCol->SetParentCollider(capCol);
+		otherHeadCol->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
+		otherHeadCol->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		RoundManager::Instance()->GetPlayerObjs().push_back(otherPlayer);
 
@@ -207,6 +214,18 @@ void InGameSceneView::Initialize()
 		posX += 1;
 		posT += 315;
 	}
+
+	// crosshair
+	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
+	auto crosshairImage = crosshairObj->AddComponent<HDData::ImageUI>();
+	crosshairImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
+	crosshairImage->SetImage("Crosshair15White.png");
+	crosshairImage->ChangeScale(0.5f, 0.5f);
+
+	// 임시 개큰박스
+	auto tempBox = API::CreateObject(_scene, "tmpBox");
+	tempBox->GetTransform()->SetPosition(Vector3(10.0f, 0.0f, 60.0f));
+	auto tempBoxCol = tempBox->AddComponent<HDData::StaticBoxCollider>(100.0f, 100.0f, 1.0f);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

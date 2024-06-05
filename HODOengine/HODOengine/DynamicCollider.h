@@ -49,6 +49,7 @@ namespace HDData
 
 	public:
 		virtual void Update() override;
+		virtual void Start() override;
 
 	public:
 		void Collide();
