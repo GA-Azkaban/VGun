@@ -46,11 +46,13 @@ namespace HDData
 		int GetFlag();
 		void SetTrigger(bool isTrigger);
 		bool GetTrigger();
+		int GetColFilterNum() const;
 
 	protected:
 		int _flag;
 		bool _isTrigger;
 		bool _isCollide;
+		int _collisionFilterNum;
 
 	// deal with the collision by callback function
 	public:

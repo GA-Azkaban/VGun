@@ -3,17 +3,19 @@
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicSphereCollider::DynamicSphereCollider()
-	: _radius(10.0f), _isPlayer(false)
+	: _radius(10.0f)
 {
 	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 	_debugStruct = _sphereDebugStruct;
 }
 
-HDData::DynamicSphereCollider::DynamicSphereCollider(float rad, bool isPlayer)
-	: _radius(rad), _isPlayer(isPlayer)
+HDData::DynamicSphereCollider::DynamicSphereCollider(float rad, int colFilterNum)
+	: _radius(rad)
 {
 	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 	_debugStruct = _sphereDebugStruct;
+
+	_collisionFilterNum = colFilterNum;
 }
 
 float HDData::DynamicSphereCollider::GetWidth() const
@@ -39,11 +41,6 @@ float HDData::DynamicSphereCollider::GetRadius() const
 void HDData::DynamicSphereCollider::SetRadius(float radius)
 {
 	_radius = radius;
-}
-
-bool HDData::DynamicSphereCollider::GetIsPlayer() const
-{
-	return _isPlayer;
 }
 
 void HDData::DynamicSphereCollider::Update()
