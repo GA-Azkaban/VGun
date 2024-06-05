@@ -5,8 +5,28 @@
 #include "../include/physX/PxPhysicsAPI.h"
 
 HDData::DynamicCollider::DynamicCollider()
+	: _physXRigid(nullptr), _freezeRotation(false)
 {
 
+}
+
+void HDData::DynamicCollider::SetFreezeRotation(bool freezeRotation)
+{
+	if (_freezeRotation == freezeRotation)
+	{
+		return;
+	}
+
+	_freezeRotation = freezeRotation;
+	if (_physXRigid != nullptr)
+	{		
+		LockPlayerRotation(freezeRotation);		
+	}
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->LockPlayerRotation(freezeRotation);
+	}
 }
 
 void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
@@ -14,15 +34,11 @@ void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
 	_physXRigid = rigid;
 }
 
-void HDData::DynamicCollider::LockPlayerRotation()
+void HDData::DynamicCollider::LockPlayerRotation(bool isLock)
 {
-	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
-	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
-	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
-	for (auto& child : _childColliders)
-	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->LockPlayerRotation();
-	}
+	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, isLock);
+	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, isLock);
+	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, isLock);
 }
 
 void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
@@ -34,6 +50,11 @@ void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
 void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol)
 {
 	_childColliders.push_back(childCol);
+}
+
+bool HDData::DynamicCollider::GetFreezeRotation()
+{
+	return _freezeRotation;
 }
 
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
@@ -67,7 +88,7 @@ void HDData::DynamicCollider::Rotate(Quaternion rot)
 void HDData::DynamicCollider::RotateY(float rotationAmount)
 {
 	//_physXRigid->addTorque(physx::PxVec3(rotQuat.x, rotQuat.y, rotQuat.z), physx::PxForceMode::eVELOCITY_CHANGE);
-	
+
 	//_physXRigid->setAngularVelocity(physx::PxVec3(rotQuat.x, rotQuat.y, rotQuat.z));
 
 	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();

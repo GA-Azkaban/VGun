@@ -103,6 +103,12 @@
     <ClCompile Include="MeshTransformController.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
+    <ClCompile Include="Crosshair.cpp">
+      <Filter>02_Client\TestScene\Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02_Client\Timer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -233,6 +239,12 @@
     <ClInclude Include="MeshTransformController.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
+    <ClInclude Include="Crosshair.h">
+      <Filter>02_Client\TestScene\Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>02_Client\Timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -338,6 +350,12 @@
     </Filter>
     <Filter Include="GameScript\ImageScript">
       <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Crosshair">
+      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\Timer">
+      <UniqueIdentifier>{7f117444-f2fc-40f0-af76-dcfecdaacb5f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

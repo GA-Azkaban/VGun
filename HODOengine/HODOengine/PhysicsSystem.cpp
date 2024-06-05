@@ -1,4 +1,4 @@
-﻿#include "PhysicsSystem.h"
+#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -238,7 +238,6 @@ namespace HDEngine
 			for (auto& collider : colliderVector)
 			{
 				HDData::DynamicBoxCollider* box = dynamic_cast<HDData::DynamicBoxCollider*>(collider);
-
 				// switch material if player
 				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_playerMaterial);
 				//shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
@@ -309,6 +308,12 @@ namespace HDEngine
 				capsule->SetPhysXRigid(capsuleRigid);
 				capsuleRigid->userData = capsule;
 				shape->release();
+
+				if (capsule->GetFreezeRotation())
+				{
+					capsule->LockPlayerRotation(true);
+				}
+
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
 		}

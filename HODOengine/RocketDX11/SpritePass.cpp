@@ -32,7 +32,6 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
 		VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
-
 		//_spriteBatch->Begin(DirectX::DX11::SpriteSortMode_FrontToBack);
 		_spriteBatch->Begin(DX11::SpriteSortMode_Deferred, _states->NonPremultiplied());
 		RenderImage();

@@ -231,6 +231,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="BtnTextScript.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Crosshair.h" />
     <ClInclude Include="Enum.pb.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="FPAniScript.h" />
@@ -262,6 +263,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TestSound.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
@@ -273,6 +275,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="BtnTextScript.cpp" />
     <ClCompile Include="CameraMove.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Crosshair.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Enum.pb.cc" />
     <ClCompile Include="FadeInOut.cpp" />
@@ -299,6 +302,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>

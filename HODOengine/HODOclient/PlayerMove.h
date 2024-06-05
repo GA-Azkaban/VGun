@@ -24,6 +24,10 @@ public:
 	void PresetSprayPattern();
 	void StartRoundCam();
 
+public:
+	bool IsShootHead();
+	bool IsShootBody();
+
 	// check ~~ series
 private:
 	void CheckMoveInfo();
@@ -65,6 +69,8 @@ private:
 	float _moveSpeed;
 	int _moveDirection;
 	int _prevDirection;
+	bool _isShootHead;
+	bool _isShootBody;
 
 private:
 	//HDData::DynamicBoxCollider* _playerCollider;
