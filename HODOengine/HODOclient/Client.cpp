@@ -44,11 +44,11 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 	
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();	
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();	
 
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
