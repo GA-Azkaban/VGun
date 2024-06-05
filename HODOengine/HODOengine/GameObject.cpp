@@ -72,7 +72,8 @@ namespace HDData
 
 		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			_componentsIndexed[i]->Update();
+			if(!_componentsIndexed[i]->_isStarted) continue;
+			else { _componentsIndexed[i]->Update(); }
 		}
 	}
 
@@ -231,6 +232,11 @@ namespace HDData
 		{
 			return GetSelfActive();
 		}
+	}
+
+	void GameObject::SetObjectName(std::string str)
+	{
+		_objectName = str;
 	}
 
 	std::string GameObject::GetObjectName()

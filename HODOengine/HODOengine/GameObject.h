@@ -134,6 +134,7 @@ namespace HDData
 		void SetSelfActive(bool active);
 		bool GetSelfActive();
 		bool GetParentActive();
+		void SetObjectName(std::string str);
 		std::string GetObjectName();
 		GameObject* GetParentObject();
 

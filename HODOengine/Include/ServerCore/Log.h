@@ -1,4 +1,5 @@
 #pragma once
+#include <sstream>
 
 using Horang::Log;
 
@@ -97,6 +98,45 @@ namespace Horang
 
 	private:
 		static HANDLE _stdOut;
+	};
+
+	class LogBuffer
+	{
+	public:
+		LogBuffer() = default;
+
+		LogBuffer(const std::string& log)
+		{
+#ifdef _DEBUG
+			stream << log << " - ";
+#endif // _DEBUG
+		}
+
+		~LogBuffer()
+		{
+#ifdef _DEBUG
+			std::cout << stream.str() << std::endl;
+#endif // _DEBUG
+		}
+
+		template <typename T>
+		LogBuffer& operator<<(const T& value)
+		{
+#ifdef _DEBUG
+			stream << value << " ";
+#endif // _DEBUG
+			return *this;
+		}
+
+		void PlayerNullptr()
+		{
+#ifdef _DEBUG
+			stream << "Player nullptr ";
+#endif // _DEBUG
+		}
+
+	private:
+		std::ostringstream stream;
 	};
 };
 

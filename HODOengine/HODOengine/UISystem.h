@@ -31,5 +31,12 @@ namespace HDEngine
 	private:
 		std::vector<HDData::UIBase*> _uiList;
 		HDData::UIBase* _focusedUI;
+
+	public:
+		std::vector<HDData::UIBase*>& GetEveryUI();
+
+	private:
+		std::vector<HDData::UIBase*> _everyUI;
+
 	};
 }

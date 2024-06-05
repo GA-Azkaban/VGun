@@ -6,6 +6,7 @@ class PlayerInfo : public HDData::Script
 {
 public:
 	PlayerInfo();
+	PlayerInfo(PlayerInfo* info);
 
 public:
 	void Start() override;
@@ -13,24 +14,6 @@ public:
 
 public:
 	void Init();
-
-	struct Stats 
-	{
-		// from server to client
-
-		int playerIndex;
-
-		int health;
-
-		bool damageHead;
-		bool damageBody;
-		bool damageArmlegs;
-
-		int bulletCount;
-
-		HDData::Transform transform;
-		ePlayerState state;
-	};
 
 public:
 	void SetPlayerUID(int uid);
@@ -67,6 +50,7 @@ public:
 
 
 private:
+
 	// player info
 	int _playerUID;
 	std::string _playerID;

@@ -5,6 +5,7 @@
 #include "GameManager.h"
 #include "NetworkManager.h"
 #include "FPAniScript.h"
+#include "RoundManager.h"
 
 LobbySceneView::LobbySceneView()
 {
@@ -24,9 +25,6 @@ void LobbySceneView::Initialize()
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
 	mainCam->GetGameObject()->GetTransform()->SetPosition(2.62, 0.57, -5.48);
 	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
-
-	auto mainLight = _scene->GetMainLight();
-	mainLight->SetDirection(Vector4{1, 2, 3, 0});
 
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
@@ -59,22 +57,6 @@ void LobbySceneView::Initialize()
 	LobbyManager::Instance().SetInGameStartButton(startButton);
 
 	startButton->SetSelfActive(false);
-
-	//// game ready button
-	//auto readyButton = API::CreateButton(_scene, "gameReadyButton");
-	//readyButton->GetComponent<HDData::Button>()->SetImage("ready.png");
-	//readyButton->GetTransform()->SetPosition(1600, 950, 0);
-
-	//auto readyText = API::CreateTextbox(_scene, "gameStartText", readyButton);
-	//readyText->GetTransform()->SetPosition(1600, 950, 0);
-	//auto rTex = readyText->GetComponent<HDData::TextUI>();
-	//rTex->SetText("GAME READY");
-	//rTex->SetColor(DirectX::Colors::OrangeRed);
-	//rTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-
-	//LobbyManager::Instance().SetInGameReadyButton(readyButton);
-
-	//readyButton->SetSelfActive(false);
 
 
 	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
@@ -127,7 +109,7 @@ void LobbySceneView::Initialize()
 		QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
 		QuitMemberButton->GetTransform()->SetPosition(defaultX, 60, 0);
 		QuitMemberButton->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
-			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetAllPlayerInfo()[i]->GetPlayerNickName());
+			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetPlayerObjects()[i]->GetComponent<PlayerInfo>()->GetPlayerNickName());
 			});
 		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
 		QuitMemberButton->SetSelfActive(false);
@@ -184,6 +166,7 @@ void LobbySceneView::Initialize()
 		HDData::GameObject* player = API::CreateObject(_scene, "player");
 		player->LoadFBXFile("SKM_TP_X_Default.fbx");
 		player->GetTransform()->SetPosition(posX, 0, 0);
+		player->GetTransform()->Rotate(0, -180, 0);
 
 		auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		meshComp->LoadMaterial(M_Red, 0);
@@ -192,11 +175,10 @@ void LobbySceneView::Initialize()
 		meshComp->LoadMaterial(M_Red, 3);
 		meshComp->LoadMaterial(M_Red, 4);
 
-		meshComp->PlayAnimation("AR_idle", true);
+		player->AddComponent<PlayerInfo>();
 
 		player->AddComponent<HDData::Animator>();
 		API::LoadFPAnimationFromData(player, "FP_animation.json");
-		player->AddComponent<FPAniScript>();
 
 		LobbyManager::Instance().GetPlayerObjects().push_back(player);
 

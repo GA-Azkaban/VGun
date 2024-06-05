@@ -3,6 +3,9 @@
 #include "GameStruct.h"
 #include "../HODOengine/HODO_API.h"
 
+#define DEFAULTWIDTH 1920
+#define DEFAULTHEIGHT 1080
+
 struct roomInfoObj
 {
 	HDData::Button* btn;
@@ -14,7 +17,7 @@ struct roomInfoObj
 	HDData::ImageUI* isTeam;
 };
 
-enum screenSize
+enum class screenSize
 {
 	option1600 = 1,	// default	1600x900
 	option1920 = 2,	// 1920x1080
@@ -22,7 +25,7 @@ enum screenSize
 	option4 = 4
 };
 
-enum screenMode
+enum class screenMode
 {
 	FULL_SCREEN = 1,
 	BORDERLESS_SCREEN,
@@ -42,7 +45,19 @@ private:
 	HDData::GameObject* _this = nullptr;
 public:
 	void Start() override;
+	void Update() override;
 
+
+private:
+	screenSize _prevSize;
+	screenSize _size;
+	screenMode _mode;
+
+	bool _isModeChange = true;
+
+	void SetObjectPosition1920();
+	void SetObjectPosition2650();
+	
 public:
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 

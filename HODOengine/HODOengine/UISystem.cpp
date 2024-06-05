@@ -107,4 +107,39 @@ namespace HDEngine
 			}
 		}
 	}
+
+	std::vector<HDData::UIBase*>& UISystem::GetEveryUI()
+	{
+		_everyUI.clear();
+
+		auto& scenes = HDEngine::SceneSystem::Instance().GetAllScenes();
+
+		for (auto& [name, scene] : scenes)
+		{
+			for (const auto& obj : scene->GetGameObjectList())
+			{
+				for (const auto& comp : obj->GetAllComponents())
+				{
+					if (HDData::UIBase* one = dynamic_cast<HDData::UIBase*>(comp))
+					{
+						_everyUI.push_back(one);
+					}
+				}
+			}
+
+			for (const auto& obj : scene->GetRunningObjectList())
+			{
+				for (const auto& comp : obj->GetAllComponents())
+				{
+					if (HDData::UIBase* one = dynamic_cast<HDData::UIBase*>(comp))
+					{
+						_everyUI.push_back(one);
+					}
+				}
+			}
+		}
+
+		return _everyUI;
+	}
+
 }

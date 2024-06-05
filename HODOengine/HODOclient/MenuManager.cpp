@@ -20,7 +20,62 @@ MenuManager::MenuManager()
 
 void MenuManager::Start()
 {
-	int a = 0;
+	// 전체화면으로 자동 시작
+
+	auto height = API::GetScreenHeight();
+	auto width = API::GetScreenWidth();
+
+	if (width == 1920)
+	{
+		_size = screenSize::option1920;
+	}
+	else if (width == 2560)
+	{
+		_size = screenSize::option2550;
+	}
+
+	_mode = screenMode::FULL_SCREEN;
+}
+
+void MenuManager::Update()
+{
+	if (!_isModeChange) return;
+
+	if (_size == screenSize::option1920)
+	{
+		SetObjectPosition1920();
+		_isModeChange = false;
+	}
+	if (_size == screenSize::option2550)
+	{
+		SetObjectPosition2650();
+		_isModeChange = false;
+	}
+}
+
+void MenuManager::SetObjectPosition1920()
+{
+
+}
+
+void MenuManager::SetObjectPosition2650()
+{
+	auto uiList = API::GetAllUIList();
+
+	//for (auto& ui : uiList)
+	//{
+	//	HDData::GameObject* obj = ui->GetGameObject();
+
+	//	// x
+	//	int x = obj->GetTransform()->GetPosition().x;
+	//	int newX = x / 3 * 4;
+
+	//	// y
+	//	int y = obj->GetTransform()->GetPosition().y;
+	//	int newY = y / 3 * 4;
+
+	//	obj->GetTransform()->SetPosition(newX, newY, 0);
+	//}
 }
 
 void MenuManager::SetMainMenuCanvas(HDData::GameObject* mainCanvas)
@@ -35,7 +90,7 @@ void MenuManager::RoomEneter(Protocol::RoomInfo)
 
 void MenuManager::SetRoom(Protocol::RoomInfo)
 {
-	
+
 }
 
 void MenuManager::ShowRoomList()
@@ -109,13 +164,13 @@ std::string MenuManager::GetNumberImage(int num)
 {
 	switch (num)
 	{
-		case 0: {return "flair_number_0_outline.png"; } break;
-		case 1: {return "flair_number_1_outline.png";} break;
-		case 2: {return "flair_number_2_outline.png";} break;
-		case 3: {return "flair_number_3_outline.png";} break;
-		case 4: {return "flair_number_4_outline.png";} break;
-		case 5: {return "flair_number_5_outline.png";} break;
-		case 6: {return "flair_number_6_outline.png";} break;
+		case 0: { return "flair_number_0_outline.png"; } break;
+		case 1: { return "flair_number_1_outline.png"; } break;
+		case 2: { return "flair_number_2_outline.png"; } break;
+		case 3: { return "flair_number_3_outline.png"; } break;
+		case 4: { return "flair_number_4_outline.png"; } break;
+		case 5: { return "flair_number_5_outline.png"; } break;
+		case 6: { return "flair_number_6_outline.png"; } break;
 		default:
 			break;
 	}
@@ -133,22 +188,22 @@ std::string MenuManager::GetIsTeamImage(bool isTeam)
 
 void MenuManager::SetScreenSize(int OptionNum)
 {
-	switch (OptionNum)
+	switch (static_cast<screenSize>(OptionNum))
 	{
-	case option1600:
-		_screenSize = ("1600x900(60Hz)");
-		API::Resize(1600, 900);
-		break;
-	case option1920:
-		_screenSize = ("1920x1080(60Hz)");
-		API::Resize(1920, 1080);
-		break;
-	case option2550:
-		_screenSize = ("2550x1440(60Hz)");
-		API::Resize(2550, 1440);
-		break;
-	default:
-		break;
+		case screenSize::option1600:
+			_screenSize = ("1600x900(60Hz)");
+			API::Resize(1600, 900);
+			break;
+		case screenSize::option1920:
+			_screenSize = ("1920x1080(60Hz)");
+			API::Resize(1920, 1080);
+			break;
+		case screenSize::option2550:
+			_screenSize = ("2550x1440(60Hz)");
+			API::Resize(2550, 1440);
+			break;
+		default:
+			break;
 
 	}
 }
@@ -161,19 +216,19 @@ std::string& MenuManager::GetScreenSize()
 void MenuManager::SetScreenMod(int OptionNum)
 {
 	// 기능 추가할 예정
-	switch (OptionNum)
+	switch (static_cast<screenMode>(OptionNum))
 	{
-	case FULL_SCREEN:
-		_screenMod = ("FULLSCREEN");
-		break;
-	case BORDERLESS_SCREEN:
-		_screenMod = ("BORDERLESS");
-		break;
-	case WINDOWS_SCREEN:
-		_screenMod = (" WINDOWED ");
-		break;
-	default:
-		break;
+		case screenMode::FULL_SCREEN:
+			_screenMod = ("FULLSCREEN");
+			break;
+		case screenMode::BORDERLESS_SCREEN:
+			_screenMod = ("BORDERLESS");
+			break;
+		case screenMode::WINDOWS_SCREEN:
+			_screenMod = (" WINDOWED ");
+			break;
+		default:
+			break;
 	}
 }
 
@@ -199,7 +254,7 @@ void MenuManager::RenderRoomList()
 	{
 		_roomObject[i - 1].id->SetText(std::to_string(_roomList[i - 1]->id));
 		_roomObject[i - 1].title->SetText(_roomList[i - 1]->title);
-		
+
 		if (_roomList[i - 1]->isTeam)
 		{
 			_roomObject[i - 1].isTeam->SetImage("team.png");
@@ -220,7 +275,7 @@ void MenuManager::RenderRoomList()
 
 		_roomObject[i - 1].maxCount->SetImage(GetNumberImage(_roomList[i - 1]->maxPlayerCount));
 		_roomObject[i - 1].currentCount->SetImage(GetNumberImage(_roomList[i - 1]->currentPlayerCount));
-					
+
 		_roomObject[i - 1].id->GetGameObject()->SetSelfActive(true);
 		_roomObject[i - 1].title->GetGameObject()->SetSelfActive(true);
 		_roomObject[i - 1].isTeam->GetGameObject()->SetSelfActive(true);

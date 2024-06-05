@@ -62,6 +62,7 @@ namespace API
 		HODO_API HDData::Scene* CreateScene(std::string sceneName);
 		HODO_API void LoadScene(HDData::Scene* scene);
 		HODO_API HDData::Scene* LoadSceneByName(std::string scene);
+		HODO_API std::vector<HDData::UIBase*>& GetAllUIList();
 
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
@@ -115,9 +116,6 @@ namespace API
 		/// physics stuff
 		HODO_API HDData::Collider* ShootRay(Vector3 origin, Vector3 direction, float length = 100.0f, int* type = nullptr);
 		HODO_API HDData::Collider* ShootRayHitPoint(Vector3 origin, Vector3 direction, Vector3& hitPoint, float length = 100.0f, int* type = nullptr);
-		
-		// animator controller 
-		HODO_API HDData::AnimationController* CreateAnimationController();
 
 		// Material
 		HODO_API HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc);

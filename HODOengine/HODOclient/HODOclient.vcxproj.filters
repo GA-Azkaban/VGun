@@ -159,7 +159,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="B.h" />
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MenuManager.h">

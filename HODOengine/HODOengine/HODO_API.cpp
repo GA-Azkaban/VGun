@@ -10,6 +10,7 @@
 #include "RenderSystem.h"
 #include "SceneLoader.h"
 #include "Animator.h"
+#include "UISystem.h"
 #include "AnimationLoader.h"
 
 #include "TweenSystem.h"
@@ -271,12 +272,6 @@ namespace API
 			return GetCurrenSceneMainCamera();
 		}
 
-		HODO_API HDData::AnimationController* CreateAnimationController()
-		{
-			HDData::AnimationController* aniCon = new HDData::AnimationController();
-			return aniCon;
-		}
-
 		HODO_API HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc)
 		{
 			return HDEngine::MaterialManager::Instance().CreateMaterial(desc);
@@ -302,5 +297,12 @@ namespace API
 			HDEngine::RenderSystem::Instance().OnResize(width, height);
 		}
 
+		HODO_API std::vector<HDData::UIBase*>& GetAllUIList()
+		{
+			return HDEngine::UISystem::Instance().GetEveryUI();
+		}
+
 	}
+
+
 }
