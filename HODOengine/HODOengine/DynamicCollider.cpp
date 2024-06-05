@@ -154,6 +154,11 @@ void HDData::DynamicCollider::Update()
 
 }
 
+void HDData::DynamicCollider::Start()
+{
+	LockPlayerRotation();
+}
+
 void HDData::DynamicCollider::Collide()
 {
 	_isCollided = true;

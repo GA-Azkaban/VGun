@@ -31,7 +31,7 @@ void PlayerMove::Start()
 	
 	_moveSpeed = 3.0f;
 
-	_playerCollider->LockPlayerRotation();
+	//_playerCollider->LockPlayerRotation();
 
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
