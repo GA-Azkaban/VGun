@@ -27,16 +27,6 @@ message S_ERROR
 	int32 errorCode = 1;
 }
 
-message S_CONNECTED
-{
-
-}
-
-message C_AUTOLOGIN
-{
-
-}
-
 message C_SIGNIN
 {
 	string id = 1;
@@ -69,27 +59,11 @@ message C_ROOM_CREATE
 
 	bool isPrivate = 4;
 	bool isTeam = 5;
-
-	int32 map = 6;
-}
-
-message C_ROOM_SETTING
-{
-	// Todo 아직 안만들어짐
-	string password = 2;
-
-	int32 maxPlayerCount = 3;
-
-	bool isPrivate = 4;
-	bool isTeam = 5;
-
-	int32 map = 6;
 }
 
 message C_ROOM_ENTER
 {
 	string roomCode = 1;
-	string password = 2;
 }
 
 message S_ROOM_ENTER
@@ -123,27 +97,6 @@ message C_ROOM_START
 }
 
 message S_ROOM_START
-{
-	RoomInfo roomInfo = 1;
-}
-
-message C_ROOM_CHANGE_TEAM
-{
-	eTeamColor teamColor = 1;
-	string targetNickName = 2;
-}
-
-message S_ROOM_CHANGE_TEAM
-{
-	RoomInfo roomInfo = 1;
-}
-
-message C_ROOM_KICK
-{
-	string targetNickName = 1;
-}
-
-message S_ROOM_KICK
 {
 	RoomInfo roomInfo = 1;
 }

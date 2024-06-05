@@ -69,7 +69,7 @@ public: // 트랜스폼 동기화
 
 
 public: // 업데이트
-	void SendPlayUpdate(Protocol::PlayerData playerData);
+	void SendPlayUpdate();
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
 public: // 동작

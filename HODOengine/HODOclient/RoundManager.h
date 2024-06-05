@@ -15,9 +15,13 @@ private:
 	RoundManager();
 	~RoundManager() = default;
 
+	HDData::Scene* _roundScene = nullptr;
+
 public:
 	void Start() override;
 	void Update() override;
+
+	void SetRoundScene(HDData::Scene* scene);
 
 public:
 	void InitGame();
@@ -31,10 +35,13 @@ public:
 	std::vector<HDData::GameObject*>& GetPlayerObjs();
 
 private:
+	int _playerNum;
 	std::vector<HDData::GameObject*> _playerObjs;
-	std::vector<PlayerInfo*> _playerInfo;
 
 private:
+	bool _isRoundStart = false;
+
+	 
 	// 라운드 정보
 	int _timer;			// 타이머
 
@@ -43,10 +50,9 @@ private:
 	int _B;
 
 public:
-	void InitRandomSpawn();
-	void SetPlayerSpawn(int playerIndex);
+	void SetIsRoundStart(bool isStart);
 
 private:
-	std::vector<HDData::GameObject*> _randomSpawnPos;
+	//std::vector<HDData::GameObject*> _randomSpawnPos;
 };
 

@@ -18,14 +18,9 @@ namespace HDEngine
 		SceneSystem();
 
 	public:
-		void UpdateNextScene();
-
-	public:
-
 		HDData::Scene* CreateScene(std::string sceneName = "");
 		HDData::Scene* LoadScene(std::string sceneName);
 		void LoadScene(HDData::Scene* scene);
-		void LoadNextScene(std::string sceneName);
 
 		std::unordered_map<std::string, HDData::Scene*>& GetAllScenes();
 		HDData::Scene* GetCurrentScene();

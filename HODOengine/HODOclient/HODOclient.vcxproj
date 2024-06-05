@@ -226,7 +226,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
   <ItemGroup>
     <ClInclude Include="AnimationLoaderTest.h" />
     <ClInclude Include="Application.h" />
-    <ClInclude Include="B.h" />
     <ClInclude Include="BtnHoveringScript.h" />
     <ClInclude Include="BtnImageScript.h" />
     <ClInclude Include="BtnTextScript.h" />

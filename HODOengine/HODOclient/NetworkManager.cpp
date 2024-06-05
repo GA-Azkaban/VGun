@@ -283,7 +283,9 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		one->SetIsHost(player.host());
 
 		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname())) 
-		{ GameManager::Instance()->GetMyInfo()->SetIsHost(true); }
+		{ 
+			GameManager::Instance()->GetMyInfo()->SetIsHost(true); 
+		}
 
 		one->SetCurrentHP(player.hp());
 
@@ -349,9 +351,11 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 		for (int j = 0; j < roomInfo.users().size(); ++j)
 		{
 
-			std::string test2 = LobbyManager::Instance().GetAllPlayerInfo()[j]->GetPlayerNickName();
+			std::string test2 = 
+				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName();
 
-			if (roomInfo.users()[i].userinfo().nickname() == LobbyManager::Instance().GetAllPlayerInfo()[j]->GetPlayerNickName())
+			if (roomInfo.users()[i].userinfo().nickname() == 
+				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
 			{
 				switch (roomInfo.users()[i].team())
 				{
@@ -393,15 +397,26 @@ void NetworkManager::SendGameStart()
 
 void NetworkManager::RecvGameStart()
 {
-	RoundManager::Instance()->Start();
+	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");
 }
 
-void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
+void NetworkManager::SendPlayUpdate()
 {
 	Protocol::C_PLAY_UPDATE packet;
 
-	// Todo PlayerData 설정
+	auto myInfo = GameManager::Instance()->GetMyInfo();
+
+	auto vector3 = packet.mutable_playerdata()->mutable_transform()->mutable_vector3();
+	vector3->set_x(myInfo->GetTransform()->GetPosition().x);
+	vector3->set_y(myInfo->GetTransform()->GetPosition().y);
+	vector3->set_z(myInfo->GetTransform()->GetPosition().z);
+
+	auto quaternion = packet.mutable_playerdata()->mutable_transform()->mutable_quaternion();
+	quaternion->set_w(myInfo->GetTransform()->GetRotation().w);
+	quaternion->set_x(myInfo->GetTransform()->GetRotation().x);
+	quaternion->set_y(myInfo->GetTransform()->GetRotation().y);
+	quaternion->set_z(myInfo->GetTransform()->GetRotation().z);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -409,6 +424,25 @@ void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
 
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
+	auto& roominfo = playUpdate.roominfo();
+	auto& playerinfo = RoundManager::Instance()->GetPlayerObjs();
+
+	for (auto& player : roominfo.users())
+	{
+		auto& name = player.userinfo().nickname();
+
+		for (auto& obj : playerinfo)
+		{
+			if (obj->GetComponent<PlayerInfo>()->GetPlayerNickName() != name) continue;
+
+			obj->GetTransform()->
+				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());
+
+			obj->GetTransform()->
+				SetRotation(player.transform().quaternion().w(), player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z());
+		}
+
+	}
 
 }
 

@@ -5,6 +5,15 @@ PlayerInfo::PlayerInfo()
 
 }
 
+PlayerInfo::PlayerInfo(PlayerInfo* info)
+{
+	_playerUID = info->GetPlayerUID();
+	_playerID = info->GetPlayerID();
+	_teamID = info->GetPlayerTeam();
+	_isHost = info->GetIsHost();
+	_playerNickname = info->GetPlayerNickName();
+}
+
 void PlayerInfo::Start()
 {
 	this->Init();
@@ -21,7 +30,7 @@ void PlayerInfo::Init()
 	this-> _kill = 0;
 	this-> _death = 0;
 	this->_isDie = false;
-	this->_bulletCount = 0;
+	this->_bulletCount = 30;
 	this->_state = ePlayerState::IDLE;
 }
 

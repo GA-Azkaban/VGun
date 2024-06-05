@@ -21,6 +21,8 @@ void InGameSceneView::Initialize()
 {
 	_scene = API::CreateScene("InGame");
 
+	RoundManager::Instance()->SetRoundScene(_scene);
+
 	// 플레이어 여섯 명 렌더링
 	float posX = 0;
 	float posT = 165;

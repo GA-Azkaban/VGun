@@ -98,7 +98,6 @@ private:
 
 	// 인게임 로비
 	HDData::GameObject* _inGameStartButton;
-	//HDData::GameObject* _inGameReadyButton;
 
 public:
 	RoomData* GetRoomData();
@@ -117,17 +116,15 @@ public:
 	void RefreshRoom();
 	void SetPlayerTeam(eTeam team, std::string nickName = "");
 
-private:
-	std::vector<PlayerInfo*> _players;
-
 public:
-	std::vector<PlayerInfo*>& GetAllPlayerInfo();
 	std::vector<HDData::GameObject*>& GetPlayerObjects();
 	std::vector<HDData::GameObject*>& GetNickNameObjects();
 	std::vector<HDData::GameObject*>& GetTeamButtonObjects();
 	std::vector<HDData::GameObject*>& GetQuitButtonObjects();
+	int GetPlayerNum();
 
 private:
+	int _playerNum;
 	// 씬 내부에 계속 존재하는 오브젝트들
 	std::vector<HDData::GameObject*> _playerObjs;
 	std::vector<HDData::GameObject*> _nickNameIndex;
