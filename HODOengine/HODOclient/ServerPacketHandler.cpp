@@ -130,6 +130,18 @@ bool Handle_S_ROOM_START(Horang::PacketSessionRef& session, Protocol::S_ROOM_STA
 	return true;
 }
 
+bool Handle_S_GAME_START(Horang::PacketSessionRef& session, Protocol::S_GAME_START& pkt)
+{
+	// Todo
+	return true;
+}
+
+bool Handle_S_GAME_END(Horang::PacketSessionRef& session, Protocol::S_GAME_END& pkt)
+{
+	// Todo
+	return true;
+}
+
 bool Handle_S_ROOM_CHANGE_TEAM(Horang::PacketSessionRef& session, Protocol::S_ROOM_CHANGE_TEAM& pkt)
 {
 	NetworkManager::Instance().RecvChangeTeamColor(pkt.roominfo());
