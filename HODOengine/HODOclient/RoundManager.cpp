@@ -64,7 +64,7 @@ void RoundManager::InitGame()
 
 		if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			GameManager::Instance()->SetMyInfo(info);
+			GameManager::Instance()->SetMyInfo(_playerObjs[i]->GetComponent<PlayerInfo>());
 		}
 	}
 
