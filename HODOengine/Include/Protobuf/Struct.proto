@@ -73,3 +73,10 @@ message PlayerData
 	bool isSitting = 7;
 	bool isDead = 8;
 }
+
+message GameRule
+{
+	int32 gameTime = 1;
+	int32 desiredKill = 2;
+	int32 respawnTime = 3;
+}
