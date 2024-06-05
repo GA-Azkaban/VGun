@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 
@@ -14,7 +14,8 @@ PlayerMove::PlayerMove()
 	_isRunning(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
 	_isFirstPersonPerspective(true),
-	_isJumping(true), _isOnGround(false)
+	_isJumping(true), _isOnGround(false),
+	_isShootHead(false), _isShootBody(false)
 {
 	
 }
@@ -26,13 +27,8 @@ void PlayerMove::Start()
 	GetGameObject()->AddComponent<FPAniScript>();
 
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
-
-	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
-	
+	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");	
 	_moveSpeed = 3.0f;
-
-	//_playerCollider->LockPlayerRotation();
-
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
@@ -92,13 +88,14 @@ void PlayerMove::Update()
 	// 탄창 비었는데 쏘면 딸깍소리
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
-		//_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.10f, 0.18f));
 		if (_bulletCount <= 0)
 		{
 			_playerAudio->PlayOnce("empty");
 		}
 	}
 
+	_isShootHead = false;
+	_isShootBody = false;
 	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
 	{
 		ShootGunDdabal();
@@ -443,14 +440,18 @@ void PlayerMove::ShootGunDdabal()
 		SpawnParticle(hitPoint);
 	}
 
-	// 맞은 애가 dynamic이면 힘 가해주기
-	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
-
-	if (hitDynamic != nullptr)
+	// 적군의 머리를 맞췄을 때
+	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
+	if (hitDynamicSphere != nullptr)
 	{
-		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
-		hitDynamic->AddForce(forceDirection, 5.0f);
-		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
+		_isShootHead = true;
+	}
+
+	// 적군의 머리를 맞췄을 때
+	HDData::DynamicCapsuleCollider* hitDynamicCapsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(hitCollider);
+	if (hitDynamicCapsule != nullptr)
+	{
+		_isShootBody = true;
 	}
 
 
@@ -624,6 +625,16 @@ void PlayerMove::StartRoundCam()
 {
 	_isHeadCam = true;
 	_isFirstPersonPerspective = true;
+}
+
+bool PlayerMove::IsShootHead()
+{
+	return _isShootHead;
+}
+
+bool PlayerMove::IsShootBody()
+{
+	return _isShootBody;
 }
 
 void PlayerMove::ToggleCam()
@@ -919,8 +930,6 @@ void PlayerMove::Pitch(float rotationValue)
 	//Quaternion newRot = XMQuaternionMultiply(headTrasnform->GetRotation(), rotVal);
 	//headTrasnform->Rotate(rotVal);
 	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
-
-
 }
 
 void PlayerMove::SwitchCamera()
@@ -979,19 +988,8 @@ void PlayerMove::CameraMove()
 	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	_headCam->GetTransform()->SetRotation(pitchRotQuat);
 
-	//_playerCollider->SetColliderRotation({ 0, 0.7071068, 0, 0.7071068 });
-	//Quaternion yawRotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angleY);
-	//Quaternion result = Quaternion::Concatenate(rotX, _headCam->GetGameObject()->GetTransform()->GetLocalRotation());
-	//Quaternion rotX = Quaternion::CreateFromYawPitchRoll(0.0f, _rotAngleX, 0.0f);
-	//_headCam->GetTransform()->SetLocalRotation(rotX);
-
-	//Vector3 right = _headCam->GetTransform()->GetRight();
+	// 메쉬 회전
 	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
-	//_fpMeshObj->GetTransform()->Rotate(rotX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
-	//_fpMeshObj->GetTransform()->SetLocalPosition(Vector3(0.0f,0.0f,1.0f));
-
-
-	//Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
-	//_playerCollider->SetColliderRotation(rot);
+	
 }
