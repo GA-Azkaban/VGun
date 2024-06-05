@@ -23,10 +23,15 @@ namespace HDData
 
 	// setting
 	public:
+		virtual void SetFreezeRotation(bool freezeRotation);
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
-		void LockPlayerRotation();
+		void LockPlayerRotation(bool isLock);
 		void SetParentCollider(HDData::DynamicCollider* col);
 		void SetChildCollider(HDData::DynamicCollider* childCol);
+
+	// getter
+	public:
+		virtual bool GetFreezeRotation();
 
 	// Move and Control
 	public:
@@ -57,10 +62,11 @@ namespace HDData
 		HDData::Collider* GetParentCollider() const;
 		std::vector<HDData::Collider*> GetChildColliderVec()const;
 
+	protected:
+		bool _freezeRotation;
+
 	private:
-		bool _isJumping;
 		bool _isCollided;
-		bool _isOnGround;
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;

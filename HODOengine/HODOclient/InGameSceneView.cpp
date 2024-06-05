@@ -59,13 +59,14 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.8f, 0.8f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
 	headCollider->SetParentCollider(playerCollider);
-	headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
+	//headCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
 	headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -86,7 +87,6 @@ void InGameSceneView::Initialize()
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.05f, -1.7f, 0.45f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//fpMeshComp->GetTransform()->SetLocalPosition(0.05f, -0.05f, 1.1f);
 	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(M_Red, 0);
 	fpMeshComp->LoadMaterial(M_Red, 1);
@@ -112,7 +112,7 @@ void InGameSceneView::Initialize()
 	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
 	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
 	
-
+	// weapon
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");
 	HDEngine::MaterialDesc weaponMatDesc;
@@ -174,6 +174,15 @@ void InGameSceneView::Initialize()
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.8f, 0.8f);
+		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+		otherPlayerCollider->SetFreezeRotation(true);
+		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
+		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
+		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.3f, 0.0f));
+		ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadMaterial(M_Red, 0);
@@ -181,11 +190,12 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadMaterial(M_Red, 2);
 		otherMeshComp->LoadMaterial(M_Red, 3);
 		otherMeshComp->LoadMaterial(M_Red, 4);
-
 		otherMeshComp->PlayAnimation("AR_idle", true);
-
-		auto boxCol = otherPlayer->AddComponent<HDData::DynamicBoxCollider>(0.5f, 1.2f, 0.25f, 1);
-		boxCol->SetPositionOffset(Vector3(0.0f, 0.6f, 0.0f));
+		//otherMeshComp->SetMeshActive(false, 0);
+		//otherMeshComp->SetMeshActive(false, 1);
+		//otherMeshComp->SetMeshActive(false, 2);
+		//otherMeshComp->SetMeshActive(false, 3);
+		//otherMeshComp->SetMeshActive(false, 4);
 
 		RoundManager::Instance()->GetPlayerObjs().push_back(otherPlayer);
 
@@ -199,7 +209,7 @@ void InGameSceneView::Initialize()
 		otherPlayerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
 		otherPlayerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
 
-		posX += 1;
+		posX += 2;
 		posT += 315;
 	}
 
@@ -208,7 +218,7 @@ void InGameSceneView::Initialize()
 	auto crosshairImage = crosshairObj->AddComponent<HDData::ImageUI>();
 	crosshairImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
 	crosshairImage->SetImage("Crosshair15White.png");
-	crosshairImage->ChangeScale(0.5f, 0.5f);
+	crosshairImage->ChangeScale(0.25f, 0.25f);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

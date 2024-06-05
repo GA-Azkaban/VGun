@@ -1,4 +1,4 @@
-#include "DynamicCapsuleCollider.h"
+﻿#include "DynamicCapsuleCollider.h"
 #include "GameObject.h"
 #include "GraphicsObjFactory.h"
 
@@ -56,7 +56,6 @@ float HDData::DynamicCapsuleCollider::GetRadius() const
 float HDData::DynamicCapsuleCollider::GetHalfHeight() const
 {
 	return _halfHeight * _scaleOffset.y * GetGameObject()->GetTransform()->GetScale().y;
-	//return _halfHeight;
 }
 
 void HDData::DynamicCapsuleCollider::SetRadius(float val)

@@ -26,13 +26,8 @@ void PlayerMove::Start()
 	GetGameObject()->AddComponent<FPAniScript>();
 
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
-
-	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
-	
+	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");	
 	_moveSpeed = 3.0f;
-
-	_playerCollider->LockPlayerRotation();
-
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern();
@@ -841,8 +836,6 @@ void PlayerMove::Pitch(float rotationValue)
 	//Quaternion newRot = XMQuaternionMultiply(headTrasnform->GetRotation(), rotVal);
 	//headTrasnform->Rotate(rotVal);
 	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
-
-
 }
 
 void PlayerMove::SwitchCamera()
@@ -901,19 +894,8 @@ void PlayerMove::CameraMove()
 	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	_headCam->GetTransform()->SetRotation(pitchRotQuat);
 
-	//_playerCollider->SetColliderRotation({ 0, 0.7071068, 0, 0.7071068 });
-	//Quaternion yawRotQuat = Quaternion::CreateFromAxisAngle({ 0.0f,1.0f,0.0f }, angleY);
-	//Quaternion result = Quaternion::Concatenate(rotX, _headCam->GetGameObject()->GetTransform()->GetLocalRotation());
-	//Quaternion rotX = Quaternion::CreateFromYawPitchRoll(0.0f, _rotAngleX, 0.0f);
-	//_headCam->GetTransform()->SetLocalRotation(rotX);
-
-	//Vector3 right = _headCam->GetTransform()->GetRight();
+	// 메쉬 회전
 	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
-	//_fpMeshObj->GetTransform()->Rotate(rotX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
-	//_fpMeshObj->GetTransform()->SetLocalPosition(Vector3(0.0f,0.0f,1.0f));
-
-
-	//Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
-	//_playerCollider->SetColliderRotation(rot);
+	
 }

@@ -33,7 +33,7 @@ float HDData::DynamicSphereCollider::GetDepth() const
 
 float HDData::DynamicSphereCollider::GetRadius() const
 {
-	return _radius;
+	return _radius * _scaleOffset.x;
 }
 
 void HDData::DynamicSphereCollider::SetRadius(float radius)
@@ -50,6 +50,9 @@ void HDData::DynamicSphereCollider::Update()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();
+	colWorld._11 *= _radius;
+	colWorld._22 *= _radius;
+	colWorld._33 *= _radius;
 	colWorld *= GetTransform()->GetWorldTM();
 	_debugStruct->worldTM = colWorld;
 	_debugStruct->color = { 0.0f,1.0f,0.0f,1.0f };

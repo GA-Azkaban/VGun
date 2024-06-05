@@ -59,7 +59,7 @@ void Client::Initialize()
 	
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
-
+	//
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();	
 
@@ -69,6 +69,6 @@ void Client::Initialize()
 	//LobbySceneView lobby;
 	//lobby.Initialize();
 
-	//API::LoadSceneByName("Lobby");
+	//API::LoadSceneByName("Login");
 	API::LoadSceneByName("InGame");
 }

@@ -106,10 +106,10 @@ _parentCollider(nullptr)
 		Matrix result = GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
 		//Matrix result = GetTranslateMatrix()  * GetRotationMatrix() * GetScaleMatrix();
 
-		if (_parentCollider != nullptr)
+		/*if (_parentCollider != nullptr)
 		{
 			result = _parentCollider->GetTransformMatrix() * result;
-		}
+		}*/
 
 		return result;
 		//return Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
