@@ -421,8 +421,6 @@ void PlayerMove::ShootGunDdabal()
 	ApplyRecoil();
 	_headCam->ToggleCameraShake(true);
 
-	++_shootCount;
-	--_bulletCount;
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
@@ -430,7 +428,12 @@ void PlayerMove::ShootGunDdabal()
 	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 1.0f;
 	Vector3 hitPoint = { 314.0f, 314.0f, 314.0f };
 
-	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
+	Vector3 recoilDirection = _headCam->GetTransform()->GetForward() +
+		_headCam->GetTransform()->GetRight() * _sprayPattern[_shootCount].first * -4.0f +
+		_headCam->GetTransform()->GetUp() * _sprayPattern[_shootCount].second * -0.02f;
+	recoilDirection.Normalize(recoilDirection);
+	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
+	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 	_playerAudio->PlayOnce("shoot");
 
 	// 맞은 데에 빨간 점 나오게 하기
@@ -450,6 +453,9 @@ void PlayerMove::ShootGunDdabal()
 		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
 	}
 
+
+	++_shootCount;
+	--_bulletCount;
 	_shootCooldown = 0.1f;
 }
 
@@ -488,8 +494,12 @@ void PlayerMove::ApplyRecoil()
 	//// 고정된 값으로 spray 해주는 버전
 	//static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateY(_sprayPattern[_shootCount].first);
 	//Pitch(_sprayPattern[_shootCount].second);
-	_rotAngleY += _sprayPattern[_shootCount].first;
-	_rotAngleX += _sprayPattern[_shootCount].second * 0.01f;
+
+	//_rotAngleY += _sprayPattern[_shootCount].first;
+	//_rotAngleX += _sprayPattern[_shootCount].second * 0.01f;
+
+	_rotAngleY += _sprayCamera[_shootCount].first;
+	_rotAngleX += _sprayCamera[_shootCount].second;
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -511,37 +521,103 @@ HDData::Camera* PlayerMove::GetHeadCam() const
 
 void PlayerMove::PresetSprayPattern()
 {
-	float scale = 1.0f;
-	_sprayPattern[0] = std::make_pair(0.001f * scale, -0.3f * scale);
-	_sprayPattern[1] = std::make_pair(-0.001f * scale, -1.0f * scale);
-	_sprayPattern[2] = std::make_pair(0.001f * scale, -1.5f * scale);
-	_sprayPattern[3] = std::make_pair(0.001f * scale, -1.5f * scale);
-	_sprayPattern[4] = std::make_pair(-0.003f * scale, -1.7f * scale);
-	_sprayPattern[5] = std::make_pair(-0.002f * scale, -1.5f * scale);
-	_sprayPattern[6] = std::make_pair(-0.003f * scale, -1.0f * scale);
-	_sprayPattern[7] = std::make_pair(0.004f * scale, -1.0f * scale);
-	_sprayPattern[8] = std::make_pair(0.01f * scale, 0.5f * scale);
-	_sprayPattern[9] = std::make_pair(0.005f * scale, -0.3f * scale);
-	_sprayPattern[10] = std::make_pair(-0.003f * scale, -0.6f * scale);
-	_sprayPattern[11] = std::make_pair(0.004f * scale, -0.6f * scale);
-	_sprayPattern[12] = std::make_pair(0.008f * scale, 0.7f * scale);
-	_sprayPattern[13] = std::make_pair(0.001f * scale, -0.2f * scale);
-	_sprayPattern[14] = std::make_pair(-0.011f * scale, -0.1f * scale);
-	_sprayPattern[15] = std::make_pair(-0.003f * scale, -0.4f * scale);
-	_sprayPattern[16] = std::make_pair(-0.003f * scale, -0.6f * scale);
-	_sprayPattern[17] = std::make_pair(-0.006f * scale, 0.3f * scale);
-	_sprayPattern[18] = std::make_pair(-0.003f * scale, 0.7f * scale);
-	_sprayPattern[19] = std::make_pair(-0.005f * scale, -0.1f * scale);
-	_sprayPattern[20] = std::make_pair(0.004f * scale, 0.0f * scale);
-	_sprayPattern[21] = std::make_pair(0.001f * scale, -1.0f * scale);
-	_sprayPattern[22] = std::make_pair(0.001f * scale, -0.4f * scale);
-	_sprayPattern[23] = std::make_pair(-0.005f * scale, 0.1f * scale);
-	_sprayPattern[24] = std::make_pair(0.004f * scale, 0.0f * scale);
-	_sprayPattern[25] = std::make_pair(0.008f * scale, 0.6f * scale);
-	_sprayPattern[26] = std::make_pair(0.01f * scale, 1.3f * scale);
-	_sprayPattern[27] = std::make_pair(0.004f * scale, -0.4f * scale);
-	_sprayPattern[28] = std::make_pair(0.002f * scale, -0.2f * scale);
-	_sprayPattern[29] = std::make_pair(0.001f * scale, -0.1f * scale);
+	float scale = 0.5f;
+
+	// 카메라를 돌려주는 방식의 경우
+	//_sprayPattern[0] = std::make_pair(0.001f * scale, -0.3f * scale);
+	//_sprayPattern[1] = std::make_pair(-0.001f * scale, -1.0f * scale);
+	//_sprayPattern[2] = std::make_pair(0.001f * scale, -1.5f * scale);
+	//_sprayPattern[3] = std::make_pair(0.001f * scale, -1.5f * scale);
+	//_sprayPattern[4] = std::make_pair(-0.003f * scale, -1.7f * scale);
+	//_sprayPattern[5] = std::make_pair(-0.002f * scale, -1.5f * scale);
+	//_sprayPattern[6] = std::make_pair(-0.003f * scale, -1.0f * scale);
+	//_sprayPattern[7] = std::make_pair(0.004f * scale, -1.0f * scale);
+	//_sprayPattern[8] = std::make_pair(0.01f * scale, 0.5f * scale);
+	//_sprayPattern[9] = std::make_pair(0.005f * scale, -0.3f * scale);
+	//_sprayPattern[10] = std::make_pair(-0.003f * scale, -0.6f * scale);
+	//_sprayPattern[11] = std::make_pair(0.004f * scale, -0.6f * scale);
+	//_sprayPattern[12] = std::make_pair(0.008f * scale, 0.7f * scale);
+	//_sprayPattern[13] = std::make_pair(0.001f * scale, -0.2f * scale);
+	//_sprayPattern[14] = std::make_pair(-0.011f * scale, -0.1f * scale);
+	//_sprayPattern[15] = std::make_pair(-0.003f * scale, -0.4f * scale);
+	//_sprayPattern[16] = std::make_pair(-0.003f * scale, -0.6f * scale);
+	//_sprayPattern[17] = std::make_pair(-0.006f * scale, 0.3f * scale);
+	//_sprayPattern[18] = std::make_pair(-0.003f * scale, 0.7f * scale);
+	//_sprayPattern[19] = std::make_pair(-0.005f * scale, -0.1f * scale);
+	//_sprayPattern[20] = std::make_pair(0.004f * scale, 0.0f * scale);
+	//_sprayPattern[21] = std::make_pair(0.001f * scale, -1.0f * scale);
+	//_sprayPattern[22] = std::make_pair(0.001f * scale, -0.4f * scale);
+	//_sprayPattern[23] = std::make_pair(-0.005f * scale, 0.1f * scale);
+	//_sprayPattern[24] = std::make_pair(0.004f * scale, 0.0f * scale);
+	//_sprayPattern[25] = std::make_pair(0.008f * scale, 0.6f * scale);
+	//_sprayPattern[26] = std::make_pair(0.01f * scale, 1.3f * scale);
+	//_sprayPattern[27] = std::make_pair(0.004f * scale, -0.4f * scale);
+	//_sprayPattern[28] = std::make_pair(0.002f * scale, -0.2f * scale);
+	//_sprayPattern[29] = std::make_pair(0.001f * scale, -0.1f * scale);
+
+	// 조준점을 흐트리는 방식의 경우
+	_sprayPattern[0] = std::make_pair(0.0f * scale, 0.0f * scale);
+	_sprayPattern[1] = std::make_pair(0.002f * scale, -0.3f * scale);
+	_sprayPattern[2] = std::make_pair(0.000f * scale, -1.3f * scale);
+	_sprayPattern[3] = std::make_pair(0.002f * scale, -2.8f * scale);
+	_sprayPattern[4] = std::make_pair(0.004f * scale, -4.3f * scale);
+	_sprayPattern[5] = std::make_pair(-0.01f * scale, -6.0f * scale);
+	_sprayPattern[6] = std::make_pair(-0.014f * scale, -7.5f * scale);
+	_sprayPattern[7] = std::make_pair(-0.02f * scale, -8.5f * scale);
+	_sprayPattern[8] = std::make_pair(-0.012f * scale, -9.5f * scale);
+	_sprayPattern[9] = std::make_pair(0.008f * scale, -9.0f * scale);
+	_sprayPattern[10] = std::make_pair(0.018f * scale, -9.3f * scale);
+	_sprayPattern[11] = std::make_pair(0.012f * scale, -9.9f * scale);
+	_sprayPattern[12] = std::make_pair(0.02f * scale, -10.5f * scale);
+	_sprayPattern[13] = std::make_pair(0.036f * scale, -9.8f * scale);
+	_sprayPattern[14] = std::make_pair(0.038f * scale, -10.0f * scale);
+	_sprayPattern[15] = std::make_pair(0.016f * scale, -10.1f * scale);
+	_sprayPattern[16] = std::make_pair(0.01f * scale, -10.5f * scale);
+	_sprayPattern[17] = std::make_pair(0.004f * scale, -11.1f * scale);
+	_sprayPattern[18] = std::make_pair(-0.008f * scale, -10.8f * scale);
+	_sprayPattern[19] = std::make_pair(-0.014f * scale, -10.1f * scale);
+	_sprayPattern[20] = std::make_pair(-0.024f * scale, -10.2f * scale);
+	_sprayPattern[21] = std::make_pair(-0.016f * scale, -10.2f * scale);
+	_sprayPattern[22] = std::make_pair(-0.014f * scale, -11.2f * scale);
+	_sprayPattern[23] = std::make_pair(-0.012f * scale, -11.6f * scale);
+	_sprayPattern[24] = std::make_pair(-0.022f * scale, -11.5f * scale);
+	_sprayPattern[25] = std::make_pair(-0.014f * scale, -11.5f * scale);
+	_sprayPattern[26] = std::make_pair(0.002f * scale, -10.9f * scale);
+	_sprayPattern[27] = std::make_pair(0.022f * scale, -9.6f * scale);
+	_sprayPattern[28] = std::make_pair(0.01f * scale, -10.0f * scale);
+	_sprayPattern[29] = std::make_pair(0.016f * scale, -10.3f * scale);
+
+	float scale2 = 0.01f;
+	_sprayCamera[0] = std::make_pair(0.002f * scale2, -0.3f * scale2);
+	_sprayCamera[1] = std::make_pair(-0.002f * scale2, -1.0f * scale2);
+	_sprayCamera[2] = std::make_pair(0.002f * scale2, -1.5f * scale2);
+	_sprayCamera[3] = std::make_pair(0.002f * scale2, -1.5f * scale2);
+	_sprayCamera[4] = std::make_pair(-0.006f * scale2, -1.7f * scale2);
+	_sprayCamera[5] = std::make_pair(-0.004f * scale2, -1.5f * scale2);
+	_sprayCamera[6] = std::make_pair(-0.006f * scale2, -1.0f * scale2);
+	_sprayCamera[7] = std::make_pair(0.008f * scale2, -1.0f * scale2);
+	_sprayCamera[8] = std::make_pair(0.02f * scale2, 0.5f * scale2);
+	_sprayCamera[9] = std::make_pair(0.01f * scale2, -0.3f * scale2);
+	_sprayCamera[10] = std::make_pair(-0.006f * scale2, -0.6f * scale2);
+	_sprayCamera[11] = std::make_pair(0.008f * scale2, -0.6f * scale2);
+	_sprayCamera[12] = std::make_pair(0.016f * scale2, 0.7f * scale2);
+	_sprayCamera[13] = std::make_pair(0.002f * scale2, -0.2f * scale2);
+	_sprayCamera[14] = std::make_pair(-0.022f * scale2, -0.1f * scale2);
+	_sprayCamera[15] = std::make_pair(-0.006f * scale2, -0.4f * scale2);
+	_sprayCamera[16] = std::make_pair(-0.006f * scale2, -0.6f * scale2);
+	_sprayCamera[17] = std::make_pair(-0.012f * scale2, 0.3f * scale2);
+	_sprayCamera[18] = std::make_pair(-0.006f * scale2, 0.7f * scale2);
+	_sprayCamera[19] = std::make_pair(-0.01f * scale2, -0.1f * scale2);
+	_sprayCamera[20] = std::make_pair(0.008f * scale2, 0.0f * scale2);
+	_sprayCamera[21] = std::make_pair(0.002f * scale2, -1.0f * scale2);
+	_sprayCamera[22] = std::make_pair(0.002f * scale2, -0.4f * scale2);
+	_sprayCamera[23] = std::make_pair(-0.01f * scale2, 0.1f * scale2);
+	_sprayCamera[24] = std::make_pair(0.008f * scale2, 0.0f * scale2);
+	_sprayCamera[25] = std::make_pair(0.016f * scale2, 0.6f * scale2);
+	_sprayCamera[26] = std::make_pair(0.02f * scale2, 1.3f * scale2);
+	_sprayCamera[27] = std::make_pair(0.008f * scale2, -0.4f * scale2);
+	_sprayCamera[28] = std::make_pair(0.004f * scale2, -0.2f * scale2);
+	_sprayCamera[29] = std::make_pair(0.002f * scale2, -0.1f * scale2);
 }
 
 void PlayerMove::StartRoundCam()

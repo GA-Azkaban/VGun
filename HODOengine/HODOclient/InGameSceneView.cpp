@@ -150,6 +150,7 @@ void InGameSceneView::Initialize()
 	{
 		auto particleObj = API::CreateObject(_scene);
 		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
+		particle->SetScaleOffset(Vector3(0.1f, 0.1f, 0.1f));
 		particleVec.push_back(particle);
 	}
 	playerMove->SetHitParticle(particleVec);
@@ -209,6 +210,11 @@ void InGameSceneView::Initialize()
 	crosshairImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
 	crosshairImage->SetImage("Crosshair15White.png");
 	crosshairImage->ChangeScale(0.5f, 0.5f);
+
+	// 임시 개큰박스
+	auto tempBox = API::CreateObject(_scene, "tmpBox");
+	tempBox->GetTransform()->SetPosition(Vector3(10.0f, 0.0f, 60.0f));
+	auto tempBoxCol = tempBox->AddComponent<HDData::StaticBoxCollider>(100.0f, 100.0f, 1.0f);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
