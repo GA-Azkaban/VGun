@@ -125,6 +125,17 @@ message C_ROOM_START
 message S_ROOM_START
 {
 	RoomInfo roomInfo = 1;
+	GameRule gameRule = 2;
+}
+
+message S_GAME_START
+{
+
+}
+
+message S_GAME_END
+{
+	RoomInfo roomInfo = 1;
 }
 
 message C_ROOM_CHANGE_TEAM
