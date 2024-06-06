@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 
@@ -963,11 +963,23 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
-	float angleX = 0.0f;
-	float angleY = 0.0f;
-	
-	angleX += mouseDelta.y * 0.0005f;
-	angleY += mouseDelta.x * 0.0005f;
+	if (mouseDelta.x > 500.0f)
+	{
+		mouseDelta.x = 500.0f;
+	} 
+	if (mouseDelta.x < -500.0f)
+	{
+		mouseDelta.x = -500.0f;
+	}
+
+	if (mouseDelta.y > 500.0f)
+	{
+		mouseDelta.y = 500.0f;
+	}
+	if (mouseDelta.y < -500.0f)
+	{
+		mouseDelta.y = -500.0f;
+	}
 
 	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0005f);
 	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0005f);
