@@ -9,6 +9,7 @@ namespace RocketCore::Graphics
 		virtual HDEngine::ICamera* CreateCamera() override;
 		virtual HDEngine::IStaticMesh* CreateStaticMeshObject() override;
 		virtual HDEngine::ISkinnedMesh* CreateSkinnedMeshObject() override;
+		virtual HDEngine::IDecal* CreateDecalObject() override;
 		virtual HDEngine::ICubeMap* CreateCubeMap() override;
 		virtual HDEngine::ISketchableText* CreateText() override;
 		virtual HDEngine::ISketchableImage* CreateImage() override;

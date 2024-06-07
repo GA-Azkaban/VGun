@@ -261,6 +261,11 @@ namespace API
 			animator->SetAllAnimationController(&HDEngine::AnimationLoader::Instance().LoadAnimationData(data));
 		}
 
+		HODO_API HDData::Scene* GetCurrentScene()
+		{
+			return HDEngine::SceneSystem::Instance().GetCurrentScene();
+		}
+
 		HODO_API HDData::Camera* GetCurrenSceneMainCamera()
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
@@ -303,6 +308,5 @@ namespace API
 		}
 
 	}
-
 
 }

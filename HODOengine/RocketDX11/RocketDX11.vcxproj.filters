@@ -389,6 +389,9 @@
     <ClInclude Include="BoundingVolumeHelper.h">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="DecalObject.h">
+      <Filter>Object\Decal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">
@@ -615,6 +618,9 @@
     </Filter>
     <Filter Include="DeferredRendering\RenderPasses\ForwardPass">
       <UniqueIdentifier>{fa17eb72-e773-473a-a0b8-f2625807947d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Decal">
+      <UniqueIdentifier>{6e56b087-8963-4086-b36d-639204a9893d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

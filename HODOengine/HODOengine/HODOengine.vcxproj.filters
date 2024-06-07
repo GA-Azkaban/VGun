@@ -188,6 +188,9 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>05_Component\ParticleSystem\Component</Filter>
     </ClCompile>
+    <ClCompile Include="DecalRenderer.cpp">
+      <Filter>05_Component\Renderer\DecalRenderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioSource.h">
@@ -446,6 +449,9 @@
     <ClInclude Include="RandomGenerator.h">
       <Filter>08_Utility\RandomGenerator</Filter>
     </ClInclude>
+    <ClInclude Include="DecalRenderer.h">
+      <Filter>05_Component\Renderer\DecalRenderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOengine.ico">
@@ -665,6 +671,9 @@
     </Filter>
     <Filter Include="08_Utility\RandomGenerator">
       <UniqueIdentifier>{be1c96c9-ab29-4ab7-9d23-525928072f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05_Component\Renderer\DecalRenderer">
+      <UniqueIdentifier>{c800fe70-babc-435d-b1ff-2ec0a1d31d2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

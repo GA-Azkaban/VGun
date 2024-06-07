@@ -233,6 +233,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="Animator.h" />
     <ClInclude Include="Burst.h" />
     <ClInclude Include="ColorOverLifetimeModule.h" />
+    <ClInclude Include="DecalRenderer.h" />
     <ClInclude Include="EmssionModule.h" />
     <ClInclude Include="Gradient.h" />
     <ClInclude Include="LimitVelocityOverLifetimeModule.h" />
@@ -339,6 +340,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="AnimationController.cpp" />
     <ClCompile Include="AnimationLoader.cpp" />
     <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="DecalRenderer.cpp" />
     <ClCompile Include="Gradient.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleSystemRenderer.cpp" />

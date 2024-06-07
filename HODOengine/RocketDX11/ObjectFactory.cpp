@@ -46,6 +46,11 @@ namespace RocketCore::Graphics
 		return ObjectManager::Instance().CreateSkinningMeshObject();
 	}
 
+	HDEngine::IDecal* ObjectFactory::CreateDecalObject()
+	{
+		return ObjectManager::Instance().
+	}
+
 	HDEngine::ICubeMap* ObjectFactory::CreateCubeMap()
 	{
 		return ObjectManager::Instance().CreateCubeMap();

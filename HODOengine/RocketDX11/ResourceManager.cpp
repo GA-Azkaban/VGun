@@ -719,6 +719,8 @@ namespace RocketCore::Graphics
 		_quadMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
 		_quadMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
 		_loadedFileInfo["primitiveQuad"].loadedMaterials.push_back(_quadMaterial);
+		_loadedFileInfo[_fileInfoKeyName].minMaxElements = quad.minMaxElements;
+		_loadedFileInfo["primitiveQuad"].boundingBox = BoundingVolumeHelper::BoundingBoxFromRange(quad.minMaxElements);
 
 		// 디버그 메쉬
 		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);

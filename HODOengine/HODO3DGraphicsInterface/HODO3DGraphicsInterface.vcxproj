@@ -28,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ICubeMap.h" />
+    <ClInclude Include="IDecal.h" />
     <ClInclude Include="ILight.h" />
     <ClInclude Include="IParticleSystem.h" />
     <ClInclude Include="Node.h" />

@@ -741,5 +741,12 @@ namespace RocketCore::Graphics
 		meshData.Indices[3] = 3;
 		meshData.Indices[4] = 4;
 		meshData.Indices[5] = 5;
+
+		meshData.minMaxElements.minX = -1.0f;
+		meshData.minMaxElements.maxX = 1.0f;
+		meshData.minMaxElements.minY = -1.0f;
+		meshData.minMaxElements.maxY = 1.0f;
+		meshData.minMaxElements.minZ = 0.0f;
+		meshData.minMaxElements.maxZ = 0.0f;
 	}
 }

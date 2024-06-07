@@ -10,6 +10,7 @@ namespace HDEngine
 	class ICamera;
 	class IStaticMesh;
 	class ISkinnedMesh;
+	class IDecal;
 	class ICubeMap;
 	class ISketchableText;
 	class ISketchableImage;
@@ -29,6 +30,7 @@ namespace HDEngine
 		virtual ICamera* CreateCamera() = 0;
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
+		virtual IDecal* CreateDecalObject() = 0;
 		virtual ICubeMap* CreateCubeMap() = 0;
 		virtual ISketchableText* CreateText() = 0;
 		virtual ISketchableImage* CreateImage() = 0;

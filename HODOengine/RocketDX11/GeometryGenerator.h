@@ -16,6 +16,7 @@
 #define GEOMETRYGENERATOR_H
 
 #include "GraphicsStruct.h"
+#include "BoundingVolumeHelper.h"
 #include <vector>
 #include <windows.h>
 
@@ -28,6 +29,7 @@ namespace RocketCore::Graphics
 		{
 			std::vector<RocketCore::Graphics::Vertex> Vertices;
 			std::vector<UINT> Indices;
+			MinMaxElements minMaxElements;
 		};
 
 		struct DebugMeshData

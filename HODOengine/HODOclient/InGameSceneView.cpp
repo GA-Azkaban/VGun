@@ -7,6 +7,7 @@
 #include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "Crosshair.h"
+#include "DecalPool.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -217,10 +218,8 @@ void InGameSceneView::Initialize()
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
 
-	// 임시 개큰박스
-	auto tempBox = API::CreateObject(_scene, "tmpBox");
-	tempBox->GetTransform()->SetPosition(Vector3(10.0f, 0.0f, 60.0f));
-	auto tempBoxCol = tempBox->AddComponent<HDData::StaticBoxCollider>(100.0f, 100.0f, 1.0f);
+	auto decalManager = API::CreateObject(_scene, "DecalManager");
+	decalManager->AddComponent<DecalPool>();	
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

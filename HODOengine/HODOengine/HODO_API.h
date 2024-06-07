@@ -83,8 +83,8 @@ namespace API
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::Tween* CreateTween();
 
-		// 사운드시스템
-		//HODO_API HDData::AudioSource* CreateSoundPlayer(HDData::Scene* scene, std::string soundName, std::string soundPath, HDData::SoundGroup soundType);
+		// 현재 씬
+		HODO_API HDData::Scene* GetCurrentScene();
 
 		// 메인 카메라 조작을 위한 함수
 		HODO_API HDData::Camera* GetCurrenSceneMainCamera();
