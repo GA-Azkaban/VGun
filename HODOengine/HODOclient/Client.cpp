@@ -53,8 +53,8 @@ void Client::Initialize()
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 
-	LobbySceneView lobby;
-	lobby.Initialize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
 	API::LoadSceneByName("Login");
 

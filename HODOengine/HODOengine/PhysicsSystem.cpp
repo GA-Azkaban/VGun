@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -37,7 +37,7 @@ namespace HDEngine
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.2f);
 		_playerMaterial = _physics->createMaterial(0.0f, 0.0f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.0f, 0.0f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.5f, 0.4f, 0.0f);
 
 		CollisionCallback* collisionCallback = new CollisionCallback();
 		_pxScene->setSimulationEventCallback(collisionCallback);
@@ -439,7 +439,7 @@ namespace HDEngine
 				Vector3 localPose = thisCol->GetTransform()->GetLocalPosition();
 				localTransform.p = { localPose.x, localPose.y, localPose.z };
 
-				if (thisCol->GetGameObject()->GetObjectName() == "head")
+				if (thisCol->GetGameObject()->GetObjectName() == "headFFFFF")
 				{
 					physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
 						parentCol->GetPhysXRigid(), localTransform);
