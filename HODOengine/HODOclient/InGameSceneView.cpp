@@ -41,7 +41,7 @@ void InGameSceneView::Initialize()
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 내 캐릭터 생성
-	std::string objName1 = "player" + std::to_string(1);
+	std::string objName1 = "player0";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
@@ -62,11 +62,11 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->GetPlayerObjs().push_back(player);
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.7f, 0.9f);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.6f, 0.8f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.95f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f);
 	headCollider->SetParentCollider(playerCollider);
 	headCollider->SetPositionOffset(Vector3(0.0f, -1.5f, 0.0f));
@@ -216,11 +216,6 @@ void InGameSceneView::Initialize()
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
-
-	// 임시 개큰박스
-	auto tempBox = API::CreateObject(_scene, "tmpBox");
-	tempBox->GetTransform()->SetPosition(Vector3(10.0f, 0.0f, 60.0f));
-	auto tempBoxCol = tempBox->AddComponent<HDData::StaticBoxCollider>(100.0f, 100.0f, 1.0f);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
