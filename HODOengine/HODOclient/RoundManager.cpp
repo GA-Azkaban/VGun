@@ -61,6 +61,7 @@ void RoundManager::InitGame()
 		PlayerInfo* info = data[i]->GetComponent<PlayerInfo>();
 
 		_playerObjs[i]->AddComponent<PlayerInfo>(info);
+		_playerObjs[i]->SetSelfActive(false);
 
 		if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
@@ -90,9 +91,10 @@ void RoundManager::InitRound()
 	for (int i = 0; i < _playerNum; ++i)
 	{
 		_playerObjs[i]->SetSelfActive(true);
-		auto mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-
-		switch (_playerObjs[i]->GetComponent<PlayerInfo>()->GetPlayerTeam())
+		HDData::SkinnedMeshRenderer* mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		auto team = _playerObjs[i]->GetComponent<PlayerInfo>()->GetPlayerTeam();
+		
+		switch (team)
 		{
 			case eTeam::R:
 			{
@@ -125,7 +127,10 @@ void RoundManager::InitRound()
 			}
 			break;
 			default:
-				break;
+			{
+
+			}
+			break;
 		}
 	}
 
@@ -149,6 +154,11 @@ void RoundManager::UpdateRound()
 std::vector<HDData::GameObject*>& RoundManager::GetPlayerObjs()
 {
 	return _playerObjs;
+}
+
+int RoundManager::GetPlayerNum()
+{
+	return _playerNum;
 }
 
 void RoundManager::SetIsRoundStart(bool isStart)

@@ -33,6 +33,7 @@ public:
 
 public:
 	std::vector<HDData::GameObject*>& GetPlayerObjs();
+	int GetPlayerNum();
 
 private:
 	int _playerNum;

@@ -215,6 +215,7 @@ void MainMenuScene::MainMenu()
 	enter_enterImg->SetSortOrder(0.91);
 	enter_enterImg->SetOnClickEvent([=]()
 		{
+			MenuManager::Instance().ShowCheckEnterCanvas(false);
 			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id));
 		});
 

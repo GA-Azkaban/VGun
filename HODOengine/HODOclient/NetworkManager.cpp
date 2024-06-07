@@ -351,9 +351,6 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 		for (int j = 0; j < roomInfo.users().size(); ++j)
 		{
 
-			std::string test2 = 
-				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName();
-
 			if (roomInfo.users()[i].userinfo().nickname() == 
 				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
 			{
@@ -432,12 +429,17 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	{
 		auto& name = player.userinfo().nickname();
 
-		for (int i = 0; i < 1; ++i)
+		for (int i = 0; i < RoundManager::Instance()->GetPlayerNum(); ++i)
 		{
 			auto nick = playerinfo[i]->GetComponent<PlayerInfo>()->GetPlayerNickName();
 
-			if ((nick != name) ||
-				(nick == myNick)) continue;
+			if (nick == myNick) continue;
+			if (nick != name) continue;
+			else 
+			{
+				auto t = playerinfo[i]->GetTransform();
+				auto s = player.transform().vector3();
+			}
 
 			playerinfo[i]->GetTransform()->
 				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());

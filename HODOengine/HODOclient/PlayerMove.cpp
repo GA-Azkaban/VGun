@@ -1,6 +1,8 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
+#include "PlayerInfo.h"
+#include "GameManager.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true),
@@ -8,7 +10,7 @@ PlayerMove::PlayerMove()
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
 	_shootCount(0),
-	_bulletCount(30),
+	_bulletCount(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()),
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),

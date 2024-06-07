@@ -291,9 +291,11 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 {
 	HDData::SkinnedMeshRenderer* mesh = nullptr;
 
+	PlayerInfo* info = nullptr;
+
 	for (int i = 0; i < _roomData->_players.size(); ++i)
 	{
-		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
+		info = _playerObjs[i]->GetComponent<PlayerInfo>();
 
 		if (nickName == info->GetPlayerNickName())
 		{
@@ -311,6 +313,8 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 			mesh->LoadMaterial(mat, 2);
 			mesh->LoadMaterial(mat, 3);
 			mesh->LoadMaterial(mat, 4);
+
+			info->SetTeamID(eTeam::R);
 		}
 		break;
 		case eTeam::G:
@@ -321,6 +325,8 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 			mesh->LoadMaterial(mat, 2);
 			mesh->LoadMaterial(mat, 3);
 			mesh->LoadMaterial(mat, 4);
+
+			info->SetTeamID(eTeam::G);
 		}
 		break;
 		case eTeam::B:
@@ -331,6 +337,8 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 			mesh->LoadMaterial(mat, 2);
 			mesh->LoadMaterial(mat, 3);
 			mesh->LoadMaterial(mat, 4);
+
+			info->SetTeamID(eTeam::B);
 		}
 		break;
 		default:
