@@ -36,4 +36,9 @@ namespace HDData
 		_decal->SetActive(false);
 	}
 
+	void DecalRenderer::OnDestroy()
+	{
+		HDEngine::GraphicsObjFactory::Instance().GetFactory()->DestroyDecalObject(_decal);
+	}
+
 }

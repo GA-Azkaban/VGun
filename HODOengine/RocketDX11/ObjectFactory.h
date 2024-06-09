@@ -22,6 +22,8 @@ namespace RocketCore::Graphics
 		virtual HDEngine::SpherePrimitive* CreateSpherePrimitive() override;
 		virtual HDEngine::CylinderPrimitive* CreateCylinderPrimitive() override;
 		virtual HDEngine::CapsulePrimitive* CreateCapsulePrimitive() override;
+
+		virtual void DestroyDecalObject(HDEngine::IDecal* decal) override;
 	};
 }
 

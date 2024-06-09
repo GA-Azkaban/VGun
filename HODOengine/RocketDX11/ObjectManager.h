@@ -42,7 +42,7 @@ namespace RocketCore::Graphics
 		std::vector<StaticMeshObject*>& GetStaticMeshObjList();
 		std::vector<StaticMeshObject*>& GetFowardStaticMeshObjList();
 		std::vector<SkinningMeshObject*>& GetSkinningMeshObjList();
-		std::vector<DecalObject*>& GetDecalObjList();
+		std::unordered_set<DecalObject*>& GetDecalObjList();
 		std::vector<ParticleSystem*>& GetParticleSystemList();
 		std::vector<TextRenderer*>& GetTextList();
 		std::vector<ImageRenderer*>& GetImageList();
@@ -71,12 +71,15 @@ namespace RocketCore::Graphics
 		HDEngine::CylinderPrimitive* CreateCylinderPrimitive();
 		HDEngine::CapsulePrimitive* CreateCapsulePrimitive();
 
+	public:
+		void DestroyDecalObject(HDEngine::IDecal* decal);
+
 	private:
 		std::vector<Camera*> _cameraList;
 		std::vector<HelperObject*> _helperObjectList;
 		std::vector<StaticMeshObject*> _staticMeshObjectList;
 		std::vector<StaticMeshObject*> _forwardStaticMeshObjectList;
-		std::vector<DecalObject*> _decalObjectList;
+		std::unordered_set<DecalObject*> _decalObjectList;
 		std::vector<SkinningMeshObject*> _skinningMeshObjectList;
 		std::vector<TextRenderer*> _textList;
 		std::vector<ImageRenderer*> _ImageList;

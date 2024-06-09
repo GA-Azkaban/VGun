@@ -222,6 +222,9 @@
     <ClCompile Include="ForwardPass.cpp">
       <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClCompile>
+    <ClCompile Include="DecalObject.cpp">
+      <Filter>Object\Decal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">

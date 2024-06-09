@@ -7,7 +7,7 @@ Decal::Decal()
 	_decalTimer.duration = 0.5f;
 	HDData::AnimationCurve curve;
 	curve.AddKey(0.0f, 0.5f, [](float t) { return 1.0f; });
-	curve.AddKey(0.5f, 1.0f, [](float t) {return -2.0f * t + 2.0f; });
+	curve.AddKey(0.5f, 1.0f, [](float t) { return -2.0f * t + 2.0f; });
 	_decalTimer.onUpdate = [&](float progress)
 		{
 			float alpha = curve.Evaluate(progress);
@@ -51,8 +51,12 @@ void Decal::RemoveAllDecals()
 	}
 }
 
+void Decal::OnEnable()
+{
+	alpha = 1.0f
+}
+
 void Decal::Update()
 {
 	_decalTimer.Update();
 }
-

@@ -749,4 +749,10 @@ namespace RocketCore::Graphics
 		meshData.minMaxElements.minZ = 0.0f;
 		meshData.minMaxElements.maxZ = 0.0f;
 	}
+
+	void GeometryGenerator::CreateDecalBox(MeshData& meshData)
+	{
+
+	}
+
 }

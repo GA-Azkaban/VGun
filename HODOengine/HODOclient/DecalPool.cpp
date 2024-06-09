@@ -27,5 +27,8 @@ Decal* DecalPool::SummonDecal(Vector3 position)
 
 void DecalPool::Retrieve(Decal* decal)
 {
-
+	if (decal != nullptr)
+	{
+		decal->GetGameObject()->SetSelfActive(false);
+	}
 }

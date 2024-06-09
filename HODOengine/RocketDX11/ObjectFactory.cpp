@@ -48,7 +48,7 @@ namespace RocketCore::Graphics
 
 	HDEngine::IDecal* ObjectFactory::CreateDecalObject()
 	{
-		return ObjectManager::Instance().
+		return ObjectManager::Instance().CreateDecalObject();
 	}
 
 	HDEngine::ICubeMap* ObjectFactory::CreateCubeMap()
@@ -109,6 +109,11 @@ namespace RocketCore::Graphics
 	HDEngine::CapsulePrimitive* ObjectFactory::CreateCapsulePrimitive()
 	{
 		return ObjectManager::Instance().CreateCapsulePrimitive();
+	}
+
+	void ObjectFactory::DestroyDecalObject(HDEngine::IDecal* decal)
+	{
+		ObjectManager::Instance().DestroyDecalObject(decal);
 	}
 
 }

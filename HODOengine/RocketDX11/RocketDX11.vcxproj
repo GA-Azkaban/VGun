@@ -214,6 +214,7 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\assimp\assimp-vc143-mtd.dll" "$(Solu
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Cubemap.cpp" />
     <ClCompile Include="DebugMeshPass.cpp" />
+    <ClCompile Include="DecalObject.cpp" />
     <ClCompile Include="ForwardPass.cpp" />
     <ClCompile Include="GeometryShader.cpp" />
     <ClCompile Include="Light.cpp" />

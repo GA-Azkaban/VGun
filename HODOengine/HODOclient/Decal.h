@@ -10,6 +10,7 @@ public:
 	static void RemoveAllDecals();
 
 protected:
+	virtual void OnEnable() override;
 	virtual void Update() override;
 
 private:

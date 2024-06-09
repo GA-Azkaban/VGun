@@ -7,6 +7,7 @@
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "DecalObject.h"
 #include "Cubemap.h"
 #include "LightAdapter.h"
 #include "TextRenderer.h"
@@ -53,6 +54,13 @@ namespace RocketCore::Graphics
 		SkinningMeshObject* temp = new SkinningMeshObject();
 		_skinningMeshObjectList.emplace_back(temp);
 
+		return temp;
+	}
+
+	DecalObject* ObjectManager::CreateDecalObject()
+	{
+		DecalObject* temp = new DecalObject();
+		_decalObjectList.insert(temp);
 		return temp;
 	}
 
@@ -201,6 +209,20 @@ namespace RocketCore::Graphics
 	LineRenderer* ObjectManager::GetLineRenderer()
 	{
 		return _lineRenderer;
+	}
+
+	std::unordered_set<DecalObject*>& ObjectManager::GetDecalObjList()
+	{
+		return _decalObjectList;
+	}
+
+	void ObjectManager::DestroyDecalObject(HDEngine::IDecal* decal)
+	{
+		DecalObject* castedDecal = dynamic_cast<DecalObject*>(decal);
+		if (castedDecal != nullptr)
+		{
+			_decalObjectList.erase(castedDecal);
+		}
 	}
 
 }
