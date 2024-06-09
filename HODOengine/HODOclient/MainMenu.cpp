@@ -769,6 +769,7 @@ void MainMenuScene::MainMenu()
 		{
 			MenuManager::Instance().SetScreenSize(3);
 			screenSizeStat->GetComponent<HDData::TextUI>()->SetText(MenuManager::Instance().GetScreenSize());
+			MenuManager::Instance().SetObjectPosition2560();
 		}
 	);
 
