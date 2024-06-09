@@ -287,8 +287,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true); 
 		}
 
-		one->SetCurrentHP(player.hp());
-
 		info->_players.push_back(one);
 	}
 
@@ -306,7 +304,6 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
@@ -422,29 +419,31 @@ void NetworkManager::SendPlayUpdate()
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
 	auto& roominfo = playUpdate.roominfo();
-	auto& playerinfo = RoundManager::Instance()->GetPlayerObjs();
+	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
+	auto playerCount = RoundManager::Instance()->GetPlayerNum();
+	
 	auto myNick = GameManager::Instance()->GetMyInfo()->GetPlayerNickName();
 
 	for (auto& player : roominfo.users())
 	{
 		auto& name = player.userinfo().nickname();
 
-		for (int i = 0; i < RoundManager::Instance()->GetPlayerNum(); ++i)
+		for (int i = 0; i < playerCount; ++i)
 		{
-			auto nick = playerinfo[i]->GetComponent<PlayerInfo>()->GetPlayerNickName();
+			auto nick = playerobj[i]->GetComponent<PlayerInfo>()->GetPlayerNickName();
 
 			if (nick == myNick) continue;
 			if (nick != name) continue;
 			else 
 			{
-				auto t = playerinfo[i]->GetTransform();
+				auto t = playerobj[i]->GetTransform();
 				auto s = player.transform().vector3();
 			}
 
-			playerinfo[i]->GetTransform()->
+			playerobj[i]->GetTransform()->
 				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());
 
-			playerinfo[i]->GetTransform()->
+			playerobj[i]->GetTransform()->
 				SetRotation(player.transform().quaternion().w(), player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z());
 		}
 

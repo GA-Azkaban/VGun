@@ -190,7 +190,7 @@ void LobbyManager::RoomEnterSUCCESS()
 	auto& data = _roomData->_players;
 	_playerNum = data.size();
 
-	for (int i = 0; i < _roomData->_players.size(); ++i)
+	for (int i = 0; i < _playerNum; ++i)
 	{
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
 		info->SetNickName(data[i]->GetPlayerNickName());
@@ -198,7 +198,7 @@ void LobbyManager::RoomEnterSUCCESS()
 		info->SetTeamID(data[i]->GetPlayerTeam());
 	}
 
-	for (int i = 0; i < _roomData->_players.size(); ++i)
+	for (int i = 0; i < _playerNum; ++i)
 	{
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
 
@@ -235,7 +235,7 @@ void LobbyManager::RefreshRoom()
 	auto& data = _roomData->_players;
 	_playerNum = data.size();
 
-	for (int i = 0; i < _roomData->_players.size(); ++i)
+	for (int i = 0; i < _playerNum; ++i)
 	{
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
 		info->SetNickName(data[i]->GetPlayerNickName());
@@ -243,7 +243,7 @@ void LobbyManager::RefreshRoom()
 		info->SetTeamID(data[i]->GetPlayerTeam());
 	}
 
-	for (int i = 0; i < _roomData->_players.size(); ++i)
+	for (int i = 0; i < _playerNum; ++i)
 	{
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
 

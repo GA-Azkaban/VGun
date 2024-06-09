@@ -172,7 +172,7 @@ void InGameSceneView::Initialize()
 	posT += 315;
 
 	// 상대방 캐릭터 생성
-	for (int i = 1; i < 2; ++i)
+	for (int i = 1; i < 6; ++i)
 	{
 		std::string otherObjName = "player" + std::to_string(i + 1);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
