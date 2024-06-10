@@ -88,6 +88,12 @@
     <FxCompile Include="ForwardPixelShaderNoLight.hlsl">
       <Filter>Resource\Shader\HLSL\Forward</Filter>
     </FxCompile>
+    <FxCompile Include="DecalVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Decal</Filter>
+    </FxCompile>
+    <FxCompile Include="DecalPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Decal</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -224,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="DecalObject.cpp">
       <Filter>Object\Decal</Filter>
+    </ClCompile>
+    <ClCompile Include="DecalPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\DecalPass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +403,9 @@
     </ClInclude>
     <ClInclude Include="DecalObject.h">
       <Filter>Object\Decal</Filter>
+    </ClInclude>
+    <ClInclude Include="DecalPass.h">
+      <Filter>DeferredRendering\RenderPasses\DecalPass</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -625,6 +637,12 @@
     <Filter Include="Object\Decal">
       <UniqueIdentifier>{6e56b087-8963-4086-b36d-639204a9893d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource\Shader\HLSL\Decal">
+      <UniqueIdentifier>{3bb21137-9967-4566-9eb2-2cf1cd72468f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\DecalPass">
+      <UniqueIdentifier>{ede17447-bf57-4c98-a8c8-22c0ebe228e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sampler.hlsli">
@@ -643,6 +661,9 @@
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
     <None Include="CommonData.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="Common.hlsli">
       <Filter>Resource\Shader\HLSL\Include</Filter>
     </None>
   </ItemGroup>

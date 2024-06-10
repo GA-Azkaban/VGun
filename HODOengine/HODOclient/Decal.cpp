@@ -1,22 +1,24 @@
 ﻿#include "Decal.h"
 #include "DecalPool.h"
 
+std::unordered_set<Decal*> Decal::decals;
+
 Decal::Decal()
 {
 	_decalTimer.isRepeat = false;
-	_decalTimer.duration = 0.5f;
-	HDData::AnimationCurve curve;
+	_decalTimer.duration = 500.0f;
+	
 	curve.AddKey(0.0f, 0.5f, [](float t) { return 1.0f; });
 	curve.AddKey(0.5f, 1.0f, [](float t) { return -2.0f * t + 2.0f; });
 	_decalTimer.onUpdate = [&](float progress)
 		{
 			float alpha = curve.Evaluate(progress);
-			_meshRenderer->SetAlbedoColor(255, 255, 255, alpha * 255);
+			_decalRenderer->SetColor(255, 255, 255, alpha * 255);
 		};
-	_decalTimer.onExpiration = [this]()
-		{
-			DecalPool::Instance()->Retrieve(this);
-		};
+	//_decalTimer.onExpiration = [this]()
+	//	{
+	//		DecalPool::Instance()->Retrieve(this);
+	//	};
 	decals.insert(this);
 }
 
@@ -34,13 +36,13 @@ void Decal::CreateDecal()
 	}
 	auto decal = API::CreateObject(API::GetCurrentScene());
 	auto decalComp = decal->AddComponent<Decal>();
-	decalComp->_meshRenderer = decal->AddComponent<HDData::MeshRenderer>();
-	decalComp->_meshRenderer->LoadMesh("primitiveQuad");
+	decalComp->_decalRenderer = decal->AddComponent<HDData::DecalRenderer>();
 	HDEngine::MaterialDesc matDesc;
 	matDesc.materialName = "DecalMat";
-	matDesc.albedo = 
+	matDesc.albedo = "FP_Black_A.png";
 	HDData::Material* mat = API::CreateMaterial(matDesc);
-	decalComp->_meshRenderer->LoadMaterial(mat);
+	decalComp->_decalRenderer->LoadMaterial(mat);
+	DecalPool::Instance()->Retrieve(decalComp);
 }
 
 void Decal::RemoveAllDecals()
@@ -53,7 +55,8 @@ void Decal::RemoveAllDecals()
 
 void Decal::OnEnable()
 {
-	alpha = 1.0f
+	_decalRenderer->SetColor(255, 255, 255, 255);
+	_decalTimer.Start();
 }
 
 void Decal::Update()

@@ -1,4 +1,5 @@
 ﻿#include "PlayerTest.h"
+#include "DecalPool.h"
 
 PlayerTest::PlayerTest()
 {
@@ -12,7 +13,7 @@ void PlayerTest::Start()
 
 void PlayerTest::Update()
 {
-	if (API::GetKeyDown(DIK_1))
+	/*if (API::GetKeyDown(DIK_1))
 	{
 		_renderer->PlayAnimation("AR_aim", true);
 	}
@@ -25,5 +26,10 @@ void PlayerTest::Update()
 	if (API::GetKeyDown(DIK_3))
 	{
 		_renderer->PlayAnimation("AR_reload", false, 0.1f, false);
+	}*/
+
+	if (API::GetKeyDown(DIK_1))
+	{
+		DecalPool::Instance()->SummonDecal({10.0f, 0.0f, 0.0f});
 	}
 }

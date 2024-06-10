@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include "IRenderable.h"
+#include "IMaterial.h"
 
 namespace HDEngine
 {

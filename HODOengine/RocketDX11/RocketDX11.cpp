@@ -26,6 +26,7 @@
 #include "QuadBuffer.h"
 #include "ShadowMapPass.h"
 #include "ForwardPass.h"
+#include "DecalPass.h"
 #include "GBufferPass.h"
 #include "SSAOPass.h"
 #include "DeferredPass.h"
@@ -188,6 +189,13 @@ namespace RocketCore::Graphics
 			_resourceManager.LoadTextureFile("Particles/" + PCtextures[i]);
 		}
 
+		// load all decal texture
+		const auto& decalTextures = GetEveryTextureFileNamesInFolder("Textures/Decal");
+		for (int i = 0; i < decalTextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("Decal/" + decalTextures[i]);
+		}
+
 		// load all UI texture
 		const auto& UItextures = GetEveryTextureFileNamesInFolder("Textures/UI");
 		for (int i = 0; i < UItextures.size(); ++i)
@@ -236,6 +244,7 @@ namespace RocketCore::Graphics
 
 		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
 		_forwardPass = new ForwardPass(_deferredBuffers, _quadBuffer);
+		_decalPass = new DecalPass(_deferredBuffers, _quadBuffer);
 		_GBufferPass = new GBufferPass(_deferredBuffers);
 		_SSAOPass = new SSAOPass(_deferredBuffers);
 		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
@@ -397,6 +406,7 @@ namespace RocketCore::Graphics
 			RenderLine();
 		}
 #endif
+		_decalPass->Render();
 
 		SetDepthStencilState(_cubemapDepthStencilState.Get());
 		_skyboxPass->Render();

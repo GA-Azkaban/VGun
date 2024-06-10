@@ -17,6 +17,7 @@ cbuffer PerFrame : register(b0)
 {
 	float4x4 view;
 	float4x4 projection;
+	float4x4 inverseView;
 	float4x4 inverseProjection;
 	float4x4 viewProjection;
 	float4 cameraPosition;
@@ -27,6 +28,7 @@ cbuffer PerFrame : register(b0)
 cbuffer PerObject : register(b1)
 {
 	float4x4 world;
+    float4x4 inverseWorld;
 }
 
 cbuffer SkeletonData : register(b2)

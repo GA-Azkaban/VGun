@@ -30,6 +30,7 @@
 #include "ParticleSphereCollider.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
+#include "DecalRenderer.h"
 #include "CubeMapRenderer.h"
 #include "InputData.h"
 #include "TextUI.h"

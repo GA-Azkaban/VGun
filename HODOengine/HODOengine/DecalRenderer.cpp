@@ -1,5 +1,7 @@
 ﻿#include "DecalRenderer.h"
 #include "GraphicsObjFactory.h"
+#include "HDMaterial.h"
+#include "Transform.h"
 
 namespace HDData
 {
@@ -16,9 +18,9 @@ namespace HDData
 		delete _decal;
 	}
 
-	void DecalRenderer::LoadTexture(const std::string& fileName)
+	void DecalRenderer::LoadMaterial(HDData::Material* material)
 	{
-		_decal->LoadTexture(fileName);
+		_decal->LoadMaterial(material->Get());
 	}
 
 	void DecalRenderer::SetColor(UINT r, UINT g, UINT b, UINT a)
@@ -39,6 +41,11 @@ namespace HDData
 	void DecalRenderer::OnDestroy()
 	{
 		HDEngine::GraphicsObjFactory::Instance().GetFactory()->DestroyDecalObject(_decal);
+	}
+
+	void DecalRenderer::Update()
+	{
+		_decal->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
 }

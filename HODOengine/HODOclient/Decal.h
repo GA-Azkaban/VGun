@@ -6,6 +6,8 @@
 class Decal : public HDData::Script
 {
 public:
+	Decal();
+	~Decal();
 	static void CreateDecal();
 	static void RemoveAllDecals();
 
@@ -14,10 +16,10 @@ protected:
 	virtual void Update() override;
 
 private:
-	Decal();
-	~Decal();
 	Timer _decalTimer;
-	HDData::MeshRenderer* _meshRenderer;
+	HDData::DecalRenderer* _decalRenderer;
 
 	static std::unordered_set<Decal*> decals;
+
+	HDData::AnimationCurve curve;
 };

@@ -31,12 +31,10 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 
-
 	// 씬 초기화
-	/*TestScene test;
-	test.Start();
+	TestScene test;
 
-	API::LoadSceneByName("Test"); */
+	API::LoadSceneByName("Test");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -58,7 +56,7 @@ void Client::Initialize()
 
 	//API::LoadSceneByName("Login");
 
-	InGameSceneView inGame;			//Scene Name : InGame
-	inGame.Initialize();
-	API::LoadSceneByName("InGame");
+	//InGameSceneView inGame;			//Scene Name : InGame
+	//inGame.Initialize();
+	//API::LoadSceneByName("InGame");
 }

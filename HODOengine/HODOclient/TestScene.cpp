@@ -6,6 +6,7 @@
 #include "NetworkManager.h"
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
+#include "DecalPool.h"
 
 enum eColliderType
 {
@@ -19,21 +20,20 @@ TestScene::TestScene()
 
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
-
-	/*
+	
 	auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
-	testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
+	testBox1->GetComponent<HDData::Transform>()->SetPosition(10.0f, -1.85f, 0.0f);
+	testBox1->GetComponent<HDData::Transform>()->SetScale(5.0f, 2.0f, 5.0f);
 	//testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	boxRender1->LoadMesh("primitiveQuad");
+	boxRender1->LoadMesh("primitiveCube");
 	HDEngine::MaterialDesc boxMat1;
 	boxMat1.materialName = "boxMat";
 	//boxMat1.albedo = "button.png";
-	boxMat1.color = { 10,10,10,255 };
+	boxMat1.color = { 255,255,255,255 };
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
-	boxRender1->SetUseLight(false); */
+	boxRender1->SetUseLight(false); 
 
 	/*auto particleSystemObj = API::CreateObject(_scene);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
@@ -227,7 +227,6 @@ TestScene::TestScene()
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 	HDEngine::MaterialDesc desc;
@@ -240,8 +239,6 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 3);
 	meshComp->LoadMaterial(newMat, 4);
 	meshComp->PlayAnimation("AR_aim", true);
-	//meshComp->PlayAnimationUpper("AR_reload", true);
-	//meshComp->PlayAnimationLower("AR_run_R", true);
 	//meshComp->SetOutlineActive(true);
 	//meshComp->SetMeshActive(false, 0);
 	//meshComp->SetMeshActive(false, 1);
@@ -257,21 +254,16 @@ TestScene::TestScene()
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	//weaponComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	weaponComp->LoadMesh("SM_AR_01.fbx");
 	HDEngine::MaterialDesc weaponMatDesc;
 	weaponMatDesc.materialName = "M_WEP_Basic_039";
-	//weaponMatDesc.albedo = "T_WEP_Basic_039_D.png";
 	weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
 	weaponMatDesc.roughness = "T_WEP_Basic_R.png";
 	weaponMatDesc.metallicValue = 0.15;
 	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
 	HDEngine::MaterialDesc weaponMatDesc2;
 	weaponMatDesc2.materialName = "M_WEP_Camo_001";
-	//weaponMatDesc2.albedo = "T_WEP_Camo_001_D.png";
 	weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
-	//weaponMatDesc2.normalMap = "T_WEP_Camo_N.png";
-	//weaponMatDesc2.roughness = "T_WEP_Camo_001_R.png";
 	weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
 	weaponMatDesc2.metallicValue = 0.1f;
 	HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
@@ -289,171 +281,8 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
 
-	// 바닥
-	//auto groundFloor = API::CreateObject(_scene, "ground");
-	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
-
-	//// 플레이어 collider들을 추가해주는 부분
-	//auto playerCollider = playerTest->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.2f, 0.5f, 1);
-
-	//auto playerTestHead = playerTest->GetGameObjectByNameInChildren("head");
-	//auto headColliderObj = API::CreateObject(_scene, "HeadCollider", playerTestHead);
-	//headColliderObj->GetTransform()->SetLocalScale(25.0f, 25.0f, 19.0f);
-	////headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -3.0f, 0.0f });
-	////headColliderObj->GetTransform()->SetLocalPosition(Vector3{ 500.0f, 0.0f, 0.0f });
-	//auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicSphereCollider>(0.35f, true);
-	////auto playerHeadCollider = headColliderObj->AddComponent<HDData::DynamicBoxCollider>(1.0f, 1.0f, 1.0f, true);
-	////auto playerHeadCollider = headColliderObj->AddComponent<HDData::StaticSphereCollider>();
-	////playerHeadCollider->SetParentCollider(playerCollider);
-
-	//auto plLeftUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_l");
-	//auto leftUpperArmObj = API::CreateObject(_scene, "LeftUpperArmCollider", plLeftUpperArm);
-	//leftUpperArmObj->GetTransform()->SetLocalPosition(Vector3{ 5.0f, -2.0f, 0.0f });
-	////leftUpperArmObj->GetTransform()->SetLocalRotation(0.0f, 0.52f, 0.0f, 1.0f);
-	//leftUpperArmObj->GetTransform()->SetLocalScale(20.0f, 15.0f, 10.0f);
-	//auto leftUpperCollider = leftUpperArmObj->AddComponent<HDData::StaticBoxCollider>();
-	//plLeftUpperArm->SetParentObject(playerTest);
-	//plLeftUpperArm->GetTransform()->SetLocalPosition(Vector3{ -0.65f, 0.2f, 0.0f });
-	//auto LUArmCollider = plLeftUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
-	//LUArmCollider->SetParentCollider(playerCollider);
-
-	//auto plLeftForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_l");
-	//plLeftForeArm->SetParentObject(plLeftUpperArm);
-	//plLeftForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
-	//auto LFArmCollider = plLeftForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
-	//LFArmCollider->SetParentCollider(LUArmCollider);
-
-	//auto plRightUpperArm = playerTest->GetGameObjectByNameInChildren("upperarm_r");
-	//plRightUpperArm->SetParentObject(playerTest);
-	//plRightUpperArm->GetTransform()->SetLocalPosition(Vector3{ 0.65f, 0.2f, 0.0f });
-	//auto RUArmCollider = plRightUpperArm->AddComponent<HDData::DynamicBoxCollider>(0.25f, 0.7f, 0.25f, 2);
-	//RUArmCollider->SetParentCollider(playerCollider);
-
-	//auto plRightForeArm = playerTest->GetGameObjectByNameInChildren("lowerarm_r");
-	//plRightForeArm->SetParentObject(plRightUpperArm);
-	//plRightForeArm->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.8f, 0.0f });
-	//auto RFArmCollider = plRightForeArm->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.9f, 0.2f, 2);
-	//RFArmCollider->SetParentCollider(RUArmCollider);
-
-	//auto plLeftThigh = playerTest->GetGameObjectByNameInChildren("thigh_l");
-	//plLeftThigh->SetParentObject(playerTest);
-	//plLeftThigh->GetTransform()->SetLocalPosition(Vector3{ -0.3f, -0.95f, 0.0f });
-	//auto LThighCollider = plLeftThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	//LThighCollider->SetParentCollider(playerCollider);
-
-	//auto plLeftLowerLeg = playerTest->GetGameObjectByNameInChildren("calf_l");
-	//plLeftLowerLeg->SetParentObject(plLeftThigh);
-	//plLeftLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
-	//auto LLLegCollider = plLeftLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	//LLLegCollider->SetParentCollider(LThighCollider);
-
-	//auto plLeftFoot = playerTest->GetGameObjectByNameInChildren("foot_l");
-	//plLeftFoot->SetParentObject(plLeftLowerLeg);
-	//plLeftFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
-	//auto LFootCollider = plLeftFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
-	//LFootCollider->SetParentCollider(LLLegCollider);
-
-	//auto plRightThigh = playerTest->GetGameObjectByNameInChildren("thigh_r");
-	//plRightThigh->SetParentObject(playerTest);
-	//plRightThigh->GetTransform()->SetLocalPosition(Vector3{ 0.3f, -0.95f, 0.0f });
-	//auto RThighCollider = plRightThigh->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	//RThighCollider->SetParentCollider(playerCollider);
-
-	//auto plRightLowerLeg = playerTest->GetGameObjectByNameInChildren("calf_r");
-	//plRightLowerLeg->SetParentObject(plRightThigh);
-	//plRightLowerLeg->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.7f, 0.0f });
-	//auto RLLegCollider = plRightLowerLeg->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.7f, 0.4f, 2);
-	//RLLegCollider->SetParentCollider(RThighCollider);
-
-	//auto plRightFoot = playerTest->GetGameObjectByNameInChildren("foot_r");
-	//plRightFoot->SetParentObject(plRightLowerLeg);
-	//plRightFoot->GetTransform()->SetLocalPosition(Vector3{ 0.0f, -0.5f, 0.1f });
-	//auto RFootCollider = plRightFoot->AddComponent<HDData::DynamicBoxCollider>(0.4f, 0.3f, 0.6f, 2);
-	//RFootCollider->SetParentCollider(RLLegCollider);
-
-	//-----------------------------------------
-	/*auto playerTest2 = API::CreateObject(_scene, "player2");
-	playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -20.0f, 0.5f, 0.0f });
-	playerTest2->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp2 = playerTest2->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc2;
-	desc2.materialName = "TP_Green";
-	desc2.albedo = "TP_Green_B.png";
-	HDData::Material* newMat2 = API::CreateMaterial(desc2);
-	meshComp2->LoadMaterial(newMat2, 0);
-	meshComp2->LoadMaterial(newMat2, 1);
-	meshComp2->LoadMaterial(newMat2, 2);
-	meshComp2->LoadMaterial(newMat2, 3);
-	meshComp2->LoadMaterial(newMat2, 4);
-	meshComp2->PlayAnimation("X_idle", true);
-	meshComp2->SetOutlineActive(true);
-
-	auto playerTest3 = API::CreateObject(_scene, "player3");
-	playerTest3->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -50.0f, 0.5f, 0.0f });
-	playerTest3->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp3 = playerTest3->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc3;
-	desc3.materialName = "TP_Blue";
-	desc3.albedo = "TP_Blue_B.png";
-	HDData::Material* newMat3 = API::CreateMaterial(desc3);
-	meshComp3->LoadMaterial(newMat3, 0);
-	meshComp3->LoadMaterial(newMat3, 1);
-	meshComp3->LoadMaterial(newMat3, 2);
-	meshComp3->LoadMaterial(newMat3, 3);
-	meshComp3->LoadMaterial(newMat3, 4);
-	meshComp3->PlayAnimation("X_idle", true);
-	meshComp3->SetOutlineActive(true);
-
-	auto playerTest4 = API::CreateObject(_scene, "player4");
-	playerTest4->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -80.0f, 0.5f, 20.0f });
-	playerTest4->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp4 = playerTest4->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//HDEngine::MaterialDesc desc4;
-	//desc4.materialName = "TP_Blue";
-	//desc4.albedo = "TP_Blue_B.png";
-	//HDData::Material* newMat4 = API::CreateMaterial(desc4);
-	meshComp4->LoadMaterial(newMat2, 0);
-	meshComp4->LoadMaterial(newMat2, 1);
-	meshComp4->LoadMaterial(newMat2, 2);
-	meshComp4->LoadMaterial(newMat2, 3);
-	meshComp4->LoadMaterial(newMat2, 4);
-	meshComp4->PlayAnimation("X_idle", true);
-	meshComp4->SetOutlineActive(true);
-
-	auto playerTest5 = API::CreateObject(_scene, "player5");
-	playerTest5->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 50.0f, 0.5f, -10.0f });
-	playerTest5->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp5 = playerTest5->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//HDEngine::MaterialDesc desc5;
-	//desc5.materialName = "TP_Blue";
-	//desc5.albedo = "TP_Blue_B.png";
-	//HDData::Material* newMat5 = API::CreateMaterial(desc4);
-	meshComp5->LoadMaterial(newMat3, 0);
-	meshComp5->LoadMaterial(newMat3, 1);
-	meshComp5->LoadMaterial(newMat3, 2);
-	meshComp5->LoadMaterial(newMat3, 3);
-	meshComp5->LoadMaterial(newMat3, 4);
-	meshComp5->PlayAnimation("X_idle", true);
-	meshComp5->SetOutlineActive(true); */
-
-	//auto btn = API::CreateButton(_scene);
-	//btn->GetComponent<HDData::Button>()->SetOnClickEvent([]()
-	//	{
-	//		API::LoadSceneByName("B");
-	//	});
-
-	//API::LoadScene(_scene);
-
-	//HDData::GameObject* obj = API::CreateSlider(_scene, 50);
-	//obj->GetTransform()->SetPosition(300, 100, 0);
-	//obj->AddComponent<SliderSoundScript>();
-	//obj->AddComponent<HDData::AudioSource>();
-
+	auto decalManager = API::CreateObject(_scene, "DecalManager");
+	decalManager->AddComponent<DecalPool>();
 }
 
 TestScene::~TestScene()
@@ -461,39 +290,4 @@ TestScene::~TestScene()
 
 }
 
-void TestScene::Start()
-{
-	/*_scene = API::CreateScene("Test");
-
-	auto mainCam = _scene->GetMainCamera();
-	mainCam->GetGameObject()->AddComponent<CameraMove>();
-	mainCam->GetGameObject()->GetTransform()->SetPosition(0, 0, 0);
-	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
-
-	HDEngine::MaterialDesc red;
-	red.materialName = "TP_Red";
-	red.albedo = "TP_Red_B.png";
-
-	HDData::Material* M_Red = API::CreateMaterial(red);
-
-	HDData::GameObject* player = API::CreateObject(_scene, "player");
-	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(0, 0, 0);
-
-	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMaterial(M_Red, 0);
-	meshComp->LoadMaterial(M_Red, 1);
-	meshComp->LoadMaterial(M_Red, 2);
-	meshComp->LoadMaterial(M_Red, 3);
-	meshComp->LoadMaterial(M_Red, 4);
-
-	meshComp->PlayAnimation("AR_idle", true);
-
-	player->SetSelfActive(false);*/
-
-}
-
-void TestScene::ClickEvent()
-{
-}
 

@@ -466,7 +466,7 @@ void PlayerMove::ShootGunDdabal()
 				{
 					// 데칼 매니저에서 데칼 불러오기
 					// 총알 들어온 방향, 맞은 포인트 알려주기
-					DecalPool::Instance().SummonDecal(hitPoint, recoilDirection);
+					DecalPool::Instance()->SummonDecal(hitPoint);
 				}
 			}
 		}

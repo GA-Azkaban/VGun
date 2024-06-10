@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "DecalObject.h"
 #include "Cubemap.h"
 #include "LightAdapter.h"
 #include "CubeMesh.h"

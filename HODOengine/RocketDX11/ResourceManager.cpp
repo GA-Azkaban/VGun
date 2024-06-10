@@ -653,6 +653,14 @@ namespace RocketCore::Graphics
 		PixelShader* forwardNoLightPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (forwardNoLightPS->LoadShaderFile(L"Resources/Shaders/ForwardPixelShaderNoLight.cso"))
 			_pixelShaders.insert(std::make_pair("ForwardPixelShaderNoLight.cso", forwardNoLightPS));
+
+		VertexShader* decalVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (decalVertexShader->LoadShaderFile(L"Resources/Shaders/DecalVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("DecalVertexShader.cso", decalVertexShader));
+
+		PixelShader* decalPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (decalPixelShader->LoadShaderFile(L"Resources/Shaders/DecalPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("DecalPixelShader.cso", decalPixelShader));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
@@ -697,6 +705,13 @@ namespace RocketCore::Graphics
 		_cubeMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
 		_cubeMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
 		_loadedFileInfo["primitiveCube"].loadedMaterials.push_back(_cubeMaterial);
+
+		// 데칼 박스 메쉬
+		GeometryGenerator::MeshData decalBox;
+		_geometryGen->CreateBox(1.0f, 1.0f, 1.0f, decalBox);
+		_loadedFileInfo["primitiveDecalBox"].boundingBox = BoundingBox({ 0, 0, 0 }, { 0.5f, 0.5f, 0.5f });
+		Mesh* _decalBox = new Mesh(&decalBox.Vertices[0], decalBox.Vertices.size(), &decalBox.Indices[0], decalBox.Indices.size(), true);
+		_loadedFileInfo["primitiveDecalBox"].loadedMeshes.push_back(_decalBox);
 
 		// 구체 모양 메쉬
 		GeometryGenerator::MeshData sphere;

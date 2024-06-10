@@ -80,8 +80,6 @@ namespace RocketCore::Graphics
 		///</summary>
 		void CreateFullscreenQuad(MeshData& meshData);
 
-		void CreateDecalBox(MeshData& meshData);
-
 	private:
 		void Subdivide(MeshData& meshData);
 		void BuildCylinderTopCap(float bottomRadius, float topRadius, float height, UINT sliceCount, UINT stackCount, MeshData& meshData);

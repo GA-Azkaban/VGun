@@ -13,13 +13,14 @@ namespace HDData
 		DecalRenderer();
 		~DecalRenderer();
 
-		void LoadTexture(const std::string& fileName);
+		void LoadMaterial(HDData::Material* material);
 		void SetColor(UINT r, UINT g, UINT b, UINT a);
 
 	protected:
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
 		virtual void OnDestroy() override;
+		virtual void Update() override;
 
 	private:
 		HDEngine::IDecal* _decal;

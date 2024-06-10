@@ -5,6 +5,7 @@
 #include "Singleton.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
 #include "../HODO3DGraphicsInterface/IParticle.h"
+#include "../HODO3DGraphicsInterface/IDecal.h"
 
 
 namespace HDEngine

@@ -36,6 +36,7 @@ namespace RocketCore::Graphics
 	class GBufferPass;
 	class SSAOPass;
 	class DeferredPass;
+	class DecalPass;
 	class DebugMeshPass;
 	class OutlinePass;
 	class SkyboxPass;
@@ -109,6 +110,7 @@ namespace RocketCore::Graphics
 		QuadBuffer* _toneMapBuffer;
 		ShadowMapPass* _shadowMapPass;
 		ForwardPass* _forwardPass;
+		DecalPass* _decalPass;
 		GBufferPass* _GBufferPass;
 		SSAOPass* _SSAOPass;
 		DeferredPass* _deferredPass;
