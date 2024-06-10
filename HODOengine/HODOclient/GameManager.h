@@ -15,8 +15,11 @@ private:
 public:
 	void SetMyInfo(PlayerInfo* info);
 	PlayerInfo* GetMyInfo();
+	void SetMyObject(HDData::GameObject* obj);
+	HDData::GameObject* GetMyObject();
 
 private:
+	HDData::GameObject* _myObj;
 	PlayerInfo* _myInfo;
 };
 

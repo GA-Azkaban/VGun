@@ -193,6 +193,7 @@ void LobbyManager::RoomEnterSUCCESS()
 	for (int i = 0; i < _playerNum; ++i)
 	{
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
+		info->SetPlayerUID(data[i]->GetPlayerUID());
 		info->SetNickName(data[i]->GetPlayerNickName());
 		info->SetIsHost(data[i]->GetIsHost());
 		info->SetTeamID(data[i]->GetPlayerTeam());
@@ -238,6 +239,7 @@ void LobbyManager::RefreshRoom()
 	for (int i = 0; i < _playerNum; ++i)
 	{
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
+		info->SetPlayerUID(data[i]->GetPlayerUID());
 		info->SetNickName(data[i]->GetPlayerNickName());
 		info->SetIsHost(data[i]->GetIsHost());
 		info->SetTeamID(data[i]->GetPlayerTeam());

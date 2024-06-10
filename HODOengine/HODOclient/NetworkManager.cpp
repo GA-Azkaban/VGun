@@ -405,12 +405,14 @@ void NetworkManager::SendPlayUpdate()
 	vector3->set_x(myInfo->GetTransform()->GetPosition().x);
 	vector3->set_y(myInfo->GetTransform()->GetPosition().y);
 	vector3->set_z(myInfo->GetTransform()->GetPosition().z);
+	vector3;
 
 	auto quaternion = packet.mutable_playerdata()->mutable_transform()->mutable_quaternion();
 	quaternion->set_w(myInfo->GetTransform()->GetRotation().w);
 	quaternion->set_x(myInfo->GetTransform()->GetRotation().x);
 	quaternion->set_y(myInfo->GetTransform()->GetRotation().y);
 	quaternion->set_z(myInfo->GetTransform()->GetRotation().z);
+	quaternion;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);

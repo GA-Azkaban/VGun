@@ -30,6 +30,7 @@ void Client::Initialize()
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();
+	RoundManager::Instance();
 
 
 	// 씬 초기화

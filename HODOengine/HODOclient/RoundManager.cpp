@@ -33,15 +33,15 @@ void RoundManager::Update()
 {
 	if (!_isRoundStart) return;
 
-	const uint64 frame = 16;
-	static auto updateTick = 0;
+	//const uint64 frame = 16;
+	//static auto updateTick = 0;
 
-	auto currentTick = ::GetTickCount64();
+	//auto currentTick = ::GetTickCount64();
 
-	if (updateTick > currentTick)
-		return;
+	//if (updateTick > currentTick)
+	//	return;
 
-	updateTick = currentTick + frame;
+	//updateTick = currentTick + frame;
 	NetworkManager::Instance().SendPlayUpdate();
 }
 
@@ -56,7 +56,7 @@ void RoundManager::InitGame()
 	auto& data = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
 
-	for (int i = 0; i < _playerNum; ++i)
+	for (int i = 0; i < 6; ++i)
 	{
 		PlayerInfo* info = data[i]->GetComponent<PlayerInfo>();
 
@@ -65,7 +65,8 @@ void RoundManager::InitGame()
 
 		if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			GameManager::Instance()->SetMyInfo(_playerObjs[i]->GetComponent<PlayerInfo>());
+			// 얘가 내 info를 제대로 못 받는 듯
+			GameManager::Instance()->SetMyObject(_playerObjs[i]);
 		}
 	}
 
@@ -82,18 +83,24 @@ void RoundManager::InitRound()
 	// 타이머 초기화
 	this->_timer = 0;
 
-	// 플레이어 정보 초기화
 	for (int i = 0; i < _playerNum; ++i)
 	{
 		_playerObjs[i]->GetComponent<PlayerInfo>()->Init();
-	}
-
-	for (int i = 0; i < _playerNum; ++i)
-	{
 		_playerObjs[i]->SetSelfActive(true);
-		HDData::SkinnedMeshRenderer* mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+
+		HDData::SkinnedMeshRenderer* mesh = nullptr;
+
+		if (GameManager::Instance()->GetMyObject() == _playerObjs[i])
+		{
+			mesh = _playerObjs[i]->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		}
+		else
+		{
+			mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		}
+
 		auto team = _playerObjs[i]->GetComponent<PlayerInfo>()->GetPlayerTeam();
-		
+
 		switch (team)
 		{
 			case eTeam::R:
@@ -128,7 +135,6 @@ void RoundManager::InitRound()
 			break;
 			default:
 			{
-
 			}
 			break;
 		}

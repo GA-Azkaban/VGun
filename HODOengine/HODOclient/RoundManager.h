@@ -39,6 +39,11 @@ private:
 	int _playerNum;
 	std::vector<HDData::GameObject*> _playerObjs;
 
+	// 해시맵으로 변경 중
+private:
+	int _playerCount;
+	std::unordered_map<int, HDData::GameObject*> _players;
+
 private:
 	bool _isRoundStart = false;
 
