@@ -72,6 +72,8 @@ message PlayerData
 
 	bool isSitting = 7;
 	bool isDead = 8;
+
+	// Todo 리스폰 무적 앉기?
 }
 
 message GameRule
