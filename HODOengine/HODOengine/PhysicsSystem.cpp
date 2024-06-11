@@ -196,9 +196,8 @@ namespace HDEngine
 			for (auto& collider : colliderVector)
 			{
 				HDData::StaticBoxCollider* box = dynamic_cast<HDData::StaticBoxCollider*>(collider);
-				Vector3 scale = object->GetTransform()->GetScale();
 
-				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x, box->GetHeight() / 2 * scale.y, box->GetDepth() / 2 * scale.z), *_planeMaterial);
+				physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2, box->GetHeight() / 2, box->GetDepth() / 2), *_planeMaterial);
 				//physx::PxShape* shape = _physics->createShape(physx::PxBoxGeometry(box->GetWidth() / 2 * scale.x * box->GetScaleOffset().x, box->GetHeight() / 2 * scale.y * box->GetScaleOffset().y, box->GetDepth() / 2 * scale.z * box->GetScaleOffset().z), *_planeMaterial);
 				shape->userData = box;
 				// TODO : 여기 작업하고 있었음.
