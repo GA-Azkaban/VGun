@@ -38,7 +38,7 @@ void InGameSceneView::Initialize()
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 내 캐릭터 생성
-	std::string objName1 = "player" + std::to_string(1);
+	std::string objName1 = "player0";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
@@ -224,6 +224,18 @@ void InGameSceneView::Initialize()
 	auto tempBox = API::CreateObject(_scene, "tmpBox");
 	tempBox->GetTransform()->SetPosition(Vector3(10.0f, 0.0f, 60.0f));
 	auto tempBoxCol = tempBox->AddComponent<HDData::StaticBoxCollider>(100.0f, 100.0f, 1.0f);
+
+	// temp TriggerBox
+	auto tempTriggerBox = API::CreateObject(_scene, "tempTrigger");
+	tempTriggerBox->GetTransform()->SetPosition(Vector3(-10.0f, 0.0f, 0.0f));
+	auto tempTriggerBoxCol = tempTriggerBox->AddComponent<HDData::TriggerBoxCollider>(3.0f, 3.0f, 3.0f);
+
+	auto tempTriggerBox2 = API::CreateObject(_scene, "tempTrigger2");
+	//tempTriggerBox2->SetParentObject(player);
+	tempTriggerBox2->GetTransform()->SetPosition(Vector3(-11.0f, 1.0f, 1.0f));
+	auto tempTriggerBoxCol2 = tempTriggerBox2->AddComponent<HDData::TriggerBoxCollider>(3.0f, 3.0f, 3.0f);
+	//tempTriggerBoxCol2->SetParentCollider(playerCollider);
+	
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

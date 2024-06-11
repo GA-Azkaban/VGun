@@ -45,13 +45,19 @@ namespace HDData
 		void Setflag(int flag);
 		int GetFlag();
 		void SetTrigger(bool isTrigger);
-		bool GetTrigger();
+		bool GetIsTrigger();
 		int GetColFilterNum() const;
+		bool GetIsCollide() const;
+		bool GetPrevIsCollide() const;
+		std::vector<PhysicsCollision*> GetCollisionStorage() const;
+
+		void Flush();
 
 	protected:
 		int _flag;
 		bool _isTrigger;
 		bool _isCollide;
+		bool _prevIsCollide;
 		int _collisionFilterNum;
 
 	// deal with the collision by callback function
