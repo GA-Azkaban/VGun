@@ -226,6 +226,12 @@ namespace HDData
 		}
 
 		_nodeTransform->_rotation = result;
+
+		auto bodyCol = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
+		if (bodyCol != nullptr)
+		{
+			bodyCol->SetColliderRotation(Quaternion(x,y,z,w));
+		}
 	}
 
 	void Transform::SetScale(const Vector3& scale)
