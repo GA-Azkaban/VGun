@@ -448,9 +448,15 @@ void NetworkManager::SendPlayUpdate()
 
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
-	
+
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
+
+	for (auto& player : playerobj)
+	{
+		auto p = player.second->GetTransform()->GetPosition();
+		auto i = 3;
+	}
 
 	for (auto& player : roominfo.users())
 	{
@@ -462,7 +468,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());
 
 		obj->GetTransform()->
-				SetRotation(player.transform().quaternion().w(), player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z());
+				SetRotation(player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w());
 	}
 
 }
