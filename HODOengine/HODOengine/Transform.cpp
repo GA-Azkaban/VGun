@@ -1,5 +1,6 @@
-﻿#include "Transform.h"
+#include "Transform.h"
 #include "GameObject.h"
+#include "DynamicCapsuleCollider.h"
 
 namespace HDData
 {
@@ -179,6 +180,13 @@ namespace HDData
 		}
 
 		_nodeTransform->_position = result;
+
+		auto bodyCol = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
+		if (bodyCol != nullptr)
+		{
+			bodyCol->SetColliderPosition(Vector3(x,y,z));
+		}
+
 		// 		else
 // 		{
 // 			// world position = position;
