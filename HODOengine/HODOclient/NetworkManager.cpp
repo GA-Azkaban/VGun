@@ -123,6 +123,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	// 로그인이 성공했을때 처리
 	LobbyManager::Instance().LoginSucess(uid, nickName);
 
+	GameManager::Instance()->GetMyInfo()->SetPlayerUID(uid);
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 
 	API::LoadSceneByName("MainMenu");
@@ -210,6 +211,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+		one->SetPlayerUID(player.userinfo().uid());
 		
 		switch (player.team())
 		{
@@ -281,13 +283,37 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+		one->SetPlayerUID(player.userinfo().uid());
+
+		switch (player.team())
+		{
+			case Protocol::TEAM_COLOR_RED:
+			{
+				one->SetTeamID(eTeam::R);
+			}
+			break;
+			case Protocol::TEAM_COLOR_GREEN:
+			{
+				one->SetTeamID(eTeam::G);
+			}
+			break;
+			case Protocol::TEAM_COLOR_BLUE:
+			{
+				one->SetTeamID(eTeam::B);
+			}
+			break;
+			default:
+			{
+				one->SetTeamID(eTeam::R);
+				SendChangeTeamColor(Protocol::TEAM_COLOR_RED, player.userinfo().nickname());
+			}
+			break;
+		}
 
 		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname())) 
 		{ 
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true); 
 		}
-
-		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
@@ -306,7 +332,6 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
@@ -350,9 +375,6 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 
 		for (int j = 0; j < roomInfo.users().size(); ++j)
 		{
-
-			std::string test2 = 
-				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName();
 
 			if (roomInfo.users()[i].userinfo().nickname() == 
 				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
@@ -405,18 +427,20 @@ void NetworkManager::SendPlayUpdate()
 {
 	Protocol::C_PLAY_UPDATE packet;
 
-	auto myInfo = GameManager::Instance()->GetMyInfo();
+	auto& playerobj = RoundManager::Instance()->_myObj;
 
 	auto vector3 = packet.mutable_playerdata()->mutable_transform()->mutable_vector3();
-	vector3->set_x(myInfo->GetTransform()->GetPosition().x);
-	vector3->set_y(myInfo->GetTransform()->GetPosition().y);
-	vector3->set_z(myInfo->GetTransform()->GetPosition().z);
+	vector3->set_x(playerobj->GetTransform()->GetPosition().x);
+	vector3->set_y(playerobj->GetTransform()->GetPosition().y);
+	vector3->set_z(playerobj->GetTransform()->GetPosition().z);
+	vector3;
 
 	auto quaternion = packet.mutable_playerdata()->mutable_transform()->mutable_quaternion();
-	quaternion->set_w(myInfo->GetTransform()->GetRotation().w);
-	quaternion->set_x(myInfo->GetTransform()->GetRotation().x);
-	quaternion->set_y(myInfo->GetTransform()->GetRotation().y);
-	quaternion->set_z(myInfo->GetTransform()->GetRotation().z);
+	quaternion->set_w(playerobj->GetTransform()->GetRotation().w);
+	quaternion->set_x(playerobj->GetTransform()->GetRotation().x);
+	quaternion->set_y(playerobj->GetTransform()->GetRotation().y);
+	quaternion->set_z(playerobj->GetTransform()->GetRotation().z);
+	quaternion;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -424,28 +448,27 @@ void NetworkManager::SendPlayUpdate()
 
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
+
+	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
-	auto& playerinfo = RoundManager::Instance()->GetPlayerObjs();
-	auto myNick = GameManager::Instance()->GetMyInfo()->GetPlayerNickName();
+
+	for (auto& player : playerobj)
+	{
+		auto p = player.second->GetTransform()->GetPosition();
+		auto i = 3;
+	}
 
 	for (auto& player : roominfo.users())
 	{
-		auto& name = player.userinfo().nickname();
+		if(player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
 
-		for (int i = 0; i < 1; ++i)
-		{
-			auto nick = playerinfo[i]->GetComponent<PlayerInfo>()->GetPlayerNickName();
+		auto& obj = playerobj[player.userinfo().uid()];
 
-			if ((nick != name) ||
-				(nick == myNick)) continue;
-
-			playerinfo[i]->GetTransform()->
+		obj->GetTransform()->
 				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());
 
-			playerinfo[i]->GetTransform()->
-				SetRotation(player.transform().quaternion().w(), player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z());
-		}
-
+		obj->GetTransform()->
+				SetRotation(player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w());
 	}
 
 }
