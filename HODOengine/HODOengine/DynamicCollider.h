@@ -40,6 +40,7 @@ namespace HDData
 		void RotateY(float rotationAmount);
 		void RotateOnAxis(float rotationAmount, Vector3 axis);
 		void SetColliderRotation(Quaternion rot);
+		void SetColliderPosition(Vector3 pos);
 		void Jump();
 		void Sleep();
 		void Stop();

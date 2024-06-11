@@ -121,6 +121,20 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 	}
 }
 
+void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
+{
+	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
+	
+	Vector3 posDif = {pos.x - currentTransform.p.x, pos.y - currentTransform.p.y, pos.z - currentTransform.p.z };
+
+	_physXRigid->setGlobalPose(physx::PxTransform(physx::PxVec3(pos.x, pos.y, pos.z), currentTransform.q));
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f);
+	}
+}
+
 void HDData::DynamicCollider::Jump()
 {
 	_physXRigid->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
