@@ -48,7 +48,7 @@ void MenuManager::Update()
 	}
 	if (_size == screenSize::option2550)
 	{
-		SetObjectPosition2650();
+		//SetObjectPosition2560();
 		_isModeChange = false;
 	}
 }
@@ -58,9 +58,9 @@ void MenuManager::SetObjectPosition1920()
 
 }
 
-void MenuManager::SetObjectPosition2650()
+void MenuManager::SetObjectPosition2560()
 {
-	auto uiList = API::GetAllUIList();
+	//auto uiList = API::GetAllUIList();
 
 	//for (auto& ui : uiList)
 	//{
@@ -76,6 +76,34 @@ void MenuManager::SetObjectPosition2650()
 
 	//	obj->GetTransform()->SetPosition(newX, newY, 0);
 	//}
+
+	auto uiList = API::GetAllUIList();
+
+	// 원래 해상도와 새로운 해상도의 크기
+	float originalWidth = 1920.0f;
+	float originalHeight = 1080.0f;
+	float newWidth = 2560.0f;
+	float newHeight = 1440.0f;
+
+	// 비율 계산
+	float widthRatio = newWidth / originalWidth;
+	float heightRatio = newHeight / originalHeight;
+
+	for (auto& ui : uiList)
+	{
+		HDData::GameObject* obj = ui->GetGameObject();
+
+		// 현재 좌표 가져오기
+		float currentX = obj->GetTransform()->GetPosition().x;
+		float currentY = obj->GetTransform()->GetPosition().y;
+
+		// 새로운 좌표 계산
+		float newX = currentX * widthRatio;
+		float newY = currentY * heightRatio;
+
+		// 새 좌표 설정
+		obj->GetTransform()->SetPosition(newX, newY, 0);
+	}
 }
 
 void MenuManager::SetMainMenuCanvas(HDData::GameObject* mainCanvas)
@@ -204,7 +232,6 @@ void MenuManager::SetScreenSize(int OptionNum)
 			break;
 		default:
 			break;
-
 	}
 }
 

@@ -100,7 +100,7 @@ private:
 	float _shootCooldown;
 	float _jumpCooldown;
 	int _shootCount;
-	int _bulletCount;
+	int& _bulletCount;
 	float _reloadTimer;
 	bool _isReloading;
 	bool _isRunning;

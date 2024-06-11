@@ -19,7 +19,7 @@ enum class ePlayerState
 
 enum class eTeam
 {
-	R,
-	G,
-	B
+	R = 1,
+	G = 2,
+	B = 3
 };

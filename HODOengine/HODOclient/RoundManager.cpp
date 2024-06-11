@@ -6,6 +6,7 @@
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "GameManager.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -33,15 +34,15 @@ void RoundManager::Update()
 {
 	if (!_isRoundStart) return;
 
-	const uint64 frame = 16;
-	static auto updateTick = 0;
+	//const uint64 frame = 16;
+	//static auto updateTick = 0;
 
-	auto currentTick = ::GetTickCount64();
+	//auto currentTick = ::GetTickCount64();
 
-	if (updateTick > currentTick)
-		return;
+	//if (updateTick > currentTick)
+	//	return;
 
-	updateTick = currentTick + frame;
+	//updateTick = currentTick + frame;
 	NetworkManager::Instance().SendPlayUpdate();
 }
 
@@ -53,19 +54,34 @@ void RoundManager::SetRoundScene(HDData::Scene* scene)
 void RoundManager::InitGame()
 {
 	// 라운드 초기화
-	auto& data = LobbyManager::Instance().GetPlayerObjects();
+	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
 
-	for (int i = 0; i < _playerNum; ++i)
+	for (auto& obj : _playerObjs)
 	{
-		PlayerInfo* info = data[i]->GetComponent<PlayerInfo>();
+		obj->SetSelfActive(false);
+	}
 
-		_playerObjs[i]->AddComponent<PlayerInfo>(info);
+	int index = 0;
 
-		if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+	for (auto& one : obj)
+	{
+		if (index >= _playerNum) break;
+
+		PlayerInfo* info = one->GetComponent<PlayerInfo>();
+
+		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
-			GameManager::Instance()->SetMyInfo(_playerObjs[i]->GetComponent<PlayerInfo>());
+			_myObj->AddComponent<PlayerInfo>(info)->SetIsMyInfo(true);
+			GameManager::Instance()->SetMyObject(_myObj);
 		}
+		else
+		{
+			_playerObjs[index]->AddComponent<PlayerInfo>(info);
+			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+		}
+
+		++index;
 	}
 
 	InitRound();
@@ -81,52 +97,25 @@ void RoundManager::InitRound()
 	// 타이머 초기화
 	this->_timer = 0;
 
-	// 플레이어 정보 초기화
-	for (int i = 0; i < _playerNum; ++i)
-	{
-		_playerObjs[i]->GetComponent<PlayerInfo>()->Init();
-	}
+	HDData::SkinnedMeshRenderer* mesh = nullptr;
+	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 
-	for (int i = 0; i < _playerNum; ++i)
-	{
-		_playerObjs[i]->SetSelfActive(true);
-		auto mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	_myObj->GetComponent<PlayerInfo>()->Init();
+	_myObj->SetSelfActive(true);
 
-		switch (_playerObjs[i]->GetComponent<PlayerInfo>()->GetPlayerTeam())
-		{
-			case eTeam::R:
-			{
-				auto mat = API::GetMaterial("TP_Red");
-				mesh->LoadMaterial(mat, 0);
-				mesh->LoadMaterial(mat, 1);
-				mesh->LoadMaterial(mat, 2);
-				mesh->LoadMaterial(mat, 3);
-				mesh->LoadMaterial(mat, 4);
-			}
-			break;
-			case eTeam::G:
-			{
-				auto mat = API::GetMaterial("TP_Green");
-				mesh->LoadMaterial(mat, 0);
-				mesh->LoadMaterial(mat, 1);
-				mesh->LoadMaterial(mat, 2);
-				mesh->LoadMaterial(mat, 3);
-				mesh->LoadMaterial(mat, 4);
-			}
-			break;
-			case eTeam::B:
-			{
-				auto mat = API::GetMaterial("TP_Blue");
-				mesh->LoadMaterial(mat, 0);
-				mesh->LoadMaterial(mat, 1);
-				mesh->LoadMaterial(mat, 2);
-				mesh->LoadMaterial(mat, 3);
-				mesh->LoadMaterial(mat, 4);
-			}
-			break;
-			default:
-				break;
-		}
+	SetTeamColor(mesh, _myObj->GetComponent<PlayerInfo>()->GetPlayerTeam());
+
+	for (auto& [uid, player] : _players)
+	{
+		player->GetComponent<PlayerInfo>()->Init();
+		player->SetSelfActive(true);
+
+		HDData::SkinnedMeshRenderer* mesh = nullptr;
+
+		PlayerInfo* info = player->GetComponent<PlayerInfo>();
+		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+
+		SetTeamColor(mesh, info->GetPlayerTeam());
 	}
 
 	_isRoundStart = true;
@@ -146,9 +135,55 @@ void RoundManager::UpdateRound()
 	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
 }
 
-std::vector<HDData::GameObject*>& RoundManager::GetPlayerObjs()
+void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
 {
-	return _playerObjs;
+	switch (color)
+	{
+		case eTeam::R:
+		{
+			auto mat = API::GetMaterial("TP_Red");
+			mesh->LoadMaterial(mat, 0);
+			mesh->LoadMaterial(mat, 1);
+			mesh->LoadMaterial(mat, 2);
+			mesh->LoadMaterial(mat, 3);
+			mesh->LoadMaterial(mat, 4);
+		}
+		break;
+		case eTeam::G:
+		{
+			auto mat = API::GetMaterial("TP_Green");
+			mesh->LoadMaterial(mat, 0);
+			mesh->LoadMaterial(mat, 1);
+			mesh->LoadMaterial(mat, 2);
+			mesh->LoadMaterial(mat, 3);
+			mesh->LoadMaterial(mat, 4);
+		}
+		break;
+		case eTeam::B:
+		{
+			auto mat = API::GetMaterial("TP_Blue");
+			mesh->LoadMaterial(mat, 0);
+			mesh->LoadMaterial(mat, 1);
+			mesh->LoadMaterial(mat, 2);
+			mesh->LoadMaterial(mat, 3);
+			mesh->LoadMaterial(mat, 4);
+		}
+		break;
+		default:
+		{
+		}
+		break;
+	}
+}
+
+std::unordered_map<int, HDData::GameObject*>& RoundManager::GetPlayerObjs()
+{
+	return _players;
+}
+
+int RoundManager::GetPlayerNum()
+{
+	return _playerNum;
 }
 
 void RoundManager::SetIsRoundStart(bool isStart)

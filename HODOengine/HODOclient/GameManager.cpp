@@ -32,3 +32,15 @@ PlayerInfo* GameManager::GetMyInfo()
 	return _myInfo;
 }
 
+void GameManager::SetMyObject(HDData::GameObject* obj)
+{
+	_myObj = obj;
+	PlayerInfo* info = obj->GetComponent<PlayerInfo>();
+	SetMyInfo(info);
+}
+
+HDData::GameObject* GameManager::GetMyObject()
+{
+	return _myObj;
+}
+

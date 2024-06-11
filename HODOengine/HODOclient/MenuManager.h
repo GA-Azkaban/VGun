@@ -55,10 +55,11 @@ private:
 
 	bool _isModeChange = true;
 
-	void SetObjectPosition1920();
-	void SetObjectPosition2650();
-	
 public:
+	//Test
+	void SetObjectPosition2560();
+	void SetObjectPosition1920();
+
 	void SetMainMenuCanvas(HDData::GameObject* mainCanvas);
 
 	void RoomEneter(Protocol::RoomInfo);

@@ -315,7 +315,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
   <ItemGroup>
     <None Include="..\Include\Protobuf\Enum.proto" />
     <None Include="..\Include\Protobuf\Protocol.proto" />
-    <None Include="..\Include\Protobuf\Struct.proto" />
+    <None Include="..\include\Protobuf\Struct.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

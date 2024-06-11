@@ -32,24 +32,28 @@ public:
 
 	void SetCurrentBulletCount(int Count);
 
-	int GetPlayerUID();
-	std::string GetPlayerID();
-	bool GetIsHost();
-	int GetPlayerIndex();
-	eTeam GetPlayerTeam();
-	bool GetPlayerDie();
-	std::string GetPlayerNickName();
+	int& GetPlayerUID();
+	std::string& GetPlayerID();
+	bool& GetIsHost();
+	int& GetPlayerIndex();
+	eTeam& GetPlayerTeam();
+	bool& GetPlayerDie();
+	std::string& GetPlayerNickName();
 
-	int GetPlayerMaxHP();
-	int GetPlayerCurrentHP();
-	int GetPlayerKillCount();
-	int GetPlayerDeathCount();
-	int GetCurrentBulletCount();
-	bool GetIsDie();
-	ePlayerState GetPlayerState();
+	int& GetPlayerMaxHP();
+	int& GetPlayerCurrentHP();
+	int& GetPlayerKillCount();
+	int& GetPlayerDeathCount();
+	int& GetCurrentBulletCount();
+	bool& GetIsDie();
+	ePlayerState& GetPlayerState();
+
+	void SetIsMyInfo(bool isMine);
+	bool GetIsMyInfo();
 
 
 private:
+	bool _isMyInfo = false;
 
 	// player info
 	int _playerUID;

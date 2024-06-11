@@ -79,17 +79,17 @@ void PlayerInfo::SetCurrentBulletCount(int count)
 	_bulletCount = count;
 }
 
-int PlayerInfo::GetPlayerUID()
+int& PlayerInfo::GetPlayerUID()
 {
 	return _playerUID;
 }
 
-std::string PlayerInfo::GetPlayerID()
+std::string& PlayerInfo::GetPlayerID()
 {
 	return _playerID;
 }
 
-bool PlayerInfo::GetIsHost()
+bool& PlayerInfo::GetIsHost()
 {
 	return _isHost;
 }
@@ -114,57 +114,67 @@ void PlayerInfo::SetMaxHP(int hp)
 	_maxHP = hp;
 }
 
-bool PlayerInfo::GetIsDie()
+bool& PlayerInfo::GetIsDie()
 {
 	return _isDie;
 }
 
-ePlayerState PlayerInfo::GetPlayerState()
+ePlayerState& PlayerInfo::GetPlayerState()
 {
 	return _state;
 }
 
-int PlayerInfo::GetPlayerIndex()
+void PlayerInfo::SetIsMyInfo(bool isMine)
+{
+	_isMyInfo = isMine;
+}
+
+bool PlayerInfo::GetIsMyInfo()
+{
+	return _isMyInfo;
+}
+
+int& PlayerInfo::GetPlayerIndex()
 {
 	return _playerIndex;
 }
 
-eTeam PlayerInfo::GetPlayerTeam()
+eTeam& PlayerInfo::GetPlayerTeam()
 {
 	return _teamID;
 }
 
-bool PlayerInfo::GetPlayerDie()
+bool& PlayerInfo::GetPlayerDie()
 {
 	return _isDie;
 }
 
-std::string PlayerInfo::GetPlayerNickName()
+std::string& PlayerInfo::GetPlayerNickName()
 {
 	return _playerNickname;
 }
 
-int PlayerInfo::GetPlayerMaxHP()
+int& PlayerInfo::GetPlayerMaxHP()
 {
 	return _maxHP;
 }
 
-int PlayerInfo::GetPlayerCurrentHP()
+int& PlayerInfo::GetPlayerCurrentHP()
 {
 	return _currentHP;
 }
 
-int PlayerInfo::GetPlayerKillCount()
+int& PlayerInfo::GetPlayerKillCount()
 {
 	return _kill;
 }
 
-int PlayerInfo::GetPlayerDeathCount()
+int& PlayerInfo::GetPlayerDeathCount()
 {
 	return _death;
 }
 
-int PlayerInfo::GetCurrentBulletCount()
+int& PlayerInfo::GetCurrentBulletCount()
 {
 	return _bulletCount;
 }

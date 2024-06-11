@@ -16,7 +16,7 @@ message RoomInfo
 	string roomCode = 2;
 	int32 state = 3;
 
-	repeated UserInfo users = 4;
+	repeated PlayerData users = 4;
 
 	string roomName = 5;
 	string password = 6;
@@ -26,6 +26,8 @@ message RoomInfo
 
 	bool isPrivate = 9;
 	bool isTeam = 10;
+	    
+	int32 map = 11;
 }
 
 message Vector3
@@ -51,8 +53,9 @@ message Transform
 
 message UserInfo
 {
-	string nickName = 1;
+	int32 uid = 1;
 	string id = 2;
+	string nickName = 3;
 }
 
 message PlayerData
@@ -60,7 +63,7 @@ message PlayerData
 	UserInfo userInfo = 1;
 	
 	bool host = 2;
-	int32 team = 3;
+	eTeamColor team = 3;
 
 	Transform transform = 4;
 
