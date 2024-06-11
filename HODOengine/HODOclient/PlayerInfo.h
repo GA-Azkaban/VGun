@@ -48,8 +48,12 @@ public:
 	bool& GetIsDie();
 	ePlayerState& GetPlayerState();
 
+	void SetIsMyInfo(bool isMine);
+	bool GetIsMyInfo();
+
 
 private:
+	bool _isMyInfo = false;
 
 	// player info
 	int _playerUID;

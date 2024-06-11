@@ -199,26 +199,26 @@ void LobbyManager::RoomEnterSUCCESS()
 		info->SetTeamID(data[i]->GetPlayerTeam());
 	}
 
-	for (int i = 0; i < _playerNum; ++i)
-	{
-		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
+	//for (int i = 0; i < _playerNum; ++i)
+	//{
+	//	PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
 
-		_playerObjs[i]->SetSelfActive(true);
-		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(info->GetPlayerNickName());
-		
+	//	_playerObjs[i]->SetSelfActive(true);
+	//	_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(info->GetPlayerNickName());
+	//	
 
-		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
-		{
-			_teamButton[i]->SetSelfActive(true);
-			_quitButtons[i]->SetSelfActive(true);
-			_inGameStartButton->SetSelfActive(true);
-		}
-		else if(info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
-		{
-			_teamButton[i]->SetSelfActive(true);
-			_quitButtons[i]->SetSelfActive(false);
-		}
-	}
+	//	if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+	//	{
+	//		_teamButton[i]->SetSelfActive(true);
+	//		_quitButtons[i]->SetSelfActive(true);
+	//		_inGameStartButton->SetSelfActive(true);
+	//	}
+	//	else if(info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+	//	{
+	//		_teamButton[i]->SetSelfActive(true);
+	//		_quitButtons[i]->SetSelfActive(false);
+	//	}
+	//}
 	
 }
 
@@ -269,6 +269,9 @@ void LobbyManager::RefreshRoom()
 			}
 			break;
 			default:
+			{
+
+			}
 				break;
 		}
 

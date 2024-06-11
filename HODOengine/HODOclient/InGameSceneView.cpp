@@ -60,7 +60,7 @@ void InGameSceneView::Initialize()
 
 	meshComp->PlayAnimation("AR_aim", true);
 
-	RoundManager::Instance()->GetPlayerObjs().push_back(player);
+	RoundManager::Instance()->_myObj = player;
 
 	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.6f, 0.8f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
@@ -108,9 +108,7 @@ void InGameSceneView::Initialize()
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->AddComponent<MeshTransformController>();
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-17.4141f, -5.2570f, -1.595f);
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5467f, 0.5239f, -0.4370f, 0.4849f });
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
 	// AJY 24.6.3.
 	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
 	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
@@ -196,7 +194,7 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadMaterial(M_Red, 4);
 		otherMeshComp->PlayAnimation("AR_idle", true);
 
-		RoundManager::Instance()->GetPlayerObjs().push_back(otherPlayer);
+		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
 
 		// sound 추가
 		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();

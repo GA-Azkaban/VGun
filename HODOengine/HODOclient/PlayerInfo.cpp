@@ -124,6 +124,16 @@ ePlayerState& PlayerInfo::GetPlayerState()
 	return _state;
 }
 
+void PlayerInfo::SetIsMyInfo(bool isMine)
+{
+	_isMyInfo = isMine;
+}
+
+bool PlayerInfo::GetIsMyInfo()
+{
+	return _isMyInfo;
+}
+
 int& PlayerInfo::GetPlayerIndex()
 {
 	return _playerIndex;

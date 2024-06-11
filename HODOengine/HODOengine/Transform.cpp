@@ -179,7 +179,6 @@ namespace HDData
 		}
 
 		_nodeTransform->_position = result;
-
 		// 		else
 // 		{
 // 			// world position = position;

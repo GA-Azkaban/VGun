@@ -31,17 +31,17 @@ public:
 	void InitRound();
 	void UpdateRound();
 
+private:
+	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);
+
 public:
-	std::vector<HDData::GameObject*>& GetPlayerObjs();
+	std::unordered_map<int, HDData::GameObject*>& GetPlayerObjs();
 	int GetPlayerNum();
+	HDData::GameObject* _myObj;
+	std::vector<HDData::GameObject*> _playerObjs;
 
 private:
 	int _playerNum;
-	std::vector<HDData::GameObject*> _playerObjs;
-
-	// 해시맵으로 변경 중
-private:
-	int _playerCount;
 	std::unordered_map<int, HDData::GameObject*> _players;
 
 private:
