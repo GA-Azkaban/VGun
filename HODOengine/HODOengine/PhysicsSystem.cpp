@@ -194,7 +194,7 @@ namespace HDEngine
 		{
 			for (auto& object : sceneIter->second->GetGameObjectList())
 			{
-				CreateStaticPlaneCollider(object);
+				//CreateStaticPlaneCollider(object);
 				CreateStaticBoxCollider(object);
 				CreateDynamicBoxCollider(object);
 				CreateDynamicCapsuleCollider(object);

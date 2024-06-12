@@ -56,7 +56,7 @@ namespace HDData
 		void SetActive(bool active) {
  			if (!_isActive && active)
 				OnEnable();
-			if (_isActive && !active)
+			if (_isActive && !active) 
 				OnDisable();
 
 			_isActive = active;

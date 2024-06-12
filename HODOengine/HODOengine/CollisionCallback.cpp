@@ -72,12 +72,12 @@ namespace HDEngine
 			{
 				pair._first->Collider_OnCollisionExit(c);
 			}
-			c.SwapObjects();
-			if (!pair._second->GetIsTrigger())
-			{
-				pair._second->Collider_OnCollisionExit(c);
-			}
-			c.SwapObjects();
+			//c.SwapObjects();
+			//if (!pair._second->GetIsTrigger())
+			//{
+			//	pair._second->Collider_OnCollisionExit(c);
+			//}
+			//c.SwapObjects();
 		}
 
 		for (int i = 0; i < _newCollisionPairs.size(); i++)
@@ -94,12 +94,12 @@ namespace HDEngine
 			{
 				pair._first->Collider_OnCollisionEnter(c);
 			}
-			c.SwapObjects();
-			if (!pair._second->GetIsTrigger())
-			{
-				pair._second->Collider_OnCollisionEnter(c);
-			}
-			c.SwapObjects();
+			//c.SwapObjects();
+			//if (!pair._second->GetIsTrigger())
+			//{
+			//	pair._second->Collider_OnCollisionEnter(c);
+			//}
+			//c.SwapObjects();
 		}
 	}
 

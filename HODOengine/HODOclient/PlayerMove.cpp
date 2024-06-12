@@ -502,6 +502,18 @@ void PlayerMove::ApplyRecoil()
 	_rotAngleX += _sprayCamera[_shootCount].second;
 }
 
+void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
+{
+	auto temp = (*colArr)->_otherActor;
+	auto temp2 = (*colArr)->_thisActor;
+	temp;
+}
+
+void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
+{
+
+}
+
 void PlayerMove::UpdatePlayerPositionDebug()
 {
 	Vector3 pos = GetTransform()->GetPosition();

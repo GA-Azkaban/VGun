@@ -53,6 +53,11 @@ private:
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
 
+public:
+	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
+	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
+
+
 private:
 	bool _isMovable;
 	bool _isJumping;

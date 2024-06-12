@@ -38,7 +38,7 @@ void InGameSceneView::Initialize()
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 내 캐릭터 생성
-	std::string objName1 = "player0";
+	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
@@ -171,7 +171,7 @@ void InGameSceneView::Initialize()
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
 	{
-		std::string otherObjName = "player" + std::to_string(i + 1);
+		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
@@ -190,7 +190,7 @@ void InGameSceneView::Initialize()
 
 		auto capCol = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
 		capCol->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
-		auto otherHead = API::CreateObject(_scene, "head" + std::to_string(i + 1), otherPlayer);
+		auto otherHead = API::CreateObject(_scene, "otherHead" + std::to_string(i), otherPlayer);
 		otherHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
 		auto otherHeadCol = otherHead->AddComponent<HDData::DynamicSphereCollider>(0.4f, true);
 		otherHeadCol->SetParentCollider(capCol);
