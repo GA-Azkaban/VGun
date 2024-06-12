@@ -133,6 +133,7 @@ void PlayerMove::Update()
 
 	// 이동, 회전
 	Move(_moveDirection);
+	
 
 	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
 	
@@ -384,6 +385,24 @@ void PlayerMove::Move(int direction)
 	}
 
 	_prevDirection = _moveDirection;
+}
+
+void PlayerMove::InterpolationMove(HDData::Transform* current, Vector3* serverPos, Quaternion* serverRot, float intermediateValue)
+{
+	//Vector3* currentPos = &current->GetPosition();
+	//Quaternion* currentRot = &current->GetRotation();
+
+	//if (currentPos == serverPos && currentRot == serverRot) return;
+
+	//// 포지션 선형 보간
+	//Vector3 interpolatedPos = Vector3::Lerp(*currentPos, *serverPos, intermediateValue);
+
+	//// 로테이션 구면 선형 보간
+	//Quaternion interpolatedRot = Quaternion::Slerp(*currentRot, *serverRot, intermediateValue);
+
+	//// 현재 Transform에 보간된 값 설정
+	//current->SetPosition(interpolatedPos);
+	//current->SetRotation(interpolatedRot);
 }
 
 void PlayerMove::ShootGun()
