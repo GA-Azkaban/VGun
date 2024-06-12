@@ -47,6 +47,16 @@ void NetworkManager::Start()
 void NetworkManager::Update()
 {
 	_service->GetIocpCore()->Dispatch(0);
+
+	auto& playerObj = RoundManager::Instance()->GetPlayerObjs();
+
+	int index = 0;
+
+	for (auto& [uid, player] : playerObj)
+	{
+		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 1);
+		++index;
+	}
 }
 
 void NetworkManager::Connected()
@@ -330,6 +340,7 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerUID(player.userinfo().uid());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 
@@ -448,15 +459,10 @@ void NetworkManager::SendPlayUpdate()
 
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
-
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
 
-	for (auto& player : playerobj)
-	{
-		auto p = player.second->GetTransform()->GetPosition();
-		auto i = 3;
-	}
+	int index = 0;
 
 	for (auto& player : roominfo.users())
 	{
@@ -464,16 +470,38 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		auto& obj = playerobj[player.userinfo().uid()];
 
-		obj->GetTransform()->
-				SetPosition(player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z());
+		currentTransform[index] = obj->GetTransform();
+		
+		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
+		serverPosition[index] = pos;
 
-		obj->GetTransform()->
-				SetRotation(player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w());
+		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
+		serverRotation[index] = rot;
+
+		++index;
 	}
-
 }
 
 bool NetworkManager::IsConnected()
 {
 	return _isConnect;
 }
+
+void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
+{
+	Vector3 currentPos = current->GetPosition();
+	Quaternion currentRot = current->GetRotation();
+
+	if (currentPos == serverPos && currentRot == serverRot) return;
+
+	// 포지션 선형 보간
+	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, intermediateValue);
+
+	// 로테이션 구면 선형 보간
+	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, intermediateValue);
+
+	// 현재 Transform에 보간된 값 설정
+	current->SetPosition(interpolatedPos);
+	current->SetRotation(interpolatedRot);
+}
+

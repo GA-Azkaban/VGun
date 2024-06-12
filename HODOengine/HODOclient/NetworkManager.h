@@ -85,5 +85,16 @@ public:
 private:
 	Horang::ClientServiceRef _service;
 	bool _isConnect;
+
+
+	// 보간 (을 서버에서 하는게 맞을까나)
+public:
+	void Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue);
+
+private:
+	// 
+	HDData::Transform* currentTransform[5];
+	Vector3 serverPosition[5];
+	Quaternion serverRotation[5];
 };
 
