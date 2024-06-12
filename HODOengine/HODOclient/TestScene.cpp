@@ -7,12 +7,6 @@
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
 
-enum eColliderType
-{
-	PLAYER = 1,
-	BOX = 2
-};
-
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");

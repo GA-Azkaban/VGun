@@ -11,7 +11,8 @@ namespace HDData
 		, _scaleOffset(Vector3::One),
 		_parentCollider(nullptr),
 		_collisionFilterNum(0),
-		_isTrigger(false)
+		_isTrigger(false),
+		_colType(eColliderType::NONE)
 	{
 		
 	}
@@ -155,6 +156,11 @@ namespace HDData
 	std::vector<PhysicsCollision*> Collider::GetCollisionStorage() const
 	{
 		return _collisionStorage;
+	}
+
+	eColliderType Collider::GetColType() const
+	{
+		return _colType;
 	}
 
 	void Collider::Flush()

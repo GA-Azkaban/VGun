@@ -14,7 +14,7 @@ PlayerMove::PlayerMove()
 	_isRunning(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
 	_isFirstPersonPerspective(true),
-	_isJumping(true), _isOnGround(false)
+	_isJumping(true), _isOnGround(true)
 {
 	
 }
@@ -51,7 +51,7 @@ void PlayerMove::Update()
 	// check on_ground state
 	if (_isJumping)
 	{
-		CheckIsOnGround();
+		//CheckIsOnGround();
 	}
 	//else
 	//{
@@ -260,7 +260,7 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
-		CheckIsOnGround();
+		//CheckIsOnGround();
 		Jump();
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
@@ -504,14 +504,40 @@ void PlayerMove::ApplyRecoil()
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-	auto temp = (*colArr)->_otherActor;
-	auto temp2 = (*colArr)->_thisActor;
-	temp;
+	//++_enterCount;
+	//if (_enterCount == 1)
+	//{
+	//	return;
+	//}
+	auto& opponentCollider = (*colArr)->_otherActor;
+	// plane인 경우
+	if (opponentCollider == nullptr)
+	{
+		_isOnGround = true;
+ 		_isJumping = false;
+	}
+	// 지형인 경우
+	else if (opponentCollider->GetColType() == eColliderType::TERRAIN)
+	{
+		// 착지 판정
+		_isOnGround = true;
+		_isJumping = false;
+	}
 }
 
 void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-
+	auto& opponentCollider = (*colArr)->_otherActor;
+	//// plane인 경우
+	//if (opponentCollider == nullptr)
+	//{
+	//	_isOnGround = false;
+	//}
+	//// 지형인 경우
+	//else if (opponentCollider->GetColType() == eColliderType::TERRAIN)
+	//{
+	//	_isOnGround = false;
+	//}
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -662,14 +688,14 @@ void PlayerMove::ToggleCam()
 
 void PlayerMove::Jump()
 {
-	//if ((!_isJumping) && (_isOnGround))
-		//if (!_isJumping)
-	if(!_isJumping)
+	if ((!_isJumping) && (_isOnGround))
+	//if(!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
 		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
+		_isOnGround = false;
 
 		//_jumpCooldown = 0.8f;
 		//_isOnGround = false;

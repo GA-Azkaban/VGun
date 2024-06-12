@@ -452,6 +452,7 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(particle->GetRadius()), *_material);
 				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+				shape->userData = particle;
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
