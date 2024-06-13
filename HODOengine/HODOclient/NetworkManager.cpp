@@ -469,8 +469,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		if(player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
 
 		auto& obj = playerobj[player.userinfo().uid()];
-
-		currentTransform[index] = obj->GetTransform();
 		
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		serverPosition[index] = pos;
