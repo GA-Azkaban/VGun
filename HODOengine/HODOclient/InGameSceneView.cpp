@@ -7,6 +7,7 @@
 #include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "Crosshair.h"
+#include "Ammo.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -28,7 +29,7 @@ void InGameSceneView::Initialize()
 	float posX = 0;
 	float posT = 165;
 
-	HDEngine::MaterialDesc red;
+	HDEngine::MaterialDesc red;  
 	red.materialName = "TP_Red";
 	red.albedo = "TP_Red_B.png";
 
@@ -214,6 +215,10 @@ void InGameSceneView::Initialize()
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
+
+	auto ammoObj = API::CreateObject(_scene, "ammo");
+	auto ammo = ammoObj->AddComponent<Ammo>();
+
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
