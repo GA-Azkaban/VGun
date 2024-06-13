@@ -138,15 +138,15 @@ inline bool eTeamColor_Parse(
     eTeamColor_descriptor(), name, value);
 }
 enum eRGBMap : int {
-  MAP_NONE = 0,
-  MAP_RANDOM = 1,
-  MAP_DESERT = 2,
+  NONE = 0,
+  RANDOM = 1,
+  DESERT = 2,
   eRGBMap_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   eRGBMap_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool eRGBMap_IsValid(int value);
-constexpr eRGBMap eRGBMap_MIN = MAP_NONE;
-constexpr eRGBMap eRGBMap_MAX = MAP_DESERT;
+constexpr eRGBMap eRGBMap_MIN = NONE;
+constexpr eRGBMap eRGBMap_MAX = DESERT;
 constexpr int eRGBMap_ARRAYSIZE = eRGBMap_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eRGBMap_descriptor();
@@ -162,35 +162,6 @@ inline bool eRGBMap_Parse(
     ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eRGBMap* value) {
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eRGBMap>(
     eRGBMap_descriptor(), name, value);
-}
-enum eHitLocation : int {
-  HIT_LOCATION_NONE = 0,
-  HIT_LOCATION_NO_HIT = 1,
-  HIT_LOCATION_HEAD = 2,
-  HIT_LOCATION_BODY = 3,
-  HIT_LOCATION_ARM = 4,
-  HIT_LOCATION_LEG = 5,
-  eHitLocation_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
-  eHitLocation_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
-};
-bool eHitLocation_IsValid(int value);
-constexpr eHitLocation eHitLocation_MIN = HIT_LOCATION_NONE;
-constexpr eHitLocation eHitLocation_MAX = HIT_LOCATION_LEG;
-constexpr int eHitLocation_ARRAYSIZE = eHitLocation_MAX + 1;
-
-const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eHitLocation_descriptor();
-template<typename T>
-inline const std::string& eHitLocation_Name(T enum_t_value) {
-  static_assert(::std::is_same<T, eHitLocation>::value ||
-    ::std::is_integral<T>::value,
-    "Incorrect type passed to function eHitLocation_Name.");
-  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
-    eHitLocation_descriptor(), enum_t_value);
-}
-inline bool eHitLocation_Parse(
-    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eHitLocation* value) {
-  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eHitLocation>(
-    eHitLocation_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -233,11 +204,6 @@ template <> struct is_proto_enum< ::Protocol::eRGBMap> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eRGBMap>() {
   return ::Protocol::eRGBMap_descriptor();
-}
-template <> struct is_proto_enum< ::Protocol::eHitLocation> : ::std::true_type {};
-template <>
-inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eHitLocation>() {
-  return ::Protocol::eHitLocation_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

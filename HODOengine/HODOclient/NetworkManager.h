@@ -72,18 +72,9 @@ public: // 업데이트
 	void SendPlayUpdate();
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
-public: // 인게임
-	void SendPlayJump(Protocol::PlayerData playerData);
-	void RecvPlayJump(Protocol::PlayerData playerData);
-
-	void SendPlayShoot(Protocol::PlayerData playerData, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
-	void RecvPlayShoot(Protocol::PlayerData playerData);
-	void RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation);
-
-	void RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData);
-
-	// 리스폰 지점 추가해야함
-	void RecvPlayRespawn(Protocol::PlayerData playerData);
+public: // 동작
+	// Todo 총 발사
+	// Todo
 
 public:
 	void SetConnect(bool isConnect);
@@ -96,11 +87,13 @@ private:
 	bool _isConnect;
 
 
-	// 보간
+	// 보간 (을 서버에서 하는게 맞을까나)
 public:
 	void Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue);
 
 private:
+	// 
+	HDData::Transform* currentTransform[5];
 	Vector3 serverPosition[5];
 	Quaternion serverRotation[5];
 };

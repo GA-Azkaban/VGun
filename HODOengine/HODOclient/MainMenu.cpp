@@ -103,7 +103,7 @@ void MainMenuScene::MainMenu()
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
 	freshBtn->SetImage("flair_arrow_3.png");
-	freshBtn->SetSortOrder(0.7f);
+	freshBtn->SetSortOrder(0.6f);
 	freshBtn->SetOnClickEvent(
 		[freshBtn]()
 		{

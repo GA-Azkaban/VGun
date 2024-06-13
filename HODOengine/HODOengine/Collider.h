@@ -10,13 +10,6 @@
 /// �ݶ��̴����� Transform�� ���õ� �������� �ٷ��.
 /// 
 
-enum class eColliderType
-{
-	NONE = 0,
-	PLAYER = 1,
-	TERRAIN = 2
-};
-
 namespace HDData
 {
 	class HODO_API Collider : public Component
@@ -52,20 +45,13 @@ namespace HDData
 		void Setflag(int flag);
 		int GetFlag();
 		void SetTrigger(bool isTrigger);
-		bool GetIsTrigger();
+		bool GetTrigger();
 		int GetColFilterNum() const;
-		bool GetIsCollide() const;
-		bool GetPrevIsCollide() const;
-		std::vector<PhysicsCollision*> GetCollisionStorage() const;
-		eColliderType GetColType() const;
-
-		void Flush();
 
 	protected:
 		int _flag;
 		bool _isTrigger;
 		bool _isCollide;
-		bool _prevIsCollide;
 		int _collisionFilterNum;
 
 	// deal with the collision by callback function
@@ -90,7 +76,6 @@ namespace HDData
 	protected:
 		HDData::Collider* _parentCollider;
 		std::vector<HDData::Collider*> _childColliders;
-		eColliderType _colType;
 	};
 }
 

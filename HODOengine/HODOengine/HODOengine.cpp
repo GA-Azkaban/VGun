@@ -154,7 +154,6 @@ void HODOengine::Run()
 
 	// physicsUpdate, temporary location
 	_physicsSystem.Update();
-	_physicsSystem.Flush();
 
 	_eventSystem.InvokeEvent();
 	_objectSystem.UpdateDisableList();

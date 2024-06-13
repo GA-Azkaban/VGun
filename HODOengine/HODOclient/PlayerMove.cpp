@@ -49,7 +49,7 @@ void PlayerMove::Update()
 	// check on_ground state
 	if (_isJumping)
 	{
-		//CheckIsOnGround();
+		CheckIsOnGround();
 	}
 	//else
 	//{
@@ -260,7 +260,7 @@ void PlayerMove::CheckMoveInfo()
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
-		//CheckIsOnGround();
+		CheckIsOnGround();
 		Jump();
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
@@ -327,7 +327,7 @@ bool PlayerMove::CheckIsOnGround()
 		Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
 
 		int colliderType = 0;
-		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, 1.0f,0.0f }, 0.08f, &colliderType);
+		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, -1.0f,0.0f }, 0.08f, &colliderType);
 		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.08f, Vector4(1.f, 0.f, 0.f, 0.f));
 
 		if (opponentCollider)
@@ -385,6 +385,24 @@ void PlayerMove::Move(int direction)
 	}
 
 	_prevDirection = _moveDirection;
+}
+
+void PlayerMove::InterpolationMove(HDData::Transform* current, Vector3* serverPos, Quaternion* serverRot, float intermediateValue)
+{
+	//Vector3* currentPos = &current->GetPosition();
+	//Quaternion* currentRot = &current->GetRotation();
+
+	//if (currentPos == serverPos && currentRot == serverRot) return;
+
+	//// 포지션 선형 보간
+	//Vector3 interpolatedPos = Vector3::Lerp(*currentPos, *serverPos, intermediateValue);
+
+	//// 로테이션 구면 선형 보간
+	//Quaternion interpolatedRot = Quaternion::Slerp(*currentRot, *serverRot, intermediateValue);
+
+	//// 현재 Transform에 보간된 값 설정
+	//current->SetPosition(interpolatedPos);
+	//current->SetRotation(interpolatedRot);
 }
 
 void PlayerMove::ShootGun()
@@ -504,39 +522,6 @@ void PlayerMove::ApplyRecoil()
 
 	_rotAngleY += _sprayCamera[_shootCount].first;
 	_rotAngleX += _sprayCamera[_shootCount].second;
-}
-
-void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
-{
-	//++_enterCount;
-	//if (_enterCount == 1)
-	//{
-	//	return;
-	//}
-	auto& opponentCollider = (*colArr)->_otherActor;
-
-	// 지형인 경우
-	if (opponentCollider->GetColType() == eColliderType::TERRAIN)
-	{
-		// 착지 판정
-		_isOnGround = true;
-		_isJumping = false;
-	}
-}
-
-void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
-{
-	auto& opponentCollider = (*colArr)->_otherActor;
-	//// plane인 경우
-	//if (opponentCollider == nullptr)
-	//{
-	//	_isOnGround = false;
-	//}
-	//// 지형인 경우
-	//else if (opponentCollider->GetColType() == eColliderType::TERRAIN)
-	//{
-	//	_isOnGround = false;
-	//}
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -697,14 +682,14 @@ void PlayerMove::ToggleCam()
 
 void PlayerMove::Jump()
 {
-	if ((!_isJumping) && (_isOnGround))
-	//if(!_isJumping)
+	//if ((!_isJumping) && (_isOnGround))
+		//if (!_isJumping)
+	if(!_isJumping)
 	{
 		// 점프
 		_playerCollider->Jump();
 		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
-		_isOnGround = false;
 
 		//_jumpCooldown = 0.8f;
 		//_isOnGround = false;

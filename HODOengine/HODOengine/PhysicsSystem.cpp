@@ -10,22 +10,13 @@
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
 #include "TriggerBoxCollider.h"
+#include "CollisionCallback.h"
 #include "ParticleSphereCollider.h"
 
 #include <windows.h>
 
 namespace HDEngine
 {
-	physx::PxFilterFlags CustomFilterShader(
-		physx::PxFilterObjectAttributes attributes0, physx::PxFilterData filterData0,
-		physx::PxFilterObjectAttributes attributes1, physx::PxFilterData filterData1,
-		physx::PxPairFlags& pairFlags, const void* constantBlock, physx::PxU32 constantBlockSize)
-	{
-		pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
-		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
-		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_LOST;
-		return physx::PxFilterFlag::eDEFAULT;
-	}
 
 	void PhysicsSystem::Initialize()
 	{
@@ -48,8 +39,8 @@ namespace HDEngine
 		_playerMaterial = _physics->createMaterial(0.0f, 0.0f, 0.0f);
 		_planeMaterial = _physics->createMaterial(0.5f, 0.4f, 0.0f);
 
-		_collisionCallback = std::make_unique<CollisionCallback>();
-		_pxScene->setSimulationEventCallback(_collisionCallback.get());
+		CollisionCallback* collisionCallback = new CollisionCallback();
+		_pxScene->setSimulationEventCallback(collisionCallback);
 
 		_pxScene->setVisualizationParameter(physx::PxVisualizationParameter::eJOINT_LOCAL_FRAMES, 1.0f);
 		_pxScene->setVisualizationParameter(physx::PxVisualizationParameter::eJOINT_LIMITS, 1.0f);
@@ -64,74 +55,41 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
-		_collisionCallback->Clear();
-
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
 
-		_collisionCallback->CollectResults();
-		_collisionCallback->SendTriggerEvents();
-		_collisionCallback->SendCollisionEvents();
+		Vector3 pos;
+		Quaternion rot;
+		physx::PxTransform temp;
 
 		for (auto& rigid : _rigidDynamics)
 		{
-			// Collider On/Off
-			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
-			rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
+			temp = rigid->getGlobalPose();
 
-			bool temp = dynamicCol->GetIsTrigger();
-			// 트리거가 아닌 경우 onCollision 함수들 실행
-			if (dynamicCol->GetIsTrigger() == false)
-			{
-				if (!dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
-				{
-					dynamicCol->GetGameObject()->OnCollisionEnter(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
-				else if (dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
-				{
-					dynamicCol->GetGameObject()->OnCollisionStay();
-				}
-				else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
-				{
-					dynamicCol->GetGameObject()->OnCollisionExit(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-			}
+			pos.x = temp.p.x;
+			pos.y = temp.p.y;
+			pos.z = temp.p.z;
 
-			// Transform Update
-			physx::PxTransform nowTransform = rigid->getGlobalPose();
-			Vector3 pos;
-			Quaternion rot;
-
-			pos.x = nowTransform.p.x;
-			pos.y = nowTransform.p.y;
-			pos.z = nowTransform.p.z;
-
-			rot.x = nowTransform.q.x;
-			rot.y = nowTransform.q.y;
-			rot.z = nowTransform.q.z;
-			rot.w = nowTransform.q.w;
+			rot.x = temp.q.x;
+			rot.y = temp.q.y;
+			rot.z = temp.q.z;
+			rot.w = temp.q.w;
 
 			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
 		}
 
 		for (auto& rigid : _movableStatics)
 		{
+			temp = rigid->getGlobalPose();
 
+			pos.x = temp.p.x;
+			pos.y = temp.p.y;
+			pos.z = temp.p.z;
 
-			// Transform Update
-			physx::PxTransform nowTransform = rigid->getGlobalPose();
-			Vector3 pos;
-			Quaternion rot;
-
-			pos.x = nowTransform.p.x;
-			pos.y = nowTransform.p.y;
-			pos.z = nowTransform.p.z;
-
-			rot.x = nowTransform.q.x;
-			rot.y = nowTransform.q.y;
-			rot.z = nowTransform.q.z;
-			rot.w = nowTransform.q.w;
+			rot.x = temp.q.x;
+			rot.y = temp.q.y;
+			rot.z = temp.q.z;
+			rot.w = temp.q.w;
 
 			static_cast<HDData::StaticCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
 		}
@@ -160,12 +118,10 @@ namespace HDEngine
 		sceneDesc.gravity = physx::PxVec3(0.0f, -981.0f, 0.0f);
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
-		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
-		sceneDesc.filterShader = CustomFilterShader;
-		sceneDesc.simulationEventCallback = _collisionCallback.get();
+		sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
 
 		// 1번을 몸톰, 2번을 다리, 팔, 머리
-		//physx::PxSetGroupCollisionFlag(1, 2, false);
+		physx::PxSetGroupCollisionFlag(1, 2, false);
 
 		_pxScene = _physics->createScene(sceneDesc);
 
@@ -182,8 +138,8 @@ namespace HDEngine
 	void PhysicsSystem::CreateRigidBodies()
 	{
 		// fundamental ground
-		//physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_planeMaterial);
-		//_pxScene->addActor(*groundPlane);
+		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_planeMaterial);
+		_pxScene->addActor(*groundPlane);
 
 		//const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
 
@@ -194,7 +150,7 @@ namespace HDEngine
 		{
 			for (auto& object : sceneIter->second->GetGameObjectList())
 			{
-				//CreateStaticPlaneCollider(object);
+				CreateStaticPlaneCollider(object);
 				CreateStaticBoxCollider(object);
 				CreateDynamicBoxCollider(object);
 				CreateDynamicCapsuleCollider(object);
@@ -334,7 +290,6 @@ namespace HDEngine
 				physx::PxFilterData filterData;
 				filterData.word0 = capsule->GetColFilterNum();
 				shape->setSimulationFilterData(filterData);
-				shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 
 				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
 				Vector3 posOffset = collider->GetPositionOffset();
@@ -380,7 +335,6 @@ namespace HDEngine
 				physx::PxFilterData headFilterData;
 				headFilterData.word0 = sphere->GetColFilterNum();
 				shape->setSimulationFilterData(headFilterData);
-				shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -456,7 +410,6 @@ namespace HDEngine
 
 				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(particle->GetRadius()), *_material);
 				shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
-				shape->userData = particle;
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -516,19 +469,6 @@ namespace HDEngine
 		for (auto& actors : _movableStatics)
 		{
 			_pxScene->addActor(*actors);
-		}
-	}
-
-	void PhysicsSystem::Flush()
-	{
-		for (auto& rigid : _rigidDynamics)
-		{
-			static_cast<HDData::DynamicCollider*>(rigid->userData)->Flush();
-		}
-
-		for (auto& rigid : _rigidStatics)
-		{
-			static_cast<HDData::StaticCollider*>(rigid->userData)->Flush();
 		}
 	}
 

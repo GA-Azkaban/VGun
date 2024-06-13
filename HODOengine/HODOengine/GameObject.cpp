@@ -9,8 +9,6 @@
 #include "Scene.h"
 #include "SceneSystem.h"
 
-#include <algorithm>
-
 namespace HDEngine
 {
 	class SceneSystem;
@@ -109,15 +107,14 @@ namespace HDData
 		}
 	}
 
-	void GameObject::OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count)
-{
-		if (!_selfActive)
-		{
-			return;
-		}
+	void GameObject::OnCollisionEnter()
+	{
+		if (!GetParentActive()) return;
 
-		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(), 
-			[&_colArr, &count](auto& iter){ iter->OnCollisionEnter(_colArr, count); });
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
+		{
+			_componentsIndexed[i]->OnCollisionEnter();
+		}
 	}
 
 	void GameObject::OnCollisionStay()
@@ -130,15 +127,14 @@ namespace HDData
 		}
 	}
 
-	void GameObject::OnCollisionExit(PhysicsCollision** _colArr, unsigned int count)
-{
-		if (!_selfActive)
-		{
-			return;
-		}
+	void GameObject::OnCollisionExit()
+	{
+		if (!GetParentActive()) return;
 
-		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
-			[&_colArr, &count](auto& iter) { iter->OnCollisionExit(_colArr, count); });
+		for (int i = 0; i < _componentsIndexed.size(); ++i)
+		{
+			_componentsIndexed[i]->OnCollisionExit();
+		}
 	}
 
 	const std::vector<Component*>& GameObject::GetAllComponents() const

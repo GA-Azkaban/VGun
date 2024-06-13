@@ -1285,10 +1285,9 @@ class PlayerData final :
     kTeamFieldNumber = 3,
     kHpFieldNumber = 5,
     kHostFieldNumber = 2,
-    kIsSittingFieldNumber = 6,
-    kIsDeadFieldNumber = 7,
-    kKillCountFieldNumber = 8,
-    kDeathCountFieldNumber = 9,
+    kIsSittingFieldNumber = 7,
+    kIsDeadFieldNumber = 8,
+    kMaxHpFieldNumber = 6,
   };
   // .Protocol.UserInfo userInfo = 1;
   bool has_userinfo() const;
@@ -1353,7 +1352,7 @@ class PlayerData final :
   void _internal_set_host(bool value);
   public:
 
-  // bool isSitting = 6;
+  // bool isSitting = 7;
   void clear_issitting();
   bool issitting() const;
   void set_issitting(bool value);
@@ -1362,7 +1361,7 @@ class PlayerData final :
   void _internal_set_issitting(bool value);
   public:
 
-  // bool isDead = 7;
+  // bool isDead = 8;
   void clear_isdead();
   bool isdead() const;
   void set_isdead(bool value);
@@ -1371,22 +1370,13 @@ class PlayerData final :
   void _internal_set_isdead(bool value);
   public:
 
-  // int32 killCount = 8;
-  void clear_killcount();
-  ::PROTOBUF_NAMESPACE_ID::int32 killcount() const;
-  void set_killcount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // float maxHp = 6;
+  void clear_maxhp();
+  float maxhp() const;
+  void set_maxhp(float value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_killcount() const;
-  void _internal_set_killcount(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
-  // int32 deathCount = 9;
-  void clear_deathcount();
-  ::PROTOBUF_NAMESPACE_ID::int32 deathcount() const;
-  void set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_deathcount() const;
-  void _internal_set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 value);
+  float _internal_maxhp() const;
+  void _internal_set_maxhp(float value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.PlayerData)
@@ -1403,8 +1393,7 @@ class PlayerData final :
   bool host_;
   bool issitting_;
   bool isdead_;
-  ::PROTOBUF_NAMESPACE_ID::int32 killcount_;
-  ::PROTOBUF_NAMESPACE_ID::int32 deathcount_;
+  float maxhp_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -1521,7 +1510,6 @@ class GameRule final :
     kGameTimeFieldNumber = 1,
     kDesiredKillFieldNumber = 2,
     kRespawnTimeFieldNumber = 3,
-    kMaxHpFieldNumber = 4,
   };
   // int32 gameTime = 1;
   void clear_gametime();
@@ -1550,15 +1538,6 @@ class GameRule final :
   void _internal_set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 maxHp = 4;
-  void clear_maxhp();
-  ::PROTOBUF_NAMESPACE_ID::int32 maxhp() const;
-  void set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_maxhp() const;
-  void _internal_set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value);
-  public:
-
   // @@protoc_insertion_point(class_scope:Protocol.GameRule)
  private:
   class _Internal;
@@ -1569,7 +1548,6 @@ class GameRule final :
   ::PROTOBUF_NAMESPACE_ID::int32 gametime_;
   ::PROTOBUF_NAMESPACE_ID::int32 desiredkill_;
   ::PROTOBUF_NAMESPACE_ID::int32 respawntime_;
-  ::PROTOBUF_NAMESPACE_ID::int32 maxhp_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -2651,7 +2629,27 @@ inline void PlayerData::set_hp(float value) {
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.hp)
 }
 
-// bool isSitting = 6;
+// float maxHp = 6;
+inline void PlayerData::clear_maxhp() {
+  maxhp_ = 0;
+}
+inline float PlayerData::_internal_maxhp() const {
+  return maxhp_;
+}
+inline float PlayerData::maxhp() const {
+  // @@protoc_insertion_point(field_get:Protocol.PlayerData.maxHp)
+  return _internal_maxhp();
+}
+inline void PlayerData::_internal_set_maxhp(float value) {
+  
+  maxhp_ = value;
+}
+inline void PlayerData::set_maxhp(float value) {
+  _internal_set_maxhp(value);
+  // @@protoc_insertion_point(field_set:Protocol.PlayerData.maxHp)
+}
+
+// bool isSitting = 7;
 inline void PlayerData::clear_issitting() {
   issitting_ = false;
 }
@@ -2671,7 +2669,7 @@ inline void PlayerData::set_issitting(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.isSitting)
 }
 
-// bool isDead = 7;
+// bool isDead = 8;
 inline void PlayerData::clear_isdead() {
   isdead_ = false;
 }
@@ -2689,46 +2687,6 @@ inline void PlayerData::_internal_set_isdead(bool value) {
 inline void PlayerData::set_isdead(bool value) {
   _internal_set_isdead(value);
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.isDead)
-}
-
-// int32 killCount = 8;
-inline void PlayerData::clear_killcount() {
-  killcount_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::_internal_killcount() const {
-  return killcount_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::killcount() const {
-  // @@protoc_insertion_point(field_get:Protocol.PlayerData.killCount)
-  return _internal_killcount();
-}
-inline void PlayerData::_internal_set_killcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  killcount_ = value;
-}
-inline void PlayerData::set_killcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_killcount(value);
-  // @@protoc_insertion_point(field_set:Protocol.PlayerData.killCount)
-}
-
-// int32 deathCount = 9;
-inline void PlayerData::clear_deathcount() {
-  deathcount_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::_internal_deathcount() const {
-  return deathcount_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 PlayerData::deathcount() const {
-  // @@protoc_insertion_point(field_get:Protocol.PlayerData.deathCount)
-  return _internal_deathcount();
-}
-inline void PlayerData::_internal_set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  deathcount_ = value;
-}
-inline void PlayerData::set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_deathcount(value);
-  // @@protoc_insertion_point(field_set:Protocol.PlayerData.deathCount)
 }
 
 // -------------------------------------------------------------------
@@ -2793,26 +2751,6 @@ inline void GameRule::_internal_set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 v
 inline void GameRule::set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_respawntime(value);
   // @@protoc_insertion_point(field_set:Protocol.GameRule.respawnTime)
-}
-
-// int32 maxHp = 4;
-inline void GameRule::clear_maxhp() {
-  maxhp_ = 0;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_maxhp() const {
-  return maxhp_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::maxhp() const {
-  // @@protoc_insertion_point(field_get:Protocol.GameRule.maxHp)
-  return _internal_maxhp();
-}
-inline void GameRule::_internal_set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  
-  maxhp_ = value;
-}
-inline void GameRule::set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_maxhp(value);
-  // @@protoc_insertion_point(field_set:Protocol.GameRule.maxHp)
 }
 
 #ifdef __GNUC__

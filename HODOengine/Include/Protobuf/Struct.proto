@@ -68,12 +68,11 @@ message PlayerData
 	Transform transform = 4;
 
 	float hp = 5;
+	float maxHp = 6;
 
-	bool isSitting = 6;
-	bool isDead = 7;
+	bool isSitting = 7;
+	bool isDead = 8;
 
-	int32 killCount = 8;
-	int32 deathCount = 9;
 	// Todo 리스폰 무적 앉기?
 }
 
@@ -82,5 +81,4 @@ message GameRule
 	int32 gameTime = 1;
 	int32 desiredKill = 2;
 	int32 respawnTime = 3;
-	int32 maxHp = 4;
 }
