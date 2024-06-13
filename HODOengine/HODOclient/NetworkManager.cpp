@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -57,6 +57,26 @@ void NetworkManager::Update()
 		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 1);
 		++index;
 	}
+}
+
+void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
+{
+
+}
+
+void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
+{
+
+}
+
+void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
+{
+
+}
+
+void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
+{
+
 }
 
 void NetworkManager::Connected()
@@ -293,7 +313,7 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetPlayerUID(player.userinfo().uid());
+		one->SetCurrentHP(player.hp());
 
 		switch (player.team())
 		{
@@ -343,6 +363,7 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetPlayerUID(player.userinfo().uid());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
@@ -362,7 +383,20 @@ void NetworkManager::SendKickPlayer(std::string targetNickName)
 
 void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 {
-	API::LoadSceneByName("MainMenu");
+	auto info = LobbyManager::Instance().GetRoomData();
+
+	info->_players.clear();
+
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.userinfo().id());
+		one->SetNickName(player.userinfo().nickname());
+		one->SetIsHost(player.host());
+		one->SetCurrentHP(player.hp());
+
+		info->_players.push_back(one);
+	}
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
@@ -469,8 +503,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		if(player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
 
 		auto& obj = playerobj[player.userinfo().uid()];
-
-		currentTransform[index] = obj->GetTransform();
 		
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		serverPosition[index] = pos;
@@ -480,6 +512,33 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		++index;
 	}
+}
+
+void NetworkManager::SendPlayJump(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_JUMP packet;
+
+	packet.mutable_playerdata()->CopyFrom(playerData);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
+{
+
+}
+
+void NetworkManager::SendPlayShoot(Protocol::PlayerData playerData, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)
+{
+	Protocol::C_PLAY_SHOOT packet;
+
+	packet.mutable_transform()->CopyFrom(playerData.transform());
+	packet.set_hittargetuid(hitTargetUid);
+	packet.set_hitlocation(hitLocation);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
 }
 
 bool NetworkManager::IsConnected()

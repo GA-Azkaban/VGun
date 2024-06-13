@@ -10,7 +10,9 @@ namespace HDData
 		, _rotationOffset(Quaternion::Identity)
 		, _scaleOffset(Vector3::One),
 		_parentCollider(nullptr),
-		_collisionFilterNum(0)
+		_collisionFilterNum(0),
+		_isTrigger(false),
+		_colType(eColliderType::NONE)
 	{
 		
 	}
@@ -131,7 +133,7 @@ namespace HDData
 		_isTrigger = isTrigger;
 	}
 
-	bool Collider::GetTrigger()
+	bool Collider::GetIsTrigger()
 	{
 		return _isTrigger;
 	}
@@ -139,6 +141,39 @@ namespace HDData
 	int Collider::GetColFilterNum() const
 	{
 		return _collisionFilterNum;
+	}
+
+	bool Collider::GetIsCollide() const
+	{
+		return _isCollide;
+	}
+
+	bool Collider::GetPrevIsCollide() const
+	{
+		return _prevIsCollide;
+	}
+
+	std::vector<PhysicsCollision*> Collider::GetCollisionStorage() const
+	{
+		return _collisionStorage;
+	}
+
+	eColliderType Collider::GetColType() const
+	{
+		return _colType;
+	}
+
+	void Collider::Flush()
+	{
+		_prevIsCollide = false;
+		_isCollide = false;
+
+		//_wasTriggered = false;
+		_isTrigger = false;
+
+		//매 프레임 체크할 때 마다 초기화.
+		_collisionStorage.clear();
+		//_triggerStorage.clear();
 	}
 
 	void Collider::OnCollision(Collider* opponent, int actionType)
@@ -162,6 +197,7 @@ namespace HDData
 
 		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
 		this->_isCollide = true;
+		this->_prevIsCollide = false;
 		_collisionStorage.push_back(&collision);
 	}
 
@@ -171,6 +207,7 @@ namespace HDData
 		//PG_TRACE(tRes.append(this->_object->GetName()).c_str());
 
 		this->_isCollide = false;
+		this->_prevIsCollide = true;
 		_collisionStorage.push_back(&collision);
 	}
 
