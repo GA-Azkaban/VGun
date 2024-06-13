@@ -75,6 +75,7 @@ message C_ROOM_CREATE
 
 message C_ROOM_SETTING
 {
+	string roomName = 1;
 	// Todo 아직 안만들어짐
 	string password = 2;
 
@@ -179,4 +180,42 @@ message C_ROOM_LIST_REQUEST
 message S_ROOM_LIST
 {
 	repeated RoomInfo roomInfo = 1;
+}
+
+message C_PLAY_JUMP
+{
+	PlayerData playerData = 1;
+}
+
+message S_PLAY_JUMP
+{
+	PlayerData playerData = 1;
+}
+
+message C_PLAY_SHOOT
+{
+	Transform transform = 1;
+	
+	uint64 hitTargetUid = 2;
+	eHitLocation hitLocation = 3;
+}
+
+message S_PLAY_SHOOT
+{
+	PlayerData shootPlayer = 1;
+	
+	optional PlayerData hitPlayer = 2;
+	optional eHitLocation hitLocation = 3;
+}
+
+message S_PLAY_KILL_DEATH
+{
+	PlayerData deathPlayer = 1;
+	PlayerData killPlayer = 2;
+}
+
+message S_PLAY_RESPAWN
+{
+	PlayerData playerData = 1;
+	// Todo Respawn Point
 }
