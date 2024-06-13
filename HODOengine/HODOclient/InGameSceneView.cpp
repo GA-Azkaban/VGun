@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -62,14 +62,14 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->_myObj = player;
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.6f, 0.8f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
+	playerCollider->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.95f, 0.0f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.4f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.05f, 0.0f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.3f);
 	headCollider->SetParentCollider(playerCollider);
-	headCollider->SetPositionOffset(Vector3(0.0f, -1.5f, 0.0f));
+	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -176,15 +176,15 @@ void InGameSceneView::Initialize()
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.8f);
-		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.8f, 0.0f });
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
+		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.65f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(1.0f, true);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.05f, 0.0f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.3f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.3f, 0.0f));
-		ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadMaterial(M_Red, 0);
