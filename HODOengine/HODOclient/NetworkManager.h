@@ -72,9 +72,18 @@ public: // 업데이트
 	void SendPlayUpdate();
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
-public: // 동작
-	// Todo 총 발사
-	// Todo
+public: // 인게임
+	void SendPlayJump(Protocol::PlayerData playerData);
+	void RecvPlayJump(Protocol::PlayerData playerData);
+
+	void SendPlayShoot(Protocol::PlayerData playerData, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
+	void RecvPlayShoot(Protocol::PlayerData playerData);
+	void RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation);
+
+	void RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData);
+
+	// 리스폰 지점 추가해야함
+	void RecvPlayRespawn(Protocol::PlayerData playerData);
 
 public:
 	void SetConnect(bool isConnect);
