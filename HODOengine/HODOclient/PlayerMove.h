@@ -47,7 +47,6 @@ private:
 private:
 	void Jump();
 	void Move(int direction);
-	void InterpolationMove(HDData::Transform* current, Vector3* serverPos, Quaternion* serverRot, float intermediateValue);
 	void Pitch(float rotationValue);
 
 	// 사격 관련

@@ -188,9 +188,6 @@ ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
 
 BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 {
-	//_screenWidth = GetSystemMetrics(SM_CXFULLSCREEN);
-	//_screenHeight = GetSystemMetrics(SM_CYFULLSCREEN);
-
 	DEVMODE dmSettings;									// Device Mode variable - Needed to change modes
 	memset(&dmSettings, 0, sizeof(dmSettings));			// Makes Sure Memory's Cleared
 
@@ -201,10 +198,6 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 		MessageBox(NULL, L"Could Not Enum Display Settings", L"Error", MB_OK);
 		return FALSE;
 	}
-
-	//dmSettings.dmPelsWidth = _screenWidth;					// Set the desired Screen Width
-	//dmSettings.dmPelsHeight = _screenHeight;					// Set the desired Screen Height
-	//dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;	// Set the flags saying we're changing the Screen Width and Height
 
 	// This function actually changes the screen to full screen
 	// CDS_FULLSCREEN Gets Rid Of Start Bar.
@@ -220,7 +213,7 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 
 	_screenWidth = dmSettings.dmPelsWidth;
 	_screenHeight = dmSettings.dmPelsHeight;
-	//_hWnd = CreateWindowExW(WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN, _appName, _appName, WS_POPUP, 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), nullptr, nullptr, hInstance, nullptr);
+	
 	_hWnd = CreateWindowW(_appName, _appName, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 		0, 0, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 
@@ -229,7 +222,7 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 		return FALSE;
 	}
 
-	ShowWindow(_hWnd, SW_SHOWNORMAL);
+	ShowWindow(_hWnd, SW_SHOWMAXIMIZED);
 	UpdateWindow(_hWnd);
 
 	return TRUE;
