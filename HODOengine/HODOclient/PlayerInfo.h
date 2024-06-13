@@ -39,7 +39,6 @@ public:
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
 
-	void SetMaxHP(int hp);
 	void SetCurrentHP(int hp);
 	void SetCurrentKill(int killCount);
 	void SetCurrentDeath(int deathCount);
@@ -54,7 +53,6 @@ public:
 	bool GetPlayerDie();
 	std::string GetPlayerNickName();
 
-	int GetPlayerMaxHP();
 	int GetPlayerCurrentHP();
 	int GetPlayerKillCount();
 	int GetPlayerDeathCount();
@@ -71,7 +69,6 @@ private:
 	std::string _playerNickname;
 
 	// state info
-	int _maxHP;
 	int _currentHP;
 	int _kill;
 	int _death;

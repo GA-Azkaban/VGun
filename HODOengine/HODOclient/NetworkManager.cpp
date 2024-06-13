@@ -47,6 +47,26 @@ void NetworkManager::Update()
 	_service->GetIocpCore()->Dispatch(0);
 }
 
+void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
+{
+
+}
+
+void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
+{
+
+}
+
+void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
+{
+
+}
+
+void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
+{
+
+}
+
 void NetworkManager::Connected()
 {
 	_isConnect = true;
@@ -241,7 +261,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
@@ -262,7 +281,6 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
@@ -291,7 +309,6 @@ void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
-		one->SetMaxHP(player.maxhp());
 		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
@@ -340,6 +357,33 @@ void NetworkManager::SendPlayUpdate(Protocol::PlayerData playerData)
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
 
+}
+
+void NetworkManager::SendPlayJump(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_JUMP packet;
+
+	packet.mutable_playerdata()->CopyFrom(playerData);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
+{
+
+}
+
+void NetworkManager::SendPlayShoot(Protocol::PlayerData playerData, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)
+{
+	Protocol::C_PLAY_SHOOT packet;
+
+	packet.mutable_transform()->CopyFrom(playerData.transform());
+	packet.set_hittargetuid(hitTargetUid);
+	packet.set_hitlocation(hitLocation);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
 }
 
 bool NetworkManager::IsConnected()
