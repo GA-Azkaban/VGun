@@ -73,12 +73,10 @@ namespace HDEngine
 				pair._first->Collider_OnCollisionExit(c);
 			}
 			c.SwapObjects();
-			if (pair._second != nullptr)
+
+			if (!pair._second->GetIsTrigger())
 			{
-				if (!pair._second->GetIsTrigger())
-				{
-					pair._second->Collider_OnCollisionExit(c);
-				}
+				pair._second->Collider_OnCollisionExit(c);
 			}
 			c.SwapObjects();
 		}
@@ -98,12 +96,10 @@ namespace HDEngine
 				pair._first->Collider_OnCollisionEnter(c);
 			}
 			c.SwapObjects();
-			if (pair._second != nullptr)
+
+			if (!pair._second->GetIsTrigger())
 			{
-				if (!pair._second->GetIsTrigger())
-				{
-					pair._second->Collider_OnCollisionEnter(c);
-				}
+				pair._second->Collider_OnCollisionEnter(c);
 			}
 			c.SwapObjects();
 		}

@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -514,14 +514,9 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 	//	return;
 	//}
 	auto& opponentCollider = (*colArr)->_otherActor;
-	// plane인 경우
-	if (opponentCollider == nullptr)
-	{
-		_isOnGround = true;
- 		_isJumping = false;
-	}
+
 	// 지형인 경우
-	else if (opponentCollider->GetColType() == eColliderType::TERRAIN)
+	if (opponentCollider->GetColType() == eColliderType::TERRAIN)
 	{
 		// 착지 판정
 		_isOnGround = true;

@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -182,8 +182,8 @@ namespace HDEngine
 	void PhysicsSystem::CreateRigidBodies()
 	{
 		// fundamental ground
-		physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_planeMaterial);
-		_pxScene->addActor(*groundPlane);
+		//physx::PxRigidStatic* groundPlane = physx::PxCreatePlane(*_physics, physx::PxPlane(0.0f, 1.0f, 0.0f, 0.0f), *_planeMaterial);
+		//_pxScene->addActor(*groundPlane);
 
 		//const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
 
