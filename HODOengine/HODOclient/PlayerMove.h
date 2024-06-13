@@ -58,6 +58,11 @@ private:
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
 
+public:
+	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
+	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
+
+
 private:
 	bool _isMovable;
 	bool _isJumping;
@@ -106,6 +111,9 @@ private:
 	bool _isReloading;
 	bool _isRunning;
 	bool _tempFlag = 0;
+
+	int _enterCount = 0;
+
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;

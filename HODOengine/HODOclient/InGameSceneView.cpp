@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -41,7 +41,7 @@ void InGameSceneView::Initialize()
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 내 캐릭터 생성
-	std::string objName1 = "player0";
+	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
@@ -172,7 +172,7 @@ void InGameSceneView::Initialize()
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
 	{
-		std::string otherObjName = "player" + std::to_string(i + 1);
+		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);

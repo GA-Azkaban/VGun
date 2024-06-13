@@ -50,6 +50,7 @@
 #include "ParticleSystem.h"
 #include "TriggerBoxCollider.h"
 #include "Light.h"
+#include "PhysicsCollision.h"
 
 #include "RenderSystem.h"
 #include "ObjectSystem.h"

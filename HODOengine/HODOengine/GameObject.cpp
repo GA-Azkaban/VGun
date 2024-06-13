@@ -9,6 +9,8 @@
 #include "Scene.h"
 #include "SceneSystem.h"
 
+#include <algorithm>
+
 namespace HDEngine
 {
 	class SceneSystem;
@@ -107,14 +109,15 @@ namespace HDData
 		}
 	}
 
-	void GameObject::OnCollisionEnter()
-	{
-		if (!GetParentActive()) return;
-
-		for (int i = 0; i < _componentsIndexed.size(); ++i)
+	void GameObject::OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count)
+{
+		if (!_selfActive)
 		{
-			_componentsIndexed[i]->OnCollisionEnter();
+			return;
 		}
+
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(), 
+			[&_colArr, &count](auto& iter){ iter->OnCollisionEnter(_colArr, count); });
 	}
 
 	void GameObject::OnCollisionStay()
@@ -127,14 +130,15 @@ namespace HDData
 		}
 	}
 
-	void GameObject::OnCollisionExit()
-	{
-		if (!GetParentActive()) return;
-
-		for (int i = 0; i < _componentsIndexed.size(); ++i)
+	void GameObject::OnCollisionExit(PhysicsCollision** _colArr, unsigned int count)
+{
+		if (!_selfActive)
 		{
-			_componentsIndexed[i]->OnCollisionExit();
+			return;
 		}
+
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
+			[&_colArr, &count](auto& iter) { iter->OnCollisionExit(_colArr, count); });
 	}
 
 	const std::vector<Component*>& GameObject::GetAllComponents() const
@@ -303,7 +307,7 @@ namespace HDData
 		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(scene, node->name, parentObject);
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
 		node->nodeTransform = newObject->GetTransform()->_nodeTransform;
-		newObject->AddComponent<StaticBoxCollider>();
+		//newObject->AddComponent<StaticBoxCollider>();
 		
 		for (int i = 0; i < node->children.size(); ++i)
 		{

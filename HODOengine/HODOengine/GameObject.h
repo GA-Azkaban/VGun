@@ -53,9 +53,9 @@ namespace HDData
 		void FixedUpdate();
 		void OnDestroy();
 
-		void OnCollisionEnter();
+		void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count);
 		void OnCollisionStay();
-		void OnCollisionExit();
+		void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count);
 
 		template <ComponentConcept ComponentType, typename... Args>
 		ComponentType* AddComponent(Args&&... args) {
