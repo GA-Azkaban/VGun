@@ -103,7 +103,7 @@ void MainMenuScene::MainMenu()
 
 	// Refresh btn
 	HDData::GameObject* refreshButton = API::CreateButton(_scene, "refreshBtn", enter_roomLstCanvas);
-	refreshButton->GetTransform()->SetLocalPosition(330, -330, 0);
+	refreshButton->GetTransform()->SetLocalPosition(330 * 1.33f, -330 * 1.33f, 0);
 	refreshButton->AddComponent<BtnHoveringScript>();
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
@@ -120,7 +120,7 @@ void MainMenuScene::MainMenu()
 
 	// page move button
 	HDData::GameObject* pageLeftButton = API::CreateButton(_scene, "pageLeft", enter_roomLstCanvas);
-	pageLeftButton->GetTransform()->SetLocalPosition(-300, 0, 0);
+	pageLeftButton->GetTransform()->SetLocalPosition(-300 * 1.33f, 0, 0);
 	pageLeftButton->AddComponent<BtnHoveringScript>();
 	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
 	lBtn->SetImage("leftArrow.png");
@@ -135,7 +135,7 @@ void MainMenuScene::MainMenu()
 		});
 
 	HDData::GameObject* pageRightButton = API::CreateButton(_scene, "pageRight", enter_roomLstCanvas);
-	pageRightButton->GetTransform()->SetLocalPosition(300, 0, 0);
+	pageRightButton->GetTransform()->SetLocalPosition(300 * 1.33f, 0, 0);
 	pageRightButton->AddComponent<BtnHoveringScript>();
 	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
 	rBtn->SetImage("rightArrow.png");
@@ -240,7 +240,7 @@ void MainMenuScene::MainMenu()
 	{
 		HDData::GameObject* enter_roomCanvas = API::CreateButton(_scene, "room", enter_roomLstCanvas);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
-		enter_roomCanvas->GetTransform()->SetPosition((960.0f + 150.0f) * width / 1920, posY * height / 1080, 0);
+		enter_roomCanvas->GetTransform()->SetPosition((960.0f + 130.0f) * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 		enter_roomCanvas->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
@@ -314,7 +314,6 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].isTeam = isT;
 
 		posY += 155;
-
 
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetOnClickEvent([=]()
 			{
