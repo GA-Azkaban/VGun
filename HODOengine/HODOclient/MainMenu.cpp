@@ -8,8 +8,6 @@
 #include "BtnImageScript.h"
 #include "BtnHoveringScript.h"
 
-#include "UIMove.h"
-
 MainMenuScene::MainMenuScene()
 	:_menuManager(MenuManager::Instance())
 {
@@ -242,7 +240,7 @@ void MainMenuScene::MainMenu()
 	{
 		HDData::GameObject* enter_roomCanvas = API::CreateButton(_scene, "room", enter_roomLstCanvas);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
-		enter_roomCanvas->GetTransform()->SetPosition((960.0f + 50.0f) * width / 1920, posY * height / 1080, 0);
+		enter_roomCanvas->GetTransform()->SetPosition((960.0f + 150.0f) * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 		enter_roomCanvas->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
