@@ -123,6 +123,9 @@ namespace API
 
 		// Resize
 		HODO_API void Resize(int width, int height);
+
+		// Destroy window
+		HODO_API void QuitWindow();
 	}
 }
 

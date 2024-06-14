@@ -33,6 +33,7 @@ namespace RocketCore::Graphics
 	void TextRenderer::SetText(const std::string& str)
 	{
 		_str = str;
+		MeasureTextSize();
 	}
 
 	const std::string TextRenderer::GetText()
@@ -55,6 +56,10 @@ namespace RocketCore::Graphics
 		_xLocation = worldTM._41;
 		_yLocation = worldTM._42;
 		_zLocation = worldTM._43;	// for Debugging text
+
+		_yLocation -= _height * 0.5f;
+		_xLocation -= _width * 0.5f;
+
 		_receiveTMInfoFlag = true;
 	}
 
@@ -81,8 +86,6 @@ namespace RocketCore::Graphics
 
 		if (_receiveTMInfoFlag)
 		{
-			MeasureTextSize();	//여기두면 안되는데
-
 			std::wstring wstr(_str.begin(), _str.end());
 			_font->DrawString(
 				spriteBatch,
@@ -126,9 +129,6 @@ namespace RocketCore::Graphics
 		_size = _font->MeasureString(wstr.c_str());
 		_width = DirectX::XMVectorGetX(_size);
 		_height = DirectX::XMVectorGetY(_size);
-
-		_yLocation -= _height * 0.5f;
-		_xLocation -= _width * 0.5f;
 	}
 
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)

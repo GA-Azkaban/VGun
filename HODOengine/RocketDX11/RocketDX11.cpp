@@ -388,7 +388,7 @@ namespace RocketCore::Graphics
 
 #ifdef _DEBUG
 		static bool isDebugRender = true;
-		if (GetAsyncKeyState(VK_F1) & 0x8000)
+		if (GetAsyncKeyState(VK_F12) & 0x8000)
 		{
 			isDebugRender = !isDebugRender;
 		}

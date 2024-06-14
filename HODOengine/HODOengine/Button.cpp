@@ -76,6 +76,11 @@ namespace HDData
 		_button->RetunDefaultColor();
 	}
 
+	void Button::ChangeScale(float x, float y)
+	{
+		_button->ChangeScale(x, y);
+	}
+
 	HDData::ImageUI* Button::GetButtonComp()
 	{
 		return _button;

@@ -134,6 +134,11 @@ HWND HODOengine::GetHWND()
 }
 
 
+void HODOengine::Quit()
+{
+	DestroyWindow(_hWnd);
+}
+
 void HODOengine::Run()
 {
 	_timeSystem.Update();
@@ -198,6 +203,12 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 		return FALSE;
 	}
 
+	//_screenWidth = 1920;
+	//_screenHeight = 1080;
+	//dmSettings.dmPelsWidth = _screenWidth;
+	//dmSettings.dmPelsHeight = _screenHeight;
+	//dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+
 	// This function actually changes the screen to full screen
 	// CDS_FULLSCREEN Gets Rid Of Start Bar.
 	// We always want to get a result from this function to check if we failed
@@ -211,7 +222,7 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 	}
 
 	_screenWidth = dmSettings.dmPelsWidth;
-	_screenHeight = dmSettings.dmPelsHeight;
+	_screenHeight = dmSettings.dmPelsHeight;	
 	
 	_hWnd = CreateWindowW(_appName, _appName, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
 		0, 0, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);

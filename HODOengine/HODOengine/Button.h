@@ -32,6 +32,7 @@ namespace HDData
 		void SetDefaultColor(DirectX::FXMVECTOR color);
 		void ReturnDefaultColor();
 
+		void ChangeScale(float x, float y);
 
 		ImageUI* GetButtonComp();
 

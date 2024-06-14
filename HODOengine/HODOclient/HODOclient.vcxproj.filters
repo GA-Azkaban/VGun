@@ -245,6 +245,9 @@
     <ClInclude Include="Timer.h">
       <Filter>02_Client\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="UIMove.h">
+      <Filter>04_SceneView</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

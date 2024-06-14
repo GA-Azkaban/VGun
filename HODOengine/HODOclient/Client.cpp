@@ -45,21 +45,21 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 	
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
-	// 
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();	
-
-	//InGameSceneView inGame;			//Scene Name : InGame
-	//inGame.Initialize();
-
-	//LobbySceneView lobby;
-	//lobby.Initialize();
-
-	//API::LoadSceneByName("Login");
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
+	 
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();	
 
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
-	API::LoadSceneByName("InGame");
+
+	LobbySceneView lobby;
+	lobby.Initialize();
+
+	API::LoadSceneByName("Login");
+
+	//InGameSceneView inGame;			//Scene Name : InGame
+	//inGame.Initialize();
+	//API::LoadSceneByName("InGame");
 }

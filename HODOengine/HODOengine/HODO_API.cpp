@@ -1,5 +1,6 @@
 ﻿#include "HODO_API.h"
 
+#include "HODOengine.h"
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
 #include "InputSystem.h"
@@ -302,7 +303,12 @@ namespace API
 			return HDEngine::UISystem::Instance().GetEveryUI();
 		}
 
+		HODO_API void QuitWindow()
+		{
+			HODOengine::Instance().Quit();
+		}
 	}
 
+	
 
 }
