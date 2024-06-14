@@ -1,4 +1,4 @@
-﻿#include "PlayerInfo.h"
+#include "PlayerInfo.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -109,7 +109,7 @@ void PlayerInfo::SetNickName(std::string nickName)
 	_playerNickname = nickName;
 }
 
-void PlayerInfo::SetMaxHP(int hp)
+bool& PlayerInfo::GetIsDie()
 {
 	_maxHP = hp;
 }
@@ -152,11 +152,6 @@ bool& PlayerInfo::GetPlayerDie()
 std::string& PlayerInfo::GetPlayerNickName()
 {
 	return _playerNickname;
-}
-
-int& PlayerInfo::GetPlayerMaxHP()
-{
-	return _maxHP;
 }
 
 int& PlayerInfo::GetPlayerCurrentHP()
