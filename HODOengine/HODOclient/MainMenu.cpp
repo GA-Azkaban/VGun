@@ -47,8 +47,7 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
-	//mainCanvasImage->SetImage("_blur_background_image.png");
-	mainCanvasImage->SetImage("_card_holder.png");
+	mainCanvasImage->SetImage("_blur_background_image.png");
 	mainCanvasImage->SetSortOrder(0.0f);
 	mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
@@ -237,17 +236,18 @@ void MainMenuScene::MainMenu()
 		});
 
 	// room
-	float posY = 230.f;
+	float posY = 245.f;
 
 	for (int i = 0; i < 5; ++i)
 	{
 		HDData::GameObject* enter_roomCanvas = API::CreateButton(_scene, "room", enter_roomLstCanvas);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
-		enter_roomCanvas->GetTransform()->SetPosition(960.0f * width / 1920, posY * height / 1080, 0);
+		enter_roomCanvas->GetTransform()->SetPosition((960.0f + 50.0f) * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 		enter_roomCanvas->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
+		MenuManager::Instance()._roomObject[i].btn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		HDData::GameObject* enter_roomTitle = API::CreateTextbox(_scene, "title", enter_roomCanvas);
 		enter_roomTitle->GetTransform()->SetLocalPosition(-80, 0, 0);
@@ -315,7 +315,7 @@ void MainMenuScene::MainMenu()
 
 		MenuManager::Instance()._roomObject[i].isTeam = isT;
 
-		posY += 150;
+		posY += 155;
 
 
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetOnClickEvent([=]()

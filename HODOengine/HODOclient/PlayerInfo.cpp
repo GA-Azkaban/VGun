@@ -1,4 +1,4 @@
-#include "PlayerInfo.h"
+﻿#include "PlayerInfo.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -107,11 +107,6 @@ void PlayerInfo::SetIsHost(bool isHost)
 void PlayerInfo::SetNickName(std::string nickName)
 {
 	_playerNickname = nickName;
-}
-
-bool& PlayerInfo::GetIsDie()
-{
-	_maxHP = hp;
 }
 
 bool& PlayerInfo::GetIsDie()
