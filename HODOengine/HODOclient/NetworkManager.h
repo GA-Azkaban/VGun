@@ -76,7 +76,7 @@ public: // 인게임
 	void SendPlayJump(Protocol::PlayerData playerData);
 	void RecvPlayJump(Protocol::PlayerData playerData);
 
-	void SendPlayShoot(Protocol::PlayerData playerData, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
+	void SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
 	void RecvPlayShoot(Protocol::PlayerData playerData);
 	void RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation);
 

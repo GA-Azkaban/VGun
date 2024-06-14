@@ -3,6 +3,7 @@
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
+#include "RoundManager.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true),
@@ -447,13 +448,15 @@ void PlayerMove::ShootGunDdabal()
 	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
 	if (hitDynamicSphere != nullptr)
 	{
+		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
 	}
 
-	// 적군의 머리를 맞췄을 때
+	// 적군의 몸을 맞췄을 때
 	HDData::DynamicCapsuleCollider* hitDynamicCapsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(hitCollider);
 	if (hitDynamicCapsule != nullptr)
 	{
+		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
 	}
 

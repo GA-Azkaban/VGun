@@ -30,6 +30,8 @@ public:
 public:
 	void InitRound();
 	void UpdateRound();
+	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
+	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
 private:
 	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);

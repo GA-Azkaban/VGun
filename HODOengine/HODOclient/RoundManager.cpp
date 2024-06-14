@@ -132,6 +132,20 @@ void RoundManager::UpdateRound()
 	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
 }
 
+void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
+{
+	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
+
+	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
+}
+
+void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider)
+{
+	int uid = collider->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
+
+	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_BODY);
+}
+
 void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
 {
 	switch (color)

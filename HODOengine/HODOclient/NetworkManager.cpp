@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -61,7 +61,7 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
-
+	
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
@@ -313,6 +313,7 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		PlayerInfo* one = new PlayerInfo;
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+		one->SetPlayerUID(player.userinfo().uid());
 		one->SetCurrentHP(player.hp());
 
 		switch (player.team())
@@ -529,11 +530,21 @@ void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
 
 }
 
-void NetworkManager::SendPlayShoot(Protocol::PlayerData playerData, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)
+void NetworkManager::SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)
 {
 	Protocol::C_PLAY_SHOOT packet;
 
-	packet.mutable_transform()->CopyFrom(playerData.transform());
+	auto pos = packet.mutable_transform()->mutable_vector3();
+	pos->set_x(transform->GetPosition().x);
+	pos->set_y(transform->GetPosition().y);
+	pos->set_z(transform->GetPosition().z);
+
+	auto rot = packet.mutable_transform()->mutable_quaternion();
+	rot->set_w(transform->GetRotation().w);
+	rot->set_x(transform->GetRotation().x);
+	rot->set_y(transform->GetRotation().y);
+	rot->set_z(transform->GetRotation().z);
+
 	packet.set_hittargetuid(hitTargetUid);
 	packet.set_hitlocation(hitLocation);
 
