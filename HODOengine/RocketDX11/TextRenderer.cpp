@@ -12,7 +12,7 @@ namespace RocketCore::Graphics
 		_xLocation(),
 		_yLocation(),
 		_zLocation(),
-		_size(),
+		_size(1.0f),
 		_width(),
 		_height(),
 		_isActive(true),
@@ -94,7 +94,7 @@ namespace RocketCore::Graphics
 				_color,
 				0.0f,
 				{0.0f,0.0f},
-				1,
+				_size,
 				DirectX::DX11::SpriteEffects_None,
 				_sortOrder
 			);
@@ -126,9 +126,9 @@ namespace RocketCore::Graphics
 	void TextRenderer::MeasureTextSize()
 	{
 		std::wstring wstr(_str.begin(), _str.end());
-		_size = _font->MeasureString(wstr.c_str());
-		_width = DirectX::XMVectorGetX(_size);
-		_height = DirectX::XMVectorGetY(_size);
+		DirectX::XMVECTOR measure = _font->MeasureString(wstr.c_str());
+		_width = DirectX::XMVectorGetX(measure);
+		_height = DirectX::XMVectorGetY(measure);
 	}
 
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
@@ -139,6 +139,11 @@ namespace RocketCore::Graphics
 	bool TextRenderer::GetActive()
 	{
 		return _isActive;
+	}
+
+	void TextRenderer::ChangeScale(float size)
+	{
+		_size = size;
 	}
 
 	void TextRenderer::SetSortOrder(float order)

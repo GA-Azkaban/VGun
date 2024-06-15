@@ -23,6 +23,8 @@ namespace HDData
 		void SetDefaultColor(DirectX::FXMVECTOR color);
 		void ReturnDefaultColor();
 
+		void ChangeScale(float size);
+
 		float GetTextWidth();
 		float GetTextHeight();
 

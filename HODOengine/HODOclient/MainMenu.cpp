@@ -40,8 +40,8 @@ void MainMenuScene::Initalize()
 
 void MainMenuScene::MainMenu()
 {
-	UINT width = API::GetScreenWidth();
-	UINT height = API::GetScreenHeight();
+	int width = static_cast<int>(API::GetScreenWidth());
+	int height = static_cast<int>(API::GetScreenHeight());
 
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
@@ -93,9 +93,9 @@ void MainMenuScene::MainMenu()
 	main_enterText->GetComponent<HDData::TextUI>()->SetText("Enter");
 
 	// room List Canvas
-	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas",main_enterBtn);
+	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas", main_enterBtn);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
-	enter_roomLstCanvas->GetTransform()->SetPosition(1000.0f * width / 1920, 540.0f * height / 1080, 0.0f);
+	enter_roomLstCanvas->GetTransform()->SetPosition(960.0f * width / 1920, 540.0f * height / 1080, 0.0f);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 	enter_roomLstCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	enter_roomLstCanvas->SetSelfActive(false);
@@ -103,7 +103,7 @@ void MainMenuScene::MainMenu()
 
 	// Refresh btn
 	HDData::GameObject* refreshButton = API::CreateButton(_scene, "refreshBtn", enter_roomLstCanvas);
-	refreshButton->GetTransform()->SetLocalPosition(330 * 1.33f, -330 * 1.33f, 0);
+	refreshButton->GetTransform()->SetLocalPosition(330.0f * width / 1920, -330.0f * height / 1080, 0);
 	refreshButton->AddComponent<BtnHoveringScript>();
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
@@ -120,7 +120,7 @@ void MainMenuScene::MainMenu()
 
 	// page move button
 	HDData::GameObject* pageLeftButton = API::CreateButton(_scene, "pageLeft", enter_roomLstCanvas);
-	pageLeftButton->GetTransform()->SetLocalPosition(-300 * 1.33f, 0, 0);
+	pageLeftButton->GetTransform()->SetLocalPosition(-325.0f + (width - 1920) * (-0.17f), 0, 0);
 	pageLeftButton->AddComponent<BtnHoveringScript>();
 	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
 	lBtn->SetImage("leftArrow.png");
@@ -135,7 +135,7 @@ void MainMenuScene::MainMenu()
 		});
 
 	HDData::GameObject* pageRightButton = API::CreateButton(_scene, "pageRight", enter_roomLstCanvas);
-	pageRightButton->GetTransform()->SetLocalPosition(300 * 1.33f, 0, 0);
+	pageRightButton->GetTransform()->SetLocalPosition(325.0f + (width - 1920) * 0.17f, 0, 0);
 	pageRightButton->AddComponent<BtnHoveringScript>();
 	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
 	rBtn->SetImage("rightArrow.png");
@@ -220,7 +220,7 @@ void MainMenuScene::MainMenu()
 			MenuManager::Instance().ShowCheckEnterCanvas(false);
 		});
 	MenuManager::Instance().SetCheckEnterCanvas(enter_enterCheckCanvas);
-	
+
 	HDData::GameObject* enter_enterBtn = API::CreateButton(_scene, "enterButton", enter_enterCheckCanvas);
 	enter_enterBtn->GetTransform()->SetLocalPosition(100, 80, 0);
 	auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
@@ -234,18 +234,18 @@ void MainMenuScene::MainMenu()
 		});
 
 	// room
-	float posY = 245.f;
+	float posY = 235.0f + (height - 1080) * 0.0138f;
 
 	for (int i = 0; i < 5; ++i)
 	{
 		HDData::GameObject* enter_roomCanvas = API::CreateButton(_scene, "room", enter_roomLstCanvas);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
-		enter_roomCanvas->GetTransform()->SetPosition((960.0f + 130.0f) * width / 1920, posY * height / 1080, 0);
+		//enter_roomCanvas->GetTransform()->SetPosition((960.0f + 130.0f) * width / 1920, posY * height / 1080, 0);
+		enter_roomCanvas->GetTransform()->SetPosition(960.0f * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 		enter_roomCanvas->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
-		MenuManager::Instance()._roomObject[i].btn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		HDData::GameObject* enter_roomTitle = API::CreateTextbox(_scene, "title", enter_roomCanvas);
 		enter_roomTitle->GetTransform()->SetLocalPosition(-80, 0, 0);
@@ -313,7 +313,7 @@ void MainMenuScene::MainMenu()
 
 		MenuManager::Instance()._roomObject[i].isTeam = isT;
 
-		posY += 155;
+		posY += 150;
 
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetOnClickEvent([=]()
 			{
@@ -354,11 +354,15 @@ void MainMenuScene::MainMenu()
 	make_canvas->SetSelfActive(false);
 
 	// room name Set
-	HDData::GameObject* make_roomNameLabel = API::CreateTextbox(_scene, "reoomNameTextLabel", make_canvas);
+	HDData::GameObject* make_roomNameLabel = API::CreateTextbox(_scene, "roomNameTextLabel", make_canvas);
 	make_roomNameLabel->GetTransform()->SetPosition(710.0f * width / 1920, 240.0f * height / 1080, 0.f);
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetText("RoomName");
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.75f);
+	if (width / 1920 > 1.0f)
+	{
+		make_roomNameLabel->GetComponent<HDData::TextUI>()->ChangeScale(width / 1920.0f * 1.35f);
+	}
 
 	HDData::GameObject* make_roomNameInput = API::CreateTextInputBox(_scene, "roomNameTextBox", make_canvas);
 	make_roomNameInput->GetTransform()->SetPosition(960.0f * width / 1920, 240.0f * height / 1080, 0.0f);
@@ -370,9 +374,13 @@ void MainMenuScene::MainMenu()
 	// privateRoom Set
 	HDData::GameObject* make_passwordLabel = API::CreateTextbox(_scene, "privateRoomTextLabel", make_canvas);
 	make_passwordLabel->GetTransform()->SetPosition(710.0f * width / 1920, 320.0f * height / 1080, 0.f);
-	make_passwordLabel->GetComponent<HDData::TextUI>()->SetText("privateRoom");
+	make_passwordLabel->GetComponent<HDData::TextUI>()->SetText("PrivateRoom");
 	make_passwordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	make_passwordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.75f);
+	if (width / 1920 > 1.0f)
+	{
+		make_passwordLabel->GetComponent<HDData::TextUI>()->ChangeScale(width / 1920.0f * 1.35f);
+	}
 
 	// privateCheckBox
 	HDData::GameObject* make_isPrivateCheck = API::CreateToggle(_scene, "privateCheckBox", make_canvas);
@@ -415,10 +423,10 @@ void MainMenuScene::MainMenu()
 	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
 	float trainingTextWidth = trainingText->GetComponent<HDData::TextUI>()->GetTextWidth();
 	trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
-	
+
 	//EXIT Btn
 	HDData::GameObject* exit_Btn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
-	exit_Btn->GetTransform()->SetPosition((100.0f + (width - 1920) * 0.012f)* width / 1920, 420.0f * height / 1080, 0.f);
+	exit_Btn->GetTransform()->SetPosition((100.0f + (width - 1920) * 0.012f) * width / 1920, 420.0f * height / 1080, 0.f);
 	exit_Btn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	exit_Btn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	exit_Btn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
@@ -776,7 +784,7 @@ void MainMenuScene::MainMenu()
 	//		}
 	//	}
 	//);	
-	
+
 	resolutionBtn1->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{

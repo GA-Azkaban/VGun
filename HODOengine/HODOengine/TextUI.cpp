@@ -52,6 +52,11 @@ namespace HDData
 		_textUI->ReturnDefaultColor();
 	}
 
+	void TextUI::ChangeScale(float size)
+	{
+		_textUI->ChangeScale(size);
+	}
+
 	float TextUI::GetTextWidth()
 	{
 		return _textUI->GetWidth();
