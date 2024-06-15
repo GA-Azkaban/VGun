@@ -121,7 +121,7 @@ void LobbySceneView::Initialize()
 			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetPlayerObjects()[i]->GetComponent<PlayerInfo>()->GetPlayerNickName());
 			});
 		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
-		//QuitMemberButton->SetSelfActive(false);
+		QuitMemberButton->SetSelfActive(false);
 
 		auto rButton = API::CreateButton(_scene, "R", subCanvas);
 		auto rBtn = rButton->GetComponent<HDData::Button>();
@@ -159,7 +159,7 @@ void LobbySceneView::Initialize()
 		rgbCanvas += 322.5f;
 
 		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
-		subCanvas->SetSelfActive(true);
+		subCanvas->SetSelfActive(false);
 	}
 
 	// player rendering
@@ -197,7 +197,7 @@ void LobbySceneView::Initialize()
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
-		//player->SetSelfActive(false);
+		player->SetSelfActive(false);
 
 		posX += 1;
 		posT += 315;
