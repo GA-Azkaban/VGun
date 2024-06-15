@@ -186,6 +186,7 @@ void LobbyManager::RoomEnterFAIL(int errorCode)
 void LobbyManager::RoomEnterSUCCESS()
 {
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
+	API::SetRecursiveMouseMode(false);
 
 	auto& data = _roomData->_players;
 	_playerNum = data.size();

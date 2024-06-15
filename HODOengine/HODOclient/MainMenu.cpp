@@ -46,6 +46,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
 	mainCanvasImage->SetImage("_blur_background_image.png");
+	//mainCanvasImage->SetImage("_card_holder.png");
 	mainCanvasImage->SetSortOrder(0.0f);
 	mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
@@ -115,7 +116,6 @@ void MainMenuScene::MainMenu()
 		{
 			NetworkManager::Instance().SendRoomListRequest();
 		}
-
 	);
 
 	// page move button
@@ -203,14 +203,15 @@ void MainMenuScene::MainMenu()
 	enter_enterCheckCanvas->SetSelfActive(false);
 
 	HDData::GameObject* enter_enterCheckText = API::CreateTextbox(_scene, "enterCheckText", enter_enterCheckCanvas);
-	enter_enterCheckText->GetTransform()->SetLocalPosition(0, -30, 0);
+	enter_enterCheckText->GetTransform()->SetLocalPosition(0, -30.0f * height / 1080, 0);
 	auto enterText = enter_enterCheckText->GetComponent<HDData::TextUI>();
 	enterText->SetText("Join?");
 	enterText->SetIsIgnoreFocus(true);
 	enterText->SetSortOrder(0.91);
+	enterText->ChangeScale(width / 1920.0f);
 
 	HDData::GameObject* enter_enterCheckExitBtn = API::CreateButton(_scene, "enterCheckExit", enter_enterCheckCanvas);
-	enter_enterCheckExitBtn->GetTransform()->SetLocalPosition(-100, 80, 0);
+	enter_enterCheckExitBtn->GetTransform()->SetLocalPosition(-105.0f + (width - 1920) * (-0.035f), 80, 0);
 	auto enter_exitImg = enter_enterCheckExitBtn->GetComponent<HDData::Button>();
 	enter_exitImg->SetImage("cancelButton.png");
 	enter_exitImg->SetSortOrder(0.91);
@@ -222,7 +223,7 @@ void MainMenuScene::MainMenu()
 	MenuManager::Instance().SetCheckEnterCanvas(enter_enterCheckCanvas);
 
 	HDData::GameObject* enter_enterBtn = API::CreateButton(_scene, "enterButton", enter_enterCheckCanvas);
-	enter_enterBtn->GetTransform()->SetLocalPosition(100, 80, 0);
+	enter_enterBtn->GetTransform()->SetLocalPosition(105.0f + (width - 1920) * 0.035f, 80, 0);
 	auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
 	enter_enterImg->SetImage("enterButton.png");
 	enter_enterImg->SetSortOrder(0.91);

@@ -47,6 +47,8 @@ namespace HDEngine
 		void Flush();
 		void RecursiveMouse();
 
+		void SetRecursiveMouseMode(bool isModeOn);
+
 	private:
 		bool StartDXInput();
 		bool FinishDXInput();

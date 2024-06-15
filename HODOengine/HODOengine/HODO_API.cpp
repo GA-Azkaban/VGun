@@ -211,6 +211,11 @@ namespace API
 			return HDEngine::InputSystem::Instance().GetMouseDelta();
 		}
 
+		HODO_API void SetRecursiveMouseMode(bool isModeOn)
+		{
+			return HDEngine::InputSystem::Instance().SetRecursiveMouseMode(isModeOn);
+		}
+
 		HODO_API float GetDeltaTime()
 		{
 			return HDEngine::TimeSystem::Instance().GetDeltaTime();

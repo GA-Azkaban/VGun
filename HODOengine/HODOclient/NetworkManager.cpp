@@ -137,6 +137,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 
 	API::LoadSceneByName("MainMenu");
+	API::SetRecursiveMouseMode(false);
 }
 
 void NetworkManager::RecvCreateAccount()
@@ -258,6 +259,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
 	API::LoadSceneByName("MainMenu");
+	API::SetRecursiveMouseMode(false);
 }
 
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
@@ -363,6 +365,7 @@ void NetworkManager::SendKickPlayer(std::string targetNickName)
 void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 {
 	API::LoadSceneByName("MainMenu");
+	API::SetRecursiveMouseMode(false);
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
@@ -432,6 +435,7 @@ void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");
+	API::SetRecursiveMouseMode(true);
 }
 
 void NetworkManager::SendPlayUpdate()

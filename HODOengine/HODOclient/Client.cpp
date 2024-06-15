@@ -58,8 +58,10 @@ void Client::Initialize()
 	//lobby.Initialize();
 
 	API::LoadSceneByName("MainMenu");
+	API::SetRecursiveMouseMode(false);
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
 	//API::LoadSceneByName("InGame");
+	//API::SetRecursiveMouseMode(true);
 }
