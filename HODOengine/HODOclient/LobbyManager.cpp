@@ -186,7 +186,6 @@ void LobbyManager::RoomEnterFAIL(int errorCode)
 void LobbyManager::RoomEnterSUCCESS()
 {
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
-	API::SetRecursiveMouseMode(false);
 
 	auto& data = _roomData->_players;
 	_playerNum = data.size();
@@ -277,7 +276,8 @@ void LobbyManager::RefreshRoom()
 		}
 
 		_nickNameIndex[i]->SetSelfActive(true);
-		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(info->GetPlayerNickName());
+		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
+		text->SetText(info->GetPlayerNickName());
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{

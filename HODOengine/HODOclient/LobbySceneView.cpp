@@ -21,10 +21,13 @@ void LobbySceneView::Initialize()
 {
 	_scene = API::CreateScene("Lobby");
 
+	int width = static_cast<int>(API::GetScreenWidth());
+	int height = static_cast<int>(API::GetScreenHeight());
+
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->AddComponent<CameraMove>();
-	mainCam->GetGameObject()->GetTransform()->SetPosition(2.62, 0.57, -5.48);
-	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
+	mainCam->GetGameObject()->GetTransform()->SetPosition(2.5f, 0.57f, -5.48f);
+	//mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
@@ -45,22 +48,23 @@ void LobbySceneView::Initialize()
 	// game start button
 	auto startButton = API::CreateButton(_scene, "gameStartButton");
 	startButton->GetComponent<HDData::Button>()->SetImage("start.png");
-	startButton->GetTransform()->SetPosition(1600, 950, 0);
+	startButton->GetTransform()->SetPosition(1600.0f * width / 1920, 950.0f * height / 1080, 0);
 
 	auto startText = API::CreateTextbox(_scene, "gameStartText", startButton);
-	startText->GetTransform()->SetPosition(1600, 950, 0);
 	auto sTex = startText->GetComponent<HDData::TextUI>();
 	sTex->SetText("GAME START");
 	sTex->SetColor(DirectX::Colors::OrangeRed);
 	sTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	float startTextWidth = sTex->GetTextWidth();
+	float startTextHeight = sTex->GetTextHeight();
+	startText->GetTransform()->SetPosition(1600.0f * width / 1920 - startTextWidth * 0.75f, 950.0f * height / 1080 - startTextHeight * 0.25f, 0);
 
 	LobbyManager::Instance().SetInGameStartButton(startButton);
 
 	startButton->SetSelfActive(false);
 
-
 	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
-	quitButton->GetTransform()->SetPosition(200, 950, 0);
+	quitButton->GetTransform()->SetPosition(320.0f * width / 1920, 950.0f * height / 1080, 0);
 	auto qBtn = quitButton->GetComponent<HDData::Button>();
 	qBtn->GetButtonComp()->SetImage("exitRoom.png");
 	qBtn->SetOnClickEvent([]()
@@ -87,37 +91,42 @@ void LobbySceneView::Initialize()
 
 	HDData::Material* M_Blue = API::CreateMaterial(blue);
 
-	float defaultX = 165;
-	float r = 85;
-	float g = 165;
-	float b = 245;
+	float defaultX = -0.5f;
+	float rgbCanvas = 155.0f;
 
 	for (int i = 0; i < 6; ++i)
 	{
-		auto defaultCanvas = API::CreateImageBox(_scene, "defaultCanvas");
-		defaultCanvas->GetTransform()->SetPosition(defaultX, 450, 0);
-		auto img = defaultCanvas->GetComponent<HDData::ImageUI>();
-		img->SetImage("back_char.png");
-		img->SetWorldSpace();
+		auto defaultCanvas = API::CreateObject(_scene, "defaultCanvas");
+		defaultCanvas->GetTransform()->SetPosition(defaultX, 0.9f, 0.9f);
+		defaultCanvas->GetTransform()->SetScale(1.1f, 0.5f, 0.0f);
+		defaultCanvas->GetTransform()->Rotate(0.0f, 0.0f, 90.0f);
+		auto canvasRenderer = defaultCanvas->AddComponent<HDData::MeshRenderer>();
+		canvasRenderer->SetUseLight(false);
+		canvasRenderer->LoadMesh("primitiveQuad");
+		HDEngine::MaterialDesc canvasMat;
+		canvasMat.materialName = "canvas";
+		canvasMat.albedo = "settingCanvas.png";
+		HDData::Material* newCanvasMat = API::CreateMaterial(canvasMat);
+		canvasRenderer->LoadMaterial(newCanvasMat, 0);
 
-		auto subCanvas = API::CreateImageBox(_scene, "subCanvas", defaultCanvas);
+		auto subCanvas = API::CreateImageBox(_scene, "subCanvas");
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
-		subCanvas->GetTransform()->SetPosition(defaultX, 800, 0);
+		subCanvas->GetTransform()->SetPosition(rgbCanvas * width / 1920, 800.0f * height / 1080, 0);
 
 		auto QuitMemberButton = API::CreateButton(_scene, "QuitButton");
 		QuitMemberButton->GetComponent<HDData::Button>()->SetSortOrder(0.3);
 		QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
-		QuitMemberButton->GetTransform()->SetPosition(defaultX, 60, 0);
+		QuitMemberButton->GetTransform()->SetPosition(rgbCanvas * width / 1920, 60.0f * height / 1080, 0);
 		QuitMemberButton->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
 			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetPlayerObjects()[i]->GetComponent<PlayerInfo>()->GetPlayerNickName());
 			});
 		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
-		QuitMemberButton->SetSelfActive(false);
+		//QuitMemberButton->SetSelfActive(false);
 
 		auto rButton = API::CreateButton(_scene, "R", subCanvas);
 		auto rBtn = rButton->GetComponent<HDData::Button>();
 		rBtn->SetSortOrder(0.3);
-		rButton->GetTransform()->SetPosition(r, 800, 0);
+		rButton->GetTransform()->SetLocalPosition(-100.0f, 0.0f, 0.0f);
 		rBtn->SetImage("r.png");
 		rBtn->SetOnClickEvent([=]()
 			{
@@ -128,7 +137,6 @@ void LobbySceneView::Initialize()
 		auto gButton = API::CreateButton(_scene, "G", subCanvas);
 		auto gBtn = gButton->GetComponent<HDData::Button>();
 		gBtn->SetSortOrder(0.3);
-		gButton->GetTransform()->SetPosition(g, 800, 0);
 		gBtn->SetImage("g.png");
 		gBtn->SetOnClickEvent([=]()
 			{
@@ -139,7 +147,7 @@ void LobbySceneView::Initialize()
 		auto bButton = API::CreateButton(_scene, "B", subCanvas);
 		auto bBtn = bButton->GetComponent<HDData::Button>();
 		bBtn->SetSortOrder(0.3);
-		bButton->GetTransform()->SetPosition(b, 800, 0);
+		bButton->GetTransform()->SetLocalPosition(100.0f, 0.0f, 0.0f);
 		bBtn->SetImage("b.png");
 		bBtn->SetOnClickEvent([=]()
 			{
@@ -147,19 +155,18 @@ void LobbySceneView::Initialize()
 				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE, nick);
 			});
 
-		defaultX += 315;
-		r += 315;
-		g += 315;
-		b += 315;
+		defaultX += 1.2f;
+		rgbCanvas += 322.5f;
 
 		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
-		subCanvas->SetSelfActive(false);
+		subCanvas->SetSelfActive(true);
 	}
 
 	// player rendering
 
 	float posX = 0;
-	float posT = 165;
+	//float posT = 165;
+	float posT = 100 * width / 1920;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -183,8 +190,10 @@ void LobbySceneView::Initialize()
 		LobbyManager::Instance().GetPlayerObjects().push_back(player);
 
 		HDData::GameObject* text = API::CreateTextbox(_scene, "player" + std::to_string(i), player);
-		text->GetTransform()->SetPosition(player->GetTransform()->GetPosition());
-		text->GetTransform()->SetPosition(posT, 30, 0);
+		auto textUI = text->GetComponent<HDData::TextUI>();
+		float textWidth = textUI->GetTextWidth();
+		float textHeight = textUI->GetTextHeight();
+		text->GetTransform()->SetPosition(posT * width / 1920 - textWidth * 0.75f, 30.0f * height / 1080 - textHeight * 0.25f, 0);
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 

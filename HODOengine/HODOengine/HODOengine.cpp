@@ -203,10 +203,10 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 		return FALSE;
 	}
 
-	//_screenWidth = 2560;
-	//_screenHeight = 1440;
-	_screenWidth = 1920;
-	_screenHeight = 1080;
+	_screenWidth = 2560;
+	_screenHeight = 1440;
+	//_screenWidth = 1920;
+	//_screenHeight = 1080;
 	dmSettings.dmPelsWidth = _screenWidth;
 	dmSettings.dmPelsHeight = _screenHeight;
 	dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;

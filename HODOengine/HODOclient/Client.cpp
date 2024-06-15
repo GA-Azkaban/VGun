@@ -48,17 +48,16 @@ void Client::Initialize()
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
 	 
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();	
+	//MainMenuScene menu;			//Scene Name : MainMenu
+	//menu.Initalize();	
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
 
-	//LobbySceneView lobby;
-	//lobby.Initialize();
+	LobbySceneView lobby;
+	lobby.Initialize();
 
-	API::LoadSceneByName("MainMenu");
-	API::SetRecursiveMouseMode(false);
+	API::LoadSceneByName("Lobby");
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
