@@ -98,6 +98,7 @@ private:
 	bool _isConnect;
 
 private:
+	Protocol::PlayerData data;
 	Protocol::PlayerData* ConvertPlayerInfoToData(PlayerInfo* info);
 
 	// 보간

@@ -555,7 +555,7 @@ void NetworkManager::SendPlayJump(PlayerInfo* playerinfo)
 
 void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
 {
-
+	RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>();
 }
 
 void NetworkManager::SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)
@@ -587,25 +587,24 @@ bool NetworkManager::IsConnected()
 
 Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(PlayerInfo* info)
 {
-	Protocol::PlayerData* data = new Protocol::PlayerData;
 
-	data->mutable_transform()->mutable_vector3()->set_x(info->GetTransform()->GetPosition().x);
-	data->mutable_transform()->mutable_vector3()->set_y(info->GetTransform()->GetPosition().y);
-	data->mutable_transform()->mutable_vector3()->set_z(info->GetTransform()->GetPosition().z);
+	data.mutable_transform()->mutable_vector3()->set_x(info->GetTransform()->GetPosition().x);
+	data.mutable_transform()->mutable_vector3()->set_y(info->GetTransform()->GetPosition().y);
+	data.mutable_transform()->mutable_vector3()->set_z(info->GetTransform()->GetPosition().z);
+		
+	data.mutable_transform()->mutable_quaternion()->set_x(info->GetTransform()->GetRotation().x);
+	data.mutable_transform()->mutable_quaternion()->set_y(info->GetTransform()->GetRotation().y);
+	data.mutable_transform()->mutable_quaternion()->set_z(info->GetTransform()->GetRotation().z);
+	data.mutable_transform()->mutable_quaternion()->set_w(info->GetTransform()->GetRotation().w);
 
-	data->mutable_transform()->mutable_quaternion()->set_x(info->GetTransform()->GetRotation().x);
-	data->mutable_transform()->mutable_quaternion()->set_y(info->GetTransform()->GetRotation().y);
-	data->mutable_transform()->mutable_quaternion()->set_z(info->GetTransform()->GetRotation().z);
-	data->mutable_transform()->mutable_quaternion()->set_w(info->GetTransform()->GetRotation().w);
-
-	data->set_host(info->GetIsHost());
+	data.set_host(info->GetIsHost());
 
 	Protocol::UserInfo* user = new Protocol::UserInfo;
 	user->set_nickname(info->GetPlayerNickName());
 
-	data->set_allocated_userinfo(user);
+	data.set_allocated_userinfo(user);
 
-	return data;
+	return &data;
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)

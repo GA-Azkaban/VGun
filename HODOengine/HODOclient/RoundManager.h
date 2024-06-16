@@ -37,6 +37,8 @@ public:
 
 	void RecvOtherPlayerShoot(eHITLOC location);
 
+	void SendJump(int uid);
+
 private:
 	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);
 
