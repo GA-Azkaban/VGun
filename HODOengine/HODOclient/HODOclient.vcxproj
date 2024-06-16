@@ -224,6 +224,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ammo.h" />
     <ClInclude Include="AnimationLoaderTest.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BtnHoveringScript.h" />
@@ -268,6 +269,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ammo.cpp" />
     <ClCompile Include="AnimationLoaderTest.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BtnHoveringScript.cpp" />

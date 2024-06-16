@@ -7,6 +7,7 @@
 #include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "Crosshair.h"
+#include "Ammo.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -214,6 +215,11 @@ void InGameSceneView::Initialize()
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
+
+	// ammo
+	auto ammo = API::CreateObject(_scene, "Ammo");
+	auto ammoComp = ammo->AddComponent<Ammo>();
+	ammoComp->playerMove = playerMove;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
