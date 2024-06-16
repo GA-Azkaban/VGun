@@ -43,22 +43,25 @@ void InGameSceneView::Initialize()
 	// 내 캐릭터 생성
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
-	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(-10, 3, 0);
+	//player->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//std::vector<HDData::GameObject*> playerNodes;
+	//playerNodes.reserve(100);
+	//player->LoadFBXFile2("SKM_TP_X_Default.fbx", playerNodes);
+	//player->GetTransform()->SetPosition(-10, 3, 0);
 
-	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMaterial(M_Red, 0);
-	meshComp->LoadMaterial(M_Red, 1);
-	meshComp->LoadMaterial(M_Red, 2);
-	meshComp->LoadMaterial(M_Red, 3);
-	meshComp->LoadMaterial(M_Red, 4);
-	meshComp->SetMeshActive(false, 0);
-	meshComp->SetMeshActive(false, 1);
-	meshComp->SetMeshActive(false, 2);
-	meshComp->SetMeshActive(false, 3);
-	meshComp->SetMeshActive(false, 4);
+	//auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//meshComp->LoadMaterial(M_Red, 0);
+	//meshComp->LoadMaterial(M_Red, 1);
+	//meshComp->LoadMaterial(M_Red, 2);
+	//meshComp->LoadMaterial(M_Red, 3);
+	//meshComp->LoadMaterial(M_Red, 4);
+	//meshComp->SetMeshActive(false, 0);
+	//meshComp->SetMeshActive(false, 1);
+	//meshComp->SetMeshActive(false, 2);
+	//meshComp->SetMeshActive(false, 3);
+	//meshComp->SetMeshActive(false, 4);	
 
-	meshComp->PlayAnimation("AR_aim", true);
+	//meshComp->PlayAnimation("AR_aim", true);
 
 	RoundManager::Instance()->_myObj = player;
 
@@ -83,7 +86,7 @@ void InGameSceneView::Initialize()
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
-	
+
 	auto playerMove = player->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
@@ -95,7 +98,92 @@ void InGameSceneView::Initialize()
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
 	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
-	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	std::vector<HDData::GameObject*> playerNodes;
+	playerNodes.reserve(100);
+	//fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	fpMeshObj->LoadFBXFile2("SKM_TP_X_Default.fbx", playerNodes);
+
+	for (auto& node : playerNodes)
+	{
+		std::string name = node->GetObjectName();
+		if (name == "root")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 3.0f);
+		}
+		else if (name == "pelvis")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(10.0f, 2.0f, 2.0f);
+		}
+		else if (name == "spine_01")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+		}
+		else if (name == "spine_02")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+		}
+		else if (name == "spine_03")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+		}
+		else if (name == "clavicle_r" || name == "clavicle_l")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
+		}
+		else if (name == "upperarm_r" || name == "upperarm_l")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
+		}
+		else if (name == "lowerarm_r" || name == "lowerarm_l")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
+		}
+		else if (name == "lowerarm_twist_01_r" || name == "lowerarm_twist_01_l")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>();
+		}
+		else if (name == "hand_r" || name == "hand_l")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 5.0f, 5.0f);
+		}
+		else if (name == "neck_01")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+		}
+		else if (name == "head")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(10.0f, 10.0f, 10.0f);
+		}
+		else if (name == "thigh_l" || name == "thigh_r")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 10.0f, 3.0f);
+		}
+		else if (name == "calf_l" || name == "calf_r")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 10.0f, 3.0f);
+		}
+		else if (name == "calf_twist_01_l" || name == "calf_twist_01_r")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>();
+		}
+		else if (name == "foot_l" || name == "foot_r")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 10.0f);
+		}
+		else if (name == "ball_l" || name == "ball_r")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>();
+		}
+		else if (name == "thigh_twist_01_l" || name == "thigh_twist_01_r")
+		{
+			node->AddComponent<HDData::StaticBoxCollider>();
+		}
+		else
+		{
+			node->AddComponent<HDData::StaticBoxCollider>();
+		}
+	}
+
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
 	fpMeshObj->AddComponent<FPAniScript>();
@@ -124,7 +212,7 @@ void InGameSceneView::Initialize()
 	// AJY 24.6.3.
 	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
 	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
-	
+
 	// weapon
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");

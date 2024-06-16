@@ -285,6 +285,36 @@ namespace HDData
 		// 가져온 노드정보의 트랜스폼을 게임 오브젝트가 가진 트랜스폼과 연결시켜야 한다.
 	}
 
+	void GameObject::LoadFBXFile2(std::string fileName, std::vector<GameObject*>& playerNodes)
+	{
+		Scene* currentScene = GetThisObjectScene();
+		GameObject* rendererObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "mesh", this);
+		rendererObject->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
+		auto rendererComp = rendererObject->AddComponent<SkinnedMeshRenderer>();
+		rendererComp->LoadNode(fileName);
+		rendererComp->LoadMesh(fileName);
+		Node* rendererNode = rendererComp->GetNode();
+		if (!rendererNode)
+			return;
+
+		Node* armature = FindNodeByName(rendererNode, "Armature");
+		if (armature != nullptr)
+		{
+			ProcessNode2(currentScene, armature, this, playerNodes);
+		}
+		else
+		{
+			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "Armature", this);
+			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
+			newObject->GetTransform()->Rotate(0.0f, 0.0f, 180.0f);
+			Node* root = FindNodeByName(rendererNode, "root");
+			if (root != nullptr)
+			{
+				ProcessNode2(currentScene, root, newObject, playerNodes);
+			}
+		}
+	}
+
 	Node* GameObject::FindNodeByName(Node* node, std::string nodeName)
 	{
 		if (node->name == nodeName)
@@ -315,4 +345,19 @@ namespace HDData
 		}
 	}
 	
+	void GameObject::ProcessNode2(Scene* scene, Node* node, GameObject* parentObject, std::vector<GameObject*>& playerNodes)
+	{
+		GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(scene, node->name, parentObject);
+		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
+		node->nodeTransform = newObject->GetTransform()->_nodeTransform;
+		//newObject->AddComponent<StaticBoxCollider>();
+
+		playerNodes.push_back(newObject);
+
+		for (int i = 0; i < node->children.size(); ++i)
+		{
+			ProcessNode2(scene, &(node->children[i]), newObject, playerNodes);
+		}
+	}
+
 }

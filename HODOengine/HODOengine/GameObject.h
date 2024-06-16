@@ -140,6 +140,7 @@ namespace HDData
 
 		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
 		void LoadFBXFile(std::string fileName);
+		void LoadFBXFile2(std::string fileName, std::vector<GameObject*>& playerNodes);
 
 	private:
 		GameObject(std::string name = "");
@@ -147,6 +148,7 @@ namespace HDData
 	private:
 		Node* FindNodeByName(Node* node, std::string nodeName);
 		void ProcessNode(Scene* scene, Node* node, GameObject* parentObject);
+		void ProcessNode2(Scene* scene, Node* node, GameObject* parentObject, std::vector<GameObject*>& playerNodes);
 
 	private:
 		//std::unordered_set<Component*> _components;
