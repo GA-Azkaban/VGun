@@ -493,6 +493,8 @@ namespace HDEngine
 
 		if (capsule->GetSitStand() == 1)
 		{
+			// shape만 갈아끼는 버전.
+			/*
 			_playerRigid->detachShape(*_playerShape);
 
 			capsule->SetHalfHeight(capsule->GetHalfHeight() * 0.5f);
@@ -509,9 +511,57 @@ namespace HDEngine
 			_playerRigid->attachShape(*newShape);
 			_playerShape = newShape;
 			capsule->SetSitStand(0);
+			*/
+
+			// rigid를 재생성하는 버전.
+			capsule->SetHalfHeight(capsule->GetHalfHeight() * 0.5f);
+			physx::PxShape* sittingShape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
+			sittingShape->userData = capsule;
+			HDData::Transform* headTransform = capsule->GetGameObject()->GetChildGameObjects()[0]->GetTransform();
+			//headTransform->SetLocalPosition(headTransform->GetLocalPosition() - Vector3(0.0f, capsule->GetHalfHeight(), 0.0f));
+
+			physx::PxFilterData filterData;
+			filterData.word0 = capsule->GetColFilterNum();
+			sittingShape->setSimulationFilterData(filterData);
+			sittingShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+			sittingShape->setLocalPose(_playerShape->getLocalPose());
+
+			physx::PxTransform pose = _playerRigid->getGlobalPose();
+			pose.p.y -= capsule->GetHalfHeight();
+			physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(pose);
+			capsuleRigid->setMass(1.5f);
+
+			sittingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+
+			capsuleRigid->attachShape(*sittingShape);
+
+			_playerShape->release();
+			_pxScene->removeActor(*_playerRigid);
+			std::erase_if(_rigidDynamics, [this](physx::PxRigidDynamic* rigid) {return (rigid == _playerRigid); });
+			_pxScene->addActor(*capsuleRigid);
+			_playerRigid->release();
+			
+			_playerRigid = capsuleRigid;
+			_playerShape = sittingShape;
+
+			_rigidDynamics.push_back(capsuleRigid);
+			capsule->SetPhysXRigid(capsuleRigid);
+			capsuleRigid->userData = capsule;
+
+			if (capsule->GetFreezeRotation())
+			{
+				capsule->LockPlayerRotation(true);
+			}
+
+			_joints.clear();
+			CreateSphericalJoint();
+			capsule->SetSitStand(0);
 		}
 		else if (capsule->GetSitStand() == 2)
 		{
+			// shape만 갈아끼는 버전.
+			/*
 			_playerRigid->detachShape(*_playerShape);
 
 			capsule->SetHalfHeight(capsule->GetHalfHeight() * 2.0f);
@@ -526,6 +576,52 @@ namespace HDEngine
 
 			_playerRigid->attachShape(*newShape);
 			_playerShape = newShape;
+			capsule->SetSitStand(0);
+			*/
+
+			// rigid 재생성하는 버전
+			capsule->SetHalfHeight(capsule->GetHalfHeight() * 2.0f);
+			physx::PxShape* standingShape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
+			standingShape->userData = capsule;
+			HDData::Transform* headTransform = capsule->GetGameObject()->GetChildGameObjects()[0]->GetTransform();
+			headTransform->SetLocalPosition(headTransform->GetLocalPosition() + Vector3(0.0f, capsule->GetHalfHeight(), 0.0f));
+
+			physx::PxFilterData filterData;
+			filterData.word0 = capsule->GetColFilterNum();
+			standingShape->setSimulationFilterData(filterData);
+			standingShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+			standingShape->setLocalPose(_playerShape->getLocalPose());
+
+			physx::PxTransform pose = _playerRigid->getGlobalPose();
+			pose.p.y += capsule->GetHalfHeight();
+			physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(pose);
+			capsuleRigid->setMass(1.5f);
+
+			standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+
+			capsuleRigid->attachShape(*standingShape);
+
+			_playerShape->release();
+			_pxScene->removeActor(*_playerRigid);
+			std::erase_if(_rigidDynamics, [this](physx::PxRigidDynamic* rigid) {return (rigid == _playerRigid); });
+			_pxScene->addActor(*capsuleRigid);
+			_playerRigid->release();
+
+			_playerRigid = capsuleRigid;
+			_playerShape = standingShape;
+
+			_rigidDynamics.push_back(capsuleRigid);
+			capsule->SetPhysXRigid(capsuleRigid);
+			capsuleRigid->userData = capsule;
+
+			if (capsule->GetFreezeRotation())
+			{
+				capsule->LockPlayerRotation(true);
+			}
+
+			_joints.clear();
+			CreateSphericalJoint();
 			capsule->SetSitStand(0);
 		}
 	}
@@ -543,7 +639,7 @@ namespace HDEngine
 				Vector3 localPose = thisCol->GetTransform()->GetLocalPosition();
 				localTransform.p = { localPose.x, localPose.y, localPose.z };
 
-				if (thisCol->GetGameObject()->GetObjectName() == "headFFFFF")
+				if (thisCol->GetGameObject()->GetObjectName() == "head")
 				{
 					physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
 						parentCol->GetPhysXRigid(), localTransform);
