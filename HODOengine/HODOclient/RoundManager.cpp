@@ -146,6 +146,12 @@ void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collid
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_BODY);
 }
 
+
+void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
+{
+	_myObj->GetComponent<PlayerInfo>()->OtherPlayerShoot(location);
+}
+
 void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
 {
 	switch (color)
@@ -195,6 +201,11 @@ std::unordered_map<int, HDData::GameObject*>& RoundManager::GetPlayerObjs()
 int RoundManager::GetPlayerNum()
 {
 	return _playerNum;
+}
+
+bool RoundManager::GetIsRoundStart()
+{
+	return _isRoundStart;
 }
 
 void RoundManager::SetIsRoundStart(bool isStart)

@@ -128,6 +128,29 @@ bool PlayerInfo::GetIsMyInfo()
 	return _isMyInfo;
 }
 
+void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
+{
+	switch (loc)
+	{
+		case eHITLOC::NONE:
+			break;
+		case eHITLOC::NO_HIT:
+			break;
+		case eHITLOC::HEAD:
+		{
+			_currentHP -= 30;
+		}
+			break;
+		case eHITLOC::BODY:
+		{
+			_currentHP -= 10;
+		}
+			break;
+		default:
+			break;
+	}
+}
+
 int& PlayerInfo::GetPlayerIndex()
 {
 	return _playerIndex;

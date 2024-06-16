@@ -30,8 +30,12 @@ public:
 public:
 	void InitRound();
 	void UpdateRound();
+
+
 	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
+
+	void RecvOtherPlayerShoot(eHITLOC location);
 
 private:
 	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);
@@ -39,6 +43,7 @@ private:
 public:
 	std::unordered_map<int, HDData::GameObject*>& GetPlayerObjs();
 	int GetPlayerNum();
+
 	HDData::GameObject* _myObj;
 	std::vector<HDData::GameObject*> _playerObjs;
 
@@ -49,18 +54,10 @@ private:
 private:
 	bool _isRoundStart = false;
 
-	 
-	// 라운드 정보
 	int _timer;			// 타이머
 
-	int _R;				// 팀당 킬카운트
-	int _G;
-	int _B;
-
 public:
+	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
-
-private:
-	//std::vector<HDData::GameObject*> _randomSpawnPos;
 };
 

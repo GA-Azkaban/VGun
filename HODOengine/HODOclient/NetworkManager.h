@@ -5,6 +5,7 @@
 #include "Enum.pb.h"
 #include "Struct.pb.h"
 #include "Protocol.pb.h"
+#include "PlayerInfo.h"
 
 class NetworkManager : public HDData::Script
 {
@@ -73,7 +74,7 @@ public: // 업데이트
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
 public: // 인게임
-	void SendPlayJump(Protocol::PlayerData playerData);
+	void SendPlayJump(PlayerInfo* playerinfo);
 	void RecvPlayJump(Protocol::PlayerData playerData);
 
 	void SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
@@ -91,10 +92,13 @@ public:
 	void Disconnected();
 	bool IsConnected();
 
+
 private:
 	Horang::ClientServiceRef _service;
 	bool _isConnect;
 
+private:
+	Protocol::PlayerData* ConvertPlayerInfoToData(PlayerInfo* info);
 
 	// 보간
 public:

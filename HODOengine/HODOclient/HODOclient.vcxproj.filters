@@ -109,6 +109,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>02_Client\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="ThirdPerson.cpp">
+      <Filter>02_Client\TestScene\test</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>02_Client\Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdPerson.h">
+      <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

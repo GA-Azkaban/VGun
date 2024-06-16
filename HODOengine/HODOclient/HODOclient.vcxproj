@@ -263,6 +263,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TestSound.h" />
+    <ClInclude Include="ThirdPerson.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="Weapon.h" />
@@ -302,6 +303,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="ThirdPerson.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
   </ItemGroup>
