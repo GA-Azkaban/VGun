@@ -5,6 +5,7 @@
 namespace physx
 {
 	class PxRigidDynamic;
+	class PxShape;
 	//class PxVec3;
 }
 
@@ -28,6 +29,7 @@ namespace HDData
 		void LockPlayerRotation(bool isLock);
 		void SetParentCollider(HDData::DynamicCollider* col);
 		void SetChildCollider(HDData::DynamicCollider* childCol);
+		void SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit);
 
 	// getter
 	public:
@@ -47,6 +49,10 @@ namespace HDData
 		void AddForce(Vector3 direction, float force = 1.0f);
 		void AdjustVelocity(float ratio);
 		void ClearVeloY();
+		void ResetCollider(eColliderType type, Vector3 widthDepthHeight);
+		void EnableCollider();
+		void DisableCollider();
+		void EnableStanding(bool isStand);
 
 	public:
 		// PhysX 씬과 데이터를 주고받는 함수
@@ -65,9 +71,12 @@ namespace HDData
 
 	private:
 		bool _isCollided;
+		bool _isColliderActive;
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;
+		physx::PxShape* _standingShape;
+		physx::PxShape* _sittingShape;
 	};
 }
 

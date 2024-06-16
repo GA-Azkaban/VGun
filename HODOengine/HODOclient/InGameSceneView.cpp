@@ -62,13 +62,18 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->_myObj = player;
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
-	playerCollider->SetFreezeRotation(true);
+	//auto playerColliderStanding = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
+	auto playerColliderStanding = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
+	playerColliderStanding->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
+	playerColliderStanding->SetFreezeRotation(true);
+	//auto playerColliderSitting = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.2f);
+	//playerColliderSitting->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
+	//playerColliderSitting->SetFreezeRotation(true);
+	//playerColliderSitting->DisableCollider();
+
 	auto playerHead = API::CreateObject(_scene, "head", player);
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.05f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.3f);
-	headCollider->SetParentCollider(playerCollider);
 	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
@@ -78,6 +83,13 @@ void InGameSceneView::Initialize()
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
+	
+	auto playerMove = player->AddComponent<PlayerMove>();
+	playerMove->SetPlayerCamera(freeRoamingCam);
+	playerMove->SetHeadCam(mainCam);
+	//playerMove->SetPlayerColliders(playerColliderStanding, playerColliderSitting);
+	headCollider->SetParentCollider(playerColliderStanding);
+
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
@@ -142,10 +154,6 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
 
-	auto playerMove = player->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(freeRoamingCam);
-	playerMove->SetHeadCam(mainCam);
-
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
 	{
@@ -176,14 +184,14 @@ void InGameSceneView::Initialize()
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
-		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
-		otherPlayerCollider->SetFreezeRotation(true);
-		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.05f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.3f);
-		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+		//auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
+		//otherPlayerCollider->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
+		//otherPlayerCollider->SetFreezeRotation(true);
+		//auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
+		//otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 2.05f, 0.0f));
+		//auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.3f);
+		//ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
+		//ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();

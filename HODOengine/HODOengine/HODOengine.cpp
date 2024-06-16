@@ -152,13 +152,15 @@ void HODOengine::Run()
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
 
-	// physicsUpdate, temporary location
-	_physicsSystem.Update();
-	_physicsSystem.Flush();
 
 	_eventSystem.InvokeEvent();
 	_objectSystem.UpdateDisableList();
 	_objectSystem.UpdateEnableList();
+
+	// physicsUpdate, temporary location
+	_physicsSystem.Update();
+	_physicsSystem.Flush();
+
 	// refresh input for next frame
 	_inputSystem.Flush();
 	_tweenSystem.Update();

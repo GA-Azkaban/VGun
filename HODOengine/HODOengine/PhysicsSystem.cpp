@@ -66,6 +66,8 @@ namespace HDEngine
 	{
 		_collisionCallback->Clear();
 
+		ResizeCollider();
+
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);
 
@@ -77,7 +79,7 @@ namespace HDEngine
 		{
 			// Collider On/Off
 			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
-			rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
+			//rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
 
 			bool temp = dynamicCol->GetIsTrigger();
 			// 트리거가 아닌 경우 onCollision 함수들 실행
@@ -326,32 +328,45 @@ namespace HDEngine
 			{
 				HDData::DynamicCapsuleCollider* capsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(collider);
 
-				float r = capsule->GetRadius();
-				float h = capsule->GetHalfHeight();
-				physx::PxShape* shape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
-				shape->userData = capsule;
+				physx::PxShape* standingShape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
+				standingShape->userData = capsule;
+				//physx::PxShape* sittingShape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight() * 0.5f), *_playerMaterial);
+				//sittingShape->userData = capsule;
 				
 				physx::PxFilterData filterData;
 				filterData.word0 = capsule->GetColFilterNum();
-				shape->setSimulationFilterData(filterData);
-				shape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+				standingShape->setSimulationFilterData(filterData);
+				standingShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+				//sittingShape->setSimulationFilterData(filterData);
+				//sittingShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
 
 				physx::PxQuat rotation = physx::PxQuat(physx::PxHalfPi, physx::PxVec3(0, 0, 1));
 				Vector3 posOffset = collider->GetPositionOffset();
 				physx::PxTransform localTransform(physx::PxVec3(posOffset.x, posOffset.y + capsule->GetRadius(), posOffset.z), rotation);
-				shape->setLocalPose(localTransform);
+				standingShape->setLocalPose(localTransform);
+				//sittingShape->setLocalPose(localTransform);
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
 				capsuleRigid->setMass(1.5f);
-				
-				capsuleRigid->attachShape(*shape);
+				capsuleRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !collider->GetIsActive());
+
+				standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+				//sittingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+
+				capsuleRigid->attachShape(*standingShape);
+				//capsuleRigid->attachShape(*sittingShape);
+
+				// 앉을 때 switch 해줄 두 shape 를 넣어준다.
+				//collider->SetPlayerShapes(standingShape, sittingShape);
+				_playerRigid = capsuleRigid;
+				_playerShape = standingShape;
 
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
 				capsule->SetPhysXRigid(capsuleRigid);
 				capsuleRigid->userData = capsule;
-				shape->release();
+				standingShape->release();
 
 				if (capsule->GetFreezeRotation())
 				{
@@ -469,6 +484,49 @@ namespace HDEngine
 				sphereRigid->userData = particle;
 				shape->release();
 			}
+		}
+	}
+
+	void PhysicsSystem::ResizeCollider()
+	{
+		HDData::DynamicCapsuleCollider* capsule = static_cast<HDData::DynamicCapsuleCollider*>(_playerRigid->userData);
+
+		if (capsule->GetSitStand() == 1)
+		{
+			_playerRigid->detachShape(*_playerShape);
+
+			capsule->SetHalfHeight(capsule->GetHalfHeight() * 0.5f);
+			physx::PxShape* newShape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
+			newShape->userData = _playerShape->userData;
+
+			physx::PxShapeFlags shapeFlags = newShape->getFlags();
+			newShape->setFlags(shapeFlags | physx::PxShapeFlag::eSIMULATION_SHAPE);
+			newShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+			newShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+			newShape->setSimulationFilterData(_playerShape->getSimulationFilterData());
+
+			_playerRigid->attachShape(*newShape);
+			_playerShape = newShape;
+			capsule->SetSitStand(0);
+		}
+		else if (capsule->GetSitStand() == 2)
+		{
+			_playerRigid->detachShape(*_playerShape);
+
+			capsule->SetHalfHeight(capsule->GetHalfHeight() * 2.0f);
+			physx::PxShape* newShape = _physics->createShape(physx::PxCapsuleGeometry(capsule->GetRadius(), capsule->GetHalfHeight()), *_playerMaterial);
+			newShape->userData = _playerShape->userData;
+
+			physx::PxShapeFlags shapeFlags = newShape->getFlags();
+			newShape->setFlags(shapeFlags | physx::PxShapeFlag::eSIMULATION_SHAPE);
+			newShape->setFlag(physx::PxShapeFlag::eSCENE_QUERY_SHAPE, true);
+
+			newShape->setSimulationFilterData(_playerShape->getSimulationFilterData());
+
+			_playerRigid->attachShape(*newShape);
+			_playerShape = newShape;
+			capsule->SetSitStand(0);
 		}
 	}
 

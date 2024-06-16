@@ -10,11 +10,18 @@
 /// �ݶ��̴����� Transform�� ���õ� �������� �ٷ��.
 /// 
 
-enum class eColliderType
+enum class eColliderRole
 {
 	NONE = 0,
 	PLAYER = 1,
 	TERRAIN = 2
+};
+
+enum class eColliderType
+{
+	BOX = 1,
+	SPHERE = 2,
+	CAPSULE = 3
 };
 
 namespace HDData
@@ -57,7 +64,7 @@ namespace HDData
 		bool GetIsCollide() const;
 		bool GetPrevIsCollide() const;
 		std::vector<PhysicsCollision*> GetCollisionStorage() const;
-		eColliderType GetColType() const;
+		eColliderRole GetColType() const;
 
 		void Flush();
 
@@ -90,7 +97,7 @@ namespace HDData
 	protected:
 		HDData::Collider* _parentCollider;
 		std::vector<HDData::Collider*> _childColliders;
-		eColliderType _colType;
+		eColliderRole _colType;
 	};
 }
 

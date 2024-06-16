@@ -20,8 +20,8 @@ public:
 	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim);
 	void SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec);
 	void SetHeadCam(HDData::Camera* cam);
-	HDData::Camera* GetHeadCam() const;
-	void PresetSprayPattern();
+	void SetPlayerColliders(HDData::DynamicCapsuleCollider* standing, HDData::DynamicCapsuleCollider* sitting);
+	void PresetSprayPattern(int gunType);
 	void StartRoundCam();
 
 public:
@@ -48,6 +48,7 @@ private:
 	void Jump();
 	void Move(int direction);
 	void Pitch(float rotationValue);
+	void ToggleSit(bool isSit);
 
 	// 사격 관련
 private:
@@ -79,7 +80,8 @@ private:
 
 private:
 	//HDData::DynamicBoxCollider* _playerCollider;
-	HDData::DynamicCapsuleCollider* _playerCollider;
+	HDData::DynamicCapsuleCollider* _playerColliderStanding;
+	HDData::DynamicCapsuleCollider* _playerColliderSitting;
 	HDData::Camera* _playerCamera;
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;

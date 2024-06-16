@@ -52,6 +52,12 @@ void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol
 	_childColliders.push_back(childCol);
 }
 
+void HDData::DynamicCollider::SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit)
+{
+	_standingShape = stand;
+	_sittingShape = sit;
+}
+
 bool HDData::DynamicCollider::GetFreezeRotation()
 {
 	return _freezeRotation;
@@ -171,6 +177,43 @@ void HDData::DynamicCollider::ClearVeloY()
 	_physXRigid->clearForce();
 	_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+}
+
+void HDData::DynamicCollider::ResetCollider(eColliderType type, Vector3 widthDepthHeight)
+{
+
+}
+
+void HDData::DynamicCollider::EnableCollider()
+{
+	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+	_isColliderActive = true;
+}
+
+void HDData::DynamicCollider::DisableCollider()
+{
+	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_isColliderActive = false;
+}
+
+void HDData::DynamicCollider::EnableStanding(bool isStand)
+{
+	if (isStand)
+	{
+		//_physXRigid->attachShape(*_standingShape);
+		_standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		_sittingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		_sittingShape->setFlag(physx::PxShapeFlag::eVISUALIZATION, false);
+		//_physXRigid->detachShape(*_sittingShape);
+	}
+	else
+	{
+		//_physXRigid->attachShape(*_sittingShape);
+		_standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		_sittingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		_sittingShape->setFlag(physx::PxShapeFlag::eVISUALIZATION, true);
+		//_physXRigid->detachShape(*_standingShape);
+	}
 }
 
 void HDData::DynamicCollider::UpdateToPhysics()

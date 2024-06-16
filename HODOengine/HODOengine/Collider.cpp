@@ -12,7 +12,7 @@ namespace HDData
 		_parentCollider(nullptr),
 		_collisionFilterNum(0),
 		_isTrigger(false),
-		_colType(eColliderType::NONE)
+		_colType(eColliderRole::NONE)
 	{
 		
 	}
@@ -158,7 +158,7 @@ namespace HDData
 		return _collisionStorage;
 	}
 
-	eColliderType Collider::GetColType() const
+	eColliderRole Collider::GetColType() const
 	{
 		return _colType;
 	}
