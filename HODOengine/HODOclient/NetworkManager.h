@@ -1,10 +1,11 @@
-﻿#pragma once
+#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "Types.h"
 
 #include "Enum.pb.h"
 #include "Struct.pb.h"
 #include "Protocol.pb.h"
+#include "PlayerInfo.h"
 
 class NetworkManager : public HDData::Script
 {
@@ -72,9 +73,18 @@ public: // 업데이트
 	void SendPlayUpdate();
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
-public: // 동작
-	// Todo 총 발사
-	// Todo
+public: // 인게임
+	void SendPlayJump(PlayerInfo* playerinfo);
+	void RecvPlayJump(Protocol::PlayerData playerData);
+
+	void SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
+	void RecvPlayShoot(Protocol::PlayerData playerData);
+	void RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation);
+
+	void RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData);
+
+	// 리스폰 지점 추가해야함
+	void RecvPlayRespawn(Protocol::PlayerData playerData);
 
 public:
 	void SetConnect(bool isConnect);
@@ -82,10 +92,14 @@ public:
 	void Disconnected();
 	bool IsConnected();
 
+
 private:
 	Horang::ClientServiceRef _service;
 	bool _isConnect;
 
+private:
+	Protocol::PlayerData data;
+	Protocol::PlayerData* ConvertPlayerInfoToData(PlayerInfo* info);
 
 	// 보간 (을 서버에서 하는게 맞을까나)
 public:
