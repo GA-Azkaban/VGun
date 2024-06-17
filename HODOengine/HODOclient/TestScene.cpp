@@ -6,6 +6,7 @@
 #include "NetworkManager.h"
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
+#include "TPScript.h"
 
 TestScene::TestScene()
 {
@@ -282,6 +283,8 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
+
+	playerTest->AddComponent<TPScript>();
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");

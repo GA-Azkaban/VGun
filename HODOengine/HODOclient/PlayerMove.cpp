@@ -703,7 +703,7 @@ void PlayerMove::Jump()
 	if ((!_isJumping) && (_isOnGround))
 	//if(!_isJumping)
 	{
-		RoundManager::Instance()->
+		//RoundManager::Instance()->
 
 		// 점프
 		_playerCollider->Jump();

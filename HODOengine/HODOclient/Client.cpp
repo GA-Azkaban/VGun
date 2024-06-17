@@ -3,7 +3,6 @@
 #include "LoginSceneView.h"
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
-#include "AnimationLoaderTest.h"
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 
@@ -34,30 +33,30 @@ void Client::Initialize()
 
 
 	// 씬 초기화
-	//TestScene test;
-	//test.Start();
+	TestScene test;
+	test.Start();
 
-	//API::LoadSceneByName("Test"); 
+	API::LoadSceneByName("Test"); 
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
 
 	//AnimationLoaderTest loader;
 	//loader.Start();
-	
-	LoginSceneView login;		//Scene Name : Login
-	login.Initialize();
-	 
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();	
+	//
+	//LoginSceneView login;		//Scene Name : Login
+	//login.Initialize();
+	// 
+	//MainMenuScene menu;			//Scene Name : MainMenu
+	//menu.Initalize();	
 
-	InGameSceneView inGame;			//Scene Name : InGame
-	inGame.Initialize();
+	//InGameSceneView inGame;			//Scene Name : InGame
+	//inGame.Initialize();
 
-	LobbySceneView lobby;
-	lobby.Initialize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
-	API::LoadSceneByName("Login");
+	//API::LoadSceneByName("Login");
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();

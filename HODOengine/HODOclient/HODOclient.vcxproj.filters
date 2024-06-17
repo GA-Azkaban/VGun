@@ -59,9 +59,6 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationLoaderTest.cpp">
-      <Filter>02_Client\TestScene\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="UnitySceneLoaderTest.cpp">
       <Filter>02_Client\TestScene\SceneLoader</Filter>
     </ClCompile>
@@ -109,7 +106,7 @@
     <ClCompile Include="Timer.cpp">
       <Filter>02_Client\Timer</Filter>
     </ClCompile>
-    <ClCompile Include="ThirdPerson.cpp">
+    <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
   </ItemGroup>
@@ -188,9 +185,6 @@
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationLoaderTest.h">
-      <Filter>02_Client\TestScene\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="FSMtestScript.h">
       <Filter>02_Client\TestScene\Animation</Filter>
     </ClInclude>
@@ -248,7 +242,7 @@
     <ClInclude Include="Timer.h">
       <Filter>02_Client\Timer</Filter>
     </ClInclude>
-    <ClInclude Include="ThirdPerson.h">
+    <ClInclude Include="TPScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
   </ItemGroup>

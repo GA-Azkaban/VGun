@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -224,7 +224,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AnimationLoaderTest.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BtnHoveringScript.h" />
     <ClInclude Include="BtnImageScript.h" />
@@ -263,13 +262,12 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="TestSound.h" />
-    <ClInclude Include="ThirdPerson.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TPScript.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AnimationLoaderTest.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BtnHoveringScript.cpp" />
     <ClCompile Include="BtnImageScript.cpp" />
@@ -303,8 +301,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="ThirdPerson.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TPScript.cpp" />
     <ClCompile Include="UnitySceneLoaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
