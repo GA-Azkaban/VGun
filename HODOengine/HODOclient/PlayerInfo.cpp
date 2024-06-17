@@ -1,4 +1,4 @@
-﻿#include "PlayerInfo.h"
+#include "PlayerInfo.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -26,7 +26,6 @@ void PlayerInfo::Update()
 
 void PlayerInfo::Init()
 {
-	this-> _maxHP = 100;
 	this-> _kill = 0;
 	this-> _death = 0;
 	this->_isDie = false;

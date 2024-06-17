@@ -392,6 +392,7 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetPlayerUID(player.userinfo().uid());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
@@ -411,7 +412,20 @@ void NetworkManager::SendKickPlayer(std::string targetNickName)
 
 void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 {
-	API::LoadSceneByName("MainMenu");
+	auto info = LobbyManager::Instance().GetRoomData();
+
+	info->_players.clear();
+
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.userinfo().id());
+		one->SetNickName(player.userinfo().nickname());
+		one->SetIsHost(player.host());
+		one->SetCurrentHP(player.hp());
+
+		info->_players.push_back(one);
+	}
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)

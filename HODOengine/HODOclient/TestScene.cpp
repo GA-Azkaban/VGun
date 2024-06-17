@@ -8,12 +8,6 @@
 #include "MeshTransformController.h"
 #include "TPScript.h"
 
-enum eColliderType
-{
-	PLAYER = 1,
-	BOX = 2
-};
-
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
