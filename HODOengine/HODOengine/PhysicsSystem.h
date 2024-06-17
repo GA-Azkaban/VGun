@@ -2,9 +2,11 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 #include "Singleton.h"
 #include "HODO_API.h"
+#include "CollisionCallback.h"
 
 #include "../include/physX/PxPhysics.h"
 #include "../include/physX/PxPhysicsAPI.h"
@@ -35,6 +37,7 @@ namespace HDEngine
 		void CreateRigidBodies();
 		void CreateSphericalJoint();
 		void AddActorsToScene();
+		void Flush();
 
 	public:
 		physx::PxScene* GetScene() const;
@@ -72,5 +75,7 @@ namespace HDEngine
 		std::vector<physx::PxJoint*> _joints;
 		int _directionX;
 		int _directionZ;
+
+		std::unique_ptr<CollisionCallback> _collisionCallback;
 	};
 }

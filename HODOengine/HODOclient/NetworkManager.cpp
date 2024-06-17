@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -54,7 +54,7 @@ void NetworkManager::Update()
 
 	for (auto& [uid, player] : playerObj)
 	{
-		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 1);
+		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 2.5);
 		++index;
 	}
 }
@@ -392,6 +392,7 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetPlayerUID(player.userinfo().uid());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
+		one->SetCurrentHP(player.hp());
 
 		info->_players.push_back(one);
 	}
@@ -411,7 +412,20 @@ void NetworkManager::SendKickPlayer(std::string targetNickName)
 
 void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 {
-	API::LoadSceneByName("MainMenu");
+	auto info = LobbyManager::Instance().GetRoomData();
+
+	info->_players.clear();
+
+	for (auto& player : roomInfo.users())
+	{
+		PlayerInfo* one = new PlayerInfo;
+		one->SetPlayerID(player.userinfo().id());
+		one->SetNickName(player.userinfo().nickname());
+		one->SetIsHost(player.host());
+		one->SetCurrentHP(player.hp());
+
+		info->_players.push_back(one);
+	}
 }
 
 void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
@@ -596,16 +610,18 @@ Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(PlayerInfo* info)
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
 {
+	auto dt = API::GetDeltaTime();
+
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
 	if (currentPos == serverPos && currentRot == serverRot) return;
 
 	// 포지션 선형 보간
-	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, intermediateValue);
+	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, intermediateValue * dt);
 
 	// 로테이션 구면 선형 보간
-	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, intermediateValue);
+	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, intermediateValue * dt * 10);
 
 	// 현재 Transform에 보간된 값 설정
 	current->SetPosition(interpolatedPos);

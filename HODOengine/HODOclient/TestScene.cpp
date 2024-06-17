@@ -8,12 +8,6 @@
 #include "MeshTransformController.h"
 #include "TPScript.h"
 
-enum eColliderType
-{
-	PLAYER = 1,
-	BOX = 2
-};
-
 TestScene::TestScene()
 {
 	_scene = API::CreateScene("Test");
@@ -291,7 +285,7 @@ TestScene::TestScene()
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
 
-	playerTest->AddComponent<TPScript>();
+	//playerTest->AddComponent<TPScript>();
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
