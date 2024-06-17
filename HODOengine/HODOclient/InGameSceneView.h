@@ -17,5 +17,10 @@ public:
 
 private:
 	HDData::Scene* _scene;
+
+	int _bulletCount = 0;
+	std::string _tempBullet;
+
+	std::string& convertBullet(int bullet);
 };
 

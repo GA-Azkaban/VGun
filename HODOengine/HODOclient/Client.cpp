@@ -1,4 +1,4 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -33,10 +33,10 @@ void Client::Initialize()
 
 
 	// 씬 초기화
-	TestScene test;
-	test.Start();
+	//TestScene test;
+	//test.Start();
 
-	API::LoadSceneByName("Test"); 
+	//API::LoadSceneByName("Test"); 
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -50,16 +50,14 @@ void Client::Initialize()
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();	
 
-	LoginSceneView login;		//Scene Name : Login
-	login.Initialize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();
+	InGameSceneView inGame;			//Scene Name : InGame
+	inGame.Initialize();
 
-	//API::LoadSceneByName("Lobby");
+	//API::LoadSceneByName("Login");
 
-	//InGameSceneView inGame;			//Scene Name : InGame
-	//inGame.Initialize();
-	//API::LoadSceneByName("InGame");
+	API::LoadSceneByName("InGame");
 	//API::SetRecursiveMouseMode(true);
 }
