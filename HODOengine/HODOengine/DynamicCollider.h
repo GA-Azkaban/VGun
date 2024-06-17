@@ -27,8 +27,6 @@ namespace HDData
 		virtual void SetFreezeRotation(bool freezeRotation);
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
 		void LockPlayerRotation(bool isLock);
-		void SetParentCollider(HDData::DynamicCollider* col);
-		void SetChildCollider(HDData::DynamicCollider* childCol);
 		void SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit);
 
 	// getter
@@ -63,8 +61,6 @@ namespace HDData
 		void Collide();
 		bool GetIsCollided();
 		physx::PxRigidDynamic* GetPhysXRigid() const;
-		HDData::Collider* GetParentCollider() const;
-		std::vector<HDData::Collider*> GetChildColliderVec()const;
 
 	protected:
 		bool _freezeRotation;

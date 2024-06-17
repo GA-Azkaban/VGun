@@ -27,6 +27,8 @@ namespace HDData
 
 	public:
 		void SetGlobalPosition(Vector3 pos);
+		void SetColliderRotation(Quaternion rot);
+		void Move(Vector3 moveStep, float speed);
 
 	private:
 		bool _isCollided;

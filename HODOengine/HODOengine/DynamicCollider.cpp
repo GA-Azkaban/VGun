@@ -1,4 +1,5 @@
 ﻿#include "DynamicCollider.h"
+#include "StaticCollider.h"
 #include "Transform.h"
 
 #include "../include/physX/PxPhysics.h"
@@ -41,17 +42,6 @@ void HDData::DynamicCollider::LockPlayerRotation(bool isLock)
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, isLock);
 }
 
-void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
-{
-	_parentCollider = col;
-	col->SetChildCollider(this);
-}
-
-void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol)
-{
-	_childColliders.push_back(childCol);
-}
-
 void HDData::DynamicCollider::SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit)
 {
 	_standingShape = stand;
@@ -75,7 +65,15 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
 	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed);
+		auto dynamicCol = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicCol != nullptr)
+		{
+			dynamicCol->Move(moveStep, speed);
+		}
+		else
+		{
+			dynamic_cast<HDData::StaticCollider*>(child)->Move(moveStep,speed);
+		}
 	}
 }
 
@@ -123,7 +121,15 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->SetColliderRotation(rot);
+		auto dynamicCol = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicCol != nullptr)
+		{
+			dynamicCol->SetColliderRotation(rot);
+		}
+		else
+		{
+			dynamic_cast<HDData::StaticCollider*>(child)->SetColliderRotation(rot);
+		}
 	}
 }
 
@@ -137,7 +143,15 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f);
+		auto dynamicCol = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicCol != nullptr)
+		{
+			dynamicCol->Move(posDif, 1.0f);
+		}
+		else
+		{
+			dynamic_cast<HDData::StaticCollider*>(child)->Move(posDif, 1.0f);
+		}
 	}
 }
 
@@ -240,14 +254,4 @@ bool HDData::DynamicCollider::GetIsCollided()
 physx::PxRigidDynamic* HDData::DynamicCollider::GetPhysXRigid() const
 {
 	return _physXRigid;
-}
-
-HDData::Collider* HDData::DynamicCollider::GetParentCollider() const
-{
-	return _parentCollider;
-}
-
-std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() const
-{
-	return _childColliders;
 }

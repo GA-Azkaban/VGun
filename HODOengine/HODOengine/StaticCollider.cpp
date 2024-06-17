@@ -37,6 +37,33 @@ void HDData::StaticCollider::SetGlobalPosition(Vector3 pos)
 	_physXStatic->setGlobalPose(position);
 }
 
+void HDData::StaticCollider::SetColliderRotation(Quaternion rot)
+{
+	physx::PxTransform currentTransform = _physXStatic->getGlobalPose();
+	_physXStatic->setGlobalPose(physx::PxTransform(currentTransform.p, physx::PxQuat(rot.x, rot.y, rot.z, rot.w)));
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::StaticCollider*>(child)->SetColliderRotation(rot);
+	}
+
+}
+
+void HDData::StaticCollider::Move(Vector3 moveStep, float speed)
+{
+	physx::PxTransform playerPos = _physXStatic->getGlobalPose();
+
+	playerPos.p.x += moveStep.x;
+	playerPos.p.z += moveStep.z;
+
+	_physXStatic->setGlobalPose(playerPos);
+	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::StaticCollider*>(child)->Move(moveStep, speed);
+	}
+}
+
 void HDData::StaticCollider::Update()
 {
 }

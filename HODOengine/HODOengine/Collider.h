@@ -49,6 +49,12 @@ namespace HDData
 
 		Matrix GetTransformMatrix();
 
+	public:
+		void SetParentCollider(HDData::Collider* col);
+		void SetChildCollider(HDData::Collider* childCol);
+		HDData::Collider* GetParentCollider() const;
+		std::vector<HDData::Collider*> GetChildColliderVec()const;
+
 	protected:
 		Vector3 _positionOffset;
 		Quaternion _rotationOffset;

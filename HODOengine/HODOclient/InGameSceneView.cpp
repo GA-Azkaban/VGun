@@ -106,82 +106,89 @@ void InGameSceneView::Initialize()
 	for (auto& node : playerNodes)
 	{
 		std::string name = node->GetObjectName();
+
+		node->GetTransform()->SetLocalScale(Vector3(0.01f, 0.01f, 0.01f));
+		node->SetParentObject(player);
+
+		HDData::StaticBoxCollider* col;
 		if (name == "root")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 3.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 3.0f);
 		}
 		else if (name == "pelvis")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(10.0f, 2.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(10.0f, 2.0f, 2.0f);
 		}
 		else if (name == "spine_01")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
 		}
 		else if (name == "spine_02")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
 		}
 		else if (name == "spine_03")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
 		}
 		else if (name == "clavicle_r" || name == "clavicle_l")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
 		}
 		else if (name == "upperarm_r" || name == "upperarm_l")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
 		}
 		else if (name == "lowerarm_r" || name == "lowerarm_l")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(5.0f, 2.0f, 2.0f);
 		}
 		else if (name == "lowerarm_twist_01_r" || name == "lowerarm_twist_01_l")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>();
+			col = node->AddComponent<HDData::StaticBoxCollider>();
 		}
 		else if (name == "hand_r" || name == "hand_l")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(5.0f, 5.0f, 5.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(5.0f, 5.0f, 5.0f);
 		}
 		else if (name == "neck_01")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(2.0f, 5.0f, 2.0f);
 		}
 		else if (name == "head")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(10.0f, 10.0f, 10.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(10.0f, 10.0f, 10.0f);
 		}
 		else if (name == "thigh_l" || name == "thigh_r")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 10.0f, 3.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(3.0f, 10.0f, 3.0f);
 		}
 		else if (name == "calf_l" || name == "calf_r")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 10.0f, 3.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(3.0f, 10.0f, 3.0f);
 		}
 		else if (name == "calf_twist_01_l" || name == "calf_twist_01_r")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>();
+			col = node->AddComponent<HDData::StaticBoxCollider>();
 		}
 		else if (name == "foot_l" || name == "foot_r")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 10.0f);
+			col = node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 10.0f);
 		}
 		else if (name == "ball_l" || name == "ball_r")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>();
+			col = node->AddComponent<HDData::StaticBoxCollider>();
 		}
 		else if (name == "thigh_twist_01_l" || name == "thigh_twist_01_r")
 		{
-			node->AddComponent<HDData::StaticBoxCollider>();
+			col = node->AddComponent<HDData::StaticBoxCollider>();
 		}
 		else
 		{
-			node->AddComponent<HDData::StaticBoxCollider>();
+			col = node->AddComponent<HDData::StaticBoxCollider>();
 		}
+
+		col->SetParentCollider(playerColliderStanding);
 	}
 
 	fpMeshObj->AddComponent<HDData::Animator>();

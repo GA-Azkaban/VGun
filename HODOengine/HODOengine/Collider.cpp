@@ -118,6 +118,27 @@ namespace HDData
 		//return Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
 	}
 
+	void Collider::SetParentCollider(HDData::Collider* col)
+	{
+		_parentCollider = col;
+		col->SetChildCollider(this);
+	}
+
+	void Collider::SetChildCollider(HDData::Collider* childCol)
+	{
+		_childColliders.push_back(childCol);
+	}
+
+	HDData::Collider* Collider::GetParentCollider() const
+	{
+		return _parentCollider;
+	}
+
+	std::vector<HDData::Collider*> Collider::GetChildColliderVec() const
+	{
+		return _childColliders;
+	}
+
 	void Collider::Setflag(int flag)
 	{
 		_flag = flag;
