@@ -1,6 +1,14 @@
-﻿#pragma once
+#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
+
+enum class eHITLOC
+{
+	NONE = 0,
+	NO_HIT = 1,
+	HEAD = 2,
+	BODY = 3
+};
 
 class PlayerInfo : public HDData::Script
 {
@@ -51,7 +59,8 @@ public:
 	void SetIsMyInfo(bool isMine);
 	bool GetIsMyInfo();
 
-
+	
+	void OtherPlayerShoot(eHITLOC loc);
 private:
 	bool _isMyInfo = false;
 
@@ -64,15 +73,19 @@ private:
 	std::string _playerNickname;
 
 	// state info
-	int _maxHP;
+	bool _isJump;
+	bool _isCrouch;
+	bool _isShoot;
+
 	int _currentHP;
+	bool _isDie;
+
+	int _bulletCount = 30;
+
+	ePlayerState _state;
+	
+	// count info
 	int _kill;
 	int _death;
-	bool _isDie;
-	ePlayerState _state;
-
-	// weapon info
-	int _weaponType = 0;
-	int _bulletCount = 30;
 };
 

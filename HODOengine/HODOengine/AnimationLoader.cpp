@@ -257,26 +257,22 @@ namespace HDEngine
 
 	std::string AnimationLoader::CutAnimationName(std::string ani)
 	{
-		// 뒤에서 두 번째 언더바의 위치 찾기
-		size_t lastSecondUnderscoreIndex = std::string::npos;
-		size_t underscoreCount = 0;
-		for (size_t i = ani.length() - 1; i != std::string::npos; --i)
+		// "AR_"의 위치 찾기
+		size_t arIndex = ani.find("AR_");
+		if (arIndex == std::string::npos)
 		{
-			if (ani[i] == '_') 
-			{
-				underscoreCount++;
-				if (underscoreCount == 2) 
-				{
-					lastSecondUnderscoreIndex = i;
-					break;
-				}
-			}
+			return ""; // "AR_"가 없으면 빈 문자열 반환
 		}
 
+		// ".fbx"의 위치 찾기
 		size_t fbxIndex = ani.find(".fbx");
+		if (fbxIndex == std::string::npos)
+		{
+			return ""; // ".fbx"가 없으면 빈 문자열 반환
+		}
 
-		// 뒤에서 두 번째 언더바 이후의 문자열 가져오기
-		std::string result = ani.substr(lastSecondUnderscoreIndex + 1, fbxIndex - lastSecondUnderscoreIndex - 1);
+		// "AR_" 이후의 문자열 가져오기
+		std::string result = ani.substr(arIndex, fbxIndex - arIndex);
 
 		return result;
 	}

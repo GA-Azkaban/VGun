@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -57,6 +57,54 @@ void NetworkManager::Update()
 		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 1);
 		++index;
 	}
+}
+
+void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
+{
+	int i = 3;
+}
+
+void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
+{
+	auto uid = playerData.userinfo().uid();
+
+	switch (hitLocation)
+	{
+		case Protocol::HIT_LOCATION_NONE:
+			break;
+		case Protocol::HIT_LOCATION_NO_HIT:
+			break;
+		case Protocol::HIT_LOCATION_HEAD:
+		{
+			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::HEAD);
+		}
+			break;
+		case Protocol::HIT_LOCATION_BODY:
+		{
+			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::BODY);
+		}
+			break;
+		case Protocol::HIT_LOCATION_ARM:
+			break;
+		case Protocol::HIT_LOCATION_LEG:
+			break;
+		case Protocol::eHitLocation_INT_MIN_SENTINEL_DO_NOT_USE_:
+			break;
+		case Protocol::eHitLocation_INT_MAX_SENTINEL_DO_NOT_USE_:
+			break;
+		default:
+			break;
+	}
+}
+
+void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
+{
+
+}
+
+void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
+{
+
 }
 
 void NetworkManager::Connected()
@@ -222,7 +270,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
-		
+
 		switch (player.team())
 		{
 			case Protocol::TEAM_COLOR_RED:
@@ -294,6 +342,7 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
+		one->SetCurrentHP(player.hp());
 
 		switch (player.team())
 		{
@@ -320,9 +369,9 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 			break;
 		}
 
-		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname())) 
-		{ 
-			GameManager::Instance()->GetMyInfo()->SetIsHost(true); 
+		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
+		{
+			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
 
 		info->_players.push_back(one);
@@ -387,7 +436,7 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 		for (int j = 0; j < roomInfo.users().size(); ++j)
 		{
 
-			if (roomInfo.users()[i].userinfo().nickname() == 
+			if (roomInfo.users()[i].userinfo().nickname() ==
 				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
 			{
 				switch (roomInfo.users()[i].team())
@@ -416,7 +465,7 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 			}
 		}
 
-		
+
 	}
 }
 
@@ -467,12 +516,10 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 	for (auto& player : roominfo.users())
 	{
-		if(player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
+		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
 
 		auto& obj = playerobj[player.userinfo().uid()];
 
-		currentTransform[index] = obj->GetTransform();
-		
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		serverPosition[index] = pos;
 
@@ -483,9 +530,68 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	}
 }
 
+void NetworkManager::SendPlayJump(PlayerInfo* playerinfo)
+{
+	Protocol::C_PLAY_JUMP packet;
+
+	packet.mutable_playerdata()->CopyFrom(*ConvertPlayerInfoToData(playerinfo));
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
+{
+	RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>();
+}
+
+void NetworkManager::SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)
+{
+	Protocol::C_PLAY_SHOOT packet;
+
+	auto pos = packet.mutable_transform()->mutable_vector3();
+	pos->set_x(transform->GetPosition().x);
+	pos->set_y(transform->GetPosition().y);
+	pos->set_z(transform->GetPosition().z);
+
+	auto rot = packet.mutable_transform()->mutable_quaternion();
+	rot->set_w(transform->GetRotation().w);
+	rot->set_x(transform->GetRotation().x);
+	rot->set_y(transform->GetRotation().y);
+	rot->set_z(transform->GetRotation().z);
+
+	packet.set_hittargetuid(hitTargetUid);
+	packet.set_hitlocation(hitLocation);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
 bool NetworkManager::IsConnected()
 {
 	return _isConnect;
+}
+
+Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(PlayerInfo* info)
+{
+
+	data.mutable_transform()->mutable_vector3()->set_x(info->GetTransform()->GetPosition().x);
+	data.mutable_transform()->mutable_vector3()->set_y(info->GetTransform()->GetPosition().y);
+	data.mutable_transform()->mutable_vector3()->set_z(info->GetTransform()->GetPosition().z);
+		
+	data.mutable_transform()->mutable_quaternion()->set_x(info->GetTransform()->GetRotation().x);
+	data.mutable_transform()->mutable_quaternion()->set_y(info->GetTransform()->GetRotation().y);
+	data.mutable_transform()->mutable_quaternion()->set_z(info->GetTransform()->GetRotation().z);
+	data.mutable_transform()->mutable_quaternion()->set_w(info->GetTransform()->GetRotation().w);
+
+	data.set_host(info->GetIsHost());
+
+	Protocol::UserInfo* user = new Protocol::UserInfo;
+	user->set_nickname(info->GetPlayerNickName());
+
+	data.set_allocated_userinfo(user);
+
+	return &data;
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
