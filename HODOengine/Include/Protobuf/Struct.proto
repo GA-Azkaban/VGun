@@ -75,6 +75,8 @@ message PlayerData
 	int32 killCount = 8;
 	int32 deathCount = 9;
 	// Todo 리스폰 무적 앉기?
+
+	eAnimationState animationState = 10;
 }
 
 message GameRule
