@@ -12,7 +12,7 @@ namespace RocketCore::Graphics
 		_xLocation(),
 		_yLocation(),
 		_zLocation(),
-		_size(),
+		_size(1.0f),
 		_width(),
 		_height(),
 		_isActive(true),
@@ -33,6 +33,7 @@ namespace RocketCore::Graphics
 	void TextRenderer::SetText(const std::string& str)
 	{
 		_str = str;
+		MeasureTextSize();
 	}
 
 	const std::string TextRenderer::GetText()
@@ -55,6 +56,10 @@ namespace RocketCore::Graphics
 		_xLocation = worldTM._41;
 		_yLocation = worldTM._42;
 		_zLocation = worldTM._43;	// for Debugging text
+
+		_yLocation -= _height * 0.5f;
+		_xLocation -= _width * 0.5f;
+
 		_receiveTMInfoFlag = true;
 	}
 
@@ -81,8 +86,6 @@ namespace RocketCore::Graphics
 
 		if (_receiveTMInfoFlag)
 		{
-			MeasureTextSize();	//여기두면 안되는데
-
 			std::wstring wstr(_str.begin(), _str.end());
 			_font->DrawString(
 				spriteBatch,
@@ -91,7 +94,7 @@ namespace RocketCore::Graphics
 				_color,
 				0.0f,
 				{0.0f,0.0f},
-				1,
+				_size,
 				DirectX::DX11::SpriteEffects_None,
 				_sortOrder
 			);
@@ -123,12 +126,9 @@ namespace RocketCore::Graphics
 	void TextRenderer::MeasureTextSize()
 	{
 		std::wstring wstr(_str.begin(), _str.end());
-		_size = _font->MeasureString(wstr.c_str());
-		_width = DirectX::XMVectorGetX(_size);
-		_height = DirectX::XMVectorGetY(_size);
-
-		_yLocation -= _height * 0.5f;
-		_xLocation -= _width * 0.5f;
+		DirectX::XMVECTOR measure = _font->MeasureString(wstr.c_str());
+		_width = DirectX::XMVectorGetX(measure);
+		_height = DirectX::XMVectorGetY(measure);
 	}
 
 	void TextRenderer::RenderDebug(DirectX::SpriteBatch* spriteBatch)
@@ -139,6 +139,11 @@ namespace RocketCore::Graphics
 	bool TextRenderer::GetActive()
 	{
 		return _isActive;
+	}
+
+	void TextRenderer::ChangeScale(float size)
+	{
+		_size = size;
 	}
 
 	void TextRenderer::SetSortOrder(float order)

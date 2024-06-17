@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -216,9 +216,10 @@ void InGameSceneView::Initialize()
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
 
-	auto ammoObj = API::CreateObject(_scene, "ammo");
-	auto ammo = ammoObj->AddComponent<Ammo>();
-
+	// ammo
+	auto ammo = API::CreateObject(_scene, "Ammo");
+	auto ammoComp = ammo->AddComponent<Ammo>();
+	ammoComp->playerMove = playerMove;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

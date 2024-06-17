@@ -58,6 +58,9 @@ private:
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
 
+public:
+	int& GetBulletCount();
+
 private:
 	bool _isMovable;
 	bool _isJumping;

@@ -47,6 +47,8 @@ namespace HDEngine
 		void Flush();
 		void RecursiveMouse();
 
+		void SetRecursiveMouseMode(bool isModeOn);
+
 	private:
 		bool StartDXInput();
 		bool FinishDXInput();
@@ -80,7 +82,7 @@ namespace HDEngine
 		int						_wheelMin;
 
 		// 무한마우스를 조건부로 하기 위해 추가. 24.2.1.AJY.
-		bool					_isFirstPersonPerspective = true;
+		bool					_isFirstPersonPerspective = false;
 	};
 }
 

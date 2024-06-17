@@ -276,7 +276,8 @@ void LobbyManager::RefreshRoom()
 		}
 
 		_nickNameIndex[i]->SetSelfActive(true);
-		_nickNameIndex[i]->GetComponent<HDData::TextUI>()->SetText(info->GetPlayerNickName());
+		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
+		text->SetText(info->GetPlayerNickName());
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{

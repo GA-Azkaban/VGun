@@ -524,6 +524,11 @@ void PlayerMove::ApplyRecoil()
 	_rotAngleX += _sprayCamera[_shootCount].second;
 }
 
+int& PlayerMove::GetBulletCount()
+{
+	return _bulletCount;
+}
+
 void PlayerMove::UpdatePlayerPositionDebug()
 {
 	Vector3 pos = GetTransform()->GetPosition();

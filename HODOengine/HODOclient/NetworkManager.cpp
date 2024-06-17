@@ -432,6 +432,7 @@ void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");
+	API::SetRecursiveMouseMode(true);
 }
 
 void NetworkManager::SendPlayUpdate()

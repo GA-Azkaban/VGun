@@ -47,7 +47,7 @@ void Client::Initialize()
 	
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
-	// 
+	 
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();	
 
@@ -57,9 +57,11 @@ void Client::Initialize()
 	//LobbySceneView lobby;
 	//lobby.Initialize();
 
-	//API::LoadSceneByName("Login");
+	//API::LoadSceneByName("Lobby");
 
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 	API::LoadSceneByName("InGame");
+
+	API::SetRecursiveMouseMode(true);
 }

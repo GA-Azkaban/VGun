@@ -47,6 +47,8 @@ namespace RocketCore::Graphics
 
 		virtual bool GetActive() override;
 
+		virtual void ChangeScale(float size) override;
+
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
 
@@ -81,8 +83,7 @@ namespace RocketCore::Graphics
 		float _yLocation;
 		float _zLocation;
 
-		DirectX::XMVECTOR _size;
-		DirectX::XMVECTOR _measureLong;
+		float _size;
 		float _width;
 		float _height;
 

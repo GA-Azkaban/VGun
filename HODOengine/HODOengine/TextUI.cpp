@@ -1,4 +1,4 @@
-#include "TextUI.h"
+﻿#include "TextUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
@@ -50,6 +50,21 @@ namespace HDData
 	void TextUI::ReturnDefaultColor()
 	{
 		_textUI->ReturnDefaultColor();
+	}
+
+	void TextUI::ChangeScale(float size)
+	{
+		_textUI->ChangeScale(size);
+	}
+
+	float TextUI::GetTextWidth()
+	{
+		return _textUI->GetWidth();
+	}
+
+	float TextUI::GetTextHeight()
+	{
+		return _textUI->GetHeight();
 	}
 
 	std::string TextUI::GetText()
