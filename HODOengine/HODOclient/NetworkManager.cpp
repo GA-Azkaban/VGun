@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -107,6 +107,36 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
 
 }
 
+void NetworkManager::SendPlayRoll(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_ROLL packet;
+
+	packet.mutable_playerdata()->CopyFrom(playerData);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayRoll(Protocol::PlayerData playerData)
+{
+
+}
+
+void NetworkManager::SendPlayReload(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_RELOAD packet;
+
+	packet.mutable_playerdata()->CopyFrom(playerData);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayReload(Protocol::PlayerData playerData)
+{
+
+}
+
 void NetworkManager::Connected()
 {
 	_isConnect = true;
@@ -121,8 +151,6 @@ void NetworkManager::Connected()
 
 	std::cout << "Connected" << std::endl;
 #endif
-
-
 }
 
 void NetworkManager::Disconnected()
@@ -491,11 +519,18 @@ void NetworkManager::SendGameStart()
 	this->_service->BroadCast(sendBuffer);
 }
 
-void NetworkManager::RecvGameStart()
+void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule)
 {
 	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
+
+	// Todo roomInfo, gameRule 설정
+}
+
+void NetworkManager::RecvGameStart()
+{
+
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -539,6 +574,9 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 		serverRotation[index] = rot;
+
+		// Todo 애니메이션
+		player.animationstate();
 
 		++index;
 	}

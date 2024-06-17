@@ -192,6 +192,40 @@ inline bool eHitLocation_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eHitLocation>(
     eHitLocation_descriptor(), name, value);
 }
+enum eAnimationState : int {
+  ANIMATION_STATE_NONE = 0,
+  ANIMATION_STATE_IDLE = 1,
+  ANIMATION_STATE_FORWARD = 2,
+  ANIMATION_STATE_BACK = 3,
+  ANIMATION_STATE_LEFT = 4,
+  ANIMATION_STATE_RIGHT = 5,
+  ANIMATION_STATE_SHOOT = 6,
+  ANIMATION_STATE_JUMP = 7,
+  ANIMATION_STATE_ROLL = 8,
+  ANIMATION_STATE_RELOAD = 9,
+  ANIMATION_STATE_DEATH = 10,
+  eAnimationState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eAnimationState_IsValid(int value);
+constexpr eAnimationState eAnimationState_MIN = ANIMATION_STATE_NONE;
+constexpr eAnimationState eAnimationState_MAX = ANIMATION_STATE_DEATH;
+constexpr int eAnimationState_ARRAYSIZE = eAnimationState_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eAnimationState_descriptor();
+template<typename T>
+inline const std::string& eAnimationState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eAnimationState>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eAnimationState_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eAnimationState_descriptor(), enum_t_value);
+}
+inline bool eAnimationState_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eAnimationState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eAnimationState>(
+    eAnimationState_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -238,6 +272,11 @@ template <> struct is_proto_enum< ::Protocol::eHitLocation> : ::std::true_type {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eHitLocation>() {
   return ::Protocol::eHitLocation_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eAnimationState> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eAnimationState>() {
+  return ::Protocol::eAnimationState_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

@@ -219,3 +219,23 @@ message S_PLAY_RESPAWN
 	PlayerData playerData = 1;
 	// Todo Respawn Point
 }
+
+message C_PLAY_ROLL
+{
+	PlayerData playerData = 1;
+}
+
+message S_PLAY_ROLL
+{
+	PlayerData playerData = 1;
+}
+
+message C_PLAY_RELOAD
+{
+	PlayerData playerData = 1;
+}
+
+message S_PLAY_RELOAD
+{
+	PlayerData playerData = 1;
+}

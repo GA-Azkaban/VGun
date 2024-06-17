@@ -62,6 +62,10 @@ public: // 팀 색상 변경
 
 public: // 게임 관련
 	void SendGameStart();
+	// 방 시작
+	void RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule);
+
+	// N초 뒤 게임 시작시 호출
 	void RecvGameStart();
 
 public: // 트랜스폼 동기화
@@ -86,8 +90,15 @@ public: // 인게임
 	// 리스폰 지점 추가해야함
 	void RecvPlayRespawn(Protocol::PlayerData playerData);
 
+	// 구르기
+	void SendPlayRoll(Protocol::PlayerData playerData);
+	void RecvPlayRoll(Protocol::PlayerData playerData);
+
+	// 재장전
+	void SendPlayReload(Protocol::PlayerData playerData);
+	void RecvPlayReload(Protocol::PlayerData playerData);
+
 public:
-	void SetConnect(bool isConnect);
 	void Connected();
 	void Disconnected();
 	bool IsConnected();
