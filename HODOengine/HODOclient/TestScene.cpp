@@ -222,7 +222,8 @@ TestScene::TestScene()
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	playerTest->LoadFBXFile("SKM_TP_X_Synty.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
