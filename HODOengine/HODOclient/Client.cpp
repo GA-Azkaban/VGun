@@ -42,26 +42,26 @@ void Client::Initialize()
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
 
-	//AnimationLoaderTest loader;
-	//loader.Start();
-	
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
-	 
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();	
+	AnimationLoaderTest loader;
+	loader.Start();
 
-	//InGameSceneView inGame;			//Scene Name : InGame
-	//inGame.Initialize();
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 
-	//LobbySceneView lobby;
-	//lobby.Initialize();
-
-	//API::LoadSceneByName("Lobby");
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();
 
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
-	API::LoadSceneByName("InGame");
+
+	LobbySceneView lobby;
+	lobby.Initialize();
+
+	API::LoadSceneByName("Login");
+
+	//InGameSceneView inGame;			//Scene Name : InGame
+	//inGame.Initialize();
+	//API::LoadSceneByName("InGame");
 
 	API::SetRecursiveMouseMode(true);
 }
