@@ -218,15 +218,15 @@ TestScene::TestScene()
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
 	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
-	playerTest->LoadFBXFile("SKM_TP_X_Synty.fbx");
+	playerTest->LoadFBXFile("SKM_TP_X_Synty3.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//meshComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
-	HDEngine::MaterialDesc desc;
+
+	/*HDEngine::MaterialDesc desc;
 	desc.materialName = "TP_Red";
 	desc.albedo = "TP_Red_B.png";
 	HDData::Material* newMat = API::CreateMaterial(desc);
@@ -234,56 +234,58 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 1);
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);
-	meshComp->PlayAnimation("AR_aim", true);
+	meshComp->LoadMaterial(newMat, 4);*/
+
+	meshComp->PlayAnimation("X_walk", true);
 	//meshComp->PlayAnimationUpper("AR_reload", true);
 	//meshComp->PlayAnimationLower("AR_run_R", true);
 	//meshComp->SetOutlineActive(true);
 	//meshComp->SetMeshActive(false, 0);
 	//meshComp->SetMeshActive(false, 1);
+	//meshComp->SetMeshActive(false, 2);
 	//meshComp->SetMeshActive(false, 3);
 	//meshComp->SetMeshActive(false, 4);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
-	//auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
-	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	//weaponTest->AddComponent<MeshTransformController>();
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
-	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	//weaponComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
-	weaponComp->LoadMesh("SM_AR_01.fbx");
-	HDEngine::MaterialDesc weaponMatDesc;
-	weaponMatDesc.materialName = "M_WEP_Basic_039";
-	//weaponMatDesc.albedo = "T_WEP_Basic_039_D.png";
-	weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
-	weaponMatDesc.roughness = "T_WEP_Basic_R.png";
-	weaponMatDesc.metallicValue = 0.15;
-	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
-	HDEngine::MaterialDesc weaponMatDesc2;
-	weaponMatDesc2.materialName = "M_WEP_Camo_001";
-	//weaponMatDesc2.albedo = "T_WEP_Camo_001_D.png";
-	weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
-	//weaponMatDesc2.normalMap = "T_WEP_Camo_N.png";
-	//weaponMatDesc2.roughness = "T_WEP_Camo_001_R.png";
-	weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
-	weaponMatDesc2.metallicValue = 0.1f;
-	HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
-	HDEngine::MaterialDesc weaponMatDesc3;
-	weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
-	weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
-	weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
-	weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
-	weaponMatDesc3.metallicValue = 0.1f;
-	HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
-	weaponComp->LoadMaterial(weaponMat1, 0);
-	weaponComp->LoadMaterial(weaponMat2, 1);
-	weaponComp->LoadMaterial(weaponMat2, 3);
-	weaponComp->LoadMaterial(weaponMat2, 5);
-	weaponComp->LoadMaterial(weaponMat3, 2);
-	weaponComp->LoadMaterial(weaponMat3, 4);
+	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	////auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
+	//auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	////weaponTest->AddComponent<MeshTransformController>();
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-15.2774f, -5.1681f, -1.1526f);
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5260f, 0.5268f, -0.4282f, 0.5123f });
+	//auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	////weaponComp->GetGameObject()->GetTransform()->Rotate(0.0f, 180.0f, 0.0f);
+	//weaponComp->LoadMesh("SM_AR_01.fbx");
+	//HDEngine::MaterialDesc weaponMatDesc;
+	//weaponMatDesc.materialName = "M_WEP_Basic_039";
+	////weaponMatDesc.albedo = "T_WEP_Basic_039_D.png";
+	//weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
+	//weaponMatDesc.roughness = "T_WEP_Basic_R.png";
+	//weaponMatDesc.metallicValue = 0.15;
+	//HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
+	//HDEngine::MaterialDesc weaponMatDesc2;
+	//weaponMatDesc2.materialName = "M_WEP_Camo_001";
+	////weaponMatDesc2.albedo = "T_WEP_Camo_001_D.png";
+	//weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
+	////weaponMatDesc2.normalMap = "T_WEP_Camo_N.png";
+	////weaponMatDesc2.roughness = "T_WEP_Camo_001_R.png";
+	//weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
+	//weaponMatDesc2.metallicValue = 0.1f;
+	//HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
+	//HDEngine::MaterialDesc weaponMatDesc3;
+	//weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
+	//weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
+	//weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
+	//weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
+	//weaponMatDesc3.metallicValue = 0.1f;
+	//HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
+	//weaponComp->LoadMaterial(weaponMat1, 0);
+	//weaponComp->LoadMaterial(weaponMat2, 1);
+	//weaponComp->LoadMaterial(weaponMat2, 3);
+	//weaponComp->LoadMaterial(weaponMat2, 5);
+	//weaponComp->LoadMaterial(weaponMat3, 2);
+	//weaponComp->LoadMaterial(weaponMat3, 4);
 
 	//playerTest->AddComponent<TPScript>();
 
@@ -459,39 +461,4 @@ TestScene::~TestScene()
 
 }
 
-void TestScene::Start()
-{
-	/*_scene = API::CreateScene("Test");
-
-	auto mainCam = _scene->GetMainCamera();
-	mainCam->GetGameObject()->AddComponent<CameraMove>();
-	mainCam->GetGameObject()->GetTransform()->SetPosition(0, 0, 0);
-	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
-
-	HDEngine::MaterialDesc red;
-	red.materialName = "TP_Red";
-	red.albedo = "TP_Red_B.png";
-
-	HDData::Material* M_Red = API::CreateMaterial(red);
-
-	HDData::GameObject* player = API::CreateObject(_scene, "player");
-	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(0, 0, 0);
-
-	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMaterial(M_Red, 0);
-	meshComp->LoadMaterial(M_Red, 1);
-	meshComp->LoadMaterial(M_Red, 2);
-	meshComp->LoadMaterial(M_Red, 3);
-	meshComp->LoadMaterial(M_Red, 4);
-
-	meshComp->PlayAnimation("AR_idle", true);
-
-	player->SetSelfActive(false);*/
-
-}
-
-void TestScene::ClickEvent()
-{
-}
 

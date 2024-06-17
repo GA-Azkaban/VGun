@@ -7,10 +7,6 @@ public:
 	TestScene();
 	~TestScene();
 
-	void Start();
-
-	void ClickEvent();
-
 private:
 	HDData::Scene* _scene;
 };

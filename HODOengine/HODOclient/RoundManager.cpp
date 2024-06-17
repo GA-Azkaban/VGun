@@ -59,7 +59,7 @@ void RoundManager::InitGame()
 
 	for (auto& obj : _playerObjs)
 	{
-		obj->SetSelfActive(false);
+		//obj->SetSelfActive(false);
 	}
 
 	int index = 0;

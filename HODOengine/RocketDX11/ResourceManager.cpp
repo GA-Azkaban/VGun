@@ -649,7 +649,7 @@ namespace RocketCore::Graphics
 		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("BillboardPixelShader.cso", billboardPS));
-		
+
 		PixelShader* forwardNoLightPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (forwardNoLightPS->LoadShaderFile(L"Resources/Shaders/ForwardPixelShaderNoLight.cso"))
 			_pixelShaders.insert(std::make_pair("ForwardPixelShaderNoLight.cso", forwardNoLightPS));
@@ -759,7 +759,7 @@ namespace RocketCore::Graphics
 				   DirectX::SimpleMath::Vector3{x, y, z},
 				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
 				   DirectX::SimpleMath::Vector2{0.f,0.f} }
-				);
+				   );
 			}
 		}
 
@@ -786,7 +786,7 @@ namespace RocketCore::Graphics
 				   DirectX::SimpleMath::Vector3(x, -y, z),
 				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
 				   DirectX::SimpleMath::Vector2{0.f,0.f} }
-				);
+				   );
 			}
 		}
 
@@ -794,7 +794,7 @@ namespace RocketCore::Graphics
 		   DirectX::SimpleMath::Vector3{0.0f, -(radius + height * 0.5f), 0.0f},
 		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
 				 DirectX::SimpleMath::Vector2{0.f,0.f} }
-		);
+				 );
 
 		// 상단 반구 인덱스
 		for (int i = 0; i < sliceCount; i++) {
@@ -1216,6 +1216,12 @@ namespace RocketCore::Graphics
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
+			/*aiMatrix4x4 mat(
+				rightVec.x, upVec.x, forwardVec.x, 0.0f,
+				rightVec.y, upVec.y, forwardVec.y, 0.0f,
+				rightVec.z, upVec.z, forwardVec.z, 0.0f,
+				0.0f, 0.0f, 0.0f, 1.0f);*/
+
 		// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
@@ -1443,7 +1449,13 @@ namespace RocketCore::Graphics
 		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
 		// numChannels == numBones
 		UINT animCount = scene->mNumAnimations;
-		for (UINT i = 0; i < animCount; ++i)
+		//for (UINT i = 0; i < animCount; ++i)
+		if (animCount <= 0)
+		{
+			return;
+		}
+
+		for (UINT i = 0; i < 1; ++i)
 		{
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();

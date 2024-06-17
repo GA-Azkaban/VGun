@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -448,7 +448,7 @@ void PlayerMove::ShootGunDdabal()
 	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
 	if (hitDynamicSphere != nullptr)
 	{
-		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
+		//RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
 	}
 
@@ -456,7 +456,7 @@ void PlayerMove::ShootGunDdabal()
 	HDData::DynamicCapsuleCollider* hitDynamicCapsule = dynamic_cast<HDData::DynamicCapsuleCollider*>(hitCollider);
 	if (hitDynamicCapsule != nullptr)
 	{
-		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
+		//RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
 	}
 
