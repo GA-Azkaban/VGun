@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -79,6 +79,36 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
 
 }
 
+void NetworkManager::SendPlayRoll(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_ROLL packet;
+
+	packet.mutable_playerdata()->CopyFrom(playerData);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayRoll(Protocol::PlayerData playerData)
+{
+
+}
+
+void NetworkManager::SendPlayReload(Protocol::PlayerData playerData)
+{
+	Protocol::C_PLAY_RELOAD packet;
+
+	packet.mutable_playerdata()->CopyFrom(playerData);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvPlayReload(Protocol::PlayerData playerData)
+{
+
+}
+
 void NetworkManager::Connected()
 {
 	_isConnect = true;
@@ -93,8 +123,6 @@ void NetworkManager::Connected()
 
 	std::cout << "Connected" << std::endl;
 #endif
-
-
 }
 
 void NetworkManager::Disconnected()
@@ -242,7 +270,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
-		
+
 		switch (player.team())
 		{
 			case Protocol::TEAM_COLOR_RED:
@@ -340,9 +368,9 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 			break;
 		}
 
-		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname())) 
-		{ 
-			GameManager::Instance()->GetMyInfo()->SetIsHost(true); 
+		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
+		{
+			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
 
 		info->_players.push_back(one);
@@ -421,7 +449,7 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 		for (int j = 0; j < roomInfo.users().size(); ++j)
 		{
 
-			if (roomInfo.users()[i].userinfo().nickname() == 
+			if (roomInfo.users()[i].userinfo().nickname() ==
 				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
 			{
 				switch (roomInfo.users()[i].team())
@@ -450,7 +478,7 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 			}
 		}
 
-		
+
 	}
 }
 
@@ -462,10 +490,17 @@ void NetworkManager::SendGameStart()
 	this->_service->BroadCast(sendBuffer);
 }
 
-void NetworkManager::RecvGameStart()
+void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule)
 {
 	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");
+
+	// Todo roomInfo, gameRule 설정
+}
+
+void NetworkManager::RecvGameStart()
+{
+
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -500,15 +535,18 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 	for (auto& player : roominfo.users())
 	{
-		if(player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
+		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
 
 		auto& obj = playerobj[player.userinfo().uid()];
-		
+
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		serverPosition[index] = pos;
 
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 		serverRotation[index] = rot;
+
+		// Todo 애니메이션
+		player.animationstate();
 
 		++index;
 	}

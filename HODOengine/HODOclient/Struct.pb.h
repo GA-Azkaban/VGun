@@ -1289,6 +1289,7 @@ class PlayerData final :
     kIsDeadFieldNumber = 7,
     kKillCountFieldNumber = 8,
     kDeathCountFieldNumber = 9,
+    kAnimationStateFieldNumber = 10,
   };
   // .Protocol.UserInfo userInfo = 1;
   bool has_userinfo() const;
@@ -1389,6 +1390,15 @@ class PlayerData final :
   void _internal_set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
+  // .Protocol.eAnimationState animationState = 10;
+  void clear_animationstate();
+  ::Protocol::eAnimationState animationstate() const;
+  void set_animationstate(::Protocol::eAnimationState value);
+  private:
+  ::Protocol::eAnimationState _internal_animationstate() const;
+  void _internal_set_animationstate(::Protocol::eAnimationState value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.PlayerData)
  private:
   class _Internal;
@@ -1405,6 +1415,7 @@ class PlayerData final :
   bool isdead_;
   ::PROTOBUF_NAMESPACE_ID::int32 killcount_;
   ::PROTOBUF_NAMESPACE_ID::int32 deathcount_;
+  int animationstate_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -2729,6 +2740,26 @@ inline void PlayerData::_internal_set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 
 inline void PlayerData::set_deathcount(::PROTOBUF_NAMESPACE_ID::int32 value) {
   _internal_set_deathcount(value);
   // @@protoc_insertion_point(field_set:Protocol.PlayerData.deathCount)
+}
+
+// .Protocol.eAnimationState animationState = 10;
+inline void PlayerData::clear_animationstate() {
+  animationstate_ = 0;
+}
+inline ::Protocol::eAnimationState PlayerData::_internal_animationstate() const {
+  return static_cast< ::Protocol::eAnimationState >(animationstate_);
+}
+inline ::Protocol::eAnimationState PlayerData::animationstate() const {
+  // @@protoc_insertion_point(field_get:Protocol.PlayerData.animationState)
+  return _internal_animationstate();
+}
+inline void PlayerData::_internal_set_animationstate(::Protocol::eAnimationState value) {
+  
+  animationstate_ = value;
+}
+inline void PlayerData::set_animationstate(::Protocol::eAnimationState value) {
+  _internal_set_animationstate(value);
+  // @@protoc_insertion_point(field_set:Protocol.PlayerData.animationState)
 }
 
 // -------------------------------------------------------------------
