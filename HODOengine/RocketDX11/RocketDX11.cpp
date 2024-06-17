@@ -223,7 +223,8 @@ namespace RocketCore::Graphics
 
 		CreateDepthStencilStates();
 
-		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
+		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
@@ -387,7 +388,7 @@ namespace RocketCore::Graphics
 
 #ifdef _DEBUG
 		static bool isDebugRender = true;
-		if (GetAsyncKeyState(VK_F1) & 0x8000)
+		if (GetAsyncKeyState(VK_F12) & 0x8000)
 		{
 			isDebugRender = !isDebugRender;
 		}

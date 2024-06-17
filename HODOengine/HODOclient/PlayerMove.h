@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "../HODOengine/HODO_API.h"
 
 /// <summary>
@@ -47,6 +47,7 @@ private:
 private:
 	void Jump();
 	void Move(int direction);
+	void InterpolationMove(HDData::Transform* current, Vector3* serverPos, Quaternion* serverRot, float intermediateValue);
 	void Pitch(float rotationValue);
 
 	// 사격 관련
@@ -58,9 +59,7 @@ private:
 	void ApplyRecoil();
 
 public:
-	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
-	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
-
+	int& GetBulletCount();
 
 private:
 	bool _isMovable;
@@ -110,9 +109,6 @@ private:
 	bool _isReloading;
 	bool _isRunning;
 	bool _tempFlag = 0;
-
-	int _enterCount = 0;
-
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;

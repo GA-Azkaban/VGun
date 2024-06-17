@@ -106,6 +106,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>02_Client\Timer</Filter>
     </ClCompile>
+    <ClCompile Include="Ammo.cpp">
+      <Filter>02_Client\TestScene\Ammo</Filter>
+    </ClCompile>
     <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
@@ -242,6 +245,9 @@
     <ClInclude Include="Timer.h">
       <Filter>02_Client\Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Ammo.h">
+      <Filter>02_Client\TestScene\Ammo</Filter>
+    </ClInclude>
     <ClInclude Include="TPScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
@@ -356,6 +362,9 @@
     </Filter>
     <Filter Include="02_Client\Timer">
       <UniqueIdentifier>{7f117444-f2fc-40f0-af76-dcfecdaacb5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\Ammo">
+      <UniqueIdentifier>{576cd7fc-3567-4f56-be15-6f6ffab1e958}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

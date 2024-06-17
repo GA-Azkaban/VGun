@@ -27,18 +27,9 @@ enum eTeamColor
 
 enum eRGBMap
 {
-	MAP_NONE = 0;
-	MAP_RANDOM = 1;
-	MAP_DESERT = 2;
-}
+	NONE = 0;
+	RANDOM = 1;
+	DESERT = 2;
 
-// 맞은 부위
-enum eHitLocation
-{
-    HIT_LOCATION_NONE = 0; 
-    HIT_LOCATION_NO_HIT = 1;
-    HIT_LOCATION_HEAD = 2;
-    HIT_LOCATION_BODY = 3;
-    HIT_LOCATION_ARM = 4;
-    HIT_LOCATION_LEG = 5;
+
 }

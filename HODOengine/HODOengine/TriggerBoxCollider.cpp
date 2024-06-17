@@ -12,8 +12,7 @@ HDData::TriggerBoxCollider::TriggerBoxCollider()
 HDData::TriggerBoxCollider::TriggerBoxCollider(float width, float height, float depth)
 	: _width(width), _height(height), _depth(depth)
 {
-	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
-	_debugStruct = _cubeDebugStruct;
+	_debugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 }
 
 float HDData::TriggerBoxCollider::GetHeight()

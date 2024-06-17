@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
 
@@ -31,6 +31,7 @@ public:
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
 
+	void SetMaxHP(int hp);
 	void SetCurrentHP(int hp);
 	void SetCurrentKill(int killCount);
 	void SetCurrentDeath(int deathCount);
@@ -47,6 +48,7 @@ public:
 	bool& GetPlayerDie();
 	std::string& GetPlayerNickName();
 
+	int& GetPlayerMaxHP();
 	int& GetPlayerCurrentHP();
 	int& GetPlayerKillCount();
 	int& GetPlayerDeathCount();

@@ -36,6 +36,8 @@ public:
 
 	HWND GetHWND();
 
+	void Quit();
+
 private:
 	void Run();
 

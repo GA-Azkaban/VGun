@@ -50,7 +50,6 @@
 #include "ParticleSystem.h"
 #include "TriggerBoxCollider.h"
 #include "Light.h"
-#include "PhysicsCollision.h"
 
 #include "RenderSystem.h"
 #include "ObjectSystem.h"
@@ -101,6 +100,7 @@ namespace API
 		HODO_API Vector2 GetMousePosition();
 		HODO_API float GetMouseWheel();
 		HODO_API Vector2 GetMouseDelta();
+		HODO_API void SetRecursiveMouseMode(bool isModeOn);
 
 		// 디버그 시스템을 위한 함수
 		HODO_API void DebugModeOn(int flag);
@@ -124,6 +124,9 @@ namespace API
 
 		// Resize
 		HODO_API void Resize(int width, int height);
+
+		// Destroy window
+		HODO_API void QuitWindow();
 	}
 }
 

@@ -233,6 +233,10 @@ namespace HDEngine
 			SetCursorPos(_mousePos.x, windowRect.bottom - 10);
 		}
 	}
+	void InputSystem::SetRecursiveMouseMode(bool isModeOn)
+	{
+		_isFirstPersonPerspective = isModeOn;
+	}
 }
 
 Vector2 HDEngine::InputSystem::GetMouseDelta()

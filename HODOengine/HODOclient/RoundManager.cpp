@@ -123,6 +123,9 @@ void RoundManager::InitRound()
 
 void RoundManager::UpdateRound()
 {
+
+
+
 	// 플레이어 transform 정보 갱신
 
 	// 플레이어 state 정보 갱신

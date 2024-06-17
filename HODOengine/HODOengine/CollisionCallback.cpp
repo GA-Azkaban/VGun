@@ -68,13 +68,12 @@ namespace HDEngine
 			//c.SwapObjects();
 
 			//OnCollisionExit 함수들 발동.
-			if (!pair._first->GetIsTrigger())
+			if (!pair._first->GetTrigger())
 			{
 				pair._first->Collider_OnCollisionExit(c);
 			}
 			c.SwapObjects();
-
-			if (!pair._second->GetIsTrigger())
+			if (!pair._second->GetTrigger())
 			{
 				pair._second->Collider_OnCollisionExit(c);
 			}
@@ -91,13 +90,12 @@ namespace HDEngine
 
 			//OnCollisionEnter 함수를 발동.
 			//OnCollisionExit 함수들 발동.
-			if (!pair._first->GetIsTrigger())
+			if (!pair._first->GetTrigger())
 			{
 				pair._first->Collider_OnCollisionEnter(c);
 			}
 			c.SwapObjects();
-
-			if (!pair._second->GetIsTrigger())
+			if (!pair._second->GetTrigger())
 			{
 				pair._second->Collider_OnCollisionEnter(c);
 			}
@@ -112,11 +110,7 @@ namespace HDEngine
 
 	void CollisionCallback::OnColliderRemoved(HDData::Collider* collider)
 	{
-		ClearColliderFromCollection(collider, _collisions);
-		ClearColliderFromCollection(collider, _prevCollisions);
-		ClearColliderFromCollection(collider, _removedCollisionPairs);
-		ClearColliderFromCollection(collider, _newTriggerPairs);
-		ClearColliderFromCollection(collider, _lostTriggerPairs);
+
 	}
 
 	void CollisionCallback::onContact(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs)
@@ -181,7 +175,7 @@ namespace HDEngine
 			col._otherActor = static_cast<HDData::Collider*>(pair.shapes[1]->userData);
 
 			// 둘 다 유효한지 확인.
-			//assert(col._thisActor != nullptr && col._otherActor != nullptr);
+			assert(col._thisActor != nullptr && col._otherActor != nullptr);
 
 			// 스트림 내부에 더 읽어들일 수 있는 패치가 있을 때까지.
 			while (iter.hasNextPatch())

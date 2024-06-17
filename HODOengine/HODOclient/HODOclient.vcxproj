@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -224,6 +224,10 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ammo.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="AnimationLoaderTest.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BtnHoveringScript.h" />
     <ClInclude Include="BtnImageScript.h" />
@@ -268,6 +272,10 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ammo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="AnimationLoaderTest.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BtnHoveringScript.cpp" />
     <ClCompile Include="BtnImageScript.cpp" />

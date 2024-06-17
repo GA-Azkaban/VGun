@@ -1,5 +1,6 @@
 ﻿#include "HODO_API.h"
 
+#include "HODOengine.h"
 #include "SceneSystem.h"
 #include "ObjectSystem.h"
 #include "InputSystem.h"
@@ -210,6 +211,11 @@ namespace API
 			return HDEngine::InputSystem::Instance().GetMouseDelta();
 		}
 
+		HODO_API void SetRecursiveMouseMode(bool isModeOn)
+		{
+			return HDEngine::InputSystem::Instance().SetRecursiveMouseMode(isModeOn);
+		}
+
 		HODO_API float GetDeltaTime()
 		{
 			return HDEngine::TimeSystem::Instance().GetDeltaTime();
@@ -302,7 +308,12 @@ namespace API
 			return HDEngine::UISystem::Instance().GetEveryUI();
 		}
 
+		HODO_API void QuitWindow()
+		{
+			HODOengine::Instance().Quit();
+		}
 	}
 
+	
 
 }

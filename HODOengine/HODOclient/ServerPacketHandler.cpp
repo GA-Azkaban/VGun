@@ -152,7 +152,7 @@ bool Handle_S_ROOM_CHANGE_TEAM(Horang::PacketSessionRef& session, Protocol::S_RO
 bool Handle_S_ROOM_KICK(Horang::PacketSessionRef& session, Protocol::S_ROOM_KICK& pkt)
 {
 	NetworkManager::Instance().RecvKickPlayer(pkt.roominfo());
-
+	
 	return true;
 }
 
@@ -166,38 +166,6 @@ bool Handle_S_PLAY_UPDATE(Horang::PacketSessionRef& session, Protocol::S_PLAY_UP
 bool Handle_S_ROOM_LIST(Horang::PacketSessionRef& session, Protocol::S_ROOM_LIST& pkt)
 {
 	NetworkManager::Instance().RecvRoomList(pkt);
-
-	return true;
-}
-
-bool Handle_S_PLAY_JUMP(Horang::PacketSessionRef& session, Protocol::S_PLAY_JUMP& pkt)
-{
-	NetworkManager::Instance().RecvPlayJump(pkt.playerdata());
-	return true;
-}
-
-bool Handle_S_PLAY_SHOOT(Horang::PacketSessionRef& session, Protocol::S_PLAY_SHOOT& pkt)
-{
-	if (pkt.has_hitplayer() && pkt.has_hitlocation())
-	{
-		NetworkManager::Instance().RecvPlayShoot(pkt.shootplayer(), pkt.hitplayer(), pkt.hitlocation());
-		return true;
-	}
-
-	NetworkManager::Instance().RecvPlayShoot(pkt.shootplayer());
-	return true;
-}
-
-bool Handle_S_PLAY_KILL_DEATH(Horang::PacketSessionRef& session, Protocol::S_PLAY_KILL_DEATH& pkt)
-{
-	NetworkManager::Instance().RecvPlayKillDeath(pkt.deathplayer(), pkt.killplayer());
-
-	return true;
-}
-
-bool Handle_S_PLAY_RESPAWN(Horang::PacketSessionRef& session, Protocol::S_PLAY_RESPAWN& pkt)
-{
-	NetworkManager::Instance().RecvPlayRespawn(pkt.playerdata());
 
 	return true;
 }
