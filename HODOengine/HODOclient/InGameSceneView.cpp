@@ -103,17 +103,44 @@ void InGameSceneView::Initialize()
 	//fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
 	fpMeshObj->LoadFBXFile2("SKM_TP_X_Default.fbx", playerNodes);
 
+	auto root = player->GetGameObjectByNameInChildren("root");
+	HDData::StaticBoxCollider* rootCol = root->AddComponent<HDData::StaticBoxCollider>(2.0f, 3.0f, 4.0f);
+	root->SetParentObject(player);
+	rootCol->SetParentCollider(playerColliderStanding);
+
+	auto pelvis = player->GetGameObjectByNameInChildren("pelvis");
+	HDData::StaticBoxCollider* pelvisCol = pelvis->AddComponent<HDData::StaticBoxCollider>();
+	pelvis->SetParentObject(root);
+	pelvisCol->SetParentCollider(rootCol);
+
+	auto spine_01 = player->GetGameObjectByNameInChildren("spine_01");
+	HDData::StaticBoxCollider* spine_01Col = spine_01->AddComponent<HDData::StaticBoxCollider>();
+	spine_01->SetParentObject(pelvis);
+	spine_01Col->SetParentCollider(pelvisCol);
+
+	auto thigh_l = player->GetGameObjectByNameInChildren("thigh_l");
+	HDData::StaticBoxCollider* thigh_lCol = thigh_l->AddComponent<HDData::StaticBoxCollider>();
+	thigh_l->SetParentObject(pelvis);
+	thigh_lCol->SetParentCollider(pelvisCol);
+
+	auto thigh_r = player->GetGameObjectByNameInChildren("thigh_r");
+	HDData::StaticBoxCollider* thigh_rCol = thigh_r->AddComponent<HDData::StaticBoxCollider>();
+	thigh_r->SetParentObject(pelvis);
+	thigh_rCol->SetParentCollider(pelvisCol);
+
+	/*
 	for (auto& node : playerNodes)
 	{
 		std::string name = node->GetObjectName();
 
-		node->GetTransform()->SetLocalScale(Vector3(0.01f, 0.01f, 0.01f));
 		node->SetParentObject(player);
+		node->GetTransform()->SetScale(Vector3(0.0001f, 0.0001f, 0.0001f));
 
 		HDData::StaticBoxCollider* col;
 		if (name == "root")
 		{
 			col = node->AddComponent<HDData::StaticBoxCollider>(3.0f, 3.0f, 3.0f);
+			col->SetParentCollider(playerColliderStanding);
 		}
 		else if (name == "pelvis")
 		{
@@ -187,9 +214,8 @@ void InGameSceneView::Initialize()
 		{
 			col = node->AddComponent<HDData::StaticBoxCollider>();
 		}
-
-		col->SetParentCollider(playerColliderStanding);
 	}
+	*/
 
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
