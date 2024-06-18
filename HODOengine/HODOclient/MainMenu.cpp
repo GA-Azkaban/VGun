@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -109,10 +109,10 @@ void MainMenuScene::MainMenu()
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
 	freshBtn->SetImage("flair_arrow_3.png");
-	freshBtn->SetSortOrder(0.6f);
+	freshBtn->SetSortOrder(0.7f);
 	freshBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	freshBtn->SetOnClickEvent(
-		[freshBtn]()
+		[]()
 		{
 			NetworkManager::Instance().SendRoomListRequest();
 		}
@@ -318,6 +318,8 @@ void MainMenuScene::MainMenu()
 
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetOnClickEvent([=]()
 			{
+				if (MenuManager::Instance()._roomList.size() <= MenuManager::Instance().currentPage * i)  return;
+
 				MenuManager::Instance().selectedRoomInfo =
 					MenuManager::Instance()._roomList[MenuManager::Instance().currentPage * i];
 

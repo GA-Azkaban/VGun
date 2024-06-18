@@ -146,7 +146,6 @@ void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collid
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_BODY);
 }
 
-
 void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 {
 	_myObj->GetComponent<PlayerInfo>()->OtherPlayerShoot(location);
@@ -154,6 +153,7 @@ void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 
 void RoundManager::SendJump(int uid)
 {
+	if ((!_players[uid]) || (uid == _myObj->GetComponent<PlayerInfo>()->GetPlayerUID())) return;
 	NetworkManager::Instance().SendPlayJump(_players[uid]->GetComponent<PlayerInfo>());
 }
 

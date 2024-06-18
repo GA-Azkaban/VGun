@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
 
@@ -52,11 +52,16 @@ public:
 	int& GetPlayerDeathCount();
 	int& GetCurrentBulletCount();
 	bool& GetIsDie();
-	ePlayerState& GetPlayerState();
+	ePlayerState GetPrevPlayerState();
+	ePlayerState GetPlayerState();
 
 	void SetIsMyInfo(bool isMine);
 	bool GetIsMyInfo();
 
+	void SetIsShoot(bool isShoot);
+	void SetIsJump(bool isJump);
+	bool GetIsShoot();
+	bool GetIsJump();
 	
 	void OtherPlayerShoot(eHITLOC loc);
 private:
@@ -72,7 +77,6 @@ private:
 
 	// state info
 	bool _isJump;
-	bool _isCrouch;
 	bool _isShoot;
 
 	int _currentHP;
@@ -80,7 +84,8 @@ private:
 
 	int _bulletCount = 30;
 
-	ePlayerState _state;
+	ePlayerState _prevState = ePlayerState::NONE;
+	ePlayerState _state = ePlayerState::IDLE;
 	
 	// count info
 	int _kill;

@@ -10,12 +10,8 @@ enum class ePlayerState
 	WALK_F,
 	WALK_B,
 	JUMP,
-	CROUCH,
-	CROUCH_R,
-	CROUCH_L,
-	CROUCH_F,
-	CROUCH_B,
 	RELOAD,
+	ROLL,
 	DIE,
 
 	LAST

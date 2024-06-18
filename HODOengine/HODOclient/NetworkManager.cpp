@@ -50,8 +50,9 @@ void NetworkManager::Update()
 
 	auto& playerObj = RoundManager::Instance()->GetPlayerObjs();
 
-	int index = 0;
+	if (playerObj.size() == 0) return;
 
+	int index = 0;
 	for (auto& [uid, player] : playerObj)
 	{
 		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 2.5);
@@ -305,6 +306,11 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
+	//if (roomInfo.currentplayercount() == 0)
+	//{
+
+	//}
+
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -556,7 +562,7 @@ void NetworkManager::SendPlayJump(PlayerInfo* playerinfo)
 
 void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
 {
-	RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>();
+	RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsJump(true);
 }
 
 void NetworkManager::SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid /*= 0*/, Protocol::eHitLocation hitLocation /*= Protocol::eHitLocation::HIT_LOCATION_NO_HIT*/)

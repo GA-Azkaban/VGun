@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -20,7 +20,7 @@ PlayerMove::PlayerMove()
 	_isJumping(true), _isOnGround(false),
 	_isShootHead(false), _isShootBody(false)
 {
-	
+
 }
 
 void PlayerMove::Start()
@@ -30,7 +30,7 @@ void PlayerMove::Start()
 	GetGameObject()->AddComponent<FPAniScript>();
 
 	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
-	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");	
+	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_moveSpeed = 3.0f;
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
@@ -134,10 +134,10 @@ void PlayerMove::Update()
 
 	// 이동, 회전
 	Move(_moveDirection);
-	
+
 
 	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
-	
+
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 
 	////UpdatePlayerPositionDebug();
@@ -309,7 +309,7 @@ bool PlayerMove::CheckIsOnGround()
 				// 상태 변경 및 착지 Sound.
 				if (_isOnGround == false)
 				{
- 					_isOnGround = true;
+					_isOnGround = true;
 					_isJumping = false;
 					//_playerAudio->Play3DOnce("landing");
 					//_jumpCount = 0;
@@ -321,33 +321,33 @@ bool PlayerMove::CheckIsOnGround()
 	_isOnGround = false;
 	*/
 	//return false;
-	
+
 	Vector3 pos = this->GetTransform()->GetPosition();
 
-		float halfHeight = _playerCollider->GetHeight() / 2.0f;
-		Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
+	float halfHeight = _playerCollider->GetHeight() / 2.0f;
+	Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
 
-		int colliderType = 0;
-		HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, 1.0f,0.0f }, 0.08f, &colliderType);
-		API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.08f, Vector4(1.f, 0.f, 0.f, 0.f));
+	int colliderType = 0;
+	HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, 1.0f,0.0f }, 0.08f, &colliderType);
+	API::DrawLineDir(rayOrigin, Vector3(0.f, 1.f, 0.f), 0.08f, Vector4(1.f, 0.f, 0.f, 0.f));
 
-		if (opponentCollider)
+	if (opponentCollider)
+	{
+		// type 1이 rigidStatic.
+		if (colliderType == 1)
 		{
-			// type 1이 rigidStatic.
-			if (colliderType == 1)
-			{
-				// 상태 변경 및 착지 Sound.
-				//if (_isOnGround == false)
-				//{
-					_isOnGround = true;
-					_isJumping = false;
-					_playerCollider->ClearVeloY();
-					//_playerAudio->Play3DOnce("landing");
-				//}
-				return true;
-			}
+			// 상태 변경 및 착지 Sound.
+			//if (_isOnGround == false)
+			//{
+			_isOnGround = true;
+			_isJumping = false;
+			_playerCollider->ClearVeloY();
+			//_playerAudio->Play3DOnce("landing");
+		//}
+			return true;
 		}
-	
+	}
+
 	_isOnGround = false;
 	return false;
 }
@@ -395,12 +395,12 @@ void PlayerMove::ShootGun()
 	HDData::Collider* hitCollider = nullptr;
 
 	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
-	Vector3 hitPoint = {1.0f, 1.0f, 1.0f};
+	Vector3 hitPoint = { 1.0f, 1.0f, 1.0f };
 
 	hitCollider = API::ShootRayHitPoint(rayOrigin, GetTransform()->GetForward(), hitPoint);
-	
+
 	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
-	
+
 	if (hitDynamic != nullptr)
 	{
 		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
@@ -683,7 +683,7 @@ bool PlayerMove::IsShootBody()
 
 void PlayerMove::ToggleCam()
 {
-	if(_isHeadCam)
+	if (_isHeadCam)
 	{
 		API::SetCurrentSceneMainCamera(_playerCamera);
 		_playerCamera->SetAsMainCamera();
@@ -706,18 +706,16 @@ void PlayerMove::ToggleCam()
 void PlayerMove::Jump()
 {
 	if ((!_isJumping) && (_isOnGround))
-	//if(!_isJumping)
 	{
-		//RoundManager::Instance()->
-
-		// 점프
 		_playerCollider->Jump();
 		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
 		_isOnGround = false;
 
-		//_jumpCooldown = 0.8f;
-		//_isOnGround = false;
+		if (RoundManager::Instance()->GetIsRoundStart())
+		{
+			RoundManager::Instance()->SendJump(GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID());
+		}
 	}
 }
 
@@ -1012,7 +1010,7 @@ void PlayerMove::CameraMove()
 	if (mouseDelta.x > 500.0f)
 	{
 		mouseDelta.x = 500.0f;
-	} 
+	}
 	if (mouseDelta.x < -500.0f)
 	{
 		mouseDelta.x = -500.0f;
@@ -1029,7 +1027,7 @@ void PlayerMove::CameraMove()
 
 	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0005f);
 	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0005f);
-	
+
 	if (_rotAngleX >= 1.5f)
 	{
 		_rotAngleX = 1.5f;
@@ -1049,5 +1047,5 @@ void PlayerMove::CameraMove()
 	// 메쉬 회전
 	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
-	
+
 }
