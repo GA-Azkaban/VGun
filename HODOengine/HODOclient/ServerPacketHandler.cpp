@@ -125,7 +125,7 @@ bool Handle_S_ANOTHER_LEAVE_ROOM(Horang::PacketSessionRef& session, Protocol::S_
 
 bool Handle_S_ROOM_START(Horang::PacketSessionRef& session, Protocol::S_ROOM_START& pkt)
 {
-	NetworkManager::Instance().RecvGameStart();
+	NetworkManager::Instance().RecvRoomStart(pkt.roominfo(), pkt.gamerule());
 
 	return true;
 }
@@ -198,6 +198,20 @@ bool Handle_S_PLAY_KILL_DEATH(Horang::PacketSessionRef& session, Protocol::S_PLA
 bool Handle_S_PLAY_RESPAWN(Horang::PacketSessionRef& session, Protocol::S_PLAY_RESPAWN& pkt)
 {
 	NetworkManager::Instance().RecvPlayRespawn(pkt.playerdata());
+
+	return true;
+}
+
+bool Handle_S_PLAY_ROLL(Horang::PacketSessionRef& session, Protocol::S_PLAY_ROLL& pkt)
+{
+	NetworkManager::Instance().RecvPlayRoll(pkt.playerdata());
+
+	return true;
+}
+
+bool Handle_S_PLAY_RELOAD(Horang::PacketSessionRef& session, Protocol::S_PLAY_RELOAD& pkt)
+{
+	NetworkManager::Instance().RecvPlayReload(pkt.playerdata());
 
 	return true;
 }

@@ -121,7 +121,9 @@ constexpr PlayerData::PlayerData(
   , issitting_(false)
   , isdead_(false)
   , killcount_(0)
-  , deathcount_(0){}
+  , deathcount_(0)
+  , animationstate_(0)
+{}
 struct PlayerDataDefaultTypeInternal {
   constexpr PlayerDataDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -222,6 +224,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Struct_2eproto::offsets[] PROT
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerData, isdead_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerData, killcount_),
   PROTOBUF_FIELD_OFFSET(::Protocol::PlayerData, deathcount_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::PlayerData, animationstate_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -240,7 +243,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 41, -1, sizeof(::Protocol::Transform)},
   { 48, -1, sizeof(::Protocol::UserInfo)},
   { 56, -1, sizeof(::Protocol::PlayerData)},
-  { 70, -1, sizeof(::Protocol::GameRule)},
+  { 71, -1, sizeof(::Protocol::GameRule)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -269,22 +272,23 @@ const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "\n\tTransform\022\"\n\007vector3\030\001 \001(\0132\021.Protocol."
   "Vector3\022(\n\nquaternion\030\002 \001(\0132\024.Protocol.Q"
   "uaternion\"5\n\010UserInfo\022\013\n\003uid\030\001 \001(\005\022\n\n\002id"
-  "\030\002 \001(\t\022\020\n\010nickName\030\003 \001(\t\"\342\001\n\nPlayerData\022"
+  "\030\002 \001(\t\022\020\n\010nickName\030\003 \001(\t\"\225\002\n\nPlayerData\022"
   "$\n\010userInfo\030\001 \001(\0132\022.Protocol.UserInfo\022\014\n"
   "\004host\030\002 \001(\010\022\"\n\004team\030\003 \001(\0162\024.Protocol.eTe"
   "amColor\022&\n\ttransform\030\004 \001(\0132\023.Protocol.Tr"
   "ansform\022\n\n\002hp\030\005 \001(\002\022\021\n\tisSitting\030\006 \001(\010\022\016"
   "\n\006isDead\030\007 \001(\010\022\021\n\tkillCount\030\010 \001(\005\022\022\n\ndea"
-  "thCount\030\t \001(\005\"U\n\010GameRule\022\020\n\010gameTime\030\001 "
-  "\001(\005\022\023\n\013desiredKill\030\002 \001(\005\022\023\n\013respawnTime\030"
-  "\003 \001(\005\022\r\n\005maxHp\030\004 \001(\005b\006proto3"
+  "thCount\030\t \001(\005\0221\n\016animationState\030\n \001(\0162\031."
+  "Protocol.eAnimationState\"U\n\010GameRule\022\020\n\010"
+  "gameTime\030\001 \001(\005\022\023\n\013desiredKill\030\002 \001(\005\022\023\n\013r"
+  "espawnTime\030\003 \001(\005\022\r\n\005maxHp\030\004 \001(\005b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Struct_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto = {
-  false, false, 908, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
+  false, false, 959, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
   &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 8,
   schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
   file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto, file_level_service_descriptors_Struct_2eproto,
@@ -2121,16 +2125,16 @@ PlayerData::PlayerData(const PlayerData& from)
     transform_ = nullptr;
   }
   ::memcpy(&team_, &from.team_,
-    static_cast<size_t>(reinterpret_cast<char*>(&deathcount_) -
-    reinterpret_cast<char*>(&team_)) + sizeof(deathcount_));
+    static_cast<size_t>(reinterpret_cast<char*>(&animationstate_) -
+    reinterpret_cast<char*>(&team_)) + sizeof(animationstate_));
   // @@protoc_insertion_point(copy_constructor:Protocol.PlayerData)
 }
 
 void PlayerData::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&userinfo_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&deathcount_) -
-    reinterpret_cast<char*>(&userinfo_)) + sizeof(deathcount_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&animationstate_) -
+    reinterpret_cast<char*>(&userinfo_)) + sizeof(animationstate_));
 }
 
 PlayerData::~PlayerData() {
@@ -2170,8 +2174,8 @@ void PlayerData::Clear() {
   }
   transform_ = nullptr;
   ::memset(&team_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&deathcount_) -
-      reinterpret_cast<char*>(&team_)) + sizeof(deathcount_));
+      reinterpret_cast<char*>(&animationstate_) -
+      reinterpret_cast<char*>(&team_)) + sizeof(animationstate_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2243,6 +2247,14 @@ const char* PlayerData::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
           deathcount_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .Protocol.eAnimationState animationState = 10;
+      case 10:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_animationstate(static_cast<::Protocol::eAnimationState>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -2333,6 +2345,13 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(9, this->_internal_deathcount(), target);
   }
 
+  // .Protocol.eAnimationState animationState = 10;
+  if (this->animationstate() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      10, this->_internal_animationstate(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -2403,6 +2422,12 @@ size_t PlayerData::ByteSizeLong() const {
         this->_internal_deathcount());
   }
 
+  // .Protocol.eAnimationState animationState = 10;
+  if (this->animationstate() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_animationstate());
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
         _internal_metadata_, total_size, &_cached_size_);
@@ -2461,6 +2486,9 @@ void PlayerData::MergeFrom(const PlayerData& from) {
   if (from.deathcount() != 0) {
     _internal_set_deathcount(from._internal_deathcount());
   }
+  if (from.animationstate() != 0) {
+    _internal_set_animationstate(from._internal_animationstate());
+  }
 }
 
 void PlayerData::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -2485,8 +2513,8 @@ void PlayerData::InternalSwap(PlayerData* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(PlayerData, deathcount_)
-      + sizeof(PlayerData::deathcount_)
+      PROTOBUF_FIELD_OFFSET(PlayerData, animationstate_)
+      + sizeof(PlayerData::animationstate_)
       - PROTOBUF_FIELD_OFFSET(PlayerData, userinfo_)>(
           reinterpret_cast<char*>(&userinfo_),
           reinterpret_cast<char*>(&other->userinfo_));
