@@ -91,7 +91,7 @@ void PlayerMove::Update()
 	// 탄창 비었는데 쏘면 딸깍소리
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
-		if (_bulletCount <= 0)
+		if (_bulletCount <= 0 && !_isReloading)
 		{
 			_playerAudio->PlayOnce("empty");
 		}
@@ -411,6 +411,11 @@ void PlayerMove::ShootGun()
 
 void PlayerMove::ShootGunDdabal()
 {
+	if (_isReloading)
+	{
+		return;
+	}
+
 	if (_bulletCount <= 0)	// 장탄수를 임시로 30발로 제한
 	{
 		_headCam->ToggleCameraShake(false);
@@ -468,11 +473,11 @@ void PlayerMove::ShootGunDdabal()
 
 void PlayerMove::Reload()
 {
-	// 2초간 장전
+	// 3초간 장전
 	if (_isReloading == true)
 	{
 		_reloadTimer += _deltaTime;
-		if (_reloadTimer >= 2.0f)
+		if (_reloadTimer >= 3.0f)
 		{
 			_bulletCount = 30;
 			_isReloading = false;
