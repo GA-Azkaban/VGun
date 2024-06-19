@@ -44,7 +44,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.2f);
+		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
 		_playerMaterial = _physics->createMaterial(0.0f, 0.0f, 0.0f);
 		_planeMaterial = _physics->createMaterial(0.5f, 0.4f, 0.0f);
 

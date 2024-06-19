@@ -141,9 +141,9 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 	}
 }
 
-void HDData::DynamicCollider::Jump()
+void HDData::DynamicCollider::Jump(Vector3 direction)
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(direction.x* 10.0f, 1.0f, direction.z * 10.0f) * 100.0f, physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
@@ -177,6 +177,15 @@ void HDData::DynamicCollider::ClearVeloY()
 	_physXRigid->clearForce();
 	_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+}
+
+void HDData::DynamicCollider::ClearForceXZ()
+{
+	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
+	velo.x = 0.0f;
+	velo.z = 0.0f;
+	_physXRigid->clearForce();
+	_physXRigid->setLinearVelocity(velo);
 }
 
 void HDData::DynamicCollider::ResetCollider(eColliderType type, Vector3 widthDepthHeight)

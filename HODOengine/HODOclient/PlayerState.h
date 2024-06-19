@@ -13,6 +13,7 @@ enum class ePlayerState
 	RELOAD,
 	FIRE,
 	DIE,
+	TUMBLE,
 
 	LAST
 };

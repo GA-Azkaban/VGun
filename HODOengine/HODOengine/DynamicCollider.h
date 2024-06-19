@@ -43,12 +43,13 @@ namespace HDData
 		void RotateOnAxis(float rotationAmount, Vector3 axis);
 		void SetColliderRotation(Quaternion rot);
 		void SetColliderPosition(Vector3 pos);
-		void Jump();
+		void Jump(Vector3 direction);
 		void Sleep();
 		void Stop();
 		void AddForce(Vector3 direction, float force = 1.0f);
 		void AdjustVelocity(float ratio);
 		void ClearVeloY();
+		void ClearForceXZ();
 		void ResetCollider(eColliderType type, Vector3 widthDepthHeight);
 		void EnableCollider();
 		void DisableCollider();

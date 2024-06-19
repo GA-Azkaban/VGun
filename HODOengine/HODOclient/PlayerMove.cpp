@@ -4,6 +4,8 @@
 #include "PlayerInfo.h"
 #include "GameManager.h"
 
+#define BULLET_MAX 30
+
 PlayerMove::PlayerMove()
 	: _isMovable(true),
 	_particleIndex(0),
@@ -17,7 +19,9 @@ PlayerMove::PlayerMove()
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
 	_isFirstPersonPerspective(true),
 	_isJumping(true), _isOnGround(false),
-	_isShootHead(false), _isShootBody(false)
+	_isShootHead(false), _isShootBody(false),
+	_prevPlayerState(ePlayerState::NONE, ePlayerState::NONE),
+	_playerState(ePlayerState::NONE, ePlayerState::NONE)
 {
 
 }
@@ -36,6 +40,9 @@ void PlayerMove::Start()
 
 	PresetSprayPattern(1);
 	StartRoundCam();
+
+	_prevPlayerState.first = ePlayerState::IDLE;
+	_playerState.first = ePlayerState::IDLE;
 }
 
 void PlayerMove::Update()
@@ -47,47 +54,18 @@ void PlayerMove::Update()
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	// check on_ground state
-	if (_isJumping)
-	{
-		//CheckIsOnGround();
-	}
-	//else
-	//{
-	//	_playerCollider->ClearVeloY();
-	//}
-
-	// 쿨타임 방식의 점프 관리
-	//if (_jumpCooldown >= 0.0f)
-	//{
-	//	_jumpCooldown -= _deltaTime;
-	//}
-	//else
-	//{
-	//	if (_isJumping)
-	//	{
-	//		_isJumping = false;
-	//		_playerCollider->ClearVeloY();
-	//	}
-	//}
-
-	//if (API::GetMouseDown(MOUSE_LEFT))
-	//{
-	//	ShootGun();
-	//}
-
-
-	// 발사 쿨타임 및 파티클 수명관리
+	// 발사 쿨타임
 	if (_shootCooldown >= 0.0f)
 	{
 		_shootCooldown -= _deltaTime;
 	}
 
-	for (int i = 0; i < 30; ++i)
-	{
-		//_hitParticles[i]->CheckTimer(_deltaTime);
-	}
+	CameraControl();
+	CheckMoveInfo();
+	DecidePlayerState();
+	Behavior();
 
+	/*
 	// 탄창 비었는데 쏘면 딸깍소리
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
@@ -108,6 +86,7 @@ void PlayerMove::Update()
 
 	_isShootHead = false;
 	_isShootBody = false;
+
 	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
 	{
 		ShootGunDdabal();
@@ -143,24 +122,9 @@ void PlayerMove::Update()
 
 	// 이동, 회전
 	Move(_moveDirection);
-
-
-	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+	*/
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
-
-	////UpdatePlayerPositionDebug();
-	//if (_tempFlag == 0)
-	//{
-	//	API::SetCurrentSceneMainCamera(_headCam);
-	//	_headCam->SetAsMainCamera();
-	//	_isHeadCam = true;
-	//	//_aimText->SetText("O");
-	//	_isFirstPersonPerspective = true;
-	//	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
-
-	//	_tempFlag = 1;
-	//}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -190,6 +154,40 @@ void PlayerMove::CheckMoveInfo()
 {
 	_moveDirection = 5;
 
+	if (API::GetKeyPressing(DIK_W))
+	{
+		_moveDirection = 8;
+	}
+	if (API::GetKeyPressing(DIK_A))
+	{
+		_moveDirection = 4;
+	}
+	if (API::GetKeyPressing(DIK_S))
+	{
+		_moveDirection = 2;
+	}
+	if (API::GetKeyPressing(DIK_D))
+	{
+		_moveDirection = 6;
+	}
+	if (API::GetKeyPressing(DIK_W) && API::GetKeyPressing(DIK_A))
+	{
+		_moveDirection = 7;
+	}
+	if (API::GetKeyPressing(DIK_W) && API::GetKeyPressing(DIK_D))
+	{
+		_moveDirection = 9;
+	}
+	if (API::GetKeyPressing(DIK_A) && API::GetKeyPressing(DIK_S))
+	{
+		_moveDirection = 1;
+	}
+	if (API::GetKeyPressing(DIK_S) && API::GetKeyPressing(DIK_D))
+	{
+		_moveDirection = 3;
+	}
+
+	/*
 	if (!_isHeadCam)
 	{
 		if (API::GetKeyPressing(DIK_I))
@@ -271,7 +269,7 @@ void PlayerMove::CheckMoveInfo()
 	if (API::GetKeyDown(DIK_SPACE))
 	{
 		//CheckIsOnGround();
-		Jump();
+		Jump(Vector3::Zero);
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
@@ -285,6 +283,7 @@ void PlayerMove::CheckMoveInfo()
 		_isRunning = false;
 		_moveSpeed = 3.0f;
 	}
+	*/
 }
 
 
@@ -470,22 +469,25 @@ void PlayerMove::ShootGunDdabal()
 
 	++_shootCount;
 	--_bulletCount;
-	_shootCooldown = 0.1f;
+	_shootCooldown = 0.2f;
 }
 
 void PlayerMove::Reload()
 {
 	// 2초간 장전
-	if (_isReloading == true)
-	{
-		_reloadTimer += _deltaTime;
-		if (_reloadTimer >= 2.0f)
-		{
-			_bulletCount = 30;
-			_isReloading = false;
-			_reloadTimer = 0.0f;
-		}
-	}
+	//if (_isReloading == true)
+	//{
+	//	_reloadTimer += _deltaTime;
+	//	if (_reloadTimer >= 3.0f)
+	//	{
+	//		_bulletCount = BULLET_MAX;
+	//		_isReloading = false;
+	//		_reloadTimer = 0.0f;
+	//	}
+	//}
+	_shootCount = 0;
+	_bulletCount = BULLET_MAX;
+	_playerState.second = ePlayerState::IDLE;
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -516,6 +518,11 @@ void PlayerMove::ApplyRecoil()
 	_rotAngleX += _sprayCamera[_shootCount].second;
 }
 
+void PlayerMove::Tumble(Vector3 direction)
+{
+
+}
+
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
 {
 	//++_enterCount;
@@ -531,6 +538,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		// 착지 판정
 		_isOnGround = true;
 		_isJumping = false;
+		_playerState.first = ePlayerState::IDLE;
 	}
 }
 
@@ -546,6 +554,11 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 	//else if (opponentCollider->GetColType() == eColliderType::TERRAIN)
 	//{
 	//	_isOnGround = false;
+	//}
+
+	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
+	//{
+	//	_playerColliderStanding->ClearForceXZ();
 	//}
 }
 
@@ -785,13 +798,13 @@ void PlayerMove::ToggleCam()
 	}
 }
 
-void PlayerMove::Jump()
+void PlayerMove::Jump(Vector3 direction)
 {
 	if ((!_isJumping) && (_isOnGround))
 		//if(!_isJumping)
 	{
 		// 점프
-		_playerColliderStanding->Jump();
+		_playerColliderStanding->Jump(direction);
 		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
 		_isOnGround = false;
@@ -1076,6 +1089,198 @@ void PlayerMove::ToggleSit(bool isSit)
 		//_playerColliderStanding->EnableStanding(true);
 		_playerColliderStanding->SetSitStand(2);
 	}
+}
+
+void PlayerMove::DecidePlayerState()
+{
+	_prevPlayerState.first = _playerState.first;
+	_prevPlayerState.second = _playerState.second;
+
+	if (_playerState.first == ePlayerState::TUMBLE)
+	{
+		if (_tumbleTimer > 0.0f)
+		{
+			_tumbleTimer -= _deltaTime;
+			return;
+		}
+	}
+
+	// jump가 아닐 때만 walk나 run이 될 수 있다.
+	if (_playerState.first != ePlayerState::JUMP)
+	{
+		if (_moveDirection == 5)
+		{
+			_playerState.first = ePlayerState::IDLE;
+		}
+		else
+		{
+			if (API::GetKeyPressing(DIK_LSHIFT))
+			{
+				_playerState.first = ePlayerState::RUN;
+			}
+			else
+			{
+				_playerState.first = ePlayerState::WALK;
+			}
+		}
+	}
+
+	// tumble, jump 들어오면 덮어씌우고
+	if (API::GetKeyDown(DIK_LCONTROL))
+	{
+		_playerState.first = ePlayerState::TUMBLE;
+	}
+	else if (API::GetKeyDown(DIK_SPACE))
+	{
+		_playerState.first = ePlayerState::JUMP;
+	}
+
+	// shoot, reload 는 second에 넣어주고
+	//if (_playerState.second == ePlayerState::RELOAD)
+	//{
+	//	if (_reloadTimer > 0.0f)
+	//	{
+	//		_reloadTimer -= _deltaTime;
+	//		return;
+	//	}
+	//}
+
+	if (_playerState.second == ePlayerState::RELOAD)
+	{
+		if (_reloadTimer > 0.0f)
+		{
+			_reloadTimer -= _deltaTime;
+		}
+		else
+		{
+			Reload();
+		}
+		return;
+	}
+
+	if (API::GetMouseDown(MOUSE_LEFT))
+	{
+		_playerState.second = ePlayerState::FIRE;
+	}
+	else if (API::GetMouseUp(MOUSE_LEFT))
+	{
+		_playerState.second = ePlayerState::IDLE;
+		_shootCount = 0;
+	}
+	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerState::IDLE && _bulletCount < BULLET_MAX)
+	{
+		_playerState.second = ePlayerState::RELOAD;
+	}
+}
+
+void PlayerMove::Behavior()
+{
+	// 움직임
+	switch (_playerState.first)
+	{
+		case ePlayerState::IDLE : 
+		{
+			_playerColliderStanding->Stop();
+			break;
+		}
+		case ePlayerState::WALK : 
+		{
+			if (!_playerAudio->IsSoundPlaying("walk"))
+			{
+				_playerAudio->PlayOnce("walk");
+			}
+			_moveSpeed = 3.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+			break;
+		}
+		case ePlayerState::RUN : 
+		{
+			if (!_playerAudio->IsSoundPlaying("run"))
+			{
+				_playerAudio->PlayOnce("run");
+			}
+			_moveSpeed = 6.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+			break;
+		}
+		case ePlayerState::JUMP :
+		{
+			if (_prevPlayerState.first != ePlayerState::JUMP)
+			{
+				Jump(DecideDisplacement(_moveDirection));
+			}
+			//else
+			//{
+			//	_playerColliderStanding->ClearForceXZ();
+			//}
+			break;
+		}
+		case ePlayerState::TUMBLE :
+		{
+			if (_prevPlayerState.first != ePlayerState::TUMBLE)
+			{
+				Tumble(DecideDisplacement(_moveDirection));
+			}
+			break;
+		}
+		default:
+		{
+
+		}
+	}
+
+	// 총 쏘거나 재장전
+	if (_playerState.second == ePlayerState::FIRE)
+	{
+		if (_shootCooldown > 0.0f)
+		{
+			_shootCooldown -= _deltaTime;
+		}
+		else if(_bulletCount == 0)
+		{
+			if (_prevPlayerState.second != ePlayerState::FIRE)
+			{
+				_playerAudio->PlayOnce("empty");
+			}
+		}
+		else
+		{
+			if (_prevPlayerState.second != ePlayerState::FIRE)
+			{
+				_headCam->ToggleCameraShake(true);
+			}
+			_headCam->ShakeCamera(_deltaTime);
+			ShootGunDdabal();
+		}
+	}
+	else if (_playerState.second == ePlayerState::RELOAD)
+	{
+		if (_prevPlayerState.second != ePlayerState::RELOAD)
+		{
+			_playerAudio->PlayOnce("reload");
+			_reloadTimer = 3.0f;
+		}
+	}
+
+	if (_prevPlayerState.first != _playerState.first)
+	{
+		if (_prevPlayerState.first == ePlayerState::JUMP)
+		{
+			Landing();
+		}
+		if (_prevPlayerState.second == ePlayerState::FIRE)
+		{
+			// 반동 초기화
+			_shootCount = 0;
+			_headCam->ToggleCameraShake(false);
+			_headCam->ResetCameraPos();
+		}
+	}
+}
+
+void PlayerMove::Landing()
+{
+
 }
 
 void PlayerMove::SwitchCamera()
