@@ -8,7 +8,7 @@ OthersAnim::OthersAnim()
 
 void OthersAnim::Start()
 {
-	_mesh = GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>();
+	_mesh = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_info = GetGameObject()->GetComponent<PlayerInfo>();
 }
 
