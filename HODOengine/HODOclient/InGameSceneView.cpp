@@ -8,6 +8,8 @@
 #include "FPAniScript.h"
 #include "Crosshair.h"
 #include "Ammo.h"
+#include "TPScript.h"
+#include "OthersAnim.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -42,8 +44,7 @@ void InGameSceneView::Initialize()
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
 	// 내 캐릭터 생성
-	std::string objName1 = "playerSelf";
-	HDData::GameObject* player = API::CreateObject(_scene, objName1);
+	HDData::GameObject* player = API::CreateObject(_scene, "playerSelf");
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 
@@ -60,8 +61,18 @@ void InGameSceneView::Initialize()
 	meshComp->SetMeshActive(false, 4);
 
 	meshComp->PlayAnimation("AR_aim", true);
-
 	RoundManager::Instance()->_myObj = player;
+
+	// 애니메이션 전달용 더미 캐릭터 생성
+	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
+	dummy->LoadFBXFile("SKM_TP_X_Default.fbx");
+	dummy->GetTransform()->SetPosition(0, -10, 0);
+	
+	dummy->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
+	dummy->AddComponent<TPScript>();
+
+	RoundManager::Instance()->SetAnimationDummy(dummy);
 
 	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.5f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.4f, 0.0f });
@@ -83,6 +94,8 @@ void InGameSceneView::Initialize()
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
 	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
+
+
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
@@ -102,7 +115,7 @@ void InGameSceneView::Initialize()
 	fpMeshComp->SetMeshActive(false, 3);
 	fpMeshComp->SetMeshActive(false, 4);
 
-	fpMeshComp->PlayAnimation("AR_aim", true);
+	//fpMeshComp->PlayAnimation("AR_aim", true);
 
 	// 총 생성
 	auto hand = fpMeshObj->GetGameObjectByNameInChildren("hand_r");
@@ -195,6 +208,8 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadMaterial(M_Red, 3);
 		otherMeshComp->LoadMaterial(M_Red, 4);
 		otherMeshComp->PlayAnimation("AR_idle", true);
+
+		otherPlayer->AddComponent<OthersAnim>();
 
 		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
 

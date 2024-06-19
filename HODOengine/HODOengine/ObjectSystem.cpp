@@ -84,6 +84,12 @@ namespace HDEngine
 
 	void ObjectSystem::UpdateCurrentSceneObjects()
 	{
+		// Call the update function of all gameobjects
+		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
+		if (currentScene == nullptr)
+			return;
+		currentScene->Update();
+
 		// Call the start function of the static objects that the update function was first called
 		if (!_staticObjectList.empty())
 		{
@@ -136,11 +142,6 @@ namespace HDEngine
 			staticComp->Update();
 		}
 
-		// Call the update function of all gameobjects
-		HDData::Scene* currentScene = HDEngine::SceneSystem::Instance().GetCurrentScene();
-		if (currentScene == nullptr)
-			return;
-		currentScene->Update();
 	}
 
 	void ObjectSystem::LateUpdateCurrentSceneObjects()

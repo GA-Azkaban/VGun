@@ -212,13 +212,13 @@ TestScene::TestScene()
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	playerTest->AddComponent<PlayerTest>();
+	//playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	//playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
-	playerTest->LoadFBXFile("SKM_TP_X_Synty3.fbx");
+	playerTest->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//playerTest->LoadFBXFile("SKM_TP_X_Synty3.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
@@ -226,7 +226,7 @@ TestScene::TestScene()
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 
-	/*HDEngine::MaterialDesc desc;
+	HDEngine::MaterialDesc desc;
 	desc.materialName = "TP_Red";
 	desc.albedo = "TP_Red_B.png";
 	HDData::Material* newMat = API::CreateMaterial(desc);
@@ -234,9 +234,9 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 1);
 	meshComp->LoadMaterial(newMat, 2);
 	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);*/
+	meshComp->LoadMaterial(newMat, 4);
 
-	meshComp->PlayAnimation("X_walk", true);
+	meshComp->PlayAnimation("AR_aim", true);
 	//meshComp->PlayAnimationUpper("AR_reload", true);
 	//meshComp->PlayAnimationLower("AR_run_R", true);
 	//meshComp->SetOutlineActive(true);
@@ -246,8 +246,8 @@ TestScene::TestScene()
 	//meshComp->SetMeshActive(false, 3);
 	//meshComp->SetMeshActive(false, 4);
 
-	// 오른손 노드의 오브젝트를 가져와서
-	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
+	 //오른손 노드의 오브젝트를 가져와서
+	 //그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
 	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
 	////auto hand = playerTest->GetGameObjectByNameInChildren("thumb_01_r");
 	//auto weaponTest = API::CreateObject(_scene, "weapon", hand);
@@ -287,7 +287,10 @@ TestScene::TestScene()
 	//weaponComp->LoadMaterial(weaponMat3, 2);
 	//weaponComp->LoadMaterial(weaponMat3, 4);
 
-	//playerTest->AddComponent<TPScript>();
+	playerTest->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
+
+	playerTest->AddComponent<TPScript>();
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
@@ -454,6 +457,22 @@ TestScene::TestScene()
 	//obj->AddComponent<SliderSoundScript>();
 	//obj->AddComponent<HDData::AudioSource>();
 
+
+	//auto house = API::CreateObject(_scene, "house");
+	//auto comp = house->AddComponent<HDData::MeshRenderer>();
+	//comp->LoadMesh("SM_tempSal.fbx");
+
+	//HDEngine::MaterialDesc desc;
+	//desc.materialName = "HOUSE";
+	//desc.albedo = "PolygonWestern_Texture_03_B.png";
+
+	//HDData::Material* newMat = API::CreateMaterial(desc);
+
+	//comp->LoadMaterial(newMat, 0);
+	//comp->LoadMaterial(newMat, 1);
+	//comp->LoadMaterial(newMat, 2);
+	//comp->LoadMaterial(newMat, 3);
+	//comp->LoadMaterial(newMat, 4);
 }
 
 TestScene::~TestScene()

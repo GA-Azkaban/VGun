@@ -70,6 +70,7 @@ void PlayerInfo::SetIsDie(bool isDie)
 
 void PlayerInfo::SetCurrentState(ePlayerState state)
 {
+	this->_prevState = _state;
 	this->_state = state;
 }
 
@@ -113,7 +114,12 @@ bool& PlayerInfo::GetIsDie()
 	return _isDie;
 }
 
-ePlayerState& PlayerInfo::GetPlayerState()
+ePlayerState PlayerInfo::GetPrevPlayerState()
+{
+	return _prevState;
+}
+
+ePlayerState PlayerInfo::GetPlayerState()
 {
 	return _state;
 }
@@ -126,6 +132,26 @@ void PlayerInfo::SetIsMyInfo(bool isMine)
 bool PlayerInfo::GetIsMyInfo()
 {
 	return _isMyInfo;
+}
+
+void PlayerInfo::SetIsShoot(bool isShoot)
+{
+	_isShoot = isShoot;
+}
+
+void PlayerInfo::SetIsJump(bool isJump)
+{
+	_isJump = isJump;
+}
+
+bool PlayerInfo::GetIsShoot()
+{
+	return _isShoot;
+}
+
+bool PlayerInfo::GetIsJump()
+{
+	return _isJump;
 }
 
 void PlayerInfo::OtherPlayerShoot(eHITLOC loc)

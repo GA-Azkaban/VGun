@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "Types.h"
 
@@ -119,5 +119,12 @@ public:
 private:
 	Vector3 serverPosition[5];
 	Quaternion serverRotation[5];
+
+	// 애니메이션
+public:
+	Protocol::eAnimationState ConvertStateToEnum(const std::string& state);
+	ePlayerState ConvertAnimationStateToEnum(Protocol::eAnimationState state);
+	//std::string ConvertAnimationStateToString(Protocol::eAnimationState state);
+
 };
 
