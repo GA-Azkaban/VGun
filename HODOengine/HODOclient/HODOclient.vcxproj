@@ -241,7 +241,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameStruct.h" />
-    <ClInclude Include="Health.h" />
     <ClInclude Include="LobbySceneView.h" />
     <ClInclude Include="MeshTransformController.h" />
     <ClInclude Include="PlayerTest.h" />
@@ -288,7 +287,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="FPAniScript.cpp" />
     <ClCompile Include="FSMtestScript.cpp" />
     <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="Health.cpp" />
     <ClCompile Include="LobbySceneView.cpp" />
     <ClCompile Include="MeshTransformController.cpp" />
     <ClCompile Include="PlayerTest.cpp" />

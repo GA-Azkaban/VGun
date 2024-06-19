@@ -206,7 +206,7 @@ std::string MenuManager::GetNumberImage(int num)
 
 std::string MenuManager::GetIsPrivateImage(bool isPrivate)
 {
-	return "icon_user_filled.png";
+	return "private.png";
 }
 
 std::string MenuManager::GetIsTeamImage(bool isTeam)

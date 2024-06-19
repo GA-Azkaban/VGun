@@ -61,9 +61,10 @@ void LoginSceneView::LoginView()
 	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.11f);
 
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", loginControlObject);
-	idTextLabel->GetTransform()->SetPosition(770.f * width / 1920, 440.f * height / 1080, 0.f);
+	idTextLabel->GetTransform()->SetPosition((770.f * width / 1920)+25, 440.f * height / 1080, 0.f);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
-	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
+	idTextLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
+	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::OrangeRed);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// password input box
@@ -77,7 +78,8 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", loginControlObject);
 	passwordTextboxLabel->GetTransform()->SetPosition(725.f * width / 1920, 540.f * height / 1080, 0.f);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetText("PASSWORD");
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::OrangeRed);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
 	// login button

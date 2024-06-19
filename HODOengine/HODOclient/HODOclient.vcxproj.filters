@@ -112,9 +112,6 @@
     <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
-    <ClCompile Include="Health.cpp">
-      <Filter>02_Client\TestScene\Health</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -254,9 +251,6 @@
     <ClInclude Include="TPScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
-    <ClInclude Include="Health.h">
-      <Filter>02_Client\TestScene\Health</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -371,9 +365,6 @@
     </Filter>
     <Filter Include="02_Client\TestScene\Ammo">
       <UniqueIdentifier>{576cd7fc-3567-4f56-be15-6f6ffab1e958}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Health">
-      <UniqueIdentifier>{c61e3828-e552-4ce3-bd57-4b03840357a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

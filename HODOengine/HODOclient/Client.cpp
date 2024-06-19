@@ -6,6 +6,7 @@
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 
+#include "FadeInOut.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
@@ -30,34 +31,34 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
-
+	//FadeInOut::Instance();
 
 	// 씬 초기화
 	//TestScene test;
 	//test.Start();
 
-	//API::LoadSceneByName("Test"); 
+	//API::LoadSceneByName("Test");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
 
 	//AnimationLoaderTest loader;
 	//loader.Start();
-	//
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
-	// 
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();	
+	
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 
-	//LobbySceneView lobby;
-	//lobby.Initialize();
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();
+
+	LobbySceneView lobby;
+	lobby.Initialize();
 
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 
-	//API::LoadSceneByName("Login");
+	//API::LoadSceneByName("InGame");
 
-	API::LoadSceneByName("InGame");
+	API::LoadSceneByName("Login");
 	//API::SetRecursiveMouseMode(true);
 }

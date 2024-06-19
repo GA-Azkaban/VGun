@@ -7,7 +7,6 @@
 #include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
-#include "Health.h"
 #include "Crosshair.h"
 #include "Ammo.h"
 

@@ -489,6 +489,25 @@ void TestScene::Start()
 
 	player->SetSelfActive(false);*/
 
+	auto temp = API::CreateObject(_scene, "tempFbx");
+	auto comp = temp->AddComponent<HDData::MeshRenderer>();
+	comp->LoadMesh("SM_Bld_Saloon_01.fbx");
+	
+
+	HDEngine::MaterialDesc tex;
+	tex.materialName = "TEX";
+	tex.albedo = "PolygonWestern_Texture_01.png";
+
+	HDData::Material* house = API::CreateMaterial(tex);
+
+	comp->LoadMaterial(house, 0);
+	comp->LoadMaterial(house, 1);
+	comp->LoadMaterial(house, 2);
+	comp->LoadMaterial(house, 3);
+	comp->LoadMaterial(house, 4);
+
+
+
 }
 
 void TestScene::ClickEvent()
