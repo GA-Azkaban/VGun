@@ -61,5 +61,14 @@ private:
 public:
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
+
+	//애니메이션
+
+public:
+	void SetAnimationDummy(HDData::GameObject* obj);
+	HDData::GameObject* GetAnimationDummy();
+
+private:
+	HDData::GameObject* _animationDummy = nullptr;
 };
 

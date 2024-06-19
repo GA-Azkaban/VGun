@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include "NetworkManager.h"
 
@@ -51,7 +51,7 @@ void NetworkManager::Update()
 	auto& playerObj = RoundManager::Instance()->GetPlayerObjs();
 
 	if (playerObj.size() == 0) return;
-
+	 
 	int index = 0;
 	for (auto& [uid, player] : playerObj)
 	{
@@ -536,7 +536,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 void NetworkManager::RecvGameStart()
 {
-
+	RoundManager::Instance()->SetIsRoundStart(true);
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -558,6 +558,11 @@ void NetworkManager::SendPlayUpdate()
 	quaternion->set_z(playerobj->GetTransform()->GetRotation().z);
 	quaternion;
 
+	auto test = ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState());
+
+	packet.mutable_playerdata()->
+		set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
+
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -574,6 +579,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
 
 		auto& obj = playerobj[player.userinfo().uid()];
+		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		serverPosition[index] = pos;
@@ -581,8 +587,9 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 		serverRotation[index] = rot;
 
-		// Todo 애니메이션
-		player.animationstate();
+		// animation
+		auto test = ConvertAnimationStateToEnum(player.animationstate());
+		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
 
 		++index;
 	}
@@ -600,6 +607,7 @@ void NetworkManager::SendPlayJump(PlayerInfo* playerinfo)
 
 void NetworkManager::RecvPlayJump(Protocol::PlayerData playerData)
 {
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
 	RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsJump(true);
 }
 
@@ -670,5 +678,114 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	// 현재 Transform에 보간된 값 설정
 	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
+}
+
+Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)
+{
+	if (state == "")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
+	}
+	if (state == "IDLE")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
+	}
+	if (state == "WALK_R")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_RIGHT;
+	}
+	if (state == "WALK_L")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_LEFT;
+	}
+	if (state == "WALK_F")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_FORWARD;
+	}
+	if (state == "WALK_B")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
+	}
+	if (state == "JUMP")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
+	}
+	if (state == "ROLL")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "RELOAD")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_RELOAD;
+	}
+	if (state == "DIE")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_DEATH;
+	}
+}
+
+ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationState state)
+{
+	switch (state)
+	{
+		case Protocol::ANIMATION_STATE_NONE:
+		{
+			return ePlayerState::NONE;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_IDLE:
+		{
+			return ePlayerState::IDLE;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_FORWARD:
+		{
+			return ePlayerState::WALK_F;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_BACK:
+		{
+			return ePlayerState::WALK_B;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_LEFT:
+		{
+			return ePlayerState::WALK_L;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_RIGHT:
+		{
+			return ePlayerState::WALK_R;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_SHOOT:
+			break;
+		case Protocol::ANIMATION_STATE_JUMP:
+		{
+			return ePlayerState::JUMP;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_ROLL:
+		{
+			return ePlayerState::ROLL;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_RELOAD:
+		{
+			return ePlayerState::RELOAD;
+		}
+			break;
+		case Protocol::ANIMATION_STATE_DEATH:
+		{
+			return ePlayerState::DIE;
+		}
+			break;
+		case Protocol::eAnimationState_INT_MIN_SENTINEL_DO_NOT_USE_:
+			break;
+		case Protocol::eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_:
+			break;
+		default:
+			break;
+	}
 }
 

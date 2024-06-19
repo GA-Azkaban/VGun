@@ -12,7 +12,6 @@ public:
 	void Update() override;
 
 private:
-	HDData::SkinnedMeshRenderer* _mesh;
-	PlayerInfo* _info;
+	HDData::Animator* _animator;
 };
 

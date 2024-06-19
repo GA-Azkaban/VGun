@@ -112,6 +112,7 @@
     <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
+    <ClCompile Include="TestSceneSecond.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -251,6 +252,7 @@
     <ClInclude Include="TPScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
+    <ClInclude Include="TestSceneSecond.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

@@ -70,6 +70,7 @@ void PlayerInfo::SetIsDie(bool isDie)
 
 void PlayerInfo::SetCurrentState(ePlayerState state)
 {
+	this->_prevState = _state;
 	this->_state = state;
 }
 

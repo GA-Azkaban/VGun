@@ -5,6 +5,7 @@ enum class ePlayerState
 {
 	NONE,
 	IDLE,
+	FIRE,
 	WALK_R,
 	WALK_L,
 	WALK_F,

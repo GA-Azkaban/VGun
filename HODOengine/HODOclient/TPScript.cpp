@@ -9,13 +9,62 @@ TPScript::TPScript()
 
 void TPScript::Start()
 {
-	_mesh = GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>();
-	_info = GetGameObject()->GetComponent<PlayerInfo>();
+	_animator = GetGameObject()->GetComponent<HDData::Animator>();
 }
 
 void TPScript::Update()
 {
-	if (!RoundManager::Instance()->GetIsRoundStart()) return;
+	if (API::GetKeyPressing(DIK_W))
+	{
+		_animator->GetAllAC()->SetBool("isWalkFront", true);
+	}
+	if (API::GetKeyUp(DIK_W))
+	{
+		_animator->GetAllAC()->SetBool("isWalkFront", false);
+	}
+	if (API::GetKeyPressing(DIK_A))
+	{
+		_animator->GetAllAC()->SetBool("isWalkLeft", true);
+	}
+	if (API::GetKeyUp(DIK_A))
+	{
+		_animator->GetAllAC()->SetBool("isWalkLeft", false);
+	}
+	if (API::GetKeyPressing(DIK_S))
+	{
+		_animator->GetAllAC()->SetBool("isWalkBack", true);
+	}
+	if (API::GetKeyUp(DIK_S))
+	{
+		_animator->GetAllAC()->SetBool("isWalkBack", false);
+
+	}
+	if (API::GetKeyPressing(DIK_D))
+	{
+		_animator->GetAllAC()->SetBool("isWalkRight", true);
+
+	}
+	if (API::GetKeyUp(DIK_D))
+	{
+		_animator->GetAllAC()->SetBool("isWalkRight", false);
+
+	}
+
+	if (API::GetKeyDown(DIK_SPACE))
+	{
+		_animator->GetAllAC()->SetTrigger("isJump");
+	}
+	if (API::GetKeyDown(DIK_R))
+	{
+		_animator->GetAllAC()->SetTrigger("isReload");
+	}
+	if (API::GetMouseDown(MOUSE_LEFT))
+	{
+		_animator->GetAllAC()->SetTrigger("isFire");
+	}
+
+
+	/*if (!RoundManager::Instance()->GetIsRoundStart()) return;
 
 	if (_info->GetPrevPlayerState() == _info->GetPlayerState()) return;
 
@@ -24,6 +73,11 @@ void TPScript::Update()
 		case ePlayerState::IDLE:
 		{
 			_mesh->PlayAnimation("AR_aim", true, 0.1, true, 0.1);
+		}
+		break;
+		case ePlayerState::FIRE:
+		{
+			_mesh->PlayAnimation("AR_fire", false, 0.1, true, 0.1);
 		}
 		break;
 		case ePlayerState::WALK_R:
@@ -68,5 +122,5 @@ void TPScript::Update()
 		break;
 		default:
 			break;
-	}
+	}*/
 }
