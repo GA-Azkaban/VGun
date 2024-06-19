@@ -19,6 +19,8 @@ HDData::DynamicCapsuleCollider::DynamicCapsuleCollider(float rad, float halfHeig
 
 	_collisionFilterNum = colFilterNum;
 	_stateSitStand = 0;
+
+	_colType = eColliderRole::PLAYER;
 }
 
 float HDData::DynamicCapsuleCollider::GetWidth() const

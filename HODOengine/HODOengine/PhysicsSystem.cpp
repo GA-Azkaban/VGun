@@ -23,7 +23,7 @@ namespace HDEngine
 	{
 		pairFlags = physx::PxPairFlag::eCONTACT_DEFAULT;
 		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_FOUND;
-		pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_LOST;
+		//pairFlags |= physx::PxPairFlag::eNOTIFY_TOUCH_LOST;
 		return physx::PxFilterFlag::eDEFAULT;
 	}
 
@@ -81,7 +81,6 @@ namespace HDEngine
 			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
 			//rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
 
-			bool temp = dynamicCol->GetIsTrigger();
 			// 트리거가 아닌 경우 onCollision 함수들 실행
 			if (dynamicCol->GetIsTrigger() == false)
 			{
@@ -92,7 +91,7 @@ namespace HDEngine
 				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
 				else if (dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
 				{
-					dynamicCol->GetGameObject()->OnCollisionStay();
+					dynamicCol->GetGameObject()->OnCollisionStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
 				}
 				else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
 				{

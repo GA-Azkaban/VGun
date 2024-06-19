@@ -158,8 +158,8 @@ void HODOengine::Run()
 	_objectSystem.UpdateEnableList();
 
 	// physicsUpdate, temporary location
-	_physicsSystem.Update();
 	_physicsSystem.Flush();
+	_physicsSystem.Update();
 
 	// refresh input for next frame
 	_inputSystem.Flush();

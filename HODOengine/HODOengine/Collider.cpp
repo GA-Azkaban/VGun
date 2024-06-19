@@ -201,6 +201,16 @@ namespace HDData
 		_collisionStorage.push_back(&collision);
 	}
 
+	void Collider::Collider_OnCollisionStay(PhysicsCollision& collision)
+	{
+		std::string tRes = "Collider_OnCollisionStay : ";
+
+		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
+		this->_isCollide = true;
+		this->_prevIsCollide = true;
+		_collisionStorage.push_back(&collision);
+	}
+
 	void Collider::Collider_OnCollisionExit(PhysicsCollision& collision)
 	{
 		std::string tRes = "Collider_OnCollisionExit : ";

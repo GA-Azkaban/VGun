@@ -44,7 +44,7 @@ void InGameSceneView::Initialize()
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(-10, 3, 0);
+	player->GetTransform()->SetPosition(-10, 0, 0);
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMaterial(M_Red, 0);
@@ -64,7 +64,7 @@ void InGameSceneView::Initialize()
 
 	//auto playerColliderStanding = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
 	auto playerColliderStanding = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
-	playerColliderStanding->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
+	playerColliderStanding->SetPositionOffset({ 0.0f, 0.45f, 0.0f });
 	playerColliderStanding->SetFreezeRotation(true);
 	//auto playerColliderSitting = player->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.2f);
 	//playerColliderSitting->SetPositionOffset({ 0.0f, 0.7f, 0.0f });

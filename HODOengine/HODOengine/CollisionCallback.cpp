@@ -35,7 +35,7 @@ namespace HDEngine
 			if (!_prevCollisions.contains(it.first))
 			{
 				// Collision 생성.
-				_newCollisionPairs.push_back(it.first);
+ 				_newCollisionPairs.push_back(it.first);
 			}
 		}
 
@@ -90,7 +90,6 @@ namespace HDEngine
 			auto& c = _collisions[pair];
 
 			//OnCollisionEnter 함수를 발동.
-			//OnCollisionExit 함수들 발동.
 			if (!pair._first->GetIsTrigger())
 			{
 				pair._first->Collider_OnCollisionEnter(c);

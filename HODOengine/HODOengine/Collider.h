@@ -83,6 +83,7 @@ namespace HDData
 
 		// copy ver
 		void Collider_OnCollisionEnter(PhysicsCollision& collision);
+		void Collider_OnCollisionStay(PhysicsCollision& collision);
 		void Collider_OnCollisionExit(PhysicsCollision& collision);
 		void Collider_OnTriggerEnter(Collider* col);
 		void Collider_OnTriggerExit(Collider* col);
