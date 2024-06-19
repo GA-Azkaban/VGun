@@ -13,5 +13,7 @@ public:
 
 private:
 	HDData::Animator* _animator;
+	HDData::SkinnedMeshRenderer* _mesh;
+	PlayerInfo* _info;
 };
 

@@ -559,7 +559,7 @@ void NetworkManager::SendPlayUpdate()
 	quaternion;
 
 	auto test = ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState());
-
+	
 	packet.mutable_playerdata()->
 		set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
 

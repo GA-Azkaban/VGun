@@ -10,6 +10,8 @@ TPScript::TPScript()
 void TPScript::Start()
 {
 	_animator = GetGameObject()->GetComponent<HDData::Animator>();
+	_mesh = GetGameObject()->GetComponent<HDData::SkinnedMeshRenderer>();
+	_info = GetGameObject()->GetComponent<PlayerInfo>();
 }
 
 void TPScript::Update()
@@ -64,7 +66,7 @@ void TPScript::Update()
 	}
 
 
-	/*if (!RoundManager::Instance()->GetIsRoundStart()) return;
+	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 
 	if (_info->GetPrevPlayerState() == _info->GetPlayerState()) return;
 
@@ -122,5 +124,5 @@ void TPScript::Update()
 		break;
 		default:
 			break;
-	}*/
+	}
 }
