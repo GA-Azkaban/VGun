@@ -9,6 +9,7 @@
 #include "Crosshair.h"
 #include "Ammo.h"
 #include "TPScript.h"
+#include "OthersAnim.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -207,6 +208,8 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadMaterial(M_Red, 3);
 		otherMeshComp->LoadMaterial(M_Red, 4);
 		otherMeshComp->PlayAnimation("AR_idle", true);
+
+		otherPlayer->AddComponent<OthersAnim>();
 
 		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
 
