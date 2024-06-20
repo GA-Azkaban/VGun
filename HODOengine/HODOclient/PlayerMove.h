@@ -119,6 +119,7 @@ private:
 	bool _isReloading;
 	bool _isRunning;
 	bool _tempFlag = 0;
+	Vector3 _tumbleDirection;
 
 	int _enterCount = 0;
 	// 상태 중첩을 표현하기 위해. 2번째 요소에는 shoot, reload만.

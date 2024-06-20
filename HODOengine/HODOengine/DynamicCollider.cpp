@@ -63,19 +63,19 @@ bool HDData::DynamicCollider::GetFreezeRotation()
 	return _freezeRotation;
 }
 
-void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
+void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTime)
 {
 	//_physXRigid->wakeUp();
 	physx::PxTransform playerPos = _physXRigid->getGlobalPose();
 
-	playerPos.p.x += moveStep.x;
-	playerPos.p.z += moveStep.z;
+	playerPos.p.x += moveStep.x * speed * deltaTime;
+	playerPos.p.z += moveStep.z * speed * deltaTime;
 
 	_physXRigid->setGlobalPose(playerPos);
 	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed);
+		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed, deltaTime);
 	}
 }
 
@@ -137,13 +137,13 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f);
+		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f, 1.0f);
 	}
 }
 
 void HDData::DynamicCollider::Jump(Vector3 direction)
 {
-	_physXRigid->addForce(physx::PxVec3(direction.x* 10.0f, 1.0f, direction.z * 10.0f) * 100.0f, physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(direction.x * 0.6f, 1.0f, direction.z * 0.6f) * 100.0f, physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()

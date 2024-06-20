@@ -378,7 +378,7 @@ void PlayerMove::Move(int direction)
 	}
 	else
 	{
-		_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+		_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
 		if (!(_playerAudio->IsSoundPlaying("walk") || _playerAudio->IsSoundPlaying("run") || _isJumping))
 		{
@@ -520,7 +520,8 @@ void PlayerMove::ApplyRecoil()
 
 void PlayerMove::Tumble(Vector3 direction)
 {
-
+	// 데굴
+	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
@@ -826,25 +827,25 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			case 1:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * -0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * -0.7f;
 			}
 			break;
 			case 2:
 			{
-				moveStep = GetTransform()->GetForward() * _deltaTime * -_moveSpeed;
+				moveStep = GetTransform()->GetForward() * -1;
 			}
 			break;
 			case 3:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * -0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * 0.7f;
 			}
 			break;
 			case 4:
 			{
-				moveStep = GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+				moveStep = GetTransform()->GetRight() * -1;
 			}
 			break;
 			case 5:
@@ -854,26 +855,26 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			break;
 			case 6:
 			{
-				moveStep = GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+				moveStep = GetTransform()->GetRight();
 			}
 			break;
 			case 7:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * -0.7f;
 			}
 			break;
 			case 8:
 			{
-				moveStep = GetTransform()->GetForward() * _deltaTime * _moveSpeed;
+				moveStep = GetTransform()->GetForward();
 			}
 			break;
 			case 9:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * 0.7f;
 			}
 			break;
 			default:
@@ -889,22 +890,22 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 		{
 			case 1:
 			{
-				moveStep = Vector3(_deltaTime * -_moveSpeed * 0.7f, 0.0f, _deltaTime * -_moveSpeed * 0.7f);
+				moveStep = Vector3(-0.7f, 0.0f, -0.7f);
 			}
 			break;
 			case 2:
 			{
-				moveStep = Vector3(0.0f, 0.0f, _deltaTime * -_moveSpeed);
+				moveStep = Vector3(0.0f, 0.0f, -1.0f);
 			}
 			break;
 			case 3:
 			{
-				moveStep = Vector3(_deltaTime * _moveSpeed * 0.7f, 0.0f, _deltaTime * -_moveSpeed * 0.7f);
+				moveStep = Vector3(0.7f, 0.0f, - 0.7f);
 			}
 			break;
 			case 4:
 			{
-				moveStep = Vector3(_deltaTime * -_moveSpeed, 0.0f, 0.0f);
+				moveStep = Vector3(-1.0f, 0.0f, 0.0f);
 			}
 			break;
 			case 5:
@@ -914,22 +915,22 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			break;
 			case 6:
 			{
-				moveStep = Vector3(_deltaTime * _moveSpeed, 0.0f, 0.0f);
+				moveStep = Vector3(1.0f, 0.0f, 0.0f);
 			}
 			break;
 			case 7:
 			{
-				moveStep = Vector3(_deltaTime * -_moveSpeed * 0.7f, 0.0f, _deltaTime * _moveSpeed * 0.7f);
+				moveStep = Vector3(-0.7f, 0.0f, 0.7f);
 			}
 			break;
 			case 8:
 			{
-				moveStep = Vector3(0.0f, 0.0f, _deltaTime * _moveSpeed);
+				moveStep = Vector3(0.0f, 0.0f, 1.0f);
 			}
 			break;
 			case 9:
 			{
-				moveStep = Vector3(_deltaTime * _moveSpeed * 0.7f, 0.0f, _deltaTime * _moveSpeed * 0.7f);
+				moveStep = Vector3(0.7f, 0.0f, 0.7f);
 			}
 			break;
 			default:
@@ -1190,7 +1191,7 @@ void PlayerMove::Behavior()
 				_playerAudio->PlayOnce("walk");
 			}
 			_moveSpeed = 3.0f;
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
 		case ePlayerState::RUN : 
@@ -1200,7 +1201,7 @@ void PlayerMove::Behavior()
 				_playerAudio->PlayOnce("run");
 			}
 			_moveSpeed = 6.0f;
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
 		case ePlayerState::JUMP :
@@ -1219,8 +1220,22 @@ void PlayerMove::Behavior()
 		{
 			if (_prevPlayerState.first != ePlayerState::TUMBLE)
 			{
-				Tumble(DecideDisplacement(_moveDirection));
+				_tumbleTimer = 0.4f;
+				_headCam->ToggleCameraShake(true);
+
+				if (_moveDirection == 5)
+				{
+					_tumbleDirection = GetTransform()->GetForward();
+				}
+				else
+				{
+					_tumbleDirection = DecideDisplacement(_moveDirection);
+				}
 			}
+
+			Tumble(_tumbleDirection);
+			_headCam->TumbleCamera(_deltaTime);
+
 			break;
 		}
 		default:
