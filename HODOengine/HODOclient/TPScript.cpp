@@ -37,17 +37,14 @@ void TPScript::Update()
 	if (API::GetKeyUp(DIK_S))
 	{
 		_animator->GetAllAC()->SetBool("isWalkBack", false);
-
 	}
 	if (API::GetKeyPressing(DIK_D))
 	{
 		_animator->GetAllAC()->SetBool("isWalkRight", true);
-
 	}
 	if (API::GetKeyUp(DIK_D))
 	{
 		_animator->GetAllAC()->SetBool("isWalkRight", false);
-
 	}
 
 	if (API::GetKeyDown(DIK_SPACE))

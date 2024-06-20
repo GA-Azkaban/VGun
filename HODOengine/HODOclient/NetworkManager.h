@@ -116,9 +116,6 @@ private:
 public:
 	void Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue);
 
-private:
-	Vector3 serverPosition[5];
-	Quaternion serverRotation[5];
 
 	// 애니메이션
 public:

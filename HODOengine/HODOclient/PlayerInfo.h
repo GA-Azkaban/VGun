@@ -24,6 +24,11 @@ public:
 	void Init();
 
 public:
+	void SetServerTransform(Vector3 pos, Quaternion rot);
+	Vector3& GetServerPosition();
+	Quaternion& GetServerRotation();
+
+
 	void SetPlayerUID(int uid);
 	void SetPlayerID(std::string id);
 	void PlayerIndex(int index);
@@ -64,8 +69,14 @@ public:
 	bool GetIsJump();
 	
 	void OtherPlayerShoot(eHITLOC loc);
+
+
 private:
 	bool _isMyInfo = false;
+
+	// server info
+	Vector3 _serverPos;
+	Quaternion _serverRot;
 
 	// player info
 	int _playerUID;

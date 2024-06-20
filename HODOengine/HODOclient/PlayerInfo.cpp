@@ -33,6 +33,22 @@ void PlayerInfo::Init()
 	this->_state = ePlayerState::IDLE;
 }
 
+void PlayerInfo::SetServerTransform(Vector3 pos, Quaternion rot)
+{
+	_serverPos = pos;
+	_serverRot = rot;
+}
+
+Vector3& PlayerInfo::GetServerPosition()
+{
+	return _serverPos;
+}
+
+Quaternion& PlayerInfo::GetServerRotation()
+{
+	return _serverRot;
+}
+
 void PlayerInfo::SetPlayerUID(int uid)
 {
 	_playerUID = uid;

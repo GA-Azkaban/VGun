@@ -1,37 +1,20 @@
-﻿#include "InGameSceneView.h"
+﻿#include "TrainigSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
-#include "FSMtestScript.h"
-#include "RoundManager.h"
-#include "../HODOEngine/CollisionCallback.h"
-#include "MeshTransformController.h"
 #include "FPAniScript.h"
-#include "Crosshair.h"
-#include "Ammo.h"
-#include "TPScript.h"
-#include "OthersAnim.h"
+#include "MeshTransformController.h"
 
-InGameSceneView::InGameSceneView()
+TrainigSceneView::TrainigSceneView()
+	: _scene(nullptr)
 {
 
 }
 
-InGameSceneView::~InGameSceneView()
+void TrainigSceneView::Initialzie()
 {
+	_scene = API::CreateScene("Training");
 
-}
-
-void InGameSceneView::Initialize()
-{
-	_scene = API::CreateScene("InGame");
-
-	RoundManager::Instance()->SetRoundScene(_scene);
-
-	// 플레이어 여섯 명 렌더링
-	float posX = 0;
-	float posT = 165;
-
-	HDEngine::MaterialDesc red;  
+	HDEngine::MaterialDesc red;
 	red.materialName = "TP_Red";
 	red.albedo = "TP_Red_B.png";
 
@@ -61,25 +44,13 @@ void InGameSceneView::Initialize()
 	meshComp->SetMeshActive(false, 4);
 
 	meshComp->PlayAnimation("AR_aim", true);
-	RoundManager::Instance()->_myObj = player;
 
-	// 애니메이션 전달용 더미 캐릭터 생성
-	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_TP_X_Default.fbx");
-	dummy->GetTransform()->SetPosition(0, -10, 0);
-	
-	dummy->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
-	dummy->AddComponent<TPScript>();
-
-	RoundManager::Instance()->SetAnimationDummy(dummy);
-
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.5f);
+	playerCollider->SetPositionOffset({ 0.0f, 0.4f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.62f, 0.0f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.18f);
 	headCollider->SetParentCollider(playerCollider);
 	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
@@ -126,7 +97,7 @@ void InGameSceneView::Initialize()
 	// AJY 24.6.3.
 	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
 	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
-	
+
 	// weapon
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");
@@ -165,7 +136,7 @@ void InGameSceneView::Initialize()
 	{
 		auto particleObj = API::CreateObject(_scene);
 		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
-		particle->SetScaleOffset(Vector3(0.01f, 0.01f, 0.01f));
+		particle->SetScaleOffset(Vector3(0.1f, 0.1f, 0.1f));
 		particleVec.push_back(particle);
 	}
 	playerMove->SetHitParticle(particleVec);
@@ -180,62 +151,17 @@ void InGameSceneView::Initialize()
 	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
 
-	posX += 1;
-	posT += 315;
 
-	// 상대방 캐릭터 생성
-	for (int i = 1; i < 6; ++i)
-	{
-		std::string otherObjName = "otherPlayer" + std::to_string(i);
-		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
-		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
-		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
-		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
-		otherPlayerCollider->SetFreezeRotation(true);
-		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
-		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
-		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+	///////////////
+	///	   UI	///
+	///////////////
 
-		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		otherMeshComp->GetTransform()->SetLocalPosition(0.0f, -0.1f, 0.0f);
-		otherMeshComp->LoadMaterial(M_Red, 0);
-		otherMeshComp->LoadMaterial(M_Red, 1);
-		otherMeshComp->LoadMaterial(M_Red, 2);
-		otherMeshComp->LoadMaterial(M_Red, 3);
-		otherMeshComp->LoadMaterial(M_Red, 4);
-		otherMeshComp->PlayAnimation("AR_idle", true);
-
-		otherPlayer->AddComponent<OthersAnim>();
-
-		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
-
-		// sound 추가
-		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
-
-		posX += 2;
-		posT += 315;
-	}
-
-	// crosshair
-	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
-	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
-	crosshairComp->playerMove = playerMove;
-
-	// ammo
-	auto ammo = API::CreateObject(_scene, "Ammo");
-	auto ammoComp = ammo->AddComponent<Ammo>();
-	ammoComp->playerMove = playerMove;
-
-	API::LoadSceneFromData("sceneData.json", this->_scene);
+	auto quitBtn = API::CreateButton(_scene, "quitBtn");
+	auto quitBtnComp = quitBtn->GetComponent<HDData::Button>();
+	quitBtnComp->SetImage("AlphaBtn.png");
+	auto quitTxt = API::CreateTextbox(_scene, "quitText");
+	auto quitTextComp = quitTxt->GetComponent<HDData::TextUI>();
+	
+			
+	API::LoadSceneFromData("trainingSceneData.json", _scene);
 }

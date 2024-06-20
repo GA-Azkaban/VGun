@@ -189,6 +189,7 @@ namespace HDEngine
 
 		auto& allScenes = SceneSystem::Instance().GetAllScenes();
 		auto sceneIter = allScenes.find("InGame");
+		//auto sceneIter = allScenes.find("Training");
 
 		if (sceneIter != allScenes.end())
 		{
