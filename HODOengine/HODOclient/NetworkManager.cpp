@@ -62,11 +62,15 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
+
 	int i = 3;
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
 {
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
+
 	auto uid = playerData.userinfo().uid();
 
 	switch (hitLocation)
