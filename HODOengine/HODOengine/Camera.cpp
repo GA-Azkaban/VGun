@@ -137,20 +137,18 @@ namespace HDData
 			return;
 		}
 
-		float shakeIntensity = 0.01f;
-		float shakeFrequency = 36.0f;
+		float shakeIntensity = 0.3f;
+		float shakeFrequency = 6.3f;
 
-		if (_shakeTime < 0.2f)
+		if (_shakeTime < 0.5f)
 		{
-			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeTime);
-			float distX = shakeIntensity * cos(shakeFrequency*_shakeTime + 0.5f);
+			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f + _distYOnShoot, 0.175f));
 
-			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(distX, 1.65f + _distYOnShoot, 0.175f));
-
-			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
-			//_distYOnShootEnd -= _distYOnShoot;
-			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
-			//_distYOnShootEnd -= _distYOnShoot;
+			// 카메라를 돌려주는 방식 시도
+			//Quaternion nowRot = GetTransform()->GetLocalRotation();
+			//Quaternion newRot = Quaternion::Concatenate(nowRot, Quaternion::CreateFromYawPitchRoll(0.0f, -_distYOnShoot, 0.0f));
+			//GetGameObject()->GetTransform()->SetLocalRotation(newRot);
 
 			_shakeTime += deltaTime;
 		}

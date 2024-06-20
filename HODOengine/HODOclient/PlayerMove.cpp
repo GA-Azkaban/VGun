@@ -4,7 +4,7 @@
 #include "PlayerInfo.h"
 #include "GameManager.h"
 
-#define BULLET_MAX 30
+#define BULLET_MAX 8
 
 PlayerMove::PlayerMove()
 	: _isMovable(true),
@@ -38,11 +38,13 @@ void PlayerMove::Start()
 	_moveSpeed = 3.0f;
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
-	PresetSprayPattern(1);
+	PresetSprayPattern(2);
 	StartRoundCam();
 
 	_prevPlayerState.first = ePlayerState::IDLE;
 	_playerState.first = ePlayerState::IDLE;
+
+	_bulletCount = BULLET_MAX;
 }
 
 void PlayerMove::Update()
@@ -54,11 +56,8 @@ void PlayerMove::Update()
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	// 발사 쿨타임
-	if (_shootCooldown >= 0.0f)
-	{
-		_shootCooldown -= _deltaTime;
-	}
+	_isShootHead = false;
+	_isShootBody = false;
 
 	CameraControl();
 	CheckMoveInfo();
@@ -154,40 +153,6 @@ void PlayerMove::CheckMoveInfo()
 {
 	_moveDirection = 5;
 
-	if (API::GetKeyPressing(DIK_W))
-	{
-		_moveDirection = 8;
-	}
-	if (API::GetKeyPressing(DIK_A))
-	{
-		_moveDirection = 4;
-	}
-	if (API::GetKeyPressing(DIK_S))
-	{
-		_moveDirection = 2;
-	}
-	if (API::GetKeyPressing(DIK_D))
-	{
-		_moveDirection = 6;
-	}
-	if (API::GetKeyPressing(DIK_W) && API::GetKeyPressing(DIK_A))
-	{
-		_moveDirection = 7;
-	}
-	if (API::GetKeyPressing(DIK_W) && API::GetKeyPressing(DIK_D))
-	{
-		_moveDirection = 9;
-	}
-	if (API::GetKeyPressing(DIK_A) && API::GetKeyPressing(DIK_S))
-	{
-		_moveDirection = 1;
-	}
-	if (API::GetKeyPressing(DIK_S) && API::GetKeyPressing(DIK_D))
-	{
-		_moveDirection = 3;
-	}
-
-	/*
 	if (!_isHeadCam)
 	{
 		if (API::GetKeyPressing(DIK_I))
@@ -258,7 +223,7 @@ void PlayerMove::CheckMoveInfo()
 			_moveDirection = 3;
 		}
 	}
-
+	/*
 	if (_moveDirection != 5)
 	{
 		//if (!_playerAudio->IsSoundPlaying("walk"))
@@ -469,7 +434,7 @@ void PlayerMove::ShootGunDdabal()
 
 	++_shootCount;
 	--_bulletCount;
-	_shootCooldown = 0.2f;
+	_shootCooldown = 0.5f;
 }
 
 void PlayerMove::Reload()
@@ -521,6 +486,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
+	Reload();
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
@@ -531,6 +497,12 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 	//{
 	//	return;
 	//}
+
+	if (_playerState.first == ePlayerState::TUMBLE)
+	{
+		return;
+	}
+
 	auto& opponentCollider = (*colArr)->_otherActor;
 
 	// 지형인 경우
@@ -540,6 +512,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		_isOnGround = true;
 		_isJumping = false;
 		_playerState.first = ePlayerState::IDLE;
+		_playerColliderStanding->ClearForceXZ();
 	}
 }
 
@@ -557,10 +530,10 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 	//	_isOnGround = false;
 	//}
 
-	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
-	//{
-	//	_playerColliderStanding->ClearForceXZ();
-	//}
+	if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
+	{
+		_playerColliderStanding->ClearForceXZ();
+	}
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -1117,11 +1090,11 @@ void PlayerMove::DecidePlayerState()
 		{
 			if (API::GetKeyPressing(DIK_LSHIFT))
 			{
-				_playerState.first = ePlayerState::RUN;
+				_playerState.first = ePlayerState::WALK;
 			}
 			else
 			{
-				_playerState.first = ePlayerState::WALK;
+				_playerState.first = ePlayerState::RUN;
 			}
 		}
 	}
@@ -1176,6 +1149,12 @@ void PlayerMove::DecidePlayerState()
 
 void PlayerMove::Behavior()
 {
+	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
+	if (_playerState.first != ePlayerState::TUMBLE)
+	{
+		_headCam->ShakeCamera(_deltaTime);
+	}
+
 	// 움직임
 	switch (_playerState.first)
 	{
@@ -1208,8 +1187,9 @@ void PlayerMove::Behavior()
 		{
 			if (_prevPlayerState.first != ePlayerState::JUMP)
 			{
-				Jump(DecideDisplacement(_moveDirection));
+				Jump(DecideDisplacement(_moveDirection) * _moveSpeed);
 			}
+
 			//else
 			//{
 			//	_playerColliderStanding->ClearForceXZ();
@@ -1264,7 +1244,6 @@ void PlayerMove::Behavior()
 			{
 				_headCam->ToggleCameraShake(true);
 			}
-			_headCam->ShakeCamera(_deltaTime);
 			ShootGunDdabal();
 		}
 	}
