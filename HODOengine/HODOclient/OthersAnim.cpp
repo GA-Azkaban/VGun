@@ -16,7 +16,7 @@ void OthersAnim::Update()
 {
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 
-	if (_info->GetPrevPlayerState() == _info->GetPlayerState()) return;
+	//if (_info->GetPrevPlayerState() == _info->GetPlayerState()) return;
 
 	switch (_info->GetPlayerState())
 	{

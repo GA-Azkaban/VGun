@@ -757,8 +757,6 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 			return ePlayerState::WALK_R;
 		}
 			break;
-		case Protocol::ANIMATION_STATE_SHOOT:
-			break;
 		case Protocol::ANIMATION_STATE_JUMP:
 		{
 			return ePlayerState::JUMP;
@@ -778,10 +776,6 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 		{
 			return ePlayerState::DIE;
 		}
-			break;
-		case Protocol::eAnimationState_INT_MIN_SENTINEL_DO_NOT_USE_:
-			break;
-		case Protocol::eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_:
 			break;
 		default:
 		{
