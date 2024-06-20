@@ -52,11 +52,10 @@ void NetworkManager::Update()
 
 	if (playerObj.size() == 0) return;
 	 
-	int index = 0;
 	for (auto& [uid, player] : playerObj)
 	{
-		Interpolation(player->GetTransform(), serverPosition[index], serverRotation[index], 2.5);
-		++index;
+		auto info = player->GetComponent<PlayerInfo>();
+		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
 	}
 }
 
@@ -572,8 +571,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
 
-	int index = 0;
-
 	for (auto& player : roominfo.users())
 	{
 		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
@@ -582,16 +579,13 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
-		serverPosition[index] = pos;
-
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
-		serverRotation[index] = rot;
+
+		info->SetServerTransform(pos, rot);
 
 		// animation
 		auto test = ConvertAnimationStateToEnum(player.animationstate());
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
-
-		++index;
 	}
 }
 
@@ -678,6 +672,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	// 현재 Transform에 보간된 값 설정
 	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
+
 }
 
 Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)
@@ -785,6 +780,9 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 		case Protocol::eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_:
 			break;
 		default:
+		{
+			return ePlayerState::IDLE;
+		}
 			break;
 	}
 }

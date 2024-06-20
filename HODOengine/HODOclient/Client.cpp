@@ -1,6 +1,7 @@
 ﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
+#include "TrainigSceneView.h"
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
 #include "InGameSceneView.h"
@@ -10,8 +11,6 @@
 #include "LobbyManager.h"
 #include "MenuManager.h"
 #include "RoundManager.h"
-
-#include "TestSceneSecond.h"
 
 
 
@@ -51,9 +50,12 @@ void Client::Initialize()
 	
 	LoginSceneView login;		//Scene Name : Login
 	login.Initialize();
-	 
+	
 	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();	
+
+	TrainigSceneView training;	//Scene Name : Training
+	training.Initialzie();
 
 	LobbySceneView lobby;		// Scene Naem : Lobby
 	lobby.Initialize();
@@ -63,5 +65,6 @@ void Client::Initialize()
 
 	API::LoadSceneByName("Login");
 	////API::LoadSceneByName("InGame");
-	//API::SetRecursiveMouseMode(true);
+	
+	API::SetRecursiveMouseMode(true);
 }
