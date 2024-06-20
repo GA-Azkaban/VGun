@@ -130,6 +130,16 @@ bool& PlayerInfo::GetIsDie()
 	return _isDie;
 }
 
+bool PlayerInfo::GetIsStateChange()
+{
+	return _isStateChange;
+}
+
+void PlayerInfo::SetIsStateChange(bool isChange)
+{
+	_isStateChange = isChange;
+}
+
 ePlayerState PlayerInfo::GetPrevPlayerState()
 {
 	return _prevState;

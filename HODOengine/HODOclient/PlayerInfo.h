@@ -57,6 +57,10 @@ public:
 	int& GetPlayerDeathCount();
 	int& GetCurrentBulletCount();
 	bool& GetIsDie();
+
+
+	bool GetIsStateChange();
+	void SetIsStateChange(bool isChange);
 	ePlayerState GetPrevPlayerState();
 	ePlayerState GetPlayerState();
 
@@ -95,6 +99,7 @@ private:
 
 	int _bulletCount = 30;
 
+	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
 	

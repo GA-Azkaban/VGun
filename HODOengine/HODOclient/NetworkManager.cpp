@@ -515,8 +515,6 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 				}
 			}
 		}
-
-
 	}
 }
 
@@ -561,8 +559,6 @@ void NetworkManager::SendPlayUpdate()
 	quaternion->set_z(playerobj->GetTransform()->GetRotation().z);
 	quaternion;
 
-	auto test = ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState());
-	
 	packet.mutable_playerdata()->
 		set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
 
@@ -588,8 +584,9 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		info->SetServerTransform(pos, rot);
 
 		// animation
-		auto test = ConvertAnimationStateToEnum(player.animationstate());
+		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
+		info->SetIsStateChange(true);
 	}
 }
 
