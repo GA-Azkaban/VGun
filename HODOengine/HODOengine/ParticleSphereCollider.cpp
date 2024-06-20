@@ -3,7 +3,7 @@
 #include "GraphicsObjFactory.h"
 
 HDData::ParticleSphereCollider::ParticleSphereCollider()
-	: _radius(0.1f)
+	: _radius(0.01f)
 {
 	_sphereDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateSpherePrimitive();
 	_debugStruct = _sphereDebugStruct;

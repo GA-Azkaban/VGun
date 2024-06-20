@@ -74,12 +74,12 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetAnimationDummy(dummy);
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.5f);
-	playerCollider->SetPositionOffset({ 0.0f, 0.4f, 0.0f });
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
+	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.62f, 0.0f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.18f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 	headCollider->SetParentCollider(playerCollider);
 	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
@@ -165,7 +165,7 @@ void InGameSceneView::Initialize()
 	{
 		auto particleObj = API::CreateObject(_scene);
 		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
-		particle->SetScaleOffset(Vector3(0.1f, 0.1f, 0.1f));
+		particle->SetScaleOffset(Vector3(0.01f, 0.01f, 0.01f));
 		particleVec.push_back(particle);
 	}
 	playerMove->SetHitParticle(particleVec);
@@ -190,18 +190,18 @@ void InGameSceneView::Initialize()
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.5f);
-		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.4f, 0.0f });
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
+		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.62f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.18f);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		auto temp = otherMeshComp->GetTransform();
+		otherMeshComp->GetTransform()->SetLocalPosition(0.0f, -0.1f, 0.0f);
 		otherMeshComp->LoadMaterial(M_Red, 0);
 		otherMeshComp->LoadMaterial(M_Red, 1);
 		otherMeshComp->LoadMaterial(M_Red, 2);
