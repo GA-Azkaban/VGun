@@ -667,11 +667,16 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	if (currentPos == serverPos && currentRot == serverRot) return;
 
+	static float lerpTime = 0.0f;
+	lerpTime += dt * intermediateValue;
+	float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
+	float t = x * x * (3 - 2 * x);
+
 	// 포지션 선형 보간
-	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, intermediateValue * dt);
+	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, t);
 
 	// 로테이션 구면 선형 보간
-	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, intermediateValue * dt * 10);
+	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt* intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
 	current->SetPosition(interpolatedPos);
