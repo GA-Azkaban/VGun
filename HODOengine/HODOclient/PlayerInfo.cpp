@@ -9,7 +9,6 @@ PlayerInfo::PlayerInfo()
 PlayerInfo::PlayerInfo(PlayerInfo* info)
 {
 	_playerUID = info->GetPlayerUID();
-	_playerID = info->GetPlayerID();
 	_teamID = info->GetPlayerTeam();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
@@ -55,16 +54,6 @@ void PlayerInfo::SetPlayerUID(int uid)
 	_playerUID = uid;
 }
 
-void PlayerInfo::SetPlayerID(std::string id)
-{
-	_playerID = id;
-}
-
-void PlayerInfo::PlayerIndex(int index)
-{
-	_playerIndex = index;
-}
-
 void PlayerInfo::SetCurrentHP(int hp)
 {
 	_currentHP = hp;
@@ -99,11 +88,6 @@ void PlayerInfo::SetCurrentBulletCount(int count)
 int& PlayerInfo::GetPlayerUID()
 {
 	return _playerUID;
-}
-
-std::string& PlayerInfo::GetPlayerID()
-{
-	return _playerID;
 }
 
 bool& PlayerInfo::GetIsHost()
@@ -202,11 +186,6 @@ void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
 		default:
 			break;
 	}
-}
-
-int& PlayerInfo::GetPlayerIndex()
-{
-	return _playerIndex;
 }
 
 eTeam& PlayerInfo::GetPlayerTeam()

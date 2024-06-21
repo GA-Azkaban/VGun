@@ -30,8 +30,6 @@ public:
 
 
 	void SetPlayerUID(int uid);
-	void SetPlayerID(std::string id);
-	void PlayerIndex(int index);
 	void SetTeamID(eTeam team);
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
@@ -45,9 +43,7 @@ public:
 	void SetCurrentBulletCount(int Count);
 
 	int& GetPlayerUID();
-	std::string& GetPlayerID();
 	bool& GetIsHost();
-	int& GetPlayerIndex();
 	eTeam& GetPlayerTeam();
 	bool& GetPlayerDie();
 	std::string& GetPlayerNickName();
@@ -84,9 +80,6 @@ private:
 
 	// player info
 	int _playerUID;
-	std::string _playerID;
-	int _playerIndex;
-	eTeam _teamID;
 	bool _isHost = false;
 	std::string _playerNickname;
 
@@ -106,5 +99,8 @@ private:
 	// count info
 	int _kill;
 	int _death;
+
+	// else
+	eTeam _teamID;
 };
 

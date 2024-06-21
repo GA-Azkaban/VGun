@@ -169,11 +169,6 @@ void NetworkManager::SendLogin(std::string id, std::string password)
 	packet.set_id(id);
 	packet.set_password(password);
 
-	PlayerInfo* player = new PlayerInfo;
-	player->SetPlayerID(id);
-
-	GameManager::Instance()->SetMyInfo(player);
-
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -215,6 +210,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 
 	GameManager::Instance()->GetMyInfo()->SetPlayerUID(uid);
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
+	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
 
 	API::LoadSceneByName("MainMenu");
 }
@@ -456,7 +452,6 @@ void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
@@ -590,11 +585,31 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	}
 }
 
-void NetworkManager::SendPlayJump(PlayerInfo* playerinfo)
+void NetworkManager::SendPlayJump()
 {
 	Protocol::C_PLAY_JUMP packet;
 
-	packet.mutable_playerdata()->CopyFrom(*ConvertPlayerInfoToData(playerinfo));
+	auto& mine = RoundManager::Instance()->_myObj;
+	auto info = GameManager::Instance()->GetMyInfo();
+
+	Protocol::PlayerData data;
+
+	Protocol::Vector3 pos;
+	pos.set_x(mine->GetTransform()->GetPosition().x);
+	pos.set_y(mine->GetTransform()->GetPosition().y);
+	pos.set_z(mine->GetTransform()->GetPosition().z);
+
+	Protocol::Quaternion rot;
+	rot.set_x(mine->GetTransform()->GetRotation().x);
+	rot.set_y(mine->GetTransform()->GetRotation().y);
+	rot.set_z(mine->GetTransform()->GetRotation().z);
+	rot.set_w(mine->GetTransform()->GetRotation().w);
+
+	data.mutable_transform()->set_allocated_vector3(&pos);
+	data.mutable_transform()->set_allocated_quaternion(&rot);
+	
+
+	packet.mutable_playerdata()->CopyFrom(data);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -635,7 +650,6 @@ bool NetworkManager::IsConnected()
 
 Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(PlayerInfo* info)
 {
-
 	data.mutable_transform()->mutable_vector3()->set_x(info->GetTransform()->GetPosition().x);
 	data.mutable_transform()->mutable_vector3()->set_y(info->GetTransform()->GetPosition().y);
 	data.mutable_transform()->mutable_vector3()->set_z(info->GetTransform()->GetPosition().z);
