@@ -1152,7 +1152,7 @@ void PlayerMove::Behavior()
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
 	if (_playerState.first != ePlayerState::TUMBLE)
 	{
-		_headCam->ShakeCamera(_deltaTime);
+		_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 	}
 
 	// 움직임

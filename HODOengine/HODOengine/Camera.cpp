@@ -130,25 +130,28 @@ namespace HDData
 		_graphicsCamera->SetAsMainCamera();
 	}
 
-	void Camera::ShakeCamera(float deltaTime)
+	void Camera::ShakeCamera(float deltaTime, float& angleX)
 	{
 		if (!_isShakingCamera)
 		{
 			return;
 		}
 
-		float shakeIntensity = 0.3f;
-		float shakeFrequency = 6.3f;
+		float shakeIntensity = 0.01f;
+		float shakeFrequency = 15.7f;
 
-		if (_shakeTime < 0.5f)
+		if (_shakeTime < 0.4f)
 		{
-			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
-			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f + _distYOnShoot, 0.175f));
+			//_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			//GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f + _distYOnShoot, 0.175f));
 
 			// 카메라를 돌려주는 방식 시도
 			//Quaternion nowRot = GetTransform()->GetLocalRotation();
 			//Quaternion newRot = Quaternion::Concatenate(nowRot, Quaternion::CreateFromYawPitchRoll(0.0f, -_distYOnShoot, 0.0f));
 			//GetGameObject()->GetTransform()->SetLocalRotation(newRot);
+
+			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			angleX -= _distYOnShoot;
 
 			_shakeTime += deltaTime;
 		}
