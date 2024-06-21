@@ -28,6 +28,12 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
+	data = new Protocol::PlayerData;
+}
+
+NetworkManager::~NetworkManager()
+{
+	delete data;
 }
 
 void NetworkManager::Start()
@@ -61,11 +67,15 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
+
 	int i = 3;
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
 {
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
+
 	auto uid = playerData.userinfo().uid();
 
 	switch (hitLocation)
@@ -165,11 +175,6 @@ void NetworkManager::SendLogin(std::string id, std::string password)
 	packet.set_id(id);
 	packet.set_password(password);
 
-	PlayerInfo* player = new PlayerInfo;
-	player->SetPlayerID(id);
-
-	GameManager::Instance()->SetMyInfo(player);
-
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -211,6 +216,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 
 	GameManager::Instance()->GetMyInfo()->SetPlayerUID(uid);
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
+	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
 
 	API::LoadSceneByName("MainMenu");
 }
@@ -452,7 +458,6 @@ void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 	for (auto& player : roomInfo.users())
 	{
 		PlayerInfo* one = new PlayerInfo;
-		one->SetPlayerID(player.userinfo().id());
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
@@ -511,8 +516,6 @@ void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
 				}
 			}
 		}
-
-
 	}
 }
 
@@ -557,8 +560,6 @@ void NetworkManager::SendPlayUpdate()
 	quaternion->set_z(playerobj->GetTransform()->GetRotation().z);
 	quaternion;
 
-	auto test = ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState());
-	
 	packet.mutable_playerdata()->
 		set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
 
@@ -584,16 +585,22 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		info->SetServerTransform(pos, rot);
 
 		// animation
-		auto test = ConvertAnimationStateToEnum(player.animationstate());
+		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
+		info->SetIsStateChange(true);
 	}
 }
 
-void NetworkManager::SendPlayJump(PlayerInfo* playerinfo)
+void NetworkManager::SendPlayJump()
 {
 	Protocol::C_PLAY_JUMP packet;
 
-	packet.mutable_playerdata()->CopyFrom(*ConvertPlayerInfoToData(playerinfo));
+	auto& mine = RoundManager::Instance()->_myObj;
+	auto info = GameManager::Instance()->GetMyInfo();
+
+	data = ConvertPlayerInfoToData(mine, info);
+	
+	packet.mutable_playerdata()->CopyFrom(*data);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -632,26 +639,23 @@ bool NetworkManager::IsConnected()
 	return _isConnect;
 }
 
-Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(PlayerInfo* info)
+Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info)
 {
+	data->mutable_transform()->mutable_vector3()->set_x(mine->GetTransform()->GetPosition().x);
+	data->mutable_transform()->mutable_vector3()->set_y(mine->GetTransform()->GetPosition().y);
+	data->mutable_transform()->mutable_vector3()->set_z(mine->GetTransform()->GetPosition().z);
 
-	data.mutable_transform()->mutable_vector3()->set_x(info->GetTransform()->GetPosition().x);
-	data.mutable_transform()->mutable_vector3()->set_y(info->GetTransform()->GetPosition().y);
-	data.mutable_transform()->mutable_vector3()->set_z(info->GetTransform()->GetPosition().z);
-		
-	data.mutable_transform()->mutable_quaternion()->set_x(info->GetTransform()->GetRotation().x);
-	data.mutable_transform()->mutable_quaternion()->set_y(info->GetTransform()->GetRotation().y);
-	data.mutable_transform()->mutable_quaternion()->set_z(info->GetTransform()->GetRotation().z);
-	data.mutable_transform()->mutable_quaternion()->set_w(info->GetTransform()->GetRotation().w);
+	data->mutable_transform()->mutable_quaternion()->set_x(mine->GetTransform()->GetRotation().x);
+	data->mutable_transform()->mutable_quaternion()->set_y(mine->GetTransform()->GetRotation().y);
+	data->mutable_transform()->mutable_quaternion()->set_z(mine->GetTransform()->GetRotation().z);
+	data->mutable_transform()->mutable_quaternion()->set_w(mine->GetTransform()->GetRotation().w);
 
-	data.set_host(info->GetIsHost());
+	data->set_host(info->GetIsHost());
 
-	Protocol::UserInfo* user = new Protocol::UserInfo;
-	user->set_nickname(info->GetPlayerNickName());
+	data->mutable_userinfo()->set_uid(info->GetPlayerUID());
+	data->mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
-	data.set_allocated_userinfo(user);
-
-	return &data;
+	return data;
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
@@ -753,8 +757,6 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 			return ePlayerState::WALK_R;
 		}
 			break;
-		case Protocol::ANIMATION_STATE_SHOOT:
-			break;
 		case Protocol::ANIMATION_STATE_JUMP:
 		{
 			return ePlayerState::JUMP;
@@ -774,10 +776,6 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 		{
 			return ePlayerState::DIE;
 		}
-			break;
-		case Protocol::eAnimationState_INT_MIN_SENTINEL_DO_NOT_USE_:
-			break;
-		case Protocol::eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_:
 			break;
 		default:
 		{

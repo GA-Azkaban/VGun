@@ -16,7 +16,7 @@ void OthersAnim::Update()
 {
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 
-	if (_info->GetPrevPlayerState() == _info->GetPlayerState()) return;
+	if (!_info->GetIsStateChange()) return;
 
 	switch (_info->GetPlayerState())
 	{
@@ -73,4 +73,6 @@ void OthersAnim::Update()
 		default:
 			break;
 	}
+
+	_info->SetIsStateChange(false);
 }
