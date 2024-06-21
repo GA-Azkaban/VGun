@@ -15,7 +15,7 @@ public:
 private:
 	static NetworkManager* _instance;
 	NetworkManager();
-	~NetworkManager() = default;
+	~NetworkManager();
 
 public:
 	virtual void Start() override;
@@ -78,7 +78,7 @@ public: // 업데이트
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
 public: // 인게임
-	void SendPlayJump(PlayerInfo* playerinfo);
+	void SendPlayJump();
 	void RecvPlayJump(Protocol::PlayerData playerData);
 
 	void SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
@@ -109,8 +109,8 @@ private:
 	bool _isConnect;
 
 private:
-	Protocol::PlayerData data;
-	Protocol::PlayerData* ConvertPlayerInfoToData(PlayerInfo* info);
+	Protocol::PlayerData* data;
+	Protocol::PlayerData* ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
 
 	// 보간
 public:

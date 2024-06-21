@@ -156,7 +156,7 @@ void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 
 void RoundManager::SendJump(int uid)
 {
-	NetworkManager::Instance().SendPlayJump(GameManager::Instance()->GetMyInfo());
+	NetworkManager::Instance().SendPlayJump();
 }
 
 void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)

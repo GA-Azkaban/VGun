@@ -19,6 +19,7 @@ GameManager::GameManager()
 
 GameManager::~GameManager()
 {
+	delete _myInfo;
 	delete _instance;
 }
 
@@ -35,8 +36,6 @@ PlayerInfo* GameManager::GetMyInfo()
 void GameManager::SetMyObject(HDData::GameObject* obj)
 {
 	_myObj = obj;
-	PlayerInfo* info = obj->GetComponent<PlayerInfo>();
-	SetMyInfo(info);
 }
 
 HDData::GameObject* GameManager::GetMyObject()
