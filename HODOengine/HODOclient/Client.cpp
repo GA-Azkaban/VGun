@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -7,6 +7,7 @@
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 
+#include "FadeInOut.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
@@ -31,6 +32,7 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
+	//FadeInOut::Instance();
 
 	//TestSceneSecond second;
 	//second.Start();

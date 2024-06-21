@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"

@@ -1,6 +1,7 @@
 ﻿#include "PlayerInfo.h"
 
 PlayerInfo::PlayerInfo()
+	:_currentHP(100)
 {
 
 }

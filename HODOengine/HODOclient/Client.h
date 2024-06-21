@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifdef _DEBUG
 #pragma comment(lib, "..\\Build\\Debug\\HODOengine.lib")
 //#define ENGINE_PATH L"..\\x64\\Debug\\RocketEngine.dll"
@@ -23,5 +23,6 @@ public:
 	void Initialize();
 
 private:
-};
 
+};
+ 

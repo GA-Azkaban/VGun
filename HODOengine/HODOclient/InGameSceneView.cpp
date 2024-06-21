@@ -6,6 +6,7 @@
 #include "../HODOEngine/CollisionCallback.h"
 #include "MeshTransformController.h"
 #include "FPAniScript.h"
+#include "PlayerInfo.h"
 #include "Crosshair.h"
 #include "Ammo.h"
 #include "TPScript.h"
@@ -31,7 +32,7 @@ void InGameSceneView::Initialize()
 	float posX = 0;
 	float posT = 165;
 
-	HDEngine::MaterialDesc red;  
+	HDEngine::MaterialDesc red;
 	red.materialName = "TP_Red";
 	red.albedo = "TP_Red_B.png";
 
@@ -126,7 +127,7 @@ void InGameSceneView::Initialize()
 	// AJY 24.6.3.
 	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
 	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
-	
+
 	// weapon
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_AR_01.fbx");
@@ -159,6 +160,8 @@ void InGameSceneView::Initialize()
 	auto playerMove = player->AddComponent<PlayerMove>();
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
+
+	auto playerInfo = player->AddComponent<PlayerInfo>();
 
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
@@ -233,9 +236,25 @@ void InGameSceneView::Initialize()
 	crosshairComp->playerMove = playerMove;
 
 	// ammo
-	auto ammo = API::CreateObject(_scene, "Ammo");
+	auto ammo = API::CreateObject(_scene, "remaingAmmo");
 	auto ammoComp = ammo->AddComponent<Ammo>();
 	ammoComp->playerMove = playerMove;
+	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
+	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 30");
+
+	// HP
+	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
+	healthPoint->GetComponent < HDData::TextUI >()->GetTransform()->SetPosition(1800.0f, 1400.0f, 0.0f);
+	healthPoint->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	healthPoint->GetComponent<HDData::TextUI>()->SetText(std::to_string(playerInfo->GetPlayerCurrentHP()));
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
+}
+
+std::string& InGameSceneView::convertBullet(int bullet)
+{
+	_tempBullet = std::to_string(bullet);
+	return _tempBullet;
 }
