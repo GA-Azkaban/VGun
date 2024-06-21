@@ -32,6 +32,12 @@ namespace RocketCore::Graphics
 	class GeometryGenerator;
 	class SamplerState;
 
+	enum class MeshType
+	{
+		STATIC,
+		SKINNING,
+	};
+
 	struct FileInfo
 	{
 		std::vector<Mesh*> loadedMeshes;
@@ -40,7 +46,7 @@ namespace RocketCore::Graphics
 		std::unordered_map<std::string, Animation*> loadedAnimation;	// <animName, animationInfo>
 		DirectX::BoundingBox boundingBox;
 		MinMaxElements minMaxElements;
-
+		MeshType meshType;
 	};
 
 	struct Texture

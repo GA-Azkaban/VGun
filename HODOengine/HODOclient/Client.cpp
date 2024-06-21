@@ -1,4 +1,4 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "MainMenu.h"
@@ -32,9 +32,9 @@ void Client::Initialize()
 	RoundManager::Instance();
 
 	// 씬 초기화
-	/*TestScene test;
+	TestScene test;
 
-	API::LoadSceneByName("Test"); */
+	API::LoadSceneByName("Test"); 
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -42,31 +42,25 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 	
-	LoginSceneView login;		//Scene Name : Login
-	login.Initialize();
-	 
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();	
-
-	LobbySceneView lobby;
-	lobby.Initialize();
-
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
-
+	// 
 	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();
+	//menu.Initalize();	
+	//
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
-	//
+
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();
 
 	//API::LoadSceneByName("Lobby");
 
-	InGameSceneView inGame;			//Scene Name : InGame
-	inGame.Initialize();
-	API::LoadSceneByName("InGame");
-	API::SetRecursiveMouseMode(true);
+	//InGameSceneView inGame;			//Scene Name : InGame
+	//inGame.Initialize();
+	//API::LoadSceneByName("InGame");
+	//API::SetRecursiveMouseMode(true);
 }
