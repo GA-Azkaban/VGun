@@ -28,6 +28,12 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
+	data = new Protocol::PlayerData;
+}
+
+NetworkManager::~NetworkManager()
+{
+	delete data;
 }
 
 void NetworkManager::Start()
@@ -592,24 +598,9 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-	Protocol::PlayerData data;
-
-	Protocol::Vector3 pos;
-	pos.set_x(mine->GetTransform()->GetPosition().x);
-	pos.set_y(mine->GetTransform()->GetPosition().y);
-	pos.set_z(mine->GetTransform()->GetPosition().z);
-
-	Protocol::Quaternion rot;
-	rot.set_x(mine->GetTransform()->GetRotation().x);
-	rot.set_y(mine->GetTransform()->GetRotation().y);
-	rot.set_z(mine->GetTransform()->GetRotation().z);
-	rot.set_w(mine->GetTransform()->GetRotation().w);
-
-	data.mutable_transform()->set_allocated_vector3(&pos);
-	data.mutable_transform()->set_allocated_quaternion(&rot);
+	data = ConvertPlayerInfoToData(mine, info);
 	
-
-	packet.mutable_playerdata()->CopyFrom(data);
+	packet.mutable_playerdata()->CopyFrom(*data);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -648,25 +639,23 @@ bool NetworkManager::IsConnected()
 	return _isConnect;
 }
 
-Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(PlayerInfo* info)
+Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info)
 {
-	data.mutable_transform()->mutable_vector3()->set_x(info->GetTransform()->GetPosition().x);
-	data.mutable_transform()->mutable_vector3()->set_y(info->GetTransform()->GetPosition().y);
-	data.mutable_transform()->mutable_vector3()->set_z(info->GetTransform()->GetPosition().z);
-		
-	data.mutable_transform()->mutable_quaternion()->set_x(info->GetTransform()->GetRotation().x);
-	data.mutable_transform()->mutable_quaternion()->set_y(info->GetTransform()->GetRotation().y);
-	data.mutable_transform()->mutable_quaternion()->set_z(info->GetTransform()->GetRotation().z);
-	data.mutable_transform()->mutable_quaternion()->set_w(info->GetTransform()->GetRotation().w);
+	data->mutable_transform()->mutable_vector3()->set_x(mine->GetTransform()->GetPosition().x);
+	data->mutable_transform()->mutable_vector3()->set_y(mine->GetTransform()->GetPosition().y);
+	data->mutable_transform()->mutable_vector3()->set_z(mine->GetTransform()->GetPosition().z);
 
-	data.set_host(info->GetIsHost());
+	data->mutable_transform()->mutable_quaternion()->set_x(mine->GetTransform()->GetRotation().x);
+	data->mutable_transform()->mutable_quaternion()->set_y(mine->GetTransform()->GetRotation().y);
+	data->mutable_transform()->mutable_quaternion()->set_z(mine->GetTransform()->GetRotation().z);
+	data->mutable_transform()->mutable_quaternion()->set_w(mine->GetTransform()->GetRotation().w);
 
-	Protocol::UserInfo* user = new Protocol::UserInfo;
-	user->set_nickname(info->GetPlayerNickName());
+	data->set_host(info->GetIsHost());
 
-	data.set_allocated_userinfo(user);
+	data->mutable_userinfo()->set_uid(info->GetPlayerUID());
+	data->mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
-	return &data;
+	return data;
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)

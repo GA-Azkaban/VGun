@@ -15,7 +15,7 @@ public:
 private:
 	static NetworkManager* _instance;
 	NetworkManager();
-	~NetworkManager() = default;
+	~NetworkManager();
 
 public:
 	virtual void Start() override;
@@ -109,8 +109,8 @@ private:
 	bool _isConnect;
 
 private:
-	Protocol::PlayerData data;
-	Protocol::PlayerData* ConvertPlayerInfoToData(PlayerInfo* info);
+	Protocol::PlayerData* data;
+	Protocol::PlayerData* ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
 
 	// 보간
 public:

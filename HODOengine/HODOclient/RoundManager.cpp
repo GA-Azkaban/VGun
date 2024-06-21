@@ -76,7 +76,7 @@ void RoundManager::InitGame()
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			_myObj->AddComponent<PlayerInfo>(info)->SetIsMyInfo(true);
-			//GameManager::Instance()->SetMyObject(_myObj);
+			GameManager::Instance()->SetMyObject(_myObj);
 		}
 		else
 		{
@@ -156,7 +156,7 @@ void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 
 void RoundManager::SendJump(int uid)
 {
-	//NetworkManager::Instance().SendPlayJump(GameManager::Instance()->GetMyInfo());
+	NetworkManager::Instance().SendPlayJump();
 }
 
 void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
