@@ -28,6 +28,11 @@ namespace HDData
 		_skinnedMesh->LoadNode(fileName);
 	}
 	
+	void SkinnedMeshRenderer::LoadAnimation(const std::string& animListName)
+	{
+		_skinnedMesh->LoadAnimation(animListName);
+	}
+
 	void SkinnedMeshRenderer::LoadMaterial(HDData::Material* material, unsigned int element /*= 0*/)
 	{
 		_skinnedMesh->LoadMaterial(material->Get(), element);
@@ -83,44 +88,14 @@ namespace HDData
 		_skinnedMesh->PlayAnimationAtOnce(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
-	void SkinnedMeshRenderer::PlayAnimationUpper(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
-	{
-		_skinnedMesh->PlayAnimationUpper(animName, isLoop, blendDuration, hasExitTime, exitTime);
-	}
-
-	void SkinnedMeshRenderer::PlayAnimationLower(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
-	{
-		_skinnedMesh->PlayAnimationLower(animName, isLoop, blendDuration, hasExitTime, exitTime);
-	}
-
 	bool SkinnedMeshRenderer::IsAnimationExitTimeElapsed()
 	{
 		return _skinnedMesh->IsAnimationExitTimeElapsed();
 	}
 
-	bool SkinnedMeshRenderer::IsUpperAnimationExitTimeElapsed()
-	{
-		return _skinnedMesh->IsUpperAnimationExitTimeElapsed();
-	}
-
-	bool SkinnedMeshRenderer::IsLowerAnimationExitTimeElapsed()
-	{
-		return _skinnedMesh->IsLowerAnimationExitTimeElapsed();
-	}
-
 	bool SkinnedMeshRenderer::IsAnimationEnd()
 	{
 		return _skinnedMesh->IsAnimationEnd();
-	}
-
-	bool SkinnedMeshRenderer::IsUpperAnimationEnd()
-	{
-		return _skinnedMesh->IsUpperAnimationEnd();
-	}
-
-	bool SkinnedMeshRenderer::IsLowerAnimationEnd()
-	{
-		return _skinnedMesh->IsLowerAnimationEnd();
 	}
 
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)

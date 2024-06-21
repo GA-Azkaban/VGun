@@ -43,7 +43,6 @@ namespace RocketCore::Graphics
 		std::vector<Mesh*> loadedMeshes;
 		std::vector<Material*> loadedMaterials;
 		Node* node;
-		std::unordered_map<std::string, Animation*> loadedAnimation;	// <animName, animationInfo>
 		DirectX::BoundingBox boundingBox;
 		MinMaxElements minMaxElements;
 		MeshType meshType;
@@ -125,7 +124,7 @@ namespace RocketCore::Graphics
 		/// <param name="fileName">model file name included extension</param>
 		/// ex)model1.fbx
 		/// <returns>animation name and animation infos of all animations in model file</returns>
-		std::unordered_map<std::string, Animation*>& GetAnimations(const std::string& fileName);
+		std::unordered_map<std::string, Animation*> GetAnimations(const std::string& fileName);
 
 		DirectX::BoundingBox GetBoundingBox(const std::string& fileName);
 		
@@ -198,6 +197,7 @@ namespace RocketCore::Graphics
 
 		std::unordered_map<std::string, FileInfo> _loadedFileInfo; //<fileName, infos>
 		std::unordered_map<std::string, Material*> _loadedMaterials; //<materialName, materialInfo>
+		std::unordered_map<std::string, std::unordered_map<std::string, Animation*>> _loadedAnimations;	// <animGroup, <animName, animations>>
 		std::unordered_map<std::string, ID3D11ShaderResourceView*> _loadedTextureFiles;	//<fileName, texture>
 		std::unordered_map<std::string, EnvMapInfo> _loadedEnvMaps;
 

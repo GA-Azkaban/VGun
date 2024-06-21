@@ -222,33 +222,27 @@ TestScene::TestScene()
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
 	//playerTest->LoadFBXFile("SKM_FP_X_shoot.fbx");
-	playerTest->LoadFBXFile("SKM_FP_X_default.fbx");
+	//playerTest->LoadFBXFile("SKM_WorkingGirl_X_default.fbx");
+	playerTest->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadAnimation("TP");
 	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 
-	/*HDEngine::MaterialDesc desc;
-	desc.materialName = "TP_Red";
-	desc.albedo = "TP_Red_B.png";
+	HDEngine::MaterialDesc desc;
+	desc.materialName = "PolygonWestern_Texture_01_A";
+	desc.albedo = "PolygonWestern_Texture_01_A.png";
 	HDData::Material* newMat = API::CreateMaterial(desc);
 	meshComp->LoadMaterial(newMat, 0);
-	meshComp->LoadMaterial(newMat, 1);
-	meshComp->LoadMaterial(newMat, 2);
-	meshComp->LoadMaterial(newMat, 3);
-	meshComp->LoadMaterial(newMat, 4);*/
+	//meshComp->LoadMaterial(newMat, 1);
+	//meshComp->LoadMaterial(newMat, 2);
+	//meshComp->LoadMaterial(newMat, 3);
+	//meshComp->LoadMaterial(newMat, 4);
 
-	meshComp->PlayAnimation("X_default", true);
-	//meshComp->PlayAnimationUpper("AR_reload", true);
-	//meshComp->PlayAnimationLower("AR_run_R", true);
-	//meshComp->SetOutlineActive(true);
-	//meshComp->SetMeshActive(false, 0);
-	//meshComp->SetMeshActive(false, 1);
-	//meshComp->SetMeshActive(false, 2);
-	//meshComp->SetMeshActive(false, 3);
-	//meshComp->SetMeshActive(false, 4);
+	meshComp->PlayAnimation("RV_shoot", true);
 
 	// 오른손 노드의 오브젝트를 가져와서
 	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
