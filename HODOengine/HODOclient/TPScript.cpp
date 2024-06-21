@@ -46,7 +46,6 @@ void TPScript::Update()
 	{
 		_animator->GetAllAC()->SetBool("isWalkRight", false);
 	}
-
 	if (API::GetKeyDown(DIK_SPACE))
 	{
 		_animator->GetAllAC()->SetTrigger("isJump");
@@ -58,5 +57,12 @@ void TPScript::Update()
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
 		_animator->GetAllAC()->SetTrigger("isFire");
+	}
+	else
+	{
+		_animator->GetAllAC()->SetBool("isWalkFront", false);
+		_animator->GetAllAC()->SetBool("isWalkLeft", false);
+		_animator->GetAllAC()->SetBool("isWalkBack", false);
+		_animator->GetAllAC()->SetBool("isWalkRight", false);
 	}
 }
