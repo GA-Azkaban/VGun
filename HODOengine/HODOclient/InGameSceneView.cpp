@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "FSMtestScript.h"
@@ -96,7 +96,7 @@ void InGameSceneView::Initialize()
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
 	//playerMove->SetPlayerColliders(playerColliderStanding, playerColliderSitting);
-	headCollider->SetParentCollider(playerColliderStanding);
+	headCollider->SetParentCollider(playerCollider);
 
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
@@ -163,10 +163,6 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
-
-	auto playerMove = player->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(freeRoamingCam);
-	playerMove->SetHeadCam(mainCam);
 
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 

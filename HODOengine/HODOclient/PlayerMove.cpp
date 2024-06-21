@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -33,7 +33,7 @@ void PlayerMove::Start()
 	API::LoadFPAnimationFromData(GetGameObject(), "FP_animation.json");
 	GetGameObject()->AddComponent<FPAniScript>();
 
-	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
+	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_moveSpeed = 3.0f;
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
@@ -1237,27 +1237,30 @@ void PlayerMove::Behavior()
 		}
 	}
 
+	if (_shootCooldown > 0.0f)
+	{
+		_shootCooldown -= _deltaTime;
+	}
 	// 총 쏘거나 재장전
 	if (_playerState.second == ePlayerState::FIRE)
 	{
-		if (_shootCooldown > 0.0f)
+		if (_shootCooldown <= 0.0f)
 		{
-			_shootCooldown -= _deltaTime;
-		}
-		else if(_bulletCount == 0)
-		{
-			if (_prevPlayerState.second != ePlayerState::FIRE)
+			if (_bulletCount == 0)
 			{
-				_playerAudio->PlayOnce("empty");
+				if (_prevPlayerState.second != ePlayerState::FIRE)
+				{
+					_playerAudio->PlayOnce("empty");
+				}
 			}
-		}
-		else
-		{
-			if (_prevPlayerState.second != ePlayerState::FIRE)
+			else
 			{
-				_headCam->ToggleCameraShake(true);
+				if (_prevPlayerState.second != ePlayerState::FIRE)
+				{
+					_headCam->ToggleCameraShake(true);
+				}
+				ShootGunDdabal();
 			}
-			ShootGunDdabal();
 		}
 	}
 	else if (_playerState.second == ePlayerState::RELOAD)
