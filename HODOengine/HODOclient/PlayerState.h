@@ -14,6 +14,7 @@ enum class ePlayerState
 	RELOAD,
 	ROLL,
 	DIE,
+	TUMBLE,
 
 	LAST
 };

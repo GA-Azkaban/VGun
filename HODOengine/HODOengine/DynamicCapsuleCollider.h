@@ -25,10 +25,17 @@ namespace HDData
 		void SetRadius(float val);
 		void SetHalfHeight(float val);
 
+	public:
+		void SetSitStand(int state);
+		int GetSitStand() const;
+
 	private:
 		float _radius;
 		float _halfHeight;
 		HDEngine::CapsulePrimitive* _capsuleObject;
+
+		// 0이면 변화 없음, 1이면 stand->sit, 2면 sit->stand
+		int _stateSitStand;
 	};
 }
 

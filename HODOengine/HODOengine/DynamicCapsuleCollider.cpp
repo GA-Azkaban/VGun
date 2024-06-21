@@ -3,7 +3,7 @@
 #include "GraphicsObjFactory.h"
 
 HDData::DynamicCapsuleCollider::DynamicCapsuleCollider()
-	: _radius(1.0f), _halfHeight(1.0f)
+	: _radius(1.0f), _halfHeight(1.0f), _stateSitStand(0)
 {
 	_capsuleObject = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCapsulePrimitive();
 	_debugStruct = _capsuleObject;
@@ -18,6 +18,9 @@ HDData::DynamicCapsuleCollider::DynamicCapsuleCollider(float rad, float halfHeig
 	_debugStruct = _capsuleObject;
 
 	_collisionFilterNum = colFilterNum;
+	_stateSitStand = 0;
+
+	_colType = eColliderRole::PLAYER;
 }
 
 float HDData::DynamicCapsuleCollider::GetWidth() const
@@ -68,5 +71,15 @@ void HDData::DynamicCapsuleCollider::SetRadius(float val)
 void HDData::DynamicCapsuleCollider::SetHalfHeight(float val)
 {
 	_halfHeight = val;
+}
+
+void HDData::DynamicCapsuleCollider::SetSitStand(int state)
+{
+	_stateSitStand = state;
+}
+
+int HDData::DynamicCapsuleCollider::GetSitStand() const
+{
+	return _stateSitStand;
 }
 
