@@ -76,6 +76,8 @@ namespace RocketCore::Graphics
 
 		virtual void SetMeshActive(bool isActive, unsigned int index) override;
 
+		virtual int GetMeshCount() override;
+
 		std::vector<Mesh*>& GetMeshes() { return m_meshes; }
 		std::vector<Material*>& GetMaterials() { return m_materials; }
 		DirectX::XMMATRIX GetWorldTM();

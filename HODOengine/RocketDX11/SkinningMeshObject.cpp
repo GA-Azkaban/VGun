@@ -450,8 +450,8 @@ namespace RocketCore::Graphics
 		}
 		DirectX::XMMATRIX globalTransform = parentTransform * _nodeTransform;
 
-		//m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
 		m_boneTransform[node->bone.id] = globalInvTransform * globalTransform * node->bone.offset;
+		//m_boneTransform[node->bone.id] = XMMatrixTranspose(m_boneTransform[node->bone.id]);
 
 		// update values for children bones
 		for (Node& child : node->children)
@@ -1578,6 +1578,11 @@ namespace RocketCore::Graphics
 			return;
 		}
 		m_meshesActive[index] = isActive;
+	}
+
+	int SkinningMeshObject::GetMeshCount()
+	{
+		return m_meshes.size();
 	}
 
 }

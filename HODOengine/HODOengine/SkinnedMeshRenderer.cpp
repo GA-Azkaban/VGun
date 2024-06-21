@@ -143,6 +143,11 @@ namespace HDData
 		return _skinnedMesh->GetNode();
 	}
 
+	int SkinnedMeshRenderer::GetMeshCount()
+	{
+		return _skinnedMesh->GetMeshCount();
+	}
+
 	void SkinnedMeshRenderer::Update()
 	{
 		_skinnedMesh->SetWorldTM(GetTransform()->GetWorldTM());

@@ -171,6 +171,11 @@ namespace RocketCore::Graphics
 		}
 	}
 
+	int StaticMeshObject::GetMeshCount()
+	{
+		return m_meshes.size();
+	}
+
 	void StaticMeshObject::Render()
 	{
 		if (!m_isActive)

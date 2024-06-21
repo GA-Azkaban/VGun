@@ -99,14 +99,15 @@ namespace RocketCore::Graphics
 		{
 			MessageBox(NULL, L"Model file name error.", L"Error!", MB_ICONERROR | MB_OK);
 		}
-		std::string meshType = _fileName.substr(0, firstBarIndex);
+		std::string meshTypeStr = _fileName.substr(0, firstBarIndex);
 		_fileName = _fileName.substr(firstBarIndex + 1, _fileName.length() - firstBarIndex);
 		std::string animName = "";
-		if (meshType == "SM")
+		if (meshTypeStr == "SM")
 		{
 			_fileInfoKeyName = _fileName;
+			_loadedFileInfo[_fileInfoKeyName].meshType = MeshType::STATIC;
 		}
-		else if (meshType == "SKM")
+		else if (meshTypeStr == "SKM")
 		{
 			// TP_X_Breathing 이나 Player_Breathing 형태로 나옴
 			// 이 형태에서 첫번째 언더바를 기준으로 왼쪽 것이 파일명, 오른쪽 것이 애니메이션명
@@ -120,6 +121,7 @@ namespace RocketCore::Graphics
 			{
 				_fileInfoKeyName = _fileName;
 			}
+			_loadedFileInfo[_fileInfoKeyName].meshType = MeshType::SKINNING;
 		}
 		else
 		{
@@ -888,7 +890,8 @@ namespace RocketCore::Graphics
 
 	void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
-		if (scene->mNumAnimations > 0)
+		//if (scene->mNumAnimations > 0)
+		if (_loadedFileInfo[_fileInfoKeyName].meshType == MeshType::SKINNING)
 		{
 			ProcessSkinningMesh(mesh, scene);
 		}
@@ -947,7 +950,7 @@ namespace RocketCore::Graphics
 			vertex.Normal.z = mesh->mNormals[i].z;
 
 			// process uv
-			if (mesh->HasTextureCoords(i))
+			if (mesh->HasTextureCoords(0))
 			{
 				vertex.UV.x = mesh->mTextureCoords[0][i].x;
 				vertex.UV.y = mesh->mTextureCoords[0][i].y;
@@ -1206,6 +1209,7 @@ namespace RocketCore::Graphics
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
 		unitScaleFactor = 0.01f / unitScaleFactor;
+		//unitScaleFactor = 100.0f / unitScaleFactor;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
@@ -1216,13 +1220,13 @@ namespace RocketCore::Graphics
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-			/*aiMatrix4x4 mat(
-				rightVec.x, upVec.x, forwardVec.x, 0.0f,
-				rightVec.y, upVec.y, forwardVec.y, 0.0f,
-				rightVec.z, upVec.z, forwardVec.z, 0.0f,
-				0.0f, 0.0f, 0.0f, 1.0f);*/
+		/*aiMatrix4x4 mat(
+			rightVec.x, upVec.x, forwardVec.x, 0.0f,
+			rightVec.y, upVec.y, forwardVec.y, 0.0f,
+			rightVec.z, upVec.z, forwardVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
 
-		// create node hierarchy
+			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);

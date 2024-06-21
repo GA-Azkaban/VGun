@@ -36,5 +36,6 @@ namespace HDEngine
 		virtual Node* GetNode() = 0;
 		virtual void SetFillModeWireFrame(bool setWireFrame) = 0;
 		virtual void SetMeshActive(bool isActive, unsigned int index) = 0;
+		virtual int GetMeshCount() = 0;
 	};
 }

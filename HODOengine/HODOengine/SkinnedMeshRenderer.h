@@ -40,6 +40,7 @@ namespace HDData
 		void SetFillModeWireFrame(bool setWireFrame);
 		void SetMeshActive(bool isActive, unsigned int index);
 		Node* GetNode();
+		int GetMeshCount();
 
 	protected:
 		virtual void Update() override;
