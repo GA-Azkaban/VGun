@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -489,6 +489,11 @@ namespace HDEngine
 
 	void PhysicsSystem::ResizeCollider()
 	{
+		if (_playerRigid == nullptr)
+		{
+			return;
+		}
+
 		HDData::DynamicCapsuleCollider* capsule = static_cast<HDData::DynamicCapsuleCollider*>(_playerRigid->userData);
 
 		if (capsule->GetSitStand() == 1)
