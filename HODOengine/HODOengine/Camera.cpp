@@ -137,10 +137,10 @@ namespace HDData
 			return;
 		}
 
-		float shakeIntensity = 0.01f;
-		float shakeFrequency = 15.7f;
+		float shakeIntensity = 0.008f;
+		float shakeFrequency = 31.4f;
 
-		if (_shakeTime < 0.4f)
+		if (_shakeTime < 0.1f)
 		{
 			//_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
 			//GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f + _distYOnShoot, 0.175f));
@@ -152,6 +152,18 @@ namespace HDData
 
 			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
 			angleX -= _distYOnShoot;
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.175f - _distYOnShoot * 20.0f));
+
+			_shakeTime += deltaTime;
+		}
+		else if (_shakeTime < 0.4f)
+		{
+			shakeFrequency = 7.86f;
+			shakeIntensity = 0.002f;
+
+			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			angleX += _distYOnShoot;
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.175f - _distYOnShoot * 20.0f));
 
 			_shakeTime += deltaTime;
 		}

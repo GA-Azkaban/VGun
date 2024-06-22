@@ -63,6 +63,7 @@ void PlayerMove::Update()
 	CheckMoveInfo();
 	DecidePlayerState();
 	Behavior();
+	PlaySound();
 
 	/*
 	// 탄창 비었는데 쏘면 딸깍소리
@@ -397,7 +398,7 @@ void PlayerMove::ShootGunDdabal()
 	}
 
 	// 총기 반동
-	ApplyRecoil();
+	//ApplyRecoil();
 	_headCam->ToggleCameraShake(true);
 
 
@@ -495,6 +496,11 @@ void PlayerMove::Tumble(Vector3 direction)
 	// 데굴
 	Reload();
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
+}
+
+void PlayerMove::PlaySound()
+{
+
 }
 
 int& PlayerMove::GetBulletCount()

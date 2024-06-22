@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PlayerState.h"
 #include "../HODOengine/HODO_API.h"
 
@@ -63,6 +63,7 @@ private:
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
 	void Tumble(Vector3 direction);
+	void PlaySound();
 
 public:
 	int& GetBulletCount();
