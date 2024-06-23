@@ -12,7 +12,7 @@ namespace HDData
 		_parentCollider(nullptr),
 		_collisionFilterNum(0),
 		_isTrigger(false),
-		_colType(eColliderType::NONE)
+		_colType(eColliderRole::NONE)
 	{
 		
 	}
@@ -158,7 +158,7 @@ namespace HDData
 		return _collisionStorage;
 	}
 
-	eColliderType Collider::GetColType() const
+	eColliderRole Collider::GetColType() const
 	{
 		return _colType;
 	}
@@ -198,6 +198,16 @@ namespace HDData
 		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
 		this->_isCollide = true;
 		this->_prevIsCollide = false;
+		_collisionStorage.push_back(&collision);
+	}
+
+	void Collider::Collider_OnCollisionStay(PhysicsCollision& collision)
+	{
+		std::string tRes = "Collider_OnCollisionStay : ";
+
+		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
+		this->_isCollide = true;
+		this->_prevIsCollide = true;
 		_collisionStorage.push_back(&collision);
 	}
 

@@ -47,7 +47,7 @@ void InGameSceneView::Initialize()
 	// 내 캐릭터 생성
 	HDData::GameObject* player = API::CreateObject(_scene, "playerSelf");
 	player->LoadFBXFile("SKM_TP_X_Default.fbx");
-	player->GetTransform()->SetPosition(-10, 3, 0);
+	player->GetTransform()->SetPosition(-10, 0, 0);
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadMaterial(M_Red, 0);
@@ -91,6 +91,13 @@ void InGameSceneView::Initialize()
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
+	
+	auto playerMove = player->AddComponent<PlayerMove>();
+	playerMove->SetPlayerCamera(freeRoamingCam);
+	playerMove->SetHeadCam(mainCam);
+	//playerMove->SetPlayerColliders(playerColliderStanding, playerColliderSitting);
+	headCollider->SetParentCollider(playerCollider);
+
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
@@ -156,10 +163,6 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(weaponMat2, 5);
 	weaponComp->LoadMaterial(weaponMat3, 2);
 	weaponComp->LoadMaterial(weaponMat3, 4);
-
-	auto playerMove = player->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(freeRoamingCam);
-	playerMove->SetHeadCam(mainCam);
 
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 

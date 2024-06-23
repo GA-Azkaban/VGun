@@ -42,7 +42,7 @@ namespace HDData
 		// 충돌체들이 서로 충돌을 시작할 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count) {};
 		// 충돌체들이 서로 충돌하고 있는 상태일 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionStay() {};
+		virtual void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count) {};
 		// 충돌체들의 충돌이 끝나고 서로 떨어져나갈 때 호출되는 콜백 함수입니다.
 		virtual void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count) {};
 		virtual ~Component() {};
