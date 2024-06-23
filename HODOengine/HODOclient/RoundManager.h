@@ -2,7 +2,6 @@
 #include <unordered_map>
 
 #include "../HODOengine/HODO_API.h"
-#include "Weapon.h"
 #include "PlayerInfo.h"
 
 class RoundManager : public HDData::Script

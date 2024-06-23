@@ -9,7 +9,6 @@ TPScript::TPScript()
 void TPScript::Start()
 {
 	_animator = GetGameObject()->GetComponent<HDData::Animator>();
-
 }
 
 void TPScript::Update()
