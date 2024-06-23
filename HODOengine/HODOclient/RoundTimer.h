@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
+#include <thread>
+#include <chrono>
 
 class RoundTimer : public HDData::Script
 {
@@ -11,11 +13,11 @@ public:
 	void Update() override;
 
 private:
-	int _time;
-	bool _isTimerEnd;
-
+	HDData::TextUI* _txt;
+	
 private:
-	long _start_time;
-	long _end_time;
+	std::chrono::time_point<std::chrono::steady_clock> _start_time;
+	double _duration;
+	bool _isRunning;
 };
 
