@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -458,21 +458,21 @@ TestScene::TestScene()
 	//obj->AddComponent<HDData::AudioSource>();
 
 
-	auto house = API::CreateObject(_scene, "house");
-	auto comp = house->AddComponent<HDData::MeshRenderer>();
-	comp->LoadMesh("SM_tempSal.fbx");
+	//auto house = API::CreateObject(_scene, "house");
+	//auto comp = house->AddComponent<HDData::MeshRenderer>();
+	//comp->LoadMesh("SM_tempSal.fbx");
 
-	HDEngine::MaterialDesc desc;
-	desc.materialName = "HOUSE";
-	desc.albedo = "PolygonWestern_Texture_03_B.png";
+	//HDEngine::MaterialDesc desc;
+	//desc.materialName = "HOUSE";
+	//desc.albedo = "PolygonWestern_Texture_03_B.png";
 
-	HDData::Material* newMat = API::CreateMaterial(desc);
+	//HDData::Material* newMat = API::CreateMaterial(desc);
 
-	comp->LoadMaterial(newMat, 0);
-	comp->LoadMaterial(newMat, 1);
-	comp->LoadMaterial(newMat, 2);
-	comp->LoadMaterial(newMat, 3);
-	comp->LoadMaterial(newMat, 4);
+	//comp->LoadMaterial(newMat, 0);
+	//comp->LoadMaterial(newMat, 1);
+	//comp->LoadMaterial(newMat, 2);
+	//comp->LoadMaterial(newMat, 3);
+	//comp->LoadMaterial(newMat, 4);
 }
 
 TestScene::~TestScene()

@@ -11,9 +11,7 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
-	PlayerMove* playerMove;
-
 private:
 	HDData::TextUI* _playerHealth;
-	int _healthPoint;
+	int& _healthPoint;
 };

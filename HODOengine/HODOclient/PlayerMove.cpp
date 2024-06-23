@@ -479,7 +479,7 @@ void PlayerMove::Reload()
 		_reloadTimer += _deltaTime;
 		if (_reloadTimer >= 3.0f)
 		{
-			_bulletCount = 30;
+			_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 			_isReloading = false;
 			_reloadTimer = 0.0f;
 		}

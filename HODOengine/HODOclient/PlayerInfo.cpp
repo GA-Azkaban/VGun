@@ -1,7 +1,7 @@
 ﻿#include "PlayerInfo.h"
 
 PlayerInfo::PlayerInfo()
-	:_currentHP(100)
+	:_currentHP(70)
 {
 
 }
@@ -29,7 +29,8 @@ void PlayerInfo::Init()
 	this-> _kill = 0;
 	this-> _death = 0;
 	this->_isDie = false;
-	this->_bulletCount = 30;
+	this->_bulletCount = 6;
+	this->_currentHP = 70;
 	this->_state = ePlayerState::IDLE;
 }
 
@@ -221,4 +222,9 @@ int& PlayerInfo::GetPlayerDeathCount()
 int& PlayerInfo::GetCurrentBulletCount()
 {
 	return _bulletCount;
+}
+
+int PlayerInfo::GetMaxBulletCount()
+{
+	return _maxBulletCount;
 }

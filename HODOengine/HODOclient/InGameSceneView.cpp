@@ -1,7 +1,6 @@
 ﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
-#include "FSMtestScript.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
 #include "MeshTransformController.h"
@@ -11,6 +10,7 @@
 #include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
+#include "Health.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -238,17 +238,22 @@ void InGameSceneView::Initialize()
 	// ammo
 	auto ammo = API::CreateObject(_scene, "remaingAmmo");
 	auto ammoComp = ammo->AddComponent<Ammo>();
-	ammoComp->playerMove = playerMove;
 	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
 	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
 	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 30");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
-	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
-	healthPoint->GetComponent < HDData::TextUI >()->GetTransform()->SetPosition(1800.0f, 1400.0f, 0.0f);
-	healthPoint->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	healthPoint->GetComponent<HDData::TextUI>()->SetText(std::to_string(playerInfo->GetPlayerCurrentHP()));
+	HDData::GameObject* healthPoint = API::CreateObject(_scene, "healthPoint");
+	healthPoint->AddComponent<Health>();
+
+	// Timer
+	auto timer = API::CreateTextbox(_scene, "timer");
+	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
+	
+	// KillCount
+	auto kills = API::CreateTextbox(_scene, "kills");
+
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
