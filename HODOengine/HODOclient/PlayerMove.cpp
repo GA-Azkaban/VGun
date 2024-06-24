@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -49,6 +49,8 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
+	if (!RoundManager::Instance()->GetIsStarted()) return;
+
 	if (!_isMovable)
 	{
 		return;
@@ -459,7 +461,7 @@ void PlayerMove::Reload()
 	//	}
 	//}
 	_shootCount = 0;
-	_playerState.second = ePlayerState::IDLE;
+	//_playerState.second = ePlayerState::IDLE;
 			_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 

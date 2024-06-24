@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -190,28 +190,28 @@ TestScene::TestScene()
 	//auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
 	//boxRender5->LoadMesh("primitiveCube"); */
 
-	auto buildingTest1 = API::CreateObject(_scene);
-	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
-	//buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
-	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	buildingRenderer1->LoadMesh("SM_Bld_Saloon_01_NoGlass.fbx");
-	HDEngine::MaterialDesc buildingDesc1;
-	buildingDesc1.materialName = "PolygonWestern_Texture_02";
-	buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
-	buildingDesc1.metallic = 0.0f;
-	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 6);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 7);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 8);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 9);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 10);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 11);
+	//auto buildingTest1 = API::CreateObject(_scene);
+	//buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
+	////buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
+	//auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
+	//buildingRenderer1->LoadMesh("SM_Bld_Saloon_01_NoGlass.fbx");
+	//HDEngine::MaterialDesc buildingDesc1;
+	//buildingDesc1.materialName = "PolygonWestern_Texture_02";
+	//buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
+	//buildingDesc1.metallic = 0.0f;
+	//HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 6);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 7);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 8);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 9);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 10);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 11);
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
@@ -226,15 +226,15 @@ TestScene::TestScene()
 	
 	auto mesh = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	mesh->LoadAnimation("TP");
-	mesh->PlayAnimation("RV_idle.fbx", true, 0.1, true, 0.1);
-	auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
-	playerTest->AddComponent<PlayerTest>();
-	// 확장자 포함한 파일이름을 넣어준다.
-	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
-	// 메쉬와 노드를 불러와 적용시킨다.
-	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_WorkingGirlFP_X_default.fbx");
+	mesh->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
+	//auto playerTest = API::CreateObject(_scene, "player");
+	//playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	//playerTest->AddComponent<PlayerTest>();
+	//// 확장자 포함한 파일이름을 넣어준다.
+	//// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
+	//// 메쉬와 노드를 불러와 적용시킨다.
+	//// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
+	//playerTest->LoadFBXFile("SKM_WorkingGirlFP_X_default.fbx");
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
@@ -249,39 +249,39 @@ TestScene::TestScene()
 	////meshComp->SetFillModeWireFrame(true);
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadAnimation("TP");
-	//meshComp->SetActive(false);
-	//meshComp->SetFillModeWireFrame(true);
+	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	//meshComp->LoadAnimation("TP");
+	////meshComp->SetActive(false);
+	////meshComp->SetFillModeWireFrame(true);
 
-	HDEngine::MaterialDesc desc;
-	desc.materialName = "PolygonWestern_Texture_01_A";
-	desc.albedo = "PolygonWestern_Texture_01_A.png";
-	HDData::Material* newMat = API::CreateMaterial(desc);
-	meshComp->LoadMaterial(newMat, 0);
+	//HDEngine::MaterialDesc desc;
+	//desc.materialName = "PolygonWestern_Texture_01_A";
+	//desc.albedo = "PolygonWestern_Texture_01_A.png";
+	//HDData::Material* newMat = API::CreateMaterial(desc);
+	//meshComp->LoadMaterial(newMat, 0);
 
-	meshComp->PlayAnimation("RV_idle", true);
+	//meshComp->PlayAnimation("RV_idle", true);
 
-	// 오른손 노드의 오브젝트를 가져와서
-	// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
-	auto hand = playerTest->GetGameObjectByNameInChildren("Thumb_01.001");
-	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	//weaponTest->AddComponent<MeshTransformController>();
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-0.9743f, 9.1915f, 8.1839f);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.0286f, -0.6265f, -0.0238f, 0.7784f });
-	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	weaponComp->LoadMesh("SM_Wep_Revolver_01.fbx");
-	HDEngine::MaterialDesc weaponMatDesc;
-	weaponMatDesc.materialName = "Revolver01Mat";
-	weaponMatDesc.albedo = "PolygonWestern_Texture_01_A.png";
-	weaponMatDesc.metallic = "PolygonWestern_Texture_Metallic.png";
-	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
-	
-	weaponComp->LoadMaterial(weaponMat1, 0);
-	weaponComp->LoadMaterial(weaponMat1, 1);
-	weaponComp->LoadMaterial(weaponMat1, 2);
-	weaponComp->LoadMaterial(weaponMat1, 3);
+	//// 오른손 노드의 오브젝트를 가져와서
+	//// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
+	////auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	//auto hand = playerTest->GetGameObjectByNameInChildren("Thumb_01.001");
+	//auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	////weaponTest->AddComponent<MeshTransformController>();
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-0.9743f, 9.1915f, 8.1839f);
+	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.0286f, -0.6265f, -0.0238f, 0.7784f });
+	//auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	//weaponComp->LoadMesh("SM_Wep_Revolver_01.fbx");
+	//HDEngine::MaterialDesc weaponMatDesc;
+	//weaponMatDesc.materialName = "Revolver01Mat";
+	//weaponMatDesc.albedo = "PolygonWestern_Texture_01_A.png";
+	//weaponMatDesc.metallic = "PolygonWestern_Texture_Metallic.png";
+	//HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
+	//
+	//weaponComp->LoadMaterial(weaponMat1, 0);
+	//weaponComp->LoadMaterial(weaponMat1, 1);
+	//weaponComp->LoadMaterial(weaponMat1, 2);
+	//weaponComp->LoadMaterial(weaponMat1, 3);
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");

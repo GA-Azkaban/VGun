@@ -171,7 +171,7 @@ void LobbySceneView::Initialize()
 	for (int i = 0; i < 6; ++i)
 	{
 		HDData::GameObject* player = API::CreateObject(_scene, "player");
-		player->LoadFBXFile("SKM_TP_X_Default.fbx");
+		player->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 		player->GetTransform()->SetPosition(posX, 0, 0);
 		player->GetTransform()->Rotate(0, -180, 0);
 
