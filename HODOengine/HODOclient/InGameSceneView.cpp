@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -63,7 +63,7 @@ void InGameSceneView::Initialize()
 
 	// 애니메이션 전달용 더미 캐릭터 생성
 	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
+	dummy->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 	dummy->GetTransform()->SetPosition(0, -10, 0);
 	
 	dummy->AddComponent<HDData::Animator>();
@@ -86,6 +86,8 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
+	playerMove->SetHeadCam(mainCam);
+	playerMove->SetPlayerCamera(freeRoamingCam);
 
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
