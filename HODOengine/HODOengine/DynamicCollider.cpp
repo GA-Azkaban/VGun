@@ -181,6 +181,10 @@ void HDData::DynamicCollider::ClearVeloY()
 
 void HDData::DynamicCollider::ClearForceXZ()
 {
+	if (_physXRigid == nullptr)
+	{
+		return;
+	}
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
 	velo.x = 0.0f;
 	velo.z = 0.0f;

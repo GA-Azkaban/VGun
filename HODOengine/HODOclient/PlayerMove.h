@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "PlayerState.h"
+#include "PlayerMoveState.h"
 #include "../HODOengine/HODO_API.h"
 
 /// <summary>
@@ -127,8 +127,8 @@ private:
 
 	int _enterCount = 0;
 	// 상태 중첩을 표현하기 위해. 2번째 요소에는 shoot, reload만.
-	std::pair<ePlayerState, ePlayerState> _prevPlayerState;
-	std::pair<ePlayerState, ePlayerState> _playerState;
+	std::pair<ePlayerMoveState, ePlayerMoveState> _prevPlayerState;
+	std::pair<ePlayerMoveState, ePlayerMoveState> _playerState;
 
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
