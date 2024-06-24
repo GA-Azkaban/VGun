@@ -176,6 +176,7 @@ void LobbySceneView::Initialize()
 		player->GetTransform()->Rotate(0, -180, 0);
 
 		auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		meshComp->LoadAnimation("TP");
 		meshComp->LoadMaterial(M_Red, 0);
 		meshComp->LoadMaterial(M_Red, 1);
 		meshComp->LoadMaterial(M_Red, 2);

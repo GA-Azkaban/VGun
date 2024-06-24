@@ -47,6 +47,7 @@ namespace RocketCore::Graphics
 
 		virtual void LoadMesh(const std::string& fileName) override;
 		virtual void LoadNode(const std::string& fileName) override;
+		virtual void LoadAnimation(const std::string& animListName) override;
 		virtual void LoadMaterial(HDEngine::IMaterial* material, unsigned int element = 0) override;
 		virtual void LoadAlbedoMap(const std::string& fileName, unsigned int element = 0) override;
 		virtual void LoadNormalMap(const std::string& fileName, unsigned int element = 0) override;
@@ -60,16 +61,9 @@ namespace RocketCore::Graphics
 
 		virtual void PlayAnimation(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 		virtual void PlayAnimationAtOnce(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
-		virtual void PlayAnimationUpper(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
-		virtual void PlayAnimationLower(const std::string& animName, bool isLoop = true, float blendDuration = 0.1f, bool hasExitTime = true, float exitTime = 0.0f) override;
 
 		virtual bool IsAnimationExitTimeElapsed() override;
-		virtual bool IsUpperAnimationExitTimeElapsed() override;
-		virtual bool IsLowerAnimationExitTimeElapsed() override;
-
 		virtual bool IsAnimationEnd() override;
-		virtual bool IsUpperAnimationEnd() override;
-		virtual bool IsLowerAnimationEnd() override;
 
 		virtual void SetOutlineActive(bool isActive) override;
 		virtual void SetFillModeWireFrame(bool setWireFrame) override;
@@ -86,22 +80,14 @@ namespace RocketCore::Graphics
 		bool IsOutlineActive() { return m_isOutlineActive; };
 		void SetRenderState(ID3D11RasterizerState* rasterizerState) { m_rasterizerState = rasterizerState; }
 
-	private:
-		void LoadAnimation(const std::unordered_map<std::string, Animation*>& animation);
-
-		void UpdateUpperAnimation(float deltaTime);
-		void UpdateLowerAnimation(float deltaTime);
+	private:	
 
 		void UpdateAnimation(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateAnimationUpper(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateAnimationLower(float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcInterpolatedPosition(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT4 CalcInterpolatedRotation(float animationTime, NodeAnimation* nodeAnim);
 		DirectX::XMFLOAT3 CalcInterpolatedScaling(float animationTime, NodeAnimation* nodeAnim);
 
 		void UpdateBlendAnimation(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateBlendAnimationUpper(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
-		void UpdateBlendAnimationLower(float prevAnimationTime, float animationTime, Node* node, DirectX::XMMATRIX parentTransform, DirectX::XMMATRIX globalInvTransform);
 		DirectX::XMFLOAT3 CalcBlendedPosition(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT4 CalcBlendedRotation(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
 		DirectX::XMFLOAT3 CalcBlendedScaling(float prevAnimationTime, float currAnimationTime, float blendDuration, NodeAnimation* prevAnim, NodeAnimation* currentAnim);
@@ -113,22 +99,11 @@ namespace RocketCore::Graphics
 		bool m_isActive;
 		bool m_receiveTMInfoFlag;
 		bool m_isOutlineActive;
-		bool m_separateUpperAndLowerAnim;
-		bool m_blendFlag;
-		bool m_blendFlagUpper;
-		bool m_blendFlagLower;
-		float m_blendDuration;
-		float m_blendDurationUpper;
-		float m_blendDurationLower;
-		bool m_hasExitTime;
-		bool m_hasExitTimeUpper;
-		bool m_hasExitTimeLower;
-		float m_exitTime;
-		float m_exitTimeUpper;
-		float m_exitTimeLower;
+		bool m_blendFlag;		
+		float m_blendDuration;		
+		bool m_hasExitTime;		
+		float m_exitTime;		
 		bool m_isExitTimeElapsed;
-		bool m_isExitTimeUpperElapsed;
-		bool m_isExitTimeLowerElapsed;
 
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_rasterizerState;
 
@@ -141,25 +116,8 @@ namespace RocketCore::Graphics
 		std::vector<DirectX::XMMATRIX> m_boneTransform;
 		Node m_node;
 
-		// upper, lower animation
-		Animation m_savedUpperPreviousAnimation;
-		Animation m_savedLowerPreviousAnimation;
-		Animation m_savedUpperCurrentAnimation;
-		Animation m_savedLowerCurrentAnimation;
-		Animation* m_previousUpperAnimation;
-		Animation* m_previousLowerAnimation;
-		Animation* m_currentUpperAnimation;
-		Animation* m_currentLowerAnimation;
-
-		Animation m_savedLowerPreviousAnimationForUpper;
-		Animation* m_lowerPreviousAnimationForUpper;
-		Animation m_savedUpperPreviousAnimationForLower;
-		Animation* m_upperPreviousAnimationForLower;
-
 		// Transform Matrix
 		DirectX::XMMATRIX m_world;	// Define transformations from local spaces to world space.
-
-		std::unordered_map<std::string, DirectX::XMMATRIX> m_nodeTransformMap;
 
 		VertexShader* m_vertexShader;
 		PixelShader* m_pixelShader;
@@ -167,10 +125,5 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox m_boundingBox;
 		bool m_cameraVisible;
 		bool m_lightVisible;
-
-		// 우리 게임에 사용하는 캐릭터 전용 노드 하드 코딩.
-		std::unordered_set<std::string> _upperAnimationNodes;
-		std::unordered_set<std::string> _lowerAnimationNodes;
-		std::unordered_set<std::string> _lowerAnimationNames;
 	};
 }

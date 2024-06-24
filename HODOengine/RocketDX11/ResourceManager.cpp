@@ -140,12 +140,18 @@ namespace RocketCore::Graphics
 		}
 
 		// SKM_ 으로 시작하는 파일명으로 받아온 FBX 파일은 메시랑 노드 한번만 로드한다.
+		// mesh 정보를 담고 있는 파일과 애니메이션 정보를 담고 있는 파일로 나뉜다.
+		// mesh 정보를 담고 있는 파일은 애니메이션 정보가 없고,
+		// 애니메이션 정보를 담고 있는 파일은 mesh 정보가 없다.
 		if (_scene->HasMeshes())
 		{
 			ProcessNode(_scene->mRootNode, _scene);
 		}
+		else
+		{
+			LoadAnimation(_scene, animName);
+		}
 		ProcessBoundingBox();
-		LoadAnimation(_scene, animName);
 	}
 
 	void ResourceManager::LoadTextureFile(std::string path)
@@ -440,18 +446,15 @@ namespace RocketCore::Graphics
 		return iter->second.node;
 	}
 
-	std::unordered_map<std::string, Animation*>& ResourceManager::GetAnimations(const std::string& fileName)
+	std::unordered_map<std::string, Animation*> ResourceManager::GetAnimations(const std::string& fileName)
 	{
-		std::string name = GetFileInfoKey(fileName);
-
-		// 엔진에 저장되어 있지 않다면 빈 맵 반환
-		auto iter = _loadedFileInfo.find(name);
-		if (iter == _loadedFileInfo.end())
+		auto animIter = _loadedAnimations.find(fileName);
+		if (animIter == _loadedAnimations.end())
 		{
-			std::unordered_map<std::string, Animation*> ret;
-			return ret;
+			std::unordered_map<std::string, Animation*> emptyAnimList;
+			return emptyAnimList;
 		}
-		return iter->second.loadedAnimation;
+		return animIter->second;
 	}
 
 	DirectX::BoundingBox ResourceManager::GetBoundingBox(const std::string& fileName)
@@ -1509,7 +1512,7 @@ namespace RocketCore::Graphics
 
 				newAnimation->nodeAnimations.push_back(newNodeAnim);
 			}
-			_loadedFileInfo[_fileInfoKeyName].loadedAnimation.insert(std::make_pair(newAnimation->animName, newAnimation));
+			_loadedAnimations[_fileInfoKeyName].insert(std::make_pair(newAnimation->animName, newAnimation));
 		}
 	}
 
