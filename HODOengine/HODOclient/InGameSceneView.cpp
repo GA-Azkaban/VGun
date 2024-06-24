@@ -62,7 +62,8 @@ void InGameSceneView::Initialize()
 
 	// 애니메이션 전달용 더미 캐릭터 생성
 	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_TP_X_Default.fbx");
+	//dummy->LoadFBXFile("SKM_TP_X_Default.fbx");
+	dummy->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 	dummy->GetTransform()->SetPosition(0, -10, 0);
 	
 	dummy->AddComponent<HDData::Animator>();
@@ -85,6 +86,7 @@ void InGameSceneView::Initialize()
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
+	playerMove->SetHeadCam(mainCam);
 
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
@@ -150,7 +152,7 @@ void InGameSceneView::Initialize()
 	{
 		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
-		otherPlayer->LoadFBXFile("SKM_GunmanTP_X_default.fbx");
+		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
 		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
