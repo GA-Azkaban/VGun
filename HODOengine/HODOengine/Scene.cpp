@@ -27,7 +27,7 @@ namespace HDData
 		GameObject* dirLight = CreateObject("DirLight");
 		auto dirLightComp = dirLight->AddComponent<Light>();
 		dirLightComp->SetDirection(Vector4(-1, -3, -2, 0));
-		dirLightComp->SetColor(Vector4(255/255.0f, 244/255.0f, 214/255.0f, 1.0f));
+		dirLightComp->SetColor(Vector4(253/255.0f, 242/255.0f, 214/255.0f, 1.0f));
 		dirLightComp->SetLightType(Light::DirectionalLight);
 		SetMainLight(dirLightComp);
 
