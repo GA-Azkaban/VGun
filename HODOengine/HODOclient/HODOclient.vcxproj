@@ -244,6 +244,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="LobbySceneView.h" />
     <ClInclude Include="MeshTransformController.h" />
     <ClInclude Include="OthersAnim.h" />
+    <ClInclude Include="PlayerMoveState.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="RoundManager.h" />
     <ClInclude Include="InGameSceneView.h" />

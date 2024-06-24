@@ -21,8 +21,8 @@ PlayerMove::PlayerMove()
 	_isFirstPersonPerspective(true),
 	_isJumping(true), _isOnGround(false),
 	_isShootHead(false), _isShootBody(false),
-	_prevPlayerState(ePlayerState::NONE, ePlayerState::NONE),
-	_playerState(ePlayerState::NONE, ePlayerState::NONE)
+	_prevPlayerState(ePlayerMoveState::NONE, ePlayerMoveState::NONE),
+	_playerState(ePlayerMoveState::NONE, ePlayerMoveState::NONE)
 {
 
 }
@@ -41,8 +41,8 @@ void PlayerMove::Start()
 	PresetSprayPattern(2);
 	StartRoundCam();
 
-	_prevPlayerState.first = ePlayerState::IDLE;
-	_playerState.first = ePlayerState::IDLE;
+	_prevPlayerState.first = ePlayerMoveState::IDLE;
+	_playerState.first = ePlayerMoveState::IDLE;
 
 	_bulletCount = BULLET_MAX;
 }
@@ -460,7 +460,7 @@ void PlayerMove::Reload()
 	//}
 	_shootCount = 0;
 	_bulletCount = BULLET_MAX;
-	_playerState.second = ePlayerState::IDLE;
+	_playerState.second = ePlayerMoveState::IDLE;
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -516,7 +516,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 	//	return;
 	//}
 
-	if (_playerState.first == ePlayerState::TUMBLE)
+	if (_playerState.first == ePlayerMoveState::TUMBLE)
 	{
 		return;
 	}
@@ -529,7 +529,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		// 착지 판정
 		_isOnGround = true;
 		_isJumping = false;
-		_playerState.first = ePlayerState::IDLE;
+		_playerState.first = ePlayerMoveState::IDLE;
 		_playerColliderStanding->ClearForceXZ();
 	}
 }
@@ -1089,7 +1089,7 @@ void PlayerMove::DecidePlayerState()
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
-	if (_playerState.first == ePlayerState::TUMBLE)
+	if (_playerState.first == ePlayerMoveState::TUMBLE)
 	{
 		if (_tumbleTimer > 0.0f)
 		{
@@ -1099,21 +1099,21 @@ void PlayerMove::DecidePlayerState()
 	}
 
 	// jump가 아닐 때만 walk나 run이 될 수 있다.
-	if (_playerState.first != ePlayerState::JUMP)
+	if (_playerState.first != ePlayerMoveState::JUMP)
 	{
 		if (_moveDirection == 5)
 		{
-			_playerState.first = ePlayerState::IDLE;
+			_playerState.first = ePlayerMoveState::IDLE;
 		}
 		else
 		{
 			if (API::GetKeyPressing(DIK_LSHIFT))
 			{
-				_playerState.first = ePlayerState::WALK;
+				_playerState.first = ePlayerMoveState::WALK;
 			}
 			else
 			{
-				_playerState.first = ePlayerState::RUN;
+				_playerState.first = ePlayerMoveState::RUN;
 			}
 		}
 	}
@@ -1121,15 +1121,15 @@ void PlayerMove::DecidePlayerState()
 	// tumble, jump 들어오면 덮어씌우고
 	if (API::GetKeyDown(DIK_LCONTROL))
 	{
-		_playerState.first = ePlayerState::TUMBLE;
+		_playerState.first = ePlayerMoveState::TUMBLE;
 	}
 	else if (API::GetKeyDown(DIK_SPACE))
 	{
-		_playerState.first = ePlayerState::JUMP;
+		_playerState.first = ePlayerMoveState::JUMP;
 	}
 
 	// shoot, reload 는 second에 넣어주고
-	//if (_playerState.second == ePlayerState::RELOAD)
+	//if (_playerState.second == ePlayerMoveState::RELOAD)
 	//{
 	//	if (_reloadTimer > 0.0f)
 	//	{
@@ -1138,7 +1138,7 @@ void PlayerMove::DecidePlayerState()
 	//	}
 	//}
 
-	if (_playerState.second == ePlayerState::RELOAD)
+	if (_playerState.second == ePlayerMoveState::RELOAD)
 	{
 		if (_reloadTimer > 0.0f)
 		{
@@ -1153,23 +1153,23 @@ void PlayerMove::DecidePlayerState()
 
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
-		_playerState.second = ePlayerState::FIRE;
+		_playerState.second = ePlayerMoveState::FIRE;
 	}
 	else if (API::GetMouseUp(MOUSE_LEFT))
 	{
-		_playerState.second = ePlayerState::IDLE;
+		_playerState.second = ePlayerMoveState::IDLE;
 		_shootCount = 0;
 	}
-	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerState::IDLE && _bulletCount < BULLET_MAX)
+	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < BULLET_MAX)
 	{
-		_playerState.second = ePlayerState::RELOAD;
+		_playerState.second = ePlayerMoveState::RELOAD;
 	}
 }
 
 void PlayerMove::Behavior()
 {
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
-	if (_playerState.first != ePlayerState::TUMBLE)
+	if (_playerState.first != ePlayerMoveState::TUMBLE)
 	{
 		_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 	}
@@ -1177,12 +1177,12 @@ void PlayerMove::Behavior()
 	// 움직임
 	switch (_playerState.first)
 	{
-		case ePlayerState::IDLE : 
+		case ePlayerMoveState::IDLE : 
 		{
 			_playerColliderStanding->Stop();
 			break;
 		}
-		case ePlayerState::WALK : 
+		case ePlayerMoveState::WALK : 
 		{
 			if (!_playerAudio->IsSoundPlaying("walk"))
 			{
@@ -1192,7 +1192,7 @@ void PlayerMove::Behavior()
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
-		case ePlayerState::RUN : 
+		case ePlayerMoveState::RUN : 
 		{
 			if (!_playerAudio->IsSoundPlaying("run"))
 			{
@@ -1202,9 +1202,9 @@ void PlayerMove::Behavior()
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
-		case ePlayerState::JUMP :
+		case ePlayerMoveState::JUMP :
 		{
-			if (_prevPlayerState.first != ePlayerState::JUMP)
+			if (_prevPlayerState.first != ePlayerMoveState::JUMP)
 			{
 				Jump(DecideDisplacement(_moveDirection) * _moveSpeed);
 			}
@@ -1215,9 +1215,9 @@ void PlayerMove::Behavior()
 			//}
 			break;
 		}
-		case ePlayerState::TUMBLE :
+		case ePlayerMoveState::TUMBLE :
 		{
-			if (_prevPlayerState.first != ePlayerState::TUMBLE)
+			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
 			{
 				_tumbleTimer = 0.4f;
 				_headCam->ToggleCameraShake(true);
@@ -1248,20 +1248,20 @@ void PlayerMove::Behavior()
 		_shootCooldown -= _deltaTime;
 	}
 	// 총 쏘거나 재장전
-	if (_playerState.second == ePlayerState::FIRE)
+	if (_playerState.second == ePlayerMoveState::FIRE)
 	{
 		if (_shootCooldown <= 0.0f)
 		{
 			if (_bulletCount == 0)
 			{
-				if (_prevPlayerState.second != ePlayerState::FIRE)
+				if (_prevPlayerState.second != ePlayerMoveState::FIRE)
 				{
 					_playerAudio->PlayOnce("empty");
 				}
 			}
 			else
 			{
-				if (_prevPlayerState.second != ePlayerState::FIRE)
+				if (_prevPlayerState.second != ePlayerMoveState::FIRE)
 				{
 					_headCam->ToggleCameraShake(true);
 				}
@@ -1269,9 +1269,9 @@ void PlayerMove::Behavior()
 			}
 		}
 	}
-	else if (_playerState.second == ePlayerState::RELOAD)
+	else if (_playerState.second == ePlayerMoveState::RELOAD)
 	{
-		if (_prevPlayerState.second != ePlayerState::RELOAD)
+		if (_prevPlayerState.second != ePlayerMoveState::RELOAD)
 		{
 			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 3.0f;
@@ -1280,11 +1280,11 @@ void PlayerMove::Behavior()
 
 	if (_prevPlayerState.first != _playerState.first)
 	{
-		if (_prevPlayerState.first == ePlayerState::JUMP)
+		if (_prevPlayerState.first == ePlayerMoveState::JUMP)
 		{
 			Landing();
 		}
-		if (_prevPlayerState.second == ePlayerState::FIRE)
+		if (_prevPlayerState.second == ePlayerMoveState::FIRE)
 		{
 			// 반동 초기화
 			_shootCount = 0;

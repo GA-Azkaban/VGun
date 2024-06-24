@@ -257,6 +257,9 @@
     <ClInclude Include="TestSceneSecond.h" />
     <ClInclude Include="OthersAnim.h" />
     <ClInclude Include="TrainigSceneView.h" />
+    <ClInclude Include="PlayerMoveState.h">
+      <Filter>02_Client\TestScene\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
