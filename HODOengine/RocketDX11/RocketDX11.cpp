@@ -209,6 +209,13 @@ namespace RocketCore::Graphics
 			_resourceManager.LoadFBXFile("SM/" + SMfiles[i]);
 		}
 
+		/// Test
+		const auto& SMTestfiles = GetEveryMeshFileNamesInFolder("Models/SMTest");
+		for (int i = 0; i < SMTestfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("SMTest/" + SMTestfiles[i]);
+		}
+
 		// load all character mesh
 		const auto& TPfiles = GetEveryMeshFileNamesInFolder("Models/TP");
 		for (int i = 0; i < TPfiles.size(); ++i)

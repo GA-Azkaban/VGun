@@ -42,7 +42,7 @@ void Client::Initialize()
 	// 씬 초기화
 	TestScene test;
 
-	API::LoadSceneByName("Test");
+	API::LoadSceneByName("Test"); 
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -52,21 +52,24 @@ void Client::Initialize()
 	
 	//LoginSceneView login;		//Scene Name : Login
 	//login.Initialize();
-	
+	// 
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();	
+	//
+	//LobbySceneView lobby;
+	//lobby.Initialize();
 
-	//TrainigSceneView training;	//Scene Name : Training
-	//training.Initialzie();
+	//LoginSceneView login;		//Scene Name : Login
+	//login.Initialize();
+
+	//MainMenuScene menu;			//Scene Name : MainMenu
+	//menu.Initalize();
 
 	//LobbySceneView lobby;		// Scene Naem : Lobby
 	//lobby.Initialize();
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
-
-	//API::LoadSceneByName("Login");
 	//API::LoadSceneByName("InGame");
-	
-	API::SetRecursiveMouseMode(true);
+	//API::SetRecursiveMouseMode(true);
 }
