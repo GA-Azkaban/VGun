@@ -938,12 +938,12 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 
 void PlayerMove::CameraControl()
 {
-
+#ifdef _DEBUG
 	if (API::GetKeyDown(DIK_P))
 	{
-		//ToggleCameraView();
 		ToggleCam();
 	}
+#endif
 
 	// camera move
 	if (_isHeadCam)

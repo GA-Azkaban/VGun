@@ -1,4 +1,4 @@
-﻿#include "GameObject.h"
+#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
 #include "SceneSystem.h"
@@ -276,7 +276,12 @@ namespace HDData
 			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "Armature", this);
 			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
 			newObject->GetTransform()->Rotate(0.0f, 0.0f, 180.0f);
-			Node* root = FindNodeByName(rendererNode, "root");			
+			Node* root = FindNodeByName(rendererNode, "root");
+			if (root == nullptr)
+			{
+				root = FindNodeByName(rendererNode, "Root");
+			}
+
 			if (root != nullptr)
 			{
 				ProcessNode(currentScene, root, newObject);

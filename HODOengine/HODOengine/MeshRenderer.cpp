@@ -72,6 +72,11 @@ namespace HDData
 		_staticMesh->SetUseLight(useLight);
 	}
 
+	int MeshRenderer::GetMeshCount()
+	{
+		return _staticMesh->GetMeshCount();
+	}
+
 	void MeshRenderer::Update()
 	{
 		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());
