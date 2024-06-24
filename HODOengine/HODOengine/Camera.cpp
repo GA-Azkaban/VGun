@@ -130,22 +130,66 @@ namespace HDData
 		_graphicsCamera->SetAsMainCamera();
 	}
 
-	void Camera::ShakeCamera(float deltaTime)
+	void Camera::ShakeCamera(float deltaTime, float& angleX)
 	{
 		if (!_isShakingCamera)
 		{
 			return;
 		}
 
-		float shakeIntensity = 0.01f;
-		float shakeFrequency = 36.0f;
+		float shakeIntensity = 0.008f;
+		float shakeFrequency = 31.4f;
 
-		if (_shakeTime < 0.2f)
+		if (_shakeTime < 0.1f)
 		{
-			_distYOnShoot = shakeIntensity * cos(shakeFrequency * _shakeTime);
-			float distX = shakeIntensity * cos(shakeFrequency*_shakeTime + 0.5f);
+			//_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			//GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f + _distYOnShoot, 0.175f));
 
-			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(distX, 1.65f + _distYOnShoot, 0.175f));
+			// 카메라를 돌려주는 방식 시도
+			//Quaternion nowRot = GetTransform()->GetLocalRotation();
+			//Quaternion newRot = Quaternion::Concatenate(nowRot, Quaternion::CreateFromYawPitchRoll(0.0f, -_distYOnShoot, 0.0f));
+			//GetGameObject()->GetTransform()->SetLocalRotation(newRot);
+
+			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			angleX -= _distYOnShoot;
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.175f - _distYOnShoot * 20.0f));
+
+			_shakeTime += deltaTime;
+		}
+		else if (_shakeTime < 0.4f)
+		{
+			shakeFrequency = 7.86f;
+			shakeIntensity = 0.002f;
+
+			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
+			angleX += _distYOnShoot;
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.175f - _distYOnShoot * 20.0f));
+
+			_shakeTime += deltaTime;
+		}
+		else
+		{
+			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShootEnd, 0.0f);
+			_shakeTime = 0.0f;
+			_isShakingCamera = false;
+			_distYOnShoot = 0.0f;
+			_distYOnShootEnd = 0.0f;
+			ResetCameraPos();
+		}
+	}
+
+	void Camera::TumbleCamera(float deltaTime)
+	{
+		if (!_isShakingCamera)
+		{
+			return;
+		}
+
+		if (_shakeTime < 0.4f)
+		{
+			float distY = sin(_shakeTime * 7.854f);
+
+			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f - distY, 0.175f));
 
 			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShoot, 0.0f);
 			//_distYOnShootEnd -= _distYOnShoot;

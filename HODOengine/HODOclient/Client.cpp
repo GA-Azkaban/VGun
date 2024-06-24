@@ -1,11 +1,13 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
+#include "TrainigSceneView.h"
 #include "MainMenu.h"
 #include "UnitySceneLoaderTest.h"
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 
+#include "FadeInOut.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
@@ -30,6 +32,12 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
+	//FadeInOut::Instance();
+
+	//TestSceneSecond second;
+	//second.Start();
+
+	//API::LoadSceneByName("Second");
 
 	// 씬 초기화
 	TestScene test;
@@ -57,7 +65,8 @@ void Client::Initialize()
 	//MainMenuScene menu;			//Scene Name : MainMenu
 	//menu.Initalize();
 
-	//API::LoadSceneByName("Lobby");
+	//LobbySceneView lobby;		// Scene Naem : Lobby
+	//lobby.Initialize();
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();

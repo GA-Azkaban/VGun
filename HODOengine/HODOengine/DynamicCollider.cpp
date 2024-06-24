@@ -52,24 +52,30 @@ void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol
 	_childColliders.push_back(childCol);
 }
 
+void HDData::DynamicCollider::SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit)
+{
+	_standingShape = stand;
+	_sittingShape = sit;
+}
+
 bool HDData::DynamicCollider::GetFreezeRotation()
 {
 	return _freezeRotation;
 }
 
-void HDData::DynamicCollider::Move(Vector3 moveStep, float speed)
+void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTime)
 {
 	//_physXRigid->wakeUp();
 	physx::PxTransform playerPos = _physXRigid->getGlobalPose();
 
-	playerPos.p.x += moveStep.x;
-	playerPos.p.z += moveStep.z;
+	playerPos.p.x += moveStep.x * speed * deltaTime;
+	playerPos.p.z += moveStep.z * speed * deltaTime;
 
 	_physXRigid->setGlobalPose(playerPos);
 	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed);
+		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed, deltaTime);
 	}
 }
 
@@ -131,13 +137,13 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f);
+		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f, 1.0f);
 	}
 }
 
-void HDData::DynamicCollider::Jump()
+void HDData::DynamicCollider::Jump(Vector3 direction)
 {
-	_physXRigid->addForce(physx::PxVec3(0.0f, 100.0f, 0.0f), physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.0f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
@@ -171,6 +177,59 @@ void HDData::DynamicCollider::ClearVeloY()
 	_physXRigid->clearForce();
 	_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+}
+
+void HDData::DynamicCollider::ClearForceXZ()
+{
+	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
+	velo.x = 0.0f;
+	velo.z = 0.0f;
+	_physXRigid->clearForce();
+	_physXRigid->clearTorque();
+	_physXRigid->setLinearVelocity(velo);
+	_physXRigid->setAngularVelocity(physx::PxVec3(0.0f));
+
+	for (auto& child : _childColliders)
+	{
+		dynamic_cast<HDData::DynamicCollider*>(child)->ClearForceXZ();
+	}
+}
+
+void HDData::DynamicCollider::ResetCollider(eColliderType type, Vector3 widthDepthHeight)
+{
+
+}
+
+void HDData::DynamicCollider::EnableCollider()
+{
+	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+	_isColliderActive = true;
+}
+
+void HDData::DynamicCollider::DisableCollider()
+{
+	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_isColliderActive = false;
+}
+
+void HDData::DynamicCollider::EnableStanding(bool isStand)
+{
+	if (isStand)
+	{
+		//_physXRigid->attachShape(*_standingShape);
+		_standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		_sittingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		_sittingShape->setFlag(physx::PxShapeFlag::eVISUALIZATION, false);
+		//_physXRigid->detachShape(*_sittingShape);
+	}
+	else
+	{
+		//_physXRigid->attachShape(*_sittingShape);
+		_standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
+		_sittingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
+		_sittingShape->setFlag(physx::PxShapeFlag::eVISUALIZATION, true);
+		//_physXRigid->detachShape(*_standingShape);
+	}
 }
 
 void HDData::DynamicCollider::UpdateToPhysics()

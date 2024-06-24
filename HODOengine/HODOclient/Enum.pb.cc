@@ -18,7 +18,7 @@
 PROTOBUF_PRAGMA_INIT_SEG
 namespace Protocol {
 }  // namespace Protocol
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[5];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[6];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = nullptr;
@@ -38,11 +38,19 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "\n\021HIT_LOCATION_NONE\020\000\022\027\n\023HIT_LOCATION_NO"
   "_HIT\020\001\022\025\n\021HIT_LOCATION_HEAD\020\002\022\025\n\021HIT_LOC"
   "ATION_BODY\020\003\022\024\n\020HIT_LOCATION_ARM\020\004\022\024\n\020HI"
-  "T_LOCATION_LEG\020\005b\006proto3"
+  "T_LOCATION_LEG\020\005*\267\002\n\017eAnimationState\022\030\n\024"
+  "ANIMATION_STATE_NONE\020\000\022\030\n\024ANIMATION_STAT"
+  "E_IDLE\020\001\022\033\n\027ANIMATION_STATE_FORWARD\020\002\022\030\n"
+  "\024ANIMATION_STATE_BACK\020\003\022\030\n\024ANIMATION_STA"
+  "TE_LEFT\020\004\022\031\n\025ANIMATION_STATE_RIGHT\020\005\022\031\n\025"
+  "ANIMATION_STATE_SHOOT\020\006\022\030\n\024ANIMATION_STA"
+  "TE_JUMP\020\007\022\030\n\024ANIMATION_STATE_ROLL\020\010\022\032\n\026A"
+  "NIMATION_STATE_RELOAD\020\t\022\031\n\025ANIMATION_STA"
+  "TE_DEATH\020\nb\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Enum_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Enum_2eproto = {
-  false, false, 544, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
+  false, false, 858, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
   &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
   schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
   nullptr, file_level_enum_descriptors_Enum_2eproto, file_level_service_descriptors_Enum_2eproto,
@@ -129,6 +137,29 @@ bool eHitLocation_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eAnimationState_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[5];
+}
+bool eAnimationState_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
       return true;
     default:
       return false;

@@ -1,4 +1,4 @@
-﻿#include <fstream>
+﻿ #include <fstream>
 #include <sstream>
 #include <string>
 
@@ -190,6 +190,8 @@ namespace HDEngine
 			{
 				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
 			}
+
+			object->GetTransform()->Rotate(0, -180, 0);
 
 		}
 	}

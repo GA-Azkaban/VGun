@@ -120,14 +120,15 @@ namespace HDData
 			[&_colArr, &count](auto& iter){ iter->OnCollisionEnter(_colArr, count); });
 	}
 
-	void GameObject::OnCollisionStay()
-	{
-		if (!GetParentActive()) return;
-
-		for (int i = 0; i < _componentsIndexed.size(); ++i)
+	void GameObject::OnCollisionStay(PhysicsCollision** _colArr, unsigned int count)
+{
+		if (!_selfActive)
 		{
-			_componentsIndexed[i]->OnCollisionStay();
+			return;
 		}
+
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
+			[&_colArr, &count](auto& iter) { iter->OnCollisionStay(_colArr, count); });
 	}
 
 	void GameObject::OnCollisionExit(PhysicsCollision** _colArr, unsigned int count)

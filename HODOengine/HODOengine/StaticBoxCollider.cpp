@@ -5,7 +5,7 @@
 HDData::StaticBoxCollider::StaticBoxCollider()
 	: _width(1.0f), _height(1.0f), _depth(1.0f)
 {
-	_colType = eColliderType::TERRAIN;
+	_colType = eColliderRole::TERRAIN;
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;
 	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);
@@ -14,7 +14,7 @@ HDData::StaticBoxCollider::StaticBoxCollider()
 HDData::StaticBoxCollider::StaticBoxCollider(float width, float height, float depth)
 	: _width(width), _height(height), _depth(depth)
 {
-	_colType = eColliderType::TERRAIN;
+	_colType = eColliderRole::TERRAIN;
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;
 	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);

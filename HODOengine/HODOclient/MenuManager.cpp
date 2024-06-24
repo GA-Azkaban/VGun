@@ -206,7 +206,7 @@ std::string MenuManager::GetNumberImage(int num)
 
 std::string MenuManager::GetIsPrivateImage(bool isPrivate)
 {
-	return "icon_user_filled.png";
+	return "private.png";
 }
 
 std::string MenuManager::GetIsTeamImage(bool isTeam)
@@ -266,49 +266,53 @@ std::string& MenuManager::GetScreenMod()
 
 void MenuManager::RenderRoomList()
 {
-	if (_roomList.size() == 0) return;
+	for (int i = 0; i < 5; ++i)
+	{
+		_roomObject[i].Clear();
+	}
 
+	// 총 페이지 수
 	pageCount = _roomList.size() / 5;
-	currentPage = 1;
-
-	int roomCount = 5;
-
 	if (_roomList.size() % 5 > 0) pageCount++;
 
-	if (_roomList.size() < 5) roomCount = _roomList.size();
+	// 총 방의 수
+	int roomCount = _roomList.size();
 
-	for (int i = 1 * currentPage; i < (roomCount + 1) * currentPage; ++i)
+	if (roomCount > 5) roomCount = 5;
+
+	for (int i = 0 ; i < roomCount; ++i)
 	{
-		_roomObject[i - 1].id->SetText(std::to_string(_roomList[i - 1]->id));
-		_roomObject[i - 1].title->SetText(_roomList[i - 1]->title);
+		int infoIndex = (currentPage - 1) * 5 + (i);
+		_roomObject[i].id->SetText(std::to_string(_roomList[infoIndex]->id));
+		_roomObject[i].title->SetText(_roomList[infoIndex]->title);
 
-		if (_roomList[i - 1]->isTeam)
+		if (_roomList[infoIndex]->isTeam)
 		{
-			_roomObject[i - 1].isTeam->SetImage("team.png");
+			_roomObject[i].isTeam->SetImage("team.png");
 		}
 		else
 		{
-			_roomObject[i - 1].isTeam->SetImage("no_team.png");
+			_roomObject[i].isTeam->SetImage("no_team.png");
 		}
 
-		if (_roomList[i - 1]->isPrivate)
+		if (_roomList[infoIndex]->isPrivate)
 		{
-			_roomObject[i - 1].isPrivate->SetImage("private.png");
+			_roomObject[i].isPrivate->SetImage("private.png");
 		}
 		else
 		{
-			_roomObject[i - 1].isPrivate->SetImage("no_private.png");
+			_roomObject[i].isPrivate->SetImage("no_private.png");
 		}
 
-		_roomObject[i - 1].maxCount->SetImage(GetNumberImage(_roomList[i - 1]->maxPlayerCount));
-		_roomObject[i - 1].currentCount->SetImage(GetNumberImage(_roomList[i - 1]->currentPlayerCount));
+		_roomObject[i].maxCount->SetImage(GetNumberImage(_roomList[infoIndex]->maxPlayerCount));
+		_roomObject[i].currentCount->SetImage(GetNumberImage(_roomList[infoIndex]->currentPlayerCount));
 
-		_roomObject[i - 1].id->GetGameObject()->SetSelfActive(true);
-		_roomObject[i - 1].title->GetGameObject()->SetSelfActive(true);
-		_roomObject[i - 1].isTeam->GetGameObject()->SetSelfActive(true);
-		_roomObject[i - 1].isPrivate->GetGameObject()->SetSelfActive(true);
-		_roomObject[i - 1].maxCount->GetGameObject()->SetSelfActive(true);
-		_roomObject[i - 1].currentCount->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].id->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].title->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].isTeam->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].isPrivate->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].maxCount->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].currentCount->GetGameObject()->SetSelfActive(true);
 	}
 }
 

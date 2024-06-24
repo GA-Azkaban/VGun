@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "Types.h"
 
@@ -15,7 +15,7 @@ public:
 private:
 	static NetworkManager* _instance;
 	NetworkManager();
-	~NetworkManager() = default;
+	~NetworkManager();
 
 public:
 	virtual void Start() override;
@@ -62,6 +62,10 @@ public: // 팀 색상 변경
 
 public: // 게임 관련
 	void SendGameStart();
+	// 방 시작
+	void RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule);
+
+	// N초 뒤 게임 시작시 호출
 	void RecvGameStart();
 
 public: // 트랜스폼 동기화
@@ -74,7 +78,7 @@ public: // 업데이트
 	void RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate);
 
 public: // 인게임
-	void SendPlayJump(PlayerInfo* playerinfo);
+	void SendPlayJump();
 	void RecvPlayJump(Protocol::PlayerData playerData);
 
 	void SendPlayShoot(HDData::Transform* transform, uint64 hitTargetUid = 0, Protocol::eHitLocation hitLocation = Protocol::eHitLocation::HIT_LOCATION_NO_HIT);
@@ -86,8 +90,15 @@ public: // 인게임
 	// 리스폰 지점 추가해야함
 	void RecvPlayRespawn(Protocol::PlayerData playerData);
 
+	// 구르기
+	void SendPlayRoll(Protocol::PlayerData playerData);
+	void RecvPlayRoll(Protocol::PlayerData playerData);
+
+	// 재장전
+	void SendPlayReload(Protocol::PlayerData playerData);
+	void RecvPlayReload(Protocol::PlayerData playerData);
+
 public:
-	void SetConnect(bool isConnect);
 	void Connected();
 	void Disconnected();
 	bool IsConnected();
@@ -98,15 +109,19 @@ private:
 	bool _isConnect;
 
 private:
-	Protocol::PlayerData data;
-	Protocol::PlayerData* ConvertPlayerInfoToData(PlayerInfo* info);
+	Protocol::PlayerData* data;
+	Protocol::PlayerData* ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
 
 	// 보간
 public:
 	void Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue);
 
-private:
-	Vector3 serverPosition[5];
-	Quaternion serverRotation[5];
+
+	// 애니메이션
+public:
+	Protocol::eAnimationState ConvertStateToEnum(const std::string& state);
+	ePlayerState ConvertAnimationStateToEnum(Protocol::eAnimationState state);
+	//std::string ConvertAnimationStateToString(Protocol::eAnimationState state);
+
 };
 

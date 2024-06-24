@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
 
@@ -24,9 +24,12 @@ public:
 	void Init();
 
 public:
+	void SetServerTransform(Vector3 pos, Quaternion rot);
+	Vector3& GetServerPosition();
+	Quaternion& GetServerRotation();
+
+
 	void SetPlayerUID(int uid);
-	void SetPlayerID(std::string id);
-	void PlayerIndex(int index);
 	void SetTeamID(eTeam team);
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
@@ -40,9 +43,7 @@ public:
 	void SetCurrentBulletCount(int Count);
 
 	int& GetPlayerUID();
-	std::string& GetPlayerID();
 	bool& GetIsHost();
-	int& GetPlayerIndex();
 	eTeam& GetPlayerTeam();
 	bool& GetPlayerDie();
 	std::string& GetPlayerNickName();
@@ -52,27 +53,38 @@ public:
 	int& GetPlayerDeathCount();
 	int& GetCurrentBulletCount();
 	bool& GetIsDie();
-	ePlayerState& GetPlayerState();
+
+
+	bool GetIsStateChange();
+	void SetIsStateChange(bool isChange);
+	ePlayerState GetPrevPlayerState();
+	ePlayerState GetPlayerState();
 
 	void SetIsMyInfo(bool isMine);
 	bool GetIsMyInfo();
 
+	void SetIsShoot(bool isShoot);
+	void SetIsJump(bool isJump);
+	bool GetIsShoot();
+	bool GetIsJump();
 	
 	void OtherPlayerShoot(eHITLOC loc);
+
+
 private:
 	bool _isMyInfo = false;
 
+	// server info
+	Vector3 _serverPos;
+	Quaternion _serverRot;
+
 	// player info
 	int _playerUID;
-	std::string _playerID;
-	int _playerIndex;
-	eTeam _teamID;
 	bool _isHost = false;
 	std::string _playerNickname;
 
 	// state info
 	bool _isJump;
-	bool _isCrouch;
 	bool _isShoot;
 
 	int _currentHP;
@@ -80,10 +92,15 @@ private:
 
 	int _bulletCount = 30;
 
-	ePlayerState _state;
+	bool _isStateChange = false;
+	ePlayerState _prevState = ePlayerState::NONE;
+	ePlayerState _state = ePlayerState::IDLE;
 	
 	// count info
 	int _kill;
 	int _death;
+
+	// else
+	eTeam _teamID;
 };
 

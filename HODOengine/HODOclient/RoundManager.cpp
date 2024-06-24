@@ -34,15 +34,16 @@ void RoundManager::Update()
 {
 	if (!_isRoundStart) return;
 
-	//const uint64 frame = 16;
-	//static auto updateTick = 0;
+	const uint64 frame = 16;
+	static auto updateTick = 0;
 
-	//auto currentTick = ::GetTickCount64();
+	auto currentTick = ::GetTickCount64();
 
-	//if (updateTick > currentTick)
-	//	return;
+	if (updateTick > currentTick)
+		return;
 
-	//updateTick = currentTick + frame;
+	updateTick = currentTick + frame;
+
 	NetworkManager::Instance().SendPlayUpdate();
 }
 
@@ -59,8 +60,10 @@ void RoundManager::InitGame()
 
 	for (auto& obj : _playerObjs)
 	{
-		//obj->SetSelfActive(false);
+		obj->SetSelfActive(false);
 	}
+
+	_players.clear();
 
 	int index = 0;
 
@@ -118,7 +121,7 @@ void RoundManager::InitRound()
 		SetTeamColor(mesh, info->GetPlayerTeam());
 	}
 
-	_isRoundStart = true;
+
 }
 
 void RoundManager::UpdateRound()
@@ -146,7 +149,6 @@ void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collid
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_BODY);
 }
 
-
 void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 {
 	_myObj->GetComponent<PlayerInfo>()->OtherPlayerShoot(location);
@@ -154,7 +156,7 @@ void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 
 void RoundManager::SendJump(int uid)
 {
-	NetworkManager::Instance().SendPlayJump(_players[uid]->GetComponent<PlayerInfo>());
+	NetworkManager::Instance().SendPlayJump();
 }
 
 void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
@@ -216,5 +218,15 @@ bool RoundManager::GetIsRoundStart()
 void RoundManager::SetIsRoundStart(bool isStart)
 {
 	_isRoundStart = isStart;
+}
+
+void RoundManager::SetAnimationDummy(HDData::GameObject* obj)
+{
+	_animationDummy = obj;
+}
+
+HDData::GameObject* RoundManager::GetAnimationDummy()
+{
+	return _animationDummy;
 }
 

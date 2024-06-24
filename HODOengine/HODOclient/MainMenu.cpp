@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 #include "FadeInOut.h"
@@ -109,10 +109,10 @@ void MainMenuScene::MainMenu()
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
 	freshBtn->SetImage("flair_arrow_3.png");
-	freshBtn->SetSortOrder(0.6f);
+	freshBtn->SetSortOrder(0.7f);
 	freshBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	freshBtn->SetOnClickEvent(
-		[freshBtn]()
+		[]()
 		{
 			NetworkManager::Instance().SendRoomListRequest();
 		}
@@ -206,6 +206,8 @@ void MainMenuScene::MainMenu()
 	enter_enterCheckText->GetTransform()->SetLocalPosition(0, -30.0f * height / 1080, 0);
 	auto enterText = enter_enterCheckText->GetComponent<HDData::TextUI>();
 	enterText->SetText("Join?");
+	enterText->SetFont("Resources/Font/KRAFTON_25.spriteFont");
+	enterText->SetColor(DirectX::Colors::OrangeRed);
 	enterText->SetIsIgnoreFocus(true);
 	enterText->SetSortOrder(0.91);
 	enterText->ChangeScale(width / 1920.0f);
@@ -293,11 +295,12 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].currentCount = current;
 
 		HDData::GameObject* enter_isPrivate = API::CreateImageBox(_scene, "isLock", enter_roomCanvas);
-		enter_isPrivate->GetTransform()->SetLocalPosition(100, 0, 0);
+		enter_isPrivate->GetTransform()->SetLocalPosition(100, 25, 0);
 		auto isP = enter_isPrivate->GetComponent<HDData::ImageUI>();
-		isP->SetImage("icon_user_filled.png");
+		isP->SetImage("no_private.png");
 		isP->SetSortOrder(0.82);
 		isP->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+		isP->ChangeScale(0.5f,0.5f);
 
 		enter_isPrivate->SetSelfActive(false);
 
@@ -318,6 +321,8 @@ void MainMenuScene::MainMenu()
 
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetOnClickEvent([=]()
 			{
+				if (MenuManager::Instance()._roomList.size() <= MenuManager::Instance().currentPage * i)  return;
+
 				MenuManager::Instance().selectedRoomInfo =
 					MenuManager::Instance()._roomList[MenuManager::Instance().currentPage * i];
 
@@ -644,18 +649,6 @@ void MainMenuScene::MainMenu()
 	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
 	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-
-	// 가로줄
-	//HDData::GameObject* tempHorizonLine = API::CreateImageBox(_scene, "tempHorizonLine", preferencesCanvas);
-	//tempHorizonLine->GetTransform()->SetPosition(960.f * width / 1920, 590.f * height / 1080, 0.f);
-	//tempHorizonLine->GetComponent<HDData::ImageUI>()->SetImage("white_line_temp.png");
-	//tempHorizonLine->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
-	// 세로줄
-	//HDData::GameObject* tempVerticalLine = API::CreateImageBox(_scene, "tempVerticalLine", preferencesCanvas);
-	//tempVerticalLine->GetTransform()->SetPosition(650.f * width / 1920, 540.0f * height / 1080, 0.f);
-	//tempVerticalLine->GetComponent<HDData::ImageUI>()->SetImage("white_line_vertical.png");
-	//tempVerticalLine->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
 
 	// event
 	// game play btn

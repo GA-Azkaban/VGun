@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
+#include "Timer.h"
 
 class FadeInOut : public HDData::Script
 {
@@ -11,6 +12,9 @@ private:
 	FadeInOut(); 
 	~FadeInOut() = default;
 	HDData::GameObject* _fadeCanvas;
+
+	Timer _fadeInTimer;
+	Timer _fadeOutTimer;
 
 public:
 	void Start() override;

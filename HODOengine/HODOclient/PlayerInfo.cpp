@@ -1,6 +1,7 @@
-#include "PlayerInfo.h"
+﻿#include "PlayerInfo.h"
 
 PlayerInfo::PlayerInfo()
+	:_currentHP(100)
 {
 
 }
@@ -8,7 +9,6 @@ PlayerInfo::PlayerInfo()
 PlayerInfo::PlayerInfo(PlayerInfo* info)
 {
 	_playerUID = info->GetPlayerUID();
-	_playerID = info->GetPlayerID();
 	_teamID = info->GetPlayerTeam();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
@@ -33,19 +33,25 @@ void PlayerInfo::Init()
 	this->_state = ePlayerState::IDLE;
 }
 
+void PlayerInfo::SetServerTransform(Vector3 pos, Quaternion rot)
+{
+	_serverPos = pos;
+	_serverRot = rot;
+}
+
+Vector3& PlayerInfo::GetServerPosition()
+{
+	return _serverPos;
+}
+
+Quaternion& PlayerInfo::GetServerRotation()
+{
+	return _serverRot;
+}
+
 void PlayerInfo::SetPlayerUID(int uid)
 {
 	_playerUID = uid;
-}
-
-void PlayerInfo::SetPlayerID(std::string id)
-{
-	_playerID = id;
-}
-
-void PlayerInfo::PlayerIndex(int index)
-{
-	_playerIndex = index;
 }
 
 void PlayerInfo::SetCurrentHP(int hp)
@@ -70,6 +76,7 @@ void PlayerInfo::SetIsDie(bool isDie)
 
 void PlayerInfo::SetCurrentState(ePlayerState state)
 {
+	this->_prevState = _state;
 	this->_state = state;
 }
 
@@ -81,11 +88,6 @@ void PlayerInfo::SetCurrentBulletCount(int count)
 int& PlayerInfo::GetPlayerUID()
 {
 	return _playerUID;
-}
-
-std::string& PlayerInfo::GetPlayerID()
-{
-	return _playerID;
 }
 
 bool& PlayerInfo::GetIsHost()
@@ -113,7 +115,22 @@ bool& PlayerInfo::GetIsDie()
 	return _isDie;
 }
 
-ePlayerState& PlayerInfo::GetPlayerState()
+bool PlayerInfo::GetIsStateChange()
+{
+	return _isStateChange;
+}
+
+void PlayerInfo::SetIsStateChange(bool isChange)
+{
+	_isStateChange = isChange;
+}
+
+ePlayerState PlayerInfo::GetPrevPlayerState()
+{
+	return _prevState;
+}
+
+ePlayerState PlayerInfo::GetPlayerState()
 {
 	return _state;
 }
@@ -126,6 +143,26 @@ void PlayerInfo::SetIsMyInfo(bool isMine)
 bool PlayerInfo::GetIsMyInfo()
 {
 	return _isMyInfo;
+}
+
+void PlayerInfo::SetIsShoot(bool isShoot)
+{
+	_isShoot = isShoot;
+}
+
+void PlayerInfo::SetIsJump(bool isJump)
+{
+	_isJump = isJump;
+}
+
+bool PlayerInfo::GetIsShoot()
+{
+	return _isShoot;
+}
+
+bool PlayerInfo::GetIsJump()
+{
+	return _isJump;
 }
 
 void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
@@ -149,11 +186,6 @@ void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
 		default:
 			break;
 	}
-}
-
-int& PlayerInfo::GetPlayerIndex()
-{
-	return _playerIndex;
 }
 
 eTeam& PlayerInfo::GetPlayerTeam()
