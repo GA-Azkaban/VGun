@@ -14,7 +14,7 @@
 #include "MeshRenderer.h"
 #include "StaticBoxCollider.h"
 #include "DynamicSphereCollider.h"
-#include "MaterialManager.h"
+
 
 using rapidjson::Document;
 using rapidjson::SizeType;
@@ -33,6 +33,13 @@ namespace HDEngine
 	void SceneLoader::LoadUnityScene(std::string fileName, HDData::Scene* scene)
 	{
 		now = scene;
+
+		HDEngine::MaterialDesc mat;
+		mat.materialName = "PolygonWestern_Texture_01_B";
+		mat.albedo = "PolygonWestern_Texture_01_B.png";
+		mat.metallic = "PolygonWestern_Texture_Metallic.png";
+
+		_material = MaterialManager::Instance().CreateMaterial(mat);
 
 		LoadFromJson(SCENEDATA_PATH + fileName);
 		CreateObject(scene);
@@ -147,11 +154,12 @@ namespace HDEngine
 					break;
 			}
 
-			for (int m = 0; m < info.materials.size(); m++)
+			int m_size = meshRenderer->GetMeshCount();
+
+			for (int m = 0; m < m_size; m++)
 			{
-				auto mat = HDEngine::MaterialManager::Instance().GetMaterial(info.materials[m]);
-				if (mat == NULL) continue;
-				meshRenderer->LoadMaterial(mat, m);
+				if (_material == nullptr) continue;
+				meshRenderer->LoadMaterial(_material, m);
 			}
 
 			_gameObjectMap.insert(std::make_pair(info.id, object));

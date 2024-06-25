@@ -49,8 +49,6 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (!RoundManager::Instance()->GetIsStarted()) return;
-
 	if (!_isMovable)
 	{
 		return;

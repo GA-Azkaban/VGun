@@ -1,5 +1,9 @@
 ﻿#include "RoundTimer.h"
+#include "RoundManager.h"
 #include <string>
+
+
+// TODO) 시작 시간 주는 타이밍 재설정
 
 RoundTimer::RoundTimer(int time)
 	: _duration(time),
@@ -19,14 +23,14 @@ void RoundTimer::Start()
 
 void RoundTimer::Update()
 {
-	if (_isRunning) 
+	if (RoundManager::Instance()->GetIsRoundStart()) 
 	{
 		auto currentTime = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsedTime = currentTime - _start_time;
 		_txt->SetText(std::to_string(static_cast<int>(_duration - elapsedTime.count())));
 		if (elapsedTime.count() >= _duration) 
 		{
-			_isRunning = false;
+			RoundManager::Instance()->SetIsRoundStart(false);
 		}
 	}
 }

@@ -22,6 +22,8 @@ namespace HDData
 		if (_animationController == nullptr) return;
 
 		_animationController->Start();
+
+		//_meshRenderer->PlayAnimation("RV_runF", true, 0.1, true, 0.1);
 		_meshRenderer->PlayAnimation(_animationController->GetCurrentState()->_motion, true, 0.1, _animationController->GetCurrentState()->_hasExitTime, _animationController->GetCurrentState()->_exitTime);
 	}
 

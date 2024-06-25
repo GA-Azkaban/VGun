@@ -5,6 +5,7 @@
 
 #include "Singleton.h"
 #include "MathHeader.h"
+#include "MaterialManager.h"
 
 namespace HDData
 {
@@ -47,6 +48,7 @@ namespace HDEngine
 
 	private:
 		HDData::Scene * now;
+		HDData::Material* _material;
 		std::vector<InfoStruct> _infoList;
 		std::unordered_map<int, HDData::GameObject*> _gameObjectMap;
 	};

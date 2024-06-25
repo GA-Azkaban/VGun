@@ -291,7 +291,7 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 	{
 		case eTeam::R:
 		{
-			auto mat = API::GetMaterial("TP_Red");
+			auto mat = API::GetMaterial("TP_defalut");
 			mesh->LoadMaterial(mat, 0);
 			mesh->LoadMaterial(mat, 1);
 			mesh->LoadMaterial(mat, 2);
@@ -303,26 +303,26 @@ void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
 		break;
 		case eTeam::G:
 		{
-			auto mat = API::GetMaterial("TP_Green");
+			/*auto mat = API::GetMaterial("TP_Green");
 			mesh->LoadMaterial(mat, 0);
 			mesh->LoadMaterial(mat, 1);
 			mesh->LoadMaterial(mat, 2);
 			mesh->LoadMaterial(mat, 3);
 			mesh->LoadMaterial(mat, 4);
 
-			info->SetTeamID(eTeam::G);
+			info->SetTeamID(eTeam::G);*/
 		}
 		break;
 		case eTeam::B:
 		{
-			auto mat = API::GetMaterial("TP_Blue");
+			/*auto mat = API::GetMaterial("TP_Blue");
 			mesh->LoadMaterial(mat, 0);
 			mesh->LoadMaterial(mat, 1);
 			mesh->LoadMaterial(mat, 2);
 			mesh->LoadMaterial(mat, 3);
 			mesh->LoadMaterial(mat, 4);
 
-			info->SetTeamID(eTeam::B);
+			info->SetTeamID(eTeam::B);*/
 		}
 		break;
 		default:

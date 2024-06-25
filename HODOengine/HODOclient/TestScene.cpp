@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -7,6 +7,7 @@
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
 #include "TPScript.h"
+#include "FPAniScript.h"
 
 TestScene::TestScene()
 {
@@ -221,31 +222,27 @@ TestScene::TestScene()
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_BadguyFP_X_default.fbx");
+	playerTest->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
 
-	//playerTest->AddComponent<HDData::Animator>();
-	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
+	//SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
+	//GetComponentInChildren 함수로 가져와서 사용해야 한다.
+	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	meshComp->LoadAnimation("TP");
+	//meshComp->SetActive(false);
+	//meshComp->SetFillModeWireFrame(true);
 
-	//playerTest->AddComponent<TPScript>();
+	HDEngine::MaterialDesc desc;
+	desc.materialName = "PolygonWestern_Texture_01_A";
+	desc.albedo = "PolygonWestern_Texture_01_A.png";
+	HDData::Material* newMat = API::CreateMaterial(desc);
+	meshComp->LoadMaterial(newMat, 0);
 
+	playerTest->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
+	playerTest->AddComponent<TPScript>();
 
-	//// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
-	//// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	////meshComp->SetActive(false);
-	////meshComp->SetFillModeWireFrame(true);
-	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
-	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
-	//auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//meshComp->LoadAnimation("TP");
-	////meshComp->SetActive(false);
-	////meshComp->SetFillModeWireFrame(true);
+	//playerTest->AddComponent<FPAniScript>();
 
-	//HDEngine::MaterialDesc desc;
-	//desc.materialName = "PolygonWestern_Texture_01_A";
-	//desc.albedo = "PolygonWestern_Texture_01_A.png";
-	//HDData::Material* newMat = API::CreateMaterial(desc);
-	//meshComp->LoadMaterial(newMat, 0);
 
 	//meshComp->PlayAnimation("RV_idle", true);
 

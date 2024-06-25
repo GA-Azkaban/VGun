@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -63,8 +63,9 @@ void InGameSceneView::Initialize()
 
 	// 애니메이션 전달용 더미 캐릭터 생성
 	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
+	dummy->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
 	dummy->GetTransform()->SetPosition(0, -10, 0);
+	dummy->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
 	
 	dummy->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
@@ -97,9 +98,9 @@ void InGameSceneView::Initialize()
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
-	//fpMeshObj->AddComponent<HDData::Animator>();
-	//API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
-	//fpMeshObj->AddComponent<FPAniScript>();
+	fpMeshObj->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
+	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -107,7 +108,6 @@ void InGameSceneView::Initialize()
 	fpMeshComp->LoadAnimation("TP");
 	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(chMat, 0);
-
 	fpMeshComp->PlayAnimation("RV_idle", true);
 
 	// 총 생성
@@ -207,7 +207,6 @@ void InGameSceneView::Initialize()
 
 	// Timer
 	auto timer = API::CreateTextbox(_scene, "timer");
-	//timer->AddComponent<RoundTimer>(RoundManager::Instance()->GetRoundTimer());
 	timer->AddComponent<RoundTimer>(10);
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
 
