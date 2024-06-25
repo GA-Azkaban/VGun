@@ -2,7 +2,6 @@
 #include <unordered_map>
 
 #include "../HODOengine/HODO_API.h"
-#include "Weapon.h"
 #include "PlayerInfo.h"
 
 class RoundManager : public HDData::Script
@@ -53,16 +52,33 @@ private:
 	int _playerNum;
 	std::unordered_map<int, HDData::GameObject*> _players;
 
-private:
-	bool _isRoundStart = false;
-
-	int _timer;			// 타이머
-
 public:
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
 
-	//애니메이션
+private:
+	bool _isRoundStart = false;
+
+public:
+	void SetRoundTimerObject(HDData::TextUI* obj);
+	void SetRoundTimer(int time);
+	int& GetRoundTimer();
+
+private:
+	HDData::TextUI* _timerUI;
+	int _timer;			// 타이머
+
+public:
+	void SetDesiredKill(int count);
+	int& GetDesiredKill();
+	
+	void SetMyKillCountUI(HDData::TextUI* txt);
+	void SetOthersKillCount(HDData::TextUI* txt, int index);
+
+private:
+	HDData::TextUI* _myKillCount;
+	HDData::TextUI* _othersKillCount[5];
+	int _desiredKill;	// 목표 킬수
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);

@@ -64,6 +64,12 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
+		if (sceneIter->GetSceneName() != "InGame")
+		{
+			return;
+		}
+
 		_collisionCallback->Clear();
 
 		ResizeCollider();

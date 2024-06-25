@@ -74,22 +74,11 @@ void LobbySceneView::Initialize()
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
-	red.materialName = "TP_Red";
-	red.albedo = "TP_Red_B.png";
+	red.materialName = "TP_defalut";
+	red.albedo = "PolygonWestern_Texture_01_A.png";
 
 	HDData::Material* M_Red = API::CreateMaterial(red);
 
-	HDEngine::MaterialDesc green;
-	green.materialName = "TP_Green";
-	green.albedo = "TP_Green_B.png";
-
-	HDData::Material* M_Green = API::CreateMaterial(green);
-
-	HDEngine::MaterialDesc blue;
-	blue.materialName = "TP_Blue";
-	blue.albedo = "TP_Blue_B.png";
-
-	HDData::Material* M_Blue = API::CreateMaterial(blue);
 
 	float defaultX = -0.5f;
 	float rgbCanvas = 155.0f;
@@ -171,7 +160,7 @@ void LobbySceneView::Initialize()
 	for (int i = 0; i < 6; ++i)
 	{
 		HDData::GameObject* player = API::CreateObject(_scene, "player");
-		player->LoadFBXFile("SKM_TP_X_Default.fbx");
+		player->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 		player->GetTransform()->SetPosition(posX, 0, 0);
 		player->GetTransform()->Rotate(0, -180, 0);
 
@@ -184,9 +173,11 @@ void LobbySceneView::Initialize()
 		meshComp->LoadMaterial(M_Red, 4);
 
 		player->AddComponent<PlayerInfo>();
+		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
+		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
 
-		player->AddComponent<HDData::Animator>();
-		API::LoadFPAnimationFromData(player, "FP_animation.json");
+		/*player->AddComponent<HDData::Animator>();
+		API::LoadFPAnimationFromData(player, "FP_animation.json");*/
 
 		LobbyManager::Instance().GetPlayerObjects().push_back(player);
 

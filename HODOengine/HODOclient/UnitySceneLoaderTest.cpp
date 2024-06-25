@@ -1,6 +1,5 @@
 ﻿#include "UnitySceneLoaderTest.h"
 #include "CameraMove.h"
-#include "FSMtestScript.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
 #include "FPAniScript.h"

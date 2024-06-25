@@ -138,7 +138,7 @@ bool Handle_S_GAME_START(Horang::PacketSessionRef& session, Protocol::S_GAME_STA
 
 bool Handle_S_GAME_END(Horang::PacketSessionRef& session, Protocol::S_GAME_END& pkt)
 {
-	// Todo
+	NetworkManager::Instance().RecvGameEnd(pkt.roominfo());
 	return true;
 }
 
