@@ -1,7 +1,6 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
-#include "FSMtestScript.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
 #include "MeshTransformController.h"
@@ -11,6 +10,8 @@
 #include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
+#include "Health.h"
+#include "RoundTimer.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -62,8 +63,9 @@ void InGameSceneView::Initialize()
 
 	// 애니메이션 전달용 더미 캐릭터 생성
 	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
+	dummy->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
 	dummy->GetTransform()->SetPosition(0, -10, 0);
+	dummy->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
 	
 	dummy->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
@@ -96,9 +98,9 @@ void InGameSceneView::Initialize()
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
-	//fpMeshObj->AddComponent<HDData::Animator>();
-	//API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
-	//fpMeshObj->AddComponent<FPAniScript>();
+	fpMeshObj->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
+	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -106,7 +108,6 @@ void InGameSceneView::Initialize()
 	fpMeshComp->LoadAnimation("TP");
 	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(chMat, 0);
-
 	fpMeshComp->PlayAnimation("RV_idle", true);
 
 	// 총 생성
@@ -195,17 +196,24 @@ void InGameSceneView::Initialize()
 	// ammo
 	auto ammo = API::CreateObject(_scene, "remaingAmmo");
 	auto ammoComp = ammo->AddComponent<Ammo>();
-	ammoComp->playerMove = playerMove;
 	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
 	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
 	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 30");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
-	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
-	healthPoint->GetComponent < HDData::TextUI >()->GetTransform()->SetPosition(1800.0f, 1400.0f, 0.0f);
-	healthPoint->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	healthPoint->GetComponent<HDData::TextUI>()->SetText(std::to_string(playerInfo->GetPlayerCurrentHP()));
+	HDData::GameObject* healthPoint = API::CreateObject(_scene, "healthPoint");
+	healthPoint->AddComponent<Health>();
+
+	// Timer
+	auto timer = API::CreateTextbox(_scene, "timer");
+	timer->AddComponent<RoundTimer>(10);
+	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
+
+	
+	// KillCount
+	auto kills = API::CreateTextbox(_scene, "kills");
+
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

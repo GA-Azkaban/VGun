@@ -1,9 +1,9 @@
 ﻿#include "Health.h"
+#include "GameManager.h"
 
 Health::Health()
-	:playerMove(),
-	_playerHealth(),
-	_healthPoint()
+	:_playerHealth(),
+	_healthPoint(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP())
 {
 
 }
@@ -17,5 +17,5 @@ void Health::Start()
 
 void Health::Update()
 {
-
+	_playerHealth->SetText(std::to_string(_healthPoint));
 }

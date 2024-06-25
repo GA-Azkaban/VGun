@@ -459,8 +459,8 @@ void PlayerMove::Reload()
 	//	}
 	//}
 	_shootCount = 0;
-	_bulletCount = BULLET_MAX;
-	_playerState.second = ePlayerMoveState::IDLE;
+	//_playerState.second = ePlayerState::IDLE;
+			_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)

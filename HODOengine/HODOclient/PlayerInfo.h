@@ -52,6 +52,7 @@ public:
 	int& GetPlayerKillCount();
 	int& GetPlayerDeathCount();
 	int& GetCurrentBulletCount();
+	int GetMaxBulletCount();
 	bool& GetIsDie();
 
 
@@ -87,10 +88,11 @@ private:
 	bool _isJump;
 	bool _isShoot;
 
-	int _currentHP;
+	int _currentHP = 70;
 	bool _isDie;
 
-	int _bulletCount = 30;
+	int _maxBulletCount = 6;
+	int _bulletCount = 6;
 
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;

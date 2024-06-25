@@ -44,6 +44,7 @@ void RoundManager::Update()
 
 	updateTick = currentTick + frame;
 
+	UpdateRound();
 	NetworkManager::Instance().SendPlayUpdate();
 }
 
@@ -126,13 +127,7 @@ void RoundManager::InitRound()
 
 void RoundManager::UpdateRound()
 {
-	// 플레이어 transform 정보 갱신
-
-	// 플레이어 state 정보 갱신
-
-	// 플레이어 killcount, time 갱신
-
-	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
+	
 }
 
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
@@ -218,6 +213,41 @@ bool RoundManager::GetIsRoundStart()
 void RoundManager::SetIsRoundStart(bool isStart)
 {
 	_isRoundStart = isStart;
+}
+
+void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
+{
+	_timerUI = obj;
+}
+
+void RoundManager::SetRoundTimer(int time)
+{
+	_timer = time;
+}
+
+int& RoundManager::GetRoundTimer()
+{
+	return _timer;
+}
+
+void RoundManager::SetDesiredKill(int count)
+{
+	_desiredKill = count;
+}
+
+int& RoundManager::GetDesiredKill()
+{
+	return _desiredKill;
+}
+
+void RoundManager::SetMyKillCountUI(HDData::TextUI* txt)
+{
+	_myKillCount = txt;
+}
+
+void RoundManager::SetOthersKillCount(HDData::TextUI* txt, int index)
+{
+	_othersKillCount[index] = txt;
 }
 
 void RoundManager::SetAnimationDummy(HDData::GameObject* obj)

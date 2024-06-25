@@ -11,10 +11,8 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
-	PlayerMove* playerMove;
-
 private:
 	HDData::TextUI* _defaultAmmo;
 	HDData::TextUI* _remainningAmmo;
-	int _bulletCount;
+	int& _bulletCount;
 };

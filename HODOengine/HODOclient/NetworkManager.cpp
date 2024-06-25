@@ -523,6 +523,8 @@ void NetworkManager::SendGameStart()
 {
 	Protocol::C_ROOM_START packet;
 
+	
+
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -534,6 +536,8 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	API::SetRecursiveMouseMode(true);
 
 	// Todo roomInfo, gameRule 설정
+	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
+	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
 }
 
 void NetworkManager::RecvGameStart()
