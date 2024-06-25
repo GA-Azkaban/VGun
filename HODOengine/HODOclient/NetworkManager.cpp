@@ -547,6 +547,11 @@ void NetworkManager::RecvGameStart()
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
 
+void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
+{
+
+}
+
 void NetworkManager::SendPlayUpdate()
 {
 	Protocol::C_PLAY_UPDATE packet;
