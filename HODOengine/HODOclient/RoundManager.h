@@ -40,9 +40,6 @@ public:
 
 	void SendJump(int uid);
 
-private:
-	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);
-
 public:
 	std::unordered_map<int, HDData::GameObject*>& GetPlayerObjs();
 	int GetPlayerNum();

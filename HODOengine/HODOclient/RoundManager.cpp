@@ -111,8 +111,6 @@ void RoundManager::InitRound()
 	_myObj->GetComponent<PlayerInfo>()->Init();
 	_myObj->SetSelfActive(true);
 
-	SetTeamColor(mesh, _myObj->GetComponent<PlayerInfo>()->GetPlayerTeam());
-
 	for (auto& [uid, player] : _players)
 	{
 		player->GetComponent<PlayerInfo>()->Init();
@@ -122,8 +120,6 @@ void RoundManager::InitRound()
 
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
 		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-
-		SetTeamColor(mesh, info->GetPlayerTeam());
 	}
 
 
@@ -157,47 +153,6 @@ void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
 void RoundManager::SendJump(int uid)
 {
 	NetworkManager::Instance().SendPlayJump();
-}
-
-void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
-{
-	switch (color)
-	{
-		case eTeam::R:
-		{
-			auto mat = API::GetMaterial("TP_Red");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-		}
-		break;
-		case eTeam::G:
-		{
-			auto mat = API::GetMaterial("TP_Green");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-		}
-		break;
-		case eTeam::B:
-		{
-			auto mat = API::GetMaterial("TP_Blue");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-		}
-		break;
-		default:
-		{
-		}
-		break;
-	}
 }
 
 std::unordered_map<int, HDData::GameObject*>& RoundManager::GetPlayerObjs()

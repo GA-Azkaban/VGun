@@ -9,7 +9,6 @@ PlayerInfo::PlayerInfo()
 PlayerInfo::PlayerInfo(PlayerInfo* info)
 {
 	_playerUID = info->GetPlayerUID();
-	_teamID = info->GetPlayerTeam();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
 }
@@ -94,11 +93,6 @@ int& PlayerInfo::GetPlayerUID()
 bool& PlayerInfo::GetIsHost()
 {
 	return _isHost;
-}
-
-void PlayerInfo::SetTeamID(eTeam team)
-{
-	_teamID = team;
 }
 
 void PlayerInfo::SetIsHost(bool isHost)
@@ -187,11 +181,6 @@ void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
 		default:
 			break;
 	}
-}
-
-eTeam& PlayerInfo::GetPlayerTeam()
-{
-	return _teamID;
 }
 
 bool& PlayerInfo::GetPlayerDie()

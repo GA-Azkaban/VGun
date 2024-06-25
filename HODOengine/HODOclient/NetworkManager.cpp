@@ -306,31 +306,6 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
 
-		switch (player.team())
-		{
-			case Protocol::TEAM_COLOR_RED:
-			{
-				one->SetTeamID(eTeam::R);
-			}
-			break;
-			case Protocol::TEAM_COLOR_GREEN:
-			{
-				one->SetTeamID(eTeam::G);
-			}
-			break;
-			case Protocol::TEAM_COLOR_BLUE:
-			{
-				one->SetTeamID(eTeam::B);
-			}
-			break;
-			default:
-			{
-				one->SetTeamID(eTeam::R);
-				SendChangeTeamColor(Protocol::TEAM_COLOR_RED, player.userinfo().nickname());
-			}
-			break;
-		}
-
 		// 플레이어 정보 받기	
 		info->_players.push_back(one);
 	}
@@ -383,31 +358,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
 		one->SetCurrentHP(player.hp());
-
-		switch (player.team())
-		{
-			case Protocol::TEAM_COLOR_RED:
-			{
-				one->SetTeamID(eTeam::R);
-			}
-			break;
-			case Protocol::TEAM_COLOR_GREEN:
-			{
-				one->SetTeamID(eTeam::G);
-			}
-			break;
-			case Protocol::TEAM_COLOR_BLUE:
-			{
-				one->SetTeamID(eTeam::B);
-			}
-			break;
-			default:
-			{
-				one->SetTeamID(eTeam::R);
-				SendChangeTeamColor(Protocol::TEAM_COLOR_RED, player.userinfo().nickname());
-			}
-			break;
-		}
 
 		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
 		{
@@ -467,58 +417,16 @@ void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 	}
 }
 
-void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
-{
-	Protocol::C_ROOM_CHANGE_TEAM packet;
-
-	packet.set_teamcolor(teamColor);
-	packet.set_targetnickname(targetNickName);
-
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
-	this->_service->BroadCast(sendBuffer);
-}
-
-void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
-{
-	auto info = LobbyManager::Instance().GetRoomData();
-
-	for (int i = 0; i < roomInfo.users().size(); ++i)
-	{
-		std::string test = roomInfo.users()[i].userinfo().nickname();
-
-		for (int j = 0; j < roomInfo.users().size(); ++j)
-		{
-
-			if (roomInfo.users()[i].userinfo().nickname() ==
-				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
-			{
-				switch (roomInfo.users()[i].team())
-				{
-					case Protocol::TEAM_COLOR_RED:
-					{
-						std::string test = roomInfo.users()[j].userinfo().nickname();
-						LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[j].userinfo().nickname());
-					}
-					break;
-					case Protocol::TEAM_COLOR_GREEN:
-					{
-						std::string test = roomInfo.users()[j].userinfo().nickname();
-						LobbyManager::Instance().SetPlayerTeam(eTeam::G, roomInfo.users()[j].userinfo().nickname());
-					}
-					break;
-					case Protocol::TEAM_COLOR_BLUE:
-					{
-						std::string test = roomInfo.users()[j].userinfo().nickname();
-						LobbyManager::Instance().SetPlayerTeam(eTeam::B, roomInfo.users()[j].userinfo().nickname());
-					}
-					break;
-					default:
-						break;
-				}
-			}
-		}
-	}
-}
+//void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
+//{
+//	Protocol::C_ROOM_CHANGE_TEAM packet;
+//
+//	packet.set_teamcolor(teamColor);
+//	packet.set_targetnickname(targetNickName);
+//
+//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+//	this->_service->BroadCast(sendBuffer);
+//}
 
 void NetworkManager::SendGameStart()
 {
