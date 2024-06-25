@@ -11,7 +11,6 @@
 #include "TPScript.h"
 #include "OthersAnim.h"
 #include "Health.h"
-#include "RoundTimer.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -207,13 +206,10 @@ void InGameSceneView::Initialize()
 
 	// Timer
 	auto timer = API::CreateTextbox(_scene, "timer");
-	timer->AddComponent<RoundTimer>(10);
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
-
 	
 	// KillCount
 	auto kills = API::CreateTextbox(_scene, "kills");
-
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

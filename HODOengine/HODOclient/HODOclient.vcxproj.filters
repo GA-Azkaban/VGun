@@ -65,7 +65,6 @@
     <ClCompile Include="LobbySceneView.cpp">
       <Filter>04_SceneView\Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="FSMtestScript.cpp" />
     <ClCompile Include="BtnHoveringScript.cpp">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
@@ -123,9 +122,6 @@
     <ClCompile Include="BtnTextScript.cpp">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
-    <ClCompile Include="RoundTimer.cpp">
-      <Filter>02_Client\01_Script\UI\RoundTimer</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -173,7 +169,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MenuManager.h">
       <Filter>03_Manager\MenuManager</Filter>
@@ -271,9 +266,7 @@
     <ClInclude Include="BtnTextScript.h">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClInclude>
-    <ClInclude Include="RoundTimer.h">
-      <Filter>02_Client\01_Script\UI\RoundTimer</Filter>
-    </ClInclude>
+    <ClInclude Include="PlayerMoveState.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -400,9 +393,6 @@
     </Filter>
     <Filter Include="02_Client\01_Script\UI\ImageScript">
       <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\UI\RoundTimer">
-      <UniqueIdentifier>{de484819-8fdb-4bfb-9bc4-3b3be09ed8f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

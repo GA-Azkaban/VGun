@@ -259,7 +259,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="RoundTimer.h" />
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
     <ClInclude Include="SliderSoundScript.h" />
@@ -305,7 +304,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="PlayerInfo.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="Protocol.pb.cc" />
-    <ClCompile Include="RoundTimer.cpp" />
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="SliderSoundScript.cpp" />

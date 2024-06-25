@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 
 #include "../HODOengine/HODO_API.h"
 #include "PlayerInfo.h"
@@ -62,11 +64,15 @@ private:
 public:
 	void SetRoundTimerObject(HDData::TextUI* obj);
 	void SetRoundTimer(int time);
+	void SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time);
 	int& GetRoundTimer();
+	void UpdateRoundTimer();
 
 private:
 	HDData::TextUI* _timerUI;
 	int _timer;			// 타이머
+
+	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
 public:
 	void SetDesiredKill(int count);

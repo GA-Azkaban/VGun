@@ -127,7 +127,7 @@ void RoundManager::InitRound()
 
 void RoundManager::UpdateRound()
 {
-	
+	UpdateRoundTimer();
 }
 
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
@@ -218,6 +218,8 @@ void RoundManager::SetIsRoundStart(bool isStart)
 void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 {
 	_timerUI = obj;
+	_timerUI->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	_timerUI->GetTransform()->SetPosition(2400.0f, 100.0f, 0.0f);
 }
 
 void RoundManager::SetRoundTimer(int time)
@@ -225,9 +227,28 @@ void RoundManager::SetRoundTimer(int time)
 	_timer = time;
 }
 
+void RoundManager::SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time)
+{
+	_start_time = time;
+}
+
 int& RoundManager::GetRoundTimer()
 {
 	return _timer;
+}
+
+void RoundManager::UpdateRoundTimer()
+{
+	if (_isRoundStart)
+	{
+		auto currentTime = std::chrono::steady_clock::now();
+		std::chrono::duration<double> elapsedTime = currentTime - _start_time;
+		_timerUI->SetText(std::to_string(static_cast<int>(_timer - elapsedTime.count())));
+		if (elapsedTime.count() >= _timer)
+		{
+			_isRoundStart = false;
+		}
+	}
 }
 
 void RoundManager::SetDesiredKill(int count)

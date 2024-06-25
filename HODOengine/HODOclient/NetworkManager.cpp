@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include <string>
+#include <chrono>
 #include "NetworkManager.h"
 
 #include "Service.h"
@@ -543,6 +544,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->SetIsRoundStart(true);
+	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
 
 void NetworkManager::SendPlayUpdate()
