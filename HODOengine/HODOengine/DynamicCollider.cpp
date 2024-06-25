@@ -143,7 +143,7 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 
 void HDData::DynamicCollider::Jump(Vector3 direction)
 {
-	_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.0f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()

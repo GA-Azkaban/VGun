@@ -1,4 +1,4 @@
-#include "AudioSource.h"
+﻿#include "AudioSource.h"
 #include "SoundSystem.h"
 
 HDData::AudioSource::AudioSource()
@@ -124,4 +124,9 @@ bool HDData::AudioSource::IsSoundPlaying(std::string soundName)
 	}
 
 	return false;
+}
+
+void HDData::AudioSource::UpdateSoundPos(Vector3 pos)
+{
+	_soundSystem.UpdateSoundPos(pos);
 }
