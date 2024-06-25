@@ -68,6 +68,9 @@ public: // 게임 관련
 	// N초 뒤 게임 시작시 호출
 	void RecvGameStart();
 
+	// 게임 종료. 시간 끝나거나 킬 달성시 호출됨
+	void RecvGameEnd(Protocol::RoomInfo roomInfo);
+
 public: // 트랜스폼 동기화
 	void SendPlayerTranform();
 	void RecvPlayerTranform();
