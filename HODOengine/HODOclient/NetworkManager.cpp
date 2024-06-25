@@ -524,8 +524,6 @@ void NetworkManager::SendGameStart()
 {
 	Protocol::C_ROOM_START packet;
 
-	
-
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
@@ -543,13 +541,16 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 void NetworkManager::RecvGameStart()
 {
+	API::SetRecursiveMouseMode(true);
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
-
+	API::SetRecursiveMouseMode(false);
+	RoundManager::Instance()->SetIsRoundStart(false);
+	// TODO) 순위 보여주기 씬으로 전환
 }
 
 void NetworkManager::SendPlayUpdate()

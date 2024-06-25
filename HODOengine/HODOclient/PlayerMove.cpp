@@ -5,8 +5,6 @@
 #include "GameManager.h"
 #include "RoundManager.h"
 
-#define BULLET_MAX 8
-
 PlayerMove::PlayerMove()
 	: _isMovable(true),
 	_particleIndex(0),
@@ -43,8 +41,6 @@ void PlayerMove::Start()
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
-
-	_bulletCount = BULLET_MAX;
 }
 
 void PlayerMove::Update()
@@ -459,8 +455,8 @@ void PlayerMove::Reload()
 	//	}
 	//}
 	_shootCount = 0;
-	//_playerState.second = ePlayerState::IDLE;
-			_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
+	_playerState.second = ePlayerMoveState::IDLE;
+	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -1160,7 +1156,7 @@ void PlayerMove::DecidePlayerState()
 		_playerState.second = ePlayerMoveState::IDLE;
 		_shootCount = 0;
 	}
-	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < BULLET_MAX)
+	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
 	{
 		_playerState.second = ePlayerMoveState::RELOAD;
 	}

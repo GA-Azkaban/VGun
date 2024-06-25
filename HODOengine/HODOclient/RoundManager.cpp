@@ -34,6 +34,8 @@ void RoundManager::Update()
 {
 	if (!_isRoundStart) return;
 
+	UpdateRound();
+
 	const uint64 frame = 16;
 	static auto updateTick = 0;
 
@@ -44,7 +46,6 @@ void RoundManager::Update()
 
 	updateTick = currentTick + frame;
 
-	UpdateRound();
 	NetworkManager::Instance().SendPlayUpdate();
 }
 
@@ -78,11 +79,14 @@ void RoundManager::InitGame()
 		{
 			_myObj->AddComponent<PlayerInfo>(info)->SetIsMyInfo(true);
 			GameManager::Instance()->SetMyObject(_myObj);
+			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 		else
 		{
 			_playerObjs[index]->AddComponent<PlayerInfo>(info);
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 
 		++index;
@@ -128,6 +132,7 @@ void RoundManager::InitRound()
 void RoundManager::UpdateRound()
 {
 	UpdateRoundTimer();
+	UpdateDesiredKillChecker();
 }
 
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
@@ -219,7 +224,7 @@ void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 {
 	_timerUI = obj;
 	_timerUI->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	_timerUI->GetTransform()->SetPosition(2400.0f, 100.0f, 0.0f);
+	_timerUI->GetTransform()->SetPosition(2300.0f, 60.0f, 0.0f);
 }
 
 void RoundManager::SetRoundTimer(int time)
@@ -251,6 +256,22 @@ void RoundManager::UpdateRoundTimer()
 	}
 }
 
+void RoundManager::UpdateDesiredKillChecker()
+{
+	{
+		int count = _myObj->GetComponent<PlayerInfo>()->GetPlayerKillCount();
+		_inGameKillCounts[GameManager::Instance()->GetMyInfo()->GetPlayerUID()].second->SetText(std::to_string(count));
+		if (count >= _desiredKill) _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
+	}
+
+	for (auto& [uid, player] : _players)
+	{
+		int count = player->GetComponent<PlayerInfo>()->GetPlayerKillCount();
+		_inGameKillCounts[uid].second->SetText(std::to_string(count));
+		if (count >= _desiredKill) _winnerUID = uid;
+	}
+}
+
 void RoundManager::SetDesiredKill(int count)
 {
 	_desiredKill = count;
@@ -261,14 +282,14 @@ int& RoundManager::GetDesiredKill()
 	return _desiredKill;
 }
 
-void RoundManager::SetMyKillCountUI(HDData::TextUI* txt)
+void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index)
 {
-	_myKillCount = txt;
+	_killCountObjs[index] = std::make_pair(nick, count);
 }
 
-void RoundManager::SetOthersKillCount(HDData::TextUI* txt, int index)
+std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
 {
-	_othersKillCount[index] = txt;
+	return _inGameKillCounts;
 }
 
 void RoundManager::SetAnimationDummy(HDData::GameObject* obj)
