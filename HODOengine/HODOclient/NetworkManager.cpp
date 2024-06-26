@@ -29,12 +29,11 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
-	data = new Protocol::PlayerData;
 }
 
 NetworkManager::~NetworkManager()
 {
-	delete data;
+
 }
 
 void NetworkManager::Start()
