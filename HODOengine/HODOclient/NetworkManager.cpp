@@ -57,7 +57,7 @@ void NetworkManager::Update()
 	auto& playerObj = RoundManager::Instance()->GetPlayerObjs();
 
 	if (playerObj.size() == 0) return;
-	 
+
 	for (auto& [uid, player] : playerObj)
 	{
 		auto info = player->GetComponent<PlayerInfo>();
@@ -88,12 +88,12 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		{
 			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::HEAD);
 		}
-			break;
+		break;
 		case Protocol::HIT_LOCATION_BODY:
 		{
 			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::BODY);
 		}
-			break;
+		break;
 		case Protocol::HIT_LOCATION_ARM:
 			break;
 		case Protocol::HIT_LOCATION_LEG:
@@ -603,9 +603,9 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-	data = ConvertPlayerInfoToData(mine, info);
-	
-	packet.mutable_playerdata()->CopyFrom(*data);
+	auto data = ConvertPlayerInfoToData(mine, info);
+
+	*packet.mutable_playerdata() = data;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -644,21 +644,23 @@ bool NetworkManager::IsConnected()
 	return _isConnect;
 }
 
-Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info)
+Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info)
 {
-	data->mutable_transform()->mutable_vector3()->set_x(mine->GetTransform()->GetPosition().x);
-	data->mutable_transform()->mutable_vector3()->set_y(mine->GetTransform()->GetPosition().y);
-	data->mutable_transform()->mutable_vector3()->set_z(mine->GetTransform()->GetPosition().z);
+	Protocol::PlayerData data;
 
-	data->mutable_transform()->mutable_quaternion()->set_x(mine->GetTransform()->GetRotation().x);
-	data->mutable_transform()->mutable_quaternion()->set_y(mine->GetTransform()->GetRotation().y);
-	data->mutable_transform()->mutable_quaternion()->set_z(mine->GetTransform()->GetRotation().z);
-	data->mutable_transform()->mutable_quaternion()->set_w(mine->GetTransform()->GetRotation().w);
+	data.mutable_transform()->mutable_vector3()->set_x(mine->GetTransform()->GetPosition().x);
+	data.mutable_transform()->mutable_vector3()->set_y(mine->GetTransform()->GetPosition().y);
+	data.mutable_transform()->mutable_vector3()->set_z(mine->GetTransform()->GetPosition().z);
 
-	data->set_host(info->GetIsHost());
+	data.mutable_transform()->mutable_quaternion()->set_x(mine->GetTransform()->GetRotation().x);
+	data.mutable_transform()->mutable_quaternion()->set_y(mine->GetTransform()->GetRotation().y);
+	data.mutable_transform()->mutable_quaternion()->set_z(mine->GetTransform()->GetRotation().z);
+	data.mutable_transform()->mutable_quaternion()->set_w(mine->GetTransform()->GetRotation().w);
 
-	data->mutable_userinfo()->set_uid(info->GetPlayerUID());
-	data->mutable_userinfo()->set_nickname(info->GetPlayerNickName());
+	data.set_host(info->GetIsHost());
+
+	data.mutable_userinfo()->set_uid(info->GetPlayerUID());
+	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
 	return data;
 }
@@ -741,52 +743,52 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 		{
 			return ePlayerState::IDLE;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_FORWARD:
 		{
 			return ePlayerState::WALK_F;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_BACK:
 		{
 			return ePlayerState::WALK_B;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_LEFT:
 		{
 			return ePlayerState::WALK_L;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_RIGHT:
 		{
 			return ePlayerState::WALK_R;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_JUMP:
 		{
 			return ePlayerState::JUMP;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_ROLL:
 		{
 			return ePlayerState::ROLL;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_RELOAD:
 		{
 			return ePlayerState::RELOAD;
 		}
-			break;
+		break;
 		case Protocol::ANIMATION_STATE_DEATH:
 		{
 			return ePlayerState::DIE;
 		}
-			break;
+		break;
 		default:
 		{
 			return ePlayerState::IDLE;
 		}
-			break;
+		break;
 	}
 }
 
