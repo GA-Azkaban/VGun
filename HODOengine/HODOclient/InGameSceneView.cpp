@@ -146,16 +146,20 @@ void InGameSceneView::Initialize()
 	//playerSound->AddAudio3D("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
 	//playerSound->AddAudio3D("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound, 5.0f, 30.0f);
 	//playerSound->SetSoundGroupVolume(HDData::SoundGroup::SoundGroupChannel5, 1000.0f);
-	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
-	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload2.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound);
 	playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
-	playerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
 
 
 	posX += 1;
