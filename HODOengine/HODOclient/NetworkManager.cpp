@@ -67,43 +67,17 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-	{
-		// 내가 쐈을 때
-		// TODO) 내 총구 이펙트
-	}
-	else
-	{
-		// 남이 쐈을 때
-		// TODO) 남의 총구 이펙트
-	}
+	ConvertDataToPlayerInfo(playerData,
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-	{
-		// 내가 쐈을 때 ) 내 킬 정보 갱신
-		RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentKill(playerData.killcount());
-		// TODO ) 내 총구 이펙트
-	}
-	else
-	{
-		// 남이 쐈을 때
-		// TODO) 남의 총구 이펙트
-
-		if (hitPlayerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-		{
-			// 내가 맞았을 때 ) 내 데스 카운트 갱신
-			RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentHP(hitPlayerData.hp());
-			//RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
-		}
-		else
-		{
-			// 남이 맞았을 때 ) 다른 플레이어의 데스 카운트 갱신
-			//RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
-		}
-	}
+	// TODO) 총구 이벤트
+	ConvertDataToPlayerInfo(hitPlayerData,
+		RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()],
+		RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 }
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)

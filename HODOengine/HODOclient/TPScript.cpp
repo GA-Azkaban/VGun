@@ -1,4 +1,5 @@
 ﻿#include "TPScript.h"
+#include "GameManager.h"
 #include "../HODOengine/HODO_API.h"
 
 TPScript::TPScript()
@@ -15,35 +16,35 @@ void TPScript::Update()
 {
 	if (API::GetKeyPressing(DIK_W))
 	{
-		_animator->GetAllAC()->SetBool("isWalkFront", true);
+		_animator->GetAllAC()->SetBool("isWalkF", true);
 	}
 	if (API::GetKeyUp(DIK_W))
 	{
-		_animator->GetAllAC()->SetBool("isWalkFront", false);
+		_animator->GetAllAC()->SetBool("isWalkF", false);
 	}
 	if (API::GetKeyPressing(DIK_A))
 	{
-		_animator->GetAllAC()->SetBool("isWalkLeft", true);
+		_animator->GetAllAC()->SetBool("isWalkL", true);
 	}
 	if (API::GetKeyUp(DIK_A))
 	{
-		_animator->GetAllAC()->SetBool("isWalkLeft", false);
+		_animator->GetAllAC()->SetBool("isWalkL", false);
 	}
 	if (API::GetKeyPressing(DIK_S))
 	{
-		_animator->GetAllAC()->SetBool("isWalkBack", true);
+		_animator->GetAllAC()->SetBool("isWalkB", true);
 	}
 	if (API::GetKeyUp(DIK_S))
 	{
-		_animator->GetAllAC()->SetBool("isWalkBack", false);
+		_animator->GetAllAC()->SetBool("isWalkB", false);
 	}
 	if (API::GetKeyPressing(DIK_D))
 	{
-		_animator->GetAllAC()->SetBool("isWalkRight", true);
+		_animator->GetAllAC()->SetBool("isWalkR", true);
 	}
 	if (API::GetKeyUp(DIK_D))
 	{
-		_animator->GetAllAC()->SetBool("isWalkRight", false);
+		_animator->GetAllAC()->SetBool("isWalkR", false);
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
@@ -57,11 +58,31 @@ void TPScript::Update()
 	{
 		_animator->GetAllAC()->SetTrigger("isFire");
 	}
+	if (API::GetKeyDown(DIK_LCONTROL))
+	{
+		_animator->GetAllAC()->SetTrigger("isRoll");
+	}
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
+	{
+		_animator->GetAllAC()->SetBool("isDie", true);
+	}
+	if (!GameManager::Instance()->GetMyInfo()->GetIsDie())
+	{
+		_animator->GetAllAC()->SetBool("isDie", false);
+	}
+	if (API::GetKeyDown(DIK_K))
+	{
+		_animator->GetAllAC()->SetBool("isDance", true);
+	}
+	if (API::GetKeyUp(DIK_K))
+	{
+		_animator->GetAllAC()->SetBool("isDance", false);
+	}
 	else
 	{
-		_animator->GetAllAC()->SetBool("isWalkFront", false);
-		_animator->GetAllAC()->SetBool("isWalkLeft", false);
-		_animator->GetAllAC()->SetBool("isWalkBack", false);
-		_animator->GetAllAC()->SetBool("isWalkRight", false);
+		_animator->GetAllAC()->SetBool("isWalkF", false);
+		_animator->GetAllAC()->SetBool("isWalkL", false);
+		_animator->GetAllAC()->SetBool("isWalkB", false);
+		_animator->GetAllAC()->SetBool("isWalkR", false);
 	}
 }
