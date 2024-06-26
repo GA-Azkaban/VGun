@@ -271,3 +271,16 @@ std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() co
 {
 	return _childColliders;
 }
+
+void HDData::DynamicCollider::OnDisable()
+{
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_physXRigid->getScene()->removeActor(*_physXRigid);
+	for (auto& child : _childColliders)
+	{
+		if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
+		{
+			dynamic_cast<HDData::DynamicCollider*>(child)->OnDisable();
+		}
+	}
+}
