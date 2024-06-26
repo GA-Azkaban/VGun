@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -52,6 +52,8 @@ void PlayerMove::Update()
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
+	_playerPos = GetTransform()->GetPosition();
+
 	_isShootHead = false;
 	_isShootBody = false;
 
@@ -59,7 +61,10 @@ void PlayerMove::Update()
 	CheckMoveInfo();
 	DecidePlayerState();
 	Behavior();
-	PlaySound();
+	
+	// sound 관련
+	_playerAudio->UpdateSoundPos(_playerPos);
+	PlayPlayerSound();
 
 	/*
 	// 탄창 비었는데 쏘면 딸깍소리
@@ -281,7 +286,7 @@ bool PlayerMove::CheckIsOnGround()
 				{
 					_isOnGround = true;
 					_isJumping = false;
-					//_playerAudio->Play3DOnce("landing");
+					//_playerAudio->PlayOnce("landing");
 					//_jumpCount = 0;
 				}
 				return true;
@@ -312,7 +317,7 @@ bool PlayerMove::CheckIsOnGround()
 			_isOnGround = true;
 			_isJumping = false;
 			_playerColliderStanding->ClearVeloY();
-			//_playerAudio->Play3DOnce("landing");
+			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
 		}
@@ -443,17 +448,6 @@ void PlayerMove::ShootGunDdabal()
 
 void PlayerMove::Reload()
 {
-	// 2초간 장전
-	//if (_isReloading == true)
-	//{
-	//	_reloadTimer += _deltaTime;
-	//	if (_reloadTimer >= 3.0f)
-	//	{
-	//		_bulletCount = BULLET_MAX;
-	//		_isReloading = false;
-	//		_reloadTimer = 0.0f;
-	//	}
-	//}
 	_shootCount = 0;
 	_playerState.second = ePlayerMoveState::IDLE;
 	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
@@ -490,11 +484,10 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	Reload();
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
-void PlayerMove::PlaySound()
+void PlayerMove::PlayPlayerSound()
 {
 
 }
@@ -1103,7 +1096,7 @@ void PlayerMove::DecidePlayerState()
 		}
 		else
 		{
-			if (API::GetKeyPressing(DIK_LSHIFT))
+			if (API::GetKeyPressing(DIK_LCONTROL))
 			{
 				_playerState.first = ePlayerMoveState::WALK;
 			}
@@ -1115,7 +1108,7 @@ void PlayerMove::DecidePlayerState()
 	}
 
 	// tumble, jump 들어오면 덮어씌우고
-	if (API::GetKeyDown(DIK_LCONTROL))
+	if (API::GetKeyDown(DIK_LSHIFT))
 	{
 		_playerState.first = ePlayerMoveState::TUMBLE;
 	}
@@ -1134,18 +1127,6 @@ void PlayerMove::DecidePlayerState()
 	//	}
 	//}
 
-	if (_playerState.second == ePlayerMoveState::RELOAD)
-	{
-		if (_reloadTimer > 0.0f)
-		{
-			_reloadTimer -= _deltaTime;
-		}
-		else
-		{
-			Reload();
-		}
-		return;
-	}
 
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
@@ -1215,6 +1196,9 @@ void PlayerMove::Behavior()
 		{
 			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
 			{
+				_playerAudio->PlayOnce("tumblingMan");
+				_playerAudio->PlayOnce("tumble");
+
 				_tumbleTimer = 0.4f;
 				_headCam->ToggleCameraShake(true);
 
@@ -1272,6 +1256,17 @@ void PlayerMove::Behavior()
 			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 3.0f;
 		}
+		else
+		{
+			if (_reloadTimer > 0.0f)
+			{
+				_reloadTimer -= _deltaTime;
+			}
+			else
+			{
+				Reload();
+			}
+		}
 	}
 
 	if (_prevPlayerState.first != _playerState.first)
@@ -1279,6 +1274,10 @@ void PlayerMove::Behavior()
 		if (_prevPlayerState.first == ePlayerMoveState::JUMP)
 		{
 			Landing();
+		}
+		if (_prevPlayerState.first == ePlayerMoveState::TUMBLE)
+		{
+			Reload();
 		}
 		if (_prevPlayerState.second == ePlayerMoveState::FIRE)
 		{

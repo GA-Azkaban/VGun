@@ -63,7 +63,7 @@ private:
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
 	void Tumble(Vector3 direction);
-	void PlaySound();
+	void PlayPlayerSound();
 
 public:
 	int& GetBulletCount();
@@ -124,6 +124,7 @@ private:
 	bool _isRunning;
 	bool _tempFlag = 0;
 	Vector3 _tumbleDirection;
+	Vector3 _playerPos;
 
 	int _enterCount = 0;
 	// 상태 중첩을 표현하기 위해. 2번째 요소에는 shoot, reload만.

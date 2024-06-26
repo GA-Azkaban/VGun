@@ -529,9 +529,15 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
+<<<<<<< HEAD
 	data = ConvertPlayerInfoToData(mine, info);
 
 	packet.mutable_playerdata()->CopyFrom(*data);
+=======
+	auto data = ConvertPlayerInfoToData(mine, info);
+
+	*packet.mutable_playerdata() = data;
+>>>>>>> InGamePlay
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -570,21 +576,23 @@ bool NetworkManager::IsConnected()
 	return _isConnect;
 }
 
-Protocol::PlayerData* NetworkManager::ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info)
+Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info)
 {
-	data->mutable_transform()->mutable_vector3()->set_x(mine->GetTransform()->GetPosition().x);
-	data->mutable_transform()->mutable_vector3()->set_y(mine->GetTransform()->GetPosition().y);
-	data->mutable_transform()->mutable_vector3()->set_z(mine->GetTransform()->GetPosition().z);
+	Protocol::PlayerData data;
 
-	data->mutable_transform()->mutable_quaternion()->set_x(mine->GetTransform()->GetRotation().x);
-	data->mutable_transform()->mutable_quaternion()->set_y(mine->GetTransform()->GetRotation().y);
-	data->mutable_transform()->mutable_quaternion()->set_z(mine->GetTransform()->GetRotation().z);
-	data->mutable_transform()->mutable_quaternion()->set_w(mine->GetTransform()->GetRotation().w);
+	data.mutable_transform()->mutable_vector3()->set_x(mine->GetTransform()->GetPosition().x);
+	data.mutable_transform()->mutable_vector3()->set_y(mine->GetTransform()->GetPosition().y);
+	data.mutable_transform()->mutable_vector3()->set_z(mine->GetTransform()->GetPosition().z);
 
-	data->set_host(info->GetIsHost());
+	data.mutable_transform()->mutable_quaternion()->set_x(mine->GetTransform()->GetRotation().x);
+	data.mutable_transform()->mutable_quaternion()->set_y(mine->GetTransform()->GetRotation().y);
+	data.mutable_transform()->mutable_quaternion()->set_z(mine->GetTransform()->GetRotation().z);
+	data.mutable_transform()->mutable_quaternion()->set_w(mine->GetTransform()->GetRotation().w);
 
-	data->mutable_userinfo()->set_uid(info->GetPlayerUID());
-	data->mutable_userinfo()->set_nickname(info->GetPlayerNickName());
+	data.set_host(info->GetIsHost());
+
+	data.mutable_userinfo()->set_uid(info->GetPlayerUID());
+	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
 	return data;
 }

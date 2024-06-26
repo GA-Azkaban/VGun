@@ -132,12 +132,12 @@ void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, Vector3 startPos)
 		if (isPlaying)
 			return;*/
 		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
-		FMOD_VECTOR velocity{ 0, 0, 0 };
+		FMOD_VECTOR velocity{ 0.0f, 0.0f, 0.0f };
 		soundIter->second.sound->setMode(FMOD_LOOP_OFF);
-		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
-			true, &(soundIter->second.channel));
 		soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
 		soundIter->second.channel->setPaused(false);
+		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
+			true, &(soundIter->second.channel));
 	}
 }
 
@@ -264,6 +264,17 @@ bool HDEngine::SoundSystem::IsSoundPlaying(std::string soundPath)
 		return isPlaying;
 	}
 	return false;
+}
+
+void HDEngine::SoundSystem::UpdateSoundPos(Vector3 pos)
+{
+	// soundSource가 플레이어를 따라다니게 업데이트 해주는 함수.
+	 //for (auto& sound : _soundList)
+	 //{
+		// FMOD_VECTOR startPosition{ pos.x, pos.y, pos.z };
+		// FMOD_VECTOR velocity{ 0.0f, 0.0f, 0.0f };
+		// sound.second.channel->set3DAttributes(&startPosition, &velocity);
+	 //}
 }
 
 std::unordered_map<std::string, std::string>& HDEngine::SoundSystem::GetSoundPathList()

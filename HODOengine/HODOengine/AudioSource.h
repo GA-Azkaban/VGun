@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include "MathHeader.h"
 #include "dllExporter.h"
@@ -49,6 +49,8 @@ namespace HDData
 		void SetSoundVolumeAll(float volume);
 
 		bool IsSoundPlaying(std::string soundName);
+
+		void UpdateSoundPos(Vector3 pos);
 
 	private:
 		HDEngine::SoundSystem& _soundSystem;

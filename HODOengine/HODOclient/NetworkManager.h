@@ -112,10 +112,9 @@ private:
 	bool _isConnect;
 
 private:
-	Protocol::PlayerData* data;
-	Protocol::PlayerData* ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
+	Protocol::PlayerData ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
+	void ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info);
 
-	// 보간
 public:
 	void Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue);
 
