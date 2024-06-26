@@ -109,14 +109,16 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
 {
-	if (deathPlayerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-	{
-		RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentDeath(deathPlayerData.deathcount());
-	}
-	else
-	{
+	// 모든 데스 갱신
+	ConvertDataToPlayerInfo(deathPlayerData,
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 
-	}
+	// 모든 킬 갱신
+	ConvertDataToPlayerInfo(killPlayerData,
+		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
+		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+
 }
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
@@ -529,15 +531,8 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-<<<<<<< HEAD
-	data = ConvertPlayerInfoToData(mine, info);
-
-	packet.mutable_playerdata()->CopyFrom(*data);
-=======
 	auto data = ConvertPlayerInfoToData(mine, info);
-
 	*packet.mutable_playerdata() = data;
->>>>>>> InGamePlay
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -595,6 +590,17 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
 	return data;
+}
+
+void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
+{
+	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
+
+	info->SetCurrentKill(data.killcount());
+	info->SetCurrentDeath(data.deathcount());
+	info->SetCurrentHP(data.hp());
+	info->SetIsDie(data.isdead());
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
