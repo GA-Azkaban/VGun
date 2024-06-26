@@ -1,4 +1,4 @@
-﻿ #include <fstream>
+﻿#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -35,11 +35,16 @@ namespace HDEngine
 		now = scene;
 
 		HDEngine::MaterialDesc mat;
-		mat.materialName = "PolygonWestern_Texture_01_B";
-		mat.albedo = "PolygonWestern_Texture_01_B.png";
+		mat.materialName = "PolygonWestern_Texture_01_A";
+		mat.albedo = "PolygonWestern_Texture_01_A.png";
 		mat.metallic = "PolygonWestern_Texture_Metallic.png";
 
 		_material = MaterialManager::Instance().CreateMaterial(mat);
+
+		HDEngine::MaterialDesc plane;
+		plane.color = { 142, 118, 89, 255 };
+
+		_plane = MaterialManager::Instance().CreateMaterial(plane);
 
 		LoadFromJson(SCENEDATA_PATH + fileName);
 		CreateObject(scene);
@@ -117,16 +122,9 @@ namespace HDEngine
 
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 
-			if (meshName == "Plane" ||
-				meshName == "Cube")
+			if (meshName == "Plane")
 			{
 				info.meshName = "Cube";
-				meshRenderer->LoadMesh("primitiveCube");
-			}
-			else if (meshName == "Stair" ||
-				meshName == "2FPlane")
-			{
-				info.meshName = "2F";
 				meshRenderer->LoadMesh("primitiveCube");
 			}
 			else if (info.meshName != "")
@@ -158,8 +156,14 @@ namespace HDEngine
 
 			for (int m = 0; m < m_size; m++)
 			{
-				if (_material == nullptr) continue;
-				meshRenderer->LoadMaterial(_material, m);
+				if (info.meshName == "Cube")
+				{
+					meshRenderer->LoadMaterial(_plane, m);
+				}
+				else
+				{
+					meshRenderer->LoadMaterial(_material, m);
+				}
 			}
 
 			_gameObjectMap.insert(std::make_pair(info.id, object));

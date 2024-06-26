@@ -1,4 +1,4 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -73,5 +73,5 @@ void Client::Initialize()
 
 	API::LoadSceneByName("Login");
 	//API::LoadSceneByName("InGame");
-	API::SetRecursiveMouseMode(true);
+	//API::SetRecursiveMouseMode(true);
 }

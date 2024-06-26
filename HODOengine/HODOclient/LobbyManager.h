@@ -114,12 +114,10 @@ private:
 public:
 	// 방 내부의 플레이어 정보를 관리
 	void RefreshRoom();
-	void SetPlayerTeam(eTeam team, std::string nickName = "");
 
 public:
 	std::vector<HDData::GameObject*>& GetPlayerObjects();
 	std::vector<HDData::GameObject*>& GetNickNameObjects();
-	std::vector<HDData::GameObject*>& GetTeamButtonObjects();
 	std::vector<HDData::GameObject*>& GetQuitButtonObjects();
 	int GetPlayerNum();
 
@@ -128,6 +126,5 @@ private:
 	// 씬 내부에 계속 존재하는 오브젝트들
 	std::vector<HDData::GameObject*> _playerObjs;
 	std::vector<HDData::GameObject*> _nickNameIndex;
-	std::vector<HDData::GameObject*> _teamButton;
 	std::vector<HDData::GameObject*> _quitButtons;
 };

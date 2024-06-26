@@ -57,8 +57,8 @@ public: // 강퇴
 	void RecvKickPlayer(Protocol::RoomInfo roomInfo);
 
 public: // 팀 색상 변경
-	void SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName = "");
-	void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);
+	//void SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName = "");
+	//void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);
 
 public: // 게임 관련
 	void SendGameStart();

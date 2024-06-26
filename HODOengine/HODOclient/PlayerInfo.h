@@ -30,7 +30,6 @@ public:
 
 
 	void SetPlayerUID(int uid);
-	void SetTeamID(eTeam team);
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
 
@@ -44,7 +43,6 @@ public:
 
 	int& GetPlayerUID();
 	bool& GetIsHost();
-	eTeam& GetPlayerTeam();
 	bool& GetPlayerDie();
 	std::string& GetPlayerNickName();
 
@@ -68,9 +66,6 @@ public:
 	void SetIsJump(bool isJump);
 	bool GetIsShoot();
 	bool GetIsJump();
-	
-	void OtherPlayerShoot(eHITLOC loc);
-
 
 private:
 	bool _isMyInfo = false;
@@ -101,8 +96,5 @@ private:
 	// count info
 	int _kill;
 	int _death;
-
-	// else
-	eTeam _teamID;
 };
 

@@ -144,7 +144,7 @@ bool Handle_S_GAME_END(Horang::PacketSessionRef& session, Protocol::S_GAME_END& 
 
 bool Handle_S_ROOM_CHANGE_TEAM(Horang::PacketSessionRef& session, Protocol::S_ROOM_CHANGE_TEAM& pkt)
 {
-	NetworkManager::Instance().RecvChangeTeamColor(pkt.roominfo());
+	//NetworkManager::Instance().RecvChangeTeamColor(pkt.roominfo());
 
 	return true;
 }

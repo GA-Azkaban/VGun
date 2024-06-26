@@ -1,7 +1,7 @@
 ﻿#include "PlayerInfo.h"
+#include "GameManager.h"
 
 PlayerInfo::PlayerInfo()
-	:_currentHP(70)
 {
 
 }
@@ -9,7 +9,6 @@ PlayerInfo::PlayerInfo()
 PlayerInfo::PlayerInfo(PlayerInfo* info)
 {
 	_playerUID = info->GetPlayerUID();
-	_teamID = info->GetPlayerTeam();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
 }
@@ -21,7 +20,7 @@ void PlayerInfo::Start()
 
 void PlayerInfo::Update()
 {
-
+	
 }
 
 void PlayerInfo::Init()
@@ -96,11 +95,6 @@ bool& PlayerInfo::GetIsHost()
 	return _isHost;
 }
 
-void PlayerInfo::SetTeamID(eTeam team)
-{
-	_teamID = team;
-}
-
 void PlayerInfo::SetIsHost(bool isHost)
 {
 	_isHost = isHost;
@@ -139,6 +133,7 @@ ePlayerState PlayerInfo::GetPlayerState()
 void PlayerInfo::SetIsMyInfo(bool isMine)
 {
 	_isMyInfo = isMine;
+	GameManager::Instance()->SetMyInfo(this);
 }
 
 bool PlayerInfo::GetIsMyInfo()
@@ -164,34 +159,6 @@ bool PlayerInfo::GetIsShoot()
 bool PlayerInfo::GetIsJump()
 {
 	return _isJump;
-}
-
-void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
-{
-	switch (loc)
-	{
-		case eHITLOC::NONE:
-			break;
-		case eHITLOC::NO_HIT:
-			break;
-		case eHITLOC::HEAD:
-		{
-			_currentHP -= 30;
-		}
-			break;
-		case eHITLOC::BODY:
-		{
-			_currentHP -= 10;
-		}
-			break;
-		default:
-			break;
-	}
-}
-
-eTeam& PlayerInfo::GetPlayerTeam()
-{
-	return _teamID;
 }
 
 bool& PlayerInfo::GetPlayerDie()

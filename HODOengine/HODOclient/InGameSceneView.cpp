@@ -10,8 +10,6 @@
 #include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
-#include "Health.h"
-#include "RoundTimer.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -162,6 +160,8 @@ void InGameSceneView::Initialize()
 
 	posX += 1;
 	posT += 315;
+	
+	
 
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
@@ -203,6 +203,37 @@ void InGameSceneView::Initialize()
 		posT += 315;
 	}
 
+	int uiX = 130;
+	int uiY = 50.0f;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		// killCount UI
+		auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
+		uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
+		uiBack->GetTransform()->SetScale(1, 3, 0);
+		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
+		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+
+		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
+		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
+		auto nickComp = nickname->GetComponent<HDData::TextUI>();
+		nickComp->SetColor(DirectX::Colors::Black);
+		nickComp->SetText("");
+		nickComp->SetSortOrder(0.7);
+
+		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
+		killcount->GetTransform()->SetPosition(uiX + 25, uiY, 0);
+		auto countComp = killcount->GetComponent<HDData::TextUI>();
+		countComp->SetColor(DirectX::Colors::Black);
+		countComp->SetText("");
+		countComp->SetSortOrder(0.7);
+
+		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
+
+		uiY += 60;
+	}
+
 	// crosshair
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
@@ -217,18 +248,15 @@ void InGameSceneView::Initialize()
 	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
-	HDData::GameObject* healthPoint = API::CreateObject(_scene, "healthPoint");
-	healthPoint->AddComponent<Health>();
+	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
+	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
+	hpTxt->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	hpTxt->GetTransform()->SetPosition(2100.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetHPObject(hpTxt);
 
 	// Timer
 	auto timer = API::CreateTextbox(_scene, "timer");
-	timer->AddComponent<RoundTimer>(10);
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
-
-	
-	// KillCount
-	auto kills = API::CreateTextbox(_scene, "kills");
-
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

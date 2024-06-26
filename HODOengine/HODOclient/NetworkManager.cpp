@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include <string>
+#include <chrono>
 #include "NetworkManager.h"
 
 #include "Service.h"
@@ -67,48 +68,56 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
-
-	int i = 3;
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+	{
+		// 내가 쐈을 때
+		// TODO) 내 총구 이펙트
+	}
+	else
+	{
+		// 남이 쐈을 때
+		// TODO) 남의 총구 이펙트
+	}
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
-
-	auto uid = playerData.userinfo().uid();
-
-	switch (hitLocation)
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
-		case Protocol::HIT_LOCATION_NONE:
-			break;
-		case Protocol::HIT_LOCATION_NO_HIT:
-			break;
-		case Protocol::HIT_LOCATION_HEAD:
+		// 내가 쐈을 때 ) 내 킬 정보 갱신
+		RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentKill(playerData.killcount());
+		// TODO ) 내 총구 이펙트
+	}
+	else
+	{
+		// 남이 쐈을 때
+		// TODO) 남의 총구 이펙트
+
+		if (hitPlayerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
-			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::HEAD);
+			// 내가 맞았을 때 ) 내 데스 카운트 갱신
+			RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentHP(hitPlayerData.hp());
+			//RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
 		}
-		break;
-		case Protocol::HIT_LOCATION_BODY:
+		else
 		{
-			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::BODY);
+			// 남이 맞았을 때 ) 다른 플레이어의 데스 카운트 갱신
+			//RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
 		}
-		break;
-		case Protocol::HIT_LOCATION_ARM:
-			break;
-		case Protocol::HIT_LOCATION_LEG:
-			break;
-		case Protocol::eHitLocation_INT_MIN_SENTINEL_DO_NOT_USE_:
-			break;
-		case Protocol::eHitLocation_INT_MAX_SENTINEL_DO_NOT_USE_:
-			break;
-		default:
-			break;
 	}
 }
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
 {
+	// 모든 데스 갱신
+	ConvertDataToPlayerInfo(deathPlayerData,
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+
+	// 모든 킬 갱신
+	ConvertDataToPlayerInfo(killPlayerData,
+		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
+		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 
 }
 
@@ -305,31 +314,6 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
 
-		switch (player.team())
-		{
-			case Protocol::TEAM_COLOR_RED:
-			{
-				one->SetTeamID(eTeam::R);
-			}
-			break;
-			case Protocol::TEAM_COLOR_GREEN:
-			{
-				one->SetTeamID(eTeam::G);
-			}
-			break;
-			case Protocol::TEAM_COLOR_BLUE:
-			{
-				one->SetTeamID(eTeam::B);
-			}
-			break;
-			default:
-			{
-				one->SetTeamID(eTeam::R);
-				SendChangeTeamColor(Protocol::TEAM_COLOR_RED, player.userinfo().nickname());
-			}
-			break;
-		}
-
 		// 플레이어 정보 받기	
 		info->_players.push_back(one);
 	}
@@ -382,31 +366,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 		one->SetIsHost(player.host());
 		one->SetPlayerUID(player.userinfo().uid());
 		one->SetCurrentHP(player.hp());
-
-		switch (player.team())
-		{
-			case Protocol::TEAM_COLOR_RED:
-			{
-				one->SetTeamID(eTeam::R);
-			}
-			break;
-			case Protocol::TEAM_COLOR_GREEN:
-			{
-				one->SetTeamID(eTeam::G);
-			}
-			break;
-			case Protocol::TEAM_COLOR_BLUE:
-			{
-				one->SetTeamID(eTeam::B);
-			}
-			break;
-			default:
-			{
-				one->SetTeamID(eTeam::R);
-				SendChangeTeamColor(Protocol::TEAM_COLOR_RED, player.userinfo().nickname());
-			}
-			break;
-		}
 
 		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
 		{
@@ -466,64 +425,20 @@ void NetworkManager::RecvKickPlayer(Protocol::RoomInfo roomInfo)
 	}
 }
 
-void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
-{
-	Protocol::C_ROOM_CHANGE_TEAM packet;
-
-	packet.set_teamcolor(teamColor);
-	packet.set_targetnickname(targetNickName);
-
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
-	this->_service->BroadCast(sendBuffer);
-}
-
-void NetworkManager::RecvChangeTeamColor(Protocol::RoomInfo roomInfo)
-{
-	auto info = LobbyManager::Instance().GetRoomData();
-
-	for (int i = 0; i < roomInfo.users().size(); ++i)
-	{
-		std::string test = roomInfo.users()[i].userinfo().nickname();
-
-		for (int j = 0; j < roomInfo.users().size(); ++j)
-		{
-
-			if (roomInfo.users()[i].userinfo().nickname() ==
-				LobbyManager::Instance().GetPlayerObjects()[j]->GetComponent<PlayerInfo>()->GetPlayerNickName())
-			{
-				switch (roomInfo.users()[i].team())
-				{
-					case Protocol::TEAM_COLOR_RED:
-					{
-						std::string test = roomInfo.users()[j].userinfo().nickname();
-						LobbyManager::Instance().SetPlayerTeam(eTeam::R, roomInfo.users()[j].userinfo().nickname());
-					}
-					break;
-					case Protocol::TEAM_COLOR_GREEN:
-					{
-						std::string test = roomInfo.users()[j].userinfo().nickname();
-						LobbyManager::Instance().SetPlayerTeam(eTeam::G, roomInfo.users()[j].userinfo().nickname());
-					}
-					break;
-					case Protocol::TEAM_COLOR_BLUE:
-					{
-						std::string test = roomInfo.users()[j].userinfo().nickname();
-						LobbyManager::Instance().SetPlayerTeam(eTeam::B, roomInfo.users()[j].userinfo().nickname());
-					}
-					break;
-					default:
-						break;
-				}
-			}
-		}
-	}
-}
+//void NetworkManager::SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName)
+//{
+//	Protocol::C_ROOM_CHANGE_TEAM packet;
+//
+//	packet.set_teamcolor(teamColor);
+//	packet.set_targetnickname(targetNickName);
+//
+//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+//	this->_service->BroadCast(sendBuffer);
+//}
 
 void NetworkManager::SendGameStart()
 {
 	Protocol::C_ROOM_START packet;
-
-	
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -542,12 +457,16 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 void NetworkManager::RecvGameStart()
 {
+	API::SetRecursiveMouseMode(true);
 	RoundManager::Instance()->SetIsRoundStart(true);
+	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
-
+	API::SetRecursiveMouseMode(false);
+	RoundManager::Instance()->SetIsRoundStart(false);
+	// TODO) 순위 보여주기 씬으로 전환
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -583,7 +502,11 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 	for (auto& player : roominfo.users())
 	{
-		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
+		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		{
+			GameManager::Instance()->GetMyInfo()->SetCurrentHP(player.hp());
+			continue;
+		}
 
 		auto& obj = playerobj[player.userinfo().uid()];
 		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
@@ -592,6 +515,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 
 		info->SetServerTransform(pos, rot);
+		info->SetCurrentHP(player.hp());
 
 		// animation
 		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
@@ -607,15 +531,8 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-<<<<<<< HEAD
-	data = ConvertPlayerInfoToData(mine, info);
-
-	packet.mutable_playerdata()->CopyFrom(*data);
-=======
 	auto data = ConvertPlayerInfoToData(mine, info);
-
 	*packet.mutable_playerdata() = data;
->>>>>>> InGamePlay
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -673,6 +590,17 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
 	return data;
+}
+
+void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
+{
+	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
+
+	info->SetCurrentKill(data.killcount());
+	info->SetCurrentDeath(data.deathcount());
+	info->SetCurrentHP(data.hp());
+	info->SetIsDie(data.isdead());
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)

@@ -112,42 +112,9 @@ void LobbySceneView::Initialize()
 		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
 		QuitMemberButton->SetSelfActive(false);
 
-		auto rButton = API::CreateButton(_scene, "R", subCanvas);
-		auto rBtn = rButton->GetComponent<HDData::Button>();
-		rBtn->SetSortOrder(0.3);
-		rButton->GetTransform()->SetLocalPosition(-100.0f, 0.0f, 0.0f);
-		rBtn->SetImage("r.png");
-		rBtn->SetOnClickEvent([=]()
-			{
-				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_RED, nick);
-			});
-
-		auto gButton = API::CreateButton(_scene, "G", subCanvas);
-		auto gBtn = gButton->GetComponent<HDData::Button>();
-		gBtn->SetSortOrder(0.3);
-		gBtn->SetImage("g.png");
-		gBtn->SetOnClickEvent([=]()
-			{
-				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_GREEN, nick);
-			});
-
-		auto bButton = API::CreateButton(_scene, "B", subCanvas);
-		auto bBtn = bButton->GetComponent<HDData::Button>();
-		bBtn->SetSortOrder(0.3);
-		bButton->GetTransform()->SetLocalPosition(100.0f, 0.0f, 0.0f);
-		bBtn->SetImage("b.png");
-		bBtn->SetOnClickEvent([=]()
-			{
-				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE, nick);
-			});
-
 		defaultX += 1.2f;
 		rgbCanvas += 322.5f;
 
-		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
 		subCanvas->SetSelfActive(false);
 	}
 
