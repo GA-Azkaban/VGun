@@ -66,6 +66,7 @@ namespace HDData
 		physx::PxRigidDynamic* GetPhysXRigid() const;
 		HDData::Collider* GetParentCollider() const;
 		std::vector<HDData::Collider*> GetChildColliderVec()const;
+		virtual void OnDisable() override;
 
 	protected:
 		bool _freezeRotation;

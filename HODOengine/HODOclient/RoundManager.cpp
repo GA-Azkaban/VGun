@@ -119,7 +119,7 @@ void RoundManager::InitRound()
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
 		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 
-		SetTeamColor(mesh, info->GetPlayerTeam());
+		//SetTeamColor(mesh, info->GetPlayerTeam());
 	}
 
 

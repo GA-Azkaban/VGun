@@ -214,6 +214,7 @@ void HDData::DynamicCollider::DisableCollider()
 {
 	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
 	_isColliderActive = false;
+	_physXRigid->getScene()->removeActor(*_physXRigid);
 }
 
 void HDData::DynamicCollider::EnableStanding(bool isStand)
@@ -270,4 +271,10 @@ HDData::Collider* HDData::DynamicCollider::GetParentCollider() const
 std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() const
 {
 	return _childColliders;
+}
+
+void HDData::DynamicCollider::OnDisable()
+{
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_physXRigid->getScene()->removeActor(*_physXRigid);
 }
