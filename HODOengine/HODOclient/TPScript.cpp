@@ -59,9 +59,9 @@ void TPScript::Update()
 	}
 	else
 	{
-		/*	_animator->GetAllAC()->SetBool("isWalkFront", false);
-			_animator->GetAllAC()->SetBool("isWalkLeft", false);
-			_animator->GetAllAC()->SetBool("isWalkBack", false);
-			_animator->GetAllAC()->SetBool("isWalkRight", false);*/
+		_animator->GetAllAC()->SetBool("isWalkFront", false);
+		_animator->GetAllAC()->SetBool("isWalkLeft", false);
+		_animator->GetAllAC()->SetBool("isWalkBack", false);
+		_animator->GetAllAC()->SetBool("isWalkRight", false);
 	}
 }
