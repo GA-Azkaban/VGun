@@ -10,7 +10,6 @@
 #include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
-#include "Health.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -234,8 +233,11 @@ void InGameSceneView::Initialize()
 	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
-	HDData::GameObject* healthPoint = API::CreateObject(_scene, "healthPoint");
-	healthPoint->AddComponent<Health>();
+	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
+	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
+	hpTxt->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	hpTxt->GetTransform()->SetPosition(2100.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetHPObject(hpTxt);
 
 	// Timer
 	auto timer = API::CreateTextbox(_scene, "timer");

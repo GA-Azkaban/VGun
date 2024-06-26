@@ -68,49 +68,55 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
-
-	int i = 3;
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+	{
+		// 내가 쐈을 때
+		// TODO) 내 총구 이펙트
+	}
+	else
+	{
+		// 남이 쐈을 때
+		// TODO) 남의 총구 이펙트
+	}
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) return;
-
-	auto uid = playerData.userinfo().uid();
-
-	switch (hitLocation)
+	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
-		case Protocol::HIT_LOCATION_NONE:
-			break;
-		case Protocol::HIT_LOCATION_NO_HIT:
-			break;
-		case Protocol::HIT_LOCATION_HEAD:
+		// 내가 쐈을 때 ) 내 킬 정보 갱신
+		RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentKill(playerData.killcount());
+		// TODO ) 내 총구 이펙트
+	}
+	else
+	{
+		// 남이 쐈을 때
+		// TODO) 남의 총구 이펙트
+
+		if (hitPlayerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
-			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::HEAD);
+			// 내가 맞았을 때 ) 내 데스 카운트 갱신
+			RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentHP(hitPlayerData.hp());
+			//RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
 		}
-		break;
-		case Protocol::HIT_LOCATION_BODY:
+		else
 		{
-			RoundManager::Instance()->RecvOtherPlayerShoot(eHITLOC::BODY);
+			// 남이 맞았을 때 ) 다른 플레이어의 데스 카운트 갱신
+			//RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
 		}
-		break;
-		case Protocol::HIT_LOCATION_ARM:
-			break;
-		case Protocol::HIT_LOCATION_LEG:
-			break;
-		case Protocol::eHitLocation_INT_MIN_SENTINEL_DO_NOT_USE_:
-			break;
-		case Protocol::eHitLocation_INT_MAX_SENTINEL_DO_NOT_USE_:
-			break;
-		default:
-			break;
 	}
 }
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
 {
+	if (deathPlayerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+	{
+		RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentDeath(deathPlayerData.deathcount());
+	}
+	else
+	{
 
+	}
 }
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
@@ -494,7 +500,11 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 	for (auto& player : roominfo.users())
 	{
-		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID()) continue;
+		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		{
+			GameManager::Instance()->GetMyInfo()->SetCurrentHP(player.hp());
+			continue;
+		}
 
 		auto& obj = playerobj[player.userinfo().uid()];
 		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
@@ -503,6 +513,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 
 		info->SetServerTransform(pos, rot);
+		info->SetCurrentHP(player.hp());
 
 		// animation
 		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;

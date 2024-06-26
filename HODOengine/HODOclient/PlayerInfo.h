@@ -66,9 +66,6 @@ public:
 	void SetIsJump(bool isJump);
 	bool GetIsShoot();
 	bool GetIsJump();
-	
-	void OtherPlayerShoot(eHITLOC loc);
-
 
 private:
 	bool _isMyInfo = false;

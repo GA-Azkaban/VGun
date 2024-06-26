@@ -1,7 +1,7 @@
 ﻿#include "PlayerInfo.h"
+#include "GameManager.h"
 
 PlayerInfo::PlayerInfo()
-	:_currentHP(70)
 {
 
 }
@@ -20,7 +20,7 @@ void PlayerInfo::Start()
 
 void PlayerInfo::Update()
 {
-
+	
 }
 
 void PlayerInfo::Init()
@@ -133,6 +133,7 @@ ePlayerState PlayerInfo::GetPlayerState()
 void PlayerInfo::SetIsMyInfo(bool isMine)
 {
 	_isMyInfo = isMine;
+	GameManager::Instance()->SetMyInfo(this);
 }
 
 bool PlayerInfo::GetIsMyInfo()
@@ -158,29 +159,6 @@ bool PlayerInfo::GetIsShoot()
 bool PlayerInfo::GetIsJump()
 {
 	return _isJump;
-}
-
-void PlayerInfo::OtherPlayerShoot(eHITLOC loc)
-{
-	switch (loc)
-	{
-		case eHITLOC::NONE:
-			break;
-		case eHITLOC::NO_HIT:
-			break;
-		case eHITLOC::HEAD:
-		{
-			_currentHP -= 30;
-		}
-			break;
-		case eHITLOC::BODY:
-		{
-			_currentHP -= 10;
-		}
-			break;
-		default:
-			break;
-	}
 }
 
 bool& PlayerInfo::GetPlayerDie()

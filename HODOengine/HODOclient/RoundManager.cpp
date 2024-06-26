@@ -86,6 +86,7 @@ void RoundManager::InitGame()
 		{
 			_playerObjs[index]->AddComponent<PlayerInfo>(info);
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 
@@ -128,6 +129,7 @@ void RoundManager::InitRound()
 void RoundManager::UpdateRound()
 {
 	UpdateRoundTimer();
+	UpdateHPText();
 	UpdateDesiredKillChecker();
 }
 
@@ -143,11 +145,6 @@ void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collid
 	int uid = collider->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
 
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_BODY);
-}
-
-void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
-{
-	_myObj->GetComponent<PlayerInfo>()->OtherPlayerShoot(location);
 }
 
 void RoundManager::SendJump(int uid)
@@ -209,6 +206,16 @@ void RoundManager::UpdateRoundTimer()
 			_isRoundStart = false;
 		}
 	}
+}
+
+void RoundManager::SetHPObject(HDData::TextUI* txt)
+{
+	_hpUI = txt;
+}
+
+void RoundManager::UpdateHPText()
+{
+	_hpUI->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
 }
 
 void RoundManager::UpdateDesiredKillChecker()

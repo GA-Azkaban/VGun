@@ -68,9 +68,6 @@
     <ClCompile Include="BtnHoveringScript.cpp">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
-    <ClCompile Include="FSMtestScript.cpp">
-      <Filter>02_Client\TestScene\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>03_Manager\GameManager</Filter>
     </ClCompile>
@@ -85,9 +82,6 @@
     </ClCompile>
     <ClCompile Include="Ammo.cpp">
       <Filter>02_Client\01_Script\UI\Ammo</Filter>
-    </ClCompile>
-    <ClCompile Include="Health.cpp">
-      <Filter>02_Client\01_Script\UI\Health</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>02_Client\01_Script\UI\Crosshair\CrossHairTimer</Filter>
@@ -182,9 +176,6 @@
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
-    <ClInclude Include="FSMtestScript.h">
-      <Filter>02_Client\TestScene\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="UnitySceneLoaderTest.h">
       <Filter>02_Client\TestScene\SceneLoader</Filter>
     </ClInclude>
@@ -223,9 +214,6 @@
     </ClInclude>
     <ClInclude Include="Ammo.h">
       <Filter>02_Client\01_Script\UI\Ammo</Filter>
-    </ClInclude>
-    <ClInclude Include="Health.h">
-      <Filter>02_Client\01_Script\UI\Health</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>02_Client\01_Script\UI\Crosshair\CrossHairTimer</Filter>
@@ -369,9 +357,6 @@
     </Filter>
     <Filter Include="02_Client\01_Script\UI\Crosshair\CrossHairTimer">
       <UniqueIdentifier>{7f117444-f2fc-40f0-af76-dcfecdaacb5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\UI\Health">
-      <UniqueIdentifier>{9cdf0530-1bfc-4410-bc82-044bcdbf0962}</UniqueIdentifier>
     </Filter>
     <Filter Include="02_Client\01_Script\Player\Animation">
       <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>

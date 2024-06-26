@@ -36,8 +36,6 @@ public:
 	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
-	void RecvOtherPlayerShoot(eHITLOC location);
-
 	void SendJump(int uid);
 
 public:
@@ -64,7 +62,8 @@ public:
 	void SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time);
 	int& GetRoundTimer();
 	void UpdateRoundTimer();
-	void UpdateDesiredKillChecker();
+	void SetHPObject(HDData::TextUI* txt);
+	void UpdateHPText();
 
 private:
 	HDData::TextUI* _timerUI;
@@ -72,14 +71,15 @@ private:
 
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
+	HDData::TextUI* _hpUI;
+
 public:
+	void UpdateDesiredKillChecker();
 	void SetDesiredKill(int count);
 	int& GetDesiredKill();
-
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
 	
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
-
 
 private:
 	// obj 보관용
