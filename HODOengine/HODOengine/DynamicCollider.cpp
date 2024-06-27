@@ -34,6 +34,11 @@ void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
 	_physXRigid = rigid;
 }
 
+void HDData::DynamicCollider::SetPhysScene(physx::PxScene* scene)
+{
+	_physScene = scene;
+}
+
 void HDData::DynamicCollider::LockPlayerRotation(bool isLock)
 {
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, isLock);
@@ -143,7 +148,7 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 
 void HDData::DynamicCollider::Jump(Vector3 direction)
 {
-	_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.0f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
+	_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 }
 
 void HDData::DynamicCollider::Sleep()
@@ -214,6 +219,7 @@ void HDData::DynamicCollider::DisableCollider()
 {
 	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
 	_isColliderActive = false;
+	_physXRigid->getScene()->removeActor(*_physXRigid);
 }
 
 void HDData::DynamicCollider::EnableStanding(bool isStand)
@@ -270,4 +276,32 @@ HDData::Collider* HDData::DynamicCollider::GetParentCollider() const
 std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() const
 {
 	return _childColliders;
+}
+
+void HDData::DynamicCollider::OnEnable()
+{
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+	_physScene->addActor(*_physXRigid);
+
+	for (auto& child : _childColliders)
+	{
+		if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
+		{
+			dynamic_cast<HDData::DynamicCollider*>(child)->OnEnable();
+		}
+	}
+}
+
+void HDData::DynamicCollider::OnDisable()
+{
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_physScene->removeActor(*_physXRigid);
+
+	for (auto& child : _childColliders)
+	{
+		if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
+		{
+			dynamic_cast<HDData::DynamicCollider*>(child)->OnDisable();
+		}
+	}
 }

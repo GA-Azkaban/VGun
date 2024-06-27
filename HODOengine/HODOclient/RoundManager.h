@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 
 #include "../HODOengine/HODO_API.h"
-#include "Weapon.h"
 #include "PlayerInfo.h"
 
 class RoundManager : public HDData::Script
@@ -35,12 +36,7 @@ public:
 	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
-	void RecvOtherPlayerShoot(eHITLOC location);
-
 	void SendJump(int uid);
-
-private:
-	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);
 
 public:
 	std::unordered_map<int, HDData::GameObject*>& GetPlayerObjs();
@@ -53,16 +49,47 @@ private:
 	int _playerNum;
 	std::unordered_map<int, HDData::GameObject*> _players;
 
-private:
-	bool _isRoundStart = false;
-
-	int _timer;			// 타이머
-
 public:
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
 
-	//애니메이션
+private:
+	bool _isRoundStart = false;
+
+public:
+	void SetRoundTimerObject(HDData::TextUI* obj);
+	void SetRoundTimer(int time);
+	void SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time);
+	int& GetRoundTimer();
+	void UpdateRoundTimer();
+	void SetHPObject(HDData::TextUI* txt);
+	void UpdateHPText();
+
+private:
+	HDData::TextUI* _timerUI;
+	int _timer;			
+
+	std::chrono::time_point<std::chrono::steady_clock> _start_time;
+
+	HDData::TextUI* _hpUI;
+
+public:
+	void UpdateDesiredKillChecker();
+	void SetDesiredKill(int count);
+	int& GetDesiredKill();
+	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
+	
+	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
+
+private:
+	// obj 보관용
+	std::pair<HDData::TextUI*, HDData::TextUI*> _killCountObjs[6];
+
+	// 인게임
+	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;
+
+	int _desiredKill;	// 목표 킬수
+	int _winnerUID;
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);

@@ -258,7 +258,7 @@ namespace HDEngine
 	std::string AnimationLoader::CutAnimationName(std::string ani)
 	{
 		// "AR_"의 위치 찾기
-		size_t arIndex = ani.find("AR_");
+		size_t arIndex = ani.find("RV_");
 		if (arIndex == std::string::npos)
 		{
 			return ""; // "AR_"가 없으면 빈 문자열 반환

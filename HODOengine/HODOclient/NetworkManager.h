@@ -57,8 +57,8 @@ public: // 강퇴
 	void RecvKickPlayer(Protocol::RoomInfo roomInfo);
 
 public: // 팀 색상 변경
-	void SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName = "");
-	void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);
+	//void SendChangeTeamColor(Protocol::eTeamColor teamColor, std::string targetNickName = "");
+	//void RecvChangeTeamColor(Protocol::RoomInfo roomInfo);
 
 public: // 게임 관련
 	void SendGameStart();
@@ -67,6 +67,9 @@ public: // 게임 관련
 
 	// N초 뒤 게임 시작시 호출
 	void RecvGameStart();
+
+	// 게임 종료. 시간 끝나거나 킬 달성시 호출됨
+	void RecvGameEnd(Protocol::RoomInfo roomInfo);
 
 public: // 트랜스폼 동기화
 	void SendPlayerTranform();
@@ -109,10 +112,9 @@ private:
 	bool _isConnect;
 
 private:
-	Protocol::PlayerData* data;
-	Protocol::PlayerData* ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
+	Protocol::PlayerData ConvertPlayerInfoToData(HDData::GameObject* mine, PlayerInfo* info);
+	void ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info);
 
-	// 보간
 public:
 	void Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue);
 

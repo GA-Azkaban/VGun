@@ -1,4 +1,4 @@
-﻿ #include <fstream>
+﻿#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -14,7 +14,7 @@
 #include "MeshRenderer.h"
 #include "StaticBoxCollider.h"
 #include "DynamicSphereCollider.h"
-#include "MaterialManager.h"
+
 
 using rapidjson::Document;
 using rapidjson::SizeType;
@@ -33,6 +33,18 @@ namespace HDEngine
 	void SceneLoader::LoadUnityScene(std::string fileName, HDData::Scene* scene)
 	{
 		now = scene;
+
+		HDEngine::MaterialDesc mat;
+		mat.materialName = "PolygonWestern_Texture_01_A";
+		mat.albedo = "PolygonWestern_Texture_01_A.png";
+		mat.metallic = "PolygonWestern_Texture_Metallic.png";
+
+		_material = MaterialManager::Instance().CreateMaterial(mat);
+
+		HDEngine::MaterialDesc plane;
+		plane.color = { 142, 118, 89, 255 };
+
+		_plane = MaterialManager::Instance().CreateMaterial(plane);
 
 		LoadFromJson(SCENEDATA_PATH + fileName);
 		CreateObject(scene);
@@ -110,16 +122,9 @@ namespace HDEngine
 
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 
-			if (meshName == "Plane" ||
-				meshName == "Cube")
+			if (meshName == "Plane")
 			{
 				info.meshName = "Cube";
-				meshRenderer->LoadMesh("primitiveCube");
-			}
-			else if (meshName == "Stair" ||
-				meshName == "2FPlane")
-			{
-				info.meshName = "2F";
 				meshRenderer->LoadMesh("primitiveCube");
 			}
 			else if (info.meshName != "")
@@ -147,11 +152,18 @@ namespace HDEngine
 					break;
 			}
 
-			for (int m = 0; m < info.materials.size(); m++)
+			int m_size = meshRenderer->GetMeshCount();
+
+			for (int m = 0; m < m_size; m++)
 			{
-				auto mat = HDEngine::MaterialManager::Instance().GetMaterial(info.materials[m]);
-				if (mat == NULL) continue;
-				meshRenderer->LoadMaterial(mat, m);
+				if (info.meshName == "Cube")
+				{
+					meshRenderer->LoadMaterial(_plane, m);
+				}
+				else
+				{
+					meshRenderer->LoadMaterial(_material, m);
+				}
 			}
 
 			_gameObjectMap.insert(std::make_pair(info.id, object));

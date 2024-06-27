@@ -257,7 +257,7 @@ namespace RocketCore::Graphics
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
 		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
-		//Cubemap::Instance().SetEnvLightIntensity(0.8f);
+		Cubemap::Instance().SetEnvLightIntensity(1.5f);
 
 		/// DEBUG Obejct
 		//HelperObject* grid = ObjectManager::Instance().CreateHelperObject();

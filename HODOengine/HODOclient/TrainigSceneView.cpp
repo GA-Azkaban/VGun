@@ -28,7 +28,7 @@ void TrainigSceneView::Initialzie()
 
 	// 내 캐릭터 생성
 	HDData::GameObject* player = API::CreateObject(_scene, "playerSelf");
-	player->LoadFBXFile("SKM_TP_X_Default.fbx");
+	player->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -68,7 +68,7 @@ void TrainigSceneView::Initialzie()
 
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
-	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	fpMeshObj->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
 	fpMeshObj->AddComponent<FPAniScript>();

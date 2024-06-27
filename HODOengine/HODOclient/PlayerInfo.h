@@ -30,7 +30,6 @@ public:
 
 
 	void SetPlayerUID(int uid);
-	void SetTeamID(eTeam team);
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
 
@@ -44,7 +43,6 @@ public:
 
 	int& GetPlayerUID();
 	bool& GetIsHost();
-	eTeam& GetPlayerTeam();
 	bool& GetPlayerDie();
 	std::string& GetPlayerNickName();
 
@@ -52,6 +50,7 @@ public:
 	int& GetPlayerKillCount();
 	int& GetPlayerDeathCount();
 	int& GetCurrentBulletCount();
+	int GetMaxBulletCount();
 	bool& GetIsDie();
 
 
@@ -67,9 +66,6 @@ public:
 	void SetIsJump(bool isJump);
 	bool GetIsShoot();
 	bool GetIsJump();
-	
-	void OtherPlayerShoot(eHITLOC loc);
-
 
 private:
 	bool _isMyInfo = false;
@@ -87,10 +83,11 @@ private:
 	bool _isJump;
 	bool _isShoot;
 
-	int _currentHP;
+	int _currentHP = 70;
 	bool _isDie;
 
-	int _bulletCount = 30;
+	int _maxBulletCount = 6;
+	int _bulletCount = 6;
 
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
@@ -99,8 +96,5 @@ private:
 	// count info
 	int _kill;
 	int _death;
-
-	// else
-	eTeam _teamID;
 };
 

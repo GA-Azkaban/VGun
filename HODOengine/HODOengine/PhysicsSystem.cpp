@@ -64,6 +64,12 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
+		if (sceneIter->GetSceneName() != "InGame")
+		{
+			return;
+		}
+
 		_collisionCallback->Clear();
 
 		ResizeCollider();
@@ -80,6 +86,12 @@ namespace HDEngine
 			// Collider On/Off
 			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
 			//rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
+			//if (!dynamicCol->GetIsActive())
+			//{
+			//	// 삭제가 용이하게 추후 맵으로 바꾸자
+			//	erase_if(_rigidDynamics, [&](physx::PxRigidDynamic* rd) {return rd == rigid; });
+			//	_pxScene->removeActor(*rigid);
+			//}
 
 			// 트리거가 아닌 경우 onCollision 함수들 실행
 			if (dynamicCol->GetIsTrigger() == false)
@@ -310,6 +322,7 @@ namespace HDEngine
 				//_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
 				box->SetPhysXRigid(boxRigid);
+				box->SetPhysScene(_pxScene);
 				boxRigid->userData = box;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
@@ -365,6 +378,7 @@ namespace HDEngine
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
 				capsule->SetPhysXRigid(capsuleRigid);
+				capsule->SetPhysScene(_pxScene);
 				capsuleRigid->userData = capsule;
 				standingShape->release();
 
@@ -406,6 +420,7 @@ namespace HDEngine
 				//_pxScene->addActor(*sphereRigid);
 				_rigidDynamics.push_back(sphereRigid);
 				sphere->SetPhysXRigid(sphereRigid);
+				sphere->SetPhysScene(_pxScene);
 				sphereRigid->userData = sphere;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?

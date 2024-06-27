@@ -5,8 +5,6 @@
 #include "GameManager.h"
 #include "RoundManager.h"
 
-#define BULLET_MAX 8
-
 PlayerMove::PlayerMove()
 	: _isMovable(true),
 	_particleIndex(0),
@@ -17,6 +15,7 @@ PlayerMove::PlayerMove()
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),
+	_isDie(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
 	_isFirstPersonPerspective(true),
 	_isJumping(true), _isOnGround(false),
@@ -43,18 +42,35 @@ void PlayerMove::Start()
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
-
-	_bulletCount = BULLET_MAX;
+	
+	_playerAudio->PlayRepeat("bgm");
 }
 
 void PlayerMove::Update()
 {
-	if (!_isMovable)
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		_isDie = !_isDie;
+
+		if (_isDie)
+		{
+			Die();
+		}
+		else
+		{
+			Respawn();
+		}
+
+	}
+
+	if (!_isMovable || _isDie)
 	{
 		return;
 	}
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
+
+	_playerPos = GetTransform()->GetPosition();
 
 	_isShootHead = false;
 	_isShootBody = false;
@@ -63,7 +79,10 @@ void PlayerMove::Update()
 	CheckMoveInfo();
 	DecidePlayerState();
 	Behavior();
-	PlaySound();
+	
+	// sound 관련
+	_playerAudio->UpdateSoundPos(_playerPos);
+	PlayPlayerSound();
 
 	/*
 	// 탄창 비었는데 쏘면 딸깍소리
@@ -285,7 +304,7 @@ bool PlayerMove::CheckIsOnGround()
 				{
 					_isOnGround = true;
 					_isJumping = false;
-					//_playerAudio->Play3DOnce("landing");
+					//_playerAudio->PlayOnce("landing");
 					//_jumpCount = 0;
 				}
 				return true;
@@ -316,7 +335,7 @@ bool PlayerMove::CheckIsOnGround()
 			_isOnGround = true;
 			_isJumping = false;
 			_playerColliderStanding->ClearVeloY();
-			//_playerAudio->Play3DOnce("landing");
+			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
 		}
@@ -415,6 +434,7 @@ void PlayerMove::ShootGunDdabal()
 	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
 	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 	_playerAudio->PlayOnce("shoot");
+	_playerAudio->PlayOnce("shoot2");
 
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
@@ -429,6 +449,8 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
+		_playerAudio->PlayOnce("hitBody");
+		_playerAudio->PlayOnce("hitHead");
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -437,6 +459,7 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
+		_playerAudio->PlayOnce("hitBody");
 	}
 
 
@@ -447,20 +470,9 @@ void PlayerMove::ShootGunDdabal()
 
 void PlayerMove::Reload()
 {
-	// 2초간 장전
-	//if (_isReloading == true)
-	//{
-	//	_reloadTimer += _deltaTime;
-	//	if (_reloadTimer >= 3.0f)
-	//	{
-	//		_bulletCount = BULLET_MAX;
-	//		_isReloading = false;
-	//		_reloadTimer = 0.0f;
-	//	}
-	//}
 	_shootCount = 0;
-	_bulletCount = BULLET_MAX;
 	_playerState.second = ePlayerMoveState::IDLE;
+	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -494,13 +506,17 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	Reload();
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
-void PlayerMove::PlaySound()
+void PlayerMove::PlayPlayerSound()
 {
 
+}
+
+void PlayerMove::OnEnable()
+{
+	//_playerAudio->PlayRepeat("bgm");
 }
 
 int& PlayerMove::GetBulletCount()
@@ -530,6 +546,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		_isOnGround = true;
 		_isJumping = false;
 		_playerState.first = ePlayerMoveState::IDLE;
+		_playerAudio->PlayOnce("land");
 		_playerColliderStanding->ClearForceXZ();
 	}
 }
@@ -1084,6 +1101,16 @@ void PlayerMove::ToggleSit(bool isSit)
 	}
 }
 
+void PlayerMove::Die()
+{
+	_playerColliderStanding->OnDisable();
+}
+
+void PlayerMove::Respawn()
+{
+	_playerColliderStanding->OnEnable();
+}
+
 void PlayerMove::DecidePlayerState()
 {
 	_prevPlayerState.first = _playerState.first;
@@ -1107,7 +1134,7 @@ void PlayerMove::DecidePlayerState()
 		}
 		else
 		{
-			if (API::GetKeyPressing(DIK_LSHIFT))
+			if (API::GetKeyPressing(DIK_LCONTROL))
 			{
 				_playerState.first = ePlayerMoveState::WALK;
 			}
@@ -1119,7 +1146,7 @@ void PlayerMove::DecidePlayerState()
 	}
 
 	// tumble, jump 들어오면 덮어씌우고
-	if (API::GetKeyDown(DIK_LCONTROL))
+	if (API::GetKeyDown(DIK_LSHIFT))
 	{
 		_playerState.first = ePlayerMoveState::TUMBLE;
 	}
@@ -1138,18 +1165,6 @@ void PlayerMove::DecidePlayerState()
 	//	}
 	//}
 
-	if (_playerState.second == ePlayerMoveState::RELOAD)
-	{
-		if (_reloadTimer > 0.0f)
-		{
-			_reloadTimer -= _deltaTime;
-		}
-		else
-		{
-			Reload();
-		}
-		return;
-	}
 
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{
@@ -1160,7 +1175,7 @@ void PlayerMove::DecidePlayerState()
 		_playerState.second = ePlayerMoveState::IDLE;
 		_shootCount = 0;
 	}
-	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < BULLET_MAX)
+	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
 	{
 		_playerState.second = ePlayerMoveState::RELOAD;
 	}
@@ -1219,6 +1234,9 @@ void PlayerMove::Behavior()
 		{
 			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
 			{
+				_playerAudio->PlayOnce("tumblingMan");
+				_playerAudio->PlayOnce("tumble");
+
 				_tumbleTimer = 0.4f;
 				_headCam->ToggleCameraShake(true);
 
@@ -1276,6 +1294,17 @@ void PlayerMove::Behavior()
 			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 3.0f;
 		}
+		else
+		{
+			if (_reloadTimer > 0.0f)
+			{
+				_reloadTimer -= _deltaTime;
+			}
+			else
+			{
+				Reload();
+			}
+		}
 	}
 
 	if (_prevPlayerState.first != _playerState.first)
@@ -1283,6 +1312,10 @@ void PlayerMove::Behavior()
 		if (_prevPlayerState.first == ePlayerMoveState::JUMP)
 		{
 			Landing();
+		}
+		if (_prevPlayerState.first == ePlayerMoveState::TUMBLE)
+		{
+			Reload();
 		}
 		if (_prevPlayerState.second == ePlayerMoveState::FIRE)
 		{

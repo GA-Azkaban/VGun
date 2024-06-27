@@ -6,6 +6,7 @@ namespace physx
 {
 	class PxRigidDynamic;
 	class PxShape;
+	class PxScene;
 	//class PxVec3;
 }
 
@@ -26,6 +27,7 @@ namespace HDData
 	public:
 		virtual void SetFreezeRotation(bool freezeRotation);
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
+		void SetPhysScene(physx::PxScene* scene);
 		void LockPlayerRotation(bool isLock);
 		void SetParentCollider(HDData::DynamicCollider* col);
 		void SetChildCollider(HDData::DynamicCollider* childCol);
@@ -66,6 +68,8 @@ namespace HDData
 		physx::PxRigidDynamic* GetPhysXRigid() const;
 		HDData::Collider* GetParentCollider() const;
 		std::vector<HDData::Collider*> GetChildColliderVec()const;
+		virtual void OnEnable() override;
+		virtual void OnDisable() override;
 
 	protected:
 		bool _freezeRotation;
@@ -76,6 +80,7 @@ namespace HDData
 
 	private:
 		physx::PxRigidDynamic* _physXRigid;
+		physx::PxScene* _physScene;
 		physx::PxShape* _standingShape;
 		physx::PxShape* _sittingShape;
 	};

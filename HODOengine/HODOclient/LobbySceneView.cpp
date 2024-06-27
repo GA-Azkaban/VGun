@@ -54,7 +54,7 @@ void LobbySceneView::Initialize()
 	auto sTex = startText->GetComponent<HDData::TextUI>();
 	sTex->SetText("GAME START");
 	sTex->SetColor(DirectX::Colors::OrangeRed);
-	sTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	sTex->SetFont("Resources/Font/Western_40.spriteFont");
 	float startTextWidth = sTex->GetTextWidth();
 	float startTextHeight = sTex->GetTextHeight();
 	startText->GetTransform()->SetPosition(1600.0f * width / 1920 - startTextWidth * 0.75f, 950.0f * height / 1080 - startTextHeight * 0.25f, 0);
@@ -74,22 +74,11 @@ void LobbySceneView::Initialize()
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
-	red.materialName = "TP_Red";
-	red.albedo = "TP_Red_B.png";
+	red.materialName = "TP_defalut";
+	red.albedo = "PolygonWestern_Texture_01_A.png";
 
 	HDData::Material* M_Red = API::CreateMaterial(red);
 
-	HDEngine::MaterialDesc green;
-	green.materialName = "TP_Green";
-	green.albedo = "TP_Green_B.png";
-
-	HDData::Material* M_Green = API::CreateMaterial(green);
-
-	HDEngine::MaterialDesc blue;
-	blue.materialName = "TP_Blue";
-	blue.albedo = "TP_Blue_B.png";
-
-	HDData::Material* M_Blue = API::CreateMaterial(blue);
 
 	float defaultX = -0.5f;
 	float rgbCanvas = 155.0f;
@@ -123,42 +112,9 @@ void LobbySceneView::Initialize()
 		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
 		QuitMemberButton->SetSelfActive(false);
 
-		auto rButton = API::CreateButton(_scene, "R", subCanvas);
-		auto rBtn = rButton->GetComponent<HDData::Button>();
-		rBtn->SetSortOrder(0.3);
-		rButton->GetTransform()->SetLocalPosition(-100.0f, 0.0f, 0.0f);
-		rBtn->SetImage("r.png");
-		rBtn->SetOnClickEvent([=]()
-			{
-				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_RED, nick);
-			});
-
-		auto gButton = API::CreateButton(_scene, "G", subCanvas);
-		auto gBtn = gButton->GetComponent<HDData::Button>();
-		gBtn->SetSortOrder(0.3);
-		gBtn->SetImage("g.png");
-		gBtn->SetOnClickEvent([=]()
-			{
-				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_GREEN, nick);
-			});
-
-		auto bButton = API::CreateButton(_scene, "B", subCanvas);
-		auto bBtn = bButton->GetComponent<HDData::Button>();
-		bBtn->SetSortOrder(0.3);
-		bButton->GetTransform()->SetLocalPosition(100.0f, 0.0f, 0.0f);
-		bBtn->SetImage("b.png");
-		bBtn->SetOnClickEvent([=]()
-			{
-				std::string nick = LobbyManager::Instance().GetRoomData()->_players[i]->GetPlayerNickName();
-				NetworkManager::Instance().SendChangeTeamColor(Protocol::TEAM_COLOR_BLUE, nick);
-			});
-
 		defaultX += 1.2f;
 		rgbCanvas += 322.5f;
 
-		LobbyManager::Instance().GetTeamButtonObjects().push_back(subCanvas);
 		subCanvas->SetSelfActive(false);
 	}
 
@@ -171,7 +127,7 @@ void LobbySceneView::Initialize()
 	for (int i = 0; i < 6; ++i)
 	{
 		HDData::GameObject* player = API::CreateObject(_scene, "player");
-		player->LoadFBXFile("SKM_TP_X_Default.fbx");
+		player->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 		player->GetTransform()->SetPosition(posX, 0, 0);
 		player->GetTransform()->Rotate(0, -180, 0);
 
@@ -184,9 +140,11 @@ void LobbySceneView::Initialize()
 		meshComp->LoadMaterial(M_Red, 4);
 
 		player->AddComponent<PlayerInfo>();
+		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
+		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
 
-		player->AddComponent<HDData::Animator>();
-		API::LoadFPAnimationFromData(player, "FP_animation.json");
+		/*player->AddComponent<HDData::Animator>();
+		API::LoadFPAnimationFromData(player, "FP_animation.json");*/
 
 		LobbyManager::Instance().GetPlayerObjects().push_back(player);
 

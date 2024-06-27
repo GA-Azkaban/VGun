@@ -1,7 +1,6 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
-#include "FSMtestScript.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
 #include "MeshTransformController.h"
@@ -62,8 +61,9 @@ void InGameSceneView::Initialize()
 
 	// 애니메이션 전달용 더미 캐릭터 생성
 	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
+	dummy->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
 	dummy->GetTransform()->SetPosition(0, -10, 0);
+	dummy->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
 	
 	dummy->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
@@ -96,9 +96,9 @@ void InGameSceneView::Initialize()
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
-	//fpMeshObj->AddComponent<HDData::Animator>();
-	//API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
-	//fpMeshObj->AddComponent<FPAniScript>();
+	fpMeshObj->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
+	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -106,7 +106,6 @@ void InGameSceneView::Initialize()
 	fpMeshComp->LoadAnimation("TP");
 	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(chMat, 0);
-
 	fpMeshComp->PlayAnimation("RV_idle", true);
 
 	// 총 생성
@@ -136,16 +135,37 @@ void InGameSceneView::Initialize()
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
-	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
+	//playerSound->AddAudio3D("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::SoundGroupChannel5, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::SoundGroupChannel5, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("tumble", "./Resources/Sound/Tumble/tumble.wav", HDData::SoundGroup::MoveSound, 5.0f, 100.0f);
+	//playerSound->AddAudio3D("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound, 5.0f, 30.0f);
+	//playerSound->SetSoundGroupVolume(HDData::SoundGroup::SoundGroupChannel5, 1000.0f);
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload2.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound);
+	playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
+	playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
+
 
 	posX += 1;
 	posT += 315;
+	
+	
 
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
@@ -187,6 +207,37 @@ void InGameSceneView::Initialize()
 		posT += 315;
 	}
 
+	int uiX = 130;
+	int uiY = 50.0f;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		// killCount UI
+		auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
+		uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
+		uiBack->GetTransform()->SetScale(1, 3, 0);
+		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
+		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+
+		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
+		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
+		auto nickComp = nickname->GetComponent<HDData::TextUI>();
+		nickComp->SetColor(DirectX::Colors::Black);
+		nickComp->SetText("");
+		nickComp->SetSortOrder(0.7);
+
+		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
+		killcount->GetTransform()->SetPosition(uiX + 25, uiY, 0);
+		auto countComp = killcount->GetComponent<HDData::TextUI>();
+		countComp->SetColor(DirectX::Colors::Black);
+		countComp->SetText("");
+		countComp->SetSortOrder(0.7);
+
+		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
+
+		uiY += 60;
+	}
+
 	// crosshair
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
@@ -195,17 +246,21 @@ void InGameSceneView::Initialize()
 	// ammo
 	auto ammo = API::CreateObject(_scene, "remaingAmmo");
 	auto ammoComp = ammo->AddComponent<Ammo>();
-	ammoComp->playerMove = playerMove;
 	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
 	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 30");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_55.spriteFont");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
-	healthPoint->GetComponent < HDData::TextUI >()->GetTransform()->SetPosition(1800.0f, 1400.0f, 0.0f);
-	healthPoint->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	healthPoint->GetComponent<HDData::TextUI>()->SetText(std::to_string(playerInfo->GetPlayerCurrentHP()));
+	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
+	hpTxt->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	hpTxt->GetTransform()->SetPosition(2100.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetHPObject(hpTxt);
+
+	// Timer
+	auto timer = API::CreateTextbox(_scene, "timer");
+	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
