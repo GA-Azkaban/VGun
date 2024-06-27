@@ -222,7 +222,7 @@
     <ClCompile Include="ForwardPass.cpp">
       <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClCompile>
-    <ClCompile Include="PostProcess.cpp">
+    <ClCompile Include="PostProcessPass.cpp">
       <Filter>DeferredRendering\RenderPasses\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
@@ -392,7 +392,7 @@
     <ClInclude Include="BoundingVolumeHelper.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="PostProcess.h">
+    <ClInclude Include="PostProcessPass.h">
       <Filter>DeferredRendering\RenderPasses\PostProcess</Filter>
     </ClInclude>
   </ItemGroup>
