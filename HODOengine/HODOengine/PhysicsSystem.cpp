@@ -322,6 +322,7 @@ namespace HDEngine
 				//_pxScene->addActor(*boxRigid);
 				_rigidDynamics.push_back(boxRigid);
 				box->SetPhysXRigid(boxRigid);
+				box->SetPhysScene(_pxScene);
 				boxRigid->userData = box;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
@@ -377,6 +378,7 @@ namespace HDEngine
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
 				capsule->SetPhysXRigid(capsuleRigid);
+				capsule->SetPhysScene(_pxScene);
 				capsuleRigid->userData = capsule;
 				standingShape->release();
 
@@ -418,6 +420,7 @@ namespace HDEngine
 				//_pxScene->addActor(*sphereRigid);
 				_rigidDynamics.push_back(sphereRigid);
 				sphere->SetPhysXRigid(sphereRigid);
+				sphere->SetPhysScene(_pxScene);
 				sphereRigid->userData = sphere;
 				shape->release();
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?

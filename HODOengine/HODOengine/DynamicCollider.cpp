@@ -1,4 +1,4 @@
-#include "DynamicCollider.h"
+﻿#include "DynamicCollider.h"
 #include "Transform.h"
 
 #include "../include/physX/PxPhysics.h"
@@ -32,6 +32,11 @@ void HDData::DynamicCollider::SetFreezeRotation(bool freezeRotation)
 void HDData::DynamicCollider::SetPhysXRigid(physx::PxRigidDynamic* rigid)
 {
 	_physXRigid = rigid;
+}
+
+void HDData::DynamicCollider::SetPhysScene(physx::PxScene* scene)
+{
+	_physScene = scene;
 }
 
 void HDData::DynamicCollider::LockPlayerRotation(bool isLock)
@@ -275,7 +280,8 @@ std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() co
 
 void HDData::DynamicCollider::OnEnable()
 {
-	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+	_physScene->addActor(*_physXRigid);
 
 	for (auto& child : _childColliders)
 	{
@@ -288,8 +294,9 @@ void HDData::DynamicCollider::OnEnable()
 
 void HDData::DynamicCollider::OnDisable()
 {
-	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
-	//_physXRigid->getScene()->removeActor(*_physXRigid);
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_physScene->removeActor(*_physXRigid);
+
 	for (auto& child : _childColliders)
 	{
 		if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
