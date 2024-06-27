@@ -15,20 +15,19 @@ TestScene::TestScene()
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	/*
-	auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
-	testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
-	//testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
-	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	boxRender1->LoadMesh("primitiveQuad");
-	HDEngine::MaterialDesc boxMat1;
-	boxMat1.materialName = "boxMat";
-	//boxMat1.albedo = "button.png";
-	boxMat1.color = { 10,10,10,255 };
-	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
-	boxRender1->LoadMaterial(newBoxMat1, 0);
-	boxRender1->SetUseLight(false); */
+	//auto testBox1 = API::CreateObject(_scene);
+	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
+	//testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
+	////testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
+	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	//boxRender1->LoadMesh("primitiveQuad");
+	//HDEngine::MaterialDesc boxMat1;
+	//boxMat1.materialName = "boxMat";
+	////boxMat1.albedo = "button.png";
+	//boxMat1.color = { 10,10,10,255 };
+	//HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
+	//boxRender1->LoadMaterial(newBoxMat1, 0);
+	//boxRender1->SetUseLight(false);
 
 	/*auto particleSystemObj = API::CreateObject(_scene);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
@@ -194,24 +193,28 @@ TestScene::TestScene()
 	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
 	//buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
 	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	buildingRenderer1->LoadMesh("SM_Bld_Saloon_01_NoGlass.fbx");
+	buildingRenderer1->LoadMesh("SM_Bld_Church_01.fbx");
 	HDEngine::MaterialDesc buildingDesc1;
 	buildingDesc1.materialName = "PolygonWestern_Texture_02";
 	buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
 	buildingDesc1.metallic = 0.0f;
 	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 6);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 7);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 8);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 9);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 10);
-	buildingRenderer1->LoadMaterial(newBuildingMat1, 11);
+	for(int i = 0; i < buildingRenderer1->GetMeshCount(); ++i)
+	{
+		buildingRenderer1->LoadMaterial(newBuildingMat1, i);
+	}
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 6);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 7);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 8);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 9);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 10);
+	//buildingRenderer1->LoadMaterial(newBuildingMat1, 11);
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
@@ -221,13 +224,12 @@ TestScene::TestScene()
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_BadguyFP_X_default.fbx");
+	playerTest->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
 
 	// SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	// GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAnimation("TP");
-	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 
 	HDEngine::MaterialDesc desc;
