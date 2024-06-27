@@ -547,7 +547,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		_isJumping = false;
 		_playerState.first = ePlayerMoveState::IDLE;
 		_playerAudio->PlayOnce("land");
-		_playerColliderStanding->ClearForceXZ();
+		_playerColliderStanding->ClearForceXYZ();
 	}
 }
 
@@ -565,10 +565,10 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 	//	_isOnGround = false;
 	//}
 
-	if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
-	{
-		_playerColliderStanding->ClearForceXZ();
-	}
+	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
+	//{
+	//	_playerColliderStanding->ClearForceXYZ();
+	//}
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -1224,10 +1224,9 @@ void PlayerMove::Behavior()
 				Jump(DecideDisplacement(_moveDirection) * _moveSpeed);
 			}
 
-			//else
-			//{
-			//	_playerColliderStanding->ClearForceXZ();
-			//}
+			_moveSpeed = 5.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+
 			break;
 		}
 		case ePlayerMoveState::TUMBLE :
