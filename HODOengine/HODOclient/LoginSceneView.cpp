@@ -63,7 +63,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", loginControlObject);
 	idTextLabel->GetTransform()->SetPosition((770.f * width / 1920)+25, 440.f * height / 1080, 0.f);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
-	idTextLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
+	idTextLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_25.spriteFont");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::OrangeRed);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
@@ -78,7 +78,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", loginControlObject);
 	passwordTextboxLabel->GetTransform()->SetPosition(725.f * width / 1920, 540.f * height / 1080, 0.f);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetText("PASSWORD");
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_25.spriteFont");
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::OrangeRed);
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
 
@@ -106,7 +106,7 @@ void LoginSceneView::LoginView()
 	);
 	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);
 	loginText->GetTransform()->SetPosition(loginBtn->GetTransform()->GetPosition());
-	loginText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	loginText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
 	loginText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
 	loginText->GetComponent<HDData::TextUI>()->SetText("LOGIN");
 
@@ -125,7 +125,7 @@ void LoginSceneView::LoginView()
 	joinBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* joinText = API::CreateTextbox(_scene, "joinText", joinBtn);
 	joinText->GetTransform()->SetPosition(joinBtn->GetTransform()->GetPosition());
-	joinText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	joinText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
 	joinText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
 	joinText->GetComponent<HDData::TextUI>()->SetText("SIGN");
 
@@ -194,7 +194,7 @@ void LoginSceneView::LoginView()
 	);
 	HDData::GameObject* makeAccountText = API::CreateTextbox(_scene, "makeAccountText", makeAccountBtn);
 	makeAccountText->GetTransform()->SetPosition(makeAccountBtn->GetTransform()->GetPosition());
-	makeAccountText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	makeAccountText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
 	makeAccountText->GetComponent<HDData::TextUI>()->SetSortOrder(0.2f);
 	makeAccountText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
 	makeAccountText->GetComponent<HDData::TextUI>()->SetText("SIGN");

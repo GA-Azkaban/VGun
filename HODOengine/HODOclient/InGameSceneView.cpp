@@ -248,7 +248,7 @@ void InGameSceneView::Initialize()
 	auto ammoComp = ammo->AddComponent<Ammo>();
 	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
 	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_55.spriteFont");
 	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
