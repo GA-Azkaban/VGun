@@ -53,7 +53,6 @@ public:
 	int GetMaxBulletCount();
 	bool& GetIsDie();
 
-
 	bool GetIsStateChange();
 	void SetIsStateChange(bool isChange);
 	ePlayerState GetPrevPlayerState();
@@ -81,7 +80,7 @@ private:
 
 	// state info
 	bool _isJump;
-	bool _isShoot;
+	bool _isShoot = false;
 
 	int _currentHP = 70;
 	bool _isDie;

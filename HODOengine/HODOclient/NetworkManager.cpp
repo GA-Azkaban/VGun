@@ -75,23 +75,48 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
 {
 	// TODO) 총구 이벤트
-	ConvertDataToPlayerInfo(hitPlayerData,
-		RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()],
-		RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == hitPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(hitPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
+		ConvertDataToPlayerInfo(hitPlayerData,
+			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	}
 }
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
 {
-	// 모든 데스 갱신
-	ConvertDataToPlayerInfo(deathPlayerData,
-		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
-		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	int myUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 
-	// 모든 킬 갱신
-	ConvertDataToPlayerInfo(killPlayerData,
-		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
-		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	if (myUID == deathPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(deathPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else if (myUID == killPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(killPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
+		// 모든 데스 갱신
+		ConvertDataToPlayerInfo(deathPlayerData,
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 
+		// 모든 킬 갱신
+		ConvertDataToPlayerInfo(killPlayerData,
+			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	}
 }
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
@@ -574,6 +599,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
+	//info->SetIsShoot(data.is)
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)

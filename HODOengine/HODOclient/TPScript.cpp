@@ -16,35 +16,35 @@ void TPScript::Update()
 {
 	if (API::GetKeyPressing(DIK_W))
 	{
-		_animator->GetAllAC()->SetBool("isWalkF", true);
+		_animator->GetAllAC()->SetBool("isRunFront", true);
 	}
 	if (API::GetKeyUp(DIK_W))
 	{
-		_animator->GetAllAC()->SetBool("isWalkF", false);
+		_animator->GetAllAC()->SetBool("isRunFront", false);
 	}
 	if (API::GetKeyPressing(DIK_A))
 	{
-		_animator->GetAllAC()->SetBool("isWalkL", true);
+		_animator->GetAllAC()->SetBool("isRunLeft", true);
 	}
 	if (API::GetKeyUp(DIK_A))
 	{
-		_animator->GetAllAC()->SetBool("isWalkL", false);
+		_animator->GetAllAC()->SetBool("isRunLeft", false);
 	}
 	if (API::GetKeyPressing(DIK_S))
 	{
-		_animator->GetAllAC()->SetBool("isWalkB", true);
+		_animator->GetAllAC()->SetBool("isRunBack", true);
 	}
 	if (API::GetKeyUp(DIK_S))
 	{
-		_animator->GetAllAC()->SetBool("isWalkB", false);
+		_animator->GetAllAC()->SetBool("isRunBack", false);
 	}
 	if (API::GetKeyPressing(DIK_D))
 	{
-		_animator->GetAllAC()->SetBool("isWalkR", true);
+		_animator->GetAllAC()->SetBool("isRunRight", true);
 	}
 	if (API::GetKeyUp(DIK_D))
 	{
-		_animator->GetAllAC()->SetBool("isWalkR", false);
+		_animator->GetAllAC()->SetBool("isRunRight", false);
 	}
 	if (API::GetKeyDown(DIK_SPACE))
 	{
@@ -80,9 +80,9 @@ void TPScript::Update()
 	}
 	else
 	{
-		_animator->GetAllAC()->SetBool("isWalkF", false);
-		_animator->GetAllAC()->SetBool("isWalkL", false);
-		_animator->GetAllAC()->SetBool("isWalkB", false);
-		_animator->GetAllAC()->SetBool("isWalkR", false);
+		//_animator->GetAllAC()->SetBool("isRunFront", false);
+		//_animator->GetAllAC()->SetBool("isRunLeft", false);
+		//_animator->GetAllAC()->SetBool("isRunRight", false);
+		//_animator->GetAllAC()->SetBool("isRunLeft", false);
 	}
 }

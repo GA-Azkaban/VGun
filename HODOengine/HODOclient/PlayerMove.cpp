@@ -45,6 +45,8 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie()) return;
+
 	if (!_isMovable)
 	{
 		return;

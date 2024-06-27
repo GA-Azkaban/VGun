@@ -121,6 +121,64 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(chMat, 2);
 	weaponComp->LoadMaterial(chMat, 3);
 
+
+	// 총구 이펙트
+	auto particleSystemObj = API::CreateObject(_scene, "effect", hand);
+	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
+	particleSystem->main.duration = 0.2f;
+	particleSystem->main.loop = true;
+	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
+	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem->main.minStartLifetime = 0.025f;
+	particleSystem->main.maxStartLifetime = 0.05f;
+	particleSystem->main.minStartRotation = -90.0f;
+	particleSystem->main.maxStartRotation = -90.0f;
+	particleSystem->main.minStartSize = 0.05f;
+	particleSystem->main.maxStartSize = 0.075f;
+	particleSystem->main.minStartSpeed = 0.0f;
+	particleSystem->main.maxStartSpeed = 0.0f;
+	particleSystem->emission.enabled = true;
+	HDData::Burst newBurst(0.0f, 1);
+	particleSystem->emission.SetBurst(newBurst);
+	particleSystem->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve;
+	curve.AddKey(0.0f, 0.654f, [](float t) { return -9.34 * t * t + 6.11 * t; });
+	particleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve);
+	HDEngine::MaterialDesc flashMatDesc;
+	flashMatDesc.materialName = "muzzleFlash";
+	flashMatDesc.albedo = "T_MuzzleFlash_D.png";
+	flashMatDesc.color = { 255, 140, 85, 255 };
+	HDData::Material* flashMat = API::CreateMaterial(flashMatDesc);
+	particleSystem->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem->rendererModule.material = flashMat;
+	particleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
+
+	
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck;
+	std::vector<HDData::GradientAlphaKey> ak;
+	HDData::GradientColorKey colorkey1;
+	colorkey1.color = { 255, 255, 255 };
+	colorkey1.time = 0.556f;
+	ck.push_back(colorkey1);
+	HDData::GradientColorKey colorkey2;
+	colorkey2.color = { 255, 79, 0 };
+	colorkey2.time = 1.0f;
+	ck.push_back(colorkey2);
+	HDData::GradientAlphaKey alphaKey1;
+	alphaKey1.alpha = 255;
+	alphaKey1.time = 0.0f;
+	ak.push_back(alphaKey1);
+	HDData::GradientAlphaKey alphaKey2;
+	alphaKey2.alpha = 255;
+	alphaKey2.time = 1.0f;
+	ak.push_back(alphaKey2);
+	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
+
+	particleSystem->Play();
+
+	particleSystemObj->GetTransform()->GetPosition();
+
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
