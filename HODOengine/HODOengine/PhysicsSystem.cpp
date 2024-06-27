@@ -86,6 +86,12 @@ namespace HDEngine
 			// Collider On/Off
 			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
 			//rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
+			//if (!dynamicCol->GetIsActive())
+			//{
+			//	// 삭제가 용이하게 추후 맵으로 바꾸자
+			//	erase_if(_rigidDynamics, [&](physx::PxRigidDynamic* rd) {return rd == rigid; });
+			//	_pxScene->removeActor(*rigid);
+			//}
 
 			// 트리거가 아닌 경우 onCollision 함수들 실행
 			if (dynamicCol->GetIsTrigger() == false)

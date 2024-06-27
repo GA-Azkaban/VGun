@@ -1,4 +1,4 @@
-﻿#include "DynamicCollider.h"
+#include "DynamicCollider.h"
 #include "Transform.h"
 
 #include "../include/physX/PxPhysics.h"
@@ -214,6 +214,7 @@ void HDData::DynamicCollider::DisableCollider()
 {
 	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
 	_isColliderActive = false;
+	_physXRigid->getScene()->removeActor(*_physXRigid);
 }
 
 void HDData::DynamicCollider::EnableStanding(bool isStand)
