@@ -41,6 +41,8 @@ void PlayerMove::Start()
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
+	
+	_playerAudio->PlayRepeat("bgm");
 }
 
 void PlayerMove::Update()
@@ -418,6 +420,7 @@ void PlayerMove::ShootGunDdabal()
 	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
 	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 	_playerAudio->PlayOnce("shoot");
+	_playerAudio->PlayOnce("shoot2");
 
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
@@ -432,6 +435,8 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
+		_playerAudio->PlayOnce("hitBody");
+		_playerAudio->PlayOnce("hitHead");
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -440,6 +445,7 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
+		_playerAudio->PlayOnce("hitBody");
 	}
 
 	++_shootCount;
@@ -493,6 +499,11 @@ void PlayerMove::PlayPlayerSound()
 
 }
 
+void PlayerMove::OnEnable()
+{
+	//_playerAudio->PlayRepeat("bgm");
+}
+
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
@@ -520,6 +531,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		_isOnGround = true;
 		_isJumping = false;
 		_playerState.first = ePlayerMoveState::IDLE;
+		_playerAudio->PlayOnce("land");
 		_playerColliderStanding->ClearForceXZ();
 	}
 }

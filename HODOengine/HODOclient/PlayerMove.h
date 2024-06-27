@@ -64,6 +64,7 @@ private:
 	void ApplyRecoil();
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
+	virtual void OnEnable() override;
 
 public:
 	int& GetBulletCount();
