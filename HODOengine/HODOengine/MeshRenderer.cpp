@@ -72,6 +72,11 @@ namespace HDData
 		_staticMesh->SetUseLight(useLight);
 	}
 
+	void MeshRenderer::SetMeshActive(bool isActive, unsigned int index)
+	{
+		_staticMesh->SetMeshActive(isActive, index);
+	}
+
 	int MeshRenderer::GetMeshCount()
 	{
 		return _staticMesh->GetMeshCount();
