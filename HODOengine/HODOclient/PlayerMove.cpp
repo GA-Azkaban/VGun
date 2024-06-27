@@ -15,6 +15,7 @@ PlayerMove::PlayerMove()
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),
+	_isDie(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
 	_isFirstPersonPerspective(true),
 	_isJumping(true), _isOnGround(false),
@@ -47,7 +48,22 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (!_isMovable)
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		_isDie = !_isDie;
+
+		if (_isDie)
+		{
+			Die();
+		}
+		else
+		{
+			Respawn();
+		}
+
+	}
+
+	if (!_isMovable || _isDie)
 	{
 		return;
 	}
@@ -1083,6 +1099,16 @@ void PlayerMove::ToggleSit(bool isSit)
 		//_playerColliderStanding->EnableStanding(true);
 		_playerColliderStanding->SetSitStand(2);
 	}
+}
+
+void PlayerMove::Die()
+{
+	_playerColliderStanding->OnDisable();
+}
+
+void PlayerMove::Respawn()
+{
+	_playerColliderStanding->OnEnable();
 }
 
 void PlayerMove::DecidePlayerState()

@@ -51,6 +51,8 @@ private:
 	void Move(int direction);
 	void Pitch(float rotationValue);
 	void ToggleSit(bool isSit);
+	void Die();
+	void Respawn();
 
 	// 사격 관련
 private:
@@ -124,6 +126,8 @@ private:
 	bool _isReloading;
 	bool _isRunning;
 	bool _tempFlag = 0;
+	bool _isDie;
+
 	Vector3 _tumbleDirection;
 	Vector3 _playerPos;
 
