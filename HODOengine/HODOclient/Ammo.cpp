@@ -13,7 +13,7 @@ Ammo::Ammo()
 void Ammo::Start()
 {
 	_remainningAmmo = GetGameObject()->AddComponent<HDData::TextUI>();
-	_remainningAmmo->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	_remainningAmmo->SetFont("Resources/Font/Western_55.spriteFont");
 	_remainningAmmo->GetTransform()->SetPosition(2250.0f, 1400.0f, 0.0f);
 } 
 
