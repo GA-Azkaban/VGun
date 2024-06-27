@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -44,25 +44,19 @@ void PlayerMove::Start()
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
-	
+
 	_playerAudio->PlayRepeat("bgm");
 }
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	if (!GameManager::Instance()->GetMyInfo()->GetIsDie())
 	{
-		_isDie = !_isDie;
-
-		if (_isDie)
-		{
-			Die();
-		}
-		else
-		{
-			Respawn();
-		}
-
+		Die();
+	}
+	else
+	{
+		Respawn();
 	}
 
 	if (!_isMovable || _isDie)
@@ -81,7 +75,7 @@ void PlayerMove::Update()
 	CheckMoveInfo();
 	DecidePlayerState();
 	Behavior();
-	
+
 	// sound 관련
 	_playerAudio->UpdateSoundPos(_playerPos);
 	PlayPlayerSound();
@@ -508,7 +502,7 @@ void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
 	_fpmesh->SetMeshActive(false, 0);
-	_weapon->SetActive(true);
+	//_weapon->SetMeshActive(false, 0);
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
@@ -912,7 +906,7 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			break;
 			case 3:
 			{
-				moveStep = Vector3(0.7f, 0.0f, - 0.7f);
+				moveStep = Vector3(0.7f, 0.0f, -0.7f);
 			}
 			break;
 			case 4:
@@ -1128,7 +1122,7 @@ void PlayerMove::DecidePlayerState()
 		}
 		else
 		{
-			_weapon->SetActive(true);
+			//_weapon->Set(true);
 			_fpmesh->SetMeshActive(true, 0);
 		}
 	}
@@ -1200,12 +1194,12 @@ void PlayerMove::Behavior()
 	// 움직임
 	switch (_playerState.first)
 	{
-		case ePlayerMoveState::IDLE : 
+		case ePlayerMoveState::IDLE:
 		{
 			_playerColliderStanding->Stop();
 			break;
 		}
-		case ePlayerMoveState::WALK : 
+		case ePlayerMoveState::WALK:
 		{
 			if (!_playerAudio->IsSoundPlaying("walk"))
 			{
@@ -1215,7 +1209,7 @@ void PlayerMove::Behavior()
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
-		case ePlayerMoveState::RUN : 
+		case ePlayerMoveState::RUN:
 		{
 			if (!_playerAudio->IsSoundPlaying("run"))
 			{
@@ -1225,7 +1219,7 @@ void PlayerMove::Behavior()
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
-		case ePlayerMoveState::JUMP :
+		case ePlayerMoveState::JUMP:
 		{
 			if (_prevPlayerState.first != ePlayerMoveState::JUMP)
 			{
@@ -1238,7 +1232,7 @@ void PlayerMove::Behavior()
 			//}
 			break;
 		}
-		case ePlayerMoveState::TUMBLE :
+		case ePlayerMoveState::TUMBLE:
 		{
 			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
 			{
@@ -1265,7 +1259,7 @@ void PlayerMove::Behavior()
 		}
 		default:
 		{
-			
+
 		}
 	}
 
