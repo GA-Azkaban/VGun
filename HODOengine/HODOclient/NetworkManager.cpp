@@ -67,15 +67,32 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
-	ConvertDataToPlayerInfo(playerData,
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
+	{
+		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
+	}
+	else
+	{
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+	}
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
-{
-	// TODO) 총구 이벤트
-	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == hitPlayerData.userinfo().uid())
+{	
+	int myUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
+
+	// 쏜 사람 (총구 이펙트만 주면 됨)
+	if (myUID == playerData.userinfo().uid())
+	{
+		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
+	}
+	else
+	{
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+	}
+
+	// 맞은 사람 ) 체력 변화
+	if (myUID == hitPlayerData.userinfo().uid())
 	{
 		ConvertDataToPlayerInfo(hitPlayerData,
 			GameManager::Instance()->GetMyObject(),
@@ -121,7 +138,20 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
 {
-
+	// isdead 갱신
+	// TODO) index 받아서 해당 위치로 포지션 갱신해주어야 함
+	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(playerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
+		ConvertDataToPlayerInfo(playerData,
+			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	}
 }
 
 void NetworkManager::SendPlayRoll(Protocol::PlayerData playerData)

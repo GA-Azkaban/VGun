@@ -33,6 +33,8 @@ void PlayerMove::Start()
 
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
+	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
 	_moveSpeed = 3.0f;
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
@@ -491,6 +493,8 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
+	_fpmesh->SetMeshActive(false, 0);
+	_weapon->SetActive(true);
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
@@ -1098,6 +1102,11 @@ void PlayerMove::DecidePlayerState()
 			_tumbleTimer -= _deltaTime;
 			return;
 		}
+		else
+		{
+			_weapon->SetActive(true);
+			_fpmesh->SetMeshActive(true, 0);
+		}
 	}
 
 	// jump가 아닐 때만 walk나 run이 될 수 있다.
@@ -1232,7 +1241,7 @@ void PlayerMove::Behavior()
 		}
 		default:
 		{
-
+			
 		}
 	}
 
@@ -1266,6 +1275,7 @@ void PlayerMove::Behavior()
 	{
 		if (_prevPlayerState.second != ePlayerMoveState::RELOAD)
 		{
+			_fpmesh->SetMeshActive(false, 0);
 			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 3.0f;
 		}
@@ -1277,6 +1287,7 @@ void PlayerMove::Behavior()
 			}
 			else
 			{
+				_fpmesh->SetMeshActive(true, 0);
 				Reload();
 			}
 		}

@@ -123,7 +123,7 @@ void InGameSceneView::Initialize()
 
 
 	// 총구 이펙트
-	auto particleSystemObj = API::CreateObject(_scene, "effect", hand);
+	auto particleSystemObj = API::CreateObject(_scene, "effect");
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
 	particleSystem->main.duration = 0.2f;
 	particleSystem->main.loop = true;
