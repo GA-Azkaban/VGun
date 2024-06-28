@@ -99,6 +99,8 @@ private:
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;
 	HDData::GameObject* _fpMeshObj;
+	HDData::SkinnedMeshRenderer* _fpmesh;
+	HDData::MeshRenderer* _weapon;
 	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
 
 private:
@@ -139,4 +141,5 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
+
 };

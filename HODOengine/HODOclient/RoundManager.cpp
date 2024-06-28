@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -176,7 +176,7 @@ void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 {
 	_timerUI = obj;
 	_timerUI->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	_timerUI->GetTransform()->SetPosition(2300.0f, 60.0f, 0.0f);
+	_timerUI->GetTransform()->SetPosition(1350.0f, 60.0f, 0.0f);
 }
 
 void RoundManager::SetRoundTimer(int time)
@@ -200,12 +200,22 @@ void RoundManager::UpdateRoundTimer()
 	{
 		auto currentTime = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsedTime = currentTime - _start_time;
-		_timerUI->SetText(std::to_string(static_cast<int>(_timer - elapsedTime.count())));
+		_timerUI->SetText(ChangeSecToMin(static_cast<int>(_timer - elapsedTime.count())));
 		if (elapsedTime.count() >= _timer)
 		{
 			_isRoundStart = false;
 		}
 	}
+}
+
+std::string RoundManager::ChangeSecToMin(int second)
+{
+	int min = second / 60;
+	int sec = second % 60;
+
+	std::string result = std::to_string(min) + " : " + std::to_string(sec);
+
+	return result;
 }
 
 void RoundManager::SetHPObject(HDData::TextUI* txt)

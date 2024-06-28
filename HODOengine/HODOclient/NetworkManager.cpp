@@ -67,62 +67,97 @@ void NetworkManager::Update()
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 {
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
-		// 내가 쐈을 때
-		// TODO) 내 총구 이펙트
+		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
 	}
 	else
 	{
-		// 남이 쐈을 때
-		// TODO) 남의 총구 이펙트
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 	}
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
-{
-	if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+{	
+	int myUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
+
+	// 쏜 사람 (총구 이펙트만 주면 됨)
+	if (myUID == playerData.userinfo().uid())
 	{
-		// 내가 쐈을 때 ) 내 킬 정보 갱신
-		RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentKill(playerData.killcount());
-		// TODO ) 내 총구 이펙트
+		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
 	}
 	else
 	{
-		// 남이 쐈을 때
-		// TODO) 남의 총구 이펙트
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+	}
 
-		if (hitPlayerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-		{
-			// 내가 맞았을 때 ) 내 데스 카운트 갱신
-			RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentHP(hitPlayerData.hp());
-			//RoundManager::Instance()->_myObj->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
-		}
-		else
-		{
-			// 남이 맞았을 때 ) 다른 플레이어의 데스 카운트 갱신
-			//RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetCurrentDeath(hitPlayerData.deathcount());
-		}
+	// 맞은 사람 ) 체력 변화
+	if (myUID == hitPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(hitPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
+		ConvertDataToPlayerInfo(hitPlayerData,
+			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 	}
 }
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
 {
-	// 모든 데스 갱신
-	ConvertDataToPlayerInfo(deathPlayerData,
-		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
-		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	int myUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 
-	// 모든 킬 갱신
-	ConvertDataToPlayerInfo(killPlayerData,
-		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
-		RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	if (myUID == deathPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(deathPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else if (myUID == killPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(killPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
+		// 모든 데스 갱신
+		ConvertDataToPlayerInfo(deathPlayerData,
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 
+		// 모든 킬 갱신
+		ConvertDataToPlayerInfo(killPlayerData,
+			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	}
 }
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
 {
+	// isdead 갱신
+	int index;
 
+	//auto vec3 = RoundManager::Instance()->GetRespawnPos()[index];
+
+	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
+	{
+		// 위치 갱신
+		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(vec3);
+		ConvertDataToPlayerInfo(playerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
+		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(vec3);
+		ConvertDataToPlayerInfo(playerData,
+			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
+			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	}
 }
 
 void NetworkManager::SendPlayRoll(Protocol::PlayerData playerData)

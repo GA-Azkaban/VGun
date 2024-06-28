@@ -62,6 +62,7 @@ public:
 	void SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time);
 	int& GetRoundTimer();
 	void UpdateRoundTimer();
+	std::string ChangeSecToMin(int second);
 	void SetHPObject(HDData::TextUI* txt);
 	void UpdateHPText();
 

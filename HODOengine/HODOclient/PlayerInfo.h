@@ -53,7 +53,6 @@ public:
 	int GetMaxBulletCount();
 	bool& GetIsDie();
 
-
 	bool GetIsStateChange();
 	void SetIsStateChange(bool isChange);
 	ePlayerState GetPrevPlayerState();
@@ -66,6 +65,8 @@ public:
 	void SetIsJump(bool isJump);
 	bool GetIsShoot();
 	bool GetIsJump();
+
+	void SetParticleObj(HDData::ParticleSystem* particle);
 
 private:
 	bool _isMyInfo = false;
@@ -81,7 +82,7 @@ private:
 
 	// state info
 	bool _isJump;
-	bool _isShoot;
+	bool _isShoot = false;
 
 	int _currentHP = 70;
 	bool _isDie;
@@ -92,6 +93,8 @@ private:
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
+
+	HDData::ParticleSystem* _shootParticle;
 	
 	// count info
 	int _kill;
