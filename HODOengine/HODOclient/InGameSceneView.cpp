@@ -204,7 +204,7 @@ void InGameSceneView::Initialize()
 	//playerSound->AddAudio3D("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
 	//playerSound->AddAudio3D("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound, 5.0f, 30.0f);
 	//playerSound->SetSoundGroupVolume(HDData::SoundGroup::SoundGroupChannel5, 1000.0f);
-	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7-2.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload2.wav", HDData::SoundGroup::GunSound);
@@ -212,7 +212,7 @@ void InGameSceneView::Initialize()
 	playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::MoveSound);
-	playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble_large.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound);
 	playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
 	playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
@@ -319,6 +319,20 @@ void InGameSceneView::Initialize()
 	// Timer
 	auto timer = API::CreateTextbox(_scene, "timer");
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
+	
+	// 디버그용 state
+	HDData::GameObject* state = API::CreateTextbox(_scene, "state");
+	HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
+	stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
+	playerMove->_plState = stateText;
+
+	// 디버그용 cooltime
+	HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
+	HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
+	coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
+	playerMove->_tumbleText = coolTimeText;
 
 	// 죽었을 때 비활성화 씬
 	auto deadzone = API::CreateImageBox(_scene, "deadzone");

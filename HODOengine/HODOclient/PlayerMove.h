@@ -71,6 +71,7 @@ private:
 	void OnStateEnter(ePlayerMoveState state);
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
+	void UpdateStateText();
 
 public:
 	int& GetBulletCount();
@@ -94,6 +95,11 @@ private:
 	int _prevDirection;
 	bool _isShootHead;
 	bool _isShootBody;
+
+public:
+	// 디버그용 state 표시
+	HDData::TextUI* _plState;
+	HDData::TextUI* _tumbleText;
 
 private:
 	//HDData::DynamicBoxCollider* _playerCollider;
