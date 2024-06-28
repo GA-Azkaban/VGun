@@ -57,7 +57,7 @@ namespace HDData
 			1,					0,					0,					0,
 			0,					1,					0,					0,
 			0,					0,					1,					0,
-			-_positionOffset.x,	_positionOffset.y,	-_positionOffset.z,	1
+			_positionOffset.x,	_positionOffset.y,	_positionOffset.z,	1
 		};
 
 		return translateMatrix;
