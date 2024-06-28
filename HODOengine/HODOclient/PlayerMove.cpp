@@ -640,9 +640,12 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	_plState->SetText(first + "/" + second);
+	_plStateText->SetText(first + "/" + second);
 
 	_tumbleText->SetText(std::to_string(_tumbleCooldown));
+
+	std::string posText = std::to_string((int)(_playerPos.x * 10)) + "/" + std::to_string((int)(_playerPos.y * 10)) + "/" + std::to_string((int)(_playerPos.z * 10));
+	_plPosText->SetText(posText);
 }
 
 int& PlayerMove::GetBulletCount()
