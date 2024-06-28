@@ -320,6 +320,10 @@ void InGameSceneView::Initialize()
 	auto timer = API::CreateTextbox(_scene, "timer");
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
 
+	// 죽었을 때 비활성화 씬
+	auto deadzone = API::CreateImageBox(_scene, "deadzone");
+	//auto deadzoneIMG = deadzone->GetComponent<HDData::ImageUI>()->SetImage("deadzone.png");
+
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
 

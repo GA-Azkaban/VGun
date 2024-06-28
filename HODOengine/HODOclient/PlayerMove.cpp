@@ -502,7 +502,10 @@ void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
 	_fpmesh->SetMeshActive(false, 0);
-	//_weapon->SetMeshActive(false, 0);
+	_weapon->SetMeshActive(false, 0);
+	_weapon->SetMeshActive(false, 1);
+	_weapon->SetMeshActive(false, 2);
+	_weapon->SetMeshActive(false, 3);
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
@@ -1122,7 +1125,10 @@ void PlayerMove::DecidePlayerState()
 		}
 		else
 		{
-			//_weapon->Set(true);
+			_weapon->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 1);
+			_weapon->SetMeshActive(true, 2);
+			_weapon->SetMeshActive(true, 3);
 			_fpmesh->SetMeshActive(true, 0);
 		}
 	}

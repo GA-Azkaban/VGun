@@ -139,15 +139,21 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
 {
 	// isdead 갱신
-	// TODO) index 받아서 해당 위치로 포지션 갱신해주어야 함
+	int index;
+
+	//auto vec3 = RoundManager::Instance()->GetRespawnPos()[index];
+
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
+		// 위치 갱신
+		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(vec3);
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
 	else
 	{
+		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(vec3);
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -629,7 +635,6 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
-	//info->SetIsShoot(data.is)
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
