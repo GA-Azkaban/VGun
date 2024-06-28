@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -1204,8 +1204,23 @@ void PlayerMove::DecidePlayerState()
 				_playerState.first = ePlayerMoveState::RUN;
 			}
 		}
-	}
 
+		// jump, tumble 들어오면 덮어씌우고
+		if (API::GetKeyDown(DIK_SPACE))
+		{
+			_playerState.first = ePlayerMoveState::JUMP;
+		}
+		else if (API::GetKeyDown(DIK_LSHIFT))
+		{
+			_playerState.first = ePlayerMoveState::TUMBLE;
+
+			// 재장전 중에 구르는 경우
+			if (_prevPlayerState.second == ePlayerMoveState::RELOAD)
+			{
+				_playerAudio->Stop("reload");
+				_reloadTimer = 0.0f;
+			}
+		}
 	// tumble, jump 들어오면 덮어씌우고
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
@@ -1216,10 +1231,8 @@ void PlayerMove::DecidePlayerState()
 			_tumbleCooldown = 5.0f;
 		}
 	}
-	else if (API::GetKeyDown(DIK_SPACE))
-	{
-		_playerState.first = ePlayerMoveState::JUMP;
-	}
+
+
 
 	// shoot, reload 는 second에 넣어주고
 	//if (_playerState.second == ePlayerMoveState::RELOAD)
@@ -1231,24 +1244,27 @@ void PlayerMove::DecidePlayerState()
 	//	}
 	//}
 
-
-	if (API::GetMouseDown(MOUSE_LEFT))
+	if (_playerState.second != ePlayerMoveState::RELOAD)
 	{
-		_playerState.second = ePlayerMoveState::FIRE;
-	}
-	else if (API::GetMouseUp(MOUSE_LEFT))
-	{
-		_playerState.second = ePlayerMoveState::IDLE;
-		_shootCount = 0;
-	}
-	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
-	{
-		_playerState.second = ePlayerMoveState::RELOAD;
+		if (API::GetMouseDown(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::FIRE;
+		}
+		else if (API::GetMouseUp(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::IDLE;
+			_shootCount = 0;
+		}
+		if (API::GetKeyDown(DIK_R) && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
+		{
+			_playerState.second = ePlayerMoveState::RELOAD;
+		}
 	}
 }
 
 void PlayerMove::Behavior()
 {
+	/*
 	if (_prevPlayerState.first == _playerState.first)
 	{
 		OnStateStay(_playerState.first);
@@ -1268,8 +1284,8 @@ void PlayerMove::Behavior()
 		OnStateExit(_prevPlayerState.second);
 		OnStateEnter(_playerState.second);
 	}
+	*/
 
-	/*
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
 	if (_playerState.first != ePlayerMoveState::TUMBLE)
 	{
@@ -1409,7 +1425,7 @@ void PlayerMove::Behavior()
 			_headCam->ResetCameraPos();
 		}
 	}
-	*/
+	
 }
 
 void PlayerMove::CoolTime()
