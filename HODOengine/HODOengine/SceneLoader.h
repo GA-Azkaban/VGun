@@ -46,6 +46,9 @@ namespace HDEngine
 		void LinkHierachy();
 		void SetTransform();
 
+		// 스폰 지점
+		Vector3 _spawnPoint[15];
+
 	private:
 		HDData::Scene * now;
 		HDData::Material* _material;
