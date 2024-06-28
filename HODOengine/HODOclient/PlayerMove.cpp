@@ -78,6 +78,8 @@ void PlayerMove::Update()
 	CoolTime();
 	Behavior();
 
+	UpdateStateText();
+
 	// sound 관련
 	_playerAudio->UpdateSoundPos(_playerPos);
 	PlayPlayerSound();
@@ -521,6 +523,128 @@ void PlayerMove::OnEnable()
 	//_playerAudio->PlayRepeat("bgm");
 }
 
+void PlayerMove::OnStateEnter(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::OnStateStay(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::OnStateExit(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::UpdateStateText()
+{
+	std::string first = "NONE";
+	std::string second = "NONE";
+
+	switch (_playerState.first)
+	{
+		case ePlayerMoveState::DIE : 
+		{
+			first = "DIE";
+			break;
+		}
+		case ePlayerMoveState::WALK :
+		{
+			first = "WALK";
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+			first = "RUN";
+			break;
+		}
+		case ePlayerMoveState::IDLE:
+		{
+			first = "IDLE";
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			first = "JUMP";
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			first = "TUMBLE";
+			break;
+		}
+		default : 
+		{
+			first = "NONE";
+		}
+	}
+
+	switch (_playerState.second)
+	{
+		case ePlayerMoveState::FIRE:
+		{
+			second = "FIRE";
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+			second = "RELOAD";
+			break;
+		}
+		case ePlayerMoveState::IDLE:
+		{
+			second = "IDLE";
+			break;
+		}
+		default:
+		{
+			second = "NONE";
+		}
+	}
+
+	_plState->SetText(first + "/" + second);
+
+	_tumbleText->SetText(std::to_string(_tumbleCooldown));
+}
+
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
@@ -549,7 +673,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		_isJumping = false;
 		_playerState.first = ePlayerMoveState::IDLE;
 		_playerAudio->PlayOnce("land");
-		_playerColliderStanding->ClearForceXZ();
+		_playerColliderStanding->ClearForceXYZ();
 	}
 }
 
@@ -567,10 +691,10 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 	//	_isOnGround = false;
 	//}
 
-	if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
-	{
-		_playerColliderStanding->ClearForceXZ();
-	}
+	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
+	//{
+	//	_playerColliderStanding->ClearForceXYZ();
+	//}
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -1127,6 +1251,8 @@ void PlayerMove::DecidePlayerState()
 		}
 		else
 		{
+			_playerState.first = ePlayerMoveState::IDLE;
+
 			_weapon->SetMeshActive(true, 0);
 			_weapon->SetMeshActive(true, 1);
 			_weapon->SetMeshActive(true, 2);
@@ -1153,23 +1279,34 @@ void PlayerMove::DecidePlayerState()
 				_playerState.first = ePlayerMoveState::RUN;
 			}
 		}
-	}
 
-	// tumble, jump 들어오면 덮어씌우고
-	if (API::GetKeyDown(DIK_LSHIFT))
-	{
-		if (_tumbleCooldown <= 0.0f)
+		// jump, tumble 들어오면 덮어씌우고
+		if (API::GetKeyDown(DIK_SPACE))
 		{
-			_playerState.first = ePlayerMoveState::TUMBLE;
-			// 구르기 쿨타임 5초로 설정
-			_tumbleCooldown = 5.0f;
+			_playerState.first = ePlayerMoveState::JUMP;
+		}
+		else if (API::GetKeyDown(DIK_LSHIFT))
+		{
+			if (_tumbleCooldown <= 0.0f)
+			{
+				_playerState.first = ePlayerMoveState::TUMBLE;
+				// 구르기 쿨타임 5초로 설정
+				_tumbleCooldown = 5.0f;
+
+				// 재장전 or 사격 중에 구르는 경우
+				if (_prevPlayerState.second == ePlayerMoveState::RELOAD)
+				{
+					_playerAudio->Stop("reload");
+					_reloadTimer = 0.0f;
+				}
+				else if (_shootCooldown > 0.0f)
+				{
+					_headCam->ResetCameraPos();
+					_prevPlayerState.second = ePlayerMoveState::IDLE;
+				}
+			}
 		}
 	}
-	else if (API::GetKeyDown(DIK_SPACE))
-	{
-		_playerState.first = ePlayerMoveState::JUMP;
-	}
-
 	// shoot, reload 는 second에 넣어주고
 	//if (_playerState.second == ePlayerMoveState::RELOAD)
 	//{
@@ -1180,24 +1317,49 @@ void PlayerMove::DecidePlayerState()
 	//	}
 	//}
 
-
-	if (API::GetMouseDown(MOUSE_LEFT))
+	if (_playerState.second != ePlayerMoveState::RELOAD && _playerState.first != ePlayerMoveState::TUMBLE)
 	{
-		_playerState.second = ePlayerMoveState::FIRE;
-	}
-	else if (API::GetMouseUp(MOUSE_LEFT))
-	{
-		_playerState.second = ePlayerMoveState::IDLE;
-		_shootCount = 0;
-	}
-	if (API::GetKeyDown(DIK_R) && _playerState.second == ePlayerMoveState::IDLE && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
-	{
-		_playerState.second = ePlayerMoveState::RELOAD;
+		if (API::GetMouseDown(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::FIRE;
+		}
+		else if (API::GetMouseUp(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::IDLE;
+			_shootCount = 0;
+		}
+		if (API::GetKeyDown(DIK_R) && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
+		{
+			//_playerAudio->PlayOnce("reload");
+			_playerState.second = ePlayerMoveState::RELOAD;
+		}
 	}
 }
 
 void PlayerMove::Behavior()
 {
+	/*
+	if (_prevPlayerState.first == _playerState.first)
+	{
+		OnStateStay(_playerState.first);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.first);
+		OnStateEnter(_playerState.first);
+	}
+
+	if (_prevPlayerState.second == _playerState.second)
+	{
+		OnStateStay(_playerState.second);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.second);
+		OnStateEnter(_playerState.second);
+	}
+	*/
+
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
 	if (_playerState.first != ePlayerMoveState::TUMBLE)
 	{
@@ -1239,10 +1401,9 @@ void PlayerMove::Behavior()
 				Jump(DecideDisplacement(_moveDirection) * _moveSpeed);
 			}
 
-			//else
-			//{
-			//	_playerColliderStanding->ClearForceXZ();
-			//}
+			_moveSpeed = 5.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
@@ -1252,7 +1413,7 @@ void PlayerMove::Behavior()
 				_playerAudio->PlayOnce("tumblingMan");
 				_playerAudio->PlayOnce("tumble");
 
-				_tumbleTimer = 0.4f;
+				_tumbleTimer = 0.3f;
 				_headCam->ToggleCameraShake(true);
 
 				if (_moveDirection == 5)
@@ -1329,6 +1490,15 @@ void PlayerMove::Behavior()
 		if (_prevPlayerState.first == ePlayerMoveState::TUMBLE)
 		{
 			Reload();
+			_shootCooldown = 0.0f;
+			if (API::GetMouseHold(MOUSE_LEFT))
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
+			else
+			{
+				_playerState.second = ePlayerMoveState::IDLE;
+			}
 		}
 		if (_prevPlayerState.second == ePlayerMoveState::FIRE)
 		{
@@ -1338,6 +1508,7 @@ void PlayerMove::Behavior()
 			_headCam->ResetCameraPos();
 		}
 	}
+
 }
 
 void PlayerMove::CoolTime()
@@ -1350,6 +1521,10 @@ void PlayerMove::CoolTime()
 	if (_tumbleCooldown > 0.0f)
 	{
 		_tumbleCooldown -= _deltaTime;
+	}
+	else
+	{
+		_tumbleCooldown = 0.0f;
 	}
 }
 
