@@ -58,6 +58,7 @@ private:
 private:
 	void DecidePlayerState();
 	void Behavior();
+	void CoolTime();
 	void Landing();
 	void ShootGun();
 	void ShootGunDdabal();
@@ -121,6 +122,7 @@ private:
 	int _particleIndex;
 	float _shootCooldown;
 	float _jumpCooldown;
+	float _tumbleCooldown;
 	int _shootCount;
 	int& _bulletCount;
 	float _reloadTimer;

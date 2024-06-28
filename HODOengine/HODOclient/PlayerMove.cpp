@@ -10,6 +10,7 @@ PlayerMove::PlayerMove()
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
+	_tumbleCooldown(0.0f),
 	_shootCount(0),
 	_bulletCount(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()),
 	_reloadTimer(0.0f),
@@ -74,6 +75,7 @@ void PlayerMove::Update()
 	CameraControl();
 	CheckMoveInfo();
 	DecidePlayerState();
+	CoolTime();
 	Behavior();
 
 	// sound 관련
@@ -1156,7 +1158,12 @@ void PlayerMove::DecidePlayerState()
 	// tumble, jump 들어오면 덮어씌우고
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
-		_playerState.first = ePlayerMoveState::TUMBLE;
+		if (_tumbleCooldown <= 0.0f)
+		{
+			_playerState.first = ePlayerMoveState::TUMBLE;
+			// 구르기 쿨타임 5초로 설정
+			_tumbleCooldown = 5.0f;
+		}
 	}
 	else if (API::GetKeyDown(DIK_SPACE))
 	{
@@ -1269,10 +1276,6 @@ void PlayerMove::Behavior()
 		}
 	}
 
-	if (_shootCooldown > 0.0f)
-	{
-		_shootCooldown -= _deltaTime;
-	}
 	// 총 쏘거나 재장전
 	if (_playerState.second == ePlayerMoveState::FIRE)
 	{
@@ -1334,6 +1337,19 @@ void PlayerMove::Behavior()
 			_headCam->ToggleCameraShake(false);
 			_headCam->ResetCameraPos();
 		}
+	}
+}
+
+void PlayerMove::CoolTime()
+{
+	if (_shootCooldown > 0.0f)
+	{
+		_shootCooldown -= _deltaTime;
+	}
+
+	if (_tumbleCooldown > 0.0f)
+	{
+		_tumbleCooldown -= _deltaTime;
 	}
 }
 
