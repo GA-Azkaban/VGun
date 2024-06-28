@@ -93,7 +93,7 @@ void RoundManager::InitGame()
 		++index;
 	}
 
-	SetSpawnPoint();
+	//SetSpawnPoint();
 	InitRound();
 }
 
@@ -265,9 +265,15 @@ std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManag
 	return _inGameKillCounts;
 }
 
-void RoundManager::SetSpawnPoint()
+Vector3 RoundManager::SetSpawnPoint(Vector3 position)
 {
+	// 매쉬 읽어와서 인덱스에 포지션 넣어주기
+	return 	_spawnPoint[_index] = position;
+}
 
+Vector3 RoundManager::GetSpawnPoint(int index)
+{
+	return _spawnPoint[index];
 }
 
 void RoundManager::SetAnimationDummy(HDData::GameObject* obj)

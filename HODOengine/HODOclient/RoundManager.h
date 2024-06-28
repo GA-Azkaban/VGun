@@ -82,15 +82,17 @@ public:
 	
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
-
+	// 리스폰 관련
+	Vector3 SetSpawnPoint(Vector3 position);
+	Vector3 GetSpawnPoint(int index);
 
 private:
 	// obj 보관용
 	std::pair<HDData::TextUI*, HDData::TextUI*> _killCountObjs[6];
 
 	// 스폰 지점
-	Vector3 _spawnPoint[10];
-	void SetSpawnPoint();
+	Vector3 _spawnPoint[15];
+	int _index = 0;
 
 	// 인게임
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;

@@ -15,7 +15,6 @@
 #include "StaticBoxCollider.h"
 #include "DynamicSphereCollider.h"
 
-
 using rapidjson::Document;
 using rapidjson::SizeType;
 using rapidjson::Value;
@@ -119,6 +118,8 @@ namespace HDEngine
 			HDData::GameObject* object = scene->CreateObject(info.name);
 
 			std::string meshName = info.meshName;
+			// 임시 스폰 포지션
+			Vector3 tempPosition = info.position;
 
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 
@@ -130,6 +131,10 @@ namespace HDEngine
 			else if (info.meshName != "")
 			{
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
+			}
+			else if (info.meshName == "SpawnPoint")
+			{
+
 			}
 
 			switch (info.colliderType)

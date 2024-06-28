@@ -50,7 +50,7 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (!GameManager::Instance()->GetMyInfo()->GetIsDie())
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
 	{
 		Die();
 	}

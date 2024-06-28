@@ -139,14 +139,17 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
 {
 	// isdead 갱신
-	int index;
+	// 서버에서 인덱스를보내줌
+	int index=0;
 
-	//auto vec3 = RoundManager::Instance()->GetRespawnPos()[index];
+	//RoundManager::Instance()->Respawn(index);
+
+	auto vec3 = RoundManager::Instance()->GetSpawnPoint(index);
 
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(vec3);
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(vec3);
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
