@@ -254,7 +254,9 @@
     <ClInclude Include="BtnTextScript.h">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMoveState.h" />
+    <ClInclude Include="PlayerMoveState.h">
+      <Filter>02_Client\01_Script\Player\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

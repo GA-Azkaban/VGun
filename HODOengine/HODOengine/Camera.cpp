@@ -17,7 +17,6 @@ namespace HDData
 		_isShakingCamera(false),
 		_shakeTime(0.1f),
 		_distYOnShoot(0.0f),
-		_distYOnShootEnd(0.0f),
 		_camActive(true)
 	{
 
@@ -170,10 +169,7 @@ namespace HDData
 		else
 		{
 			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShootEnd, 0.0f);
-			_shakeTime = 0.0f;
-			_isShakingCamera = false;
-			_distYOnShoot = 0.0f;
-			_distYOnShootEnd = 0.0f;
+
 			ResetCameraPos();
 		}
 	}
@@ -185,9 +181,9 @@ namespace HDData
 			return;
 		}
 
-		if (_shakeTime < 0.4f)
+		if (_shakeTime < 0.3f)
 		{
-			float distY = sin(_shakeTime * 7.854f);
+			float distY = sin(_shakeTime * 10.472f);
 
 			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f - distY, 0.175f));
 
@@ -201,10 +197,6 @@ namespace HDData
 		else
 		{
 			//GetGameObject()->GetTransform()->Translate(0.0f, _distYOnShootEnd, 0.0f);
-			_shakeTime = 0.0f;
-			_isShakingCamera = false;
-			_distYOnShoot = 0.0f;
-			_distYOnShootEnd = 0.0f;
 			ResetCameraPos();
 		}
 	}
@@ -216,6 +208,9 @@ namespace HDData
 
 	void Camera::ResetCameraPos()
 	{
+		_shakeTime = 0.0f;
+		_isShakingCamera = false;
+		_distYOnShoot = 0.0f;
 		GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	}
 

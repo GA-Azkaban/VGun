@@ -58,6 +58,7 @@ private:
 private:
 	void DecidePlayerState();
 	void Behavior();
+	void CoolTime();
 	void Landing();
 	void ShootGun();
 	void ShootGunDdabal();
@@ -67,6 +68,10 @@ private:
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
 	virtual void OnEnable() override;
+	void OnStateEnter(ePlayerMoveState state);
+	void OnStateStay(ePlayerMoveState state);
+	void OnStateExit(ePlayerMoveState state);
+	void UpdateStateText();
 
 public:
 	int& GetBulletCount();
@@ -90,6 +95,11 @@ private:
 	int _prevDirection;
 	bool _isShootHead;
 	bool _isShootBody;
+
+public:
+	// 디버그용 state 표시
+	HDData::TextUI* _plState;
+	HDData::TextUI* _tumbleText;
 
 private:
 	//HDData::DynamicBoxCollider* _playerCollider;
@@ -121,6 +131,7 @@ private:
 	int _particleIndex;
 	float _shootCooldown;
 	float _jumpCooldown;
+	float _tumbleCooldown;
 	int _shootCount;
 	int& _bulletCount;
 	float _reloadTimer;

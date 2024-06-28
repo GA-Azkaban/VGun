@@ -17,7 +17,7 @@ void FPAniScript::Start()
 void FPAniScript::Update()
 {
 	// play animation in FP
-	if (API::GetMouseHold(MOUSE_LEFT))
+	if (API::GetMouseDown(MOUSE_LEFT))
 	{
 		_animator->GetAllAC()->SetTrigger("isFire");
 	}

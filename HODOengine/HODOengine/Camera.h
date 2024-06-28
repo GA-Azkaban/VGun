@@ -80,7 +80,6 @@ namespace HDData
 		bool _isShakingCamera;
 		float _shakeTime;
 		float _distYOnShoot;
-		float _distYOnShootEnd;
 		bool _camActive;
 	};
 }

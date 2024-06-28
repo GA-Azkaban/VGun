@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -49,29 +49,21 @@ void Client::Initialize()
 
 	//AnimationLoaderTest loader;
 	//loader.Start();
+
+	LoginSceneView login;		//Scene Name : Login
+	login.Initialize();
 	
-	//LoginSceneView login;		//Scene Name : Login
-	//login.Initialize();
-	//
-	//MainMenuScene menu;			//Scene Name : MainMenu
-	//menu.Initalize();	
-	//
-	//LobbySceneView lobby;
-	//lobby.Initialize();
-
-// 	LoginSceneView login;		//Scene Name : Login
-// 	login.Initialize();
-// 
-// 	MainMenuScene menu;			//Scene Name : MainMenu
-// 	menu.Initalize();
-// 
-// 	LobbySceneView lobby;		// Scene Naem : Lobby
-// 	lobby.Initialize();
-
+	MainMenuScene menu;			//Scene Name : MainMenu
+	menu.Initalize();
+	
+	LobbySceneView lobby;		// Scene Naem : Lobby
+	lobby.Initialize();
+	
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 
-	//API::LoadSceneByName("Login");
-	API::LoadSceneByName("InGame");
+	API::LoadSceneByName("Login");
+
+	//API::LoadSceneByName("InGame");
 	//API::SetRecursiveMouseMode(true);
 }
