@@ -30,23 +30,33 @@ void LowHPEffect::Update()
 	_lowHPEffectTimer.Update();
 
 	int playerHP = GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP();
-	//GameManager::Instance()->GetMyInfo()->SetCurrentHP();
+
+	if (API::GetKeyDown(DIK_B))
+	{
+		GameManager::Instance()->GetMyInfo()->SetCurrentHP(25);
+
+	}
 	if (playerHP > (maxHP * 0.3f))
 	{
 		_lowHPEffectImage->SetActive(false);
+		_lowHPEffectTimer.Stop();
 	}
 	else
 	{
 		_lowHPEffectImage->SetActive(true);
+		if (_lowHPEffectTimer.IsActive() == false)
+		{
+			_lowHPEffectTimer.Start();
+		}
 		if (playerHP <= (maxHP * 0.3f) && playerHP > (maxHP * 0.2f))
 		{
 			_effectColorThreshold = 0.3f;
 		}
-		else if(playerHP <= (maxHP * 0.2f) && playerHP > (maxHP * 0.1f))
+		else if (playerHP <= (maxHP * 0.2f) && playerHP > (maxHP * 0.1f))
 		{
 			_effectColorThreshold = 0.66f;
 		}
-		else if(playerHP <= (maxHP * 0.1f) && playerHP > 0)
+		else if (playerHP <= (maxHP * 0.1f) && playerHP > 0)
 		{
 			_effectColorThreshold = 1.0f;
 		}

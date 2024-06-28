@@ -1,4 +1,4 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -55,9 +55,6 @@ void Client::Initialize()
 	
 	LobbySceneView lobby;
 	lobby.Initialize();
-
-	LoginSceneView login;		//Scene Name : Login
-	login.Initialize();
 
 	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();
