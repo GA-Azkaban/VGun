@@ -112,6 +112,9 @@
     <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\TestScene\test</Filter>
     </ClCompile>
+    <ClCompile Include="LowHPEffect.cpp">
+      <Filter>02_Client\TestScene\ScreenEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -251,6 +254,12 @@
     <ClInclude Include="TPScript.h">
       <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>02_Client\TestScene\ScreenEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="LowHPEffect.h">
+      <Filter>02_Client\TestScene\ScreenEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -365,6 +374,9 @@
     </Filter>
     <Filter Include="02_Client\TestScene\Ammo">
       <UniqueIdentifier>{576cd7fc-3567-4f56-be15-6f6ffab1e958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\ScreenEffect">
+      <UniqueIdentifier>{7017d7d7-7460-4192-8fe7-7d702e84046e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

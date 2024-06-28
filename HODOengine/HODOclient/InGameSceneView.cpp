@@ -8,6 +8,7 @@
 #include "FPAniScript.h"
 #include "Crosshair.h"
 #include "Ammo.h"
+#include "LowHPEffect.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -135,7 +136,7 @@ void InGameSceneView::Initialize()
 	{
 		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
-		otherPlayer->LoadFBXFile("SKM_GunmanTP_X_default.fbx");
+		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
 		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.4f, 0.5f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.7f, 0.0f });
@@ -177,6 +178,11 @@ void InGameSceneView::Initialize()
 	auto ammo = API::CreateObject(_scene, "Ammo");
 	auto ammoComp = ammo->AddComponent<Ammo>();
 	ammoComp->playerMove = playerMove;
+
+	// low hp screen effect
+	//auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
+	//auto hpEffectComp = hpEffectObj->AddComponent<LowHPEffect>();
+	player->AddComponent<LowHPEffect>();
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

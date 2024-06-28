@@ -12,11 +12,12 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
-	PlayerInfo* info;
+	//PlayerInfo* info;
 
 private:
 	HDData::ImageUI* _lowHPEffectImage;
 	Timer _lowHPEffectTimer;
-	float _effectColor;
+	float _effectColorThreshold;
 	HDData::AnimationCurve _curve;
-}
+	static const int maxHP = 100;
+};
