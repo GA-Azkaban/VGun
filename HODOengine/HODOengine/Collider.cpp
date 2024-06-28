@@ -57,7 +57,7 @@ namespace HDData
 			1,					0,					0,					0,
 			0,					1,					0,					0,
 			0,					0,					1,					0,
-			_positionOffset.x,	_positionOffset.y,	_positionOffset.z,	1
+			-_positionOffset.x,	_positionOffset.y,	-_positionOffset.z,	1
 		};
 
 		return translateMatrix;
@@ -65,41 +65,45 @@ namespace HDData
 
 	Matrix Collider::GetRotationMatrix()
 	{
-		Matrix rotationMatrix =
-		{
-			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
-			2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
-			2.0f * (_rotationOffset.x * _rotationOffset.z - _rotationOffset.y * _rotationOffset.w),
-			0,
+// 		Matrix rotationMatrix =
+// 		{
+// 			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
+// 			2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
+// 			2.0f * (_rotationOffset.x * _rotationOffset.z - _rotationOffset.y * _rotationOffset.w),
+// 			0,
+// 
+// 			2.0f * (_rotationOffset.x * _rotationOffset.y - _rotationOffset.z * _rotationOffset.w),
+// 			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.z * _rotationOffset.z),
+// 			2.0f * (_rotationOffset.y * _rotationOffset.z + _rotationOffset.x * _rotationOffset.w),
+// 			0,
+// 
+// 			2.0f * (_rotationOffset.x * _rotationOffset.z + _rotationOffset.y * _rotationOffset.w),
+// 			2.0f * (_rotationOffset.y * _rotationOffset.z - _rotationOffset.x * _rotationOffset.w),
+// 			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.y * _rotationOffset.y),
+// 			0,
+// 
+// 			0,
+// 			0,
+// 			0,
+// 			1
+// 		};
 
-			2.0f * (_rotationOffset.x * _rotationOffset.y - _rotationOffset.z * _rotationOffset.w),
-			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.z * _rotationOffset.z),
-			2.0f * (_rotationOffset.y * _rotationOffset.z + _rotationOffset.x * _rotationOffset.w),
-			0,
-
-			2.0f * (_rotationOffset.x * _rotationOffset.z + _rotationOffset.y * _rotationOffset.w),
-			2.0f * (_rotationOffset.y * _rotationOffset.z - _rotationOffset.x * _rotationOffset.w),
-			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.y * _rotationOffset.y),
-			0,
-
-			0,
-			0,
-			0,
-			1
-		};
+		Matrix rotationMatrix = Matrix::CreateFromQuaternion(_rotationOffset);
 
 		return rotationMatrix;
 	}
 
 	Matrix Collider::GetScaleMatrix()
 	{		
-		Matrix scaleMatrix =
-		{
-			_scaleOffset.x,		0,					0,					0,
-			0,					_scaleOffset.y,		0,					0,
-			0,					0,					_scaleOffset.z,		0,
-			0,					0,					0,					1
-		};
+// 		Matrix scaleMatrix =
+// 		{
+// 			_scaleOffset.x,		0,					0,					0,
+// 			0,					_scaleOffset.y,		0,					0,
+// 			0,					0,					_scaleOffset.z,		0,
+// 			0,					0,					0,					1
+// 		};
+
+		Matrix scaleMatrix = Matrix::CreateScale(_scaleOffset);
 
 		return scaleMatrix;
 	}
