@@ -519,6 +519,57 @@ void PlayerMove::OnEnable()
 	//_playerAudio->PlayRepeat("bgm");
 }
 
+void PlayerMove::OnStateEnter(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE :
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::OnStateStay(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::OnStateExit(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
@@ -1183,6 +1234,27 @@ void PlayerMove::DecidePlayerState()
 
 void PlayerMove::Behavior()
 {
+	if (_prevPlayerState.first == _playerState.first)
+	{
+		OnStateStay(_playerState.first);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.first);
+		OnStateEnter(_playerState.first);
+	}
+
+	if (_prevPlayerState.second == _playerState.second)
+	{
+		OnStateStay(_playerState.second);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.second);
+		OnStateEnter(_playerState.second);
+	}
+
+	/*
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
 	if (_playerState.first != ePlayerMoveState::TUMBLE)
 	{
@@ -1324,6 +1396,7 @@ void PlayerMove::Behavior()
 			_headCam->ResetCameraPos();
 		}
 	}
+	*/
 }
 
 void PlayerMove::Landing()

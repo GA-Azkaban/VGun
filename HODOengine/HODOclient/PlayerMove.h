@@ -67,6 +67,9 @@ private:
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
 	virtual void OnEnable() override;
+	void OnStateEnter(ePlayerMoveState state);
+	void OnStateStay(ePlayerMoveState state);
+	void OnStateExit(ePlayerMoveState state);
 
 public:
 	int& GetBulletCount();
