@@ -4,6 +4,7 @@ namespace RocketCore::Graphics
 	class QuadBuffer;
 	class VertexShader;
 	class PixelShader;
+	class Material;
 
 	class PostProcessPass
 	{
@@ -17,6 +18,8 @@ namespace RocketCore::Graphics
 
 		VertexShader* _vertexShader;
 		PixelShader* _pixelShader;
+
+		Material* _material;
 	};
 
 }

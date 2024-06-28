@@ -76,6 +76,8 @@ cbuffer PostProcessData : register(b7)
 	float2 ssaoNoiseScale;
 	float ssaoRadius;
 	float ssaoPower;
+    int vignetteEnabled;
+	float vignetteIntensity;
 }
 
 cbuffer ParticleData : register(b8)

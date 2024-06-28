@@ -3,6 +3,8 @@
 #include "ResourceManager.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
+#include "Material.h"
+#include "ObjectManager.h"
 #include <d3d11_2.h>
 
 namespace RocketCore::Graphics
@@ -13,25 +15,30 @@ namespace RocketCore::Graphics
 	{
 		_vertexShader = ResourceManager::Instance().GetVertexShader("FullScreenQuadVS.cso");
 		_pixelShader = ResourceManager::Instance().GetPixelShader("PostProcessPS.cso");
+		HDEngine::MaterialDesc vignetteDesc;
+		vignetteDesc.materialName = "vignette";
+		vignetteDesc.albedo = "blackout0003.png";
+		vignetteDesc.color = { 255, 255, 255, 100 };
+		_material = ObjectManager::Instance().CreateMaterial(vignetteDesc);
 	}
 
 	PostProcessPass::~PostProcessPass()
 	{
-		delete _quadBuffer;
-		delete _vertexShader;
-		delete _pixelShader;
+		
 	}
 
 	void PostProcessPass::Render()
 	{
 		_quadBuffer->SetRenderTargets();
-		_quadBuffer->ClearRenderTargets();
 
 		ResourceManager::Instance().GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 		_vertexShader->SetShader();
 
-		_pixelShader->SetShaderResourceView("src", _quadBuffer->GetShaderResourceView());
+		_pixelShader->SetInt("vignetteEnabled", 1);
+		_pixelShader->SetFloat("vignetteIntensity", 1.0f);
+		_pixelShader->SetFloat4("albedoColor", _material->GetColorFloat4());
+		_pixelShader->SetShaderResourceView("vignetteSrc", _material->GetAlbedoMap());
 		_pixelShader->CopyAllBufferData();
 		_pixelShader->SetShader();
 

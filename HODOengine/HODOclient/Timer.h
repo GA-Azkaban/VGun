@@ -7,6 +7,7 @@ public:
 	Timer();
 	void Start();
 	void Update();
+	void Stop();
 
 	bool IsActive();
 	float GetElapsedTime();

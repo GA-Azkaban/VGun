@@ -39,6 +39,7 @@ namespace RocketCore::Graphics
 	class DebugMeshPass;
 	class OutlinePass;
 	class SkyboxPass;
+	class PostProcessPass;
 	class ToneMapPass;
 	class SpritePass;
 	class ParticlePass;
@@ -115,6 +116,7 @@ namespace RocketCore::Graphics
 		DebugMeshPass* _debugMeshPass;
 		OutlinePass* _outlinePass;
 		SkyboxPass* _skyboxPass;
+		PostProcessPass* _postProcessPass;
 		ToneMapPass* _toneMapPass;
 		SpritePass* _spritePass;
 		ParticlePass* _particlePass;

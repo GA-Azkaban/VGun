@@ -335,6 +335,12 @@ TestScene::TestScene()
 	meshComp5->PlayAnimation("X_idle", true);
 	meshComp5->SetOutlineActive(true); */
 
+	auto blackOutObj = API::CreateObject(_scene, "BlackOut");
+	auto blackOutImage = blackOutObj->AddComponent<HDData::ImageUI>();
+	blackOutImage->SetImage("blackout0003.png");
+	blackOutImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
+	blackOutImage->ChangeScale(1.334f, 1.334f);
+	blackOutImage->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 }
 
 TestScene::~TestScene()

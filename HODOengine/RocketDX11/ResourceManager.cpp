@@ -658,6 +658,10 @@ namespace RocketCore::Graphics
 		PixelShader* forwardNoLightPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (forwardNoLightPS->LoadShaderFile(L"Resources/Shaders/ForwardPixelShaderNoLight.cso"))
 			_pixelShaders.insert(std::make_pair("ForwardPixelShaderNoLight.cso", forwardNoLightPS));
+
+		PixelShader* postProcessPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (postProcessPS->LoadShaderFile(L"Resources/Shaders/PostProcessPS.cso"))
+			_pixelShaders.insert(std::make_pair("PostProcessPS.cso", postProcessPS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
