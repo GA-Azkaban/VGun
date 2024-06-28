@@ -51,13 +51,18 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
+	if (_isDie != GameManager::Instance()->GetMyInfo()->GetIsDie())
 	{
-		Die();
-	}
-	else
-	{
-		Respawn();
+		if (_isDie)
+		{
+			_isDie = false;
+			Respawn();
+		}
+		else
+		{
+			_isDie = true;
+			Die();
+		}
 	}
 
 	if (!_isMovable || _isDie)
