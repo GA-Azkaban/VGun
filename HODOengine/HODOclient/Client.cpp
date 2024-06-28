@@ -59,10 +59,11 @@ void Client::Initialize()
 	LobbySceneView lobby;		// Scene Naem : Lobby
 	lobby.Initialize();
 	
+	InGameSceneView inGame;			//Scene Name : InGame
+	inGame.Initialize();
+
 	API::LoadSceneByName("Login");
 
-	//InGameSceneView inGame;			//Scene Name : InGame
-	//inGame.Initialize();
 	//API::LoadSceneByName("InGame");
 	//API::SetRecursiveMouseMode(true);
 }
