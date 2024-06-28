@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -93,6 +93,7 @@ void RoundManager::InitGame()
 		++index;
 	}
 
+	SetSpawnPoint();
 	InitRound();
 }
 
@@ -252,6 +253,11 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
 {
 	return _inGameKillCounts;
+}
+
+void RoundManager::SetSpawnPoint()
+{
+
 }
 
 void RoundManager::SetAnimationDummy(HDData::GameObject* obj)
