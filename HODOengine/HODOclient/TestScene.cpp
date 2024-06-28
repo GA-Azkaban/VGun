@@ -1,4 +1,4 @@
-﻿#include "TestScene.h"
+#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -16,20 +16,19 @@ TestScene::TestScene()
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	/*
-	auto testBox1 = API::CreateObject(_scene);
-	testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
-	testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
-	//testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
-	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
-	boxRender1->LoadMesh("primitiveQuad");
-	HDEngine::MaterialDesc boxMat1;
-	boxMat1.materialName = "boxMat";
-	//boxMat1.albedo = "button.png";
-	boxMat1.color = { 10,10,10,255 };
-	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
-	boxRender1->LoadMaterial(newBoxMat1, 0);
-	boxRender1->SetUseLight(false); */
+	//auto testBox1 = API::CreateObject(_scene);
+	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
+	//testBox1->GetComponent<HDData::Transform>()->SetScale(20.0f, 20.0f, 0.0f);
+	////testBox1->GetComponent<HDData::Transform>()->Rotate(90.0f, 0.0f, 0.0f);
+	//auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
+	//boxRender1->LoadMesh("primitiveQuad");
+	//HDEngine::MaterialDesc boxMat1;
+	//boxMat1.materialName = "boxMat";
+	////boxMat1.albedo = "button.png";
+	//boxMat1.color = { 10,10,10,255 };
+	//HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
+	//boxRender1->LoadMaterial(newBoxMat1, 0);
+	//boxRender1->SetUseLight(false);
 
 	/*auto particleSystemObj = API::CreateObject(_scene);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
@@ -191,16 +190,20 @@ TestScene::TestScene()
 	//auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
 	//boxRender5->LoadMesh("primitiveCube"); */
 
-	//auto buildingTest1 = API::CreateObject(_scene);
-	//buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
-	////buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
-	//auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	//buildingRenderer1->LoadMesh("SM_Bld_Saloon_01_NoGlass.fbx");
-	//HDEngine::MaterialDesc buildingDesc1;
-	//buildingDesc1.materialName = "PolygonWestern_Texture_02";
-	//buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
-	//buildingDesc1.metallic = 0.0f;
-	//HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
+	auto buildingTest1 = API::CreateObject(_scene);
+	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
+	//buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
+	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
+	buildingRenderer1->LoadMesh("SM_Bld_Church_01.fbx");
+	HDEngine::MaterialDesc buildingDesc1;
+	buildingDesc1.materialName = "PolygonWestern_Texture_02";
+	buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
+	buildingDesc1.metallic = 0.0f;
+	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
+	for(int i = 0; i < buildingRenderer1->GetMeshCount(); ++i)
+	{
+		buildingRenderer1->LoadMaterial(newBuildingMat1, i);
+	}
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
 	//buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
@@ -228,7 +231,6 @@ TestScene::TestScene()
 	//GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAnimation("TP");
-	//meshComp->SetActive(false);
 	//meshComp->SetFillModeWireFrame(true);
 
 	HDEngine::MaterialDesc desc;

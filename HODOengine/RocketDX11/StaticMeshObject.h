@@ -38,6 +38,7 @@ namespace RocketCore::Graphics
 		virtual void SetMetallicValue(float value, unsigned int element = 0) override;
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual void SetUseLight(bool useLight) override;
+		virtual void SetMeshActive(bool isActive, unsigned int index) override;
 		virtual int GetMeshCount() override;
 
 	public:
@@ -62,6 +63,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;
+		std::vector<bool> m_meshesActive;
 		std::vector<Material*> m_materials;
 		Node* m_node;
 		bool m_isActive;

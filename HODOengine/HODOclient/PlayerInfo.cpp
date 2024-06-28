@@ -20,7 +20,11 @@ void PlayerInfo::Start()
 
 void PlayerInfo::Update()
 {
-	
+	if (_isShoot)
+	{
+		//_shootParticle->Play();
+		_isShoot = false;
+	}
 }
 
 void PlayerInfo::Init()
@@ -159,6 +163,11 @@ bool PlayerInfo::GetIsShoot()
 bool PlayerInfo::GetIsJump()
 {
 	return _isJump;
+}
+
+void PlayerInfo::SetParticleObj(HDData::ParticleSystem* particle)
+{
+	_shootParticle = particle;
 }
 
 bool& PlayerInfo::GetPlayerDie()

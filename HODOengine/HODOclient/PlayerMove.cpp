@@ -10,6 +10,7 @@ PlayerMove::PlayerMove()
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
+	_tumbleCooldown(0.0f),
 	_shootCount(0),
 	_bulletCount(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()),
 	_reloadTimer(0.0f),
@@ -34,6 +35,8 @@ void PlayerMove::Start()
 
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
+	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
 	_moveSpeed = 3.0f;
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
@@ -42,25 +45,19 @@ void PlayerMove::Start()
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
-	
+
 	_playerAudio->PlayRepeat("bgm");
 }
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
 	{
-		_isDie = !_isDie;
-
-		if (_isDie)
-		{
-			Die();
-		}
-		else
-		{
-			Respawn();
-		}
-
+		Die();
+	}
+	else
+	{
+		Respawn();
 	}
 
 	if (!_isMovable || _isDie)
@@ -78,8 +75,9 @@ void PlayerMove::Update()
 	CameraControl();
 	CheckMoveInfo();
 	DecidePlayerState();
+	CoolTime();
 	Behavior();
-	
+
 	// sound 관련
 	_playerAudio->UpdateSoundPos(_playerPos);
 	PlayPlayerSound();
@@ -462,7 +460,6 @@ void PlayerMove::ShootGunDdabal()
 		_playerAudio->PlayOnce("hitBody");
 	}
 
-
 	++_shootCount;
 	--_bulletCount;
 	_shootCooldown = 0.5f;
@@ -506,6 +503,11 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
+	_fpmesh->SetMeshActive(false, 0);
+	_weapon->SetMeshActive(false, 0);
+	_weapon->SetMeshActive(false, 1);
+	_weapon->SetMeshActive(false, 2);
+	_weapon->SetMeshActive(false, 3);
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
@@ -960,7 +962,7 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			break;
 			case 3:
 			{
-				moveStep = Vector3(0.7f, 0.0f, - 0.7f);
+				moveStep = Vector3(0.7f, 0.0f, -0.7f);
 			}
 			break;
 			case 4:
@@ -1174,6 +1176,14 @@ void PlayerMove::DecidePlayerState()
 			_tumbleTimer -= _deltaTime;
 			return;
 		}
+		else
+		{
+			_weapon->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 1);
+			_weapon->SetMeshActive(true, 2);
+			_weapon->SetMeshActive(true, 3);
+			_fpmesh->SetMeshActive(true, 0);
+		}
 	}
 
 	// jump가 아닐 때만 walk나 run이 될 수 있다.
@@ -1199,7 +1209,12 @@ void PlayerMove::DecidePlayerState()
 	// tumble, jump 들어오면 덮어씌우고
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
-		_playerState.first = ePlayerMoveState::TUMBLE;
+		if (_tumbleCooldown <= 0.0f)
+		{
+			_playerState.first = ePlayerMoveState::TUMBLE;
+			// 구르기 쿨타임 5초로 설정
+			_tumbleCooldown = 5.0f;
+		}
 	}
 	else if (API::GetKeyDown(DIK_SPACE))
 	{
@@ -1264,12 +1279,12 @@ void PlayerMove::Behavior()
 	// 움직임
 	switch (_playerState.first)
 	{
-		case ePlayerMoveState::IDLE : 
+		case ePlayerMoveState::IDLE:
 		{
 			_playerColliderStanding->Stop();
 			break;
 		}
-		case ePlayerMoveState::WALK : 
+		case ePlayerMoveState::WALK:
 		{
 			if (!_playerAudio->IsSoundPlaying("walk"))
 			{
@@ -1279,7 +1294,7 @@ void PlayerMove::Behavior()
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
-		case ePlayerMoveState::RUN : 
+		case ePlayerMoveState::RUN:
 		{
 			if (!_playerAudio->IsSoundPlaying("run"))
 			{
@@ -1289,7 +1304,7 @@ void PlayerMove::Behavior()
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			break;
 		}
-		case ePlayerMoveState::JUMP :
+		case ePlayerMoveState::JUMP:
 		{
 			if (_prevPlayerState.first != ePlayerMoveState::JUMP)
 			{
@@ -1301,7 +1316,7 @@ void PlayerMove::Behavior()
 
 			break;
 		}
-		case ePlayerMoveState::TUMBLE :
+		case ePlayerMoveState::TUMBLE:
 		{
 			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
 			{
@@ -1332,10 +1347,6 @@ void PlayerMove::Behavior()
 		}
 	}
 
-	if (_shootCooldown > 0.0f)
-	{
-		_shootCooldown -= _deltaTime;
-	}
 	// 총 쏘거나 재장전
 	if (_playerState.second == ePlayerMoveState::FIRE)
 	{
@@ -1362,6 +1373,7 @@ void PlayerMove::Behavior()
 	{
 		if (_prevPlayerState.second != ePlayerMoveState::RELOAD)
 		{
+			_fpmesh->SetMeshActive(false, 0);
 			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 3.0f;
 		}
@@ -1373,6 +1385,7 @@ void PlayerMove::Behavior()
 			}
 			else
 			{
+				_fpmesh->SetMeshActive(true, 0);
 				Reload();
 			}
 		}
@@ -1397,6 +1410,19 @@ void PlayerMove::Behavior()
 		}
 	}
 	*/
+}
+
+void PlayerMove::CoolTime()
+{
+	if (_shootCooldown > 0.0f)
+	{
+		_shootCooldown -= _deltaTime;
+	}
+
+	if (_tumbleCooldown > 0.0f)
+	{
+		_tumbleCooldown -= _deltaTime;
+	}
 }
 
 void PlayerMove::Landing()

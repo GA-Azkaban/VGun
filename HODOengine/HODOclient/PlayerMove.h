@@ -58,6 +58,7 @@ private:
 private:
 	void DecidePlayerState();
 	void Behavior();
+	void CoolTime();
 	void Landing();
 	void ShootGun();
 	void ShootGunDdabal();
@@ -102,6 +103,8 @@ private:
 	HDData::Camera* _headCam;
 	HDData::Camera* _prevCam;
 	HDData::GameObject* _fpMeshObj;
+	HDData::SkinnedMeshRenderer* _fpmesh;
+	HDData::MeshRenderer* _weapon;
 	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
 
 private:
@@ -122,6 +125,7 @@ private:
 	int _particleIndex;
 	float _shootCooldown;
 	float _jumpCooldown;
+	float _tumbleCooldown;
 	int _shootCount;
 	int& _bulletCount;
 	float _reloadTimer;
@@ -142,4 +146,5 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
+
 };
