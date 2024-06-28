@@ -88,6 +88,9 @@
     <FxCompile Include="ForwardPixelShaderNoLight.hlsl">
       <Filter>Resource\Shader\HLSL\Forward</Filter>
     </FxCompile>
+    <FxCompile Include="PostProcessPS.hlsl">
+      <Filter>Resource\Shader\HLSL\PostProcess</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -222,7 +225,7 @@
     <ClCompile Include="ForwardPass.cpp">
       <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClCompile>
-    <ClCompile Include="PostProcess.cpp">
+    <ClCompile Include="PostProcessPass.cpp">
       <Filter>DeferredRendering\RenderPasses\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
@@ -392,7 +395,7 @@
     <ClInclude Include="BoundingVolumeHelper.h">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="PostProcess.h">
+    <ClInclude Include="PostProcessPass.h">
       <Filter>DeferredRendering\RenderPasses\PostProcess</Filter>
     </ClInclude>
   </ItemGroup>
@@ -624,6 +627,9 @@
     </Filter>
     <Filter Include="DeferredRendering\RenderPasses\PostProcess">
       <UniqueIdentifier>{6c2e683e-002b-4404-8d93-618a426cf585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\PostProcess">
+      <UniqueIdentifier>{6b6521f1-b7a7-491a-af8a-4af600272a9d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

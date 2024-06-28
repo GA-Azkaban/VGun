@@ -45,6 +45,11 @@ void Timer::Update()
 	}
 }
 
+void Timer::Stop()
+{
+	isActive = false;
+}
+
 bool Timer::IsActive()
 {
 	return isActive;

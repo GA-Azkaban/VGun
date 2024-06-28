@@ -116,6 +116,9 @@
     <ClCompile Include="BtnTextScript.cpp">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
+    <ClCompile Include="LowHPEffect.cpp">
+      <Filter>02_Client\TestScene\ScreenEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -257,6 +260,12 @@
     <ClInclude Include="PlayerMoveState.h">
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>02_Client\TestScene\ScreenEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="LowHPEffect.h">
+      <Filter>02_Client\TestScene\ScreenEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -380,6 +389,9 @@
     </Filter>
     <Filter Include="02_Client\01_Script\UI\ImageScript">
       <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\TestScene\ScreenEffect">
+      <UniqueIdentifier>{7017d7d7-7460-4192-8fe7-7d702e84046e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

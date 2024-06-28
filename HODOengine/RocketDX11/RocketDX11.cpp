@@ -32,6 +32,7 @@
 #include "DebugMeshPass.h"
 #include "OutlinePass.h"
 #include "SkyboxPass.h"
+#include "PostProcessPass.h"
 #include "ToneMapPass.h"
 #include "SpritePass.h"
 #include "ParticlePass.h"
@@ -250,6 +251,7 @@ namespace RocketCore::Graphics
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
 		_outlinePass = new OutlinePass(_deferredBuffers, _quadBuffer, _stencilEnableBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
+		_postProcessPass = new PostProcessPass(_quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
 		_particlePass = new ParticlePass(_deferredBuffers, _quadBuffer);
@@ -404,6 +406,7 @@ namespace RocketCore::Graphics
 		_particlePass->Render();
 
 		SetDepthStencilState(_depthStencilStateDisable.Get());
+		//_postProcessPass->Render();
 		_toneMapPass->Render();
 		_spritePass->Render();
 
