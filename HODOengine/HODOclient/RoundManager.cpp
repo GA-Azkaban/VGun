@@ -267,6 +267,12 @@ std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManag
 
 Vector3 RoundManager::SetSpawnPoint(Vector3 position)
 {
+	//_spawnPoint[0] = { 20.0f,20.0f,20.0f };
+	//_spawnPoint[1] = { 30.0f,20.0f,20.0f };
+	//_spawnPoint[2] = { 40.0f,20.0f,20.0f };
+	//_spawnPoint[3] = { 50.0f,20.0f,20.0f };
+	//_spawnPoint[4] = { 60.0f,20.0f,20.0f };
+
 	// 매쉬 읽어와서 인덱스에 포지션 넣어주기
 	return 	_spawnPoint[_index] = position;
 }

@@ -118,7 +118,9 @@ namespace HDEngine
 			HDData::GameObject* object = scene->CreateObject(info.name);
 
 			std::string meshName = info.meshName;
-			// 임시 스폰 포지션
+			
+			// 스폰위치를 위한 변수
+			std::string objName = info.name;
 			Vector3 tempPosition = info.position;
 
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
@@ -132,9 +134,12 @@ namespace HDEngine
 			{
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
-			else if (info.meshName == "SpawnPoint")
+			
+			if (objName == "SpawnPoint")
 			{
-
+				// 스폰 위치 받아와서 배열에 추가
+				_spawnPoint[_spawnIndex] = tempPosition;
+				_spawnIndex++;
 			}
 
 			switch (info.colliderType)

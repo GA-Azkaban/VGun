@@ -48,7 +48,7 @@ namespace HDEngine
 
 		// 스폰 지점
 		Vector3 _spawnPoint[15];
-
+		int _spawnIndex = 0;
 	private:
 		HDData::Scene * now;
 		HDData::Material* _material;
