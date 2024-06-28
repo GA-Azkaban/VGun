@@ -261,9 +261,12 @@ namespace HDEngine
 				// TODO : 여기 작업하고 있었음.
 				Vector3 position = object->GetTransform()->GetPosition();
 
-				if (collider->GetPositionOffset() != Vector3::Zero)
+				Vector3 posOffset = collider->GetPositionOffset();
+				if (posOffset != Vector3::Zero)
 				{
-					position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
+					//posOffset.x *= -1.0f;
+					//posOffset.z *= -1.0f;
+					position = Vector3::Transform(posOffset, object->GetTransform()->GetWorldTM());
 				}
 
 				Quaternion rot = object->GetTransform()->GetRotation();
