@@ -222,6 +222,9 @@
     <ClCompile Include="ForwardPass.cpp">
       <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
     </ClCompile>
+    <ClCompile Include="PostProcess.cpp">
+      <Filter>DeferredRendering\RenderPasses\PostProcess</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="BoundingVolumeHelper.h">
       <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcess.h">
+      <Filter>DeferredRendering\RenderPasses\PostProcess</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -615,6 +621,9 @@
     </Filter>
     <Filter Include="DeferredRendering\RenderPasses\ForwardPass">
       <UniqueIdentifier>{fa17eb72-e773-473a-a0b8-f2625807947d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\PostProcess">
+      <UniqueIdentifier>{6c2e683e-002b-4404-8d93-618a426cf585}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

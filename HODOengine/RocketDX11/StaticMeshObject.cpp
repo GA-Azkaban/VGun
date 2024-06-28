@@ -43,6 +43,11 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_meshesActive.resize(m_meshes.size());
+		for (int i = 0; i < m_meshesActive.size(); ++i)
+		{
+			m_meshesActive[i] = true;
+		}
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 		m_node = ResourceManager::Instance().GetNode(fileName);
 		m_boundingBox = ResourceManager::Instance().GetBoundingBox(fileName);
@@ -171,6 +176,15 @@ namespace RocketCore::Graphics
 		}
 	}
 
+	void StaticMeshObject::SetMeshActive(bool isActive, unsigned int index)
+	{
+		if (index >= m_meshes.size())
+		{
+			return;
+		}
+		m_meshesActive[index] = isActive;
+	}
+
 	int StaticMeshObject::GetMeshCount()
 	{
 		return m_meshes.size();
@@ -198,6 +212,11 @@ namespace RocketCore::Graphics
 
 			for (UINT i = 0; i < m_meshes.size(); ++i)
 			{
+				if (!m_meshesActive[i])
+				{
+					continue;
+				}
+
 				if (m_materials[i]->GetAlbedoMap())
 				{
 					m_pixelShader->SetInt("useAlbedo", 1);
