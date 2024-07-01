@@ -34,9 +34,9 @@ namespace HDEngine
 		now = scene;
 
 		HDEngine::MaterialDesc mat;
-		mat.materialName = "PolygonKRAFTON_Texture_01_A";
-		mat.albedo = "PolygonKRAFTON_Texture_01_A.png";
-		mat.metallic = "PolygonKRAFTON_Texture_Metallic.png";
+		mat.materialName = "PolygonWestern_Texture_01_A";
+		mat.albedo = "PolygonWestern_Texture_01_A.png";
+		mat.metallic = "PolygonWestern_Texture_Metallic.png";
 
 		_material = MaterialManager::Instance().CreateMaterial(mat);
 

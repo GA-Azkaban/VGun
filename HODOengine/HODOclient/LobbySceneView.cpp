@@ -1,4 +1,4 @@
-#include "LobbySceneView.h"
+﻿#include "LobbySceneView.h"
 #include "CameraMove.h"
 #include "PlayerInfo.h"
 #include "LobbyManager.h"
@@ -75,7 +75,7 @@ void LobbySceneView::Initialize()
 	// Create Meterial
 	HDEngine::MaterialDesc red;
 	red.materialName = "TP_defalut";
-	red.albedo = "PolygonKRAFTON_Texture_01_A.png";
+	red.albedo = "PolygonWestern_Texture_01_A.png";
 
 	HDData::Material* M_Red = API::CreateMaterial(red);
 

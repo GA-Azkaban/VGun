@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -33,9 +33,9 @@ void InGameSceneView::Initialize()
 	float posT = 165;
 
 	HDEngine::MaterialDesc characterMat;  
-	characterMat.materialName = "PolygonKRAFTON_Texture_01_A";
-	characterMat.albedo = "PolygonKRAFTON_Texture_01_A.png";
-	characterMat.metallic = "PolygonKRAFTON_Texture_Metallic.png";
+	characterMat.materialName = "PolygonWestern_Texture_01_A";
+	characterMat.albedo = "PolygonWestern_Texture_01_A.png";
+	characterMat.metallic = "PolygonWestern_Texture_Metallic.png";
 
 	HDData::Material* chMat = API::CreateMaterial(characterMat);
 
