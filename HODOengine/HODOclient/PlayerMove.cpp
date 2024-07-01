@@ -587,16 +587,23 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 
 			break;
 		}
 		case ePlayerMoveState::WALK:
 		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			_playerAudio->PlayOnceIfNotPlaying("walk");
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			_playerAudio->PlayOnceIfNotPlaying("run");
 
 			break;
 		}
@@ -655,11 +662,14 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::JUMP:
 		{
+			Landing();
+			_playerAudio->PlayOnce("land");
 
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
 		{
+			Reload();
 
 			break;
 		}
@@ -670,11 +680,13 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			Reload();
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			Respawn();
 
 			break;
 		}
