@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -349,7 +349,7 @@ void InGameSceneView::Initialize()
 	// low hp screen effect
 	//auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
 	//auto hpEffectComp = hpEffectObj->AddComponent<LowHPEffect>();
-	player->AddComponent<LowHPEffect>();
+	//player->AddComponent<LowHPEffect>();
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
