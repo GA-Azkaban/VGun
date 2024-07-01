@@ -63,7 +63,7 @@ public: // 팀 색상 변경
 public: // 게임 관련
 	void SendGameStart();
 	// 방 시작
-	void RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule);
+	void RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex);
 
 	// N초 뒤 게임 시작시 호출
 	void RecvGameStart();
@@ -91,7 +91,7 @@ public: // 인게임
 	void RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData);
 
 	// 리스폰 지점 추가해야함
-	void RecvPlayRespawn(Protocol::PlayerData playerData);
+	void RecvPlayRespawn(Protocol::PlayerData playerData, int32 spawnPointIndex);
 
 	// 구르기
 	void SendPlayRoll(Protocol::PlayerData playerData);

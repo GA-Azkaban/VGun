@@ -127,6 +127,7 @@ message S_ROOM_START
 {
 	RoomInfo roomInfo = 1;
 	GameRule gameRule = 2;
+	int32 spawnPointIndex = 3;
 }
 
 message S_GAME_START
@@ -217,7 +218,7 @@ message S_PLAY_KILL_DEATH
 message S_PLAY_RESPAWN
 {
 	PlayerData playerData = 1;
-	// Todo Respawn Point
+	int32 spawnPointIndex = 2;
 }
 
 message C_PLAY_ROLL

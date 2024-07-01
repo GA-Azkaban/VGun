@@ -1531,8 +1531,9 @@ class GameRule final :
   enum : int {
     kGameTimeFieldNumber = 1,
     kDesiredKillFieldNumber = 2,
-    kRespawnTimeFieldNumber = 3,
-    kMaxHpFieldNumber = 4,
+    kMaxHpFieldNumber = 3,
+    kRespawnTimeFieldNumber = 4,
+    kSpawnIndexRangeFieldNumber = 5,
   };
   // int32 gameTime = 1;
   void clear_gametime();
@@ -1552,7 +1553,16 @@ class GameRule final :
   void _internal_set_desiredkill(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 respawnTime = 3;
+  // int32 maxHp = 3;
+  void clear_maxhp();
+  ::PROTOBUF_NAMESPACE_ID::int32 maxhp() const;
+  void set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_maxhp() const;
+  void _internal_set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
+  // int32 respawnTime = 4;
   void clear_respawntime();
   ::PROTOBUF_NAMESPACE_ID::int32 respawntime() const;
   void set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value);
@@ -1561,13 +1571,13 @@ class GameRule final :
   void _internal_set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // int32 maxHp = 4;
-  void clear_maxhp();
-  ::PROTOBUF_NAMESPACE_ID::int32 maxhp() const;
-  void set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value);
+  // int32 spawnIndexRange = 5;
+  void clear_spawnindexrange();
+  ::PROTOBUF_NAMESPACE_ID::int32 spawnindexrange() const;
+  void set_spawnindexrange(::PROTOBUF_NAMESPACE_ID::int32 value);
   private:
-  ::PROTOBUF_NAMESPACE_ID::int32 _internal_maxhp() const;
-  void _internal_set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value);
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_spawnindexrange() const;
+  void _internal_set_spawnindexrange(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.GameRule)
@@ -1579,8 +1589,9 @@ class GameRule final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::int32 gametime_;
   ::PROTOBUF_NAMESPACE_ID::int32 desiredkill_;
-  ::PROTOBUF_NAMESPACE_ID::int32 respawntime_;
   ::PROTOBUF_NAMESPACE_ID::int32 maxhp_;
+  ::PROTOBUF_NAMESPACE_ID::int32 respawntime_;
+  ::PROTOBUF_NAMESPACE_ID::int32 spawnindexrange_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Struct_2eproto;
 };
@@ -2806,7 +2817,27 @@ inline void GameRule::set_desiredkill(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:Protocol.GameRule.desiredKill)
 }
 
-// int32 respawnTime = 3;
+// int32 maxHp = 3;
+inline void GameRule::clear_maxhp() {
+  maxhp_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_maxhp() const {
+  return maxhp_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::maxhp() const {
+  // @@protoc_insertion_point(field_get:Protocol.GameRule.maxHp)
+  return _internal_maxhp();
+}
+inline void GameRule::_internal_set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  maxhp_ = value;
+}
+inline void GameRule::set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_maxhp(value);
+  // @@protoc_insertion_point(field_set:Protocol.GameRule.maxHp)
+}
+
+// int32 respawnTime = 4;
 inline void GameRule::clear_respawntime() {
   respawntime_ = 0;
 }
@@ -2826,24 +2857,24 @@ inline void GameRule::set_respawntime(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:Protocol.GameRule.respawnTime)
 }
 
-// int32 maxHp = 4;
-inline void GameRule::clear_maxhp() {
-  maxhp_ = 0;
+// int32 spawnIndexRange = 5;
+inline void GameRule::clear_spawnindexrange() {
+  spawnindexrange_ = 0;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_maxhp() const {
-  return maxhp_;
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::_internal_spawnindexrange() const {
+  return spawnindexrange_;
 }
-inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::maxhp() const {
-  // @@protoc_insertion_point(field_get:Protocol.GameRule.maxHp)
-  return _internal_maxhp();
+inline ::PROTOBUF_NAMESPACE_ID::int32 GameRule::spawnindexrange() const {
+  // @@protoc_insertion_point(field_get:Protocol.GameRule.spawnIndexRange)
+  return _internal_spawnindexrange();
 }
-inline void GameRule::_internal_set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value) {
+inline void GameRule::_internal_set_spawnindexrange(::PROTOBUF_NAMESPACE_ID::int32 value) {
   
-  maxhp_ = value;
+  spawnindexrange_ = value;
 }
-inline void GameRule::set_maxhp(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _internal_set_maxhp(value);
-  // @@protoc_insertion_point(field_set:Protocol.GameRule.maxHp)
+inline void GameRule::set_spawnindexrange(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_spawnindexrange(value);
+  // @@protoc_insertion_point(field_set:Protocol.GameRule.spawnIndexRange)
 }
 
 #ifdef __GNUC__
