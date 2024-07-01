@@ -136,7 +136,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 	}
 }
 
-void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
+void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spawnPointIndex)
 {
 	// isdead 갱신
 	// 서버에서 인덱스를보내줌
@@ -481,7 +481,7 @@ void NetworkManager::SendGameStart()
 	this->_service->BroadCast(sendBuffer);
 }
 
-void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule)
+void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex)
 {
 	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");

@@ -259,7 +259,8 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT C_ROOM_STARTDefaultTypeInternal
 constexpr S_ROOM_START::S_ROOM_START(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : roominfo_(nullptr)
-  , gamerule_(nullptr){}
+  , gamerule_(nullptr)
+  , spawnpointindex_(0){}
 struct S_ROOM_STARTDefaultTypeInternal {
   constexpr S_ROOM_STARTDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -459,7 +460,8 @@ struct S_PLAY_KILL_DEATHDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT S_PLAY_KILL_DEATHDefaultTypeInternal _S_PLAY_KILL_DEATH_default_instance_;
 constexpr S_PLAY_RESPAWN::S_PLAY_RESPAWN(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : playerdata_(nullptr){}
+  : playerdata_(nullptr)
+  , spawnpointindex_(0){}
 struct S_PLAY_RESPAWNDefaultTypeInternal {
   constexpr S_PLAY_RESPAWNDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -655,6 +657,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOM_START, roominfo_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOM_START, gamerule_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_ROOM_START, spawnpointindex_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_GAME_START, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -759,6 +762,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_PLAY_RESPAWN, playerdata_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_PLAY_RESPAWN, spawnpointindex_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_PLAY_ROLL, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -805,26 +809,26 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 114, -1, sizeof(::Protocol::S_ANOTHER_LEAVE_ROOM)},
   { 120, -1, sizeof(::Protocol::C_ROOM_START)},
   { 125, -1, sizeof(::Protocol::S_ROOM_START)},
-  { 132, -1, sizeof(::Protocol::S_GAME_START)},
-  { 137, -1, sizeof(::Protocol::S_GAME_END)},
-  { 143, -1, sizeof(::Protocol::C_ROOM_CHANGE_TEAM)},
-  { 150, -1, sizeof(::Protocol::S_ROOM_CHANGE_TEAM)},
-  { 156, -1, sizeof(::Protocol::C_ROOM_KICK)},
-  { 162, -1, sizeof(::Protocol::S_ROOM_KICK)},
-  { 168, -1, sizeof(::Protocol::C_PLAY_UPDATE)},
-  { 174, -1, sizeof(::Protocol::S_PLAY_UPDATE)},
-  { 181, -1, sizeof(::Protocol::C_ROOM_LIST_REQUEST)},
-  { 186, -1, sizeof(::Protocol::S_ROOM_LIST)},
-  { 192, -1, sizeof(::Protocol::C_PLAY_JUMP)},
-  { 198, -1, sizeof(::Protocol::S_PLAY_JUMP)},
-  { 204, -1, sizeof(::Protocol::C_PLAY_SHOOT)},
-  { 212, 220, sizeof(::Protocol::S_PLAY_SHOOT)},
-  { 223, -1, sizeof(::Protocol::S_PLAY_KILL_DEATH)},
-  { 230, -1, sizeof(::Protocol::S_PLAY_RESPAWN)},
-  { 236, -1, sizeof(::Protocol::C_PLAY_ROLL)},
-  { 242, -1, sizeof(::Protocol::S_PLAY_ROLL)},
-  { 248, -1, sizeof(::Protocol::C_PLAY_RELOAD)},
-  { 254, -1, sizeof(::Protocol::S_PLAY_RELOAD)},
+  { 133, -1, sizeof(::Protocol::S_GAME_START)},
+  { 138, -1, sizeof(::Protocol::S_GAME_END)},
+  { 144, -1, sizeof(::Protocol::C_ROOM_CHANGE_TEAM)},
+  { 151, -1, sizeof(::Protocol::S_ROOM_CHANGE_TEAM)},
+  { 157, -1, sizeof(::Protocol::C_ROOM_KICK)},
+  { 163, -1, sizeof(::Protocol::S_ROOM_KICK)},
+  { 169, -1, sizeof(::Protocol::C_PLAY_UPDATE)},
+  { 175, -1, sizeof(::Protocol::S_PLAY_UPDATE)},
+  { 182, -1, sizeof(::Protocol::C_ROOM_LIST_REQUEST)},
+  { 187, -1, sizeof(::Protocol::S_ROOM_LIST)},
+  { 193, -1, sizeof(::Protocol::C_PLAY_JUMP)},
+  { 199, -1, sizeof(::Protocol::S_PLAY_JUMP)},
+  { 205, -1, sizeof(::Protocol::C_PLAY_SHOOT)},
+  { 213, 221, sizeof(::Protocol::S_PLAY_SHOOT)},
+  { 224, -1, sizeof(::Protocol::S_PLAY_KILL_DEATH)},
+  { 231, -1, sizeof(::Protocol::S_PLAY_RESPAWN)},
+  { 238, -1, sizeof(::Protocol::C_PLAY_ROLL)},
+  { 244, -1, sizeof(::Protocol::S_PLAY_ROLL)},
+  { 250, -1, sizeof(::Protocol::C_PLAY_RELOAD)},
+  { 256, -1, sizeof(::Protocol::S_PLAY_RELOAD)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -894,43 +898,44 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "ER_ROOM\022$\n\010roomInfo\030\001 \001(\0132\022.Protocol.Roo"
   "mInfo\"<\n\024S_ANOTHER_LEAVE_ROOM\022$\n\010roomInf"
   "o\030\001 \001(\0132\022.Protocol.RoomInfo\"\016\n\014C_ROOM_ST"
-  "ART\"Z\n\014S_ROOM_START\022$\n\010roomInfo\030\001 \001(\0132\022."
+  "ART\"s\n\014S_ROOM_START\022$\n\010roomInfo\030\001 \001(\0132\022."
   "Protocol.RoomInfo\022$\n\010gameRule\030\002 \001(\0132\022.Pr"
-  "otocol.GameRule\"\016\n\014S_GAME_START\"2\n\nS_GAM"
-  "E_END\022$\n\010roomInfo\030\001 \001(\0132\022.Protocol.RoomI"
-  "nfo\"U\n\022C_ROOM_CHANGE_TEAM\022\'\n\tteamColor\030\001"
-  " \001(\0162\024.Protocol.eTeamColor\022\026\n\016targetNick"
-  "Name\030\002 \001(\t\":\n\022S_ROOM_CHANGE_TEAM\022$\n\010room"
-  "Info\030\001 \001(\0132\022.Protocol.RoomInfo\"%\n\013C_ROOM"
-  "_KICK\022\026\n\016targetNickName\030\001 \001(\t\"3\n\013S_ROOM_"
-  "KICK\022$\n\010roomInfo\030\001 \001(\0132\022.Protocol.RoomIn"
-  "fo\"9\n\rC_PLAY_UPDATE\022(\n\nplayerData\030\001 \001(\0132"
-  "\024.Protocol.PlayerData\"_\n\rS_PLAY_UPDATE\022$"
-  "\n\010roomInfo\030\001 \001(\0132\022.Protocol.RoomInfo\022(\n\n"
-  "playerData\030\002 \003(\0132\024.Protocol.PlayerData\"\025"
-  "\n\023C_ROOM_LIST_REQUEST\"3\n\013S_ROOM_LIST\022$\n\010"
-  "roomInfo\030\001 \003(\0132\022.Protocol.RoomInfo\"7\n\013C_"
-  "PLAY_JUMP\022(\n\nplayerData\030\001 \001(\0132\024.Protocol"
-  ".PlayerData\"7\n\013S_PLAY_JUMP\022(\n\nplayerData"
-  "\030\001 \001(\0132\024.Protocol.PlayerData\"y\n\014C_PLAY_S"
-  "HOOT\022&\n\ttransform\030\001 \001(\0132\023.Protocol.Trans"
-  "form\022\024\n\014hitTargetUid\030\002 \001(\004\022+\n\013hitLocatio"
-  "n\030\003 \001(\0162\026.Protocol.eHitLocation\"\267\001\n\014S_PL"
-  "AY_SHOOT\022)\n\013shootPlayer\030\001 \001(\0132\024.Protocol"
-  ".PlayerData\022,\n\thitPlayer\030\002 \001(\0132\024.Protoco"
-  "l.PlayerDataH\000\210\001\001\0220\n\013hitLocation\030\003 \001(\0162\026"
-  ".Protocol.eHitLocationH\001\210\001\001B\014\n\n_hitPlaye"
-  "rB\016\n\014_hitLocation\"h\n\021S_PLAY_KILL_DEATH\022)"
-  "\n\013deathPlayer\030\001 \001(\0132\024.Protocol.PlayerDat"
-  "a\022(\n\nkillPlayer\030\002 \001(\0132\024.Protocol.PlayerD"
-  "ata\":\n\016S_PLAY_RESPAWN\022(\n\nplayerData\030\001 \001("
-  "\0132\024.Protocol.PlayerData\"7\n\013C_PLAY_ROLL\022("
-  "\n\nplayerData\030\001 \001(\0132\024.Protocol.PlayerData"
-  "\"7\n\013S_PLAY_ROLL\022(\n\nplayerData\030\001 \001(\0132\024.Pr"
-  "otocol.PlayerData\"9\n\rC_PLAY_RELOAD\022(\n\npl"
-  "ayerData\030\001 \001(\0132\024.Protocol.PlayerData\"9\n\r"
-  "S_PLAY_RELOAD\022(\n\nplayerData\030\001 \001(\0132\024.Prot"
-  "ocol.PlayerDatab\006proto3"
+  "otocol.GameRule\022\027\n\017spawnPointIndex\030\003 \001(\005"
+  "\"\016\n\014S_GAME_START\"2\n\nS_GAME_END\022$\n\010roomIn"
+  "fo\030\001 \001(\0132\022.Protocol.RoomInfo\"U\n\022C_ROOM_C"
+  "HANGE_TEAM\022\'\n\tteamColor\030\001 \001(\0162\024.Protocol"
+  ".eTeamColor\022\026\n\016targetNickName\030\002 \001(\t\":\n\022S"
+  "_ROOM_CHANGE_TEAM\022$\n\010roomInfo\030\001 \001(\0132\022.Pr"
+  "otocol.RoomInfo\"%\n\013C_ROOM_KICK\022\026\n\016target"
+  "NickName\030\001 \001(\t\"3\n\013S_ROOM_KICK\022$\n\010roomInf"
+  "o\030\001 \001(\0132\022.Protocol.RoomInfo\"9\n\rC_PLAY_UP"
+  "DATE\022(\n\nplayerData\030\001 \001(\0132\024.Protocol.Play"
+  "erData\"_\n\rS_PLAY_UPDATE\022$\n\010roomInfo\030\001 \001("
+  "\0132\022.Protocol.RoomInfo\022(\n\nplayerData\030\002 \003("
+  "\0132\024.Protocol.PlayerData\"\025\n\023C_ROOM_LIST_R"
+  "EQUEST\"3\n\013S_ROOM_LIST\022$\n\010roomInfo\030\001 \003(\0132"
+  "\022.Protocol.RoomInfo\"7\n\013C_PLAY_JUMP\022(\n\npl"
+  "ayerData\030\001 \001(\0132\024.Protocol.PlayerData\"7\n\013"
+  "S_PLAY_JUMP\022(\n\nplayerData\030\001 \001(\0132\024.Protoc"
+  "ol.PlayerData\"y\n\014C_PLAY_SHOOT\022&\n\ttransfo"
+  "rm\030\001 \001(\0132\023.Protocol.Transform\022\024\n\014hitTarg"
+  "etUid\030\002 \001(\004\022+\n\013hitLocation\030\003 \001(\0162\026.Proto"
+  "col.eHitLocation\"\267\001\n\014S_PLAY_SHOOT\022)\n\013sho"
+  "otPlayer\030\001 \001(\0132\024.Protocol.PlayerData\022,\n\t"
+  "hitPlayer\030\002 \001(\0132\024.Protocol.PlayerDataH\000\210"
+  "\001\001\0220\n\013hitLocation\030\003 \001(\0162\026.Protocol.eHitL"
+  "ocationH\001\210\001\001B\014\n\n_hitPlayerB\016\n\014_hitLocati"
+  "on\"h\n\021S_PLAY_KILL_DEATH\022)\n\013deathPlayer\030\001"
+  " \001(\0132\024.Protocol.PlayerData\022(\n\nkillPlayer"
+  "\030\002 \001(\0132\024.Protocol.PlayerData\"S\n\016S_PLAY_R"
+  "ESPAWN\022(\n\nplayerData\030\001 \001(\0132\024.Protocol.Pl"
+  "ayerData\022\027\n\017spawnPointIndex\030\002 \001(\005\"7\n\013C_P"
+  "LAY_ROLL\022(\n\nplayerData\030\001 \001(\0132\024.Protocol."
+  "PlayerData\"7\n\013S_PLAY_ROLL\022(\n\nplayerData\030"
+  "\001 \001(\0132\024.Protocol.PlayerData\"9\n\rC_PLAY_RE"
+  "LOAD\022(\n\nplayerData\030\001 \001(\0132\024.Protocol.Play"
+  "erData\"9\n\rS_PLAY_RELOAD\022(\n\nplayerData\030\001 "
+  "\001(\0132\024.Protocol.PlayerDatab\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -938,7 +943,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 2383, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 2433, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 40,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -5144,14 +5149,15 @@ S_ROOM_START::S_ROOM_START(const S_ROOM_START& from)
   } else {
     gamerule_ = nullptr;
   }
+  spawnpointindex_ = from.spawnpointindex_;
   // @@protoc_insertion_point(copy_constructor:Protocol.S_ROOM_START)
 }
 
 void S_ROOM_START::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&roominfo_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&gamerule_) -
-    reinterpret_cast<char*>(&roominfo_)) + sizeof(gamerule_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&spawnpointindex_) -
+    reinterpret_cast<char*>(&roominfo_)) + sizeof(spawnpointindex_));
 }
 
 S_ROOM_START::~S_ROOM_START() {
@@ -5190,6 +5196,7 @@ void S_ROOM_START::Clear() {
     delete gamerule_;
   }
   gamerule_ = nullptr;
+  spawnpointindex_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -5210,6 +5217,13 @@ const char* S_ROOM_START::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_gamerule(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 spawnPointIndex = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          spawnpointindex_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -5258,6 +5272,12 @@ failure:
         2, _Internal::gamerule(this), target, stream);
   }
 
+  // int32 spawnPointIndex = 3;
+  if (this->spawnpointindex() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_spawnpointindex(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -5286,6 +5306,13 @@ size_t S_ROOM_START::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *gamerule_);
+  }
+
+  // int32 spawnPointIndex = 3;
+  if (this->spawnpointindex() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_spawnpointindex());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -5325,6 +5352,9 @@ void S_ROOM_START::MergeFrom(const S_ROOM_START& from) {
   if (from.has_gamerule()) {
     _internal_mutable_gamerule()->::Protocol::GameRule::MergeFrom(from._internal_gamerule());
   }
+  if (from.spawnpointindex() != 0) {
+    _internal_set_spawnpointindex(from._internal_spawnpointindex());
+  }
 }
 
 void S_ROOM_START::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -5349,8 +5379,8 @@ void S_ROOM_START::InternalSwap(S_ROOM_START* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(S_ROOM_START, gamerule_)
-      + sizeof(S_ROOM_START::gamerule_)
+      PROTOBUF_FIELD_OFFSET(S_ROOM_START, spawnpointindex_)
+      + sizeof(S_ROOM_START::spawnpointindex_)
       - PROTOBUF_FIELD_OFFSET(S_ROOM_START, roominfo_)>(
           reinterpret_cast<char*>(&roominfo_),
           reinterpret_cast<char*>(&other->roominfo_));
@@ -8703,11 +8733,15 @@ S_PLAY_RESPAWN::S_PLAY_RESPAWN(const S_PLAY_RESPAWN& from)
   } else {
     playerdata_ = nullptr;
   }
+  spawnpointindex_ = from.spawnpointindex_;
   // @@protoc_insertion_point(copy_constructor:Protocol.S_PLAY_RESPAWN)
 }
 
 void S_PLAY_RESPAWN::SharedCtor() {
-playerdata_ = nullptr;
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&playerdata_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&spawnpointindex_) -
+    reinterpret_cast<char*>(&playerdata_)) + sizeof(spawnpointindex_));
 }
 
 S_PLAY_RESPAWN::~S_PLAY_RESPAWN() {
@@ -8741,6 +8775,7 @@ void S_PLAY_RESPAWN::Clear() {
     delete playerdata_;
   }
   playerdata_ = nullptr;
+  spawnpointindex_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -8754,6 +8789,13 @@ const char* S_PLAY_RESPAWN::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
           ptr = ctx->ParseMessage(_internal_mutable_playerdata(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 spawnPointIndex = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          spawnpointindex_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -8794,6 +8836,12 @@ failure:
         1, _Internal::playerdata(this), target, stream);
   }
 
+  // int32 spawnPointIndex = 2;
+  if (this->spawnpointindex() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_spawnpointindex(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -8815,6 +8863,13 @@ size_t S_PLAY_RESPAWN::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *playerdata_);
+  }
+
+  // int32 spawnPointIndex = 2;
+  if (this->spawnpointindex() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_spawnpointindex());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -8851,6 +8906,9 @@ void S_PLAY_RESPAWN::MergeFrom(const S_PLAY_RESPAWN& from) {
   if (from.has_playerdata()) {
     _internal_mutable_playerdata()->::Protocol::PlayerData::MergeFrom(from._internal_playerdata());
   }
+  if (from.spawnpointindex() != 0) {
+    _internal_set_spawnpointindex(from._internal_spawnpointindex());
+  }
 }
 
 void S_PLAY_RESPAWN::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -8874,7 +8932,12 @@ bool S_PLAY_RESPAWN::IsInitialized() const {
 void S_PLAY_RESPAWN::InternalSwap(S_PLAY_RESPAWN* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(playerdata_, other->playerdata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(S_PLAY_RESPAWN, spawnpointindex_)
+      + sizeof(S_PLAY_RESPAWN::spawnpointindex_)
+      - PROTOBUF_FIELD_OFFSET(S_PLAY_RESPAWN, playerdata_)>(
+          reinterpret_cast<char*>(&playerdata_),
+          reinterpret_cast<char*>(&other->playerdata_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_PLAY_RESPAWN::GetMetadata() const {

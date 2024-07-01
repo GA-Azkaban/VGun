@@ -137,8 +137,9 @@ constexpr GameRule::GameRule(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : gametime_(0)
   , desiredkill_(0)
+  , maxhp_(0)
   , respawntime_(0)
-  , maxhp_(0){}
+  , spawnindexrange_(0){}
 struct GameRuleDefaultTypeInternal {
   constexpr GameRuleDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -232,8 +233,9 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Struct_2eproto::offsets[] PROT
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, gametime_),
   PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, desiredkill_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, respawntime_),
   PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, maxhp_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, respawntime_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::GameRule, spawnindexrange_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::Protocol::BuffData)},
@@ -279,16 +281,17 @@ const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "ansform\022\n\n\002hp\030\005 \001(\002\022\021\n\tisSitting\030\006 \001(\010\022\016"
   "\n\006isDead\030\007 \001(\010\022\021\n\tkillCount\030\010 \001(\005\022\022\n\ndea"
   "thCount\030\t \001(\005\0221\n\016animationState\030\n \001(\0162\031."
-  "Protocol.eAnimationState\"U\n\010GameRule\022\020\n\010"
-  "gameTime\030\001 \001(\005\022\023\n\013desiredKill\030\002 \001(\005\022\023\n\013r"
-  "espawnTime\030\003 \001(\005\022\r\n\005maxHp\030\004 \001(\005b\006proto3"
+  "Protocol.eAnimationState\"n\n\010GameRule\022\020\n\010"
+  "gameTime\030\001 \001(\005\022\023\n\013desiredKill\030\002 \001(\005\022\r\n\005m"
+  "axHp\030\003 \001(\005\022\023\n\013respawnTime\030\004 \001(\005\022\027\n\017spawn"
+  "IndexRange\030\005 \001(\005b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Struct_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto = {
-  false, false, 959, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
+  false, false, 984, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
   &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 8,
   schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
   file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto, file_level_service_descriptors_Struct_2eproto,
@@ -2542,16 +2545,16 @@ GameRule::GameRule(const GameRule& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&gametime_, &from.gametime_,
-    static_cast<size_t>(reinterpret_cast<char*>(&maxhp_) -
-    reinterpret_cast<char*>(&gametime_)) + sizeof(maxhp_));
+    static_cast<size_t>(reinterpret_cast<char*>(&spawnindexrange_) -
+    reinterpret_cast<char*>(&gametime_)) + sizeof(spawnindexrange_));
   // @@protoc_insertion_point(copy_constructor:Protocol.GameRule)
 }
 
 void GameRule::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&gametime_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&maxhp_) -
-    reinterpret_cast<char*>(&gametime_)) + sizeof(maxhp_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&spawnindexrange_) -
+    reinterpret_cast<char*>(&gametime_)) + sizeof(spawnindexrange_));
 }
 
 GameRule::~GameRule() {
@@ -2581,8 +2584,8 @@ void GameRule::Clear() {
   (void) cached_has_bits;
 
   ::memset(&gametime_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&maxhp_) -
-      reinterpret_cast<char*>(&gametime_)) + sizeof(maxhp_));
+      reinterpret_cast<char*>(&spawnindexrange_) -
+      reinterpret_cast<char*>(&gametime_)) + sizeof(spawnindexrange_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2606,17 +2609,24 @@ const char* GameRule::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::i
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 respawnTime = 3;
+      // int32 maxHp = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          maxhp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // int32 respawnTime = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           respawntime_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // int32 maxHp = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
-          maxhp_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+      // int32 spawnIndexRange = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+          spawnindexrange_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2661,16 +2671,22 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_desiredkill(), target);
   }
 
-  // int32 respawnTime = 3;
-  if (this->respawntime() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_respawntime(), target);
-  }
-
-  // int32 maxHp = 4;
+  // int32 maxHp = 3;
   if (this->maxhp() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_maxhp(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_maxhp(), target);
+  }
+
+  // int32 respawnTime = 4;
+  if (this->respawntime() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_respawntime(), target);
+  }
+
+  // int32 spawnIndexRange = 5;
+  if (this->spawnindexrange() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_spawnindexrange(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2703,18 +2719,25 @@ size_t GameRule::ByteSizeLong() const {
         this->_internal_desiredkill());
   }
 
-  // int32 respawnTime = 3;
+  // int32 maxHp = 3;
+  if (this->maxhp() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_maxhp());
+  }
+
+  // int32 respawnTime = 4;
   if (this->respawntime() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
         this->_internal_respawntime());
   }
 
-  // int32 maxHp = 4;
-  if (this->maxhp() != 0) {
+  // int32 spawnIndexRange = 5;
+  if (this->spawnindexrange() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_maxhp());
+        this->_internal_spawnindexrange());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2754,11 +2777,14 @@ void GameRule::MergeFrom(const GameRule& from) {
   if (from.desiredkill() != 0) {
     _internal_set_desiredkill(from._internal_desiredkill());
   }
+  if (from.maxhp() != 0) {
+    _internal_set_maxhp(from._internal_maxhp());
+  }
   if (from.respawntime() != 0) {
     _internal_set_respawntime(from._internal_respawntime());
   }
-  if (from.maxhp() != 0) {
-    _internal_set_maxhp(from._internal_maxhp());
+  if (from.spawnindexrange() != 0) {
+    _internal_set_spawnindexrange(from._internal_spawnindexrange());
   }
 }
 
@@ -2784,8 +2810,8 @@ void GameRule::InternalSwap(GameRule* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(GameRule, maxhp_)
-      + sizeof(GameRule::maxhp_)
+      PROTOBUF_FIELD_OFFSET(GameRule, spawnindexrange_)
+      + sizeof(GameRule::spawnindexrange_)
       - PROTOBUF_FIELD_OFFSET(GameRule, gametime_)>(
           reinterpret_cast<char*>(&gametime_),
           reinterpret_cast<char*>(&other->gametime_));
