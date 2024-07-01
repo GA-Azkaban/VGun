@@ -2,7 +2,7 @@
 #include "../HODOengine/HODO_API.h"
 #include "Timer.h"
 
-class PlayerInfo;
+class GameManager;
 
 class LowHPEffect : public HDData::Script
 {
@@ -12,9 +12,8 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
-	//PlayerInfo* info;
-
 private:
+	GameManager* _gameManager;
 	HDData::ImageUI* _lowHPEffectImage;
 	Timer _lowHPEffectTimer;
 	float _effectColorThreshold;

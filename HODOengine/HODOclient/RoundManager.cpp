@@ -6,7 +6,6 @@
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
-#include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 

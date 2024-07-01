@@ -98,8 +98,9 @@ private:
 
 public:
 	// 디버그용 state 표시
-	HDData::TextUI* _plState;
+	HDData::TextUI* _plStateText;
 	HDData::TextUI* _tumbleText;
+	HDData::TextUI* _plPosText;
 
 private:
 	//HDData::DynamicBoxCollider* _playerCollider;
