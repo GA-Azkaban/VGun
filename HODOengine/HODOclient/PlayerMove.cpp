@@ -29,10 +29,6 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	_animator = GetGameObject()->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(GetGameObject(), "FP_animation.json");
-	GetGameObject()->AddComponent<FPAniScript>();
-
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -454,7 +450,7 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
-		_playerAudio->PlayOnce("hitBody");
+		//_playerAudio->PlayOnce("hitBody");
 		_playerAudio->PlayOnce("hitHead");
 	}
 

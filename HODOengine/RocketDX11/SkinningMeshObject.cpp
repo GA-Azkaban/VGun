@@ -24,7 +24,7 @@ namespace RocketCore::Graphics
 		m_blendFlag(false), m_blendDuration(0.1f),
 		m_hasExitTime(false), m_exitTime(0.0f),
 		m_isExitTimeElapsed(true),
-		m_cameraVisible(true), m_lightVisible(true)
+		m_cameraVisible(true), m_lightVisible(true), m_isShadowActive(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_boneTransform.resize(96, XMMatrixIdentity());
@@ -194,6 +194,16 @@ namespace RocketCore::Graphics
 	bool SkinningMeshObject::IsLightVisible()
 	{
 		return m_lightVisible;
+	}
+
+	bool SkinningMeshObject::IsShadowActive()
+	{
+		return m_isShadowActive;
+	}
+
+	bool SkinningMeshObject::IsReceiveTM()
+	{
+		return m_receiveTMInfoFlag;
 	}
 
 	void SkinningMeshObject::SetCameraVisible(bool isVisible)
@@ -832,6 +842,11 @@ namespace RocketCore::Graphics
 	bool SkinningMeshObject::IsAnimationEnd()
 	{
 		return m_currentAnimation->isEnd;
+	}
+
+	void SkinningMeshObject::SetShadowActive(bool isActive)
+	{
+		m_isShadowActive = isActive;
 	}
 
 }

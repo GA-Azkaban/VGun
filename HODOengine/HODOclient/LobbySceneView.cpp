@@ -1,4 +1,4 @@
-#include "LobbySceneView.h"
+﻿#include "LobbySceneView.h"
 #include "CameraMove.h"
 #include "PlayerInfo.h"
 #include "LobbyManager.h"
@@ -134,14 +134,8 @@ void LobbySceneView::Initialize()
 		auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		meshComp->LoadAnimation("TP");
 		meshComp->LoadMaterial(M_Red, 0);
-		meshComp->LoadMaterial(M_Red, 1);
-		meshComp->LoadMaterial(M_Red, 2);
-		meshComp->LoadMaterial(M_Red, 3);
-		meshComp->LoadMaterial(M_Red, 4);
-
+		meshComp->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
 		player->AddComponent<PlayerInfo>();
-		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
-		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
 
 		/*player->AddComponent<HDData::Animator>();
 		API::LoadFPAnimationFromData(player, "FP_animation.json");*/

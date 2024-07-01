@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -55,22 +55,15 @@ void InGameSceneView::Initialize()
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAnimation("TP");
 	meshComp->LoadMaterial(chMat, 0);
-	meshComp->PlayAnimation("RV_idle");
+	meshComp->PlayAnimation("RV_idle"); 
 	meshComp->SetMeshActive(false, 0);
 
+	player->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(player, "TP_animation.json");
+	player->AddComponent<TPScript>();
+	RoundManager::Instance()->SetAnimationDummy(player);
+
 	RoundManager::Instance()->_myObj = player;
-
-	// 애니메이션 전달용 더미 캐릭터 생성
-	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
-	dummy->GetTransform()->SetPosition(0, -10, 0);
-	dummy->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
-	
-	dummy->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
-	dummy->AddComponent<TPScript>();
-
-	RoundManager::Instance()->SetAnimationDummy(dummy);
 
 	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
@@ -94,7 +87,6 @@ void InGameSceneView::Initialize()
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
 	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
 
-
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
@@ -107,6 +99,7 @@ void InGameSceneView::Initialize()
 	fpMeshComp->LoadAnimation("TP");
 	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(chMat, 0);
+	fpMeshComp->SetShadowActive(false);
 	fpMeshComp->PlayAnimation("RV_idle", true);
 
 	// 총 생성
@@ -121,7 +114,7 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(chMat, 1);
 	weaponComp->LoadMaterial(chMat, 2);
 	weaponComp->LoadMaterial(chMat, 3);
-
+	weaponComp->SetShadowActive(false);
 
 	// 총구 이펙트
 	auto particleSystemObj = API::CreateObject(_scene, "effect");
@@ -154,7 +147,6 @@ void InGameSceneView::Initialize()
 	particleSystem->rendererModule.material = flashMat;
 	particleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
 
-	
 	// colorKey, alphaKey 생성
 	std::vector<HDData::GradientColorKey> ck;
 	std::vector<HDData::GradientAlphaKey> ak;
@@ -177,8 +169,6 @@ void InGameSceneView::Initialize()
 	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
 	particleSystem->Play();
-
-	particleSystemObj->GetTransform()->GetPosition();
 
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 
@@ -220,11 +210,8 @@ void InGameSceneView::Initialize()
 	playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
 
-
 	posX += 1;
 	posT += 315;
-	
-	
 
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
@@ -303,7 +290,7 @@ void InGameSceneView::Initialize()
 	crosshairComp->playerMove = playerMove;
 
 	// ammo
-	auto ammo = API::CreateObject(_scene, "remaingAmmo");
+	auto ammo = API::CreateObject(_scene, "remainAmmo");
 	auto ammoComp = ammo->AddComponent<Ammo>();
 	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
 	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);

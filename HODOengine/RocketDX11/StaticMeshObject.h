@@ -39,6 +39,7 @@ namespace RocketCore::Graphics
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual void SetUseLight(bool useLight) override;
 		virtual void SetMeshActive(bool isActive, unsigned int index) override;
+		virtual void SetShadowActive(bool isActive) override;
 		virtual int GetMeshCount() override;
 
 	public:
@@ -48,6 +49,8 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox GetBoundingBox();
 		bool IsCameraVisible();
 		bool IsLightVisible();
+		bool IsShadowActive();
+		bool IsReceiveTM();
 		void SetCameraVisible(bool isVisible);
 		void SetLightVisible(bool isVisible);
 
@@ -77,5 +80,7 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox m_boundingBox;
 		bool m_cameraVisible; // camera culling
 		bool m_lightVisible; // light culling
+
+		bool m_isShadowActive;
 	};
 }
