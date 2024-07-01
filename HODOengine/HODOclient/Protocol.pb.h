@@ -3048,6 +3048,7 @@ class S_ROOM_START final :
   enum : int {
     kRoomInfoFieldNumber = 1,
     kGameRuleFieldNumber = 2,
+    kSpawnPointIndexFieldNumber = 3,
   };
   // .Protocol.RoomInfo roomInfo = 1;
   bool has_roominfo() const;
@@ -3085,6 +3086,15 @@ class S_ROOM_START final :
       ::Protocol::GameRule* gamerule);
   ::Protocol::GameRule* unsafe_arena_release_gamerule();
 
+  // int32 spawnPointIndex = 3;
+  void clear_spawnpointindex();
+  ::PROTOBUF_NAMESPACE_ID::int32 spawnpointindex() const;
+  void set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_spawnpointindex() const;
+  void _internal_set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.S_ROOM_START)
  private:
   class _Internal;
@@ -3094,6 +3104,7 @@ class S_ROOM_START final :
   typedef void DestructorSkippable_;
   ::Protocol::RoomInfo* roominfo_;
   ::Protocol::GameRule* gamerule_;
+  ::PROTOBUF_NAMESPACE_ID::int32 spawnpointindex_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -5380,6 +5391,7 @@ class S_PLAY_RESPAWN final :
 
   enum : int {
     kPlayerDataFieldNumber = 1,
+    kSpawnPointIndexFieldNumber = 2,
   };
   // .Protocol.PlayerData playerData = 1;
   bool has_playerdata() const;
@@ -5399,6 +5411,15 @@ class S_PLAY_RESPAWN final :
       ::Protocol::PlayerData* playerdata);
   ::Protocol::PlayerData* unsafe_arena_release_playerdata();
 
+  // int32 spawnPointIndex = 2;
+  void clear_spawnpointindex();
+  ::PROTOBUF_NAMESPACE_ID::int32 spawnpointindex() const;
+  void set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_spawnpointindex() const;
+  void _internal_set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.S_PLAY_RESPAWN)
  private:
   class _Internal;
@@ -5407,6 +5428,7 @@ class S_PLAY_RESPAWN final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::Protocol::PlayerData* playerdata_;
+  ::PROTOBUF_NAMESPACE_ID::int32 spawnpointindex_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -7355,6 +7377,26 @@ inline void S_ROOM_START::set_allocated_gamerule(::Protocol::GameRule* gamerule)
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_ROOM_START.gameRule)
 }
 
+// int32 spawnPointIndex = 3;
+inline void S_ROOM_START::clear_spawnpointindex() {
+  spawnpointindex_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 S_ROOM_START::_internal_spawnpointindex() const {
+  return spawnpointindex_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 S_ROOM_START::spawnpointindex() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ROOM_START.spawnPointIndex)
+  return _internal_spawnpointindex();
+}
+inline void S_ROOM_START::_internal_set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  spawnpointindex_ = value;
+}
+inline void S_ROOM_START::set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_spawnpointindex(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_ROOM_START.spawnPointIndex)
+}
+
 // -------------------------------------------------------------------
 
 // S_GAME_START
@@ -8696,6 +8738,26 @@ inline void S_PLAY_RESPAWN::set_allocated_playerdata(::Protocol::PlayerData* pla
   }
   playerdata_ = playerdata;
   // @@protoc_insertion_point(field_set_allocated:Protocol.S_PLAY_RESPAWN.playerData)
+}
+
+// int32 spawnPointIndex = 2;
+inline void S_PLAY_RESPAWN::clear_spawnpointindex() {
+  spawnpointindex_ = 0;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 S_PLAY_RESPAWN::_internal_spawnpointindex() const {
+  return spawnpointindex_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 S_PLAY_RESPAWN::spawnpointindex() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_PLAY_RESPAWN.spawnPointIndex)
+  return _internal_spawnpointindex();
+}
+inline void S_PLAY_RESPAWN::_internal_set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  
+  spawnpointindex_ = value;
+}
+inline void S_PLAY_RESPAWN::set_spawnpointindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_spawnpointindex(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_PLAY_RESPAWN.spawnPointIndex)
 }
 
 // -------------------------------------------------------------------
