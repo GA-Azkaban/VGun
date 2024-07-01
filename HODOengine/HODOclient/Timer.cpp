@@ -40,7 +40,11 @@ void Timer::Update()
 			{
 				isActive = false;
 			}
-			onExpiration();
+
+			if (onExpiration)
+			{
+				onExpiration();
+			}
 		}
 	}
 }

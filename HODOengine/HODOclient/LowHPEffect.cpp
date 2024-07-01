@@ -2,12 +2,13 @@
 #include "GameManager.h"
 
 LowHPEffect::LowHPEffect()
+	: _gameManager(GameManager::Instance())
 {
-	_curve.AddKey(0.0f, 0.5f, [](float t) { return 1.8f * t + 0.1f; });
-	_curve.AddKey(0.5f, 1.0f, [](float t) { return -1.8f * t + 1.9f; });
+	_curve.AddKey(0.0f, 0.5f, [](float t) { return 1.8f * t + 0.2f; });
+	_curve.AddKey(0.5f, 1.0f, [](float t) { return -1.8f * t + 2.0f; });
 
 	_lowHPEffectTimer.isRepeat = true;
-	_lowHPEffectTimer.duration = 0.5f;
+	_lowHPEffectTimer.duration = 1.5f;
 	_lowHPEffectTimer.onUpdate = [&](float progress)
 		{
 			float value = _curve.Evaluate(progress);
@@ -29,13 +30,8 @@ void LowHPEffect::Update()
 {
 	_lowHPEffectTimer.Update();
 
-	int playerHP = GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP();
+	int playerHP = _gameManager->GetMyInfo()->GetPlayerCurrentHP();
 
-	if (API::GetKeyDown(DIK_B))
-	{
-		GameManager::Instance()->GetMyInfo()->SetCurrentHP(25);
-
-	}
 	if (playerHP > (maxHP * 0.3f))
 	{
 		_lowHPEffectImage->SetActive(false);
@@ -63,6 +59,7 @@ void LowHPEffect::Update()
 		else
 		{
 			_lowHPEffectImage->SetActive(false);
+			_lowHPEffectTimer.Stop();
 		}
 	}
 }
