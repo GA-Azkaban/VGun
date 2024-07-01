@@ -529,6 +529,50 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
+			_playerColliderStanding->Stop();
+
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+			_moveSpeed = 3.0f;
+
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+			_moveSpeed = 6.0f;
+
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			_moveSpeed = 5.0f;
+			_playerColliderStanding->Jump(Vector3::Zero);
+			_playerAudio->PlayOnce("jump");
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			Tumble(_tumbleDirection);
+			_playerAudio->PlayOnce("tumble");
+			_playerAudio->PlayOnce("tumblingMan");
+
+			break;
+		}
+		case ePlayerMoveState::FIRE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::DIE:
+		{
 
 			break;
 		}
@@ -549,6 +593,41 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 			break;
 		}
+		case ePlayerMoveState::WALK:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::FIRE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::DIE:
+		{
+
+			break;
+		}
 
 		default:
 		{
@@ -562,6 +641,41 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 	switch (state)
 	{
 		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::FIRE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::DIE:
 		{
 
 			break;
