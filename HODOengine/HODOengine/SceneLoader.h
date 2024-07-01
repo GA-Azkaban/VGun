@@ -39,6 +39,7 @@ namespace HDEngine
 
 	public:
 		void LoadUnityScene(std::string fileName, HDData::Scene* scene);
+		Vector3* GetRespawnPoint();
 
 	private:
 		void LoadFromJson(std::string filePath);

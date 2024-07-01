@@ -76,7 +76,6 @@ void RoundManager::InitGame()
 
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
-			_myObj->AddComponent<PlayerInfo>(info)->SetIsMyInfo(true);
 			GameManager::Instance()->SetMyObject(_myObj);
 			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });

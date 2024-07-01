@@ -75,7 +75,7 @@ private:
 
 public:
 	int& GetBulletCount();
-
+	ePlayerMoveState GetPlayerMoveEnum();
 public:
 	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
 	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;

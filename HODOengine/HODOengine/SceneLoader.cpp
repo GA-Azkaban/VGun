@@ -51,6 +51,11 @@ namespace HDEngine
 		SetTransform();
 	}
 
+	Vector3* SceneLoader::GetRespawnPoint()
+	{
+		return _spawnPoint;
+	}
+
 	void SceneLoader::LoadFromJson(std::string filePath)
 	{
 		// 모든 값을 string으로 묶어서 '한 번' 가져온다

@@ -29,10 +29,6 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	_animator = GetGameObject()->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(GetGameObject(), "FP_animation.json");
-	GetGameObject()->AddComponent<FPAniScript>();
-
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -770,6 +766,11 @@ void PlayerMove::UpdateStateText()
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
+}
+
+ePlayerMoveState PlayerMove::GetPlayerMoveEnum()
+{
+	return _playerState.first;
 }
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)

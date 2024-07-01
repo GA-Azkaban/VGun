@@ -61,16 +61,16 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->_myObj = player;
 
 	// 애니메이션 전달용 더미 캐릭터 생성
-	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
-	dummy->GetTransform()->SetPosition(0, -10, 0);
-	dummy->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
+	//HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
+	//dummy->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
+	//dummy->GetTransform()->SetPosition(0, -10, 0);
+	//dummy->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
 	
-	dummy->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
-	dummy->AddComponent<TPScript>();
+	player->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(player, "TP_animation.json");
+	player->AddComponent<TPScript>();
 
-	RoundManager::Instance()->SetAnimationDummy(dummy);
+	RoundManager::Instance()->SetAnimationDummy(player);
 
 	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
