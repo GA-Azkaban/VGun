@@ -555,6 +555,18 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::TUMBLE:
 		{
+			_tumbleTimer = 0.3f;
+			_headCam->ToggleCameraShake(true);
+
+			if (_moveDirection == 5)
+			{
+				_tumbleDirection = GetTransform()->GetForward();
+			}
+			else
+			{
+				_tumbleDirection = DecideDisplacement(_moveDirection);
+			}
+
 			Tumble(_tumbleDirection);
 			_playerAudio->PlayOnce("tumble");
 			_playerAudio->PlayOnce("tumblingMan");
@@ -610,6 +622,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::TUMBLE:
 		{
+			_headCam->TumbleCamera(_deltaTime);
 
 			break;
 		}
