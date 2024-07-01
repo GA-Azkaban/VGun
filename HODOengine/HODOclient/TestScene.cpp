@@ -196,8 +196,8 @@ TestScene::TestScene()
 	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
 	buildingRenderer1->LoadMesh("SM_Bld_Church_01.fbx");
 	HDEngine::MaterialDesc buildingDesc1;
-	buildingDesc1.materialName = "PolygonWestern_Texture_02";
-	buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
+	buildingDesc1.materialName = "PolygonKRAFTON_Texture_02";
+	buildingDesc1.albedo = "PolygonKRAFTON_Texture_02.png";
 	buildingDesc1.metallic = 0.0f;
 	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
 	for(int i = 0; i < buildingRenderer1->GetMeshCount(); ++i)
@@ -234,8 +234,8 @@ TestScene::TestScene()
 	//meshComp->SetFillModeWireFrame(true);
 
 	HDEngine::MaterialDesc desc;
-	desc.materialName = "PolygonWestern_Texture_01_A";
-	desc.albedo = "PolygonWestern_Texture_01_A.png";
+	desc.materialName = "PolygonKRAFTON_Texture_01_A";
+	desc.albedo = "PolygonKRAFTON_Texture_01_A.png";
 	HDData::Material* newMat = API::CreateMaterial(desc);
 	meshComp->LoadMaterial(newMat, 0);
 
@@ -260,8 +260,8 @@ TestScene::TestScene()
 	//weaponComp->LoadMesh("SM_Wep_Revolver_01.fbx");
 	//HDEngine::MaterialDesc weaponMatDesc;
 	//weaponMatDesc.materialName = "Revolver01Mat";
-	//weaponMatDesc.albedo = "PolygonWestern_Texture_01_A.png";
-	//weaponMatDesc.metallic = "PolygonWestern_Texture_Metallic.png";
+	//weaponMatDesc.albedo = "PolygonKRAFTON_Texture_01_A.png";
+	//weaponMatDesc.metallic = "PolygonKRAFTON_Texture_Metallic.png";
 	//HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
 	//
 	//weaponComp->LoadMaterial(weaponMat1, 0);

@@ -54,7 +54,7 @@ void LobbySceneView::Initialize()
 	auto sTex = startText->GetComponent<HDData::TextUI>();
 	sTex->SetText("GAME START");
 	sTex->SetColor(DirectX::Colors::OrangeRed);
-	sTex->SetFont("Resources/Font/Western_40.spriteFont");
+	sTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	float startTextWidth = sTex->GetTextWidth();
 	float startTextHeight = sTex->GetTextHeight();
 	startText->GetTransform()->SetPosition(1600.0f * width / 1920 - startTextWidth * 0.75f, 950.0f * height / 1080 - startTextHeight * 0.25f, 0);

@@ -101,6 +101,7 @@ public:
 	HDData::TextUI* _plStateText;
 	HDData::TextUI* _tumbleText;
 	HDData::TextUI* _plPosText;
+	int melon;
 
 private:
 	//HDData::DynamicBoxCollider* _playerCollider;
