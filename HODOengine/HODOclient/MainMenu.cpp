@@ -43,12 +43,23 @@ void MainMenuScene::MainMenu()
 	int width = static_cast<int>(API::GetScreenWidth());
 	int height = static_cast<int>(API::GetScreenHeight());
 
+	int originalwidth = 4000;
+	int originalHeight = 2248;
+
+	int targetWidth = 2560;
+	int targetHeight = 1440;
+
+	float widthScale = static_cast<float>(targetWidth) / originalwidth;
+	float heightScale = static_cast<float>(targetHeight) / originalHeight;
+	float scale = (widthScale < heightScale) ? widthScale : heightScale;
+
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
 	mainCanvasImage->SetImage("_blur_background_image.png");
 	//mainCanvasImage->SetImage("_card_holder.png");
 	mainCanvasImage->SetSortOrder(0.0f);
-	mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	mainCanvasImage->ChangeScale(scale, scale);
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
 	mainCanvasImage->SetActive(true);
 	_menuManager.Instance().SetMainMenuCanvas(mainCanvas);
@@ -76,7 +87,7 @@ void MainMenuScene::MainMenu()
 	main_playBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_playText = API::CreateTextbox(_scene, "playText", main_playBtn);
 	main_playText->GetTransform()->SetPosition(main_playBtn->GetTransform()->GetPosition());
-	main_playText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_55.spriteFont");
+	main_playText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	main_playText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
 	main_playText->GetComponent<HDData::TextUI>()->SetText("PLAY");
 
@@ -90,7 +101,7 @@ void MainMenuScene::MainMenu()
 	main_enterBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_enterText = API::CreateTextbox(_scene, "roomEnterText", main_enterBtn);
 	main_enterText->GetTransform()->SetPosition(main_enterBtn->GetTransform()->GetPosition());
-	main_enterText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
+	main_enterText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	main_enterText->GetComponent<HDData::TextUI>()->SetText("ENTER");
 
 	// room List Canvas
@@ -206,7 +217,7 @@ void MainMenuScene::MainMenu()
 	enter_enterCheckText->GetTransform()->SetLocalPosition(0, -30.0f * height / 1080, 0);
 	auto enterText = enter_enterCheckText->GetComponent<HDData::TextUI>();
 	enterText->SetText("Join?");
-	enterText->SetFont("Resources/Font/Western_25.spriteFont");
+	enterText->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	enterText->SetColor(DirectX::Colors::OrangeRed);
 	enterText->SetIsIgnoreFocus(true);
 	enterText->SetSortOrder(0.91);
@@ -346,7 +357,7 @@ void MainMenuScene::MainMenu()
 	main_makeBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_makeText = API::CreateTextbox(_scene, "setRoomText", main_makeBtn);
 	main_makeText->GetTransform()->SetPosition(main_makeBtn->GetTransform()->GetPosition());
-	main_makeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
+	main_makeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	main_makeText->GetComponent<HDData::TextUI>()->SetText("MAKE");
 
 	/// make room ui
@@ -362,7 +373,7 @@ void MainMenuScene::MainMenu()
 	// room name Set
 	HDData::GameObject* make_roomNameLabel = API::CreateTextbox(_scene, "roomNameTextLabel", make_canvas);
 	make_roomNameLabel->GetTransform()->SetPosition(710.0f * width / 1920, 240.0f * height / 1080, 0.f);
-	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_30.spriteFont");
+	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetText("RoomName");
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.75f);
@@ -381,7 +392,7 @@ void MainMenuScene::MainMenu()
 	// privateRoom Set
 	HDData::GameObject* make_passwordLabel = API::CreateTextbox(_scene, "privateRoomTextLabel", make_canvas);
 	make_passwordLabel->GetTransform()->SetPosition(710.0f * width / 1920, 320.0f * height / 1080, 0.f);
-	make_passwordLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_30.spriteFont");
+	make_passwordLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	make_passwordLabel->GetComponent<HDData::TextUI>()->SetText("RoomPassword");
 	make_passwordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	make_passwordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.75f);
@@ -415,7 +426,7 @@ void MainMenuScene::MainMenu()
 
 	HDData::GameObject* setRoomText = API::CreateTextbox(_scene, "setRoomText", roomSetBtn);
 	setRoomText->GetTransform()->SetPosition(roomSetBtn->GetTransform()->GetPosition());
-	setRoomText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
+	setRoomText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
 	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.8f);
 
@@ -427,7 +438,7 @@ void MainMenuScene::MainMenu()
 	main_trainingBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	main_trainingBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", main_trainingBtn);
-	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
+	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
 	float trainingTextWidth = trainingText->GetComponent<HDData::TextUI>()->GetTextWidth();
 	trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
@@ -441,7 +452,7 @@ void MainMenuScene::MainMenu()
 	exit_Btn->AddComponent<BtnTextScript>();
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", exit_Btn);
 	tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
-	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_40.spriteFont");
+	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
 
 	// setting & option
@@ -468,7 +479,7 @@ void MainMenuScene::MainMenu()
 	// 마우스 감도
 	// Mouse Sensitivity
 	HDData::GameObject* mouseSensitivityText = API::CreateTextbox(_scene, "Mouse Sensitivity Text", preferencesCanvas);
-	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_30.spritefont");
+	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetText("Mouse Sensitivity");
 	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 	float mouseSensitivityTextWidth = mouseSensitivityText->GetComponent<HDData::TextUI>()->GetTextWidth();
@@ -485,7 +496,7 @@ void MainMenuScene::MainMenu()
 	/// 이부분 추가수정
 	HDData::GameObject* BGMVolumeText = API::CreateTextbox(_scene, "BGMVolumeText", preferencesCanvas);
 	BGMVolumeText->GetTransform()->SetPosition((302.0f * width / 1920)+20, (350.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_30.spritefont");
+	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	BGMVolumeText->GetComponent<HDData::TextUI>()->SetText("BGM Volume");
 	BGMVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 	float screenModTextH = BGMVolumeText->GetComponent<HDData::TextUI>()->GetTextHeight();
@@ -498,7 +509,7 @@ void MainMenuScene::MainMenu()
 
 	// Environment Volume
 	HDData::GameObject* EnvironmentVolumeText = API::CreateTextbox(_scene, "EnvironmentVolumeText", preferencesCanvas);
-	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_30.spritefont");
+	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetText("Environment Volume");
 	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 	float evTextWidth = EnvironmentVolumeText->GetComponent<HDData::TextUI>()->GetTextWidth();

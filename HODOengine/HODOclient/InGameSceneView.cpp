@@ -33,9 +33,9 @@ void InGameSceneView::Initialize()
 	float posT = 165;
 
 	HDEngine::MaterialDesc characterMat;  
-	characterMat.materialName = "PolygonWestern_Texture_01_A";
-	characterMat.albedo = "PolygonWestern_Texture_01_A.png";
-	characterMat.metallic = "PolygonWestern_Texture_Metallic.png";
+	characterMat.materialName = "PolygonKRAFTON_Texture_01_A";
+	characterMat.albedo = "PolygonKRAFTON_Texture_01_A.png";
+	characterMat.metallic = "PolygonKRAFTON_Texture_Metallic.png";
 
 	HDData::Material* chMat = API::CreateMaterial(characterMat);
 
@@ -307,7 +307,7 @@ void InGameSceneView::Initialize()
 	auto ammoComp = ammo->AddComponent<Ammo>();
 	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
 	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/Western_55.spriteFont");
+	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
 
 	// HP
