@@ -66,7 +66,6 @@ namespace HDData
 		void Collide();
 		bool GetIsCollided();
 		physx::PxRigidDynamic* GetPhysXRigid() const;
-		HDData::Collider* GetParentCollider() const;
 		std::vector<HDData::Collider*> GetChildColliderVec()const;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;

@@ -167,6 +167,11 @@ namespace HDData
 		return _colType;
 	}
 
+	HDData::Collider* Collider::GetParentCollider() const
+{
+		return _parentCollider;
+	}
+
 	void Collider::Flush()
 	{
 		_prevIsCollide = false;
