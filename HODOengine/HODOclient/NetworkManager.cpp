@@ -28,12 +28,11 @@ NetworkManager* NetworkManager::_instance = nullptr;
 NetworkManager::NetworkManager()
 {
 	API::CreateStaticComponent(this);
-	data = new Protocol::PlayerData;
 }
 
 NetworkManager::~NetworkManager()
 {
-	delete data;
+
 }
 
 void NetworkManager::Start()
@@ -112,7 +111,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 
 }
 
-void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData)
+void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spawnPointIndex)
 {
 
 }
@@ -527,7 +526,7 @@ void NetworkManager::SendGameStart()
 	this->_service->BroadCast(sendBuffer);
 }
 
-void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule)
+void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex)
 {
 	RoundManager::Instance()->InitGame();
 	API::LoadSceneByName("InGame");

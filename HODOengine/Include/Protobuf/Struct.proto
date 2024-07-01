@@ -83,6 +83,7 @@ message GameRule
 {
 	int32 gameTime = 1;
 	int32 desiredKill = 2;
-	int32 respawnTime = 3;
-	int32 maxHp = 4;
+	int32 maxHp = 3;
+	int32 respawnTime = 4;
+	int32 spawnIndexRange = 5;
 }
