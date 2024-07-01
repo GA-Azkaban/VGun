@@ -383,27 +383,6 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::ShootGun()
 {
-	_headCam->ToggleCameraShake(true);
-
-	HDData::Collider* hitCollider = nullptr;
-
-	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
-	Vector3 hitPoint = { 1.0f, 1.0f, 1.0f };
-
-	hitCollider = API::ShootRayHitPoint(rayOrigin, GetTransform()->GetForward(), hitPoint);
-
-	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
-
-	if (hitDynamic != nullptr)
-	{
-		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
-		hitDynamic->AddForce(forceDirection, 50.0f);
-		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
-	}
-}
-
-void PlayerMove::ShootGunDdabal()
-{
 	if (_isReloading)
 	{
 		return;
@@ -575,16 +554,22 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::FIRE:
 		{
+			ShootGun();
+			_playerAudio->PlayOnce("shoot");
 
 			break;
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			_fpmesh->SetMeshActive(false, 0);
+			_playerAudio->PlayOnce("reload");
+			_reloadTimer = 3.0f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			Die();
 
 			break;
 		}
@@ -1585,7 +1570,7 @@ void PlayerMove::Behavior()
 				{
 					_headCam->ToggleCameraShake(true);
 				}
-				ShootGunDdabal();
+				ShootGun();
 			}
 		}
 	}

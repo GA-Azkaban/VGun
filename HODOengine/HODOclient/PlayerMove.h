@@ -61,7 +61,6 @@ private:
 	void CoolTime();
 	void Landing();
 	void ShootGun();
-	void ShootGunDdabal();
 	void Reload();
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
