@@ -326,7 +326,7 @@ void InGameSceneView::Initialize()
 	HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
 	stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
-	playerMove->_plState = stateText;
+	playerMove->_plStateText = stateText;
 
 	// 디버그용 cooltime
 	HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
@@ -334,6 +334,13 @@ void InGameSceneView::Initialize()
 	coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
 	playerMove->_tumbleText = coolTimeText;
+
+	// 디버그용 포지션
+	HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
+	HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
+	posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
+	playerMove->_plPosText = posText;
 
 	// 죽었을 때 비활성화 씬
 	auto deadzone = API::CreateImageBox(_scene, "deadzone");
