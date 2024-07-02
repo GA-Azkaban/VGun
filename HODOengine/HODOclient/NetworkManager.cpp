@@ -124,6 +124,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 	}
 
+
 	if (myUID == killPlayerData.userinfo().uid())
 	{
 		ConvertDataToPlayerInfo(killPlayerData,
@@ -137,6 +138,8 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 	}
+
+
 }
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spawnPointIndex)

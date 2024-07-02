@@ -230,7 +230,7 @@ void RoundManager::UpdateHPText()
 void RoundManager::UpdateDesiredKillChecker()
 {
 	{
-		int count = _myObj->GetComponent<PlayerInfo>()->GetPlayerKillCount();
+		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_inGameKillCounts[GameManager::Instance()->GetMyInfo()->GetPlayerUID()].second->SetText(std::to_string(count));
 		if (count >= _desiredKill) _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 	}

@@ -1382,7 +1382,7 @@ void PlayerMove::DecidePlayerState()
 	//if (_playerState.second == ePlayerMoveState::RELOAD)
 	//{
 	//	if (_reloadTimer > 0.0f)
-	//	{
+	//	{o
 	//		_reloadTimer -= _deltaTime;
 	//		return;
 	//	}
