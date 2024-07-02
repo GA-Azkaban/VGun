@@ -271,11 +271,6 @@ physx::PxRigidDynamic* HDData::DynamicCollider::GetPhysXRigid() const
 	return _physXRigid;
 }
 
-HDData::Collider* HDData::DynamicCollider::GetParentCollider() const
-{
-	return _parentCollider;
-}
-
 std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() const
 {
 	return _childColliders;

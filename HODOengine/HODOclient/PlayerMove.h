@@ -119,8 +119,6 @@ private:
 	HDData::AudioSource* _playerAudio = nullptr;
 
 private:
-	HDData::Animator* _animator;
-
 	HDData::TextUI* _playerInfoText;
 	HDData::TextUI* _aimText;
 	HDData::TextUI* _hitText;

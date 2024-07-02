@@ -26,6 +26,7 @@ namespace HDData
 		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
 		void SetUseLight(bool useLight);
 		void SetMeshActive(bool isActive, unsigned int index);
+		void SetShadowActive(bool isActive);
 		int GetMeshCount();
 
 	protected:

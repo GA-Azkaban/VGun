@@ -34,6 +34,7 @@ namespace HDData
 		void SetOutlineActive(bool isActive);
 		void SetFillModeWireFrame(bool setWireFrame);
 		void SetMeshActive(bool isActive, unsigned int index);
+		void SetShadowActive(bool isActive);
 		Node* GetNode();
 		int GetMeshCount();
 

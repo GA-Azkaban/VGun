@@ -113,6 +113,11 @@ namespace HDData
 		_skinnedMesh->SetMeshActive(isActive, index);
 	}
 
+	void SkinnedMeshRenderer::SetShadowActive(bool isActive)
+	{
+		_skinnedMesh->SetShadowActive(isActive);
+	}
+
 	Node* SkinnedMeshRenderer::GetNode()
 	{
 		return _skinnedMesh->GetNode();

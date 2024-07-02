@@ -17,7 +17,8 @@ namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false), m_useLight(true),
-		m_world{ XMMatrixIdentity() }, m_cameraVisible(true), m_lightVisible(true)
+		m_world{ XMMatrixIdentity() }, 
+		m_cameraVisible(true), m_lightVisible(true), m_isShadowActive(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
@@ -185,6 +186,11 @@ namespace RocketCore::Graphics
 		m_meshesActive[index] = isActive;
 	}
 
+	void StaticMeshObject::SetShadowActive(bool isActive)
+	{
+		m_isShadowActive = isActive;
+	}
+
 	int StaticMeshObject::GetMeshCount()
 	{
 		return m_meshes.size();
@@ -303,6 +309,16 @@ namespace RocketCore::Graphics
 	bool StaticMeshObject::IsLightVisible()
 	{
 		return m_lightVisible;
+	}
+
+	bool StaticMeshObject::IsShadowActive()
+	{
+		return m_isShadowActive;
+	}
+
+	bool StaticMeshObject::IsReceiveTM()
+	{
+		return m_receiveTMInfoFlag;
 	}
 
 	void StaticMeshObject::SetCameraVisible(bool isVisible)

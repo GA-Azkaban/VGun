@@ -77,6 +77,11 @@ namespace HDData
 		_staticMesh->SetMeshActive(isActive, index);
 	}
 
+	void MeshRenderer::SetShadowActive(bool isActive)
+	{
+		_staticMesh->SetShadowActive(isActive);
+	}
+
 	int MeshRenderer::GetMeshCount()
 	{
 		return _staticMesh->GetMeshCount();

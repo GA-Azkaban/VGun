@@ -65,6 +65,7 @@ namespace HDData
 		bool GetPrevIsCollide() const;
 		std::vector<PhysicsCollision*> GetCollisionStorage() const;
 		eColliderRole GetColType() const;
+		Collider* GetParentCollider() const;
 
 		void Flush();
 

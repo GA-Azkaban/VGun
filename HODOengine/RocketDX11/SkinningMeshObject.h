@@ -39,6 +39,8 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox GetBoundingBox();
 		bool IsCameraVisible();
 		bool IsLightVisible();
+		bool IsShadowActive();
+		bool IsReceiveTM();
 		void SetCameraVisible(bool isVisible);
 		void SetLightVisible(bool isVisible);
 
@@ -69,6 +71,7 @@ namespace RocketCore::Graphics
 		virtual void SetFillModeWireFrame(bool setWireFrame) override;
 
 		virtual void SetMeshActive(bool isActive, unsigned int index) override;
+		virtual void SetShadowActive(bool isActive) override;
 
 		virtual int GetMeshCount() override;
 
@@ -125,5 +128,7 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox m_boundingBox;
 		bool m_cameraVisible;
 		bool m_lightVisible;
+
+		bool m_isShadowActive;
 	};
 }
