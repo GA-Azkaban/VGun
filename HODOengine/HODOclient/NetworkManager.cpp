@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -532,8 +532,10 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 
 	auto obj = RoundManager::Instance()->_myObj->GetParentObject();
 
-	//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(0, 1.64999, 0.17499);
-	//GameManager::Instance()->GetMyObject()->GetTransform()->SetRotation()
+
+
+	RoundManager::Instance()->GetEndCam()->GetComponent<HDData::Camera>()->SetAsMainCamera();
+	RoundManager::Instance()->GetRoundEndButton()->SetSelfActive(true);
 }
 
 void NetworkManager::SendPlayUpdate()

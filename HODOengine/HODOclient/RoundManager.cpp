@@ -3,6 +3,7 @@
 #include "LobbyManager.h"
 #include "PlayerMove.h"
 #include "GameManager.h"
+#include "MenuManager.h"
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
@@ -97,7 +98,7 @@ void RoundManager::InitGame()
 
 void RoundManager::EndGame()
 {
-
+	ExitGame();
 }
 
 void RoundManager::InitRound()
@@ -169,6 +170,32 @@ bool RoundManager::GetIsRoundStart()
 void RoundManager::SetIsRoundStart(bool isStart)
 {
 	_isRoundStart = isStart;
+}
+
+void RoundManager::SetEndCam(HDData::GameObject* cam)
+{
+	_endCam = cam;
+}
+
+HDData::GameObject* RoundManager::GetEndCam()
+{
+	return _endCam;
+}
+
+void RoundManager::SetRoundEndButton(HDData::GameObject* obj)
+{
+	_endObj = obj;
+}
+
+HDData::GameObject* RoundManager::GetRoundEndButton()
+{
+	return _endObj;
+}
+
+void RoundManager::ExitGame()
+{
+	API::LoadSceneByName("Lobby");
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)

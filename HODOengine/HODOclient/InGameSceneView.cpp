@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -44,6 +44,13 @@ void InGameSceneView::Initialize()
 	auto freeRoamingCam = freeRoamingCamObj->AddComponent<HDData::Camera>();
 	freeRoamingCamObj->GetTransform()->SetPosition(-5.0f, 2.0f, -10.0f);
 	freeRoamingCamObj->AddComponent<CameraMove>();
+
+	// 게임엔딩 카메라
+	auto gameendCam = API::CreateObject(_scene, "endCam");
+	auto gameendCamcomp = gameendCam->AddComponent<HDData::Camera>();
+	gameendCamcomp->GetTransform()->SetPosition(-5.0f, 2.0f, -10.0f);
+
+	RoundManager::Instance()->SetEndCam(gameendCam);
 
 	// 내 캐릭터 생성
 	std::string objName1 = "playerSelf";
@@ -329,9 +336,27 @@ void InGameSceneView::Initialize()
 	posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
 	playerMove->_plPosText = posText;
 
-	// 죽었을 때 비활성화 씬
-	auto deadzone = API::CreateImageBox(_scene, "deadzone");
-	//auto deadzoneIMG = deadzone->GetComponent<HDData::ImageUI>()->SetImage("deadzone.png");
+	// game end
+
+	auto endButton = API::CreateButton(_scene, "endBtn");
+	endButton->GetTransform()->SetPosition(1350.0f, 1200.0f, 0.0f);
+	auto endComp = endButton->GetComponent<HDData::Button>();
+	endComp->SetImage("start.png");
+	endComp->SetOnClickEvent([=]()
+		{
+			RoundManager::Instance()->EndGame();
+		});
+
+	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
+	endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
+	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
+	endTXTcomp->SetText("Confirm");
+	endTXTcomp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+
+	endButton->SetSelfActive(false);
+
+	RoundManager::Instance()->SetRoundEndButton(endButton);
+
 
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");

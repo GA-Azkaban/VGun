@@ -52,9 +52,18 @@ private:
 public:
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
+	void SetEndCam(HDData::GameObject* cam);
+	
+	
+	HDData::GameObject* GetEndCam();
+	void SetRoundEndButton(HDData::GameObject* obj);
+	HDData::GameObject* GetRoundEndButton();
+	void ExitGame();
 
 private:
 	bool _isRoundStart = false;
+	HDData::GameObject* _endCam;
+	HDData::GameObject* _endObj;
 
 public:
 	void SetRoundTimerObject(HDData::TextUI* obj);
