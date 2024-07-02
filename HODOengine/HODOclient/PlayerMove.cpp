@@ -768,9 +768,16 @@ int& PlayerMove::GetBulletCount()
 	return _bulletCount;
 }
 
-ePlayerMoveState PlayerMove::GetPlayerMoveEnum()
+ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 {
-	return _playerState.first;
+	if (index == 1)
+	{
+		return _playerState.first;
+	}
+	else
+	{
+		return _playerState.second;
+	}
 }
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
