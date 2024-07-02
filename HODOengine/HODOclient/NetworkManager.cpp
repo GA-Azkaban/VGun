@@ -147,14 +147,16 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
 	else
 	{
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
