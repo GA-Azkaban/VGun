@@ -452,7 +452,7 @@ void PlayerMove::Tumble(Vector3 direction)
 	_weapon->SetMeshActive(false, 1);
 	_weapon->SetMeshActive(false, 2);
 	_weapon->SetMeshActive(false, 3);
-	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
 void PlayerMove::PlayPlayerSound()
