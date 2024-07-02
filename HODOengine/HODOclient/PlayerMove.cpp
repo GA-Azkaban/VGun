@@ -29,10 +29,6 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
-	_animator = GetGameObject()->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(GetGameObject(), "FP_animation.json");
-	GetGameObject()->AddComponent<FPAniScript>();
-
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -88,65 +84,6 @@ void PlayerMove::Update()
 	// sound 관련
 	_playerAudio->UpdateSoundPos(_playerPos);
 	PlayPlayerSound();
-
-	/*
-	// 탄창 비었는데 쏘면 딸깍소리
-	if (API::GetMouseDown(MOUSE_LEFT))
-	{
-		if (_bulletCount <= 0 && !_isReloading)
-		{
-			_playerAudio->PlayOnce("empty");
-		}
-	}
-
-	if(API::GetKeyDown(DIK_LCONTROL))
-	{
-		ToggleSit(true);
-	}
-	else if(API::GetKeyUp(DIK_LCONTROL))
-	{
-		ToggleSit(false);
-	}
-
-	_isShootHead = false;
-	_isShootBody = false;
-
-	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
-	{
-		ShootGunDdabal();
-	}
-
-	if (API::GetMouseUp(MOUSE_LEFT))
-	{
-		// 반동 리셋
-		_shootCount = 0;
-		_headCam->ToggleCameraShake(false);
-		_headCam->ResetCameraPos();
-	}
-
-	if (API::GetKeyDown(DIK_R))
-	{
-		if (_isReloading == false && _bulletCount < 30)
-		{
-			// 여기에 재장전 애니메이션과 소리 넣기
-			_playerAudio->PlayOnce("reload");
-			_isReloading = true;
-		}
-	}
-	Reload();
-
-	// 마우스에 따른 플레이어 회전 체크
-	CheckLookDirection();
-
-	// 키보드에 따른 플레이어 이동 방향 체크
-	CheckMoveInfo();
-
-	CameraControl();
-	_headCam->ShakeCamera(_deltaTime);
-
-	// 이동, 회전
-	Move(_moveDirection);
-	*/
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 }
@@ -454,7 +391,7 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
-		_playerAudio->PlayOnce("hitBody");
+		//_playerAudio->PlayOnce("hitBody");
 		_playerAudio->PlayOnce("hitHead");
 	}
 
@@ -515,7 +452,7 @@ void PlayerMove::Tumble(Vector3 direction)
 	_weapon->SetMeshActive(false, 1);
 	_weapon->SetMeshActive(false, 2);
 	_weapon->SetMeshActive(false, 3);
-	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
 void PlayerMove::PlayPlayerSound()

@@ -58,7 +58,7 @@ void TPScript::Update()
 	{
 		_animator->GetAllAC()->SetTrigger("isFire");
 	}
-	if (API::GetKeyDown(DIK_LCONTROL))
+	if (API::GetKeyDown(DIK_LSHIFT))
 	{
 		_animator->GetAllAC()->SetTrigger("isRoll");
 	}

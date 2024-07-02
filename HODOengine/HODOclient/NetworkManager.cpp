@@ -13,6 +13,7 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
+#include <fstream>
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -40,12 +41,29 @@ void NetworkManager::Start()
 {
 	ServerPacketHandler::Init();
 
-	_service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"172.16.1.13", 7777),
-		Horang::MakeShared<Horang::IocpCore>(),
-		Horang::MakeShared<ServerSession>,
-		1
-	);
+	std::wifstream ipAddressFile("serverIP.txt");
+	std::wstring ipAddressStr = L"";
+
+	if (ipAddressFile.is_open())
+	{
+		_service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(ipAddressStr, 7777),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>,
+			1
+		);
+	}
+	else
+	{
+		_service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(L"172.16.1.13", 7777),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>,
+			1
+		);
+	}
+
+	ipAddressFile.close();
 
 	_service->Start();
 }
@@ -571,7 +589,7 @@ void NetworkManager::SendPlayJump()
 	auto data = ConvertPlayerInfoToData(mine, info);
 	*packet.mutable_playerdata() = data;
 
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
 

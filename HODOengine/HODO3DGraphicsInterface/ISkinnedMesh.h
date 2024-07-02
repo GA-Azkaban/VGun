@@ -30,6 +30,7 @@ namespace HDEngine
 		virtual bool IsAnimationEnd() = 0;
 		virtual void SetFillModeWireFrame(bool setWireFrame) = 0;
 		virtual void SetMeshActive(bool isActive, unsigned int index) = 0;
+		virtual void SetShadowActive(bool isActive) = 0;
 		virtual int GetMeshCount() = 0;
 		virtual Node* GetNode() = 0;
 	};
