@@ -26,6 +26,20 @@ void HDData::AudioSource::PlayOnce(std::string soundName)
 		_soundSystem.PlayOnce(iter->second);
 }
 
+void HDData::AudioSource::PlayOnceIfNotPlaying(std::string soundName)
+{
+	if (!IsSoundPlaying(soundName))
+	{
+		PlayOnce(soundName);
+	}
+}
+
+void HDData::AudioSource::PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup)
+{
+	StopSoundGroup(stopGroup);
+	PlayOnce(soundName);
+}
+
 void HDData::AudioSource::PlayRepeat(std::string soundName)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
