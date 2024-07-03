@@ -601,6 +601,7 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
+			make_canvas->SetSelfActive(false);
 			NetworkManager::Instance().SendRoomCreate(newRoomName->GetCurrentText(), "", 6, false);
 		}
 	);

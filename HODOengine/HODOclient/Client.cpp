@@ -33,7 +33,7 @@ void Client::Initialize()
 	MenuManager::Instance();
 	RoundManager::Instance();
 	//FadeInOut::Instance();
-
+	
 	// 씬 초기화
 	/*TestScene test;
 
@@ -50,22 +50,22 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start();
 
-	LoginSceneView login;		//Scene Name : Login
-	login.Initialize();
-	
-	LobbySceneView lobby;
-	lobby.Initialize();
+	//LoginSceneView login;		//Scene Name : Login
+	//login.Initialize();
 
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();
+	//LobbySceneView lobby;
+	//lobby.Initialize();
+
+	//MainMenuScene menu;			//Scene Name : MainMenu
+	//menu.Initalize();
 	
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 	
-	API::LoadSceneByName("Login");
+	//API::LoadSceneByName("Login");
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
-	//API::LoadSceneByName("InGame");
+	API::LoadSceneByName("InGame");
 	//API::SetRecursiveMouseMode(true);
 }

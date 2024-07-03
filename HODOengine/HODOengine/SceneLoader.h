@@ -39,6 +39,7 @@ namespace HDEngine
 
 	public:
 		void LoadUnityScene(std::string fileName, HDData::Scene* scene);
+		Vector3* GetRespawnPoint();
 
 	private:
 		void LoadFromJson(std::string filePath);
@@ -47,8 +48,8 @@ namespace HDEngine
 		void SetTransform();
 
 		// 스폰 지점
-		Vector3 _spawnPoint[15];
-		int _spawnIndex = 0;
+		Vector3 _spawnPoint[20];
+		int _spawnIndex = 1;
 	private:
 		HDData::Scene * now;
 		HDData::Material* _material;

@@ -67,6 +67,7 @@ namespace API
 
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
+		HODO_API Vector3* GetSpawnPointArr();
 
 		// 애니메이션 툴 데이터에서 FSM 로드
 		HODO_API void LoadFPAnimationFromData(HDData::GameObject* gameobject, std::string data);

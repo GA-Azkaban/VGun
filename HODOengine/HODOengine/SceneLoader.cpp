@@ -26,7 +26,10 @@ namespace HDEngine
 {
 	SceneLoader::SceneLoader()
 	{
-
+		for (auto& pos : _spawnPoint)
+		{
+			pos = { 1, 2, 1 };
+		}
 	}
 
 	void SceneLoader::LoadUnityScene(std::string fileName, HDData::Scene* scene)
@@ -49,6 +52,11 @@ namespace HDEngine
 		CreateObject(scene);
 		LinkHierachy();
 		SetTransform();
+	}
+
+	Vector3* SceneLoader::GetRespawnPoint()
+	{
+		return _spawnPoint;
 	}
 
 	void SceneLoader::LoadFromJson(std::string filePath)
@@ -118,7 +126,7 @@ namespace HDEngine
 			HDData::GameObject* object = scene->CreateObject(info.name);
 
 			std::string meshName = info.meshName;
-			
+
 			// 스폰위치를 위한 변수
 			std::string objName = info.name;
 			Vector3 tempPosition = info.position;
@@ -134,7 +142,12 @@ namespace HDEngine
 			{
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
-			
+
+			if (objName == "WrongPoint")
+			{
+				_spawnPoint[0] = tempPosition;
+			}
+
 			if (objName == "SpawnPoint")
 			{
 				// 스폰 위치 받아와서 배열에 추가

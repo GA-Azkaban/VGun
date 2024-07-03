@@ -1,5 +1,4 @@
 ﻿#pragma once
-#include "PlayerInfo.h"
 #include "../HODOengine/HODO_API.h"
 
 
@@ -14,7 +13,5 @@ public:
 
 public:
 	HDData::Animator* _animator;
-	HDData::SkinnedMeshRenderer* _mesh;
-	PlayerInfo* _info;
 };
 

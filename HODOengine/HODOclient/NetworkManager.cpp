@@ -13,6 +13,7 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
+#include <fstream>
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -40,12 +41,29 @@ void NetworkManager::Start()
 {
 	ServerPacketHandler::Init();
 
-	_service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"172.16.1.13", 7777),
-		Horang::MakeShared<Horang::IocpCore>(),
-		Horang::MakeShared<ServerSession>,
-		1
-	);
+	std::wifstream ipAddressFile("serverIP.txt");
+	std::wstring ipAddressStr = L"";
+
+	if (ipAddressFile.is_open())
+	{
+		_service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(ipAddressStr, 7777),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>,
+			1
+		);
+	}
+	else
+	{
+		_service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(L"172.16.1.13", 7777),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>,
+			1
+		);
+	}
+
+	ipAddressFile.close();
 
 	_service->Start();
 }
@@ -78,7 +96,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 }
 
 void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::PlayerData hitPlayerData, Protocol::eHitLocation hitLocation)
-{	
+{
 	int myUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 
 	// 쏜 사람 (총구 이펙트만 주면 됨)
@@ -116,47 +134,47 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
-	else if (myUID == killPlayerData.userinfo().uid())
-	{
-		ConvertDataToPlayerInfo(killPlayerData,
-			GameManager::Instance()->GetMyObject(),
-			GameManager::Instance()->GetMyInfo());
-	}
 	else
 	{
 		// 모든 데스 갱신
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+	}
 
+
+	if (myUID == killPlayerData.userinfo().uid())
+	{
+		ConvertDataToPlayerInfo(killPlayerData,
+			GameManager::Instance()->GetMyObject(),
+			GameManager::Instance()->GetMyInfo());
+	}
+	else
+	{
 		// 모든 킬 갱신
 		ConvertDataToPlayerInfo(killPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 	}
+
+
 }
 
 void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spawnPointIndex)
 {
-	// isdead 갱신
-	// 서버에서 인덱스를보내줌
-	int index=0;
-
-	//RoundManager::Instance()->Respawn(index);
-
-	auto vec3 = RoundManager::Instance()->GetSpawnPoint(index);
-
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(vec3);
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
 	else
 	{
-		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(vec3);
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -483,7 +501,14 @@ void NetworkManager::SendGameStart()
 
 void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex)
 {
+	// 라운드 초기화
 	RoundManager::Instance()->InitGame();
+
+	// 스폰 포인트로 위치 갱신
+	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
+	//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+
+	// 씬 로드
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
 
@@ -503,7 +528,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
 	RoundManager::Instance()->SetIsRoundStart(false);
-	// TODO) 순위 보여주기 씬으로 전환
+	RoundManager::Instance()->EndGame();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -571,7 +596,7 @@ void NetworkManager::SendPlayJump()
 	auto data = ConvertPlayerInfoToData(mine, info);
 	*packet.mutable_playerdata() = data;
 
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
 

@@ -452,7 +452,7 @@ void PlayerMove::Tumble(Vector3 direction)
 	_weapon->SetMeshActive(false, 1);
 	_weapon->SetMeshActive(false, 2);
 	_weapon->SetMeshActive(false, 3);
-	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
 void PlayerMove::PlayPlayerSound()
@@ -707,6 +707,18 @@ void PlayerMove::UpdateStateText()
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
+}
+
+ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
+{
+	if (index == 1)
+	{
+		return _playerState.first;
+	}
+	else
+	{
+		return _playerState.second;
+	}
 }
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
@@ -1370,7 +1382,7 @@ void PlayerMove::DecidePlayerState()
 	//if (_playerState.second == ePlayerMoveState::RELOAD)
 	//{
 	//	if (_reloadTimer > 0.0f)
-	//	{
+	//	{o
 	//		_reloadTimer -= _deltaTime;
 	//		return;
 	//	}
