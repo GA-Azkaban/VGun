@@ -50,20 +50,28 @@ private:
 	std::unordered_map<int, HDData::GameObject*> _players;
 
 public:
+	void CheckWinner();
+
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
 	void SetEndCam(HDData::GameObject* cam);
+	void SetStartCam(HDData::Camera* cam);
 	
 	
 	HDData::GameObject* GetEndCam();
 	void SetRoundEndButton(HDData::GameObject* obj);
 	HDData::GameObject* GetRoundEndButton();
 	void ExitGame();
+	void SetWinnerText(HDData::TextUI* txt);
+	void SetLoserText(HDData::TextUI* txt, int index);
 
 private:
 	bool _isRoundStart = false;
+	HDData::Camera* _startCam;
 	HDData::GameObject* _endCam;
 	HDData::GameObject* _endObj;
+	HDData::TextUI* _winnerTXT;
+	HDData::TextUI* _loserTXT[5];
 
 public:
 	void SetRoundTimerObject(HDData::TextUI* obj);
@@ -90,10 +98,6 @@ public:
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
 	
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
-
-	// 리스폰 관련
-	Vector3 SetSpawnPoint(Vector3 position);
-	Vector3 GetSpawnPoint(int index);
 
 private:
 	// obj 보관용

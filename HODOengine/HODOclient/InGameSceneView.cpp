@@ -47,12 +47,13 @@ void InGameSceneView::Initialize()
 
 	// 게임엔딩 카메라
 	auto gameendCam = API::CreateObject(_scene, "endCam");
+	gameendCam->GetTransform()->SetPosition(59.25668f, 2.73707f, -34.79806f);
+	gameendCam->GetTransform()->SetRotation(0.077f, -0.701f, 0.07f, 0.74f);
 	auto gameendCamcomp = gameendCam->AddComponent<HDData::Camera>();
-	gameendCamcomp->GetTransform()->SetPosition(-5.0f, 2.0f, -10.0f);
 
 	RoundManager::Instance()->SetEndCam(gameendCam);
 
-	// 내 캐릭터 생성
+	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	auto playerMove = player->AddComponent<PlayerMove>();
@@ -88,6 +89,8 @@ void InGameSceneView::Initialize()
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
 	playerMove->SetHeadCam(mainCam);
 	playerMove->SetPlayerCamera(freeRoamingCam);
+
+	RoundManager::Instance()->SetStartCam(mainCam);
 
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
@@ -336,7 +339,7 @@ void InGameSceneView::Initialize()
 	posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
 	playerMove->_plPosText = posText;
 
-	// game end
+	/// game end
 
 	auto endButton = API::CreateButton(_scene, "endBtn");
 	endButton->GetTransform()->SetPosition(1350.0f, 1200.0f, 0.0f);
@@ -344,7 +347,7 @@ void InGameSceneView::Initialize()
 	endComp->SetImage("start.png");
 	endComp->SetOnClickEvent([=]()
 		{
-			RoundManager::Instance()->EndGame();
+			RoundManager::Instance()->ExitGame();
 		});
 
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
@@ -357,6 +360,36 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetRoundEndButton(endButton);
 
+
+	// 우승자
+	auto winnerName = API::CreateTextbox(_scene, "winner");
+	winnerName->GetTransform()->SetPosition(1000.0f, 900.0f, 0.0f);
+	auto winnerComp = winnerName->GetComponent<HDData::TextUI>();
+	winnerComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	winnerComp->SetColor(DirectX::Colors::GreenYellow);
+	
+	RoundManager::Instance()->SetWinnerText(winnerComp);
+
+	winnerName->SetSelfActive(false);
+
+	// 루저들
+	float loserX = 100.f;
+
+	for (int i = 0; i < 5; ++i)
+	{
+		auto loserName = API::CreateTextbox(_scene, "loser" + std::to_string(i));
+		loserName->GetTransform()->SetPosition(loserX, 400.0f, 0.0f);
+
+		auto loserComp = loserName->GetComponent<HDData::TextUI>();
+		loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+		loserComp->SetColor(DirectX::Colors::GreenYellow);
+
+		RoundManager::Instance()->SetLoserText(loserComp, i);
+
+		loserName->SetSelfActive(false);
+
+		loserX += 500;
+	}
 
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");

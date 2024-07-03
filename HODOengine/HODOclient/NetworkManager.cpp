@@ -528,14 +528,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
 	RoundManager::Instance()->SetIsRoundStart(false);
-
-
-	auto obj = RoundManager::Instance()->_myObj->GetParentObject();
-
-
-
-	RoundManager::Instance()->GetEndCam()->GetComponent<HDData::Camera>()->SetAsMainCamera();
-	RoundManager::Instance()->GetRoundEndButton()->SetSelfActive(true);
+	RoundManager::Instance()->EndGame();
 }
 
 void NetworkManager::SendPlayUpdate()

@@ -1,5 +1,7 @@
 ﻿#include "FPAniScript.h"
 #include "GameManager.h"
+#include "PlayerMove.h"
+#include "PlayerMoveState.h"
 #include "NetworkManager.h"
 
 FPAniScript::FPAniScript()
@@ -21,6 +23,7 @@ void FPAniScript::Update()
 	}
 	if (API::GetKeyDown(DIK_R))
 	{
+		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(2) != ePlayerMoveState::RELOAD) return;
 		_animator->GetAllAC()->SetTrigger("isReload");
 	}
 }

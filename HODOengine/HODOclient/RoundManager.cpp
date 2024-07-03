@@ -57,8 +57,18 @@ void RoundManager::SetRoundScene(HDData::Scene* scene)
 void RoundManager::InitGame()
 {
 	// 라운드 초기화
+	//API::SetCurrentSceneMainCamera(_startCam);
+	_startCam->SetAsMainCamera();
+
 	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
+
+	_winnerUID = NULL;
+	_winnerTXT->SetText("");
+	for (int i = 0; i < 5; ++i)
+	{
+		_loserTXT[i]->SetText("");
+	}
 
 	for (auto& obj : _playerObjs)
 	{
@@ -98,7 +108,9 @@ void RoundManager::InitGame()
 
 void RoundManager::EndGame()
 {
-	ExitGame();
+	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
+	_endObj->SetSelfActive(true);
+	CheckWinner();
 }
 
 void RoundManager::InitRound()
@@ -162,6 +174,46 @@ int RoundManager::GetPlayerNum()
 	return _playerNum;
 }
 
+void RoundManager::CheckWinner()
+{
+	if (_winnerUID == NULL) return;
+
+	int count = _players.size();
+
+	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+	{
+		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+
+		int index = 0;
+		for (auto& [uid, player] : _players)
+		{
+			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
+			++index;
+		}
+	}
+	else
+	{
+		_winnerTXT->SetText(_players[_winnerUID]->GetComponent<PlayerInfo>()->GetPlayerNickName());
+
+		int index = 0;
+		for (auto& [uid, player] : _players)
+		{
+			if(_winnerUID == uid) continue;
+			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
+			++index;
+		}
+
+		_loserTXT[index]->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+	}
+
+	_winnerTXT->GetGameObject()->SetSelfActive(true);
+
+	for (int i = 0; i < count; ++i)
+	{
+		_loserTXT[i]->GetGameObject()->SetSelfActive(true);
+	}
+}
+
 bool RoundManager::GetIsRoundStart()
 {
 	return _isRoundStart;
@@ -175,6 +227,11 @@ void RoundManager::SetIsRoundStart(bool isStart)
 void RoundManager::SetEndCam(HDData::GameObject* cam)
 {
 	_endCam = cam;
+}
+
+void RoundManager::SetStartCam(HDData::Camera* cam)
+{
+	_startCam = cam;
 }
 
 HDData::GameObject* RoundManager::GetEndCam()
@@ -196,6 +253,16 @@ void RoundManager::ExitGame()
 {
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
+}
+
+void RoundManager::SetWinnerText(HDData::TextUI* txt)
+{
+	_winnerTXT = txt;
+}
+
+void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
+{
+	_loserTXT[index] = txt;
 }
 
 void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
@@ -288,23 +355,6 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
 {
 	return _inGameKillCounts;
-}
-
-Vector3 RoundManager::SetSpawnPoint(Vector3 position)
-{
-	//_spawnPoint[0] = { 20.0f,20.0f,20.0f };
-	//_spawnPoint[1] = { 30.0f,20.0f,20.0f };
-	//_spawnPoint[2] = { 40.0f,20.0f,20.0f };
-	//_spawnPoint[3] = { 50.0f,20.0f,20.0f };
-	//_spawnPoint[4] = { 60.0f,20.0f,20.0f };
-
-	// 매쉬 읽어와서 인덱스에 포지션 넣어주기
-	return 	_spawnPoint[_index] = position;
-}
-
-Vector3 RoundManager::GetSpawnPoint(int index)
-{
-	return _spawnPoint[index];
 }
 
 void RoundManager::SetAnimationDummy(HDData::GameObject* obj)
