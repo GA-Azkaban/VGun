@@ -119,6 +119,9 @@
     <ClCompile Include="LowHPEffect.cpp">
       <Filter>02_Client\ScreenEffect</Filter>
     </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>02_Client\ScreenEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">

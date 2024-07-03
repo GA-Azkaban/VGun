@@ -1,5 +1,6 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
+#include "HitEffect.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -22,12 +23,7 @@ void PlayerInfo::Update()
 {
 	if (_isShoot)
 	{
-		//_shootParticle->Play();
 		_isShoot = false;
-	}
-	if (_isAttacked)
-	{
-		_isAttacked = false;
 	}
 }
 
@@ -86,11 +82,6 @@ void PlayerInfo::SetCurrentState(ePlayerState state)
 {
 	this->_prevState = _state;
 	this->_state = state;
-}
-
-void PlayerInfo::SetIsAttacked(bool isAttaked)
-{
-	_isAttacked = isAttaked;
 }
 
 void PlayerInfo::SetCurrentBulletCount(int count)
@@ -177,6 +168,16 @@ bool PlayerInfo::GetIsJump()
 void PlayerInfo::SetParticleObj(HDData::ParticleSystem* particle)
 {
 	_shootParticle = particle;
+}
+
+void PlayerInfo::SetHitEffectObj(HitEffect* hitEffect)
+{
+	_hitEffect = hitEffect;
+}
+
+void PlayerInfo::PlayerAttacked()
+{
+	_hitEffect->SetEffectOn();
 }
 
 bool& PlayerInfo::GetPlayerDie()
