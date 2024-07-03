@@ -60,12 +60,13 @@ void RoundManager::InitGame()
 
 	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
-
+	_nowMaxKill = 0;
 	_winnerUID = NULL;
-	_winnerTXT->SetText("");
+
+	_winnerTXT->GetGameObject()->SetSelfActive(false);
 	for (int i = 0; i < 5; ++i)
 	{
-		_loserTXT[i]->SetText("");
+		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
 	}
 
 	for (auto& obj : _playerObjs)
@@ -132,8 +133,6 @@ void RoundManager::InitRound()
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
 		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	}
-
-
 }
 
 void RoundManager::UpdateRound()
@@ -326,14 +325,14 @@ void RoundManager::UpdateDesiredKillChecker()
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_inGameKillCounts[GameManager::Instance()->GetMyInfo()->GetPlayerUID()].second->SetText(std::to_string(count));
-		if (count >= _desiredKill) _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
+		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
 	}
 
 	for (auto& [uid, player] : _players)
 	{
 		int count = player->GetComponent<PlayerInfo>()->GetPlayerKillCount();
 		_inGameKillCounts[uid].second->SetText(std::to_string(count));
-		if (count >= _desiredKill) _winnerUID = uid;
+		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
 	}
 }
 

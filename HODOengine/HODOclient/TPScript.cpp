@@ -82,11 +82,4 @@ void TPScript::Update()
 	{
 		_animator->GetAllAC()->SetBool("isDance", false);
 	}
-	else
-	{
-		//_animator->GetAllAC()->SetBool("isRunFront", false);
-		//_animator->GetAllAC()->SetBool("isRunLeft", false);
-		//_animator->GetAllAC()->SetBool("isRunRight", false);
-		//_animator->GetAllAC()->SetBool("isRunLeft", false);
-	}
 }

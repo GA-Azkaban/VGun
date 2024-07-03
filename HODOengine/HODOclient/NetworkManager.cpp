@@ -123,6 +123,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 	}
+
 }
 
 void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Protocol::PlayerData killPlayerData)
@@ -379,11 +380,6 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
-	//if (roomInfo.currentplayercount() == 0)
-	//{
-
-	//}
-
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -597,7 +593,7 @@ void NetworkManager::SendPlayJump()
 	auto data = ConvertPlayerInfoToData(mine, info);
 	*packet.mutable_playerdata() = data;
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
 }
 

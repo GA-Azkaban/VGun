@@ -111,6 +111,7 @@ private:
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;
 
 	int _desiredKill;	// 목표 킬수
+	int _nowMaxKill;
 	int _winnerUID;
 
 public:
