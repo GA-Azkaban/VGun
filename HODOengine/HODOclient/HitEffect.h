@@ -17,4 +17,5 @@ public:
 private:
 	HDData::ImageUI* _hitEffectImage;
 	Timer _hitEffectTimer;
+	HDData::AnimationCurve _curve;
 };

@@ -4,8 +4,15 @@
 
 HitEffect::HitEffect()
 {
+	_curve.AddKey(0, 1, [](float t) { return -t + 1.0f; });
+
 	_hitEffectTimer.isRepeat = false;
 	_hitEffectTimer.duration = 0.5f;
+	_hitEffectTimer.onUpdate = [&](float progress)
+		{
+			float value = _curve.Evaluate(progress);
+			_hitEffectImage->SetColor({ 1.0f, 1.0f, 1.0f, value });
+		};
 	_hitEffectTimer.onExpiration = [&]()
 		{
 			_hitEffectImage->SetActive(false);
@@ -25,6 +32,11 @@ void HitEffect::Start()
 
 void HitEffect::Update()
 {
+	if (API::GetKeyDown(DIK_5))
+	{
+		SetEffectOn();
+	}
+
 	_hitEffectTimer.Update();
 }
 
