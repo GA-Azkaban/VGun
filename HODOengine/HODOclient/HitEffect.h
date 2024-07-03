@@ -12,9 +12,9 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
+	void SetEffectOn();
+
 private:
-	GameManager* _gameManager;
 	HDData::ImageUI* _hitEffectImage;
 	Timer _hitEffectTimer;
-	HDData::AnimationCurve _curve;
 };

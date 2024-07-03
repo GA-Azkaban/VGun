@@ -3,7 +3,6 @@
 #include "PlayerMove.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
-#include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
@@ -11,6 +10,7 @@
 #include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
+#include "HitEffect.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -115,7 +115,6 @@ void InGameSceneView::Initialize()
 	// 총 생성
 	auto hand = fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->AddComponent<MeshTransformController>();
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.1321f, 9.6180f, 7.9218f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.0453f, -0.6043f, -0.1055f, 0.7881f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
@@ -360,7 +359,6 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetRoundEndButton(endButton);
 
-
 	// 우승자
 	auto winnerName = API::CreateTextbox(_scene, "winner");
 	winnerName->GetTransform()->SetPosition(1000.0f, 900.0f, 0.0f);
@@ -393,7 +391,10 @@ void InGameSceneView::Initialize()
 
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
-	auto hpEffectComp = hpEffectObj->AddComponent<LowHPEffect>();
+	hpEffectObj->AddComponent<LowHPEffect>();
+
+	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
+	hitEffectObj->AddComponent<HitEffect>();
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

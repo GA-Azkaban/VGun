@@ -10,6 +10,8 @@ enum class eHITLOC
 	BODY = 3
 };
 
+class HitEffect;
+
 class PlayerInfo : public HDData::Script
 {
 public:
@@ -28,7 +30,6 @@ public:
 	Vector3& GetServerPosition();
 	Quaternion& GetServerRotation();
 
-
 	void SetPlayerUID(int uid);
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
@@ -38,7 +39,6 @@ public:
 	void SetCurrentDeath(int deathCount);
 	void SetIsDie(bool isDie);
 	void SetCurrentState(ePlayerState state);
-	void SetIsAttacked(bool isAttaked);
 
 	void SetCurrentBulletCount(int Count);
 
@@ -69,6 +69,9 @@ public:
 
 	void SetParticleObj(HDData::ParticleSystem* particle);
 
+	void SetHitEffectObj(HitEffect* hitEffect);
+	void PlayerAttacked();
+
 private:
 	bool _isMyInfo = false;
 
@@ -83,7 +86,6 @@ private:
 
 	// state info
 	bool _isJump;
-	bool _isAttacked = false;
 	bool _isShoot = false;
 
 	int _currentHP = 70;
@@ -101,5 +103,7 @@ private:
 	// count info
 	int _kill;
 	int _death;
+
+	HitEffect* _hitEffect;
 };
 
