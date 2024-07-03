@@ -38,6 +38,7 @@ public:
 	void SetCurrentDeath(int deathCount);
 	void SetIsDie(bool isDie);
 	void SetCurrentState(ePlayerState state);
+	void SetIsAttacked(bool isAttaked);
 
 	void SetCurrentBulletCount(int Count);
 
@@ -82,6 +83,7 @@ private:
 
 	// state info
 	bool _isJump;
+	bool _isAttacked = false;
 	bool _isShoot = false;
 
 	int _currentHP = 70;

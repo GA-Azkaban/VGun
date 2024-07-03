@@ -25,6 +25,10 @@ void PlayerInfo::Update()
 		//_shootParticle->Play();
 		_isShoot = false;
 	}
+	if (_isAttacked)
+	{
+		_isAttacked = false;
+	}
 }
 
 void PlayerInfo::Init()
@@ -82,6 +86,11 @@ void PlayerInfo::SetCurrentState(ePlayerState state)
 {
 	this->_prevState = _state;
 	this->_state = state;
+}
+
+void PlayerInfo::SetIsAttacked(bool isAttaked)
+{
+	_isAttacked = isAttaked;
 }
 
 void PlayerInfo::SetCurrentBulletCount(int count)
