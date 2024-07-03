@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
@@ -47,7 +47,7 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
 	{
 		if (_isDie)
 		{
@@ -75,8 +75,8 @@ void PlayerMove::Update()
 
 	CameraControl();
 	CheckMoveInfo();
-	DecidePlayerState();
 	CoolTime();
+	DecidePlayerState();
 	Behavior();
 
 	UpdateStateText();
@@ -325,27 +325,6 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::ShootGun()
 {
-	_headCam->ToggleCameraShake(true);
-
-	HDData::Collider* hitCollider = nullptr;
-
-	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
-	Vector3 hitPoint = { 1.0f, 1.0f, 1.0f };
-
-	hitCollider = API::ShootRayHitPoint(rayOrigin, GetTransform()->GetForward(), hitPoint);
-
-	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
-
-	if (hitDynamic != nullptr)
-	{
-		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
-		hitDynamic->AddForce(forceDirection, 50.0f);
-		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
-	}
-}
-
-void PlayerMove::ShootGunDdabal()
-{
 	if (_isReloading)
 	{
 		return;
@@ -447,12 +426,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_fpmesh->SetMeshActive(false, 0);
-	_weapon->SetMeshActive(false, 0);
-	_weapon->SetMeshActive(false, 1);
-	_weapon->SetMeshActive(false, 2);
-	_weapon->SetMeshActive(false, 3);
-	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
 void PlayerMove::PlayPlayerSound()
@@ -497,24 +471,62 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::TUMBLE:
 		{
-			Tumble(_tumbleDirection);
+			_tumbleTimer = 0.3f;
+			_tumbleCooldown = 2.0f;
+
+			_headCam->ToggleCameraShake(true);
+			_fpmesh->SetMeshActive(false, 0);
+			_weapon->SetMeshActive(false, 0);
+			_weapon->SetMeshActive(false, 1);
+			_weapon->SetMeshActive(false, 2);
+			_weapon->SetMeshActive(false, 3);
+
+			if (_moveDirection == 5)
+			{
+				_tumbleDirection = GetTransform()->GetForward();
+			}
+			else
+			{
+				_tumbleDirection = DecideDisplacement(_moveDirection);
+			}
+
+			_headCam->TumbleCamera(_deltaTime);
 			_playerAudio->PlayOnce("tumble");
 			_playerAudio->PlayOnce("tumblingMan");
 
 			break;
 		}
+		case ePlayerMoveState::AIM:
+		{
+
+			break;
+		}
 		case ePlayerMoveState::FIRE:
 		{
+			ShootGun();
+			_headCam->ToggleCameraShake(true);
+			_playerAudio->PlayOnce("shoot");
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+			_shootCooldown = 0.8f;
+			_playerAudio->PlayOnce("empty");
 
 			break;
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			_fpmesh->SetMeshActive(false, 0);
+			_playerAudio->PlayOnce("reload");
+			_reloadTimer = 3.0f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			Die();
 
 			break;
 		}
@@ -537,25 +549,45 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::WALK:
 		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			_playerAudio->PlayOnceIfNotPlaying("walk");
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			_playerAudio->PlayOnceIfNotPlaying("run");
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
 		{
+			Tumble(_tumbleDirection);
+			_headCam->TumbleCamera(_deltaTime);
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
 
 			break;
 		}
 		case ePlayerMoveState::FIRE:
+		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
 		{
 
 			break;
@@ -599,26 +631,57 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::JUMP:
 		{
+			Landing();
 
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
+		{
+			Reload();
+			_headCam->TumbleCamera(_deltaTime);
+			_headCam->ToggleCameraShake(false);
+			_fpmesh->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 1);
+			_weapon->SetMeshActive(true, 2);
+			_weapon->SetMeshActive(true, 3);
+
+			_playerState.second = ePlayerMoveState::AIM;
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
 		{
 
 			break;
 		}
 		case ePlayerMoveState::FIRE:
 		{
+			// 반동 초기화
+			_shootCount = 0;
+			_headCam->ToggleCameraShake(false);
+			_headCam->ResetCameraPos();
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
 
 			break;
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			Reload();
+			_fpmesh->SetMeshActive(true, 0);
+
+			_playerAudio->Stop("reload");
+			_reloadTimer = 0.0f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			Respawn();
 
 			break;
 		}
@@ -637,12 +700,12 @@ void PlayerMove::UpdateStateText()
 
 	switch (_playerState.first)
 	{
-		case ePlayerMoveState::DIE : 
+		case ePlayerMoveState::DIE:
 		{
 			first = "DIE";
 			break;
 		}
-		case ePlayerMoveState::WALK :
+		case ePlayerMoveState::WALK:
 		{
 			first = "WALK";
 			break;
@@ -667,7 +730,7 @@ void PlayerMove::UpdateStateText()
 			first = "TUMBLE";
 			break;
 		}
-		default : 
+		default:
 		{
 			first = "NONE";
 		}
@@ -685,9 +748,14 @@ void PlayerMove::UpdateStateText()
 			second = "RELOAD";
 			break;
 		}
-		case ePlayerMoveState::IDLE:
+		case ePlayerMoveState::AIM:
 		{
-			second = "IDLE";
+			second = "AIM";
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+			second = "EMPTY";
 			break;
 		}
 		default:
@@ -740,11 +808,9 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 	if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
 	{
 		// 착지 판정
-		_isOnGround = true;
-		_isJumping = false;
 		_playerState.first = ePlayerMoveState::IDLE;
-		_playerAudio->PlayOnce("land");
-		_playerColliderStanding->ClearForceXYZ();
+		// 일단 
+		OnStateExit(ePlayerMoveState::JUMP);
 	}
 }
 
@@ -1310,6 +1376,52 @@ void PlayerMove::Respawn()
 
 void PlayerMove::DecidePlayerState()
 {
+	// 이전 스테이트 정보로 저장해주고 넘어간다.
+	_prevPlayerState.first = _playerState.first;
+	_prevPlayerState.second = _playerState.second;
+
+	// 구르기 타이머 체크해서 상태 종료
+	if (_tumbleTimer > 0.0f)
+	{
+		return;
+	}
+
+	if (API::GetKeyDown(DIK_LSHIFT) && _tumbleCooldown <= 0.0f && _playerState.first != ePlayerMoveState::JUMP)
+	{
+		_playerState.first = ePlayerMoveState::TUMBLE;
+		_playerState.second = ePlayerMoveState::AIM;
+		return;
+	}
+
+	DecidePlayerStateSecond();
+
+	// 점프, 걷기, 뛰기
+	if (_playerState.first == ePlayerMoveState::JUMP)
+	{
+		return;
+	}
+	else if (API::GetKeyDown(DIK_SPACE))
+	{
+		_playerState.first = ePlayerMoveState::JUMP;
+	}
+	else if (_moveDirection == 5)
+	{
+		_playerState.first = ePlayerMoveState::IDLE;
+	}
+	else
+	{
+		if (API::GetKeyPressing(DIK_LCONTROL))
+		{
+			_playerState.first = ePlayerMoveState::WALK;
+		}
+		else
+		{
+			_playerState.first = ePlayerMoveState::RUN;
+		}
+	}
+
+
+	/*
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
@@ -1405,11 +1517,63 @@ void PlayerMove::DecidePlayerState()
 			_playerState.second = ePlayerMoveState::RELOAD;
 		}
 	}
+	*/
+}
+
+void PlayerMove::DecidePlayerStateSecond()
+{
+
+	// 재장전, 사격 (BULLET_MAX 6)
+	if (_reloadTimer > 0.0f)
+	{
+		return;
+	}
+	else if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
+	{
+		_playerState.second = ePlayerMoveState::RELOAD;
+		return;
+	}
+
+	//else if (API::GetMouseUp(MOUSE_LEFT))
+	//{
+	//	_playerState.second = ePlayerMoveState::IDLE;
+	//}
+	//else if (_shootCooldown <= 0.0f)
+	//{
+	//	_playerState.second = ePlayerMoveState::IDLE;
+	//}
+
+	if (_shootCooldown <= 0.0f)
+	{
+		if (API::GetMouseDown(MOUSE_LEFT))
+		{
+			if (_bulletCount == 0)
+			{
+				_playerState.second = ePlayerMoveState::EMPTY;
+			}
+			else
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
+		}
+		else  if (API::GetMouseHold(MOUSE_LEFT) && _prevPlayerState.second == ePlayerMoveState::AIM)
+		{
+			if (_bulletCount != 0)
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
+		}
+		else
+		{
+			_playerState.second = ePlayerMoveState::AIM;
+		}
+
+	}
 }
 
 void PlayerMove::Behavior()
 {
-	/*
+
 	if (_prevPlayerState.first == _playerState.first)
 	{
 		OnStateStay(_playerState.first);
@@ -1429,8 +1593,8 @@ void PlayerMove::Behavior()
 		OnStateExit(_prevPlayerState.second);
 		OnStateEnter(_playerState.second);
 	}
-	*/
 
+	/*
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
 	if (_playerState.first != ePlayerMoveState::TUMBLE)
 	{
@@ -1526,7 +1690,7 @@ void PlayerMove::Behavior()
 				{
 					_headCam->ToggleCameraShake(true);
 				}
-				ShootGunDdabal();
+				ShootGun();
 			}
 		}
 	}
@@ -1579,7 +1743,7 @@ void PlayerMove::Behavior()
 			_headCam->ResetCameraPos();
 		}
 	}
-
+	*/
 }
 
 void PlayerMove::CoolTime()
@@ -1597,11 +1761,24 @@ void PlayerMove::CoolTime()
 	{
 		_tumbleCooldown = 0.0f;
 	}
+
+	if (_reloadTimer > 0.0f)
+	{
+		_reloadTimer -= _deltaTime;
+	}
+
+	if (_tumbleTimer > 0.0f)
+	{
+		_tumbleTimer -= _deltaTime;
+	}
 }
 
 void PlayerMove::Landing()
 {
-
+	_isOnGround = true;
+	_isJumping = false;
+	_playerAudio->PlayOnce("land");
+	_playerColliderStanding->ClearForceXYZ();
 }
 
 void PlayerMove::SwitchCamera()

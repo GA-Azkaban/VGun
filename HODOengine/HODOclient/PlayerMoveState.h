@@ -3,12 +3,18 @@
 enum class ePlayerMoveState
 {
 	NONE,
+
+	// first
 	IDLE,
 	WALK,
 	RUN,
 	JUMP,
 	TUMBLE,
+	DIE,
+
+	//second
+	AIM,
 	FIRE,
-	RELOAD,
-	DIE
+	EMPTY,
+	RELOAD
 };

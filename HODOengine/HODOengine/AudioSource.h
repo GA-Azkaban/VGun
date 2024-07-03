@@ -26,6 +26,8 @@ namespace HDData
 			float minDistance, float maxDistance);
 
 		void PlayOnce(std::string soundName);
+		void PlayOnceIfNotPlaying(std::string soundName);
+		void PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup);
 		void PlayRepeat(std::string soundName);
 
 		void Play3DOnce(std::string soundName, Vector3 startPos);
