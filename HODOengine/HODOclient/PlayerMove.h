@@ -57,6 +57,7 @@ private:
 	// 사격 관련
 private:
 	void DecidePlayerState();
+	void DecidePlayerStateSecond();
 	void Behavior();
 	void CoolTime();
 	void Landing();

@@ -9,6 +9,7 @@ enum class ePlayerMoveState
 	JUMP,
 	TUMBLE,
 	FIRE,
+	EMPTY,
 	RELOAD,
 	DIE
 };

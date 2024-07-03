@@ -555,16 +555,16 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::FIRE:
 		{
-			if (_bulletCount > 0)
-			{
-				ShootGun();
-				_headCam->ToggleCameraShake(true);
-				_playerAudio->PlayOnce("shoot");
-			}
-			else
-			{
-				_playerAudio->PlayOnce("empty");
-			}
+			ShootGun();
+			_headCam->ToggleCameraShake(true);
+			_playerAudio->PlayOnce("shoot");
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+			_shootCooldown = 0.8f;
+			_playerAudio->PlayOnce("empty");
 
 			break;
 		}
@@ -634,6 +634,11 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 			break;
 		}
+		case ePlayerMoveState::EMPTY:
+		{
+
+			break;
+		}
 		case ePlayerMoveState::RELOAD:
 		{
 
@@ -694,6 +699,11 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 
 			break;
 		}
+		case ePlayerMoveState::EMPTY:
+		{
+
+			break;
+		}
 		case ePlayerMoveState::RELOAD:
 		{
 			Reload();
@@ -725,12 +735,12 @@ void PlayerMove::UpdateStateText()
 
 	switch (_playerState.first)
 	{
-		case ePlayerMoveState::DIE : 
+		case ePlayerMoveState::DIE:
 		{
 			first = "DIE";
 			break;
 		}
-		case ePlayerMoveState::WALK :
+		case ePlayerMoveState::WALK:
 		{
 			first = "WALK";
 			break;
@@ -755,7 +765,7 @@ void PlayerMove::UpdateStateText()
 			first = "TUMBLE";
 			break;
 		}
-		default : 
+		default:
 		{
 			first = "NONE";
 		}
@@ -1401,23 +1411,7 @@ void PlayerMove::DecidePlayerState()
 		return;
 	}
 
-	// 재장전, 사격 (BULLET_MAX 6)
-	if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
-	{
-		_playerState.second = ePlayerMoveState::RELOAD;
-	}
-	else if (API::GetMouseHold(MOUSE_LEFT))
-	{
-		_playerState.second = ePlayerMoveState::FIRE;
-	}
-	else if (API::GetMouseUp(MOUSE_LEFT))
-	{
-		_playerState.second = ePlayerMoveState::IDLE;
-	}
-	else if(_shootCooldown <= 0.0f)
-	{
-		_playerState.second = ePlayerMoveState::IDLE;
-	}
+	DecidePlayerStateSecond();
 
 	// 점프, 걷기, 뛰기
 	if (_playerState.first == ePlayerMoveState::JUMP)
@@ -1544,9 +1538,57 @@ void PlayerMove::DecidePlayerState()
 	*/
 }
 
+void PlayerMove::DecidePlayerStateSecond()
+{
+
+	// 재장전, 사격 (BULLET_MAX 6)
+	if (_reloadTimer > 0.0f)
+	{
+		return;
+	}
+	else if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
+	{
+		_playerState.second = ePlayerMoveState::RELOAD;
+		return;
+	}
+
+	//else if (API::GetMouseUp(MOUSE_LEFT))
+	//{
+	//	_playerState.second = ePlayerMoveState::IDLE;
+	//}
+	//else if (_shootCooldown <= 0.0f)
+	//{
+	//	_playerState.second = ePlayerMoveState::IDLE;
+	//}
+
+	if (_shootCooldown <= 0.0f)
+	{
+		if (API::GetMouseDown(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::FIRE;
+		}
+		else  if (API::GetMouseHold(MOUSE_LEFT) && _prevPlayerState.second == ePlayerMoveState::IDLE)
+		{
+			_playerState.second = ePlayerMoveState::FIRE;
+		}
+		else
+		{
+			_playerState.second = ePlayerMoveState::IDLE;
+		}
+		if (_bulletCount == 0)
+		{
+			_playerState.second = ePlayerMoveState::EMPTY;
+		}
+	}
+	else
+	{
+		_playerState.second = ePlayerMoveState::FIRE;
+	}
+}
+
 void PlayerMove::Behavior()
 {
-	
+
 	if (_prevPlayerState.first == _playerState.first)
 	{
 		OnStateStay(_playerState.first);
@@ -1566,7 +1608,7 @@ void PlayerMove::Behavior()
 		OnStateExit(_prevPlayerState.second);
 		OnStateEnter(_playerState.second);
 	}
-	
+
 	/*
 	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
 	if (_playerState.first != ePlayerMoveState::TUMBLE)
