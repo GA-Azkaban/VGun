@@ -1,5 +1,7 @@
 ﻿#include "TPScript.h"
 #include "GameManager.h"
+#include "PlayerMove.h"
+#include "PlayerMoveState.h"
 #include "../HODOengine/HODO_API.h"
 
 TPScript::TPScript()
@@ -52,6 +54,7 @@ void TPScript::Update()
 	}
 	if (API::GetKeyDown(DIK_R))
 	{
+		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(2) != ePlayerMoveState::RELOAD) return;
 		_animator->GetAllAC()->SetTrigger("isReload");
 	}
 	if (API::GetMouseDown(MOUSE_LEFT))
@@ -60,6 +63,7 @@ void TPScript::Update()
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
+		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(1) != ePlayerMoveState::TUMBLE) return;
 		_animator->GetAllAC()->SetTrigger("isRoll");
 	}
 	if (GameManager::Instance()->GetMyInfo()->GetIsDie())

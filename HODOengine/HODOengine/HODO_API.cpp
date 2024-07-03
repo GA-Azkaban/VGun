@@ -274,6 +274,7 @@ namespace API
 
 		HODO_API HDData::Camera* SetCurrentSceneMainCamera(HDData::Camera* camera)
 		{
+			camera->SetAsMainCamera();
 			HDEngine::SceneSystem::Instance().GetCurrentScene()->SetMainCamera(camera);
 			return GetCurrenSceneMainCamera();
 		}
@@ -312,8 +313,12 @@ namespace API
 		{
 			HODOengine::Instance().Quit();
 		}
+
+		HODO_API Vector3* GetSpawnPointArr()
+		{
+			return HDEngine::SceneLoader::Instance().GetRespawnPoint();
+		}
 	}
 
-	
 
 }

@@ -26,7 +26,10 @@ namespace HDEngine
 {
 	SceneLoader::SceneLoader()
 	{
-
+		for (auto& pos : _spawnPoint)
+		{
+			pos = { 1, 2, 1 };
+		}
 	}
 
 	void SceneLoader::LoadUnityScene(std::string fileName, HDData::Scene* scene)
@@ -49,6 +52,11 @@ namespace HDEngine
 		CreateObject(scene);
 		LinkHierachy();
 		SetTransform();
+	}
+
+	Vector3* SceneLoader::GetRespawnPoint()
+	{
+		return _spawnPoint;
 	}
 
 	void SceneLoader::LoadFromJson(std::string filePath)
