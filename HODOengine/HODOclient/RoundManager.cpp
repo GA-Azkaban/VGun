@@ -57,8 +57,6 @@ void RoundManager::SetRoundScene(HDData::Scene* scene)
 void RoundManager::InitGame()
 {
 	// 라운드 초기화
-	//API::SetCurrentSceneMainCamera(_startCam);
-	_startCam->SetAsMainCamera();
 
 	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
@@ -251,6 +249,8 @@ HDData::GameObject* RoundManager::GetRoundEndButton()
 
 void RoundManager::ExitGame()
 {
+	API::SetCurrentSceneMainCamera(_startCam);
+	_endObj->SetSelfActive(false);
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
 }
