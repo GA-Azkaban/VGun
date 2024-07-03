@@ -115,6 +115,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		ConvertDataToPlayerInfo(hitPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+		GameManager::Instance()->GetMyInfo()->SetIsAttacked(true);
 	}
 	else
 	{
