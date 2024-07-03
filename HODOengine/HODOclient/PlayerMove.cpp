@@ -484,11 +484,6 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_fpmesh->SetMeshActive(false, 0);
-	_weapon->SetMeshActive(false, 0);
-	_weapon->SetMeshActive(false, 1);
-	_weapon->SetMeshActive(false, 2);
-	_weapon->SetMeshActive(false, 3);
 	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
 }
 
@@ -536,7 +531,13 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_tumbleTimer = 0.3f;
 			_tumbleCooldown = 2.0f;
+
 			_headCam->ToggleCameraShake(true);
+			_fpmesh->SetMeshActive(false, 0);
+			_weapon->SetMeshActive(false, 0);
+			_weapon->SetMeshActive(false, 1);
+			_weapon->SetMeshActive(false, 2);
+			_weapon->SetMeshActive(false, 3);
 
 			if (_moveDirection == 5)
 			{
@@ -550,6 +551,11 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_headCam->TumbleCamera(_deltaTime);
 			_playerAudio->PlayOnce("tumble");
 			_playerAudio->PlayOnce("tumblingMan");
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
 
 			break;
 		}
@@ -596,7 +602,6 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			//_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 
 			break;
 		}
@@ -629,8 +634,14 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 			break;
 		}
+		case ePlayerMoveState::AIM:
+		{
+
+			break;
+		}
 		case ePlayerMoveState::FIRE:
 		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 
 			break;
 		}
@@ -687,6 +698,18 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			Reload();
 			_headCam->TumbleCamera(_deltaTime);
 			_headCam->ToggleCameraShake(false);
+			_fpmesh->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 1);
+			_weapon->SetMeshActive(true, 2);
+			_weapon->SetMeshActive(true, 3);
+
+			_playerState.second = ePlayerMoveState::AIM;
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
 
 			break;
 		}
@@ -783,9 +806,14 @@ void PlayerMove::UpdateStateText()
 			second = "RELOAD";
 			break;
 		}
-		case ePlayerMoveState::IDLE:
+		case ePlayerMoveState::AIM:
 		{
-			second = "IDLE";
+			second = "AIM";
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+			second = "EMPTY";
 			break;
 		}
 		default:
@@ -1404,10 +1432,10 @@ void PlayerMove::DecidePlayerState()
 		return;
 	}
 
-	if (API::GetKeyDown(DIK_LSHIFT) && _tumbleCooldown <= 0.0f)
+	if (API::GetKeyDown(DIK_LSHIFT) && _tumbleCooldown <= 0.0f && _playerState.first != ePlayerMoveState::JUMP)
 	{
 		_playerState.first = ePlayerMoveState::TUMBLE;
-		_playerState.second = ePlayerMoveState::IDLE;
+		_playerState.second = ePlayerMoveState::AIM;
 		return;
 	}
 
@@ -1565,24 +1593,27 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		if (API::GetMouseDown(MOUSE_LEFT))
 		{
-			_playerState.second = ePlayerMoveState::FIRE;
+			if (_bulletCount == 0)
+			{
+				_playerState.second = ePlayerMoveState::EMPTY;
+			}
+			else
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
 		}
-		else  if (API::GetMouseHold(MOUSE_LEFT) && _prevPlayerState.second == ePlayerMoveState::IDLE)
+		else  if (API::GetMouseHold(MOUSE_LEFT) && _prevPlayerState.second == ePlayerMoveState::AIM)
 		{
-			_playerState.second = ePlayerMoveState::FIRE;
+			if (_bulletCount != 0)
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
 		}
 		else
 		{
-			_playerState.second = ePlayerMoveState::IDLE;
+			_playerState.second = ePlayerMoveState::AIM;
 		}
-		if (_bulletCount == 0)
-		{
-			_playerState.second = ePlayerMoveState::EMPTY;
-		}
-	}
-	else
-	{
-		_playerState.second = ePlayerMoveState::FIRE;
+
 	}
 }
 
