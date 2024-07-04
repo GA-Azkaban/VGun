@@ -76,9 +76,9 @@ void RoundManager::InitGame()
 		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
 	}
 
-	for (auto& obj : _playerObjs)
+	for (int i = 0; i < _playerObjs.size(); ++i)
 	{
-		obj->SetSelfActive(false);
+		_playerObjs[i]->SetSelfActive(false);
 	}
 
 	_timerUI->GetGameObject()->SetSelfActive(true);
@@ -121,6 +121,14 @@ void RoundManager::EndGame()
 	_timerUI->GetGameObject()->SetSelfActive(false);
 	_hpUI->GetGameObject()->SetSelfActive(false);
 	_ammoUI->GetGameObject()->SetSelfActive(false);
+
+	// killcount
+	for (int i = 0; i < 6; ++i)
+	{
+		//_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		//_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
+		_backIMG[i]->GetGameObject()->SetSelfActive(false);
+	}
 
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
 	SetIsRoundStart(false);
@@ -355,6 +363,8 @@ void RoundManager::UpdateAmmoText()
 
 void RoundManager::UpdateResultTimer()
 {
+	if (API::GetCurrentSceneName() != "InGame") return;
+
 	_resultSceneTimer->Update();
 
 	if (!_resultSceneTimer->IsActive()) return;
@@ -396,6 +406,11 @@ int& RoundManager::GetDesiredKill()
 void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index)
 {
 	_killCountObjs[index] = std::make_pair(nick, count);
+}
+
+void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
+{
+	_backIMG[index] = img;
 }
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()

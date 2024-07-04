@@ -250,12 +250,7 @@ void InGameSceneView::Initialize()
 		// sound 추가
 		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
 		otherPlayerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
 		otherPlayerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
 
 		posX += 2;
 		posT += 315;
@@ -273,20 +268,23 @@ void InGameSceneView::Initialize()
 		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
 		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
 
-		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
+		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i), uiBack);
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetColor(DirectX::Colors::Black);
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
-		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
+		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i), uiBack);
 		killcount->GetTransform()->SetPosition(uiX + 25, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetColor(DirectX::Colors::Black);
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
+		uiBack->SetSelfActive(false);
+
+		RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;

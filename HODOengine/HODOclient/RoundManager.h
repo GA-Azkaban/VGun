@@ -104,6 +104,7 @@ public:
 	void SetDesiredKill(int count);
 	int& GetDesiredKill();
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
+	void SetKillCountBack(HDData::ImageUI* img, int index);
 	
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
@@ -121,6 +122,8 @@ private:
 	int _desiredKill;	// 목표 킬수
 	int _nowMaxKill;
 	int _winnerUID;
+
+	HDData::ImageUI* _backIMG[6];
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
