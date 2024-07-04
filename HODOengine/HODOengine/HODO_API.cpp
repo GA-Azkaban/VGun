@@ -318,6 +318,11 @@ namespace API
 		{
 			return HDEngine::SceneLoader::Instance().GetRespawnPoint();
 		}
+
+		HODO_API std::string GetCurrentSceneName()
+		{
+			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetSceneName();
+		}
 	}
 
 

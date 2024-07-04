@@ -1,9 +1,8 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
 #include "MainMenu.h"
-#include "UnitySceneLoaderTest.h"
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 

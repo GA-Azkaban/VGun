@@ -6,7 +6,6 @@
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
@@ -252,12 +251,7 @@ void InGameSceneView::Initialize()
 		// sound 추가
 		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
 		otherPlayerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
 		otherPlayerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
 
 		posX += 2;
 		posT += 315;
@@ -275,20 +269,23 @@ void InGameSceneView::Initialize()
 		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
 		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
 
-		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
+		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i), uiBack);
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetColor(DirectX::Colors::Black);
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
-		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
+		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i), uiBack);
 		killcount->GetTransform()->SetPosition(uiX + 25, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetColor(DirectX::Colors::Black);
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
+		uiBack->SetSelfActive(false);
+
+		RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
@@ -300,12 +297,11 @@ void InGameSceneView::Initialize()
 	crosshairComp->playerMove = playerMove;
 
 	// ammo
-	auto ammo = API::CreateObject(_scene, "remainAmmo");
-	auto ammoComp = ammo->AddComponent<Ammo>();
-	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
-	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
+	auto ammo = API::CreateTextbox(_scene, "AmmoText");
+	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
+	ammoTXT->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	ammoTXT->GetTransform()->SetPosition(2250.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
@@ -398,7 +394,16 @@ void InGameSceneView::Initialize()
 		loserX += 500;
 	}
 
+	// 다시 로비 진입을 위한 타이머 UI
+	auto resultTimer = API::CreateTextbox(_scene, "resultTimer");
+	resultTimer->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	auto resultTimerComp = resultTimer->GetComponent<HDData::TextUI>();
+	resultTimerComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	resultTimerComp->SetColor(DirectX::Colors::OrangeRed);
 
+	resultTimer->SetSelfActive(false);
+
+	RoundManager::Instance()->SetResultTimerUI(resultTimerComp);
 
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");

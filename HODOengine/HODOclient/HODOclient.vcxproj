@@ -224,9 +224,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Ammo.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="BtnHoveringScript.h" />
     <ClInclude Include="BtnImageScript.h" />
@@ -271,12 +268,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TPScript.h" />
     <ClInclude Include="TrainigSceneView.h" />
-    <ClInclude Include="UnitySceneLoaderTest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ammo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BtnHoveringScript.cpp" />
     <ClCompile Include="BtnImageScript.cpp" />
@@ -315,7 +308,6 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TPScript.cpp" />
     <ClCompile Include="TrainigSceneView.cpp" />
-    <ClCompile Include="UnitySceneLoaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />

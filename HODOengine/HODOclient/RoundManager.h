@@ -5,6 +5,7 @@
 
 #include "../HODOengine/HODO_API.h"
 #include "PlayerInfo.h"
+#include "Timer.h"
 
 class RoundManager : public HDData::Script
 {
@@ -82,20 +83,28 @@ public:
 	std::string ChangeSecToMin(int second);
 	void SetHPObject(HDData::TextUI* txt);
 	void UpdateHPText();
+	void SetAmmoText(HDData::TextUI* txt);
+	void UpdateAmmoText();
+	void UpdateResultTimer();
+	void SetResultTimerUI(HDData::TextUI* txt);
 
 private:
 	HDData::TextUI* _timerUI;
 	int _timer;			
 
+	Timer* _resultSceneTimer;
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
 	HDData::TextUI* _hpUI;
+	HDData::TextUI* _ammoUI;
+	HDData::TextUI* _resultTimerUI;
 
 public:
 	void UpdateDesiredKillChecker();
 	void SetDesiredKill(int count);
 	int& GetDesiredKill();
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
+	void SetKillCountBack(HDData::ImageUI* img, int index);
 	
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
@@ -113,6 +122,8 @@ private:
 	int _desiredKill;	// 목표 킬수
 	int _nowMaxKill;
 	int _winnerUID;
+
+	HDData::ImageUI* _backIMG[6];
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
