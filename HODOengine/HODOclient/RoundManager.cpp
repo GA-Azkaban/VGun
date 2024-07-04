@@ -76,9 +76,9 @@ void RoundManager::InitGame()
 		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
 	}
 
-	for (int i = 0; i < _playerObjs.size(); ++i)
+	for (auto& p : _playerObjs)
 	{
-		_playerObjs[i]->SetSelfActive(false);
+		p->SetSelfActive(false);
 	}
 
 	_timerUI->GetGameObject()->SetSelfActive(true);
@@ -122,12 +122,11 @@ void RoundManager::EndGame()
 	_hpUI->GetGameObject()->SetSelfActive(false);
 	_ammoUI->GetGameObject()->SetSelfActive(false);
 
-	// killcount
 	for (int i = 0; i < 6; ++i)
 	{
-		//_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
-		//_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 		_backIMG[i]->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 	}
 
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
@@ -138,8 +137,12 @@ void RoundManager::EndGame()
 
 void RoundManager::InitRound()
 {
-	// 타이머 초기화
-	this->_timer = 0;
+	for (int i = 0; i < _players.size() + 1; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
+	}
 
 	HDData::SkinnedMeshRenderer* mesh = nullptr;
 	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -275,6 +278,7 @@ void RoundManager::ExitGame()
 {
 	API::SetCurrentSceneMainCamera(_startCam);
 	_endObj->SetSelfActive(false);
+	_resultSceneTimer->Stop();
 	_resultTimerUI->GetGameObject()->SetSelfActive(false);
 
 	// 로비로 복귀
