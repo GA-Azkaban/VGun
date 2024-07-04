@@ -310,11 +310,11 @@ void HDData::DynamicCollider::BuHwal(Vector3 pos)
 	transform.p.z = pos.z;
 	_physXRigid->setGlobalPose(transform);
 
-	//for (auto& child : _childColliders)
-	//{
-	//	if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
-	//	{
-	//		dynamic_cast<HDData::DynamicCollider*>(child)->BuHwal(pos);
-	//	}
-	//}
+	for (auto& child : _childColliders)
+	{
+		if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
+		{
+			dynamic_cast<HDData::DynamicCollider*>(child)->BuHwal(pos);
+		}
+	}
 }

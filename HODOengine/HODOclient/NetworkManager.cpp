@@ -49,7 +49,7 @@ void NetworkManager::Start()
 	if (ipAddressFile.is_open())
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(ipAddressStr, 7777),
+			Horang::NetAddress(ipAddressStr, 7778),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -58,7 +58,7 @@ void NetworkManager::Start()
 	else
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7777),
+			Horang::NetAddress(L"172.16.1.13", 7778),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -169,7 +169,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		auto pos = Vector3(10.0f, 100.0f, 10.0f);
 		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
@@ -178,7 +179,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	}
 	else
 	{
-		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		auto pos = Vector3(10.0f, 100.0f, 10.0f);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
