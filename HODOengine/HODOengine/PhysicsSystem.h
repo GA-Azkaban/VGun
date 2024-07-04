@@ -50,6 +50,7 @@ namespace HDEngine
 		void CreateDynamicSphereCollider(HDData::GameObject* object);
 		void CreateTriggerBoxCollider(HDData::GameObject* object);
 		void CreateParticleSphereCollider(HDData::GameObject* object);
+		void CreateMeshCol();
 
 		void ResizeCollider();
 
@@ -69,6 +70,7 @@ namespace HDEngine
 		physx::PxMaterial* _playerMaterial;
 		physx::PxMaterial* _planeMaterial;
 		physx::PxPvd* _pvd;
+		physx::PxCookingParams* _cook;
 
 	private:
 		std::vector<physx::PxRigidDynamic*> _rigidDynamics;

@@ -216,6 +216,8 @@ namespace HDEngine
 				CreateTriggerBoxCollider(object);
 				CreateParticleSphereCollider(object);
 			}
+
+			//CreateMeshCol();
 		}
 	}
 
@@ -503,6 +505,84 @@ namespace HDEngine
 				shape->release();
 			}
 		}
+	}
+
+	void PhysicsSystem::CreateMeshCol()
+	{
+		// 예제 정점 데이터 (간단한 큐브 예제)
+		std::vector<physx::PxVec3> vertices = 
+		{
+			{ -1.0f, -1.0f, -1.0f }, { 1.0f, -1.0f, -1.0f }, { 1.0f,  1.0f, -1.0f }, { -1.0f,  1.0f, -1.0f },
+			{ -1.0f, -1.0f,  1.0f }, { 1.0f, -1.0f,  1.0f }, { 1.0f,  1.0f,  1.0f }, { -1.0f,  1.0f,  1.0f }
+		};
+
+		// 예제 인덱스 데이터
+		std::vector<physx::PxU32> indices = 
+		{
+			0, 1, 2, 2, 3, 0,  // Front face
+			1, 5, 6, 6, 2, 1,  // Right face
+			5, 4, 7, 7, 6, 5,  // Back face
+			4, 0, 3, 3, 7, 4,  // Left face
+			3, 2, 6, 6, 7, 3,  // Top face
+			4, 5, 1, 1, 0, 4   // Bottom face
+		};
+
+		/*
+		physx::PxTriangleMeshDesc meshDesc;
+		meshDesc.points.count = nbVerts;
+		meshDesc.points.stride = sizeof(physx::PxVec3);
+		meshDesc.points.data = verts;
+
+		meshDesc.triangles.count = triCount;
+		meshDesc.triangles.stride = 3 * sizeof(physx::PxU32);
+		meshDesc.triangles.data = indices32;
+
+		physx::PxTolerancesScale scale;
+		physx::PxCookingParams params(scale);
+
+		physx::PxDefaultMemoryOutputStream writeBuffer;
+		physx::PxTriangleMeshCookingResult::Enum result;
+		bool status = PxCookTriangleMesh(params, meshDesc, writeBuffer, &result);
+		if (!status)
+		{
+			return NULL;
+		}
+
+		physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+		return physics.createTriangleMesh(readBuffer);
+		*/
+
+		physx::PxTriangleMeshDesc meshDesc;
+		meshDesc.points.count = vertices.size();
+		meshDesc.points.stride = sizeof(physx::PxVec3);
+		meshDesc.points.data = vertices.data();
+		meshDesc.triangles.count = indices.size() / 3;
+		meshDesc.triangles.stride = 3 * sizeof(physx::PxU32);
+		meshDesc.triangles.data = indices.data();
+
+		physx::PxDefaultMemoryOutputStream writeBuffer;
+		physx::PxTriangleMeshCookingResult::Enum result;
+		
+		//if (!cooking->cookTriangleMesh(meshDesc, writeBuffer, &result)) 
+		//{
+		//	// 오류 처리
+		//}
+
+		physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+		physx::PxTriangleMesh* triangleMesh = _physics->createTriangleMesh(readBuffer);
+
+		// PxTriangleMeshGeometry 생성
+		physx::PxTriangleMeshGeometry geometry(triangleMesh);
+
+		// 메쉬 콜라이더를 가진 PxRigidStatic 생성
+		physx::PxRigidStatic* actor = _physics->createRigidStatic(physx::PxTransform(physx::PxVec3(0, 3, 0)));
+		physx::PxShape* shape = _physics->createShape(geometry, *_material);
+		actor->attachShape(*shape);
+
+		_rigidStatics.push_back(actor);
+		
+		// 씬에 추가
+		//_pxScene->addActor(*actor);
 	}
 
 	void PhysicsSystem::ResizeCollider()
