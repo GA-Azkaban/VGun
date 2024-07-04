@@ -131,6 +131,9 @@ namespace HDEngine
 			std::string objName = info.name;
 			Vector3 tempPosition = info.position;
 
+			// 구름 인덱스
+			int cloudIndex = 0;
+
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 
 			if (meshName == "Plane")
@@ -143,6 +146,7 @@ namespace HDEngine
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
 
+			// 잘못된 위치
 			if (objName == "WrongPoint")
 			{
 				_spawnPoint[0] = tempPosition;
@@ -153,6 +157,12 @@ namespace HDEngine
 				// 스폰 위치 받아와서 배열에 추가
 				_spawnPoint[_spawnIndex] = tempPosition;
 				_spawnIndex++;
+			}
+
+			if (objName == "Cloud")
+			{
+				_cloudPosition[cloudIndex];
+				cloudIndex++;
 			}
 
 			switch (info.colliderType)
