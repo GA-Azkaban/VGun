@@ -395,7 +395,16 @@ void InGameSceneView::Initialize()
 		loserX += 500;
 	}
 
+	// 다시 로비 진입을 위한 타이머 UI
+	auto resultTimer = API::CreateTextbox(_scene, "resultTimer");
+	resultTimer->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	auto resultTimerComp = resultTimer->GetComponent<HDData::TextUI>();
+	resultTimerComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	resultTimerComp->SetColor(DirectX::Colors::OrangeRed);
 
+	resultTimer->SetSelfActive(false);
+
+	RoundManager::Instance()->SetResultTimerUI(resultTimerComp);
 
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");

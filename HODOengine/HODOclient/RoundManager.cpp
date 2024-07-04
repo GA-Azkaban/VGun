@@ -28,7 +28,7 @@ RoundManager::RoundManager()
 void RoundManager::Start()
 {
 	_resultSceneTimer = new Timer;
-	_resultSceneTimer->duration = 5;
+	_resultSceneTimer->duration = 10;
 	_resultSceneTimer->onExpiration = [&]() {
 		ExitGame();
 		};
@@ -36,7 +36,7 @@ void RoundManager::Start()
 
 void RoundManager::Update()
 {
-	_resultSceneTimer->Update();
+	UpdateResultTimer();
 
 	if (!_isRoundStart) return;
 
@@ -267,6 +267,7 @@ void RoundManager::ExitGame()
 {
 	API::SetCurrentSceneMainCamera(_startCam);
 	_endObj->SetSelfActive(false);
+	_resultTimerUI->GetGameObject()->SetSelfActive(false);
 
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
@@ -316,6 +317,7 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_resultSceneTimer->Start();
+			_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		}
 	}
 }
@@ -349,6 +351,20 @@ void RoundManager::UpdateAmmoText()
 {
 	std::string count = std::to_string(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount());
 	_ammoUI->SetText(count + "/6");
+}
+
+void RoundManager::UpdateResultTimer()
+{
+	_resultSceneTimer->Update();
+
+	if (!_resultSceneTimer->IsActive()) return;
+
+	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_resultSceneTimer->duration - _resultSceneTimer->GetElapsedTime())));
+}
+
+void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
+{
+	_resultTimerUI = txt;
 }
 
 void RoundManager::UpdateDesiredKillChecker()

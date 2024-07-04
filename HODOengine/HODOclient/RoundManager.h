@@ -85,6 +85,8 @@ public:
 	void UpdateHPText();
 	void SetAmmoText(HDData::TextUI* txt);
 	void UpdateAmmoText();
+	void UpdateResultTimer();
+	void SetResultTimerUI(HDData::TextUI* txt);
 
 private:
 	HDData::TextUI* _timerUI;
@@ -95,6 +97,7 @@ private:
 
 	HDData::TextUI* _hpUI;
 	HDData::TextUI* _ammoUI;
+	HDData::TextUI* _resultTimerUI;
 
 public:
 	void UpdateDesiredKillChecker();
