@@ -80,7 +80,8 @@ void InGameSceneView::Initialize()
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 	headCollider->SetParentCollider(playerCollider);
-	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
