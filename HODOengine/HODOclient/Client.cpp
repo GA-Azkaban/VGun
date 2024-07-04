@@ -34,9 +34,9 @@ void Client::Initialize()
 	//FadeInOut::Instance();
 	
 	// 씬 초기화
-	/*TestScene test;
+	//TestScene test;
 
-	API::LoadSceneByName("Test");*/
+	//API::LoadSceneByName("Test");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
