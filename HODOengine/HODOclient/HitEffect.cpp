@@ -11,7 +11,7 @@ HitEffect::HitEffect()
 	_hitEffectTimer.onUpdate = [&](float progress)
 		{
 			float value = _curve.Evaluate(progress);
-			_hitEffectImage->SetColor({ 1.0f, 1.0f, 1.0f, value });
+			_hitEffectImage->SetColor({ value, value, value, 1.0f });
 		};
 	_hitEffectTimer.onExpiration = [&]()
 		{
