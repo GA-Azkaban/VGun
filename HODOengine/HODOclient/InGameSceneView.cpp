@@ -3,7 +3,6 @@
 #include "PlayerMove.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
-#include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
@@ -11,6 +10,7 @@
 #include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
+#include "HitEffect.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -115,7 +115,6 @@ void InGameSceneView::Initialize()
 	// 총 생성
 	auto hand = fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->AddComponent<MeshTransformController>();
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.1321f, 9.6180f, 7.9218f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.0453f, -0.6043f, -0.1055f, 0.7881f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
@@ -353,20 +352,27 @@ void InGameSceneView::Initialize()
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
 	endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
 	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
-	endTXTcomp->SetText("Confirm");
+	endTXTcomp->SetText("EXIT GAME");
 	endTXTcomp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 
 	endButton->SetSelfActive(false);
 
 	RoundManager::Instance()->SetRoundEndButton(endButton);
 
-
 	// 우승자
+	auto winnerObj = API::CreateObject(_scene, "winner");
+	winnerObj->LoadFBXFile("SKM_GunManTP_X_default.fbx");
+	winnerObj->GetTransform()->SetPosition(53, 0, -35);
+	winnerObj->GetTransform()->Rotate(0, 90, 0);
+	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
+	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_sillyDancing");
+	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadMaterial(chMat, 0);
+
 	auto winnerName = API::CreateTextbox(_scene, "winner");
 	winnerName->GetTransform()->SetPosition(1000.0f, 900.0f, 0.0f);
 	auto winnerComp = winnerName->GetComponent<HDData::TextUI>();
 	winnerComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	winnerComp->SetColor(DirectX::Colors::GreenYellow);
+	winnerComp->SetColor(DirectX::Colors::Red);
 	
 	RoundManager::Instance()->SetWinnerText(winnerComp);
 
@@ -382,7 +388,7 @@ void InGameSceneView::Initialize()
 
 		auto loserComp = loserName->GetComponent<HDData::TextUI>();
 		loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		loserComp->SetColor(DirectX::Colors::GreenYellow);
+		loserComp->SetColor(DirectX::Colors::Black);
 
 		RoundManager::Instance()->SetLoserText(loserComp, i);
 
@@ -391,9 +397,14 @@ void InGameSceneView::Initialize()
 		loserX += 500;
 	}
 
+
+
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
-	auto hpEffectComp = hpEffectObj->AddComponent<LowHPEffect>();
+	hpEffectObj->AddComponent<LowHPEffect>();
+
+	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
+	hitEffectObj->AddComponent<HitEffect>();
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

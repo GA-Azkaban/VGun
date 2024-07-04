@@ -48,8 +48,11 @@ namespace HDEngine
 		void SetTransform();
 
 		// 스폰 지점
-		Vector3 _spawnPoint[15];
-		int _spawnIndex = 0;
+		Vector3 _spawnPoint[20];
+		int _spawnIndex = 1;
+
+		// 구름 위치 지정
+		Vector3 _cloudPosition[30];
 	private:
 		HDData::Scene * now;
 		HDData::Material* _material;

@@ -1,4 +1,4 @@
-#include "TestScene.h"
+﻿#include "TestScene.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "TestSound.h"
@@ -194,7 +194,7 @@ TestScene::TestScene()
 	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
 	//buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
 	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	buildingRenderer1->LoadMesh("SM_Bld_Church_01.fbx");
+	buildingRenderer1->LoadMesh("SM_Bld_Saloon_02.fbx");
 	HDEngine::MaterialDesc buildingDesc1;
 	buildingDesc1.materialName = "PolygonKRAFTON_Texture_02";
 	buildingDesc1.albedo = "PolygonKRAFTON_Texture_02.png";
@@ -239,14 +239,7 @@ TestScene::TestScene()
 	HDData::Material* newMat = API::CreateMaterial(desc);
 	meshComp->LoadMaterial(newMat, 0);
 
-	playerTest->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
-	playerTest->AddComponent<TPScript>();
-
-	//playerTest->AddComponent<FPAniScript>();
-
-
-	//meshComp->PlayAnimation("RV_idle", true);
+	meshComp->PlayAnimation("RV_idle", true);
 
 	//// 오른손 노드의 오브젝트를 가져와서
 	//// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.

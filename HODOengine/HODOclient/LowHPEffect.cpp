@@ -21,18 +21,16 @@ void LowHPEffect::Start()
 {
 	_lowHPEffectImage = GetGameObject()->AddComponent<HDData::ImageUI>();
 	_lowHPEffectImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
-	_lowHPEffectImage->SetImage("blackout0004.png");
-	_lowHPEffectImage->ChangeScale(1.334f, 1.334f);
+	_lowHPEffectImage->SetImage("blackout0003.png");
+	_lowHPEffectImage->ChangeScale(API::GetScreenWidth() / 1920.0f, API::GetScreenHeight() / 1080.0f);
 	_lowHPEffectImage->SetActive(false);
 }
 
 void LowHPEffect::Update()
 {
-	_lowHPEffectTimer.Update();
-
 	int playerHP = _gameManager->GetMyInfo()->GetPlayerCurrentHP();
 
-	if (playerHP > (maxHP * 0.3f))
+	if (playerHP > (maxHP * 0.66f))
 	{
 		_lowHPEffectImage->SetActive(false);
 		_lowHPEffectTimer.Stop();
@@ -44,15 +42,11 @@ void LowHPEffect::Update()
 		{
 			_lowHPEffectTimer.Start();
 		}
-		if (playerHP <= (maxHP * 0.3f) && playerHP > (maxHP * 0.2f))
+		if (playerHP <= (maxHP * 0.66f) && playerHP > (maxHP * 0.33f))
 		{
-			_effectColorThreshold = 0.3f;
+			_effectColorThreshold = 0.5f;
 		}
-		else if (playerHP <= (maxHP * 0.2f) && playerHP > (maxHP * 0.1f))
-		{
-			_effectColorThreshold = 0.66f;
-		}
-		else if (playerHP <= (maxHP * 0.1f) && playerHP > 0)
+		else if (playerHP <= (maxHP * 0.33f) && playerHP > 0)
 		{
 			_effectColorThreshold = 1.0f;
 		}
@@ -62,4 +56,6 @@ void LowHPEffect::Update()
 			_lowHPEffectTimer.Stop();
 		}
 	}
+
+	_lowHPEffectTimer.Update();
 }

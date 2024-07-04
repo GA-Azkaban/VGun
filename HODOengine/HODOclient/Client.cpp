@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -33,16 +33,11 @@ void Client::Initialize()
 	MenuManager::Instance();
 	RoundManager::Instance();
 	//FadeInOut::Instance();
-
+	
 	// 씬 초기화
 	/*TestScene test;
 
-	API::LoadSceneByName("Test"); */
-
-	////// 씬 초기화
-	//TestScene test;
-
-	//API::LoadSceneByName("Test");
+	API::LoadSceneByName("Test");*/
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -52,7 +47,7 @@ void Client::Initialize()
 
 	LoginSceneView login;		//Scene Name : Login
 	login.Initialize();
-	
+
 	LobbySceneView lobby;
 	lobby.Initialize();
 

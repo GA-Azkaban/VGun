@@ -192,12 +192,9 @@ void HDData::DynamicCollider::ClearForceXYZ()
 	{
 		return;
 	}
-	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
-	velo.x = 0.0f;
-	velo.z = 0.0f;
+
 	_physXRigid->clearForce();
 	_physXRigid->clearTorque();
-	//_physXRigid->setLinearVelocity(velo);
 	_physXRigid->setLinearVelocity(physx::PxVec3(0.0f));
 	_physXRigid->setAngularVelocity(physx::PxVec3(0.0f));
 
@@ -278,8 +275,8 @@ std::vector<HDData::Collider*> HDData::DynamicCollider::GetChildColliderVec() co
 
 void HDData::DynamicCollider::OnEnable()
 {
-	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
-	//_physScene->addActor(*_physXRigid);
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+	_physScene->addActor(*_physXRigid);
 
 	for (auto& child : _childColliders)
 	{
@@ -292,8 +289,8 @@ void HDData::DynamicCollider::OnEnable()
 
 void HDData::DynamicCollider::OnDisable()
 {
-	_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
-	//_physScene->removeActor(*_physXRigid);
+	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+	_physScene->removeActor(*_physXRigid);
 
 	for (auto& child : _childColliders)
 	{
