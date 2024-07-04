@@ -79,7 +79,8 @@ void InGameSceneView::Initialize()
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 	headCollider->SetParentCollider(playerCollider);
-	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
@@ -257,7 +258,7 @@ void InGameSceneView::Initialize()
 	}
 
 	int uiX = 130;
-	int uiY = 50.0f;
+	int uiY = 52.0f;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -268,21 +269,21 @@ void InGameSceneView::Initialize()
 		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
 		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
 
-		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i), uiBack);
+		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
+		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		nickComp->SetColor(DirectX::Colors::Black);
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
-		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i), uiBack);
-		killcount->GetTransform()->SetPosition(uiX + 25, uiY, 0);
+		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
+		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
-		countComp->SetColor(DirectX::Colors::Black);
+		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+		countComp->SetColor(DirectX::Colors::Blue);
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
-
-		uiBack->SetSelfActive(false);
 
 		RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);

@@ -47,7 +47,7 @@ void NetworkManager::Start()
 	if (ipAddressFile.is_open())
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(ipAddressStr, 7777),
+			Horang::NetAddress(ipAddressStr, 7776),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -56,7 +56,7 @@ void NetworkManager::Start()
 	else
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7776),
+			Horang::NetAddress(L"172.16.1.13", 7777),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
