@@ -69,6 +69,7 @@ namespace HDData
 		std::vector<HDData::Collider*> GetChildColliderVec()const;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
+		void BuHwal(Vector3 pos);
 
 	protected:
 		bool _freezeRotation;

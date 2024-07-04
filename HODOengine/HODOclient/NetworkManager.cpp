@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -6,6 +6,8 @@
 #include "Service.h"
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
+
+#include "PlayerMove.h"
 
 #include "RoundManager.h"
 #include "LobbyManager.h"
@@ -168,6 +170,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
@@ -176,6 +179,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
