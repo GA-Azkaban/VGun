@@ -27,11 +27,17 @@ RoundManager::RoundManager()
 
 void RoundManager::Start()
 {
-
+	_resultSceneTimer = new Timer;
+	_resultSceneTimer->duration = 5;
+	_resultSceneTimer->onExpiration = [&]() {
+		ExitGame();
+		};
 }
 
 void RoundManager::Update()
 {
+	_resultSceneTimer->Update();
+
 	if (!_isRoundStart) return;
 
 	UpdateRound();
@@ -63,6 +69,7 @@ void RoundManager::InitGame()
 	_nowMaxKill = 0;
 	_winnerUID = NULL;
 
+	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
 	for (int i = 0; i < 5; ++i)
 	{
@@ -73,6 +80,10 @@ void RoundManager::InitGame()
 	{
 		obj->SetSelfActive(false);
 	}
+
+	_timerUI->GetGameObject()->SetSelfActive(true);
+	_hpUI->GetGameObject()->SetSelfActive(true);
+	_ammoUI->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -101,13 +112,18 @@ void RoundManager::InitGame()
 		++index;
 	}
 
-	//SetSpawnPoint();
 	InitRound();
 }
 
 void RoundManager::EndGame()
 {
+	// UI 활성화, 비활성화
+	_timerUI->GetGameObject()->SetSelfActive(false);
+	_hpUI->GetGameObject()->SetSelfActive(false);
+	_ammoUI->GetGameObject()->SetSelfActive(false);
+
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
+	SetIsRoundStart(false);
 	_endObj->SetSelfActive(true);
 	CheckWinner();
 }
@@ -139,6 +155,7 @@ void RoundManager::UpdateRound()
 {
 	UpdateRoundTimer();
 	UpdateHPText();
+	UpdateAmmoText();
 	UpdateDesiredKillChecker();
 }
 
@@ -250,6 +267,8 @@ void RoundManager::ExitGame()
 {
 	API::SetCurrentSceneMainCamera(_startCam);
 	_endObj->SetSelfActive(false);
+
+	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
 }
@@ -296,6 +315,7 @@ void RoundManager::UpdateRoundTimer()
 		if (elapsedTime.count() >= _timer)
 		{
 			_isRoundStart = false;
+			_resultSceneTimer->Start();
 		}
 	}
 }
@@ -318,6 +338,17 @@ void RoundManager::SetHPObject(HDData::TextUI* txt)
 void RoundManager::UpdateHPText()
 {
 	_hpUI->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
+}
+
+void RoundManager::SetAmmoText(HDData::TextUI* txt)
+{
+	_ammoUI = txt;
+}
+
+void RoundManager::UpdateAmmoText()
+{
+	std::string count = std::to_string(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount());
+	_ammoUI->SetText(count + "/6");
 }
 
 void RoundManager::UpdateDesiredKillChecker()

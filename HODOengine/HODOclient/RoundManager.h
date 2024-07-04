@@ -5,6 +5,7 @@
 
 #include "../HODOengine/HODO_API.h"
 #include "PlayerInfo.h"
+#include "Timer.h"
 
 class RoundManager : public HDData::Script
 {
@@ -82,14 +83,18 @@ public:
 	std::string ChangeSecToMin(int second);
 	void SetHPObject(HDData::TextUI* txt);
 	void UpdateHPText();
+	void SetAmmoText(HDData::TextUI* txt);
+	void UpdateAmmoText();
 
 private:
 	HDData::TextUI* _timerUI;
 	int _timer;			
 
+	Timer* _resultSceneTimer;
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
 	HDData::TextUI* _hpUI;
+	HDData::TextUI* _ammoUI;
 
 public:
 	void UpdateDesiredKillChecker();

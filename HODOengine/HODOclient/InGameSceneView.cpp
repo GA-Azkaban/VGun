@@ -6,7 +6,6 @@
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
@@ -299,12 +298,11 @@ void InGameSceneView::Initialize()
 	crosshairComp->playerMove = playerMove;
 
 	// ammo
-	auto ammo = API::CreateObject(_scene, "remainAmmo");
-	auto ammoComp = ammo->AddComponent<Ammo>();
-	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
-	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 6");
+	auto ammo = API::CreateTextbox(_scene, "AmmoText");
+	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
+	ammoTXT->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	ammoTXT->GetTransform()->SetPosition(2250.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
