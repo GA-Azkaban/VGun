@@ -3,13 +3,13 @@
 
 Crosshair::Crosshair()
 {
-	_hitCrosshairTimer.isRepeat = false;
-	_hitCrosshairTimer.duration = 0.5f;
-	_hitCrosshairTimer.onExpiration = [&]() { _hitCrosshair->SetActive(false); };
+	_hitTimer.isRepeat = false;
+	_hitTimer.duration = 0.5f;
+	_hitTimer.onExpiration = [&]() { _hitCrosshair->SetActive(false); };
 
-	_criticalCrosshairTimer.isRepeat = false;
-	_criticalCrosshairTimer.duration = 0.5f;
-	_criticalCrosshairTimer.onExpiration = [&]() {_criticalCrosshair->SetActive(false); };
+	_criticalTimer.isRepeat = false;
+	_criticalTimer.duration = 0.5f;
+	_criticalTimer.onExpiration = [&]() {_criticalCrosshair->SetActive(false); };
 }
 
 void Crosshair::Start()
@@ -39,16 +39,16 @@ void Crosshair::Update()
 		if (playerMove->IsShootHead())
 		{
 			_criticalCrosshair->SetActive(true);
-			_criticalCrosshairTimer.Start();
+			_criticalTimer.Start();
 		}
 
 		if (playerMove->IsShootBody())
 		{
 			_hitCrosshair->SetActive(true);
-			_hitCrosshairTimer.Start();
+			_hitTimer.Start();
 		}
 	}
 
-	_criticalCrosshairTimer.Update();
-	_hitCrosshairTimer.Update();
+	_criticalTimer.Update();
+	_hitTimer.Update();
 }

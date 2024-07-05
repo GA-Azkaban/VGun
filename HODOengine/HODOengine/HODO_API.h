@@ -64,6 +64,7 @@ namespace API
 		HODO_API void LoadScene(HDData::Scene* scene);
 		HODO_API HDData::Scene* LoadSceneByName(std::string scene);
 		HODO_API std::vector<HDData::UIBase*>& GetAllUIList();
+		HODO_API std::string GetCurrentSceneName();
 
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);

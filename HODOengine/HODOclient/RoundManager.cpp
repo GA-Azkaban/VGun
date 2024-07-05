@@ -27,11 +27,17 @@ RoundManager::RoundManager()
 
 void RoundManager::Start()
 {
-
+	_resultSceneTimer = new Timer;
+	_resultSceneTimer->duration = 10;
+	_resultSceneTimer->onExpiration = [&]() {
+		ExitGame();
+		};
 }
 
 void RoundManager::Update()
 {
+	UpdateResultTimer();
+
 	if (!_isRoundStart) return;
 
 	UpdateRound();
@@ -63,16 +69,21 @@ void RoundManager::InitGame()
 	_nowMaxKill = 0;
 	_winnerUID = NULL;
 
+	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
 	for (int i = 0; i < 5; ++i)
 	{
 		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
 	}
 
-	for (auto& obj : _playerObjs)
+	for (auto& p : _playerObjs)
 	{
-		obj->SetSelfActive(false);
+		p->SetSelfActive(false);
 	}
+
+	_timerUI->GetGameObject()->SetSelfActive(true);
+	_hpUI->GetGameObject()->SetSelfActive(true);
+	_ammoUI->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -101,21 +112,37 @@ void RoundManager::InitGame()
 		++index;
 	}
 
-	//SetSpawnPoint();
 	InitRound();
 }
 
 void RoundManager::EndGame()
 {
+	// UI 활성화, 비활성화
+	_timerUI->GetGameObject()->SetSelfActive(false);
+	_hpUI->GetGameObject()->SetSelfActive(false);
+	_ammoUI->GetGameObject()->SetSelfActive(false);
+
+	for (int i = 0; i < 6; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
+	}
+
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
+	SetIsRoundStart(false);
 	_endObj->SetSelfActive(true);
 	CheckWinner();
 }
 
 void RoundManager::InitRound()
 {
-	// 타이머 초기화
-	this->_timer = 0;
+	for (int i = 0; i < _players.size() + 1; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
+	}
 
 	HDData::SkinnedMeshRenderer* mesh = nullptr;
 	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -139,6 +166,7 @@ void RoundManager::UpdateRound()
 {
 	UpdateRoundTimer();
 	UpdateHPText();
+	UpdateAmmoText();
 	UpdateDesiredKillChecker();
 }
 
@@ -250,6 +278,10 @@ void RoundManager::ExitGame()
 {
 	API::SetCurrentSceneMainCamera(_startCam);
 	_endObj->SetSelfActive(false);
+	_resultSceneTimer->Stop();
+	_resultTimerUI->GetGameObject()->SetSelfActive(false);
+
+	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
 }
@@ -296,6 +328,8 @@ void RoundManager::UpdateRoundTimer()
 		if (elapsedTime.count() >= _timer)
 		{
 			_isRoundStart = false;
+			_resultSceneTimer->Start();
+			_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		}
 	}
 }
@@ -318,6 +352,33 @@ void RoundManager::SetHPObject(HDData::TextUI* txt)
 void RoundManager::UpdateHPText()
 {
 	_hpUI->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
+}
+
+void RoundManager::SetAmmoText(HDData::TextUI* txt)
+{
+	_ammoUI = txt;
+}
+
+void RoundManager::UpdateAmmoText()
+{
+	std::string count = std::to_string(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount());
+	_ammoUI->SetText(count + "/6");
+}
+
+void RoundManager::UpdateResultTimer()
+{
+	if (API::GetCurrentSceneName() != "InGame") return;
+
+	_resultSceneTimer->Update();
+
+	if (!_resultSceneTimer->IsActive()) return;
+
+	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_resultSceneTimer->duration - _resultSceneTimer->GetElapsedTime())));
+}
+
+void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
+{
+	_resultTimerUI = txt;
 }
 
 void RoundManager::UpdateDesiredKillChecker()
@@ -349,6 +410,11 @@ int& RoundManager::GetDesiredKill()
 void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index)
 {
 	_killCountObjs[index] = std::make_pair(nick, count);
+}
+
+void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
+{
+	_backIMG[index] = img;
 }
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()

@@ -49,7 +49,6 @@
     <ClCompile Include="MenuManager.cpp">
       <Filter>03_Manager\MenuManager</Filter>
     </ClCompile>
-    <ClCompile Include="UnitySceneLoaderTest.cpp" />
     <ClCompile Include="SliderSoundScript.cpp">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
@@ -78,13 +77,7 @@
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
     <ClCompile Include="Crosshair.cpp">
-      <Filter>02_Client\01_Script\UI\Crosshair</Filter>
-    </ClCompile>
-    <ClCompile Include="Ammo.cpp">
-      <Filter>02_Client\01_Script\UI\Ammo</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>02_Client\01_Script\UI\Crosshair\CrossHairTimer</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Crosshair</Filter>
     </ClCompile>
     <ClCompile Include="FPAniScript.cpp">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
@@ -117,10 +110,13 @@
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
     <ClCompile Include="LowHPEffect.cpp">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
     </ClCompile>
     <ClCompile Include="HitEffect.cpp">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02_Client\01_Script\UI\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +165,6 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MenuManager.h">
       <Filter>03_Manager\MenuManager</Filter>
     </ClInclude>
@@ -216,13 +211,7 @@
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
     <ClInclude Include="Crosshair.h">
-      <Filter>02_Client\01_Script\UI\Crosshair</Filter>
-    </ClInclude>
-    <ClInclude Include="Ammo.h">
-      <Filter>02_Client\01_Script\UI\Ammo</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>02_Client\01_Script\UI\Crosshair\CrossHairTimer</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Crosshair</Filter>
     </ClInclude>
     <ClInclude Include="FPAniScript.h">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
@@ -264,10 +253,13 @@
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="LowHPEffect.h">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>02_Client\01_Script\UI\Timer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,15 +355,6 @@
     <Filter Include="02_Client\01_Script\UI">
       <UniqueIdentifier>{2bd02384-316b-4567-9388-d69965fb1901}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\01_Script\UI\Ammo">
-      <UniqueIdentifier>{576cd7fc-3567-4f56-be15-6f6ffab1e958}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\UI\Crosshair">
-      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\UI\Crosshair\CrossHairTimer">
-      <UniqueIdentifier>{7f117444-f2fc-40f0-af76-dcfecdaacb5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02_Client\01_Script\Player\Animation">
       <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
     </Filter>
@@ -393,8 +376,14 @@
     <Filter Include="02_Client\01_Script\UI\ImageScript">
       <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\ScreenEffect">
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect">
       <UniqueIdentifier>{806ec663-771b-4be6-b490-fca586f0ac02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\Timer">
+      <UniqueIdentifier>{165843a8-9acb-43a1-8b5d-51219692351f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\Crosshair">
+      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

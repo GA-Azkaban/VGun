@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -49,7 +49,7 @@ void NetworkManager::Start()
 	if (ipAddressFile.is_open())
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(ipAddressStr, 7778),
+			Horang::NetAddress(ipAddressStr, 7776),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1

@@ -241,6 +241,10 @@ TestScene::TestScene()
 
 	meshComp->PlayAnimation("RV_idle", true);
 
+	//playerTest->AddComponent<HDData::Animator>();
+	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
+	//playerTest->AddComponent<TPScript>();
+
 	//// 오른손 노드의 오브젝트를 가져와서
 	//// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
 	////auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
