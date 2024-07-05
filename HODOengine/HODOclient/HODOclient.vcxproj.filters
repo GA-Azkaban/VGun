@@ -83,9 +83,6 @@
     <ClCompile Include="Ammo.cpp">
       <Filter>02_Client\01_Script\UI\Ammo</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>02_Client\01_Script\UI\Crosshair\CrossHairTimer</Filter>
-    </ClCompile>
     <ClCompile Include="FPAniScript.cpp">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClCompile>
@@ -117,10 +114,19 @@
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
     <ClCompile Include="LowHPEffect.cpp">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\ScreenEffect\LowHPEffect</Filter>
     </ClCompile>
     <ClCompile Include="HitEffect.cpp">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\ScreenEffect\HitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Indicator.cpp">
+      <Filter>02_Client\ScreenEffect\Indicator</Filter>
+    </ClCompile>
+    <ClCompile Include="IndicatorPool.cpp">
+      <Filter>02_Client\ScreenEffect\Indicator\Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02_Client\Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -221,9 +227,6 @@
     <ClInclude Include="Ammo.h">
       <Filter>02_Client\01_Script\UI\Ammo</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>02_Client\01_Script\UI\Crosshair\CrossHairTimer</Filter>
-    </ClInclude>
     <ClInclude Include="FPAniScript.h">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
@@ -264,10 +267,19 @@
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
     </ClInclude>
     <ClInclude Include="LowHPEffect.h">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\ScreenEffect\LowHPEffect</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
-      <Filter>02_Client\ScreenEffect</Filter>
+      <Filter>02_Client\ScreenEffect\HitEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="Indicator.h">
+      <Filter>02_Client\ScreenEffect\Indicator</Filter>
+    </ClInclude>
+    <ClInclude Include="IndicatorPool.h">
+      <Filter>02_Client\ScreenEffect\Indicator\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>02_Client\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -369,9 +381,6 @@
     <Filter Include="02_Client\01_Script\UI\Crosshair">
       <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\01_Script\UI\Crosshair\CrossHairTimer">
-      <UniqueIdentifier>{7f117444-f2fc-40f0-af76-dcfecdaacb5f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02_Client\01_Script\Player\Animation">
       <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
     </Filter>
@@ -395,6 +404,21 @@
     </Filter>
     <Filter Include="02_Client\ScreenEffect">
       <UniqueIdentifier>{806ec663-771b-4be6-b490-fca586f0ac02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\ScreenEffect\LowHPEffect">
+      <UniqueIdentifier>{d7dacaca-092a-424e-9dd5-a885c6022fe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\ScreenEffect\HitEffect">
+      <UniqueIdentifier>{a5e7ca9b-4a70-434d-91a7-724408143891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\ScreenEffect\Indicator">
+      <UniqueIdentifier>{a058dba2-23f1-4ee7-b1c3-7f097d9b07b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\ScreenEffect\Indicator\Pool">
+      <UniqueIdentifier>{7d29ca79-eaf7-4c8f-bcdf-cdd5e9448c2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\Util">
+      <UniqueIdentifier>{1d1a670f-3bd0-4346-9ff0-2b5462d7d4d1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

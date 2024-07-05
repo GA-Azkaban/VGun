@@ -9,6 +9,7 @@
 #include "Material.h"
 #include "ObjectManager.h"
 #include "../HODO3DGraphicsInterface/IMaterial.h"
+#include <numbers>
 
 #define FILEPATH "Resources/Textures/UI/"
 
@@ -17,8 +18,10 @@ using namespace DirectX;
 RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	: _xlocation(),
 	_ylocation(),
+	_origin{ 0.0f, 0.0f },
 	_scaleX(1.0f),
 	_scaleY(1.0f),
+	_rotationRadian(0.0f),
 	_imageWidth(),
 	_imageHeight(),
 	_active(true),
@@ -66,10 +69,7 @@ void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float y)
 {
-	_xlocation;
-	_ylocation;
-	//_xlocation = x - _centerX;
-	//_ylocation = y - _centerY;
+	
 }
 
 void RocketCore::Graphics::ImageRenderer::SetWorldSpace()
@@ -150,8 +150,8 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 				DirectX::XMFLOAT2(_xlocation - _centerX, _ylocation - _centerY),
 				nullptr,
 				_color,
-				0.0f,										//회전 각도
-				DirectX::XMFLOAT2(0.5f, 0.5f),				//  이미지의 원점->0.0f,0.0f이면 좌측상단
+				_rotationRadian,										//회전 각도
+				_origin,				//  이미지의 원점->0.0f,0.0f이면 좌측상단
 				DirectX::XMFLOAT2(_scaleX, _scaleY),		// 이미지 스케일
 				DirectX::DX11::SpriteEffects_None,
 				_sortOrder
@@ -205,8 +205,25 @@ void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 	_scaleY = y;
 	_imageWidth *= _scaleX;
 	_imageHeight *= _scaleY;
-	_centerX = _imageWidth / 2;
-	_centerY = _imageHeight / 2;
+	_centerX = _imageWidth / 2.0f;
+	_centerY = _imageHeight / 2.0f;
+}
+
+void RocketCore::Graphics::ImageRenderer::SetAngle(float angle)
+{
+	_rotationRadian = angle * std::numbers::pi / 180.0f;
+}
+
+void RocketCore::Graphics::ImageRenderer::SetOrigin(float x, float y)
+{
+	_origin.x = x;
+	_origin.y = y;
+}
+
+void RocketCore::Graphics::ImageRenderer::SetCenter(float x, float y)
+{
+	_centerX = x;
+	_centerY = y;
 }
 
 float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionX()
@@ -273,4 +290,4 @@ void RocketCore::Graphics::ImageRenderer::RetunDefalutColor()
 {
 	_color = _defalutcolor;
 }
- 
+

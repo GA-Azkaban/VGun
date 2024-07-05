@@ -11,6 +11,7 @@
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
+#include "IndicatorPool.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -397,14 +398,17 @@ void InGameSceneView::Initialize()
 		loserX += 500;
 	}
 
-
-
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
 	hpEffectObj->AddComponent<LowHPEffect>();
 
 	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
 	hitEffectObj->AddComponent<HitEffect>();
+
+	auto indicatorObj = API::CreateObject(_scene, "Indicator");
+	indicatorObj->AddComponent<Indicator>();
+
+	IndicatorPool::Instance().player = player;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

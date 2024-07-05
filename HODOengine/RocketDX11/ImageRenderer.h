@@ -43,6 +43,12 @@ namespace RocketCore::Graphics
 
 		virtual void ChangeScale(float x, float y) override;
 
+		virtual void SetAngle(float angle) override;
+
+		virtual void SetOrigin(float x, float y) override;
+
+		virtual void SetCenter(float x, float y) override;
+
 		virtual float GetWidth() override;
 
 		virtual float GetHeight() override;
@@ -50,7 +56,7 @@ namespace RocketCore::Graphics
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }
 
-		virtual void SetDefalutColor(DirectX::FXMVECTOR color)override;
+		virtual void SetDefalutColor(DirectX::FXMVECTOR color) override;
 		virtual void RetunDefalutColor()override;
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
@@ -70,10 +76,12 @@ namespace RocketCore::Graphics
 		std::string _str;
 		DirectX::XMVECTOR _color;
 		DirectX::XMVECTOR _defalutcolor;
+		DirectX::XMFLOAT2 _origin;
 		float _xlocation;
 		float _ylocation;
 		float _scaleX;
 		float _scaleY;
+		float _rotationRadian;
 		bool _active;
 		bool _receiveTMInfoFlag;
 
