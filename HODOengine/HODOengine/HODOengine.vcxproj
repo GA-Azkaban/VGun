@@ -162,6 +162,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)HODO3DGraphicsInterface;$(SolutionDir)HODOCommon;$(SolutionDir)include\physX;$(SolutionDir)include\DXTK;$(SolutionDir)include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

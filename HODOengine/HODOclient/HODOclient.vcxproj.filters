@@ -55,9 +55,6 @@
     <ClCompile Include="TestScene.cpp">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
-    <ClCompile Include="UnitySceneLoaderTest.cpp">
-      <Filter>02_Client\TestScene\SceneLoader</Filter>
-    </ClCompile>
     <ClCompile Include="InGameSceneView.cpp">
       <Filter>04_SceneView\InGame</Filter>
     </ClCompile>
@@ -176,9 +173,6 @@
     </ClInclude>
     <ClInclude Include="SliderSoundScript.h">
       <Filter>02_Client\01_Script\99_test</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitySceneLoaderTest.h">
-      <Filter>02_Client\TestScene\SceneLoader</Filter>
     </ClInclude>
     <ClInclude Include="MenuManager.h">
       <Filter>03_Manager\MenuManager</Filter>

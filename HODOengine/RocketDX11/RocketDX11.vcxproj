@@ -153,6 +153,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Include;$(SolutionDir)Include\DXTK;$(SolutionDir)HODO3DGraphicInterface;$(SolutionDir)HODOCommon;C:\Users\KOCCA34\Desktop\DirectXTK-main\Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

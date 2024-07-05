@@ -91,7 +91,10 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 	}
 	else
 	{
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		auto players = RoundManager::Instance()->GetPlayerObjs();
+		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
+			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
 	}
 }
 
@@ -106,7 +109,10 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	}
 	else
 	{
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		auto players = RoundManager::Instance()->GetPlayerObjs();
+		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
+			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
 	}
 
 	// 맞은 사람 ) 체력 변화
@@ -700,19 +706,19 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
-	if (state == "WALK_R")
+	if (state == "RUN_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RIGHT;
 	}
-	if (state == "WALK_L")
+	if (state == "RUN_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_LEFT;
 	}
-	if (state == "WALK_F")
+	if (state == "RUN_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_FORWARD;
 	}
-	if (state == "WALK_B")
+	if (state == "RUN_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
 	}
@@ -720,7 +726,19 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
 	}
-	if (state == "ROLL")
+	if (state == "ROLL_F")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "ROLL_B")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "ROLL_R")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "ROLL_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
 	}
