@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -58,7 +58,7 @@ void NetworkManager::Start()
 	else
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7778),
+			Horang::NetAddress(L"172.16.1.13", 7777),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -81,7 +81,10 @@ void NetworkManager::Update()
 	for (auto& [uid, player] : playerObj)
 	{
 		auto info = player->GetComponent<PlayerInfo>();
-		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		if (!info->GetIsDie())
+		{
+			Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		}
 	}
 }
 
@@ -134,6 +137,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 
 	if (myUID == deathPlayerData.userinfo().uid())
 	{
+		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->OnDisable();
+		//GameManager::Instance()->GetMyObject()->SetSelfActive(false);
+
 		ConvertDataToPlayerInfo(deathPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -141,6 +147,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 	else
 	{
 		// 모든 데스 갱신
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->OnDisable();
+		//RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->SetSelfActive(false);
+
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -170,9 +179,16 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3(10.0f, 100.0f, 10.0f);
+		auto pos = Vector3(10.0f, 10.0f, 10.0f);
+		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->OnEnable();
 		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
-		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		//GameManager::Instance()->GetMyObject()->SetSelfActive(true);
+		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+
+		PlayerInfo* info = GameManager::Instance()->GetMyObject()->GetComponent<PlayerInfo>();
+
+		info->SetServerTransform(pos, Quaternion());
+
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -180,9 +196,17 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	else
 	{
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3(10.0f, 100.0f, 10.0f);
+
+		auto pos = Vector3(10.0f, 10.0f, 10.0f);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->OnEnable();
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->SetSelfActive(true);
+		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+
+		PlayerInfo* info = GameManager::Instance()->GetMyObject()->GetComponent<PlayerInfo>();
+
+		info->SetServerTransform(pos, Quaternion());
+
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -659,8 +683,8 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
 {
-	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
-	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
+	//mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	//mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
 
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
@@ -689,7 +713,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	current->SetPosition(interpolatedPos);
+	//current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)
