@@ -227,6 +227,10 @@ TestScene::TestScene()
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
 	playerTest->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
 
+	//auto comp = playerTest->AddComponent<HDData::AudioSource>();
+	//comp->AddAudio3D("shootother", "./Resources/Sound/swish.wav", HDData::SoundGroup::BackgroundMusic, 10, 300);
+	//comp->Play3DRepeat("shootother", playerTest->GetTransform()->GetPosition());
+
 	//SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	//GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -240,6 +244,7 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 0);
 
 	meshComp->PlayAnimation("RV_idle", true);
+
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");

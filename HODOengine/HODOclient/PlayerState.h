@@ -15,6 +15,10 @@ enum class ePlayerState
 	JUMP,
 	RELOAD,
 	ROLL,
+	ROLL_R,
+	ROLL_L,
+	ROLL_F,
+	ROLL_B,
 	DIE,
 	TUMBLE,
 

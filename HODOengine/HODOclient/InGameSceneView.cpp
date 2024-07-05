@@ -27,6 +27,9 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetRoundScene(_scene);
 
+	auto soundObj = API::CreateObject(_scene, "soundObj");
+	soundObj->AddComponent<HDData::AudioSource>();
+
 	// 플레이어 여섯 명 렌더링
 	float posX = 0;
 	float posT = 165;
@@ -217,7 +220,7 @@ void InGameSceneView::Initialize()
 	playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
 	playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
+	//playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
 
 	posX += 1;
 	posT += 315;
@@ -250,8 +253,8 @@ void InGameSceneView::Initialize()
 
 		// sound 추가
 		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
+		otherPlayerSound->AddAudio3D("shootother", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::EffectSound, 10, 150);
+		otherPlayerSound->AddAudio3D("walkother", "./Resources/Sound/Walk/footstep.wav", HDData::SoundGroup::EffectSound, 10, 250);
 
 		posX += 2;
 		posT += 315;
