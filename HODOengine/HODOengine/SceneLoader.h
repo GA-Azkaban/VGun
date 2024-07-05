@@ -49,10 +49,11 @@ namespace HDEngine
 
 		// 스폰 지점
 		Vector3 _spawnPoint[20];
-		int _spawnIndex = 1;
+		int _spawnIndex = 1;	// 0번은 wrong point
 
 		// 구름 위치 지정
-		Vector3 _cloudPosition[30];
+		Vector3 _cloudPosition[25];
+		int _cloudIndex = 0;
 	private:
 		HDData::Scene * now;
 		HDData::Material* _material;

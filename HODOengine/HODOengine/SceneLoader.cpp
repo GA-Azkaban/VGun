@@ -22,6 +22,8 @@ using rapidjson::Value;
 const std::string MODEL_PATH = "Resources/Models/";
 const std::string SCENEDATA_PATH = "Resources/SceneData/";
 
+#define Cloud "Env_Cloud_"
+
 namespace HDEngine
 {
 	SceneLoader::SceneLoader()
@@ -129,10 +131,6 @@ namespace HDEngine
 
 			// 스폰위치를 위한 변수
 			std::string objName = info.name;
-			Vector3 tempPosition = info.position;
-
-			// 구름 인덱스
-			int cloudIndex = 0;
 
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 
@@ -149,20 +147,20 @@ namespace HDEngine
 			// 잘못된 위치
 			if (objName == "WrongPoint")
 			{
-				_spawnPoint[0] = tempPosition;
+				_spawnPoint[0] = info.position;
 			}
 
 			if (objName == "SpawnPoint")
 			{
 				// 스폰 위치 받아와서 배열에 추가
-				_spawnPoint[_spawnIndex] = tempPosition;
+				_spawnPoint[_spawnIndex] = info.position;
 				_spawnIndex++;
 			}
 
-			if (objName == "Cloud")
+			if (objName == Cloud "01" || objName == Cloud "02" || objName == Cloud "03")
 			{
-				_cloudPosition[cloudIndex];
-				cloudIndex++;
+				_cloudPosition[_cloudIndex] = info.position;
+				_cloudIndex++;
 			}
 
 			switch (info.colliderType)
