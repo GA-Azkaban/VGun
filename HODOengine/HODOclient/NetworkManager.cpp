@@ -7,6 +7,8 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
+#include "PlayerMove.h"
+
 #include "RoundManager.h"
 #include "LobbyManager.h"
 #include "GameManager.h"
@@ -79,7 +81,10 @@ void NetworkManager::Update()
 	for (auto& [uid, player] : playerObj)
 	{
 		auto info = player->GetComponent<PlayerInfo>();
-		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		if (!info->GetIsDie())
+		{
+			Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		}
 	}
 }
 
@@ -91,7 +96,10 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 	}
 	else
 	{
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		auto players = RoundManager::Instance()->GetPlayerObjs();
+		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
+			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
 	}
 }
 
@@ -106,7 +114,10 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	}
 	else
 	{
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		auto players = RoundManager::Instance()->GetPlayerObjs();
+		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
+		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
+			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
 	}
 
 	// 맞은 사람 ) 체력 변화
@@ -132,6 +143,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 
 	if (myUID == deathPlayerData.userinfo().uid())
 	{
+		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->OnDisable();
+		//GameManager::Instance()->GetMyObject()->SetSelfActive(false);
+
 		ConvertDataToPlayerInfo(deathPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -139,6 +153,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 	else
 	{
 		// 모든 데스 갱신
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->OnDisable();
+		//RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->SetSelfActive(false);
+
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -167,16 +184,35 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		auto pos = Vector3(10.0f, 10.0f, 10.0f);
+		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->OnEnable();
+		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
+		//GameManager::Instance()->GetMyObject()->SetSelfActive(true);
+		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+
+		PlayerInfo* info = GameManager::Instance()->GetMyObject()->GetComponent<PlayerInfo>();
+
+		info->SetServerTransform(pos, Quaternion());
+
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
 	else
 	{
-		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+
+		auto pos = Vector3(10.0f, 10.0f, 10.0f);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->OnEnable();
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
+		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->SetSelfActive(true);
+		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+
+		PlayerInfo* info = GameManager::Instance()->GetMyObject()->GetComponent<PlayerInfo>();
+
+		info->SetServerTransform(pos, Quaternion());
+
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -653,8 +689,8 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
 {
-	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
-	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
+	//mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	//mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
 
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
@@ -683,7 +719,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	current->SetPosition(interpolatedPos);
+	//current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)
@@ -700,19 +736,19 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
-	if (state == "WALK_R")
+	if (state == "RUN_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RIGHT;
 	}
-	if (state == "WALK_L")
+	if (state == "RUN_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_LEFT;
 	}
-	if (state == "WALK_F")
+	if (state == "RUN_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_FORWARD;
 	}
-	if (state == "WALK_B")
+	if (state == "RUN_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
 	}
@@ -720,7 +756,19 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
 	}
-	if (state == "ROLL")
+	if (state == "ROLL_F")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "ROLL_B")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "ROLL_R")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+	}
+	if (state == "ROLL_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
 	}

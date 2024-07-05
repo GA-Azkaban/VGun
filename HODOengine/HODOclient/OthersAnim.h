@@ -14,5 +14,6 @@ public:
 private:
 	HDData::SkinnedMeshRenderer* _mesh;
 	PlayerInfo* _info;
+	HDData::AudioSource* _audio;
 };
 

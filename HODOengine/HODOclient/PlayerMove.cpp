@@ -1,9 +1,10 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
 #include "RoundManager.h"
+#include "NetworkManager.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true),
@@ -42,7 +43,7 @@ void PlayerMove::Start()
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
 
-	_playerAudio->PlayRepeat("bgm");
+	//_playerAudio->PlayRepeat("bgm");
 }
 
 void PlayerMove::Update()
@@ -52,7 +53,7 @@ void PlayerMove::Update()
 		if (_isDie)
 		{
 			_isDie = false;
-			Respawn();
+			//Respawn(TODO);
 		}
 		else
 		{
@@ -341,6 +342,7 @@ void PlayerMove::ShootGun()
 	//ApplyRecoil();
 	_headCam->ToggleCameraShake(true);
 
+	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
@@ -360,7 +362,7 @@ void PlayerMove::ShootGun()
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
 	{
-		_playerAudio->PlayOnce("hit");
+		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
 	}
 
@@ -371,7 +373,7 @@ void PlayerMove::ShootGun()
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
 		//_playerAudio->PlayOnce("hitBody");
-		_playerAudio->PlayOnce("hitHead");
+		//_playerAudio->PlayOnce("hitHead");
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -380,7 +382,7 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
-		_playerAudio->PlayOnce("hitBody");
+		//_playerAudio->PlayOnce("hitBody");
 	}
 
 	++_shootCount;
@@ -1371,7 +1373,7 @@ void PlayerMove::Die()
 
 void PlayerMove::Respawn()
 {
-	_playerColliderStanding->OnEnable();
+	//_playerColliderStanding->OnEnable();
 }
 
 void PlayerMove::DecidePlayerState()

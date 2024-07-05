@@ -96,7 +96,7 @@ namespace HDData
 	bool SkinnedMeshRenderer::IsAnimationEnd()
 	{
 		return _skinnedMesh->IsAnimationEnd();
-	}
+ 	}
 
 	void SkinnedMeshRenderer::SetOutlineActive(bool isActive)
 	{
