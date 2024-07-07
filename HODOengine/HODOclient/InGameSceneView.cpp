@@ -12,6 +12,7 @@
 #include "LowHPEffect.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
+#include "IndicatorTest.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -228,7 +229,7 @@ void InGameSceneView::Initialize()
 	{
 		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
-		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
+		otherPlayer->LoadFBXFile("SKM_GunmanTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
 		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
@@ -362,7 +363,7 @@ void InGameSceneView::Initialize()
 
 	// 우승자
 	auto winnerObj = API::CreateObject(_scene, "winner");
-	winnerObj->LoadFBXFile("SKM_GunManTP_X_default.fbx");
+	winnerObj->LoadFBXFile("SKM_GunmanTP_X_default.fbx");
 	winnerObj->GetTransform()->SetPosition(53, 0, -35);
 	winnerObj->GetTransform()->Rotate(0, 90, 0);
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
@@ -402,11 +403,11 @@ void InGameSceneView::Initialize()
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
 	hpEffectObj->AddComponent<LowHPEffect>();
 
-	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
-	hitEffectObj->AddComponent<HitEffect>();
+	//auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
+	//hitEffectObj->AddComponent<HitEffect>();
 
-	auto indicatorObj = API::CreateObject(_scene, "Indicator");
-	indicatorObj->AddComponent<Indicator>();
+	auto indicatorTest = API::CreateObject(_scene, "IndicatorTest");
+	indicatorTest->AddComponent<IndicatorTest>();
 
 	IndicatorPool::Instance().player = player;
 

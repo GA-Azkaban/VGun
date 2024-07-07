@@ -281,6 +281,9 @@
     <ClInclude Include="Timer.h">
       <Filter>02_Client\Util</Filter>
     </ClInclude>
+    <ClInclude Include="IndicatorTest.h">
+      <Filter>02_Client\ScreenEffect\Indicator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

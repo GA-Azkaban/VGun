@@ -211,7 +211,8 @@ void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 
 void RocketCore::Graphics::ImageRenderer::SetAngle(float angle)
 {
-	_rotationRadian = angle * std::numbers::pi / 180.0f;
+	//_rotationRadian = angle * std::numbers::pi / 180.0f;
+	_rotationRadian = angle;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetOrigin(float x, float y)

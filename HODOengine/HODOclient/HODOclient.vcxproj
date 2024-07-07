@@ -243,6 +243,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="HitEffect.h" />
     <ClInclude Include="Indicator.h" />
     <ClInclude Include="IndicatorPool.h" />
+    <ClInclude Include="IndicatorTest.h" />
     <ClInclude Include="LobbySceneView.h" />
     <ClInclude Include="LowHPEffect.h" />
     <ClInclude Include="MeshTransformController.h" />

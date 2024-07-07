@@ -768,7 +768,7 @@ void PlayerMove::UpdateStateText()
 
 	_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
-	std::string posText = std::to_string((int)(_playerPos.x * 10)) + "/" + std::to_string((int)(_playerPos.y * 10)) + "/" + std::to_string((int)(_playerPos.z * 10));
+	std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
 	_plPosText->SetText(posText);
 }
 
