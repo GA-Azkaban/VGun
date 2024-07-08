@@ -428,7 +428,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
 void PlayerMove::PlayPlayerSound()
