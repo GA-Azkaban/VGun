@@ -61,6 +61,11 @@ namespace HDEngine
 		return _spawnPoint;
 	}
 
+	Vector3* SceneLoader::GetCloudPoint()
+	{
+		return _cloudPoint;
+	}
+
 	void SceneLoader::LoadFromJson(std::string filePath)
 	{
 		// 모든 값을 string으로 묶어서 '한 번' 가져온다
@@ -157,9 +162,21 @@ namespace HDEngine
 				_spawnIndex++;
 			}
 
-			if (objName == Cloud "01" || objName == Cloud "02" || objName == Cloud "03")
+			if (meshName.compare("Env_Cloud_01") == 0)
 			{
-				_cloudPosition[_cloudIndex] = info.position;
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+			
+			if (meshName.compare("Env_Cloud_02") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+			
+			if (meshName.compare("Env_Cloud_03") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
 				_cloudIndex++;
 			}
 
