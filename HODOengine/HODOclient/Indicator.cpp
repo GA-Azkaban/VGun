@@ -28,31 +28,6 @@ Indicator::Indicator()
 	_indicatorTimer.onExpiration = [&]() { IndicatorPool::Instance().RetrieveIndicator(this); };
 }
 
-//float Indicator::CalculateDegreeBetweenTwoVectors(Vector3 v1, Vector3 v2)
-//{
-//	v1.Normalize();
-//	v2.Normalize();
-//
-//	float scalar = v1.x * v2.x + v1.z * v2.z;
-//	float length1 = v1.Length();
-//	float length2 = v2.Length();
-//	float radian = acosf(scalar / (length1 * length2));
-//
-//	Vector3 crossVec = v1.Cross(v2);
-//	
-//	if(crossVec.y >= 0)
-//	{
-//		//float degree = radian * 180.0f / std::numbers::pi;
-//		return radian;
-//	}
-//	else
-//	{
-//		float degree = radian * 180.0f / std::numbers::pi;
-//		float resultRadian = (360.0f - degree) * std::numbers::pi / 180.0f;
-//		return resultRadian;
-//	}
-//}
-
 Indicator* Indicator::CreateIndicator()
 {
 	auto obj = API::CreateObject(API::GetCurrenScene());

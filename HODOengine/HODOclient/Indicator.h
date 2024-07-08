@@ -14,7 +14,6 @@ public:
 	void SetEffectOn(Vector3 targetPos);
 
 private:
-	float CalculateDegreeBetweenTwoVectors(Vector3 v1, Vector3 v2);
 	HDData::ImageUI* _indicatorImage;
 	Timer _indicatorTimer;
 	Vector3 _targetPos;
