@@ -150,42 +150,42 @@ void LoginSceneView::LoginView()
 	_lobbyManager.SetJoinCanvas(joinCanvas);
 
 	HDData::GameObject* newIDtextbox = API::CreateTextInputBox(_scene, "newIDtextbox", joinControlObject);
-	newIDtextbox->GetTransform()->SetPosition(960.f * width / 1920, 340.f * height / 1080, 0.f);
+	newIDtextbox->GetTransform()->SetPosition(960.f * width / 1920,480.0f, 0.f);
 	auto newIDtext = newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
 	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
 	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
-	newIDLabel->GetTransform()->SetPosition(760.f * width / 1920, 340.f * height / 1080, 0.f);
+	newIDLabel->GetTransform()->SetPosition(760.f * width / 1920, 480.0f, 0.f);	// height :340.f * height / 1080
 	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
 	newIDLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	newIDLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	newIDLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newPasswordTextbox = API::CreateTextInputBox(_scene, "newPasswordTextbox", joinControlObject);
-	newPasswordTextbox->GetTransform()->SetPosition(960.f * width / 1920, 440.f * height / 1080, 0.f);
+	newPasswordTextbox->GetTransform()->SetPosition(960.f * width / 1920,640.0f, 0.f);
 	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
 	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
 	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
-	newPasswordLabel->GetTransform()->SetPosition(740.f * width / 1920, 440.f * height / 1080, 0.f);
+	newPasswordLabel->GetTransform()->SetPosition(740.f * width / 1920, 640.0f, 0.f);
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinControlObject);
-	newNicknameTextbox->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
+	newNicknameTextbox->GetTransform()->SetPosition(960.f * width / 1920, 800.0f, 0.f);
 	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
 	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
 	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 
 	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
-	newNicknameLabel->GetTransform()->SetPosition(740.f * width / 1920, 540.f * height / 1080, 0.f);
+	newNicknameLabel->GetTransform()->SetPosition(740.f * width / 1920, 800.0f, 0.f);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
@@ -194,7 +194,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinControlObject);
 	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
 	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.21f);
-	makeAccountBtn->GetTransform()->SetPosition(960.f * width / 1920, 640.f * height / 1080, 0.f);
+	makeAccountBtn->GetTransform()->SetPosition(960.f * width / 1920, 960.0f, 0.f);
 	makeAccountBtn->AddComponent<BtnTextScript>();
 	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
