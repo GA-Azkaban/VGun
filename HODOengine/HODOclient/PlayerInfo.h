@@ -11,6 +11,7 @@ enum class eHITLOC
 };
 
 class HitEffect;
+class IndicatorPool;
 
 class PlayerInfo : public HDData::Script
 {
@@ -70,7 +71,7 @@ public:
 	void SetParticleObj(HDData::ParticleSystem* particle);
 
 	void SetHitEffectObj(HitEffect* hitEffect);
-	void PlayerAttacked();
+	void PlayerAttacked(Vector3 targetPos);
 
 private:
 	bool _isMyInfo = false;

@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -10,6 +10,7 @@
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
+#include "IndicatorPool.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -414,6 +415,8 @@ void InGameSceneView::Initialize()
 
 	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
 	hitEffectObj->AddComponent<HitEffect>();
+
+	IndicatorPool::Instance().player = player;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

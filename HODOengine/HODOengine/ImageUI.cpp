@@ -81,6 +81,21 @@ namespace HDData
 		_imageUI->ChangeScale(x, y);
 	}
 
+	void ImageUI::SetAngle(float angle)
+	{
+		_imageUI->SetAngle(angle);
+	}
+
+	void ImageUI::SetOrigin(float x, float y)
+	{
+		_imageUI->SetOrigin(x, y);
+	}
+
+	void ImageUI::SetCenter(float x, float y)
+	{
+		_imageUI->SetCenter(x, y);
+	}
+
 	void ImageUI::FadeIn()
 	{
 		return _imageUI->FadeIn();

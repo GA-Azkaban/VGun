@@ -15,6 +15,9 @@ namespace HDEngine
 		virtual float GetWidth() override = 0;
 		virtual float GetHeight() override = 0;
 		virtual void ChangeScale(float x, float y) = 0;
+		virtual void SetAngle(float angle) = 0;
+		virtual void SetOrigin(float x, float y) = 0;
+		virtual void SetCenter(float x, float y) = 0;
 
 		virtual void SetDefalutColor(DirectX::FXMVECTOR color) = 0;
 		virtual	void RetunDefalutColor() = 0;
