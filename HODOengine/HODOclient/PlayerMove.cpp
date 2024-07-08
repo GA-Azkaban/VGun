@@ -83,7 +83,6 @@ void PlayerMove::Update()
 	UpdateStateText();
 
 	// sound 관련
-	_playerAudio->UpdateSoundPos(_playerPos);
 	PlayPlayerSound();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
