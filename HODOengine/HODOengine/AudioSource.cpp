@@ -140,7 +140,7 @@ bool HDData::AudioSource::IsSoundPlaying(std::string soundName)
 	return false;
 }
 
-void HDData::AudioSource::UpdateSoundPos(Vector3 pos)
+void HDData::AudioSource::Update3DSoundPosition(std::string soundName, Vector3 position)
 {
-	_soundSystem.UpdateSoundPos(pos);
+	_soundSystem.Update3DSoundPosition(soundName, position);
 }

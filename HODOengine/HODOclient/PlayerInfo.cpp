@@ -1,6 +1,7 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
 #include "HitEffect.h"
+#include "IndicatorPool.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -175,9 +176,10 @@ void PlayerInfo::SetHitEffectObj(HitEffect* hitEffect)
 	_hitEffect = hitEffect;
 }
 
-void PlayerInfo::PlayerAttacked()
+void PlayerInfo::PlayerAttacked(Vector3 targetPos)
 {
 	_hitEffect->SetEffectOn();
+	IndicatorPool::Instance().SummonIndicator(targetPos);
 }
 
 bool& PlayerInfo::GetPlayerDie()

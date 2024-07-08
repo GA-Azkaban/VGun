@@ -225,7 +225,7 @@ namespace RocketCore::Graphics
 		CreateDepthStencilStates();
 
 		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
-		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());

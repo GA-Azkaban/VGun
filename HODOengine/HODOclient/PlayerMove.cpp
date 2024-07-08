@@ -83,7 +83,6 @@ void PlayerMove::Update()
 	UpdateStateText();
 
 	// sound 관련
-	_playerAudio->UpdateSoundPos(_playerPos);
 	PlayPlayerSound();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
@@ -261,7 +260,7 @@ bool PlayerMove::CheckIsOnGround()
 	Vector3 pos = this->GetTransform()->GetPosition();
 
 	float halfHeight = _playerColliderStanding->GetHeight() / 2.0f;
-	Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
+	Vector3 rayOrigin = Vector3(pos.x, pos.y, pos.z);
 
 	int colliderType = 0;
 	HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, 1.0f,0.0f }, 0.08f, &colliderType);
@@ -428,7 +427,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_playerColliderStanding->Move(direction, 8.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
 void PlayerMove::PlayPlayerSound()
@@ -770,7 +769,7 @@ void PlayerMove::UpdateStateText()
 
 	_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
-	std::string posText = std::to_string((int)(_playerPos.x * 10)) + "/" + std::to_string((int)(_playerPos.y * 10)) + "/" + std::to_string((int)(_playerPos.z * 10));
+	std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
 	_plPosText->SetText(posText);
 }
 
