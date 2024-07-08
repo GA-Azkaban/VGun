@@ -348,7 +348,7 @@ void RoundManager::SetHPObject(HDData::TextUI* txt)
 {
 	_hpUI = txt;
 }
- 
+
 void RoundManager::UpdateHPText()
 {
 	_hpUI->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));

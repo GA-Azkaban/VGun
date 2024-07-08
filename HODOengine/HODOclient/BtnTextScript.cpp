@@ -33,7 +33,7 @@ void BtnTextScript::Update()
 	if (button && button->GetButtonComp()->GetIsHovering())
 	{
 		newCursor = SetCursor(LoadCursor(NULL, IDC_HAND));
-		_childTextObject->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Gold);
+		_childTextObject->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
 	}
 	else
 	{
