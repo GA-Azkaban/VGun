@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -50,7 +50,7 @@ namespace HDEngine
 
 		// 스폰 지점
 		Vector3 _spawnPoint[20];
-		int _spawnIndex = 1;	// 0번은 wrong point
+		int _spawnIndex = 1;
 
 		// 구름 위치 지정
 		//std::vector<Vector3> _cloudPosition;	//57

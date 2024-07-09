@@ -300,24 +300,3 @@ void HDData::DynamicCollider::OnDisable()
 		}
 	}
 }
-
-void HDData::DynamicCollider::BuHwal(Vector3 pos)
-{
-	//_physScene->addActor(*_physXRigid);
-	physx::PxTransform transform = _physXRigid->getGlobalPose();
-	transform.p.x = pos.x;
-	transform.p.y = pos.y;
-	transform.p.z = pos.z;
-	_physXRigid->setGlobalPose(transform);
-
-	GetTransform()->SetPosition(pos);
-	
-
-	for (auto& child : _childColliders)
-	{
-		if (dynamic_cast<HDData::DynamicCollider*>(child) != nullptr)
-		{
-			dynamic_cast<HDData::DynamicCollider*>(child)->BuHwal(pos);
-		}
-	}
-}
