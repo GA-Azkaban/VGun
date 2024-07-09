@@ -52,7 +52,7 @@ namespace HDData
 
 		bool IsSoundPlaying(std::string soundName);
 
-		void UpdateSoundPos(Vector3 pos);
+		void Update3DSoundPosition(std::string soundName, Vector3 position);
 
 	private:
 		HDEngine::SoundSystem& _soundSystem;

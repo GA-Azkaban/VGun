@@ -1,4 +1,4 @@
-﻿#include <fstream>
+#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -57,6 +57,11 @@ namespace HDEngine
 	Vector3* SceneLoader::GetRespawnPoint()
 	{
 		return _spawnPoint;
+	}
+
+	Vector3* SceneLoader::GetCloudPoint()
+	{
+		return _cloudPoint;
 	}
 
 	void SceneLoader::LoadFromJson(std::string filePath)
@@ -159,10 +164,22 @@ namespace HDEngine
 				_spawnIndex++;
 			}
 
-			if (objName == "Cloud")
+			if (meshName.compare("Env_Cloud_01") == 0)
 			{
-				_cloudPosition[cloudIndex];
-				cloudIndex++;
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+			
+			if (meshName.compare("Env_Cloud_02") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+			
+			if (meshName.compare("Env_Cloud_03") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
 			}
 
 			switch (info.colliderType)

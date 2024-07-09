@@ -10,6 +10,9 @@
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
+#include "IndicatorPool.h"
+
+#include "CloudRotate.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -55,6 +58,12 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetEndCam(gameendCam);
 
+	// 구름 회전
+	auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
+	cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
+	cloudPivotObj->AddComponent<CloudRotateScript>();
+
+
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
@@ -98,7 +107,7 @@ void InGameSceneView::Initialize()
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
-	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
+	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.20f, 1.65f, 0.1f });
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
@@ -107,6 +116,7 @@ void InGameSceneView::Initialize()
 	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
+	fpMeshObj->GetTransform()->Rotate(0.0f, -5.0f, 0.0f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	fpMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
 	fpMeshComp->LoadAnimation("TP");
@@ -118,8 +128,8 @@ void InGameSceneView::Initialize()
 	// 총 생성
 	auto hand = fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.1321f, 9.6180f, 7.9218f);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.0453f, -0.6043f, -0.1055f, 0.7881f });
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.892f, 8.082f, 7.923f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.061f, -0.606f, -0.093f, 0.787f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_Wep_Revolver_02.fbx");
 	weaponComp->LoadMaterial(chMat, 0);
@@ -414,6 +424,8 @@ void InGameSceneView::Initialize()
 
 	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
 	hitEffectObj->AddComponent<HitEffect>();
+
+	IndicatorPool::Instance().player = player;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

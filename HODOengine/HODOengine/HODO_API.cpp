@@ -299,6 +299,10 @@ namespace API
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 
+		HODO_API HDData::Scene* GetCurrenScene()
+		{
+			return HDEngine::SceneSystem::Instance().GetCurrentScene();
+		}
 		HODO_API void Resize(int width, int height)
 		{
 			HDEngine::RenderSystem::Instance().OnResize(width, height);
@@ -323,7 +327,11 @@ namespace API
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetSceneName();
 		}
-	}
 
+		HODO_API Vector3* GetCloudPosition()
+		{
+			return HDEngine::SceneLoader::Instance().GetCloudPoint();
+		}
+	}
 
 }

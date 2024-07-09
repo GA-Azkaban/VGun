@@ -73,9 +73,6 @@
     <ClCompile Include="MeshTransformController.cpp">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
-    <ClCompile Include="Crosshair.cpp">
-      <Filter>02_Client\01_Script\UI\ScreenEffect\Crosshair</Filter>
-    </ClCompile>
     <ClCompile Include="FPAniScript.cpp">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClCompile>
@@ -106,14 +103,26 @@
     <ClCompile Include="BtnTextScript.cpp">
       <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
-    <ClCompile Include="LowHPEffect.cpp">
-      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02_Client\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Crosshair.cpp">
+      <Filter>02_Client\01_Script\UI\Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="Indicator.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator</Filter>
     </ClCompile>
     <ClCompile Include="HitEffect.cpp">
-      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect\HitEffect</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>02_Client\01_Script\UI\Timer</Filter>
+    <ClCompile Include="LowHPEffect.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\LowHPEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="IndicatorPool.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator\Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudRotate.cpp">
+      <Filter>02_Client\01_Script\Cloud</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,9 +213,6 @@
     <ClInclude Include="MeshTransformController.h">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
-    <ClInclude Include="Crosshair.h">
-      <Filter>02_Client\01_Script\UI\ScreenEffect\Crosshair</Filter>
-    </ClInclude>
     <ClInclude Include="FPAniScript.h">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
@@ -246,14 +252,26 @@
     <ClInclude Include="PlayerMoveState.h">
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="LowHPEffect.h">
-      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
+    <ClInclude Include="Timer.h">
+      <Filter>02_Client\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Crosshair.h">
+      <Filter>02_Client\01_Script\UI\Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="Indicator.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator</Filter>
     </ClInclude>
     <ClInclude Include="HitEffect.h">
-      <Filter>02_Client\01_Script\UI\ScreenEffect</Filter>
+      <Filter>02_Client\01_Script\UI\ScreenEffect\HitEffect</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>02_Client\01_Script\UI\Timer</Filter>
+    <ClInclude Include="LowHPEffect.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\LowHPEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="IndicatorPool.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="CloudRotate.h">
+      <Filter>02_Client\01_Script\Cloud</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +367,9 @@
     <Filter Include="02_Client\01_Script\UI">
       <UniqueIdentifier>{2bd02384-316b-4567-9388-d69965fb1901}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02_Client\01_Script\UI\Crosshair">
+      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
+    </Filter>
     <Filter Include="02_Client\01_Script\Player\Animation">
       <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
     </Filter>
@@ -373,11 +394,23 @@
     <Filter Include="02_Client\01_Script\UI\ScreenEffect">
       <UniqueIdentifier>{806ec663-771b-4be6-b490-fca586f0ac02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\01_Script\UI\Timer">
-      <UniqueIdentifier>{165843a8-9acb-43a1-8b5d-51219692351f}</UniqueIdentifier>
+    <Filter Include="02_Client\Util">
+      <UniqueIdentifier>{1d1a670f-3bd0-4346-9ff0-2b5462d7d4d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\01_Script\UI\ScreenEffect\Crosshair">
-      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\Indicator">
+      <UniqueIdentifier>{1bc41ce9-2817-4517-9c4c-5a1581bc3ed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\HitEffect">
+      <UniqueIdentifier>{2e67a855-474b-4fe8-a32a-83aeb9ad78fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\LowHPEffect">
+      <UniqueIdentifier>{4693641c-0923-4903-b9c3-ee2f3febd2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\Indicator\Pool">
+      <UniqueIdentifier>{c3e2d269-cb42-46a6-9294-404a10cf2436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Cloud">
+      <UniqueIdentifier>{29cee099-4558-4fc9-bb6b-a2a4fdbc28db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

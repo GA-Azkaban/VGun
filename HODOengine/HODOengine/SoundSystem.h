@@ -71,7 +71,7 @@ namespace HDEngine
 
 		bool IsSoundPlaying(std::string soundPath);
 
-		void UpdateSoundPos(Vector3 pos);
+		void Update3DSoundPosition(std::string soundName, Vector3 position);
 
 		std::unordered_map<std::string, std::string>& GetSoundPathList();
 		std::unordered_map<std::string, HDData::AudioClip>& GetSoundList();

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -40,6 +40,7 @@ namespace HDEngine
 	public:
 		void LoadUnityScene(std::string fileName, HDData::Scene* scene);
 		Vector3* GetRespawnPoint();
+		Vector3* GetCloudPoint();
 
 	private:
 		void LoadFromJson(std::string filePath);
@@ -52,7 +53,9 @@ namespace HDEngine
 		int _spawnIndex = 1;
 
 		// 구름 위치 지정
-		Vector3 _cloudPosition[30];
+		//std::vector<Vector3> _cloudPosition;	//57
+		Vector3 _cloudPoint[60];
+		int _cloudIndex = 0;
 	private:
 		HDData::Scene * now;
 		HDData::Material* _material;

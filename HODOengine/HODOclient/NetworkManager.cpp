@@ -123,7 +123,8 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		ConvertDataToPlayerInfo(hitPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
-		GameManager::Instance()->GetMyInfo()->PlayerAttacked();
+		Vector3 enemyPos{ playerData.transform().vector3().x(), playerData.transform().vector3().y(), playerData.transform().vector3().z() };
+		GameManager::Instance()->GetMyInfo()->PlayerAttacked(enemyPos);
 	}
 	else
 	{
