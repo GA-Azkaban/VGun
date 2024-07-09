@@ -32,6 +32,7 @@ namespace HDData
 
 			if (currentKey == keys.end())
 			{
+				// 현재 시간이 가장 앞에 있는 키의 시작시간보다 작으면
 				if (keys.begin()->first.first >= time)
 				{
 					return keys.begin()->second(keys.begin()->first.first);
@@ -43,6 +44,7 @@ namespace HDData
 			}
 			else
 			{
+				float ret = currentKey->second(time);
 				return currentKey->second(time);
 			}
 		}

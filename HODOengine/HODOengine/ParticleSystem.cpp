@@ -204,19 +204,20 @@ namespace HDData
 		}
 
 		// 활성화 되어있는 파티클들 정보 업데이트
+		float dt = _accumulatedDeltaTime / main.duration;
 		for (auto& p : _activatedParticles)
 		{
 			if (colorOverLifetime.enabled)
 			{
-				p.first->SetColor(colorOverLifetime.color.Evaluate(_accumulatedDeltaTime / main.duration));
+				p.first->SetColor(colorOverLifetime.color.Evaluate(dt));
 			}
 			if (sizeOverLifetime.enabled)
 			{
-				p.first->SetSize(p.first->GetStartSize() * sizeOverLifetime.size.Evaluate(_accumulatedDeltaTime / main.duration));
+				p.first->SetSize(p.first->GetStartSize() * sizeOverLifetime.size.Evaluate(dt));
 			}
 			if (rotationOverLifetime.enabled)
 			{
-				p.first->SetAngle(rotationOverLifetime.angularVelocity.Evaluate(_accumulatedDeltaTime / main.duration) * deltaTime);
+				p.first->SetAngle(rotationOverLifetime.angularVelocity.Evaluate(dt) * deltaTime);
 			}
 
 			// 파티클의 라이프타임과 파티클의 누적 델타타임을 비교해서 시간이 다 된 파티클을 지워준다
