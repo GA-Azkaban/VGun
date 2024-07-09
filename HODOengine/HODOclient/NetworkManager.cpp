@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -16,6 +16,10 @@
 #include "FadeInOut.h"
 
 #include <fstream>
+
+extern int g_argc;
+extern WCHAR g_ipAddress[256];
+extern int g_port;
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -43,29 +47,12 @@ void NetworkManager::Start()
 {
 	ServerPacketHandler::Init();
 
-	std::wifstream ipAddressFile("serverIP.txt");
-	std::wstring ipAddressStr = L"";
-
-	if (ipAddressFile.is_open())
-	{
-		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(ipAddressStr, 7776),
-			Horang::MakeShared<Horang::IocpCore>(),
-			Horang::MakeShared<ServerSession>,
-			1
-		);
-	}
-	else
-	{
-		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7776),
-			Horang::MakeShared<Horang::IocpCore>(),
-			Horang::MakeShared<ServerSession>,
-			1
-		);
-	}
-
-	ipAddressFile.close();
+	_service = Horang::MakeShared<Horang::ClientService>(
+		Horang::NetAddress(g_ipAddress, g_port),
+		Horang::MakeShared<Horang::IocpCore>(),
+		Horang::MakeShared<ServerSession>,
+		1
+	);
 
 	_service->Start();
 }
@@ -600,7 +587,13 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-	auto data = ConvertPlayerInfoToData(mine, info);
+	<<<<<< < HEAD
+		data = ConvertPlayerInfoToData(mine, info);
+
+	packet.mutable_playerdata()->CopyFrom(*data);
+	====== =
+		auto data = ConvertPlayerInfoToData(mine, info);
+
 	*packet.mutable_playerdata() = data;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
