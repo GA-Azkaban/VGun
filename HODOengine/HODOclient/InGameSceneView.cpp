@@ -64,7 +64,6 @@ void InGameSceneView::Initialize()
 	cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
 	cloudPivotObj->AddComponent<CloudRotateScript>();
 
-
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);

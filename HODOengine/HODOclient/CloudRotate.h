@@ -21,6 +21,4 @@ public:
 private:
 	HDData::GameObject* _pivotObject = nullptr;
 	std::vector<HDData::GameObject*> _childCloud;
-	//std::vector<Vector3>* _childPos = nullptr;
-	Vector3* _cloudPos = nullptr;
 };

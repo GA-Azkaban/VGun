@@ -53,7 +53,6 @@ namespace HDEngine
 		int _spawnIndex = 1;
 
 		// 구름 위치 지정
-		//std::vector<Vector3> _cloudPosition;	//57
 		Vector3 _cloudPoint[60];
 		int _cloudIndex = 0;
 	private:

@@ -164,6 +164,7 @@ namespace HDEngine
 				_spawnIndex++;
 			}
 
+			//포지션은 필요없지 않나?
 			if (meshName.compare("Env_Cloud_01") == 0)
 			{
 				_cloudPoint[_cloudIndex] = info.position;
