@@ -33,12 +33,23 @@ void LoginSceneView::LoginView()
 	UINT width = API::GetScreenWidth();
 	UINT height = API::GetScreenHeight();
 
+	int originalwidth = 4000;
+	int originalHeight = 2248;
+
+	int targetWidth = 2560;
+	int targetHeight = 1440;
+
+	float widthScale = static_cast<float>(targetWidth) / originalwidth;
+	float heightScale = static_cast<float>(targetHeight) / originalHeight;
+	float scale = (widthScale < heightScale) ? widthScale : heightScale;
+
 	/// main canvas
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "loginCanvas");
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
 	mainCanvasImage->SetImage("_blur_background_image.png");
-	mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	mainCanvasImage->ChangeScale(scale, scale);
 	mainCanvasImage->SetSortOrder(0.0f);
 	mainCanvasImage->SetActive(true);
 
@@ -148,6 +159,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
 	newIDLabel->GetTransform()->SetPosition(760.f * width / 1920, 340.f * height / 1080, 0.f);
 	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
+	newIDLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	newIDLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	newIDLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
@@ -161,6 +173,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
 	newPasswordLabel->GetTransform()->SetPosition(740.f * width / 1920, 440.f * height / 1080, 0.f);
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
+	newPasswordLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	newPasswordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
@@ -174,6 +187,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
 	newNicknameLabel->GetTransform()->SetPosition(740.f * width / 1920, 540.f * height / 1080, 0.f);
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
+	newNicknameLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
 	newNicknameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
@@ -288,9 +302,10 @@ void LoginSceneView::LoginView()
 
 	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinControlObject);
 	exitJoinBtn->AddComponent<BtnHoveringScript>();
-	exitJoinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.2f);
+	exitJoinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.5f);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
-	exitJoinBtn->GetTransform()->SetPosition(1300.f * width / 1920, 200.f * height / 1080, 0.f);
+	exitJoinBtn->GetComponent<HDData::Button>()->ChangeScale(2.0f,2.0f);
+	exitJoinBtn->GetTransform()->SetPosition((1300.f * width / 1920)-150, (200.f * height / 1080)+120, 0.f);
 	exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{

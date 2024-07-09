@@ -38,6 +38,9 @@ namespace RocketCore::Graphics
 		virtual void SetMetallicValue(float value, unsigned int element = 0) override;
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) override;
 		virtual void SetUseLight(bool useLight) override;
+		virtual void SetMeshActive(bool isActive, unsigned int index) override;
+		virtual void SetShadowActive(bool isActive) override;
+		virtual int GetMeshCount() override;
 
 	public:
 		void Render();
@@ -46,6 +49,8 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox GetBoundingBox();
 		bool IsCameraVisible();
 		bool IsLightVisible();
+		bool IsShadowActive();
+		bool IsReceiveTM();
 		void SetCameraVisible(bool isVisible);
 		void SetLightVisible(bool isVisible);
 
@@ -61,6 +66,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX m_world;
 
 		std::vector<Mesh*> m_meshes;
+		std::vector<bool> m_meshesActive;
 		std::vector<Material*> m_materials;
 		Node* m_node;
 		bool m_isActive;
@@ -74,5 +80,7 @@ namespace RocketCore::Graphics
 		DirectX::BoundingBox m_boundingBox;
 		bool m_cameraVisible; // camera culling
 		bool m_lightVisible; // light culling
+
+		bool m_isShadowActive;
 	};
 }

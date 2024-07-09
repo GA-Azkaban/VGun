@@ -40,9 +40,18 @@ void Timer::Update()
 			{
 				isActive = false;
 			}
-			onExpiration();
+
+			if (onExpiration)
+			{
+				onExpiration();
+			}
 		}
 	}
+}
+
+void Timer::Stop()
+{
+	isActive = false;
 }
 
 bool Timer::IsActive()

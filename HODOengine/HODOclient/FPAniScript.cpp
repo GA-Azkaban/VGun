@@ -1,5 +1,7 @@
 ﻿#include "FPAniScript.h"
 #include "GameManager.h"
+#include "PlayerMove.h"
+#include "PlayerMoveState.h"
 #include "NetworkManager.h"
 
 FPAniScript::FPAniScript()
@@ -10,33 +12,18 @@ FPAniScript::FPAniScript()
 void FPAniScript::Start()
 {
 	_animator = GetGameObject()->GetComponent<HDData::Animator>();
-	//_info = GetGameObject()->GetComponent<PlayerInfo>();
 }
 
 void FPAniScript::Update()
 {
 	// play animation in FP
-	if (API::GetMouseHold(MOUSE_LEFT))
+	if (API::GetMouseDown(MOUSE_LEFT))
 	{
 		_animator->GetAllAC()->SetTrigger("isFire");
 	}
 	if (API::GetKeyDown(DIK_R))
 	{
+		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(2) != ePlayerMoveState::RELOAD) return;
 		_animator->GetAllAC()->SetTrigger("isReload");
 	}
-	if (API::GetKeyDown(DIK_LSHIFT))
-	{
-		// roll
-		//NetworkManager::Instance().SendPlayRoll();
-	}
-
-
-
-	// die
-	//if (GetGameObject()->GetComponent<PlayerInfo>()->GetIsDie())
-	//{
-	//	_animator->GetAllAC()->SetBool("isDie", true);
-	//}
-
-
 }

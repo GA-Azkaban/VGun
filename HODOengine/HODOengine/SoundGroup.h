@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace HDData
 {
@@ -7,9 +7,9 @@ namespace HDData
 		BackgroundMusic,
 		EffectSound,
 		ErrorSound,
-		SoundGroupChannel2,
-		SoundGroupChannel3,
-		SoundGroupChannel4,
+		MoveSound,
+		GunSound,
+		ActionSound,
 		SoundGroupChannel5,
 		SoundGroupChannel6,
 		SoundGroupChannel7,

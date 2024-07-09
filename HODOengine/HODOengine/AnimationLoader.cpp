@@ -219,7 +219,7 @@ namespace HDEngine
 				}
 				continue;
 			}
-			
+
 			switch (link.param.type)
 			{
 				case 0:
@@ -235,7 +235,7 @@ namespace HDEngine
 				break;
 				case 2:
 				{
-					if(link.hasEngageMotion) con->GetState(link.start).MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.b_value, link.engageMotion);
+					if (link.hasEngageMotion) con->GetState(link.start).MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.b_value, link.engageMotion);
 					else con->GetState(link.start).MakeTransition(link.end).AddCondition(link.end, link.param.paramName, link.param.b_value);
 				}
 				break;
@@ -257,8 +257,8 @@ namespace HDEngine
 
 	std::string AnimationLoader::CutAnimationName(std::string ani)
 	{
-		// "AR_"의 위치 찾기
-		size_t arIndex = ani.find("AR_");
+		// "RV_"의 위치 찾기
+		size_t arIndex = ani.find("RV_");
 		if (arIndex == std::string::npos)
 		{
 			return ""; // "AR_"가 없으면 빈 문자열 반환

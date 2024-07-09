@@ -1,4 +1,4 @@
-#include "AudioSource.h"
+﻿#include "AudioSource.h"
 #include "SoundSystem.h"
 
 HDData::AudioSource::AudioSource()
@@ -24,6 +24,20 @@ void HDData::AudioSource::PlayOnce(std::string soundName)
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
 		_soundSystem.PlayOnce(iter->second);
+}
+
+void HDData::AudioSource::PlayOnceIfNotPlaying(std::string soundName)
+{
+	if (!IsSoundPlaying(soundName))
+	{
+		PlayOnce(soundName);
+	}
+}
+
+void HDData::AudioSource::PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup)
+{
+	StopSoundGroup(stopGroup);
+	PlayOnce(soundName);
 }
 
 void HDData::AudioSource::PlayRepeat(std::string soundName)
@@ -124,4 +138,9 @@ bool HDData::AudioSource::IsSoundPlaying(std::string soundName)
 	}
 
 	return false;
+}
+
+void HDData::AudioSource::Update3DSoundPosition(std::string soundName, Vector3 position)
+{
+	_soundSystem.Update3DSoundPosition(soundName, position);
 }

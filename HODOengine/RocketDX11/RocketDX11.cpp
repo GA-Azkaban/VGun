@@ -32,6 +32,7 @@
 #include "DebugMeshPass.h"
 #include "OutlinePass.h"
 #include "SkyboxPass.h"
+#include "PostProcessPass.h"
 #include "ToneMapPass.h"
 #include "SpritePass.h"
 #include "ParticlePass.h"
@@ -224,7 +225,7 @@ namespace RocketCore::Graphics
 		CreateDepthStencilStates();
 
 		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
-		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
@@ -243,6 +244,7 @@ namespace RocketCore::Graphics
 		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
 		_outlinePass = new OutlinePass(_deferredBuffers, _quadBuffer, _stencilEnableBuffer);
 		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
+		_postProcessPass = new PostProcessPass(_quadBuffer);
 		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
 		_spritePass = new SpritePass(_toneMapBuffer);
 		_particlePass = new ParticlePass(_deferredBuffers, _quadBuffer);
@@ -250,7 +252,7 @@ namespace RocketCore::Graphics
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
 		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
-		//Cubemap::Instance().SetEnvLightIntensity(0.8f);
+		Cubemap::Instance().SetEnvLightIntensity(1.5f);
 
 		/// DEBUG Obejct
 		//HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
@@ -284,16 +286,7 @@ namespace RocketCore::Graphics
 		_screenWidth = screenWidth;
 		_screenHeight = screenHeight;
 
-
-		// 윈도우의 중앙 좌표 계산
-		//int centerX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
-		//int centerY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
-
-		//int centerX = screenWidth / 2;
-		//int centerY = screenHeight / 2;
-
 		SetWindowPos(_hWnd, nullptr, 0, 0, screenWidth, screenHeight, SWP_NOMOVE | SWP_NOZORDER);
-		//SetWindowPos(_hWnd, nullptr, 0, 0, screenWidth, screenHeight, SWP_NOZORDER);
 
 		// 투영 행렬 재계산
 		Camera::GetMainCamera()->SetAspect(static_cast<float>(_screenWidth / _screenHeight));
@@ -406,6 +399,7 @@ namespace RocketCore::Graphics
 		_particlePass->Render();
 
 		SetDepthStencilState(_depthStencilStateDisable.Get());
+		//_postProcessPass->Render();
 		_toneMapPass->Render();
 		_spritePass->Render();
 

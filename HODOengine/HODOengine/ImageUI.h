@@ -29,6 +29,10 @@ namespace HDData
 
 		void ChangeScale(float x, float y);
 
+		void SetAngle(float angle);
+		void SetOrigin(float x, float y);
+		void SetCenter(float x, float y);
+
 		// fade In & out
 		void FadeIn();
 		void FadeOut();

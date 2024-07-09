@@ -8,10 +8,7 @@
       <Filter>01_Entry</Filter>
     </ClCompile>
     <ClCompile Include="CameraMove.cpp">
-      <Filter>02_Client\TestScene\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerMove.cpp">
-      <Filter>02_Client\TestScene\Player</Filter>
+      <Filter>02_Client\01_Script\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Client.cpp">
       <Filter>01_Entry</Filter>
@@ -52,76 +49,88 @@
     <ClCompile Include="MenuManager.cpp">
       <Filter>03_Manager\MenuManager</Filter>
     </ClCompile>
-    <ClCompile Include="UnitySceneLoaderTest.cpp" />
     <ClCompile Include="SliderSoundScript.cpp">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
     <ClCompile Include="TestScene.cpp">
-      <Filter>02_Client\TestScene\test</Filter>
-    </ClCompile>
-    <ClCompile Include="UnitySceneLoaderTest.cpp">
-      <Filter>02_Client\TestScene\SceneLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="FPAniScript.cpp">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
     <ClCompile Include="InGameSceneView.cpp">
       <Filter>04_SceneView\InGame</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerInfo.cpp">
-      <Filter>03_Manager\GameManager\PlayerInfo</Filter>
-    </ClCompile>
     <ClCompile Include="LobbySceneView.cpp">
       <Filter>04_SceneView\Lobby</Filter>
     </ClCompile>
-    <ClCompile Include="FSMtestScript.cpp" />
-    <ClCompile Include="SoundPlayer.cpp">
-      <Filter>04_SceneView\SoundPlayer</Filter>
-    </ClCompile>
-    <ClCompile Include="FadeInOut.cpp">
-      <Filter>04_SceneView\FadeInOut</Filter>
-    </ClCompile>
     <ClCompile Include="BtnHoveringScript.cpp">
-      <Filter>GameScript\ButtonScript</Filter>
-    </ClCompile>
-    <ClCompile Include="BtnTextScript.cpp" />
-    <ClCompile Include="FSMtestScript.cpp">
-      <Filter>02_Client\TestScene\Animation</Filter>
+      <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>03_Manager\GameManager</Filter>
     </ClCompile>
     <ClCompile Include="BtnImageScript.cpp">
-      <Filter>GameScript\ImageScript</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerTest.cpp">
-      <Filter>02_Client\TestScene\Player</Filter>
+      <Filter>02_Client\01_Script\UI\ImageScript</Filter>
     </ClCompile>
     <ClCompile Include="MeshTransformController.cpp">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
-    <ClCompile Include="Crosshair.cpp">
-      <Filter>02_Client\TestScene\Crosshair</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>02_Client\Timer</Filter>
-    </ClCompile>
-    <ClCompile Include="Ammo.cpp">
-      <Filter>02_Client\TestScene\Ammo</Filter>
+    <ClCompile Include="FPAniScript.cpp">
+      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClCompile>
     <ClCompile Include="TPScript.cpp">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClCompile>
-    <ClCompile Include="TestSceneSecond.cpp" />
-    <ClCompile Include="OthersAnim.cpp" />
-    <ClCompile Include="TrainigSceneView.cpp" />
+    <ClCompile Include="OthersAnim.cpp">
+      <Filter>02_Client\01_Script\Player\Animation\OhtersScript</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerTest.cpp">
+      <Filter>02_Client\01_Script\99_test</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMove.cpp">
+      <Filter>02_Client\01_Script\Player\PlayerMove</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerInfo.cpp">
+      <Filter>02_Client\01_Script\Player\PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeInOut.cpp">
+      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundPlayer.cpp">
+      <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
+    </ClCompile>
+    <ClCompile Include="TrainigSceneView.cpp">
+      <Filter>04_SceneView\Training</Filter>
+    </ClCompile>
+    <ClCompile Include="BtnTextScript.cpp">
+      <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02_Client\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Crosshair.cpp">
+      <Filter>02_Client\01_Script\UI\Crosshair</Filter>
+    </ClCompile>
+    <ClCompile Include="Indicator.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator</Filter>
+    </ClCompile>
+    <ClCompile Include="HitEffect.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\HitEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="LowHPEffect.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\LowHPEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="IndicatorPool.cpp">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator\Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="CloudRotate.cpp">
+      <Filter>02_Client\01_Script\Cloud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
       <Filter>01_Entry</Filter>
     </ClInclude>
     <ClInclude Include="CameraMove.h">
-      <Filter>02_Client\TestScene\Camera</Filter>
+      <Filter>02_Client\01_Script\Camera</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>00_default</Filter>
@@ -129,14 +138,8 @@
     <ClInclude Include="Resource.h">
       <Filter>00_default</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMove.h">
-      <Filter>02_Client\TestScene\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Client.h">
       <Filter>01_Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="TestSound.h">
-      <Filter>02_Client\TestScene\Player</Filter>
     </ClInclude>
     <ClInclude Include="LoginSceneView.h">
       <Filter>04_SceneView\Login</Filter>
@@ -146,9 +149,6 @@
     </ClInclude>
     <ClInclude Include="LobbyManager.h">
       <Filter>03_Manager\LobbyManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>02_Client\TestScene\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>03_Manager\NetworkManager\Protocol\ProtoBuf</Filter>
@@ -171,55 +171,29 @@
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>03_Manager\NetworkManager\Network</Filter>
     </ClInclude>
-    <ClInclude Include="FSMtestScript.h" />
-    <ClInclude Include="UnitySceneLoaderTest.h" />
     <ClInclude Include="MenuManager.h">
       <Filter>03_Manager\MenuManager</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>04_SceneView\MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundPlayer.h">
-      <Filter>04_SceneView\SoundPlayer</Filter>
-    </ClInclude>
-    <ClInclude Include="FadeInOut.h">
-      <Filter>04_SceneView\FadeInOut</Filter>
     </ClInclude>
     <ClInclude Include="TestScene.h">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
     <ClInclude Include="SliderSoundScript.h">
-      <Filter>02_Client\TestScene\test</Filter>
-    </ClInclude>
-    <ClInclude Include="FSMtestScript.h">
-      <Filter>02_Client\TestScene\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitySceneLoaderTest.h">
-      <Filter>02_Client\TestScene\SceneLoader</Filter>
+      <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
     <ClInclude Include="MenuManager.h">
       <Filter>03_Manager\MenuManager</Filter>
     </ClInclude>
     <ClInclude Include="MainMenu.h">
       <Filter>04_SceneView\MainMenu</Filter>
-    </ClInclude>
-    <ClInclude Include="FPAniScript.h">
-      <Filter>02_Client\TestScene\test</Filter>
     </ClInclude>
     <ClInclude Include="InGameSceneView.h">
       <Filter>04_SceneView\InGame</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerInfo.h">
-      <Filter>03_Manager\GameManager\PlayerInfo</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerState.h">
-      <Filter>03_Manager\GameManager\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="BtnTextScript.h">
-      <Filter>GameScript\TextScript</Filter>
-    </ClInclude>
     <ClInclude Include="BtnHoveringScript.h">
-      <Filter>GameScript\ButtonScript</Filter>
+      <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
     </ClInclude>
     <ClInclude Include="LobbySceneView.h">
       <Filter>04_SceneView\Lobby</Filter>
@@ -234,29 +208,71 @@
       <Filter>03_Manager\NetworkManager</Filter>
     </ClInclude>
     <ClInclude Include="BtnImageScript.h">
-      <Filter>GameScript\ImageScript</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerTest.h">
-      <Filter>02_Client\TestScene\Player</Filter>
+      <Filter>02_Client\01_Script\UI\ImageScript</Filter>
     </ClInclude>
     <ClInclude Include="MeshTransformController.h">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
-    <ClInclude Include="Crosshair.h">
-      <Filter>02_Client\TestScene\Crosshair</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>02_Client\Timer</Filter>
-    </ClInclude>
-    <ClInclude Include="Ammo.h">
-      <Filter>02_Client\TestScene\Ammo</Filter>
+    <ClInclude Include="FPAniScript.h">
+      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
     <ClInclude Include="TPScript.h">
-      <Filter>02_Client\TestScene\test</Filter>
+      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
-    <ClInclude Include="TestSceneSecond.h" />
-    <ClInclude Include="OthersAnim.h" />
-    <ClInclude Include="TrainigSceneView.h" />
+    <ClInclude Include="OthersAnim.h">
+      <Filter>02_Client\01_Script\Player\Animation\OhtersScript</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerTest.h">
+      <Filter>02_Client\01_Script\99_test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSound.h">
+      <Filter>02_Client\01_Script\99_test</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMove.h">
+      <Filter>02_Client\01_Script\Player\PlayerMove</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerInfo.h">
+      <Filter>02_Client\01_Script\Player\PlayerInfo</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>02_Client\01_Script\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeInOut.h">
+      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundPlayer.h">
+      <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
+    </ClInclude>
+    <ClInclude Include="TrainigSceneView.h">
+      <Filter>04_SceneView\Training</Filter>
+    </ClInclude>
+    <ClInclude Include="BtnTextScript.h">
+      <Filter>02_Client\01_Script\UI\ButtonScript</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMoveState.h">
+      <Filter>02_Client\01_Script\Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>02_Client\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Crosshair.h">
+      <Filter>02_Client\01_Script\UI\Crosshair</Filter>
+    </ClInclude>
+    <ClInclude Include="Indicator.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator</Filter>
+    </ClInclude>
+    <ClInclude Include="HitEffect.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\HitEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="LowHPEffect.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\LowHPEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="IndicatorPool.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="CloudRotate.h">
+      <Filter>02_Client\01_Script\Cloud</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -273,20 +289,8 @@
     <Filter Include="02_Client">
       <UniqueIdentifier>{342fcac3-0837-43be-b602-048e7ce5726e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\TestScene">
-      <UniqueIdentifier>{8664440e-bf82-4337-b7ec-0f46723b1ee6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00_default">
       <UniqueIdentifier>{c6d687a0-25a1-46f1-8015-03125a0d679d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Camera">
-      <UniqueIdentifier>{86ee13c8-2323-4661-8522-0a2947d039a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Player">
-      <UniqueIdentifier>{e9acabb0-cb8a-4c2a-92fc-47be2c4bbcc0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Weapon">
-      <UniqueIdentifier>{ac6e43e2-0c45-4b33-886f-5f2e52942ec8}</UniqueIdentifier>
     </Filter>
     <Filter Include="03_Manager">
       <UniqueIdentifier>{d039347b-5cfa-432c-9368-05a320664418}</UniqueIdentifier>
@@ -324,56 +328,89 @@
     <Filter Include="03_Manager\MenuManager">
       <UniqueIdentifier>{76b2ac2e-a96f-4c9f-a9be-c4305db62ff6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\TestScene\test">
-      <UniqueIdentifier>{fc498499-d32a-4872-8cb0-5341026958db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Animation">
-      <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\SceneLoader">
-      <UniqueIdentifier>{84041ead-e90d-49f3-8dce-9afc738d60c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03_Manager\RoundManager">
       <UniqueIdentifier>{e8233cb4-3695-440b-9f48-fad40d71449d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_SceneView\SoundPlayer">
-      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04_SceneView\FadeInOut">
-      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript">
-      <UniqueIdentifier>{ef0be1a9-d055-4c19-af9e-566ca7710276}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript\TextScript">
-      <UniqueIdentifier>{fb8b271c-0c2e-440a-b783-d04736d94db8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript\ButtonScript">
-      <UniqueIdentifier>{f79ac5cb-0ffd-4cb6-b845-794c6ce5da10}</UniqueIdentifier>
     </Filter>
     <Filter Include="03_Manager\GameManager">
       <UniqueIdentifier>{3e6093fd-b3ec-48df-b5cc-994a84f99236}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03_Manager\GameManager\PlayerInfo">
-      <UniqueIdentifier>{3fd426df-0e08-4a6c-a6df-2b67ce877b2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03_Manager\GameManager\PlayerState">
-      <UniqueIdentifier>{42b78a4a-0b1d-48f0-99cd-750b122aa05d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameScript\ImageScript">
-      <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Crosshair">
-      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\Timer">
-      <UniqueIdentifier>{7f117444-f2fc-40f0-af76-dcfecdaacb5f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\TestScene\Ammo">
-      <UniqueIdentifier>{576cd7fc-3567-4f56-be15-6f6ffab1e958}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04_SceneView\Training">
       <UniqueIdentifier>{28c0320e-f943-4eeb-892e-15b24ca4f1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script">
+      <UniqueIdentifier>{8664440e-bf82-4337-b7ec-0f46723b1ee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Camera">
+      <UniqueIdentifier>{86ee13c8-2323-4661-8522-0a2947d039a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player">
+      <UniqueIdentifier>{e9acabb0-cb8a-4c2a-92fc-47be2c4bbcc0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\99_test">
+      <UniqueIdentifier>{fc498499-d32a-4872-8cb0-5341026958db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player\PlayerMove">
+      <UniqueIdentifier>{f7b606cf-2407-4492-9e4f-83639dbe20e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player\PlayerInfo">
+      <UniqueIdentifier>{f93b7398-b7f8-4753-9cf0-3454704d6c50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player\PlayerState">
+      <UniqueIdentifier>{82644f2a-7750-428e-8e5a-3399a94be9a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Effect">
+      <UniqueIdentifier>{5a996260-c4e4-474d-874e-63697805f3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Effect\FadeInOut">
+      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI">
+      <UniqueIdentifier>{2bd02384-316b-4567-9388-d69965fb1901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\Crosshair">
+      <UniqueIdentifier>{035855eb-462d-491e-b939-ede3db1a5cbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player\Animation">
+      <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player\Animation\MyScript">
+      <UniqueIdentifier>{873f5d52-415b-49f4-848d-7d5ba42dd6aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Player\Animation\OhtersScript">
+      <UniqueIdentifier>{14d37520-ce9f-4583-a8f1-6f3d633b11bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Sound">
+      <UniqueIdentifier>{66f16f2e-0b2e-4c75-8e51-0e9e258984f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Sound\SoundPlayer">
+      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ButtonScript">
+      <UniqueIdentifier>{f79ac5cb-0ffd-4cb6-b845-794c6ce5da10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ImageScript">
+      <UniqueIdentifier>{8573ef6f-5601-4614-ae52-96f3c1dd665c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect">
+      <UniqueIdentifier>{806ec663-771b-4be6-b490-fca586f0ac02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\Util">
+      <UniqueIdentifier>{1d1a670f-3bd0-4346-9ff0-2b5462d7d4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\Indicator">
+      <UniqueIdentifier>{1bc41ce9-2817-4517-9c4c-5a1581bc3ed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\HitEffect">
+      <UniqueIdentifier>{2e67a855-474b-4fe8-a32a-83aeb9ad78fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\LowHPEffect">
+      <UniqueIdentifier>{4693641c-0923-4903-b9c3-ee2f3febd2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\ScreenEffect\Indicator\Pool">
+      <UniqueIdentifier>{c3e2d269-cb42-46a6-9294-404a10cf2436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Cloud">
+      <UniqueIdentifier>{29cee099-4558-4fc9-bb6b-a2a4fdbc28db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

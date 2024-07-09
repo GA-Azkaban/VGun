@@ -1,4 +1,4 @@
-﻿#include "GameObject.h"
+#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
 #include "SceneSystem.h"
@@ -120,14 +120,15 @@ namespace HDData
 			[&_colArr, &count](auto& iter){ iter->OnCollisionEnter(_colArr, count); });
 	}
 
-	void GameObject::OnCollisionStay()
-	{
-		if (!GetParentActive()) return;
-
-		for (int i = 0; i < _componentsIndexed.size(); ++i)
+	void GameObject::OnCollisionStay(PhysicsCollision** _colArr, unsigned int count)
+{
+		if (!_selfActive)
 		{
-			_componentsIndexed[i]->OnCollisionStay();
+			return;
 		}
+
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
+			[&_colArr, &count](auto& iter) { iter->OnCollisionStay(_colArr, count); });
 	}
 
 	void GameObject::OnCollisionExit(PhysicsCollision** _colArr, unsigned int count)
@@ -275,7 +276,12 @@ namespace HDData
 			GameObject* newObject = HDEngine::ObjectSystem::Instance().CreateObject(currentScene, "Armature", this);
 			newObject->GetTransform()->SetLocalTM(rendererNode->rootNodeInvTransform);
 			newObject->GetTransform()->Rotate(0.0f, 0.0f, 180.0f);
-			Node* root = FindNodeByName(rendererNode, "root");			
+			Node* root = FindNodeByName(rendererNode, "root");
+			if (root == nullptr)
+			{
+				root = FindNodeByName(rendererNode, "Root");
+			}
+
 			if (root != nullptr)
 			{
 				ProcessNode(currentScene, root, newObject);

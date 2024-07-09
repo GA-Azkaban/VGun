@@ -28,7 +28,7 @@ void TrainigSceneView::Initialzie()
 
 	// 내 캐릭터 생성
 	HDData::GameObject* player = API::CreateObject(_scene, "playerSelf");
-	player->LoadFBXFile("SKM_TP_X_Default.fbx");
+	player->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -50,9 +50,9 @@ void TrainigSceneView::Initialzie()
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.62f, 0.0f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.18f);
-	headCollider->SetParentCollider(playerCollider);
-	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+	//auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.18f);
+	//headCollider->SetParentCollider(playerCollider);
+	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -68,7 +68,7 @@ void TrainigSceneView::Initialzie()
 
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
-	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	fpMeshObj->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
 	fpMeshObj->AddComponent<FPAniScript>();

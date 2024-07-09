@@ -486,8 +486,6 @@ HODOengine/SoundLib/lib/.svn/pristine/9d/9d33f091a6ab1d4a53b59f8714875267ed6a585
 
 HODOengine/Resources/Models/SM/SM_renameRecur.bat
 
-HODOengine/HODOclient/Client.cpp
-
 HODOengine/Include/RapidJson/
 
 HODOengine/Resources/SceneData/lobbyData.json

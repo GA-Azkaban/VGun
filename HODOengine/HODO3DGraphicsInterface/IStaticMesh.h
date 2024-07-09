@@ -20,5 +20,8 @@ namespace HDEngine
 		virtual void SetMetallicValue(float value, unsigned int element = 0) = 0;
 		virtual void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0) = 0;
 		virtual void SetUseLight(bool useLight) = 0;
+		virtual void SetMeshActive(bool isActive, unsigned int index) = 0;
+		virtual void SetShadowActive(bool isActive) = 0;
+		virtual int GetMeshCount() = 0;
 	};
 }

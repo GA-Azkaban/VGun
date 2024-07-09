@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include "MathHeader.h"
 #include "dllExporter.h"
@@ -26,6 +26,8 @@ namespace HDData
 			float minDistance, float maxDistance);
 
 		void PlayOnce(std::string soundName);
+		void PlayOnceIfNotPlaying(std::string soundName);
+		void PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup);
 		void PlayRepeat(std::string soundName);
 
 		void Play3DOnce(std::string soundName, Vector3 startPos);
@@ -49,6 +51,8 @@ namespace HDData
 		void SetSoundVolumeAll(float volume);
 
 		bool IsSoundPlaying(std::string soundName);
+
+		void Update3DSoundPosition(std::string soundName, Vector3 position);
 
 	private:
 		HDEngine::SoundSystem& _soundSystem;

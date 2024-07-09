@@ -16,6 +16,8 @@ HDData::DynamicSphereCollider::DynamicSphereCollider(float rad, int colFilterNum
 	_debugStruct = _sphereDebugStruct;
 
 	_collisionFilterNum = colFilterNum;
+
+	_colType = eColliderRole::PLAYER;
 }
 
 float HDData::DynamicSphereCollider::GetWidth() const

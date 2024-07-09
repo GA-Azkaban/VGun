@@ -1,4 +1,4 @@
-﻿#include <fstream>
+#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -14,7 +14,6 @@
 #include "MeshRenderer.h"
 #include "StaticBoxCollider.h"
 #include "DynamicSphereCollider.h"
-#include "MaterialManager.h"
 
 using rapidjson::Document;
 using rapidjson::SizeType;
@@ -27,17 +26,42 @@ namespace HDEngine
 {
 	SceneLoader::SceneLoader()
 	{
-
+		for (auto& pos : _spawnPoint)
+		{
+			pos = { 1, 2, 1 };
+		}
 	}
 
 	void SceneLoader::LoadUnityScene(std::string fileName, HDData::Scene* scene)
 	{
 		now = scene;
 
+		HDEngine::MaterialDesc mat;
+		mat.materialName = "PolygonWestern_Texture_01_A";
+		mat.albedo = "PolygonWestern_Texture_01_A.png";
+		mat.metallic = "PolygonWestern_Texture_Metallic.png";
+
+		_material = MaterialManager::Instance().CreateMaterial(mat);
+
+		HDEngine::MaterialDesc plane;
+		plane.color = { 142, 118, 89, 255 };
+
+		_plane = MaterialManager::Instance().CreateMaterial(plane);
+
 		LoadFromJson(SCENEDATA_PATH + fileName);
 		CreateObject(scene);
 		LinkHierachy();
 		SetTransform();
+	}
+
+	Vector3* SceneLoader::GetRespawnPoint()
+	{
+		return _spawnPoint;
+	}
+
+	Vector3* SceneLoader::GetCloudPoint()
+	{
+		return _cloudPoint;
 	}
 
 	void SceneLoader::LoadFromJson(std::string filePath)
@@ -108,18 +132,18 @@ namespace HDEngine
 
 			std::string meshName = info.meshName;
 
+			// 스폰위치를 위한 변수
+			std::string objName = info.name;
+			Vector3 tempPosition = info.position;
+
+			// 구름 인덱스
+			int cloudIndex = 0;
+
 			HDData::MeshRenderer* meshRenderer = object->AddComponent<HDData::MeshRenderer>();
 
-			if (meshName == "Plane" ||
-				meshName == "Cube")
+			if (meshName == "Plane")
 			{
 				info.meshName = "Cube";
-				meshRenderer->LoadMesh("primitiveCube");
-			}
-			else if (meshName == "Stair" ||
-				meshName == "2FPlane")
-			{
-				info.meshName = "2F";
 				meshRenderer->LoadMesh("primitiveCube");
 			}
 			else if (info.meshName != "")
@@ -127,19 +151,50 @@ namespace HDEngine
 				meshRenderer->LoadMesh("SM_" + info.meshName + ".fbx");
 			}
 
+			// 잘못된 위치
+			if (objName == "WrongPoint")
+			{
+				_spawnPoint[0] = tempPosition;
+			}
+
+			if (objName == "SpawnPoint")
+			{
+				// 스폰 위치 받아와서 배열에 추가
+				_spawnPoint[_spawnIndex] = tempPosition;
+				_spawnIndex++;
+			}
+
+			if (meshName.compare("Env_Cloud_01") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+			
+			if (meshName.compare("Env_Cloud_02") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+			
+			if (meshName.compare("Env_Cloud_03") == 0)
+			{
+				_cloudPoint[_cloudIndex] = info.position;
+				_cloudIndex++;
+			}
+
 			switch (info.colliderType)
 			{
 				case 1:	// box static
 				{
 					auto col = object->AddComponent<HDData::StaticBoxCollider>();
-					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
+					col->SetPositionOffset({ -info.colliderCenter.x, info.colliderCenter.y, -info.colliderCenter.z });
 					col->SetScaleOffset(info.boxColliderSize);
 				}
 				break;
 				case 2:	// sphere dynamic
 				{
 					auto col = object->AddComponent<HDData::DynamicSphereCollider>();
-					col->SetPositionOffset({ info.colliderCenter.x, info.colliderCenter.y, info.colliderCenter.z });
+					col->SetPositionOffset({ -info.colliderCenter.x, info.colliderCenter.y, -info.colliderCenter.z });
 					col->SetScaleOffset({ info.sphereColliderRadius, info.sphereColliderRadius, info.sphereColliderRadius });
 				}
 				break;
@@ -147,11 +202,18 @@ namespace HDEngine
 					break;
 			}
 
-			for (int m = 0; m < info.materials.size(); m++)
+			int m_size = meshRenderer->GetMeshCount();
+
+			for (int m = 0; m < m_size; m++)
 			{
-				auto mat = HDEngine::MaterialManager::Instance().GetMaterial(info.materials[m]);
-				if (mat == NULL) continue;
-				meshRenderer->LoadMaterial(mat, m);
+				if (info.meshName == "Cube")
+				{
+					meshRenderer->LoadMaterial(_plane, m);
+				}
+				else
+				{
+					meshRenderer->LoadMaterial(_material, m);
+				}
 			}
 
 			_gameObjectMap.insert(std::make_pair(info.id, object));
@@ -190,6 +252,8 @@ namespace HDEngine
 			{
 				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
 			}
+
+			object->GetTransform()->Rotate(0, -180, 0);
 
 		}
 	}

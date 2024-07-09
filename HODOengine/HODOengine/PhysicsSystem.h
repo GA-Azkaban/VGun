@@ -51,6 +51,8 @@ namespace HDEngine
 		void CreateTriggerBoxCollider(HDData::GameObject* object);
 		void CreateParticleSphereCollider(HDData::GameObject* object);
 
+		void ResizeCollider();
+
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
 		HDData::Collider* RayCast(float originX, float originY, float originZ, float directionX, float directionY, float directionZ, float length, int* type);
@@ -73,9 +75,12 @@ namespace HDEngine
 		std::vector<physx::PxRigidStatic*> _rigidStatics;
 		std::vector<physx::PxRigidStatic*> _movableStatics;
 		std::vector<physx::PxJoint*> _joints;
-		int _directionX;
-		int _directionZ;
 
 		std::unique_ptr<CollisionCallback> _collisionCallback;
+
+	private:
+		// 맘에 들진 않지만 플레이어를 여기에 저장해두자
+		physx::PxRigidDynamic* _playerRigid;
+		physx::PxShape* _playerShape;
 	};
 }
