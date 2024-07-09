@@ -327,6 +327,11 @@ namespace API
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetSceneName();
 		}
+
+		HODO_API Vector3* GetCloudPosition()
+		{
+			return HDEngine::SceneLoader::Instance().GetCloudPoint();
+		}
 	}
 
 }

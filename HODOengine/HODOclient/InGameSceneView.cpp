@@ -13,6 +13,8 @@
 #include "IndicatorPool.h"
 #include "MeshTransformController.h"
 
+#include "CloudRotate.h"
+
 InGameSceneView::InGameSceneView()
 {
 
@@ -56,6 +58,12 @@ void InGameSceneView::Initialize()
 	auto gameendCamcomp = gameendCam->AddComponent<HDData::Camera>();
 
 	RoundManager::Instance()->SetEndCam(gameendCam);
+
+	// 구름 회전
+	auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
+	cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
+	cloudPivotObj->AddComponent<CloudRotateScript>();
+
 
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";

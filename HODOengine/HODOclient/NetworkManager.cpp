@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -7,15 +7,19 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
-#include "PlayerMove.h"
-
 #include "RoundManager.h"
 #include "LobbyManager.h"
 #include "GameManager.h"
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
+#include "FadeInOut.h"
+
 #include <fstream>
+
+extern int g_argc;
+extern WCHAR g_ipAddress[256];
+extern int g_port;
 
 NetworkManager& NetworkManager::Instance()
 {
@@ -43,29 +47,12 @@ void NetworkManager::Start()
 {
 	ServerPacketHandler::Init();
 
-	std::wifstream ipAddressFile("serverIP.txt");
-	std::wstring ipAddressStr = L"";
-
-	if (ipAddressFile.is_open())
-	{
-		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(ipAddressStr, 7776),
-			Horang::MakeShared<Horang::IocpCore>(),
-			Horang::MakeShared<ServerSession>,
-			1
-		);
-	}
-	else
-	{
-		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7777),
-			Horang::MakeShared<Horang::IocpCore>(),
-			Horang::MakeShared<ServerSession>,
-			1
-		);
-	}
-
-	ipAddressFile.close();
+	_service = Horang::MakeShared<Horang::ClientService>(
+		Horang::NetAddress(g_ipAddress, g_port),
+		Horang::MakeShared<Horang::IocpCore>(),
+		Horang::MakeShared<ServerSession>,
+		1
+	);
 
 	_service->Start();
 }
@@ -81,10 +68,7 @@ void NetworkManager::Update()
 	for (auto& [uid, player] : playerObj)
 	{
 		auto info = player->GetComponent<PlayerInfo>();
-		if (!info->GetIsDie())
-		{
-			Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
-		}
+		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
 	}
 }
 
@@ -144,9 +128,6 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 
 	if (myUID == deathPlayerData.userinfo().uid())
 	{
-		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->OnDisable();
-		//GameManager::Instance()->GetMyObject()->SetSelfActive(false);
-
 		ConvertDataToPlayerInfo(deathPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -154,9 +135,6 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 	else
 	{
 		// 모든 데스 갱신
-		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->OnDisable();
-		//RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->SetSelfActive(false);
-
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -185,35 +163,16 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3(10.0f, 10.0f, 10.0f);
-		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->OnEnable();
-		GameManager::Instance()->GetMyObject()->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
-		//GameManager::Instance()->GetMyObject()->SetSelfActive(true);
-		//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
-
-		PlayerInfo* info = GameManager::Instance()->GetMyObject()->GetComponent<PlayerInfo>();
-
-		info->SetServerTransform(pos, Quaternion());
-
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
 	else
 	{
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-
-		auto pos = Vector3(10.0f, 10.0f, 10.0f);
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->OnEnable();
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<HDData::DynamicCapsuleCollider>()->BuHwal(pos);
-		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->SetSelfActive(true);
-		//RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
-
-		PlayerInfo* info = GameManager::Instance()->GetMyObject()->GetComponent<PlayerInfo>();
-
-		info->SetServerTransform(pos, Quaternion());
-
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -562,7 +521,8 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
 	RoundManager::Instance()->SetIsRoundStart(false);
-	RoundManager::Instance()->EndGame();
+	RoundManager::Instance()->GetGameEndTimer()->Start();
+	FadeInOut::Instance().FadeIn();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -627,7 +587,13 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-	auto data = ConvertPlayerInfoToData(mine, info);
+	<<<<<< < HEAD
+		data = ConvertPlayerInfoToData(mine, info);
+
+	packet.mutable_playerdata()->CopyFrom(*data);
+	====== =
+		auto data = ConvertPlayerInfoToData(mine, info);
+
 	*packet.mutable_playerdata() = data;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
@@ -690,8 +656,8 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
 {
-	//mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
-	//mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
+	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
 
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());

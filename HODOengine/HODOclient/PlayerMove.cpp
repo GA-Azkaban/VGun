@@ -53,7 +53,7 @@ void PlayerMove::Update()
 		if (_isDie)
 		{
 			_isDie = false;
-			//Respawn(TODO);
+			Respawn();
 		}
 		else
 		{
@@ -1375,7 +1375,7 @@ void PlayerMove::Die()
 
 void PlayerMove::Respawn()
 {
-	//_playerColliderStanding->OnEnable();
+	_playerColliderStanding->OnEnable();
 }
 
 void PlayerMove::DecidePlayerState()
