@@ -13,7 +13,6 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
-#include "FadeInOut.h"
 
 #include <fstream>
 
@@ -535,7 +534,6 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	API::SetRecursiveMouseMode(false);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
-	FadeInOut::Instance().FadeIn();
 }
 
 void NetworkManager::SendPlayUpdate()
