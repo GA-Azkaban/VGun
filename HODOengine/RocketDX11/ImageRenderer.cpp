@@ -86,7 +86,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	{
 		if (_fadeAlpha <= 1.0f)
 		{
-			_fadeAlpha += 0.002f;
+			_fadeAlpha += 0.02f;
 			if (_fadeAlpha > 1.0f)
 			{
 				_fadeAlpha = 1.0f;
@@ -102,7 +102,7 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	{
 		if (_fadeAlpha >= 0.0f)
 		{
-			_fadeAlpha -= 0.002f;
+			_fadeAlpha -= 0.02f;
 			if (_fadeAlpha < 0.0f)
 			{
 				_fadeAlpha = 0.0f;

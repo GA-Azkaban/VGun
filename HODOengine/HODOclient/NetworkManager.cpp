@@ -13,6 +13,8 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
+#include "FadeInOut.h"
+
 #include <fstream>
 
 NetworkManager& NetworkManager::Instance()
@@ -56,7 +58,7 @@ void NetworkManager::Start()
 	else
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7777),
+			Horang::NetAddress(L"172.16.1.13", 7776),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -531,7 +533,8 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
 	RoundManager::Instance()->SetIsRoundStart(false);
-	RoundManager::Instance()->EndGame();
+	RoundManager::Instance()->GetGameEndTimer()->Start();
+	FadeInOut::Instance().FadeIn();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -689,7 +692,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	current->SetPosition(interpolatedPos);
+	//current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)

@@ -420,7 +420,7 @@ void MainMenuScene::MainMenu()
 	roomSetBtn->GetTransform()->SetPosition(960.0f * width / 1920, 840.0f * height / 1080, 0.f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
+	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.9f);
 	roomSetBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	roomSetBtn->AddComponent<BtnTextScript>();
 
