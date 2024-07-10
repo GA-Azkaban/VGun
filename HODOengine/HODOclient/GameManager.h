@@ -18,8 +18,6 @@ public:
 	void SetMyObject(HDData::GameObject* obj);
 	HDData::GameObject* GetMyObject();
 
-	
-
 private:
 	HDData::GameObject* _myObj;
 	PlayerInfo* _myInfo;

@@ -43,3 +43,5 @@ HDData::GameObject* GameManager::GetMyObject()
 	return _myObj;
 }
 
+
+
