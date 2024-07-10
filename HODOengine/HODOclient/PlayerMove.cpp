@@ -546,7 +546,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::IDLE:
 		{
 
-			break;
+			break;	
 		}
 		case ePlayerMoveState::WALK:
 		{

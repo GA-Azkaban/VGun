@@ -48,7 +48,7 @@ void NetworkManager::Start()
 	if (ipAddressFile.is_open())
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(ipAddressStr, 7776),
+			Horang::NetAddress(ipAddressStr, 7777),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -57,7 +57,7 @@ void NetworkManager::Start()
 	else
 	{
 		_service = Horang::MakeShared<Horang::ClientService>(
-			Horang::NetAddress(L"172.16.1.13", 7776),
+			Horang::NetAddress(L"172.16.1.13", 7777),
 			Horang::MakeShared<Horang::IocpCore>(),
 			Horang::MakeShared<ServerSession>,
 			1
@@ -176,7 +176,9 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = Vector3{ 0, 2, 0 };
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{0, 0, 0, 0});
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -184,7 +186,10 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = Vector3{ 0, 2, 0 };
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -510,8 +515,10 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	RoundManager::Instance()->InitGame();
 
 	// 스폰 포인트로 위치 갱신
-	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+	auto pos = API::GetSpawnPointArr()[spawnpointindex];
+	//auto pos = Vector3{ 0, 2, 0 };
+	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{0, 0, 0, 0});
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
@@ -691,7 +698,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	//current->SetPosition(interpolatedPos);
+	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)
