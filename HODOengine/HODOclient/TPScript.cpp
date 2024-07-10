@@ -96,4 +96,13 @@ void TPScript::Update()
 		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(1) != ePlayerMoveState::TUMBLE) return;
 		_animator->GetAllAC()->SetTrigger("isRollFront");
 	}
+
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
+	{
+		_animator->GetAllAC()->SetBool("isDie", true);
+	}
+	else
+	{
+		_animator->GetAllAC()->SetBool("isDie", false);
+	}
 }
