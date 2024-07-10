@@ -4,11 +4,7 @@ IndicatorPool* IndicatorPool::_instance = nullptr;
 
 IndicatorPool::IndicatorPool()
 {
-	for(int i = 0; i < 10; ++i)
-	{
-		auto indicator = Indicator::CreateIndicator();
-		_indicatorList.push_back(indicator);
-	}
+	
 }
 
 IndicatorPool::~IndicatorPool()
@@ -34,8 +30,11 @@ Indicator* IndicatorPool::SummonIndicator(Vector3 targetPos)
 {
 	if(_indicatorList.empty())
 	{
-		auto indicator = Indicator::CreateIndicator();
-		_indicatorList.push_back(indicator);		
+		for (int i = 0; i < 10; ++i)
+		{
+			auto indicator = Indicator::CreateIndicator();
+			_indicatorList.push_back(indicator);
+		}
 	}
 
 	Indicator* indicator = _indicatorList.back();

@@ -27,6 +27,7 @@ namespace HDData
 
 		void PlayOnce(std::string soundName);
 		void PlayOnceIfNotPlaying(std::string soundName);
+		void PlayOnceIfNotPlaying2(std::string soundName1, std::string soundName2);
 		void PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup);
 		void PlayRepeat(std::string soundName);
 

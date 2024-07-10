@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -380,6 +380,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
+	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
 	API::LoadSceneByName("MainMenu");
 }
 

@@ -11,7 +11,7 @@
 #include "LowHPEffect.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
-#include "MeshTransformController.h"
+#include "IndicatorTest.h"
 
 #include "CloudRotate.h"
 
@@ -139,12 +139,22 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(chMat, 3);
 	weaponComp->SetShadowActive(false);
 
+	// 궤적
+	auto trailObj = API::CreateObject(_scene, "Trail");
+	trailObj->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
+	auto trailComp = trailObj->AddComponent<HDData::MeshRenderer>();
+	trailComp->LoadMesh("trail.fbx");
+	trailComp->LoadMaterial(chMat, 0);
+	trailComp->LoadMaterial(chMat, 1);
+	trailComp->LoadMaterial(chMat, 2);
+	trailComp->LoadMaterial(chMat, 3);
+	trailComp->SetShadowActive(false);
+
 	// 총구 이펙트
 	auto particleSystemObj = API::CreateObject(_scene, "ParticleEffect", weaponTest);
 	particleSystemObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
 	particleSystemObj->GetTransform()->SetLocalPosition(0.0f, 40.5722f, 6.8792f);
 	particleSystemObj->GetTransform()->SetLocalRotation(-0.6989f, 0.0f, 0.0f, -0.7150f);
-	particleSystemObj->AddComponent<MeshTransformController>();
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
 	particleSystem->main.duration = 0.08f;
 	//particleSystem->main.duration = 2000.0f;
@@ -218,7 +228,7 @@ void InGameSceneView::Initialize()
 	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7-2.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
-	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload2.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload3.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
 	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
@@ -423,6 +433,9 @@ void InGameSceneView::Initialize()
 	hitEffectObj->AddComponent<HitEffect>();
 
 	IndicatorPool::Instance().player = player;
+
+	auto indicatorTest = API::CreateObject(_scene, "IndicatorTest");
+	indicatorTest->AddComponent<IndicatorTest>();
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

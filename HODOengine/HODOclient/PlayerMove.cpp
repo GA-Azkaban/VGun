@@ -366,6 +366,7 @@ void PlayerMove::ShootGun()
 	{
 		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
+		_hitPoint = hitPoint;
 	}
 
 	// 적군의 머리를 맞췄을 때
@@ -425,6 +426,17 @@ void PlayerMove::ApplyRecoil()
 
 	_rotAngleY += _sprayCamera[_shootCount].first;
 	_rotAngleX += _sprayCamera[_shootCount].second;
+}
+
+void PlayerMove::ShootTrail(Vector3 endPoint)
+{
+	Vector3 forward = _headCam->GetTransform()->GetForward();
+	Vector3 up = _headCam->GetTransform()->GetUp();
+	Vector3 right = _headCam->GetTransform()->GetRight();
+
+	Vector3 startPoint = _headCam->GetTransform()->GetPosition() + forward * 1.75f - up * 0.15f + right * 0.25f;
+	Vector3 endPoint2 = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 50.0f;
+	API::DrawLine(startPoint, endPoint2, Vector4(1.0f, 0.0f, 0.0f, 0.0f));
 }
 
 void PlayerMove::Tumble(Vector3 direction)
@@ -524,7 +536,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_fpmesh->SetMeshActive(false, 0);
 			_playerAudio->PlayOnce("reload");
-			_reloadTimer = 3.0f;
+			_reloadTimer = 2.6f;
 
 			break;
 		}
@@ -555,7 +567,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying("walk");
+			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
 			break;
 		}
@@ -563,7 +575,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying("run");
+			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
 			break;
 		}
@@ -588,6 +600,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::FIRE:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			ShootTrail(_hitPoint);
 
 			break;
 		}
