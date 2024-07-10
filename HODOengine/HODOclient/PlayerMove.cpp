@@ -366,6 +366,7 @@ void PlayerMove::ShootGun()
 	{
 		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
+		_hitPoint = hitPoint;
 	}
 
 	// 적군의 머리를 맞췄을 때
@@ -425,6 +426,17 @@ void PlayerMove::ApplyRecoil()
 
 	_rotAngleY += _sprayCamera[_shootCount].first;
 	_rotAngleX += _sprayCamera[_shootCount].second;
+}
+
+void PlayerMove::ShootTrail(Vector3 endPoint)
+{
+	Vector3 forward = _headCam->GetTransform()->GetForward();
+	Vector3 up = _headCam->GetTransform()->GetUp();
+	Vector3 right = _headCam->GetTransform()->GetRight();
+
+	Vector3 startPoint = _headCam->GetTransform()->GetPosition() + forward * 1.8f - up * 0.15f + right * 0.15f;
+	Vector3 endPoint2 = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 50.0f;
+	API::DrawLine(startPoint, endPoint2, Vector4(1.0f, 0.0f, 0.0f, 0.0f));
 }
 
 void PlayerMove::Tumble(Vector3 direction)
@@ -588,6 +600,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::FIRE:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			ShootTrail(_hitPoint);
 
 			break;
 		}

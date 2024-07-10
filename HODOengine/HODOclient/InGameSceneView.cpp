@@ -139,6 +139,17 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(chMat, 3);
 	weaponComp->SetShadowActive(false);
 
+	// 궤적
+	auto trailObj = API::CreateObject(_scene, "Trail");
+	trailObj->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
+	auto trailComp = trailObj->AddComponent<HDData::MeshRenderer>();
+	trailComp->LoadMesh("trail.fbx");
+	trailComp->LoadMaterial(chMat, 0);
+	trailComp->LoadMaterial(chMat, 1);
+	trailComp->LoadMaterial(chMat, 2);
+	trailComp->LoadMaterial(chMat, 3);
+	trailComp->SetShadowActive(false);
+
 	// 총구 이펙트
 	auto particleSystemObj = API::CreateObject(_scene, "ParticleEffect", weaponTest);
 	particleSystemObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
