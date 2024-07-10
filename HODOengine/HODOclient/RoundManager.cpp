@@ -3,10 +3,11 @@
 #include "LobbyManager.h"
 #include "PlayerMove.h"
 #include "GameManager.h"
+#include "MenuManager.h"
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
-#include "GameManager.h"
+#include "FadeInOut.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -27,12 +28,29 @@ RoundManager::RoundManager()
 
 void RoundManager::Start()
 {
-
+	_gameEndTimer = new Timer;
+	_gameEndTimer->duration = 2;
+	_gameEndTimer->onExpiration = [&]() {
+		FadeInOut::Instance().FadeOut();
+		_showResultTimer->Start();
+		_resultTimerUI->GetGameObject()->SetSelfActive(true);
+		EndGame();
+		};
+	
+	_showResultTimer = new Timer;
+	_showResultTimer->duration = 10;
+	_showResultTimer->onExpiration = [&]() {
+		ExitGame();
+		};
 }
 
 void RoundManager::Update()
 {
+	UpdateResultTimer();
+
 	if (!_isRoundStart) return;
+
+	UpdateRound();
 
 	const uint64 frame = 16;
 	static auto updateTick = 0;
@@ -55,13 +73,27 @@ void RoundManager::SetRoundScene(HDData::Scene* scene)
 void RoundManager::InitGame()
 {
 	// 라운드 초기화
+
 	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
+	_nowMaxKill = 0;
+	_winnerUID = NULL;
 
-	for (auto& obj : _playerObjs)
+	// UI 활성화, 비활성화
+	_winnerTXT->GetGameObject()->SetSelfActive(false);
+	for (int i = 0; i < 5; ++i)
 	{
-		obj->SetSelfActive(false);
+		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
 	}
+
+	for (auto& p : _playerObjs)
+	{
+		p->SetSelfActive(false);
+	}
+
+	_timerUI->GetGameObject()->SetSelfActive(true);
+	_hpUI->GetGameObject()->SetSelfActive(true);
+	_ammoUI->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -75,13 +107,16 @@ void RoundManager::InitGame()
 
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
-			_myObj->AddComponent<PlayerInfo>(info)->SetIsMyInfo(true);
 			GameManager::Instance()->SetMyObject(_myObj);
+			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 		else
 		{
 			_playerObjs[index]->AddComponent<PlayerInfo>(info);
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
+			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 
 		++index;
@@ -92,21 +127,38 @@ void RoundManager::InitGame()
 
 void RoundManager::EndGame()
 {
+	// UI 활성화, 비활성화
+	_timerUI->GetGameObject()->SetSelfActive(false);
+	_hpUI->GetGameObject()->SetSelfActive(false);
+	_ammoUI->GetGameObject()->SetSelfActive(false);
 
+	for (int i = 0; i < 6; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
+	}
+
+	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
+	SetIsRoundStart(false);
+	_endObj->SetSelfActive(true);
+	CheckWinner();
 }
 
 void RoundManager::InitRound()
 {
-	// 타이머 초기화
-	this->_timer = 0;
+	for (int i = 0; i < _players.size() + 1; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
+	}
 
 	HDData::SkinnedMeshRenderer* mesh = nullptr;
 	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 
 	_myObj->GetComponent<PlayerInfo>()->Init();
 	_myObj->SetSelfActive(true);
-
-	SetTeamColor(mesh, _myObj->GetComponent<PlayerInfo>()->GetPlayerTeam());
 
 	for (auto& [uid, player] : _players)
 	{
@@ -117,22 +169,15 @@ void RoundManager::InitRound()
 
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
 		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-
-		SetTeamColor(mesh, info->GetPlayerTeam());
 	}
-
-
 }
 
 void RoundManager::UpdateRound()
 {
-	// 플레이어 transform 정보 갱신
-
-	// 플레이어 state 정보 갱신
-
-	// 플레이어 killcount, time 갱신
-
-	// 플레이어 상태 (체력, 남은 총알 수, 위치) 를 서버에서 받아와 갱신
+	UpdateRoundTimer();
+	UpdateHPText();
+	UpdateAmmoText();
+	UpdateDesiredKillChecker();
 }
 
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
@@ -149,55 +194,9 @@ void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collid
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_BODY);
 }
 
-void RoundManager::RecvOtherPlayerShoot(eHITLOC location)
-{
-	_myObj->GetComponent<PlayerInfo>()->OtherPlayerShoot(location);
-}
-
 void RoundManager::SendJump(int uid)
 {
 	NetworkManager::Instance().SendPlayJump();
-}
-
-void RoundManager::SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color)
-{
-	switch (color)
-	{
-		case eTeam::R:
-		{
-			auto mat = API::GetMaterial("TP_Red");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-		}
-		break;
-		case eTeam::G:
-		{
-			auto mat = API::GetMaterial("TP_Green");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-		}
-		break;
-		case eTeam::B:
-		{
-			auto mat = API::GetMaterial("TP_Blue");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-		}
-		break;
-		default:
-		{
-		}
-		break;
-	}
 }
 
 std::unordered_map<int, HDData::GameObject*>& RoundManager::GetPlayerObjs()
@@ -210,6 +209,46 @@ int RoundManager::GetPlayerNum()
 	return _playerNum;
 }
 
+void RoundManager::CheckWinner()
+{
+	if (_winnerUID == NULL) return;
+
+	int count = _players.size();
+
+	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+	{
+		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+
+		int index = 0;
+		for (auto& [uid, player] : _players)
+		{
+			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
+			++index;
+		}
+	}
+	else
+	{
+		_winnerTXT->SetText(_players[_winnerUID]->GetComponent<PlayerInfo>()->GetPlayerNickName());
+
+		int index = 0;
+		for (auto& [uid, player] : _players)
+		{
+			if(_winnerUID == uid) continue;
+			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
+			++index;
+		}
+
+		_loserTXT[index]->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+	}
+
+	_winnerTXT->GetGameObject()->SetSelfActive(true);
+
+	for (int i = 0; i < count; ++i)
+	{
+		_loserTXT[i]->GetGameObject()->SetSelfActive(true);
+	}
+}
+
 bool RoundManager::GetIsRoundStart()
 {
 	return _isRoundStart;
@@ -218,6 +257,193 @@ bool RoundManager::GetIsRoundStart()
 void RoundManager::SetIsRoundStart(bool isStart)
 {
 	_isRoundStart = isStart;
+}
+
+void RoundManager::SetEndCam(HDData::GameObject* cam)
+{
+	_endCam = cam;
+}
+
+void RoundManager::SetStartCam(HDData::Camera* cam)
+{
+	_startCam = cam;
+}
+
+HDData::GameObject* RoundManager::GetEndCam()
+{
+	return _endCam;
+}
+
+void RoundManager::SetRoundEndButton(HDData::GameObject* obj)
+{
+	_endObj = obj;
+}
+
+HDData::GameObject* RoundManager::GetRoundEndButton()
+{
+	return _endObj;
+}
+
+void RoundManager::ExitGame()
+{
+	API::SetCurrentSceneMainCamera(_startCam);
+	_endObj->SetSelfActive(false);
+	_showResultTimer->Stop();
+	_resultTimerUI->GetGameObject()->SetSelfActive(false);
+
+	// 로비로 복귀
+	API::LoadSceneByName("Lobby");
+	LobbyManager::Instance().RefreshRoom();
+}
+
+void RoundManager::SetWinnerText(HDData::TextUI* txt)
+{
+	_winnerTXT = txt;
+}
+
+void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
+{
+	_loserTXT[index] = txt;
+}
+
+void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
+{
+	_timerUI = obj;
+	_timerUI->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	_timerUI->GetTransform()->SetPosition(1350.0f, 60.0f, 0.0f);
+}
+
+void RoundManager::SetRoundTimer(int time)
+{
+	_timer = time;
+}
+
+void RoundManager::SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time)
+{
+	_start_time = time;
+}
+
+int& RoundManager::GetRoundTimer()
+{
+	return _timer;
+}
+
+void RoundManager::UpdateRoundTimer()
+{
+	if (_isRoundStart)
+	{
+		auto currentTime = std::chrono::steady_clock::now();
+		std::chrono::duration<double> elapsedTime = currentTime - _start_time;
+
+		auto nowElapsed = static_cast<int>(_timer - elapsedTime.count());
+		_timerUI->SetText(ChangeSecToMin(nowElapsed));
+
+		if (nowElapsed <= 10)
+		{
+			_timerUI->SetColor(DirectX::Colors::Red);
+			// TODO) 사운드 이펙트 넣기
+		}
+		if (elapsedTime.count() >= _timer)
+		{
+			_isRoundStart = false;
+			_gameEndTimer->Start();
+		
+		}
+	}
+}
+
+std::string RoundManager::ChangeSecToMin(int second)
+{
+	int min = second / 60;
+	int sec = second % 60;
+
+	std::string result = std::to_string(min) + " : " + std::to_string(sec);
+
+	return result;
+}
+
+void RoundManager::SetHPObject(HDData::TextUI* txt)
+{
+	_hpUI = txt;
+}
+
+void RoundManager::UpdateHPText()
+{
+	_hpUI->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
+}
+
+void RoundManager::SetAmmoText(HDData::TextUI* txt)
+{
+	_ammoUI = txt;
+}
+
+void RoundManager::UpdateAmmoText()
+{
+	std::string count = std::to_string(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount());
+	_ammoUI->SetText(count + "/6");
+}
+
+void RoundManager::UpdateResultTimer()
+{
+	if (API::GetCurrentSceneName() != "InGame") return;
+
+	_gameEndTimer->Update();
+	_showResultTimer->Update();
+
+	if (!_showResultTimer->IsActive()) return;
+
+	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
+}
+
+void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
+{
+	_resultTimerUI = txt;
+}
+
+Timer* RoundManager::GetGameEndTimer()
+{
+	return _gameEndTimer;
+}
+
+void RoundManager::UpdateDesiredKillChecker()
+{
+	{
+		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
+		_inGameKillCounts[GameManager::Instance()->GetMyInfo()->GetPlayerUID()].second->SetText(std::to_string(count));
+		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
+	}
+
+	for (auto& [uid, player] : _players)
+	{
+		int count = player->GetComponent<PlayerInfo>()->GetPlayerKillCount();
+		_inGameKillCounts[uid].second->SetText(std::to_string(count));
+		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
+	}
+}
+
+void RoundManager::SetDesiredKill(int count)
+{
+	_desiredKill = count;
+}
+
+int& RoundManager::GetDesiredKill()
+{
+	return _desiredKill;
+}
+
+void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index)
+{
+	_killCountObjs[index] = std::make_pair(nick, count);
+}
+
+void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
+{
+	_backIMG[index] = img;
+}
+
+std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
+{
+	return _inGameKillCounts;
 }
 
 void RoundManager::SetAnimationDummy(HDData::GameObject* obj)

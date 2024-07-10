@@ -154,6 +154,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;$(SolutionDir)ServerCore\</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -178,6 +179,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -205,6 +207,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;</AdditionalIncludeDirectories>
       <Optimization>MaxSpeed</Optimization>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -224,26 +227,28 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Ammo.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="BtnHoveringScript.h" />
     <ClInclude Include="BtnImageScript.h" />
     <ClInclude Include="BtnTextScript.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="CloudRotate.h" />
     <ClInclude Include="Crosshair.h" />
     <ClInclude Include="Enum.pb.h" />
     <ClInclude Include="FadeInOut.h" />
     <ClInclude Include="FPAniScript.h" />
     <ClInclude Include="ErrorCode.h" />
-    <ClInclude Include="FSMtestScript.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameStruct.h" />
+    <ClInclude Include="HitEffect.h" />
+    <ClInclude Include="Indicator.h" />
+    <ClInclude Include="IndicatorPool.h" />
     <ClInclude Include="LobbySceneView.h" />
+    <ClInclude Include="LowHPEffect.h" />
     <ClInclude Include="MeshTransformController.h" />
     <ClInclude Include="OthersAnim.h" />
+    <ClInclude Include="PlayerMoveState.h" />
     <ClInclude Include="PlayerTest.h" />
     <ClInclude Include="RoundManager.h" />
     <ClInclude Include="InGameSceneView.h" />
@@ -265,32 +270,30 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
-    <ClInclude Include="TestSceneSecond.h" />
     <ClInclude Include="TestSound.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="TPScript.h" />
     <ClInclude Include="TrainigSceneView.h" />
-    <ClInclude Include="UnitySceneLoaderTest.h" />
-    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Ammo.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BtnHoveringScript.cpp" />
     <ClCompile Include="BtnImageScript.cpp" />
     <ClCompile Include="BtnTextScript.cpp" />
     <ClCompile Include="CameraMove.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="CloudRotate.cpp" />
     <ClCompile Include="Crosshair.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Enum.pb.cc" />
     <ClCompile Include="FadeInOut.cpp" />
     <ClCompile Include="FPAniScript.cpp" />
-    <ClCompile Include="FSMtestScript.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
+    <ClCompile Include="Indicator.cpp" />
+    <ClCompile Include="IndicatorPool.cpp" />
     <ClCompile Include="LobbySceneView.cpp" />
+    <ClCompile Include="LowHPEffect.cpp" />
     <ClCompile Include="MeshTransformController.cpp" />
     <ClCompile Include="OthersAnim.cpp" />
     <ClCompile Include="PlayerTest.cpp" />
@@ -311,11 +314,9 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />
-    <ClCompile Include="TestSceneSecond.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="TPScript.cpp" />
     <ClCompile Include="TrainigSceneView.cpp" />
-    <ClCompile Include="UnitySceneLoaderTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />

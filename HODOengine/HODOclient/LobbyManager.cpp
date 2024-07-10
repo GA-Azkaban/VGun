@@ -196,7 +196,6 @@ void LobbyManager::RoomEnterSUCCESS()
 		info->SetPlayerUID(data[i]->GetPlayerUID());
 		info->SetNickName(data[i]->GetPlayerNickName());
 		info->SetIsHost(data[i]->GetIsHost());
-		info->SetTeamID(data[i]->GetPlayerTeam());
 	}
 }
 
@@ -207,7 +206,6 @@ void LobbyManager::RefreshRoom()
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
-		_teamButton[i]->SetSelfActive(false);
 		_quitButtons[i]->SetSelfActive(false);
 	}
 
@@ -220,7 +218,6 @@ void LobbyManager::RefreshRoom()
 		info->SetPlayerUID(data[i]->GetPlayerUID());
 		info->SetNickName(data[i]->GetPlayerNickName());
 		info->SetIsHost(data[i]->GetIsHost());
-		info->SetTeamID(data[i]->GetPlayerTeam());
 	}
 
 	for (int i = 0; i < _playerNum; ++i)
@@ -228,105 +225,19 @@ void LobbyManager::RefreshRoom()
 		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
 
 		_playerObjs[i]->SetSelfActive(true);
-		
-		switch (info->GetPlayerTeam())
-		{
-			case eTeam::R :
-			{
-				SetPlayerTeam(eTeam::R, info->GetPlayerNickName());
-			}
-			break;
-			case eTeam::G:
-			{
-				SetPlayerTeam(eTeam::G, info->GetPlayerNickName());
-			}
-			break;
-			case eTeam::B:
-			{
-				SetPlayerTeam(eTeam::B, info->GetPlayerNickName());
-			}
-			break;
-			default:
-			{
-
-			}
-				break;
-		}
-
 		_nickNameIndex[i]->SetSelfActive(true);
 		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
 		text->SetText(info->GetPlayerNickName());
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
-			_teamButton[i]->SetSelfActive(true);
 			_quitButtons[i]->SetSelfActive(true);
 			_inGameStartButton->SetSelfActive(true);
 		}
 		else if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			_teamButton[i]->SetSelfActive(true);
 			_quitButtons[i]->SetSelfActive(false);
 		}
-	}
-}
-
-void LobbyManager::SetPlayerTeam(eTeam team, std::string nickName)
-{
-	HDData::SkinnedMeshRenderer* mesh = nullptr;
-
-	PlayerInfo* info = nullptr;
-
-	for (int i = 0; i < _roomData->_players.size(); ++i)
-	{
-		info = _playerObjs[i]->GetComponent<PlayerInfo>();
-
-		if (nickName == info->GetPlayerNickName())
-		{
-			mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		}
-	}
-
-	switch (team)
-	{
-		case eTeam::R:
-		{
-			auto mat = API::GetMaterial("TP_Red");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-
-			info->SetTeamID(eTeam::R);
-		}
-		break;
-		case eTeam::G:
-		{
-			auto mat = API::GetMaterial("TP_Green");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-
-			info->SetTeamID(eTeam::G);
-		}
-		break;
-		case eTeam::B:
-		{
-			auto mat = API::GetMaterial("TP_Blue");
-			mesh->LoadMaterial(mat, 0);
-			mesh->LoadMaterial(mat, 1);
-			mesh->LoadMaterial(mat, 2);
-			mesh->LoadMaterial(mat, 3);
-			mesh->LoadMaterial(mat, 4);
-
-			info->SetTeamID(eTeam::B);
-		}
-		break;
-		default:
-			break;
 	}
 }
 
@@ -339,11 +250,6 @@ std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 std::vector<HDData::GameObject*>& LobbyManager::GetNickNameObjects()
 {
 	return _nickNameIndex;
-}
-
-std::vector<HDData::GameObject*>& LobbyManager::GetTeamButtonObjects()
-{
-	return _teamButton;
 }
 
 std::vector<HDData::GameObject*>& LobbyManager::GetQuitButtonObjects()

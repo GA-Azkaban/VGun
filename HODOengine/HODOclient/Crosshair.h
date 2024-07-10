@@ -18,6 +18,6 @@ private:
 	HDData::ImageUI* _defaultCrosshair;
 	HDData::ImageUI* _hitCrosshair;
 	HDData::ImageUI* _criticalCrosshair;
-	Timer _hitCrosshairTimer;
-	Timer _criticalCrosshairTimer;
+	Timer _hitTimer;
+	Timer _criticalTimer;
 };

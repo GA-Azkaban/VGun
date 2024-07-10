@@ -54,7 +54,7 @@ namespace HDData
 		void OnDestroy();
 
 		void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count);
-		void OnCollisionStay();
+		void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count);
 		void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count);
 
 		template <ComponentConcept ComponentType, typename... Args>

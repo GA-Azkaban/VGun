@@ -12,7 +12,7 @@ namespace HDData
 		_parentCollider(nullptr),
 		_collisionFilterNum(0),
 		_isTrigger(false),
-		_colType(eColliderType::NONE)
+		_colType(eColliderRole::NONE)
 	{
 		
 	}
@@ -65,41 +65,45 @@ namespace HDData
 
 	Matrix Collider::GetRotationMatrix()
 	{
-		Matrix rotationMatrix =
-		{
-			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
-			2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
-			2.0f * (_rotationOffset.x * _rotationOffset.z - _rotationOffset.y * _rotationOffset.w),
-			0,
+// 		Matrix rotationMatrix =
+// 		{
+// 			1.0f - 2.0f * (_rotationOffset.y * _rotationOffset.y + _rotationOffset.z * _rotationOffset.z),
+// 			2.0f * (_rotationOffset.x * _rotationOffset.y + _rotationOffset.z * _rotationOffset.w),
+// 			2.0f * (_rotationOffset.x * _rotationOffset.z - _rotationOffset.y * _rotationOffset.w),
+// 			0,
+// 
+// 			2.0f * (_rotationOffset.x * _rotationOffset.y - _rotationOffset.z * _rotationOffset.w),
+// 			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.z * _rotationOffset.z),
+// 			2.0f * (_rotationOffset.y * _rotationOffset.z + _rotationOffset.x * _rotationOffset.w),
+// 			0,
+// 
+// 			2.0f * (_rotationOffset.x * _rotationOffset.z + _rotationOffset.y * _rotationOffset.w),
+// 			2.0f * (_rotationOffset.y * _rotationOffset.z - _rotationOffset.x * _rotationOffset.w),
+// 			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.y * _rotationOffset.y),
+// 			0,
+// 
+// 			0,
+// 			0,
+// 			0,
+// 			1
+// 		};
 
-			2.0f * (_rotationOffset.x * _rotationOffset.y - _rotationOffset.z * _rotationOffset.w),
-			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.z * _rotationOffset.z),
-			2.0f * (_rotationOffset.y * _rotationOffset.z + _rotationOffset.x * _rotationOffset.w),
-			0,
-
-			2.0f * (_rotationOffset.x * _rotationOffset.z + _rotationOffset.y * _rotationOffset.w),
-			2.0f * (_rotationOffset.y * _rotationOffset.z - _rotationOffset.x * _rotationOffset.w),
-			1.0f - 2.0f * (_rotationOffset.x * _rotationOffset.x + _rotationOffset.y * _rotationOffset.y),
-			0,
-
-			0,
-			0,
-			0,
-			1
-		};
+		Matrix rotationMatrix = Matrix::CreateFromQuaternion(_rotationOffset);
 
 		return rotationMatrix;
 	}
 
 	Matrix Collider::GetScaleMatrix()
 	{		
-		Matrix scaleMatrix =
-		{
-			_scaleOffset.x,		0,					0,					0,
-			0,					_scaleOffset.y,		0,					0,
-			0,					0,					_scaleOffset.z,		0,
-			0,					0,					0,					1
-		};
+// 		Matrix scaleMatrix =
+// 		{
+// 			_scaleOffset.x,		0,					0,					0,
+// 			0,					_scaleOffset.y,		0,					0,
+// 			0,					0,					_scaleOffset.z,		0,
+// 			0,					0,					0,					1
+// 		};
+
+		Matrix scaleMatrix = Matrix::CreateScale(_scaleOffset);
 
 		return scaleMatrix;
 	}
@@ -158,9 +162,14 @@ namespace HDData
 		return _collisionStorage;
 	}
 
-	eColliderType Collider::GetColType() const
+	eColliderRole Collider::GetColType() const
 	{
 		return _colType;
+	}
+
+	HDData::Collider* Collider::GetParentCollider() const
+{
+		return _parentCollider;
 	}
 
 	void Collider::Flush()
@@ -198,6 +207,16 @@ namespace HDData
 		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
 		this->_isCollide = true;
 		this->_prevIsCollide = false;
+		_collisionStorage.push_back(&collision);
+	}
+
+	void Collider::Collider_OnCollisionStay(PhysicsCollision& collision)
+	{
+		std::string tRes = "Collider_OnCollisionStay : ";
+
+		//bool값을 변경해주고 상태를 설정해줘야 Object의 이벤트와 연결이 가능하다.
+		this->_isCollide = true;
+		this->_prevIsCollide = true;
 		_collisionStorage.push_back(&collision);
 	}
 

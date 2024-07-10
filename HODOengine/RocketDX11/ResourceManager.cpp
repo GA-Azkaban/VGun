@@ -99,14 +99,15 @@ namespace RocketCore::Graphics
 		{
 			MessageBox(NULL, L"Model file name error.", L"Error!", MB_ICONERROR | MB_OK);
 		}
-		std::string meshType = _fileName.substr(0, firstBarIndex);
+		std::string meshTypeStr = _fileName.substr(0, firstBarIndex);
 		_fileName = _fileName.substr(firstBarIndex + 1, _fileName.length() - firstBarIndex);
 		std::string animName = "";
-		if (meshType == "SM")
+		if (meshTypeStr == "SM")
 		{
 			_fileInfoKeyName = _fileName;
+			_loadedFileInfo[_fileInfoKeyName].meshType = MeshType::STATIC;
 		}
-		else if (meshType == "SKM")
+		else if (meshTypeStr == "SKM")
 		{
 			// TP_X_Breathing 이나 Player_Breathing 형태로 나옴
 			// 이 형태에서 첫번째 언더바를 기준으로 왼쪽 것이 파일명, 오른쪽 것이 애니메이션명
@@ -120,6 +121,7 @@ namespace RocketCore::Graphics
 			{
 				_fileInfoKeyName = _fileName;
 			}
+			_loadedFileInfo[_fileInfoKeyName].meshType = MeshType::SKINNING;
 		}
 		else
 		{
@@ -138,12 +140,18 @@ namespace RocketCore::Graphics
 		}
 
 		// SKM_ 으로 시작하는 파일명으로 받아온 FBX 파일은 메시랑 노드 한번만 로드한다.
+		// mesh 정보를 담고 있는 파일과 애니메이션 정보를 담고 있는 파일로 나뉜다.
+		// mesh 정보를 담고 있는 파일은 애니메이션 정보가 없고,
+		// 애니메이션 정보를 담고 있는 파일은 mesh 정보가 없다.
 		if (_scene->HasMeshes())
 		{
 			ProcessNode(_scene->mRootNode, _scene);
 		}
+		else
+		{
+			LoadAnimation(_scene, animName);
+		}
 		ProcessBoundingBox();
-		LoadAnimation(_scene, animName);
 	}
 
 	void ResourceManager::LoadTextureFile(std::string path)
@@ -438,18 +446,15 @@ namespace RocketCore::Graphics
 		return iter->second.node;
 	}
 
-	std::unordered_map<std::string, Animation*>& ResourceManager::GetAnimations(const std::string& fileName)
+	std::unordered_map<std::string, Animation*> ResourceManager::GetAnimations(const std::string& fileName)
 	{
-		std::string name = GetFileInfoKey(fileName);
-
-		// 엔진에 저장되어 있지 않다면 빈 맵 반환
-		auto iter = _loadedFileInfo.find(name);
-		if (iter == _loadedFileInfo.end())
+		auto animIter = _loadedAnimations.find(fileName);
+		if (animIter == _loadedAnimations.end())
 		{
-			std::unordered_map<std::string, Animation*> ret;
-			return ret;
+			std::unordered_map<std::string, Animation*> emptyAnimList;
+			return emptyAnimList;
 		}
-		return iter->second.loadedAnimation;
+		return animIter->second;
 	}
 
 	DirectX::BoundingBox ResourceManager::GetBoundingBox(const std::string& fileName)
@@ -653,6 +658,10 @@ namespace RocketCore::Graphics
 		PixelShader* forwardNoLightPS = new PixelShader(_device.Get(), _deviceContext.Get());
 		if (forwardNoLightPS->LoadShaderFile(L"Resources/Shaders/ForwardPixelShaderNoLight.cso"))
 			_pixelShaders.insert(std::make_pair("ForwardPixelShaderNoLight.cso", forwardNoLightPS));
+
+		PixelShader* postProcessPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (postProcessPS->LoadShaderFile(L"Resources/Shaders/PostProcessPS.cso"))
+			_pixelShaders.insert(std::make_pair("PostProcessPS.cso", postProcessPS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
@@ -888,7 +897,8 @@ namespace RocketCore::Graphics
 
 	void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
-		if (scene->mNumAnimations > 0)
+		//if (scene->mNumAnimations > 0)
+		if (_loadedFileInfo[_fileInfoKeyName].meshType == MeshType::SKINNING)
 		{
 			ProcessSkinningMesh(mesh, scene);
 		}
@@ -947,7 +957,7 @@ namespace RocketCore::Graphics
 			vertex.Normal.z = mesh->mNormals[i].z;
 
 			// process uv
-			if (mesh->HasTextureCoords(i))
+			if (mesh->HasTextureCoords(0))
 			{
 				vertex.UV.x = mesh->mTextureCoords[0][i].x;
 				vertex.UV.y = mesh->mTextureCoords[0][i].y;
@@ -1206,6 +1216,7 @@ namespace RocketCore::Graphics
 		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
 
 		unitScaleFactor = 0.01f / unitScaleFactor;
+		//unitScaleFactor = 100.0f / unitScaleFactor;
 		upVec *= unitScaleFactor;
 		forwardVec *= unitScaleFactor;
 		rightVec *= unitScaleFactor;
@@ -1216,13 +1227,13 @@ namespace RocketCore::Graphics
 			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f);
 
-			/*aiMatrix4x4 mat(
-				rightVec.x, upVec.x, forwardVec.x, 0.0f,
-				rightVec.y, upVec.y, forwardVec.y, 0.0f,
-				rightVec.z, upVec.z, forwardVec.z, 0.0f,
-				0.0f, 0.0f, 0.0f, 1.0f);*/
+		/*aiMatrix4x4 mat(
+			rightVec.x, upVec.x, forwardVec.x, 0.0f,
+			rightVec.y, upVec.y, forwardVec.y, 0.0f,
+			rightVec.z, upVec.z, forwardVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
 
-		// create node hierarchy
+			// create node hierarchy
 		Node* rootNode = new Node();
 		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
 		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
@@ -1505,7 +1516,7 @@ namespace RocketCore::Graphics
 
 				newAnimation->nodeAnimations.push_back(newNodeAnim);
 			}
-			_loadedFileInfo[_fileInfoKeyName].loadedAnimation.insert(std::make_pair(newAnimation->animName, newAnimation));
+			_loadedAnimations[_fileInfoKeyName].insert(std::make_pair(newAnimation->animName, newAnimation));
 		}
 	}
 

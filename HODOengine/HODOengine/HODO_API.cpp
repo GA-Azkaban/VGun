@@ -274,6 +274,7 @@ namespace API
 
 		HODO_API HDData::Camera* SetCurrentSceneMainCamera(HDData::Camera* camera)
 		{
+			camera->SetAsMainCamera();
 			HDEngine::SceneSystem::Instance().GetCurrentScene()->SetMainCamera(camera);
 			return GetCurrenSceneMainCamera();
 		}
@@ -298,6 +299,10 @@ namespace API
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 
+		HODO_API HDData::Scene* GetCurrenScene()
+		{
+			return HDEngine::SceneSystem::Instance().GetCurrentScene();
+		}
 		HODO_API void Resize(int width, int height)
 		{
 			HDEngine::RenderSystem::Instance().OnResize(width, height);
@@ -312,8 +317,21 @@ namespace API
 		{
 			HODOengine::Instance().Quit();
 		}
-	}
 
-	
+		HODO_API Vector3* GetSpawnPointArr()
+		{
+			return HDEngine::SceneLoader::Instance().GetRespawnPoint();
+		}
+
+		HODO_API std::string GetCurrentSceneName()
+		{
+			return HDEngine::SceneSystem::Instance().GetCurrentScene()->GetSceneName();
+		}
+
+		HODO_API Vector3* GetCloudPosition()
+		{
+			return HDEngine::SceneLoader::Instance().GetCloudPoint();
+		}
+	}
 
 }

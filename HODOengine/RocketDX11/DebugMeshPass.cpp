@@ -41,6 +41,7 @@ namespace RocketCore::Graphics
 			//e->worldTM.m[0][0] *= e->diameter;
 			//e->worldTM.m[1][1] *= e->diameter;
 			//e->worldTM.m[2][2] *= e->diameter;
+			
 
 			ResourceManager::Instance().GetSpherePrimitive()->Draw(e->worldTM, cam->GetViewMatrix(), cam->GetProjectionMatrix(), e->color, nullptr, true);
 		}
@@ -56,9 +57,9 @@ namespace RocketCore::Graphics
 
 		for (auto& e : ObjectManager::Instance().GetCapsulePrimitiveList())
 		{
-			e->worldTM.m[0][0] *= e->diameter/2;
-			e->worldTM.m[1][1] *= (e->height)/2;
-			e->worldTM.m[2][2] *= e->diameter/2;
+			//e->worldTM.m[0][0] *= e->diameter / 2;
+			//e->worldTM.m[1][1] *= (e->height) / 2;
+			//e->worldTM.m[2][2] *= e->diameter / 2;
 			//auto temp = e->worldTM;
 			//auto temp2 = e->diameter;
 			//auto temp3 = e->height;

@@ -10,10 +10,17 @@ enum class ePlayerState
 	WALK_L,
 	WALK_F,
 	WALK_B,
+	WALK,
+	RUN,
 	JUMP,
 	RELOAD,
 	ROLL,
+	ROLL_R,
+	ROLL_L,
+	ROLL_F,
+	ROLL_B,
 	DIE,
+	TUMBLE,
 
 	LAST
 };

@@ -1,16 +1,18 @@
 ﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
-#include "FSMtestScript.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
-#include "MeshTransformController.h"
 #include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "Ammo.h"
 #include "TPScript.h"
 #include "OthersAnim.h"
+#include "LowHPEffect.h"
+#include "HitEffect.h"
+#include "IndicatorPool.h"
+
+#include "CloudRotate.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -28,15 +30,19 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetRoundScene(_scene);
 
+	auto soundObj = API::CreateObject(_scene, "soundObj");
+	soundObj->AddComponent<HDData::AudioSource>();
+
 	// 플레이어 여섯 명 렌더링
 	float posX = 0;
 	float posT = 165;
 
-	HDEngine::MaterialDesc red;
-	red.materialName = "TP_Red";
-	red.albedo = "TP_Red_B.png";
+	HDEngine::MaterialDesc characterMat;  
+	characterMat.materialName = "PolygonWestern_Texture_01_A";
+	characterMat.albedo = "PolygonWestern_Texture_01_A.png";
+	characterMat.metallic = "PolygonWestern_Texture_Metallic.png";
 
-	HDData::Material* M_Red = API::CreateMaterial(red);
+	HDData::Material* chMat = API::CreateMaterial(characterMat);
 
 	// 그래픽스 디버깅용 카메라 생성
 	auto freeRoamingCamObj = API::CreateObject(_scene, "freeRoamingCam");
@@ -44,36 +50,39 @@ void InGameSceneView::Initialize()
 	freeRoamingCamObj->GetTransform()->SetPosition(-5.0f, 2.0f, -10.0f);
 	freeRoamingCamObj->AddComponent<CameraMove>();
 
-	// 내 캐릭터 생성
-	HDData::GameObject* player = API::CreateObject(_scene, "playerSelf");
-	player->LoadFBXFile("SKM_TP_X_Default.fbx");
+	// 게임엔딩 카메라
+	auto gameendCam = API::CreateObject(_scene, "endCam");
+	gameendCam->GetTransform()->SetPosition(59.25668f, 2.73707f, -34.79806f);
+	gameendCam->GetTransform()->SetRotation(0.077f, -0.701f, 0.07f, 0.74f);
+	auto gameendCamcomp = gameendCam->AddComponent<HDData::Camera>();
+
+	RoundManager::Instance()->SetEndCam(gameendCam);
+
+	// 구름 회전
+	auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
+	cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
+	cloudPivotObj->AddComponent<CloudRotateScript>();
+
+
+	// 내 캐릭터 생성	
+	std::string objName1 = "playerSelf";
+	HDData::GameObject* player = API::CreateObject(_scene, objName1);
+	auto playerMove = player->AddComponent<PlayerMove>();
+	player->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	meshComp->LoadMaterial(M_Red, 0);
-	meshComp->LoadMaterial(M_Red, 1);
-	meshComp->LoadMaterial(M_Red, 2);
-	meshComp->LoadMaterial(M_Red, 3);
-	meshComp->LoadMaterial(M_Red, 4);
+	meshComp->LoadAnimation("TP");
+	meshComp->LoadMaterial(chMat, 0);
+	meshComp->PlayAnimation("RV_idle"); 
 	meshComp->SetMeshActive(false, 0);
-	meshComp->SetMeshActive(false, 1);
-	meshComp->SetMeshActive(false, 2);
-	meshComp->SetMeshActive(false, 3);
-	meshComp->SetMeshActive(false, 4);
 
-	meshComp->PlayAnimation("AR_aim", true);
+	player->AddComponent<HDData::Animator>();
+	API::LoadFPAnimationFromData(player, "TP_animation.json");
+	player->AddComponent<TPScript>();
+	RoundManager::Instance()->SetAnimationDummy(player);
+
 	RoundManager::Instance()->_myObj = player;
-
-	// 애니메이션 전달용 더미 캐릭터 생성
-	HDData::GameObject* dummy = API::CreateObject(_scene, "dummy");
-	dummy->LoadFBXFile("SKM_TP_X_Default.fbx");
-	dummy->GetTransform()->SetPosition(0, -10, 0);
-	
-	dummy->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(dummy, "TP_animation.json");
-	dummy->AddComponent<TPScript>();
-
-	RoundManager::Instance()->SetAnimationDummy(dummy);
 
 	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
@@ -82,84 +91,106 @@ void InGameSceneView::Initialize()
 	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 	headCollider->SetParentCollider(playerCollider);
-	headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
-	//headCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
 	auto mainCam = _scene->GetMainCamera();
 	mainCam->GetGameObject()->SetParentObject(player);
 	mainCam->GetGameObject()->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.175f });
-	//mainCam->GetGameObject()->AddComponent<HDData::StaticBoxCollider>();
+	playerMove->SetHeadCam(mainCam);
+	playerMove->SetPlayerCamera(freeRoamingCam);
+
+	RoundManager::Instance()->SetStartCam(mainCam);
+
 	// 1인칭 메쉬 달 오브젝트
 	// 카메라에 달려고 했으나 카메라에 달았을 때 이상하게 동작해 메쉬를 카메라와 분리한다.
 	auto meshObjShell = API::CreateObject(_scene, "meshShell", player);
-	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.0f, 1.65f, 0.170f });
-
+	meshObjShell->GetTransform()->SetLocalPosition(Vector3{ 0.20f, 1.65f, 0.1f });
 
 	auto fpMeshObj = API::CreateObject(_scene, "FPMesh", meshObjShell);
-	fpMeshObj->LoadFBXFile("SKM_TP_X_Default.fbx");
+	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
 	fpMeshObj->AddComponent<FPAniScript>();
 
-	fpMeshObj->GetTransform()->SetLocalPosition(0.05f, -1.7f, 0.45f);
+	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
+	fpMeshObj->GetTransform()->Rotate(0.0f, -5.0f, 0.0f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
-	fpMeshComp->LoadMaterial(M_Red, 0);
-	fpMeshComp->LoadMaterial(M_Red, 1);
-	fpMeshComp->LoadMaterial(M_Red, 2);
-	fpMeshComp->LoadMaterial(M_Red, 3);
-	fpMeshComp->LoadMaterial(M_Red, 4);
-	fpMeshComp->SetMeshActive(false, 0);
-	fpMeshComp->SetMeshActive(false, 1);
-	fpMeshComp->SetMeshActive(false, 3);
-	fpMeshComp->SetMeshActive(false, 4);
-
-	//fpMeshComp->PlayAnimation("AR_aim", true);
+	fpMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
+	fpMeshComp->LoadAnimation("TP");
+	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
+	fpMeshComp->LoadMaterial(chMat, 0);
+	fpMeshComp->SetShadowActive(false);
+	fpMeshComp->PlayAnimation("RV_idle", true);
 
 	// 총 생성
-	auto hand = fpMeshObj->GetGameObjectByNameInChildren("hand_r");
+	auto hand = fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	weaponTest->AddComponent<MeshTransformController>();
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-17.4141f, -5.2570f, -1.595f);
-	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.5467f, 0.5239f, -0.4370f, 0.4849f });
-	// AJY 24.6.3.
-	weaponTest->GetTransform()->SetLocalPosition(Vector3(38.5f, 4.73f, -17.7f));
-	weaponTest->GetTransform()->SetLocalRotation(Quaternion(-0.5289f, 0.4137f, -0.4351f, 0.5997f));
-
-	// weapon
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.892f, 8.082f, 7.923f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.061f, -0.606f, -0.093f, 0.787f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	weaponComp->LoadMesh("SM_AR_01.fbx");
-	HDEngine::MaterialDesc weaponMatDesc;
-	weaponMatDesc.materialName = "M_WEP_Basic_039";
-	weaponMatDesc.albedo = "T_WEP_Basic_004_D.png";
-	weaponMatDesc.roughness = "T_WEP_Basic_R.png";
-	weaponMatDesc.metallicValue = 0.15f;
-	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
-	HDEngine::MaterialDesc weaponMatDesc2;
-	weaponMatDesc2.materialName = "M_WEP_Camo_001";
-	weaponMatDesc2.albedo = "T_WEP_Basic_004_D.png";
-	weaponMatDesc2.roughness = "T_WEP_Basic_R.png";
-	weaponMatDesc2.metallicValue = 0.1f;
-	HDData::Material* weaponMat2 = API::CreateMaterial(weaponMatDesc2);
-	HDEngine::MaterialDesc weaponMatDesc3;
-	weaponMatDesc3.materialName = "M_WEP_CarbonFibre_001";
-	weaponMatDesc3.albedo = "T_WEP_CarbonFibre_001_D.png";
-	weaponMatDesc3.normalMap = "T_WEP_CarbonFibre_N.png";
-	weaponMatDesc3.roughness = "T_WEP_CarbonFibre_R.png";
-	weaponMatDesc3.metallicValue = 0.1f;
-	HDData::Material* weaponMat3 = API::CreateMaterial(weaponMatDesc3);
-	weaponComp->LoadMaterial(weaponMat1, 0);
-	weaponComp->LoadMaterial(weaponMat2, 1);
-	weaponComp->LoadMaterial(weaponMat2, 3);
-	weaponComp->LoadMaterial(weaponMat2, 5);
-	weaponComp->LoadMaterial(weaponMat3, 2);
-	weaponComp->LoadMaterial(weaponMat3, 4);
+	weaponComp->LoadMesh("SM_Wep_Revolver_02.fbx");
+	weaponComp->LoadMaterial(chMat, 0);
+	weaponComp->LoadMaterial(chMat, 1);
+	weaponComp->LoadMaterial(chMat, 2);
+	weaponComp->LoadMaterial(chMat, 3);
+	weaponComp->SetShadowActive(false);
 
-	auto playerMove = player->AddComponent<PlayerMove>();
-	playerMove->SetPlayerCamera(freeRoamingCam);
-	playerMove->SetHeadCam(mainCam);
+	// 총구 이펙트
+	auto particleSystemObj = API::CreateObject(_scene, "effect");
+	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
+	particleSystem->main.duration = 0.2f;
+	particleSystem->main.loop = true;
+	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
+	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem->main.minStartLifetime = 0.025f;
+	particleSystem->main.maxStartLifetime = 0.05f;
+	particleSystem->main.minStartRotation = -90.0f;
+	particleSystem->main.maxStartRotation = -90.0f;
+	particleSystem->main.minStartSize = 0.05f;
+	particleSystem->main.maxStartSize = 0.075f;
+	particleSystem->main.minStartSpeed = 0.0f;
+	particleSystem->main.maxStartSpeed = 0.0f;
+	particleSystem->emission.enabled = true;
+	HDData::Burst newBurst(0.0f, 1);
+	particleSystem->emission.SetBurst(newBurst);
+	particleSystem->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve;
+	curve.AddKey(0.0f, 0.654f, [](float t) { return -9.34 * t * t + 6.11 * t; });
+	particleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve);
+	HDEngine::MaterialDesc flashMatDesc;
+	flashMatDesc.materialName = "muzzleFlash";
+	flashMatDesc.albedo = "T_MuzzleFlash_D.png";
+	flashMatDesc.color = { 255, 140, 85, 255 };
+	HDData::Material* flashMat = API::CreateMaterial(flashMatDesc);
+	particleSystem->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem->rendererModule.material = flashMat;
+	particleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
+
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck;
+	std::vector<HDData::GradientAlphaKey> ak;
+	HDData::GradientColorKey colorkey1;
+	colorkey1.color = { 255, 255, 255 };
+	colorkey1.time = 0.556f;
+	ck.push_back(colorkey1);
+	HDData::GradientColorKey colorkey2;
+	colorkey2.color = { 255, 79, 0 };
+	colorkey2.time = 1.0f;
+	ck.push_back(colorkey2);
+	HDData::GradientAlphaKey alphaKey1;
+	alphaKey1.alpha = 255;
+	alphaKey1.time = 0.0f;
+	ak.push_back(alphaKey1);
+	HDData::GradientAlphaKey alphaKey2;
+	alphaKey2.alpha = 255;
+	alphaKey2.time = 1.0f;
+	ak.push_back(alphaKey2);
+	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
+
+	particleSystem->Play();
 
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 
@@ -175,13 +206,31 @@ void InGameSceneView::Initialize()
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
-	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
-	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
+	//playerSound->AddAudio3D("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::SoundGroupChannel5, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::SoundGroupChannel5, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("tumble", "./Resources/Sound/Tumble/tumble.wav", HDData::SoundGroup::MoveSound, 5.0f, 100.0f);
+	//playerSound->AddAudio3D("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
+	//playerSound->AddAudio3D("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound, 5.0f, 30.0f);
+	//playerSound->SetSoundGroupVolume(HDData::SoundGroup::SoundGroupChannel5, 1000.0f);
+	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7-2.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload2.wav", HDData::SoundGroup::GunSound);
+	playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble_large.wav", HDData::SoundGroup::MoveSound);
+	playerSound->AddAudio("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound);
+	playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
+	playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
+	playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
+	//playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
 
 	posX += 1;
 	posT += 315;
@@ -191,7 +240,7 @@ void InGameSceneView::Initialize()
 	{
 		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
-		otherPlayer->LoadFBXFile("SKM_TP_X_Default.fbx");
+		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
 		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
@@ -204,13 +253,9 @@ void InGameSceneView::Initialize()
 		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		otherMeshComp->GetTransform()->SetLocalPosition(0.0f, -0.1f, 0.0f);
-		otherMeshComp->LoadMaterial(M_Red, 0);
-		otherMeshComp->LoadMaterial(M_Red, 1);
-		otherMeshComp->LoadMaterial(M_Red, 2);
-		otherMeshComp->LoadMaterial(M_Red, 3);
-		otherMeshComp->LoadMaterial(M_Red, 4);
-		otherMeshComp->PlayAnimation("AR_idle", true);
+		otherMeshComp->LoadAnimation("TP");
+		otherMeshComp->LoadMaterial(chMat, 0);
+		otherMeshComp->PlayAnimation("RV_idle", true);
 
 		otherPlayer->AddComponent<OthersAnim>();
 
@@ -218,16 +263,45 @@ void InGameSceneView::Initialize()
 
 		// sound 추가
 		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::EffectSound);
-		otherPlayerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::EffectSound);
+		otherPlayerSound->AddAudio3D("shootother", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::EffectSound, 10, 150);
+		otherPlayerSound->AddAudio3D("walkother", "./Resources/Sound/Walk/footstep.wav", HDData::SoundGroup::EffectSound, 10, 250);
 
 		posX += 2;
 		posT += 315;
+	}
+
+	int uiX = 130;
+	int uiY = 52.0f;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		// killCount UI
+		auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
+		uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
+		uiBack->GetTransform()->SetScale(1, 3, 0);
+		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
+		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+
+		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
+		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
+		auto nickComp = nickname->GetComponent<HDData::TextUI>();
+		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+		nickComp->SetColor(DirectX::Colors::Black);
+		nickComp->SetText("");
+		nickComp->SetSortOrder(0.7);
+
+		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
+		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
+		auto countComp = killcount->GetComponent<HDData::TextUI>();
+		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+		countComp->SetColor(DirectX::Colors::Blue);
+		countComp->SetText("");
+		countComp->SetSortOrder(0.7);
+
+		RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
+		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
+
+		uiY += 60;
 	}
 
 	// crosshair
@@ -236,19 +310,122 @@ void InGameSceneView::Initialize()
 	crosshairComp->playerMove = playerMove;
 
 	// ammo
-	auto ammo = API::CreateObject(_scene, "remaingAmmo");
-	auto ammoComp = ammo->AddComponent<Ammo>();
-	ammoComp->playerMove = playerMove;
-	HDData::GameObject* defaultAmmo = API::CreateTextbox(_scene, "Ammo");
-	defaultAmmo->GetComponent<HDData::TextUI>()->GetTransform()->SetPosition(2400.0f, 1400.0f, 0.0f);
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	defaultAmmo->GetComponent<HDData::TextUI>()->SetText("/ 30");
+	auto ammo = API::CreateTextbox(_scene, "AmmoText");
+	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
+	ammoTXT->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	ammoTXT->GetTransform()->SetPosition(2250.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
-	healthPoint->GetComponent < HDData::TextUI >()->GetTransform()->SetPosition(1800.0f, 1400.0f, 0.0f);
-	healthPoint->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	healthPoint->GetComponent<HDData::TextUI>()->SetText(std::to_string(playerInfo->GetPlayerCurrentHP()));
+	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
+	hpTxt->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	hpTxt->GetTransform()->SetPosition(2100.0f, 1400.0f, 0.0f);
+	RoundManager::Instance()->SetHPObject(hpTxt);
+
+	// Timer
+	auto timer = API::CreateTextbox(_scene, "timer");
+	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
+	
+	// 디버그용 state
+	HDData::GameObject* state = API::CreateTextbox(_scene, "state");
+	HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
+	stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
+	playerMove->_plStateText = stateText;
+
+	// 디버그용 cooltime
+	HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
+	HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
+	coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
+	playerMove->_tumbleText = coolTimeText;
+
+	// 디버그용 포지션
+	HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
+	HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
+	posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
+	playerMove->_plPosText = posText;
+
+	/// game end
+
+	auto endButton = API::CreateButton(_scene, "endBtn");
+	endButton->GetTransform()->SetPosition(1350.0f, 1200.0f, 0.0f);
+	auto endComp = endButton->GetComponent<HDData::Button>();
+	endComp->SetImage("start.png");
+	endComp->SetOnClickEvent([=]()
+		{
+			RoundManager::Instance()->ExitGame();
+		});
+
+	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
+	endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
+	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
+	endTXTcomp->SetText("EXIT GAME");
+	endTXTcomp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+
+	endButton->SetSelfActive(false);
+
+	RoundManager::Instance()->SetRoundEndButton(endButton);
+
+	// 우승자
+	auto winnerObj = API::CreateObject(_scene, "winner");
+	winnerObj->LoadFBXFile("SKM_GunManTP_X_default.fbx");
+	winnerObj->GetTransform()->SetPosition(53, 0, -35);
+	winnerObj->GetTransform()->Rotate(0, 90, 0);
+	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadAnimation("TP");
+	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_sillyDancing");
+	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadMaterial(chMat, 0);
+
+	auto winnerName = API::CreateTextbox(_scene, "winner");
+	winnerName->GetTransform()->SetPosition(1000.0f, 900.0f, 0.0f);
+	auto winnerComp = winnerName->GetComponent<HDData::TextUI>();
+	winnerComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	winnerComp->SetColor(DirectX::Colors::Red);
+	
+	RoundManager::Instance()->SetWinnerText(winnerComp);
+
+	winnerName->SetSelfActive(false);
+
+	// 루저들
+	float loserX = 100.f;
+
+	for (int i = 0; i < 5; ++i)
+	{
+		auto loserName = API::CreateTextbox(_scene, "loser" + std::to_string(i));
+		loserName->GetTransform()->SetPosition(loserX, 400.0f, 0.0f);
+
+		auto loserComp = loserName->GetComponent<HDData::TextUI>();
+		loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+		loserComp->SetColor(DirectX::Colors::Black);
+
+		RoundManager::Instance()->SetLoserText(loserComp, i);
+
+		loserName->SetSelfActive(false);
+
+		loserX += 500;
+	}
+
+	// 다시 로비 진입을 위한 타이머 UI
+	auto resultTimer = API::CreateTextbox(_scene, "resultTimer");
+	resultTimer->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	auto resultTimerComp = resultTimer->GetComponent<HDData::TextUI>();
+	resultTimerComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	resultTimerComp->SetColor(DirectX::Colors::OrangeRed);
+
+	resultTimer->SetSelfActive(false);
+
+	RoundManager::Instance()->SetResultTimerUI(resultTimerComp);
+
+	// low hp screen effect
+	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
+	hpEffectObj->AddComponent<LowHPEffect>();
+
+	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
+	hitEffectObj->AddComponent<HitEffect>();
+
+	IndicatorPool::Instance().player = player;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

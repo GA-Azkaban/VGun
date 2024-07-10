@@ -17,7 +17,8 @@ namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false), m_useLight(true),
-		m_world{ XMMatrixIdentity() }, m_cameraVisible(true), m_lightVisible(true)
+		m_world{ XMMatrixIdentity() }, 
+		m_cameraVisible(true), m_lightVisible(true), m_isShadowActive(true)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
@@ -43,6 +44,11 @@ namespace RocketCore::Graphics
 	void StaticMeshObject::LoadMesh(const std::string& fileName)
 	{
 		m_meshes = ResourceManager::Instance().GetMeshes(fileName);
+		m_meshesActive.resize(m_meshes.size());
+		for (int i = 0; i < m_meshesActive.size(); ++i)
+		{
+			m_meshesActive[i] = true;
+		}
 		m_materials = ResourceManager::Instance().GetMaterials(fileName);
 		m_node = ResourceManager::Instance().GetNode(fileName);
 		m_boundingBox = ResourceManager::Instance().GetBoundingBox(fileName);
@@ -171,6 +177,25 @@ namespace RocketCore::Graphics
 		}
 	}
 
+	void StaticMeshObject::SetMeshActive(bool isActive, unsigned int index)
+	{
+		if (index >= m_meshes.size())
+		{
+			return;
+		}
+		m_meshesActive[index] = isActive;
+	}
+
+	void StaticMeshObject::SetShadowActive(bool isActive)
+	{
+		m_isShadowActive = isActive;
+	}
+
+	int StaticMeshObject::GetMeshCount()
+	{
+		return m_meshes.size();
+	}
+
 	void StaticMeshObject::Render()
 	{
 		if (!m_isActive)
@@ -193,6 +218,11 @@ namespace RocketCore::Graphics
 
 			for (UINT i = 0; i < m_meshes.size(); ++i)
 			{
+				if (!m_meshesActive[i])
+				{
+					continue;
+				}
+
 				if (m_materials[i]->GetAlbedoMap())
 				{
 					m_pixelShader->SetInt("useAlbedo", 1);
@@ -279,6 +309,16 @@ namespace RocketCore::Graphics
 	bool StaticMeshObject::IsLightVisible()
 	{
 		return m_lightVisible;
+	}
+
+	bool StaticMeshObject::IsShadowActive()
+	{
+		return m_isShadowActive;
+	}
+
+	bool StaticMeshObject::IsReceiveTM()
+	{
+		return m_receiveTMInfoFlag;
 	}
 
 	void StaticMeshObject::SetCameraVisible(bool isVisible)

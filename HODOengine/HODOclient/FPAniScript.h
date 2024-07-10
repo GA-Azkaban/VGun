@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "../HODOengine/HODO_API.h"
 
 
@@ -14,6 +13,5 @@ public:
 
 public:
 	HDData::Animator* _animator;
-	//PlayerInfo* _info;
 };
 

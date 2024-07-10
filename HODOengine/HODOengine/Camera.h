@@ -53,7 +53,8 @@ namespace HDData
 
 	// behavior functions
 	public:
-		void ShakeCamera(float deltaTime);
+		void ShakeCamera(float deltaTime, float& angleX);
+		void TumbleCamera(float deltaTime);
 		void ToggleCameraShake(bool isShake);
 		void ResetCameraPos();
 
@@ -79,7 +80,6 @@ namespace HDData
 		bool _isShakingCamera;
 		float _shakeTime;
 		float _distYOnShoot;
-		float _distYOnShootEnd;
 		bool _camActive;
 	};
 }

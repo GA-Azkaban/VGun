@@ -72,6 +72,21 @@ namespace HDData
 		_staticMesh->SetUseLight(useLight);
 	}
 
+	void MeshRenderer::SetMeshActive(bool isActive, unsigned int index)
+	{
+		_staticMesh->SetMeshActive(isActive, index);
+	}
+
+	void MeshRenderer::SetShadowActive(bool isActive)
+	{
+		_staticMesh->SetShadowActive(isActive);
+	}
+
+	int MeshRenderer::GetMeshCount()
+	{
+		return _staticMesh->GetMeshCount();
+	}
+
 	void MeshRenderer::Update()
 	{
 		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());

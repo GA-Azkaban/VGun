@@ -1,9 +1,11 @@
 ﻿#pragma once
 #include <unordered_map>
+#include <chrono>
+#include <thread>
 
 #include "../HODOengine/HODO_API.h"
-#include "Weapon.h"
 #include "PlayerInfo.h"
+#include "Timer.h"
 
 class RoundManager : public HDData::Script
 {
@@ -35,12 +37,7 @@ public:
 	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
-	void RecvOtherPlayerShoot(eHITLOC location);
-
 	void SendJump(int uid);
-
-private:
-	void SetTeamColor(HDData::SkinnedMeshRenderer* mesh, eTeam color);
 
 public:
 	std::unordered_map<int, HDData::GameObject*>& GetPlayerObjs();
@@ -53,16 +50,83 @@ private:
 	int _playerNum;
 	std::unordered_map<int, HDData::GameObject*> _players;
 
-private:
-	bool _isRoundStart = false;
-
-	int _timer;			// 타이머
-
 public:
+	void CheckWinner();
+
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
+	void SetEndCam(HDData::GameObject* cam);
+	void SetStartCam(HDData::Camera* cam);
+	
+	
+	HDData::GameObject* GetEndCam();
+	void SetRoundEndButton(HDData::GameObject* obj);
+	HDData::GameObject* GetRoundEndButton();
+	void ExitGame();
+	void SetWinnerText(HDData::TextUI* txt);
+	void SetLoserText(HDData::TextUI* txt, int index);
 
-	//애니메이션
+private:
+	bool _isRoundStart = false;
+	HDData::Camera* _startCam;
+	HDData::GameObject* _endCam;
+	HDData::GameObject* _endObj;
+	HDData::TextUI* _winnerTXT;
+	HDData::TextUI* _loserTXT[5];
+
+public:
+	void SetRoundTimerObject(HDData::TextUI* obj);
+	void SetRoundTimer(int time);
+	void SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time);
+	int& GetRoundTimer();
+	void UpdateRoundTimer();
+	std::string ChangeSecToMin(int second);
+	void SetHPObject(HDData::TextUI* txt);
+	void UpdateHPText();
+	void SetAmmoText(HDData::TextUI* txt);
+	void UpdateAmmoText();
+	void UpdateResultTimer();
+	void SetResultTimerUI(HDData::TextUI* txt);
+	Timer* GetGameEndTimer();
+
+
+private:
+	HDData::TextUI* _timerUI;
+	int _timer;			
+
+	Timer* _gameEndTimer;
+	Timer* _showResultTimer;
+	std::chrono::time_point<std::chrono::steady_clock> _start_time;
+
+	HDData::TextUI* _hpUI;
+	HDData::TextUI* _ammoUI;
+	HDData::TextUI* _resultTimerUI;
+
+public:
+	void UpdateDesiredKillChecker();
+	void SetDesiredKill(int count);
+	int& GetDesiredKill();
+	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
+	void SetKillCountBack(HDData::ImageUI* img, int index);
+	
+	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
+
+private:
+	// obj 보관용
+	std::pair<HDData::TextUI*, HDData::TextUI*> _killCountObjs[6];
+
+	// 스폰 지점
+	Vector3 _spawnPoint[15];
+	int _index = 0;
+
+	// 인게임
+	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;
+
+	int _desiredKill;	// 목표 킬수
+	int _nowMaxKill;
+	int _winnerUID;
+
+	HDData::ImageUI* _backIMG[6];
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);

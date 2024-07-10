@@ -1,10 +1,11 @@
-﻿#pragma once
+#pragma once
 #include <string>
 #include <vector>
 #include <unordered_map>
 
 #include "Singleton.h"
 #include "MathHeader.h"
+#include "MaterialManager.h"
 
 namespace HDData
 {
@@ -38,6 +39,8 @@ namespace HDEngine
 
 	public:
 		void LoadUnityScene(std::string fileName, HDData::Scene* scene);
+		Vector3* GetRespawnPoint();
+		Vector3* GetCloudPoint();
 
 	private:
 		void LoadFromJson(std::string filePath);
@@ -45,8 +48,18 @@ namespace HDEngine
 		void LinkHierachy();
 		void SetTransform();
 
+		// 스폰 지점
+		Vector3 _spawnPoint[20];
+		int _spawnIndex = 1;
+
+		// 구름 위치 지정
+		//std::vector<Vector3> _cloudPosition;	//57
+		Vector3 _cloudPoint[60];
+		int _cloudIndex = 0;
 	private:
 		HDData::Scene * now;
+		HDData::Material* _material;
+		HDData::Material* _plane;
 		std::vector<InfoStruct> _infoList;
 		std::unordered_map<int, HDData::GameObject*> _gameObjectMap;
 	};

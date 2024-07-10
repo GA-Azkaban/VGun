@@ -4,154 +4,88 @@
 #include "PlayerInfo.h"
 #include "GameManager.h"
 #include "RoundManager.h"
+#include "NetworkManager.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true),
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
+	_tumbleCooldown(0.0f),
 	_shootCount(0),
 	_bulletCount(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()),
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),
+	_isDie(false),
 	_rotAngleX(0.0f), _rotAngleY(0.0f),
 	_isFirstPersonPerspective(true),
 	_isJumping(true), _isOnGround(false),
-	_isShootHead(false), _isShootBody(false)
+	_isShootHead(false), _isShootBody(false),
+	_prevPlayerState(ePlayerMoveState::NONE, ePlayerMoveState::NONE),
+	_playerState(ePlayerMoveState::NONE, ePlayerMoveState::NONE)
 {
 
 }
 
 void PlayerMove::Start()
 {
-	_animator = GetGameObject()->AddComponent<HDData::Animator>();
-	API::LoadFPAnimationFromData(GetGameObject(), "FP_animation.json");
-	GetGameObject()->AddComponent<FPAniScript>();
-
-	_playerCollider = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
+	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
+	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
 	_moveSpeed = 3.0f;
 	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
-	PresetSprayPattern();
+	PresetSprayPattern(2);
 	StartRoundCam();
+
+	_prevPlayerState.first = ePlayerMoveState::IDLE;
+	_playerState.first = ePlayerMoveState::IDLE;
+
+	//_playerAudio->PlayRepeat("bgm");
 }
 
 void PlayerMove::Update()
 {
-	if (!_isMovable)
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		if (_isDie)
+		{
+			_isDie = false;
+			Respawn();
+		}
+		else
+		{
+			_isDie = true;
+			Die();
+		}
+	}
+
+	if (!_isMovable || _isDie)
 	{
 		return;
 	}
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	// check on_ground state
-	if (_isJumping)
-	{
-		//CheckIsOnGround();
-	}
-	//else
-	//{
-	//	_playerCollider->ClearVeloY();
-	//}
-
-	// 쿨타임 방식의 점프 관리
-	//if (_jumpCooldown >= 0.0f)
-	//{
-	//	_jumpCooldown -= _deltaTime;
-	//}
-	//else
-	//{
-	//	if (_isJumping)
-	//	{
-	//		_isJumping = false;
-	//		_playerCollider->ClearVeloY();
-	//	}
-	//}
-
-	//if (API::GetMouseDown(MOUSE_LEFT))
-	//{
-	//	ShootGun();
-	//}
-
-
-	// 발사 쿨타임 및 파티클 수명관리
-	if (_shootCooldown >= 0.0f)
-	{
-		_shootCooldown -= _deltaTime;
-	}
-
-	for (int i = 0; i < 30; ++i)
-	{
-		//_hitParticles[i]->CheckTimer(_deltaTime);
-	}
-
-	// 탄창 비었는데 쏘면 딸깍소리
-	if (API::GetMouseDown(MOUSE_LEFT))
-	{
-		if (_bulletCount <= 0 && !_isReloading)
-		{
-			_playerAudio->PlayOnce("empty");
-		}
-	}
+	_playerPos = GetTransform()->GetPosition();
 
 	_isShootHead = false;
 	_isShootBody = false;
-	if (API::GetMouseHold(MOUSE_LEFT) && _shootCooldown <= 0.0f)
-	{
-		ShootGunDdabal();
-	}
-
-	if (API::GetMouseUp(MOUSE_LEFT))
-	{
-		// 반동 리셋
-		_shootCount = 0;
-		_headCam->ToggleCameraShake(false);
-		_headCam->ResetCameraPos();
-	}
-
-	if (API::GetKeyDown(DIK_R))
-	{
-		if (_isReloading == false && _bulletCount < 30)
-		{
-			// 여기에 재장전 애니메이션과 소리 넣기
-			_playerAudio->PlayOnce("reload");
-			_isReloading = true;
-		}
-	}
-	Reload();
-
-	// 마우스에 따른 플레이어 회전 체크
-	CheckLookDirection();
-
-	// 키보드에 따른 플레이어 이동 방향 체크
-	CheckMoveInfo();
 
 	CameraControl();
-	_headCam->ShakeCamera(_deltaTime);
+	CheckMoveInfo();
+	CoolTime();
+	DecidePlayerState();
+	Behavior();
 
-	// 이동, 회전
-	Move(_moveDirection);
+	UpdateStateText();
 
-
-	//API::DrawLineDir({ 0.f,0.f,0.f }, GetTransform()->GetPosition(), 10.0f, { 1.0f,0.0f,0.0f,1.0f });
+	// sound 관련
+	PlayPlayerSound();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
-
-	////UpdatePlayerPositionDebug();
-	//if (_tempFlag == 0)
-	//{
-	//	API::SetCurrentSceneMainCamera(_headCam);
-	//	_headCam->SetAsMainCamera();
-	//	_isHeadCam = true;
-	//	//_aimText->SetText("O");
-	//	_isFirstPersonPerspective = true;
-	//	_headCam->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.0f, 0.3f));
-
-	//	_tempFlag = 1;
-	//}
 }
 
 void PlayerMove::SetMovable(bool movable)
@@ -251,7 +185,7 @@ void PlayerMove::CheckMoveInfo()
 			_moveDirection = 3;
 		}
 	}
-
+	/*
 	if (_moveDirection != 5)
 	{
 		//if (!_playerAudio->IsSoundPlaying("walk"))
@@ -262,7 +196,7 @@ void PlayerMove::CheckMoveInfo()
 	if (API::GetKeyDown(DIK_SPACE))
 	{
 		//CheckIsOnGround();
-		Jump();
+		Jump(Vector3::Zero);
 	}
 	if (API::GetKeyDown(DIK_LSHIFT))
 	{
@@ -276,6 +210,7 @@ void PlayerMove::CheckMoveInfo()
 		_isRunning = false;
 		_moveSpeed = 3.0f;
 	}
+	*/
 }
 
 
@@ -311,7 +246,7 @@ bool PlayerMove::CheckIsOnGround()
 				{
 					_isOnGround = true;
 					_isJumping = false;
-					//_playerAudio->Play3DOnce("landing");
+					//_playerAudio->PlayOnce("landing");
 					//_jumpCount = 0;
 				}
 				return true;
@@ -324,8 +259,8 @@ bool PlayerMove::CheckIsOnGround()
 
 	Vector3 pos = this->GetTransform()->GetPosition();
 
-	float halfHeight = _playerCollider->GetHeight() / 2.0f;
-	Vector3 rayOrigin = Vector3(pos.x, pos.y - 0.04f, pos.z);
+	float halfHeight = _playerColliderStanding->GetHeight() / 2.0f;
+	Vector3 rayOrigin = Vector3(pos.x, pos.y, pos.z);
 
 	int colliderType = 0;
 	HDData::Collider* opponentCollider = API::ShootRay({ rayOrigin.x, rayOrigin.y, rayOrigin.z }, { 0.0f, 1.0f,0.0f }, 0.08f, &colliderType);
@@ -341,8 +276,8 @@ bool PlayerMove::CheckIsOnGround()
 			//{
 			_isOnGround = true;
 			_isJumping = false;
-			_playerCollider->ClearVeloY();
-			//_playerAudio->Play3DOnce("landing");
+			_playerColliderStanding->ClearVeloY();
+			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
 		}
@@ -365,12 +300,12 @@ void PlayerMove::Move(int direction)
 		if (_prevDirection != 0)
 		{
 			//_playerCollider->Move(DecideMovement(_prevDirection) * -30.0f);
-			_playerCollider->Stop();
+			_playerColliderStanding->Stop();
 		}
 	}
 	else
 	{
-		_playerCollider->Move(DecideDisplacement(_moveDirection), _moveSpeed);
+		_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
 		if (!(_playerAudio->IsSoundPlaying("walk") || _playerAudio->IsSoundPlaying("run") || _isJumping))
 		{
@@ -390,27 +325,6 @@ void PlayerMove::Move(int direction)
 
 void PlayerMove::ShootGun()
 {
-	_headCam->ToggleCameraShake(true);
-
-	HDData::Collider* hitCollider = nullptr;
-
-	Vector3 rayOrigin = GetTransform()->GetPosition() + GetTransform()->GetForward() * 2.0f;
-	Vector3 hitPoint = { 1.0f, 1.0f, 1.0f };
-
-	hitCollider = API::ShootRayHitPoint(rayOrigin, GetTransform()->GetForward(), hitPoint);
-
-	HDData::DynamicCollider* hitDynamic = dynamic_cast<HDData::DynamicCollider*>(hitCollider);
-
-	if (hitDynamic != nullptr)
-	{
-		Vector3 forceDirection = hitCollider->GetTransform()->GetPosition() - hitPoint;
-		hitDynamic->AddForce(forceDirection, 50.0f);
-		//_hitText->GetTransform()->SetPosition(hitPoint); // must setPos in screenSpace
-	}
-}
-
-void PlayerMove::ShootGunDdabal()
-{
 	if (_isReloading)
 	{
 		return;
@@ -424,9 +338,10 @@ void PlayerMove::ShootGunDdabal()
 	}
 
 	// 총기 반동
-	ApplyRecoil();
+	//ApplyRecoil();
 	_headCam->ToggleCameraShake(true);
 
+	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
@@ -441,11 +356,12 @@ void PlayerMove::ShootGunDdabal()
 	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
 	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 	_playerAudio->PlayOnce("shoot");
+	_playerAudio->PlayOnce("shoot2");
 
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
 	{
-		_playerAudio->PlayOnce("hit");
+		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
 	}
 
@@ -455,6 +371,8 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		_isShootHead = true;
+		//_playerAudio->PlayOnce("hitBody");
+		//_playerAudio->PlayOnce("hitHead");
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -463,27 +381,19 @@ void PlayerMove::ShootGunDdabal()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
+		//_playerAudio->PlayOnce("hitBody");
 	}
-
 
 	++_shootCount;
 	--_bulletCount;
-	_shootCooldown = 0.1f;
+	_shootCooldown = 0.5f;
 }
 
 void PlayerMove::Reload()
 {
-	// 3초간 장전
-	if (_isReloading == true)
-	{
-		_reloadTimer += _deltaTime;
-		if (_reloadTimer >= 3.0f)
-		{
-			_bulletCount = 30;
-			_isReloading = false;
-			_reloadTimer = 0.0f;
-		}
-	}
+	_shootCount = 0;
+	_playerState.second = ePlayerMoveState::IDLE;
+	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
 void PlayerMove::SpawnParticle(Vector3 position)
@@ -514,9 +424,370 @@ void PlayerMove::ApplyRecoil()
 	_rotAngleX += _sprayCamera[_shootCount].second;
 }
 
+void PlayerMove::Tumble(Vector3 direction)
+{
+	// 데굴
+	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
+}
+
+void PlayerMove::PlayPlayerSound()
+{
+
+}
+
+void PlayerMove::OnEnable()
+{
+	//_playerAudio->PlayRepeat("bgm");
+}
+
+void PlayerMove::OnStateEnter(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+			_playerColliderStanding->Stop();
+
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+			_moveSpeed = 3.0f;
+
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+			_moveSpeed = 6.0f;
+
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			_moveSpeed = 5.0f;
+			_playerColliderStanding->Jump(Vector3::Zero);
+			_playerAudio->PlayOnce("jump");
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			_tumbleTimer = 0.3f;
+			_tumbleCooldown = 2.0f;
+
+			_headCam->ToggleCameraShake(true);
+			_fpmesh->SetMeshActive(false, 0);
+			_weapon->SetMeshActive(false, 0);
+			_weapon->SetMeshActive(false, 1);
+			_weapon->SetMeshActive(false, 2);
+			_weapon->SetMeshActive(false, 3);
+
+			if (_moveDirection == 5)
+			{
+				_tumbleDirection = GetTransform()->GetForward();
+			}
+			else
+			{
+				_tumbleDirection = DecideDisplacement(_moveDirection);
+			}
+
+			_headCam->TumbleCamera(_deltaTime);
+			_playerAudio->PlayOnce("tumble");
+			_playerAudio->PlayOnce("tumblingMan");
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::FIRE:
+		{
+			ShootGun();
+			_headCam->ToggleCameraShake(true);
+			_playerAudio->PlayOnce("shoot");
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+			_shootCooldown = 0.8f;
+			_playerAudio->PlayOnce("empty");
+
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+			_fpmesh->SetMeshActive(false, 0);
+			_playerAudio->PlayOnce("reload");
+			_reloadTimer = 3.0f;
+
+			break;
+		}
+		case ePlayerMoveState::DIE:
+		{
+			Die();
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::OnStateStay(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			_playerAudio->PlayOnceIfNotPlaying("walk");
+
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			_playerAudio->PlayOnceIfNotPlaying("run");
+
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			Tumble(_tumbleDirection);
+			_headCam->TumbleCamera(_deltaTime);
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::FIRE:
+		{
+			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::DIE:
+		{
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::OnStateExit(ePlayerMoveState state)
+{
+	switch (state)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			Landing();
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			Reload();
+			_headCam->TumbleCamera(_deltaTime);
+			_headCam->ToggleCameraShake(false);
+			_fpmesh->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 1);
+			_weapon->SetMeshActive(true, 2);
+			_weapon->SetMeshActive(true, 3);
+
+			_playerState.second = ePlayerMoveState::AIM;
+
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::FIRE:
+		{
+			// 반동 초기화
+			_shootCount = 0;
+			_headCam->ToggleCameraShake(false);
+			_headCam->ResetCameraPos();
+
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+			Reload();
+			_fpmesh->SetMeshActive(true, 0);
+
+			_playerAudio->Stop("reload");
+			_reloadTimer = 0.0f;
+
+			break;
+		}
+		case ePlayerMoveState::DIE:
+		{
+			Respawn();
+
+			break;
+		}
+
+		default:
+		{
+
+		}
+	}
+}
+
+void PlayerMove::UpdateStateText()
+{
+	std::string first = "NONE";
+	std::string second = "NONE";
+
+	switch (_playerState.first)
+	{
+		case ePlayerMoveState::DIE:
+		{
+			first = "DIE";
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+			first = "WALK";
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+			first = "RUN";
+			break;
+		}
+		case ePlayerMoveState::IDLE:
+		{
+			first = "IDLE";
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			first = "JUMP";
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			first = "TUMBLE";
+			break;
+		}
+		default:
+		{
+			first = "NONE";
+		}
+	}
+
+	switch (_playerState.second)
+	{
+		case ePlayerMoveState::FIRE:
+		{
+			second = "FIRE";
+			break;
+		}
+		case ePlayerMoveState::RELOAD:
+		{
+			second = "RELOAD";
+			break;
+		}
+		case ePlayerMoveState::AIM:
+		{
+			second = "AIM";
+			break;
+		}
+		case ePlayerMoveState::EMPTY:
+		{
+			second = "EMPTY";
+			break;
+		}
+		default:
+		{
+			second = "NONE";
+		}
+	}
+
+	_plStateText->SetText(first + "/" + second);
+
+	_tumbleText->SetText(std::to_string(_tumbleCooldown));
+
+	std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
+	_plPosText->SetText(posText);
+}
+
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
+}
+
+ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
+{
+	if (index == 1)
+	{
+		return _playerState.first;
+	}
+	else
+	{
+		return _playerState.second;
+	}
 }
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
@@ -526,14 +797,21 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 	//{
 	//	return;
 	//}
+
+	if (_playerState.first == ePlayerMoveState::TUMBLE)
+	{
+		return;
+	}
+
 	auto& opponentCollider = (*colArr)->_otherActor;
 
 	// 지형인 경우
-	if (opponentCollider->GetColType() == eColliderType::TERRAIN)
+	if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
 	{
 		// 착지 판정
-		_isOnGround = true;
-		_isJumping = false;
+		_playerState.first = ePlayerMoveState::IDLE;
+		// 일단 
+		OnStateExit(ePlayerMoveState::JUMP);
 	}
 }
 
@@ -550,6 +828,11 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 	//{
 	//	_isOnGround = false;
 	//}
+
+	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
+	//{
+	//	_playerColliderStanding->ClearForceXYZ();
+	//}
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -564,110 +847,190 @@ void PlayerMove::SetHeadCam(HDData::Camera* cam)
 	_headCam = cam;
 }
 
-HDData::Camera* PlayerMove::GetHeadCam() const
+void PlayerMove::SetPlayerColliders(HDData::DynamicCapsuleCollider* standing, HDData::DynamicCapsuleCollider* sitting)
 {
-	return _headCam;
+	_playerColliderStanding = standing;
+	_playerColliderSitting = sitting;
 }
 
-void PlayerMove::PresetSprayPattern()
+void PlayerMove::PresetSprayPattern(int gunType)
 {
-	float scale = 0.5f;
+	switch (gunType)
+	{
+		case 1:
+		{
+			float scale = 0.3f;
 
-	// 카메라를 돌려주는 방식의 경우
-	//_sprayPattern[0] = std::make_pair(0.001f * scale, -0.3f * scale);
-	//_sprayPattern[1] = std::make_pair(-0.001f * scale, -1.0f * scale);
-	//_sprayPattern[2] = std::make_pair(0.001f * scale, -1.5f * scale);
-	//_sprayPattern[3] = std::make_pair(0.001f * scale, -1.5f * scale);
-	//_sprayPattern[4] = std::make_pair(-0.003f * scale, -1.7f * scale);
-	//_sprayPattern[5] = std::make_pair(-0.002f * scale, -1.5f * scale);
-	//_sprayPattern[6] = std::make_pair(-0.003f * scale, -1.0f * scale);
-	//_sprayPattern[7] = std::make_pair(0.004f * scale, -1.0f * scale);
-	//_sprayPattern[8] = std::make_pair(0.01f * scale, 0.5f * scale);
-	//_sprayPattern[9] = std::make_pair(0.005f * scale, -0.3f * scale);
-	//_sprayPattern[10] = std::make_pair(-0.003f * scale, -0.6f * scale);
-	//_sprayPattern[11] = std::make_pair(0.004f * scale, -0.6f * scale);
-	//_sprayPattern[12] = std::make_pair(0.008f * scale, 0.7f * scale);
-	//_sprayPattern[13] = std::make_pair(0.001f * scale, -0.2f * scale);
-	//_sprayPattern[14] = std::make_pair(-0.011f * scale, -0.1f * scale);
-	//_sprayPattern[15] = std::make_pair(-0.003f * scale, -0.4f * scale);
-	//_sprayPattern[16] = std::make_pair(-0.003f * scale, -0.6f * scale);
-	//_sprayPattern[17] = std::make_pair(-0.006f * scale, 0.3f * scale);
-	//_sprayPattern[18] = std::make_pair(-0.003f * scale, 0.7f * scale);
-	//_sprayPattern[19] = std::make_pair(-0.005f * scale, -0.1f * scale);
-	//_sprayPattern[20] = std::make_pair(0.004f * scale, 0.0f * scale);
-	//_sprayPattern[21] = std::make_pair(0.001f * scale, -1.0f * scale);
-	//_sprayPattern[22] = std::make_pair(0.001f * scale, -0.4f * scale);
-	//_sprayPattern[23] = std::make_pair(-0.005f * scale, 0.1f * scale);
-	//_sprayPattern[24] = std::make_pair(0.004f * scale, 0.0f * scale);
-	//_sprayPattern[25] = std::make_pair(0.008f * scale, 0.6f * scale);
-	//_sprayPattern[26] = std::make_pair(0.01f * scale, 1.3f * scale);
-	//_sprayPattern[27] = std::make_pair(0.004f * scale, -0.4f * scale);
-	//_sprayPattern[28] = std::make_pair(0.002f * scale, -0.2f * scale);
-	//_sprayPattern[29] = std::make_pair(0.001f * scale, -0.1f * scale);
+			// 조준점을 흐트리는 방식의 경우
+			_sprayPattern[0] = std::make_pair(0.0f * scale, 0.0f * scale);
+			_sprayPattern[1] = std::make_pair(0.002f * scale, -0.3f * scale);
+			_sprayPattern[2] = std::make_pair(0.000f * scale, -1.3f * scale);
+			_sprayPattern[3] = std::make_pair(0.002f * scale, -2.8f * scale);
+			_sprayPattern[4] = std::make_pair(0.004f * scale, -4.3f * scale);
+			_sprayPattern[5] = std::make_pair(-0.01f * scale, -6.0f * scale);
+			_sprayPattern[6] = std::make_pair(-0.014f * scale, -7.5f * scale);
+			_sprayPattern[7] = std::make_pair(-0.02f * scale, -8.5f * scale);
+			_sprayPattern[8] = std::make_pair(-0.012f * scale, -9.5f * scale);
+			_sprayPattern[9] = std::make_pair(0.008f * scale, -9.0f * scale);
+			_sprayPattern[10] = std::make_pair(0.018f * scale, -9.3f * scale);
+			_sprayPattern[11] = std::make_pair(0.012f * scale, -9.9f * scale);
+			_sprayPattern[12] = std::make_pair(0.02f * scale, -10.5f * scale);
+			_sprayPattern[13] = std::make_pair(0.036f * scale, -9.8f * scale);
+			_sprayPattern[14] = std::make_pair(0.038f * scale, -10.0f * scale);
+			_sprayPattern[15] = std::make_pair(0.016f * scale, -10.1f * scale);
+			_sprayPattern[16] = std::make_pair(0.01f * scale, -10.5f * scale);
+			_sprayPattern[17] = std::make_pair(0.004f * scale, -11.1f * scale);
+			_sprayPattern[18] = std::make_pair(-0.008f * scale, -10.8f * scale);
+			_sprayPattern[19] = std::make_pair(-0.014f * scale, -10.1f * scale);
+			_sprayPattern[20] = std::make_pair(-0.024f * scale, -10.2f * scale);
+			_sprayPattern[21] = std::make_pair(-0.016f * scale, -10.2f * scale);
+			_sprayPattern[22] = std::make_pair(-0.014f * scale, -11.2f * scale);
+			_sprayPattern[23] = std::make_pair(-0.012f * scale, -11.6f * scale);
+			_sprayPattern[24] = std::make_pair(-0.022f * scale, -11.5f * scale);
+			_sprayPattern[25] = std::make_pair(-0.014f * scale, -11.5f * scale);
+			_sprayPattern[26] = std::make_pair(0.002f * scale, -10.9f * scale);
+			_sprayPattern[27] = std::make_pair(0.022f * scale, -9.6f * scale);
+			_sprayPattern[28] = std::make_pair(0.01f * scale, -10.0f * scale);
+			_sprayPattern[29] = std::make_pair(0.016f * scale, -10.3f * scale);
 
-	// 조준점을 흐트리는 방식의 경우
-	_sprayPattern[0] = std::make_pair(0.0f * scale, 0.0f * scale);
-	_sprayPattern[1] = std::make_pair(0.002f * scale, -0.3f * scale);
-	_sprayPattern[2] = std::make_pair(0.000f * scale, -1.3f * scale);
-	_sprayPattern[3] = std::make_pair(0.002f * scale, -2.8f * scale);
-	_sprayPattern[4] = std::make_pair(0.004f * scale, -4.3f * scale);
-	_sprayPattern[5] = std::make_pair(-0.01f * scale, -6.0f * scale);
-	_sprayPattern[6] = std::make_pair(-0.014f * scale, -7.5f * scale);
-	_sprayPattern[7] = std::make_pair(-0.02f * scale, -8.5f * scale);
-	_sprayPattern[8] = std::make_pair(-0.012f * scale, -9.5f * scale);
-	_sprayPattern[9] = std::make_pair(0.008f * scale, -9.0f * scale);
-	_sprayPattern[10] = std::make_pair(0.018f * scale, -9.3f * scale);
-	_sprayPattern[11] = std::make_pair(0.012f * scale, -9.9f * scale);
-	_sprayPattern[12] = std::make_pair(0.02f * scale, -10.5f * scale);
-	_sprayPattern[13] = std::make_pair(0.036f * scale, -9.8f * scale);
-	_sprayPattern[14] = std::make_pair(0.038f * scale, -10.0f * scale);
-	_sprayPattern[15] = std::make_pair(0.016f * scale, -10.1f * scale);
-	_sprayPattern[16] = std::make_pair(0.01f * scale, -10.5f * scale);
-	_sprayPattern[17] = std::make_pair(0.004f * scale, -11.1f * scale);
-	_sprayPattern[18] = std::make_pair(-0.008f * scale, -10.8f * scale);
-	_sprayPattern[19] = std::make_pair(-0.014f * scale, -10.1f * scale);
-	_sprayPattern[20] = std::make_pair(-0.024f * scale, -10.2f * scale);
-	_sprayPattern[21] = std::make_pair(-0.016f * scale, -10.2f * scale);
-	_sprayPattern[22] = std::make_pair(-0.014f * scale, -11.2f * scale);
-	_sprayPattern[23] = std::make_pair(-0.012f * scale, -11.6f * scale);
-	_sprayPattern[24] = std::make_pair(-0.022f * scale, -11.5f * scale);
-	_sprayPattern[25] = std::make_pair(-0.014f * scale, -11.5f * scale);
-	_sprayPattern[26] = std::make_pair(0.002f * scale, -10.9f * scale);
-	_sprayPattern[27] = std::make_pair(0.022f * scale, -9.6f * scale);
-	_sprayPattern[28] = std::make_pair(0.01f * scale, -10.0f * scale);
-	_sprayPattern[29] = std::make_pair(0.016f * scale, -10.3f * scale);
+			float scale2 = 0.01f;
+			_sprayCamera[0] = std::make_pair(0.002f * scale2, -0.3f * scale2);
+			_sprayCamera[1] = std::make_pair(-0.002f * scale2, -1.0f * scale2);
+			_sprayCamera[2] = std::make_pair(0.002f * scale2, -1.5f * scale2);
+			_sprayCamera[3] = std::make_pair(0.002f * scale2, -1.5f * scale2);
+			_sprayCamera[4] = std::make_pair(-0.006f * scale2, -1.7f * scale2);
+			_sprayCamera[5] = std::make_pair(-0.004f * scale2, -1.5f * scale2);
+			_sprayCamera[6] = std::make_pair(-0.006f * scale2, -1.0f * scale2);
+			_sprayCamera[7] = std::make_pair(0.008f * scale2, -1.0f * scale2);
+			_sprayCamera[8] = std::make_pair(0.02f * scale2, 0.5f * scale2);
+			_sprayCamera[9] = std::make_pair(0.01f * scale2, -0.3f * scale2);
+			_sprayCamera[10] = std::make_pair(-0.006f * scale2, -0.6f * scale2);
+			_sprayCamera[11] = std::make_pair(0.008f * scale2, -0.6f * scale2);
+			_sprayCamera[12] = std::make_pair(0.016f * scale2, 0.7f * scale2);
+			_sprayCamera[13] = std::make_pair(0.002f * scale2, -0.2f * scale2);
+			_sprayCamera[14] = std::make_pair(-0.022f * scale2, -0.1f * scale2);
+			_sprayCamera[15] = std::make_pair(-0.006f * scale2, -0.4f * scale2);
+			_sprayCamera[16] = std::make_pair(-0.006f * scale2, -0.6f * scale2);
+			_sprayCamera[17] = std::make_pair(-0.012f * scale2, 0.3f * scale2);
+			_sprayCamera[18] = std::make_pair(-0.006f * scale2, 0.7f * scale2);
+			_sprayCamera[19] = std::make_pair(-0.01f * scale2, -0.1f * scale2);
+			_sprayCamera[20] = std::make_pair(0.008f * scale2, 0.0f * scale2);
+			_sprayCamera[21] = std::make_pair(0.002f * scale2, -1.0f * scale2);
+			_sprayCamera[22] = std::make_pair(0.002f * scale2, -0.4f * scale2);
+			_sprayCamera[23] = std::make_pair(-0.01f * scale2, 0.1f * scale2);
+			_sprayCamera[24] = std::make_pair(0.008f * scale2, 0.0f * scale2);
+			_sprayCamera[25] = std::make_pair(0.016f * scale2, 0.6f * scale2);
+			_sprayCamera[26] = std::make_pair(0.02f * scale2, 1.3f * scale2);
+			_sprayCamera[27] = std::make_pair(0.008f * scale2, -0.4f * scale2);
+			_sprayCamera[28] = std::make_pair(0.004f * scale2, -0.2f * scale2);
+			_sprayCamera[29] = std::make_pair(0.002f * scale2, -0.1f * scale2);
 
-	float scale2 = 0.01f;
-	_sprayCamera[0] = std::make_pair(0.002f * scale2, -0.3f * scale2);
-	_sprayCamera[1] = std::make_pair(-0.002f * scale2, -1.0f * scale2);
-	_sprayCamera[2] = std::make_pair(0.002f * scale2, -1.5f * scale2);
-	_sprayCamera[3] = std::make_pair(0.002f * scale2, -1.5f * scale2);
-	_sprayCamera[4] = std::make_pair(-0.006f * scale2, -1.7f * scale2);
-	_sprayCamera[5] = std::make_pair(-0.004f * scale2, -1.5f * scale2);
-	_sprayCamera[6] = std::make_pair(-0.006f * scale2, -1.0f * scale2);
-	_sprayCamera[7] = std::make_pair(0.008f * scale2, -1.0f * scale2);
-	_sprayCamera[8] = std::make_pair(0.02f * scale2, 0.5f * scale2);
-	_sprayCamera[9] = std::make_pair(0.01f * scale2, -0.3f * scale2);
-	_sprayCamera[10] = std::make_pair(-0.006f * scale2, -0.6f * scale2);
-	_sprayCamera[11] = std::make_pair(0.008f * scale2, -0.6f * scale2);
-	_sprayCamera[12] = std::make_pair(0.016f * scale2, 0.7f * scale2);
-	_sprayCamera[13] = std::make_pair(0.002f * scale2, -0.2f * scale2);
-	_sprayCamera[14] = std::make_pair(-0.022f * scale2, -0.1f * scale2);
-	_sprayCamera[15] = std::make_pair(-0.006f * scale2, -0.4f * scale2);
-	_sprayCamera[16] = std::make_pair(-0.006f * scale2, -0.6f * scale2);
-	_sprayCamera[17] = std::make_pair(-0.012f * scale2, 0.3f * scale2);
-	_sprayCamera[18] = std::make_pair(-0.006f * scale2, 0.7f * scale2);
-	_sprayCamera[19] = std::make_pair(-0.01f * scale2, -0.1f * scale2);
-	_sprayCamera[20] = std::make_pair(0.008f * scale2, 0.0f * scale2);
-	_sprayCamera[21] = std::make_pair(0.002f * scale2, -1.0f * scale2);
-	_sprayCamera[22] = std::make_pair(0.002f * scale2, -0.4f * scale2);
-	_sprayCamera[23] = std::make_pair(-0.01f * scale2, 0.1f * scale2);
-	_sprayCamera[24] = std::make_pair(0.008f * scale2, 0.0f * scale2);
-	_sprayCamera[25] = std::make_pair(0.016f * scale2, 0.6f * scale2);
-	_sprayCamera[26] = std::make_pair(0.02f * scale2, 1.3f * scale2);
-	_sprayCamera[27] = std::make_pair(0.008f * scale2, -0.4f * scale2);
-	_sprayCamera[28] = std::make_pair(0.004f * scale2, -0.2f * scale2);
-	_sprayCamera[29] = std::make_pair(0.002f * scale2, -0.1f * scale2);
+			break;
+		}
+
+		case 2:
+		{
+			_sprayPattern[0] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[1] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[2] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[3] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[4] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[5] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[6] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[7] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[8] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[9] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[10] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[11] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[12] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[13] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[14] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[15] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[16] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[17] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[18] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[19] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[20] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[21] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[22] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[23] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[24] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[25] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[26] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[27] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[28] = std::make_pair(0.0f, 0.0f);
+			_sprayPattern[29] = std::make_pair(0.0f, 0.0f);
+
+			_sprayCamera[0] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[1] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[2] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[3] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[4] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[5] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[6] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[7] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[8] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[9] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[10] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[11] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[12] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[13] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[14] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[15] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[16] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[17] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[18] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[19] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[20] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[21] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[22] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[23] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[24] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[25] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[26] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[27] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[28] = std::make_pair(0.0f, 0.0f);
+			_sprayCamera[29] = std::make_pair(0.0f, 0.0f);
+
+			break;
+		}
+
+		default:
+		{
+			// 카메라를 돌려주는 방식의 경우
+			//_sprayPattern[0] = std::make_pair(0.001f * scale, -0.3f * scale);
+			//_sprayPattern[1] = std::make_pair(-0.001f * scale, -1.0f * scale);
+			//_sprayPattern[2] = std::make_pair(0.001f * scale, -1.5f * scale);
+			//_sprayPattern[3] = std::make_pair(0.001f * scale, -1.5f * scale);
+			//_sprayPattern[4] = std::make_pair(-0.003f * scale, -1.7f * scale);
+			//_sprayPattern[5] = std::make_pair(-0.002f * scale, -1.5f * scale);
+			//_sprayPattern[6] = std::make_pair(-0.003f * scale, -1.0f * scale);
+			//_sprayPattern[7] = std::make_pair(0.004f * scale, -1.0f * scale);
+			//_sprayPattern[8] = std::make_pair(0.01f * scale, 0.5f * scale);
+			//_sprayPattern[9] = std::make_pair(0.005f * scale, -0.3f * scale);
+			//_sprayPattern[10] = std::make_pair(-0.003f * scale, -0.6f * scale);
+			//_sprayPattern[11] = std::make_pair(0.004f * scale, -0.6f * scale);
+			//_sprayPattern[12] = std::make_pair(0.008f * scale, 0.7f * scale);
+			//_sprayPattern[13] = std::make_pair(0.001f * scale, -0.2f * scale);
+			//_sprayPattern[14] = std::make_pair(-0.011f * scale, -0.1f * scale);
+			//_sprayPattern[15] = std::make_pair(-0.003f * scale, -0.4f * scale);
+			//_sprayPattern[16] = std::make_pair(-0.003f * scale, -0.6f * scale);
+			//_sprayPattern[17] = std::make_pair(-0.006f * scale, 0.3f * scale);
+			//_sprayPattern[18] = std::make_pair(-0.003f * scale, 0.7f * scale);
+			//_sprayPattern[19] = std::make_pair(-0.005f * scale, -0.1f * scale);
+			//_sprayPattern[20] = std::make_pair(0.004f * scale, 0.0f * scale);
+			//_sprayPattern[21] = std::make_pair(0.001f * scale, -1.0f * scale);
+			//_sprayPattern[22] = std::make_pair(0.001f * scale, -0.4f * scale);
+			//_sprayPattern[23] = std::make_pair(-0.005f * scale, 0.1f * scale);
+			//_sprayPattern[24] = std::make_pair(0.004f * scale, 0.0f * scale);
+			//_sprayPattern[25] = std::make_pair(0.008f * scale, 0.6f * scale);
+			//_sprayPattern[26] = std::make_pair(0.01f * scale, 1.3f * scale);
+			//_sprayPattern[27] = std::make_pair(0.004f * scale, -0.4f * scale);
+			//_sprayPattern[28] = std::make_pair(0.002f * scale, -0.2f * scale);
+			//_sprayPattern[29] = std::make_pair(0.001f * scale, -0.1f * scale);
+			break;
+		}
+	}
 }
 
 void PlayerMove::StartRoundCam()
@@ -708,11 +1071,12 @@ void PlayerMove::ToggleCam()
 	}
 }
 
-void PlayerMove::Jump()
+void PlayerMove::Jump(Vector3 direction)
 {
 	if ((!_isJumping) && (_isOnGround))
 	{
-		_playerCollider->Jump();
+		// 점프
+		_playerColliderStanding->Jump(direction);
 		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
 		_isOnGround = false;
@@ -736,25 +1100,25 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			case 1:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * -0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * -0.7f;
 			}
 			break;
 			case 2:
 			{
-				moveStep = GetTransform()->GetForward() * _deltaTime * -_moveSpeed;
+				moveStep = GetTransform()->GetForward() * -1;
 			}
 			break;
 			case 3:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * -_moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * -0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * 0.7f;
 			}
 			break;
 			case 4:
 			{
-				moveStep = GetTransform()->GetRight() * _deltaTime * -_moveSpeed;
+				moveStep = GetTransform()->GetRight() * -1;
 			}
 			break;
 			case 5:
@@ -764,26 +1128,26 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			break;
 			case 6:
 			{
-				moveStep = GetTransform()->GetRight() * _deltaTime * _moveSpeed;
+				moveStep = GetTransform()->GetRight();
 			}
 			break;
 			case 7:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * -_moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * -0.7f;
 			}
 			break;
 			case 8:
 			{
-				moveStep = GetTransform()->GetForward() * _deltaTime * _moveSpeed;
+				moveStep = GetTransform()->GetForward();
 			}
 			break;
 			case 9:
 			{
 				moveStep =
-					GetGameObject()->GetTransform()->GetForward() * _deltaTime * _moveSpeed * 0.7f
-					+ GetGameObject()->GetTransform()->GetRight() * _deltaTime * _moveSpeed * 0.7f;
+					GetGameObject()->GetTransform()->GetForward() * 0.7f
+					+ GetGameObject()->GetTransform()->GetRight() * 0.7f;
 			}
 			break;
 			default:
@@ -799,22 +1163,22 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 		{
 			case 1:
 			{
-				moveStep = Vector3(_deltaTime * -_moveSpeed * 0.7f, 0.0f, _deltaTime * -_moveSpeed * 0.7f);
+				moveStep = Vector3(-0.7f, 0.0f, -0.7f);
 			}
 			break;
 			case 2:
 			{
-				moveStep = Vector3(0.0f, 0.0f, _deltaTime * -_moveSpeed);
+				moveStep = Vector3(0.0f, 0.0f, -1.0f);
 			}
 			break;
 			case 3:
 			{
-				moveStep = Vector3(_deltaTime * _moveSpeed * 0.7f, 0.0f, _deltaTime * -_moveSpeed * 0.7f);
+				moveStep = Vector3(0.7f, 0.0f, -0.7f);
 			}
 			break;
 			case 4:
 			{
-				moveStep = Vector3(_deltaTime * -_moveSpeed, 0.0f, 0.0f);
+				moveStep = Vector3(-1.0f, 0.0f, 0.0f);
 			}
 			break;
 			case 5:
@@ -824,22 +1188,22 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 			break;
 			case 6:
 			{
-				moveStep = Vector3(_deltaTime * _moveSpeed, 0.0f, 0.0f);
+				moveStep = Vector3(1.0f, 0.0f, 0.0f);
 			}
 			break;
 			case 7:
 			{
-				moveStep = Vector3(_deltaTime * -_moveSpeed * 0.7f, 0.0f, _deltaTime * _moveSpeed * 0.7f);
+				moveStep = Vector3(-0.7f, 0.0f, 0.7f);
 			}
 			break;
 			case 8:
 			{
-				moveStep = Vector3(0.0f, 0.0f, _deltaTime * _moveSpeed);
+				moveStep = Vector3(0.0f, 0.0f, 1.0f);
 			}
 			break;
 			case 9:
 			{
-				moveStep = Vector3(_deltaTime * _moveSpeed * 0.7f, 0.0f, _deltaTime * _moveSpeed * 0.7f);
+				moveStep = Vector3(0.7f, 0.0f, 0.7f);
 			}
 			break;
 			default:
@@ -855,12 +1219,12 @@ Vector3 PlayerMove::DecideDisplacement(int direction)
 
 void PlayerMove::CameraControl()
 {
-
+#ifdef _DEBUG
 	if (API::GetKeyDown(DIK_P))
 	{
-		//ToggleCameraView();
 		ToggleCam();
 	}
+#endif
 
 	// camera move
 	if (_isHeadCam)
@@ -978,7 +1342,444 @@ void PlayerMove::Pitch(float rotationValue)
 	//Quaternion rotVal = XMQuaternionRotationAxis(rotAxis, rotationValue);
 	//Quaternion newRot = XMQuaternionMultiply(headTrasnform->GetRotation(), rotVal);
 	//headTrasnform->Rotate(rotVal);
-	static_cast<HDData::DynamicCollider*>(_playerCollider->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
+	static_cast<HDData::DynamicCollider*>(_playerColliderStanding->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
+}
+
+void PlayerMove::ToggleSit(bool isSit)
+{
+	if (isSit)
+	{
+		//_playerColliderStanding->DisableCollider();
+		//_playerColliderSitting->EnableCollider();
+
+		//_playerColliderStanding->EnableStanding(false);
+		_playerColliderStanding->SetSitStand(1);
+	}
+	else
+	{
+		//_playerColliderSitting->DisableCollider();
+		//_playerColliderStanding->EnableCollider();
+
+		//_playerColliderStanding->EnableStanding(true);
+		_playerColliderStanding->SetSitStand(2);
+	}
+}
+
+void PlayerMove::Die()
+{
+	_playerColliderStanding->OnDisable();
+}
+
+void PlayerMove::Respawn()
+{
+	_playerColliderStanding->OnEnable();
+}
+
+void PlayerMove::DecidePlayerState()
+{
+	// 이전 스테이트 정보로 저장해주고 넘어간다.
+	_prevPlayerState.first = _playerState.first;
+	_prevPlayerState.second = _playerState.second;
+
+	// 구르기 타이머 체크해서 상태 종료
+	if (_tumbleTimer > 0.0f)
+	{
+		return;
+	}
+
+	if (API::GetKeyDown(DIK_LSHIFT) && _tumbleCooldown <= 0.0f && _playerState.first != ePlayerMoveState::JUMP)
+	{
+		_playerState.first = ePlayerMoveState::TUMBLE;
+		_playerState.second = ePlayerMoveState::AIM;
+		return;
+	}
+
+	DecidePlayerStateSecond();
+
+	// 점프, 걷기, 뛰기
+	if (_playerState.first == ePlayerMoveState::JUMP)
+	{
+		return;
+	}
+	else if (API::GetKeyDown(DIK_SPACE))
+	{
+		_playerState.first = ePlayerMoveState::JUMP;
+	}
+	else if (_moveDirection == 5)
+	{
+		_playerState.first = ePlayerMoveState::IDLE;
+	}
+	else
+	{
+		if (API::GetKeyPressing(DIK_LCONTROL))
+		{
+			_playerState.first = ePlayerMoveState::WALK;
+		}
+		else
+		{
+			_playerState.first = ePlayerMoveState::RUN;
+		}
+	}
+
+
+	/*
+	_prevPlayerState.first = _playerState.first;
+	_prevPlayerState.second = _playerState.second;
+
+	if (_playerState.first == ePlayerMoveState::TUMBLE)
+	{
+		if (_tumbleTimer > 0.0f)
+		{
+			_tumbleTimer -= _deltaTime;
+			return;
+		}
+		else
+		{
+			_playerState.first = ePlayerMoveState::IDLE;
+
+			_weapon->SetMeshActive(true, 0);
+			_weapon->SetMeshActive(true, 1);
+			_weapon->SetMeshActive(true, 2);
+			_weapon->SetMeshActive(true, 3);
+			_fpmesh->SetMeshActive(true, 0);
+		}
+	}
+
+	// jump가 아닐 때만 walk나 run이 될 수 있다.
+	if (_playerState.first != ePlayerMoveState::JUMP)
+	{
+		if (_moveDirection == 5)
+		{
+			_playerState.first = ePlayerMoveState::IDLE;
+		}
+		else
+		{
+			if (API::GetKeyPressing(DIK_LCONTROL))
+			{
+				_playerState.first = ePlayerMoveState::WALK;
+			}
+			else
+			{
+				_playerState.first = ePlayerMoveState::RUN;
+			}
+		}
+
+		// jump, tumble 들어오면 덮어씌우고
+		if (API::GetKeyDown(DIK_SPACE))
+		{
+			_playerState.first = ePlayerMoveState::JUMP;
+		}
+		else if (API::GetKeyDown(DIK_LSHIFT))
+		{
+			if (_tumbleCooldown <= 0.0f)
+			{
+				_playerState.first = ePlayerMoveState::TUMBLE;
+				// 구르기 쿨타임 5초로 설정
+				_tumbleCooldown = 5.0f;
+
+				// 재장전 or 사격 중에 구르는 경우
+				if (_prevPlayerState.second == ePlayerMoveState::RELOAD)
+				{
+					_playerAudio->Stop("reload");
+					_reloadTimer = 0.0f;
+				}
+				else if (_shootCooldown > 0.0f)
+				{
+					_headCam->ResetCameraPos();
+					_prevPlayerState.second = ePlayerMoveState::IDLE;
+				}
+			}
+		}
+	}
+	// shoot, reload 는 second에 넣어주고
+	//if (_playerState.second == ePlayerMoveState::RELOAD)
+	//{
+	//	if (_reloadTimer > 0.0f)
+	//	{o
+	//		_reloadTimer -= _deltaTime;
+	//		return;
+	//	}
+	//}
+
+	if (_playerState.second != ePlayerMoveState::RELOAD && _playerState.first != ePlayerMoveState::TUMBLE)
+	{
+		if (API::GetMouseDown(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::FIRE;
+		}
+		else if (API::GetMouseUp(MOUSE_LEFT))
+		{
+			_playerState.second = ePlayerMoveState::IDLE;
+			_shootCount = 0;
+		}
+		if (API::GetKeyDown(DIK_R) && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
+		{
+			//_playerAudio->PlayOnce("reload");
+			_playerState.second = ePlayerMoveState::RELOAD;
+		}
+	}
+	*/
+}
+
+void PlayerMove::DecidePlayerStateSecond()
+{
+
+	// 재장전, 사격 (BULLET_MAX 6)
+	if (_reloadTimer > 0.0f)
+	{
+		return;
+	}
+	else if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
+	{
+		_playerState.second = ePlayerMoveState::RELOAD;
+		return;
+	}
+
+	//else if (API::GetMouseUp(MOUSE_LEFT))
+	//{
+	//	_playerState.second = ePlayerMoveState::IDLE;
+	//}
+	//else if (_shootCooldown <= 0.0f)
+	//{
+	//	_playerState.second = ePlayerMoveState::IDLE;
+	//}
+
+	if (_shootCooldown <= 0.0f)
+	{
+		if (API::GetMouseDown(MOUSE_LEFT))
+		{
+			if (_bulletCount == 0)
+			{
+				_playerState.second = ePlayerMoveState::EMPTY;
+			}
+			else
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
+		}
+		else  if (API::GetMouseHold(MOUSE_LEFT) && _prevPlayerState.second == ePlayerMoveState::AIM)
+		{
+			if (_bulletCount != 0)
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
+		}
+		else
+		{
+			_playerState.second = ePlayerMoveState::AIM;
+		}
+
+	}
+}
+
+void PlayerMove::Behavior()
+{
+
+	if (_prevPlayerState.first == _playerState.first)
+	{
+		OnStateStay(_playerState.first);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.first);
+		OnStateEnter(_playerState.first);
+	}
+
+	if (_prevPlayerState.second == _playerState.second)
+	{
+		OnStateStay(_playerState.second);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.second);
+		OnStateEnter(_playerState.second);
+	}
+
+	/*
+	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
+	if (_playerState.first != ePlayerMoveState::TUMBLE)
+	{
+		_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+	}
+
+	// 움직임
+	switch (_playerState.first)
+	{
+		case ePlayerMoveState::IDLE:
+		{
+			_playerColliderStanding->Stop();
+			break;
+		}
+		case ePlayerMoveState::WALK:
+		{
+			if (!_playerAudio->IsSoundPlaying("walk"))
+			{
+				_playerAudio->PlayOnce("walk");
+			}
+			_moveSpeed = 3.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			break;
+		}
+		case ePlayerMoveState::RUN:
+		{
+			if (!_playerAudio->IsSoundPlaying("run"))
+			{
+				_playerAudio->PlayOnce("run");
+			}
+			_moveSpeed = 6.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			break;
+		}
+		case ePlayerMoveState::JUMP:
+		{
+			if (_prevPlayerState.first != ePlayerMoveState::JUMP)
+			{
+				Jump(DecideDisplacement(_moveDirection) * _moveSpeed);
+			}
+
+			_moveSpeed = 5.0f;
+			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+
+			break;
+		}
+		case ePlayerMoveState::TUMBLE:
+		{
+			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
+			{
+				_playerAudio->PlayOnce("tumblingMan");
+				_playerAudio->PlayOnce("tumble");
+
+				_tumbleTimer = 0.3f;
+				_headCam->ToggleCameraShake(true);
+
+				if (_moveDirection == 5)
+				{
+					_tumbleDirection = GetTransform()->GetForward();
+				}
+				else
+				{
+					_tumbleDirection = DecideDisplacement(_moveDirection);
+				}
+			}
+
+			Tumble(_tumbleDirection);
+			_headCam->TumbleCamera(_deltaTime);
+
+			break;
+		}
+		default:
+		{
+
+		}
+	}
+
+	// 총 쏘거나 재장전
+	if (_playerState.second == ePlayerMoveState::FIRE)
+	{
+		if (_shootCooldown <= 0.0f)
+		{
+			if (_bulletCount == 0)
+			{
+				if (_prevPlayerState.second != ePlayerMoveState::FIRE)
+				{
+					_playerAudio->PlayOnce("empty");
+				}
+			}
+			else
+			{
+				if (_prevPlayerState.second != ePlayerMoveState::FIRE)
+				{
+					_headCam->ToggleCameraShake(true);
+				}
+				ShootGun();
+			}
+		}
+	}
+	else if (_playerState.second == ePlayerMoveState::RELOAD)
+	{
+		if (_prevPlayerState.second != ePlayerMoveState::RELOAD)
+		{
+			_fpmesh->SetMeshActive(false, 0);
+			_playerAudio->PlayOnce("reload");
+			_reloadTimer = 3.0f;
+		}
+		else
+		{
+			if (_reloadTimer > 0.0f)
+			{
+				_reloadTimer -= _deltaTime;
+			}
+			else
+			{
+				_fpmesh->SetMeshActive(true, 0);
+				Reload();
+			}
+		}
+	}
+
+	if (_prevPlayerState.first != _playerState.first)
+	{
+		if (_prevPlayerState.first == ePlayerMoveState::JUMP)
+		{
+			Landing();
+		}
+		if (_prevPlayerState.first == ePlayerMoveState::TUMBLE)
+		{
+			Reload();
+			_shootCooldown = 0.0f;
+			if (API::GetMouseHold(MOUSE_LEFT))
+			{
+				_playerState.second = ePlayerMoveState::FIRE;
+			}
+			else
+			{
+				_playerState.second = ePlayerMoveState::IDLE;
+			}
+		}
+		if (_prevPlayerState.second == ePlayerMoveState::FIRE)
+		{
+			// 반동 초기화
+			_shootCount = 0;
+			_headCam->ToggleCameraShake(false);
+			_headCam->ResetCameraPos();
+		}
+	}
+	*/
+}
+
+void PlayerMove::CoolTime()
+{
+	if (_shootCooldown > 0.0f)
+	{
+		_shootCooldown -= _deltaTime;
+	}
+
+	if (_tumbleCooldown > 0.0f)
+	{
+		_tumbleCooldown -= _deltaTime;
+	}
+	else
+	{
+		_tumbleCooldown = 0.0f;
+	}
+
+	if (_reloadTimer > 0.0f)
+	{
+		_reloadTimer -= _deltaTime;
+	}
+
+	if (_tumbleTimer > 0.0f)
+	{
+		_tumbleTimer -= _deltaTime;
+	}
+}
+
+void PlayerMove::Landing()
+{
+	_isOnGround = true;
+	_isJumping = false;
+	_playerAudio->PlayOnce("land");
+	_playerColliderStanding->ClearForceXYZ();
 }
 
 void PlayerMove::SwitchCamera()
@@ -1043,7 +1844,7 @@ void PlayerMove::CameraMove()
 	}
 
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
-	_playerCollider->SetColliderRotation(rot);
+	_playerColliderStanding->SetColliderRotation(rot);
 
 	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
 	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);

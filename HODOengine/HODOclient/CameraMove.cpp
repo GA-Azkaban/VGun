@@ -22,7 +22,7 @@ void CameraMove::Update()
 	float deltaTime = API::GetDeltaTime();
 	moveSpeed = 5.0f;
 
-	if (API::GetKeyPressing(DIK_LSHIFT))
+	if (API::GetKeyPressing(DIK_LALT))
 	{
 		moveSpeed *= 5.0f;
 	}

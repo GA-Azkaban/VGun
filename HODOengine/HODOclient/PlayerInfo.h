@@ -10,6 +10,9 @@ enum class eHITLOC
 	BODY = 3
 };
 
+class HitEffect;
+class IndicatorPool;
+
 class PlayerInfo : public HDData::Script
 {
 public:
@@ -28,9 +31,7 @@ public:
 	Vector3& GetServerPosition();
 	Quaternion& GetServerRotation();
 
-
 	void SetPlayerUID(int uid);
-	void SetTeamID(eTeam team);
 	void SetIsHost(bool isHost);
 	void SetNickName(std::string nickName);
 
@@ -44,7 +45,6 @@ public:
 
 	int& GetPlayerUID();
 	bool& GetIsHost();
-	eTeam& GetPlayerTeam();
 	bool& GetPlayerDie();
 	std::string& GetPlayerNickName();
 
@@ -52,8 +52,8 @@ public:
 	int& GetPlayerKillCount();
 	int& GetPlayerDeathCount();
 	int& GetCurrentBulletCount();
+	int GetMaxBulletCount();
 	bool& GetIsDie();
-
 
 	bool GetIsStateChange();
 	void SetIsStateChange(bool isChange);
@@ -67,9 +67,11 @@ public:
 	void SetIsJump(bool isJump);
 	bool GetIsShoot();
 	bool GetIsJump();
-	
-	void OtherPlayerShoot(eHITLOC loc);
 
+	void SetParticleObj(HDData::ParticleSystem* particle);
+
+	void SetHitEffectObj(HitEffect* hitEffect);
+	void PlayerAttacked(Vector3 targetPos);
 
 private:
 	bool _isMyInfo = false;
@@ -85,22 +87,24 @@ private:
 
 	// state info
 	bool _isJump;
-	bool _isShoot;
+	bool _isShoot = false;
 
-	int _currentHP;
+	int _currentHP = 70;
 	bool _isDie;
 
-	int _bulletCount = 30;
+	int _maxBulletCount = 6;
+	int _bulletCount = 6;
 
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
+
+	HDData::ParticleSystem* _shootParticle;
 	
 	// count info
 	int _kill;
 	int _death;
 
-	// else
-	eTeam _teamID;
+	HitEffect* _hitEffect;
 };
 
