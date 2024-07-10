@@ -204,12 +204,16 @@ enum eAnimationState : int {
   ANIMATION_STATE_ROLL = 8,
   ANIMATION_STATE_RELOAD = 9,
   ANIMATION_STATE_DEATH = 10,
+  ANIMATION_STATE_ROLL_FORWARD = 11,
+  ANIMATION_STATE_ROLL_LEFT = 12,
+  ANIMATION_STATE_ROLL_RIGHT = 13,
+  ANIMATION_STATE_ROLL_BACK = 14,
   eAnimationState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool eAnimationState_IsValid(int value);
 constexpr eAnimationState eAnimationState_MIN = ANIMATION_STATE_NONE;
-constexpr eAnimationState eAnimationState_MAX = ANIMATION_STATE_DEATH;
+constexpr eAnimationState eAnimationState_MAX = ANIMATION_STATE_ROLL_BACK;
 constexpr int eAnimationState_ARRAYSIZE = eAnimationState_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eAnimationState_descriptor();
