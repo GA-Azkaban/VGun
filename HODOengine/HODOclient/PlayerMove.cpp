@@ -536,7 +536,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_fpmesh->SetMeshActive(false, 0);
 			_playerAudio->PlayOnce("reload");
-			_reloadTimer = 3.0f;
+			_reloadTimer = 2.6f;
 
 			break;
 		}
@@ -567,7 +567,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying("walk");
+			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
 			break;
 		}
@@ -575,7 +575,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying("run");
+			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
 			break;
 		}

@@ -34,6 +34,14 @@ void HDData::AudioSource::PlayOnceIfNotPlaying(std::string soundName)
 	}
 }
 
+void HDData::AudioSource::PlayOnceIfNotPlaying2(std::string soundName1, std::string soundName2)
+{
+	if (!IsSoundPlaying(soundName1) && !IsSoundPlaying(soundName2))
+	{
+		PlayOnce(soundName1);
+	}
+}
+
 void HDData::AudioSource::PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup)
 {
 	StopSoundGroup(stopGroup);
