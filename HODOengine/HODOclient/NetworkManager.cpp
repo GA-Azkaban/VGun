@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -165,7 +165,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
 		auto pos = Vector3{ 1, 2, 0 };
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
-		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{0, 0, 0, 0});
+		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -505,7 +505,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
 	auto pos = Vector3{ 0, 2, 0 };
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
-	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{0, 0, 0, 0});
+	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
@@ -592,13 +592,7 @@ void NetworkManager::SendPlayJump()
 	auto& mine = RoundManager::Instance()->_myObj;
 	auto info = GameManager::Instance()->GetMyInfo();
 
-	<<<<<< < HEAD
-		data = ConvertPlayerInfoToData(mine, info);
-
-	packet.mutable_playerdata()->CopyFrom(*data);
-	====== =
-		auto data = ConvertPlayerInfoToData(mine, info);
-
+	auto data = ConvertPlayerInfoToData(mine, info);
 	*packet.mutable_playerdata() = data;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);

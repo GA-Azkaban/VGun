@@ -13,7 +13,7 @@ CloudRotateScript::~CloudRotateScript()
 void CloudRotateScript::Start()
 {
 	_pivotObject = this->GetGameObject();
-	_pivotObject = this->GetGameObject()->GetChildGameObjects();
+	//_pivotObject = this->GetGameObject()->GetChildGameObjects();
 }
 
 void CloudRotateScript::Update()
