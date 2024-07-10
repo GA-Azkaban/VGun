@@ -65,7 +65,7 @@ public:
 	void SetWinnerText(HDData::TextUI* txt);
 	void SetLoserText(HDData::TextUI* txt, int index);
 
-	void CheckESCCMenu(bool escMenu);
+	bool GetMenuStatus();
 	bool _ESCMenuOn = false;
 
 private:

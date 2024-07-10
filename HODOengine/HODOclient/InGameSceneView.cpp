@@ -376,6 +376,14 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetRoundEndButton(endButton);
 
+	// ESC Menu
+	HDData::GameObject* esc_controlObj = API::CreateImageBox(_scene,"escControlObj");
+	esc_controlObj->SetSelfActive(false);
+	esc_controlObj->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
+
+	auto inGameESCMenuCanvas = API::CreateImageBox(_scene,"ESCMenuCanvas",esc_controlObj);
+
+
 	// 우승자
 	auto winnerObj = API::CreateObject(_scene, "winner");
 	winnerObj->LoadFBXFile("SKM_GunManTP_X_default.fbx");
@@ -436,6 +444,15 @@ void InGameSceneView::Initialize()
 
 	auto indicatorTest = API::CreateObject(_scene, "IndicatorTest");
 	indicatorTest->AddComponent<IndicatorTest>();
+
+	if (RoundManager::Instance()->GetMenuStatus())
+	{
+		esc_controlObj->SetSelfActive(true);
+	}
+	else
+	{
+		esc_controlObj->SetSelfActive(false);
+	}
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

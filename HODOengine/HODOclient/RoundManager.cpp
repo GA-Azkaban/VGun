@@ -71,8 +71,6 @@ void RoundManager::Update()
 		_ESCMenuOn = false;
 	}
 
-	CheckESCCMenu(_ESCMenuOn);
-
 }
 
 void RoundManager::SetRoundScene(HDData::Scene* scene)
@@ -317,16 +315,9 @@ void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
 	_loserTXT[index] = txt;
 }
 
-void RoundManager::CheckESCCMenu(bool escMenu)
+bool RoundManager::GetMenuStatus()
 {
-	if (escMenu)
-	{
-
-	}
-	else
-	{
-
-	}
+	return _ESCMenuOn;
 }
 
 void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
