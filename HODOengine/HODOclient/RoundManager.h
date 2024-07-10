@@ -58,13 +58,15 @@ public:
 	void SetEndCam(HDData::GameObject* cam);
 	void SetStartCam(HDData::Camera* cam);
 	
-	
 	HDData::GameObject* GetEndCam();
 	void SetRoundEndButton(HDData::GameObject* obj);
 	HDData::GameObject* GetRoundEndButton();
 	void ExitGame();
 	void SetWinnerText(HDData::TextUI* txt);
 	void SetLoserText(HDData::TextUI* txt, int index);
+
+	void CheckESCCMenu(bool escMenu);
+	bool _ESCMenuOn = false;
 
 private:
 	bool _isRoundStart = false;

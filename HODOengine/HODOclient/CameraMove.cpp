@@ -76,6 +76,7 @@ void CameraMove::Update()
 	{
 		Pitch(-rotateSpeed * deltaTime * 10);
 	}
+
 }
 
 void CameraMove::Strafe(float delta)
