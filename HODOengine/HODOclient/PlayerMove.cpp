@@ -434,7 +434,7 @@ void PlayerMove::ShootTrail(Vector3 endPoint)
 	Vector3 up = _headCam->GetTransform()->GetUp();
 	Vector3 right = _headCam->GetTransform()->GetRight();
 
-	Vector3 startPoint = _headCam->GetTransform()->GetPosition() + forward * 1.8f - up * 0.15f + right * 0.15f;
+	Vector3 startPoint = _headCam->GetTransform()->GetPosition() + forward * 1.75f - up * 0.15f + right * 0.25f;
 	Vector3 endPoint2 = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 50.0f;
 	API::DrawLine(startPoint, endPoint2, Vector4(1.0f, 0.0f, 0.0f, 0.0f));
 }
