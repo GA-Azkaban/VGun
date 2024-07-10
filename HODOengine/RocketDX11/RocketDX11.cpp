@@ -223,7 +223,7 @@ namespace RocketCore::Graphics
 		}
 
 		CreateDepthStencilStates();
-
+		
 		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
 		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
 
@@ -252,7 +252,7 @@ namespace RocketCore::Graphics
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
 		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
-		Cubemap::Instance().SetEnvLightIntensity(1.5f);
+		Cubemap::Instance().SetEnvLightIntensity(1.0f);
 
 		/// DEBUG Obejct
 		//HelperObject* grid = ObjectManager::Instance().CreateHelperObject();

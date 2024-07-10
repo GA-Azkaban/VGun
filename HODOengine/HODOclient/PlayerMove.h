@@ -80,6 +80,8 @@ public:
 	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
 	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
 
+public:
+	HDData::ParticleSystem* fireParticle;
 
 private:
 	bool _isMovable;

@@ -70,6 +70,7 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX _projectionMatrix;	// 카메라의 투영 행렬
 
 		DirectX::BoundingFrustum _boundingFrustum;
+		DirectX::BoundingSphere _boundingSphere;
 
 	public:
 		static Camera* GetMainCamera();

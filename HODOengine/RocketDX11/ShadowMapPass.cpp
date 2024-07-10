@@ -51,8 +51,8 @@ namespace RocketCore::Graphics
 			if(!staticMeshObj->IsShadowActive())
 				continue;
 
-			//if(!staticMeshObj->IsLightVisible())
-			//	continue;
+			if(!staticMeshObj->IsLightVisible())
+				continue;
 
 			if(!staticMeshObj->IsReceiveTM())
 				continue;

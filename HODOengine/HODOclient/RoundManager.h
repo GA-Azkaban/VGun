@@ -87,12 +87,15 @@ public:
 	void UpdateAmmoText();
 	void UpdateResultTimer();
 	void SetResultTimerUI(HDData::TextUI* txt);
+	Timer* GetGameEndTimer();
+
 
 private:
 	HDData::TextUI* _timerUI;
 	int _timer;			
 
-	Timer* _resultSceneTimer;
+	Timer* _gameEndTimer;
+	Timer* _showResultTimer;
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
 	HDData::TextUI* _hpUI;

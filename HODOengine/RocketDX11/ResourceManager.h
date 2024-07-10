@@ -73,6 +73,7 @@ namespace RocketCore::Graphics
 		enum class eRasterizerState
 		{
 			SOLID,
+			CULLNONESOLID,
 			WIREFRAME,
 			SHADOWMAP,
 			CUBEMAP,

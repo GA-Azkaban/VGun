@@ -4,7 +4,7 @@
 
 HitEffect::HitEffect()
 {
-	_curve.AddKey(0, 1, [](float t) { return -t + 1.0f; });
+	_curve.AddKey(0, 1, [](float t) { return t * t - 2.0f * t + 1.0f; });
 
 	_hitEffectTimer.isRepeat = false;
 	_hitEffectTimer.duration = 0.5f;

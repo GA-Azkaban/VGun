@@ -27,9 +27,17 @@ RoundManager::RoundManager()
 
 void RoundManager::Start()
 {
-	_resultSceneTimer = new Timer;
-	_resultSceneTimer->duration = 10;
-	_resultSceneTimer->onExpiration = [&]() {
+	_gameEndTimer = new Timer;
+	_gameEndTimer->duration = 2;
+	_gameEndTimer->onExpiration = [&]() {
+		_showResultTimer->Start();
+		_resultTimerUI->GetGameObject()->SetSelfActive(true);
+		EndGame();
+		};
+	
+	_showResultTimer = new Timer;
+	_showResultTimer->duration = 10;
+	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		};
 }
@@ -246,6 +254,7 @@ bool RoundManager::GetIsRoundStart()
 
 void RoundManager::SetIsRoundStart(bool isStart)
 {
+	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 	_isRoundStart = isStart;
 }
 
@@ -278,7 +287,7 @@ void RoundManager::ExitGame()
 {
 	API::SetCurrentSceneMainCamera(_startCam);
 	_endObj->SetSelfActive(false);
-	_resultSceneTimer->Stop();
+	_showResultTimer->Stop();
 	_resultTimerUI->GetGameObject()->SetSelfActive(false);
 
 	// 로비로 복귀
@@ -324,12 +333,20 @@ void RoundManager::UpdateRoundTimer()
 	{
 		auto currentTime = std::chrono::steady_clock::now();
 		std::chrono::duration<double> elapsedTime = currentTime - _start_time;
-		_timerUI->SetText(ChangeSecToMin(static_cast<int>(_timer - elapsedTime.count())));
+
+		auto nowElapsed = static_cast<int>(_timer - elapsedTime.count());
+		_timerUI->SetText(ChangeSecToMin(nowElapsed));
+
+		if (nowElapsed <= 10)
+		{
+			_timerUI->SetColor(DirectX::Colors::Red);
+			// TODO) 사운드 이펙트 넣기
+		}
 		if (elapsedTime.count() >= _timer)
 		{
 			_isRoundStart = false;
-			_resultSceneTimer->Start();
-			_resultTimerUI->GetGameObject()->SetSelfActive(true);
+			_gameEndTimer->Start();
+		
 		}
 	}
 }
@@ -348,7 +365,7 @@ void RoundManager::SetHPObject(HDData::TextUI* txt)
 {
 	_hpUI = txt;
 }
- 
+
 void RoundManager::UpdateHPText()
 {
 	_hpUI->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerCurrentHP()));
@@ -369,16 +386,22 @@ void RoundManager::UpdateResultTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
-	_resultSceneTimer->Update();
+	_gameEndTimer->Update();
+	_showResultTimer->Update();
 
-	if (!_resultSceneTimer->IsActive()) return;
+	if (!_showResultTimer->IsActive()) return;
 
-	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_resultSceneTimer->duration - _resultSceneTimer->GetElapsedTime())));
+	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
 {
 	_resultTimerUI = txt;
+}
+
+Timer* RoundManager::GetGameEndTimer()
+{
+	return _gameEndTimer;
 }
 
 void RoundManager::UpdateDesiredKillChecker()
