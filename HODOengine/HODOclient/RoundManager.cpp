@@ -61,6 +61,18 @@ void RoundManager::Update()
 	updateTick = currentTick + frame;
 
 	NetworkManager::Instance().SendPlayUpdate();
+
+	if (API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
+	{
+		_ESCMenuOn = true;
+	}
+	else if (API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
+	{
+		_ESCMenuOn = false;
+	}
+
+	CheckESCCMenu(_ESCMenuOn);
+
 }
 
 void RoundManager::SetRoundScene(HDData::Scene* scene)
@@ -303,6 +315,18 @@ void RoundManager::SetWinnerText(HDData::TextUI* txt)
 void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
 {
 	_loserTXT[index] = txt;
+}
+
+void RoundManager::CheckESCCMenu(bool escMenu)
+{
+	if (escMenu)
+	{
+
+	}
+	else
+	{
+
+	}
 }
 
 void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)

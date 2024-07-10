@@ -56,7 +56,6 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
 	mainCanvasImage->SetImage("_blur_background_image.png");
-	//mainCanvasImage->SetImage("_card_holder.png");
 	mainCanvasImage->SetSortOrder(0.0f);
 	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvasImage->ChangeScale(scale, scale);
