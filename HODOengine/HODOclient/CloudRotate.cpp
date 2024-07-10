@@ -1,4 +1,4 @@
-﻿#include "CloudRotate.h"
+#include "CloudRotate.h"
 
 CloudRotateScript::CloudRotateScript(std::string name)
 {
@@ -13,7 +13,7 @@ CloudRotateScript::~CloudRotateScript()
 void CloudRotateScript::Start()
 {
 	_pivotObject = this->GetGameObject();
-	//_pivotObject = this->GetGameObject()->GetChildGameObjects();
+
 }
 
 void CloudRotateScript::Update()

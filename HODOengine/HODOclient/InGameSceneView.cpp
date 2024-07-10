@@ -62,7 +62,8 @@ void InGameSceneView::Initialize()
 	// 구름 회전
 	auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
 	cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
-	cloudPivotObj->AddComponent<CloudRotateScript>();
+	//cloudPivotObj->AddComponent<CloudRotateScript>();
+	cloudPivotObj->GetTransform()->Rotate(0.0f, 5.0f, 0.0f);
 
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
