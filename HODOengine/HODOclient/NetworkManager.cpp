@@ -163,7 +163,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 1, 2, 0 };
+		auto pos = Vector3{ 2, 2, 0 };
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
@@ -173,7 +173,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	else
 	{
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 1, 2, 0 };
+		auto pos = Vector3{ 2, 2, 0 };
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
