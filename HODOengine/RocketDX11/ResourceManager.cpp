@@ -499,6 +499,16 @@ namespace RocketCore::Graphics
 		HR(_device->CreateRasterizerState(&solidDesc, &solid));
 		_rasterizerStates.emplace_back(solid);
 
+		D3D11_RASTERIZER_DESC cullNoneSolidDesc;
+		ZeroMemory(&cullNoneSolidDesc, sizeof(D3D11_RASTERIZER_DESC));
+		cullNoneSolidDesc.FillMode = D3D11_FILL_SOLID;
+		cullNoneSolidDesc.CullMode = D3D11_CULL_NONE;
+		cullNoneSolidDesc.FrontCounterClockwise = false;
+		cullNoneSolidDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* cullNoneSolid;
+		HR(_device->CreateRasterizerState(&cullNoneSolidDesc, &cullNoneSolid));
+		_rasterizerStates.emplace_back(cullNoneSolid);
+
 		D3D11_RASTERIZER_DESC wireframeDesc;
 		ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
 		wireframeDesc.FillMode = D3D11_FILL_WIREFRAME;

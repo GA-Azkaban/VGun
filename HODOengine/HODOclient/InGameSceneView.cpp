@@ -11,6 +11,7 @@
 #include "LowHPEffect.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
+#include "MeshTransformController.h"
 
 #include "CloudRotate.h"
 
@@ -61,8 +62,8 @@ void InGameSceneView::Initialize()
 	// 구름 회전
 	auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
 	cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
-	cloudPivotObj->AddComponent<CloudRotateScript>();
-
+	//cloudPivotObj->AddComponent<CloudRotateScript>();
+	cloudPivotObj->GetTransform()->Rotate(0.0f, 5.0f, 0.0f);
 
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
@@ -121,7 +122,6 @@ void InGameSceneView::Initialize()
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	fpMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
 	fpMeshComp->LoadAnimation("TP");
-	//fpMeshComp->GetTransform()->SetLocalRotation(Quaternion::CreateFromYawPitchRoll(2.8f, 0.4f, 0.0f));
 	fpMeshComp->LoadMaterial(chMat, 0);
 	fpMeshComp->SetShadowActive(false);
 	fpMeshComp->PlayAnimation("RV_idle", true);
@@ -140,16 +140,23 @@ void InGameSceneView::Initialize()
 	weaponComp->SetShadowActive(false);
 
 	// 총구 이펙트
-	auto particleSystemObj = API::CreateObject(_scene, "effect");
+	auto particleSystemObj = API::CreateObject(_scene, "ParticleEffect", weaponTest);
+	particleSystemObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
+	particleSystemObj->GetTransform()->SetLocalPosition(0.0f, 40.5722f, 6.8792f);
+	particleSystemObj->GetTransform()->SetLocalRotation(-0.6989f, 0.0f, 0.0f, -0.7150f);
+	particleSystemObj->AddComponent<MeshTransformController>();
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
-	particleSystem->main.duration = 0.2f;
-	particleSystem->main.loop = true;
+	particleSystem->main.duration = 0.08f;
+	//particleSystem->main.duration = 2000.0f;
+	particleSystem->main.loop = false;
 	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
 	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
-	particleSystem->main.minStartLifetime = 0.025f;
-	particleSystem->main.maxStartLifetime = 0.05f;
-	particleSystem->main.minStartRotation = -90.0f;
-	particleSystem->main.maxStartRotation = -90.0f;
+	//particleSystem->main.minStartLifetime = 2000.0f;
+	particleSystem->main.minStartLifetime = 0.04f;
+	//particleSystem->main.maxStartLifetime = 2000.0f;
+	particleSystem->main.maxStartLifetime = 0.08f;
+	particleSystem->main.minStartRotation = 90.0f;
+	particleSystem->main.maxStartRotation = 90.0f;
 	particleSystem->main.minStartSize = 0.05f;
 	particleSystem->main.maxStartSize = 0.075f;
 	particleSystem->main.minStartSpeed = 0.0f;
@@ -159,7 +166,7 @@ void InGameSceneView::Initialize()
 	particleSystem->emission.SetBurst(newBurst);
 	particleSystem->sizeOverLifetime.enabled = true;
 	HDData::AnimationCurve curve;
-	curve.AddKey(0.0f, 0.654f, [](float t) { return -9.34 * t * t + 6.11 * t; });
+	curve.AddKey(0.0f, 1.0f, [](float t) { return -3.8f * t * t + 3.7f * t + 0.1f; });
 	particleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve);
 	HDEngine::MaterialDesc flashMatDesc;
 	flashMatDesc.materialName = "muzzleFlash";
@@ -191,7 +198,8 @@ void InGameSceneView::Initialize()
 	ak.push_back(alphaKey2);
 	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
-	particleSystem->Play();
+	playerMove->fireParticle = particleSystem;
+	//particleSystem->Play();
 
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 
@@ -207,17 +215,6 @@ void InGameSceneView::Initialize()
 
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
-	//playerSound->AddAudio3D("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("reload", "./Resources/Sound/GunReload/Reload.wav", HDData::SoundGroup::GunSound, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::SoundGroupChannel5, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::SoundGroupChannel5, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("tumble", "./Resources/Sound/Tumble/tumble.wav", HDData::SoundGroup::MoveSound, 5.0f, 100.0f);
-	//playerSound->AddAudio3D("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound, 5.0f, 30.0f);
-	//playerSound->AddAudio3D("hit", "./Resources/Sound/Hit/Hit.wav", HDData::SoundGroup::EffectSound, 5.0f, 30.0f);
-	//playerSound->SetSoundGroupVolume(HDData::SoundGroup::SoundGroupChannel5, 1000.0f);
 	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7-2.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
 	playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
@@ -231,7 +228,6 @@ void InGameSceneView::Initialize()
 	playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
 	playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
 	playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
-	//playerSound->AddAudio("bgm", "./Resources/Sound/BGM/FunnyBGM.wav", HDData::SoundGroup::BackgroundMusic);
 
 	posX += 1;
 	posT += 315;

@@ -16,7 +16,7 @@ namespace RocketCore::Graphics
 		: _mesh(nullptr), _material(nullptr),
 		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard), _isActive(true)
 	{
-		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
+		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::CULLNONESOLID);
 		_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
 		_material = ResourceManager::Instance().GetLoadedMaterial("Default-ParticleSystem");
 		_material->SetVertexShader(ResourceManager::Instance().GetVertexShader("ParticleVertexShader.cso"));

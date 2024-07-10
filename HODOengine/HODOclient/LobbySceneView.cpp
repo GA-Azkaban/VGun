@@ -32,7 +32,7 @@ void LobbySceneView::Initialize()
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
-	testBox1->GetTransform()->SetScale(4, 4, 4);
+	testBox1->GetTransform()->SetScale(6, 6, 6);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->SetUseLight(false);
 	boxRender1->LoadMesh("primitiveQuad");
