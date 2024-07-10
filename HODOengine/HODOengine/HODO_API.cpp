@@ -299,7 +299,7 @@ namespace API
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 
-		HODO_API HDData::Scene* GetCurrenScene()
+		HODO_API HDData::Scene* GetCurrentScene()
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene();
 		}

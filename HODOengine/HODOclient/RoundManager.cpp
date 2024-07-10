@@ -16,7 +16,7 @@ RoundManager* RoundManager::Instance()
 	{
 		_instance = new RoundManager;
 	}
-
+	
 	return _instance;
 }
 

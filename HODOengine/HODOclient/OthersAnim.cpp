@@ -70,9 +70,24 @@ void OthersAnim::Update()
 			_mesh->PlayAnimation("RV_reload", false, 0.1, true, 0.1);
 		}
 		break;
-		case ePlayerState::ROLL:
+		case ePlayerState::ROLL_F:
 		{
-			_mesh->PlayAnimation("RV_roll", false, 0.1, true, 0.1);
+			_mesh->PlayAnimation("RV_rollF", false, 0.1, true, 0.1);
+		}
+		break;
+		case ePlayerState::ROLL_B:
+		{
+			_mesh->PlayAnimation("RV_rollB", false, 0.1, true, 0.1);
+		}
+		break;
+		case ePlayerState::ROLL_R:
+		{
+			_mesh->PlayAnimation("RV_rollR", false, 0.1, true, 0.1);
+		}
+		break;
+		case ePlayerState::ROLL_L:
+		{
+			_mesh->PlayAnimation("RV_rollL", false, 0.1, true, 0.1);
 		}
 		break;
 		case ePlayerState::DIE:

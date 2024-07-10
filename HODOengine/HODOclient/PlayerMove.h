@@ -65,6 +65,7 @@ private:
 	void Reload();
 	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
+	void ShootTrail(Vector3 endPoint);
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
 	virtual void OnEnable() override;
@@ -145,6 +146,7 @@ private:
 
 	Vector3 _tumbleDirection;
 	Vector3 _playerPos;
+	Vector3 _hitPoint;
 
 	int _enterCount = 0;
 	// 상태 중첩을 표현하기 위해. 2번째 요소에는 shoot, reload만.
@@ -154,5 +156,4 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
-
 };

@@ -71,13 +71,16 @@ bool HDData::DynamicCollider::GetFreezeRotation()
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTime)
 {
 	//_physXRigid->wakeUp();
-	physx::PxTransform playerPos = _physXRigid->getGlobalPose();
+	//physx::PxTransform playerPos = _physXRigid->getGlobalPose();
 
-	playerPos.p.x += moveStep.x * speed * deltaTime;
-	playerPos.p.z += moveStep.z * speed * deltaTime;
+	//playerPos.p.x += moveStep.x * speed * deltaTime;
+	//playerPos.p.z += moveStep.z * speed * deltaTime;
 
-	_physXRigid->setGlobalPose(playerPos);
-	//_physXRigid->addForce(physx::PxVec3(moveStep.x, moveStep.y, moveStep.z) * speed, physx::PxForceMode::eVELOCITY_CHANGE);
+	//_physXRigid->setGlobalPose(playerPos);
+	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
+
+	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 10.0f, velo.y, moveStep.z * speed * 10.0f));
+
 	for (auto& child : _childColliders)
 	{
 		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed, deltaTime);

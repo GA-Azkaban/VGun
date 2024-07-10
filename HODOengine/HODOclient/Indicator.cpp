@@ -30,7 +30,7 @@ Indicator::Indicator()
 
 Indicator* Indicator::CreateIndicator()
 {
-	auto obj = API::CreateObject(API::GetCurrenScene());
+	auto obj = API::CreateObject(API::GetCurrentScene());
 	auto comp = obj->AddComponent<Indicator>();
 	comp->_indicatorImage = obj->AddComponent<HDData::ImageUI>();
 	comp->_indicatorImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
@@ -42,7 +42,7 @@ Indicator* Indicator::CreateIndicator()
 	comp->_indicatorImage->SetOrigin(width / 2.0f * 0.975f, height / 2.0f * 1.05f);
 	//_indicatorImage->SetCenter(-100, -100);
 	comp->_indicatorImage->SetCenter(0, 0);
-	comp->_indicatorImage->GetGameObject()->SetSelfActive(false);
+	comp->GetGameObject()->SetSelfActive(false);
 	return comp;
 }
 

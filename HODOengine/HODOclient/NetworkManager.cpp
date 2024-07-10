@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -163,7 +163,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 1, 2, 0 };
+		auto pos = Vector3{ 2, 2, 0 };
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
@@ -173,7 +173,7 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	else
 	{
 		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 1, 2, 0 };
+		auto pos = Vector3{ 2, 2, 0 };
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -380,6 +380,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
+	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -724,19 +725,19 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	}
 	if (state == "ROLL_F")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_FORWARD;
 	}
 	if (state == "ROLL_B")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_BACK;
 	}
 	if (state == "ROLL_R")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_RIGHT;
 	}
 	if (state == "ROLL_L")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_LEFT;
 	}
 	if (state == "RELOAD")
 	{
@@ -787,9 +788,24 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 			return ePlayerState::JUMP;
 		}
 		break;
-		case Protocol::ANIMATION_STATE_ROLL:
+		case Protocol::ANIMATION_STATE_ROLL_FORWARD:
 		{
-			return ePlayerState::ROLL;
+			return ePlayerState::ROLL_F;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_ROLL_BACK:
+		{
+			return ePlayerState::ROLL_B;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_ROLL_RIGHT:
+		{
+			return ePlayerState::ROLL_R;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_ROLL_LEFT:
+		{
+			return ePlayerState::ROLL_L;
 		}
 		break;
 		case Protocol::ANIMATION_STATE_RELOAD:
