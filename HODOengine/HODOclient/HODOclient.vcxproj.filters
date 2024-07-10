@@ -273,6 +273,9 @@
     <ClInclude Include="CloudRotate.h">
       <Filter>02_Client\01_Script\Cloud</Filter>
     </ClInclude>
+    <ClInclude Include="IndicatorTest.h">
+      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">

@@ -11,7 +11,7 @@
 #include "LowHPEffect.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
-#include "MeshTransformController.h"
+#include "IndicatorTest.h"
 
 #include "CloudRotate.h"
 
@@ -143,7 +143,6 @@ void InGameSceneView::Initialize()
 	particleSystemObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
 	particleSystemObj->GetTransform()->SetLocalPosition(0.0f, 40.5722f, 6.8792f);
 	particleSystemObj->GetTransform()->SetLocalRotation(-0.6989f, 0.0f, 0.0f, -0.7150f);
-	particleSystemObj->AddComponent<MeshTransformController>();
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
 	particleSystem->main.duration = 0.08f;
 	//particleSystem->main.duration = 2000.0f;
@@ -422,6 +421,9 @@ void InGameSceneView::Initialize()
 	hitEffectObj->AddComponent<HitEffect>();
 
 	IndicatorPool::Instance().player = player;
+
+	auto indicatorTest = API::CreateObject(_scene, "IndicatorTest");
+	indicatorTest->AddComponent<IndicatorTest>();
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
