@@ -7,7 +7,6 @@
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
-#include "FadeInOut.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -31,7 +30,6 @@ void RoundManager::Start()
 	_gameEndTimer = new Timer;
 	_gameEndTimer->duration = 2;
 	_gameEndTimer->onExpiration = [&]() {
-		FadeInOut::Instance().FadeOut();
 		_showResultTimer->Start();
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		EndGame();
@@ -256,6 +254,7 @@ bool RoundManager::GetIsRoundStart()
 
 void RoundManager::SetIsRoundStart(bool isStart)
 {
+	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 	_isRoundStart = isStart;
 }
 

@@ -13,7 +13,6 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
-#include "FadeInOut.h"
 
 #include <fstream>
 
@@ -163,16 +162,21 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		auto pos = Vector3{ 1, 2, 0 };
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{0, 0, 0, 0});
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 	}
 	else
 	{
-		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		auto pos = Vector3{ 1, 2, 0 };
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
@@ -499,7 +503,9 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+	auto pos = Vector3{ 0, 2, 0 };
+	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{0, 0, 0, 0});
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
@@ -522,7 +528,6 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	API::SetRecursiveMouseMode(false);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
-	FadeInOut::Instance().FadeIn();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -686,7 +691,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	//current->SetPosition(interpolatedPos);
+	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)

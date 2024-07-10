@@ -25,9 +25,9 @@ void LobbySceneView::Initialize()
 	int height = static_cast<int>(API::GetScreenHeight());
 
 	auto mainCam = _scene->GetMainCamera();
-	mainCam->GetGameObject()->AddComponent<CameraMove>();
-	mainCam->GetGameObject()->GetTransform()->SetPosition(2.5f, 0.57f, -5.48f);
-	//mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
+	//mainCam->GetGameObject()->AddComponent<CameraMove>();
+	mainCam->GetGameObject()->GetTransform()->SetPosition(2.6f, 0.57f, -4.4f);
+	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
