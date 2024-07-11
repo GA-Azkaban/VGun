@@ -254,7 +254,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionCallback.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="CubeMapRenderer.h" />
     <ClInclude Include="DebugSystem.h" />
     <ClInclude Include="DLL_Loader.h" />
     <ClInclude Include="DynamicBoxCollider.h" />
@@ -350,7 +349,6 @@ copy /Y "$(SolutionDir)Lib\$(Configuration)\physX\PhysXFoundation_64.dll" "$(Sol
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionCallback.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="CubeMapRenderer.cpp" />
     <ClCompile Include="DebugSystem.cpp" />
     <ClCompile Include="DLL_Loader.cpp" />
     <ClCompile Include="DynamicBoxCollider.cpp" />

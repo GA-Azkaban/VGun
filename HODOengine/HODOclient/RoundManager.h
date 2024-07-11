@@ -7,6 +7,8 @@
 #include "PlayerInfo.h"
 #include "Timer.h"
 
+class LowHPEffect;
+
 class RoundManager : public HDData::Script
 {
 public:
@@ -67,6 +69,8 @@ public:
 
 	bool GetMenuStatus();
 	bool _ESCMenuOn = false;
+
+	LowHPEffect* lowHPEffect;
 
 private:
 	bool _isRoundStart = false;
@@ -136,5 +140,6 @@ public:
 
 private:
 	HDData::GameObject* _animationDummy = nullptr;
+
 };
 

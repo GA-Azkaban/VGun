@@ -7,6 +7,7 @@
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -102,6 +103,7 @@ void RoundManager::InitGame()
 	_timerUI->GetGameObject()->SetSelfActive(true);
 	_hpUI->GetGameObject()->SetSelfActive(true);
 	_ammoUI->GetGameObject()->SetSelfActive(true);
+	lowHPEffect->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -139,6 +141,7 @@ void RoundManager::EndGame()
 	_timerUI->GetGameObject()->SetSelfActive(false);
 	_hpUI->GetGameObject()->SetSelfActive(false);
 	_ammoUI->GetGameObject()->SetSelfActive(false);
+	lowHPEffect->GetGameObject()->SetSelfActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -303,6 +306,8 @@ void RoundManager::ExitGame()
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
+	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
+	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
 
 void RoundManager::SetWinnerText(HDData::TextUI* txt)

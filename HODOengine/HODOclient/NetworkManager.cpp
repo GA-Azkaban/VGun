@@ -511,6 +511,8 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// 씬 로드
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
+	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
+	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
 
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
