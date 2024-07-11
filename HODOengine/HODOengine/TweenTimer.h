@@ -19,6 +19,7 @@ namespace HDEngine
 		float _duration;
 		std::function<void()> _play;
 
+		bool _isComplete;
 		bool _isActive;
 	};
 }

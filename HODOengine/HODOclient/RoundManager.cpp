@@ -86,6 +86,7 @@ void RoundManager::InitGame()
 
 	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
+	_timerUI->SetColor(DirectX::Colors::White);
 	_nowMaxKill = 0;
 	_winnerUID = NULL;
 
