@@ -344,7 +344,6 @@ void PlayerMove::ShootGun()
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
 	// 총구 화염 이펙트
-	fireParticle->Play();
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;

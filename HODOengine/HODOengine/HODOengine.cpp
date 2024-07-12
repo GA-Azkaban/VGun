@@ -158,7 +158,6 @@ void HODOengine::Run()
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
 
-
 	_eventSystem.InvokeEvent();
 	_objectSystem.UpdateDisableList();
 	_objectSystem.UpdateEnableList();

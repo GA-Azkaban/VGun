@@ -71,6 +71,7 @@ public:
 	void SetParticleObj(HDData::ParticleSystem* particle);
 
 	void SetHitEffectObj(HitEffect* hitEffect);
+	void SetParticleSystem(HDData::ParticleSystem* particleSystem);
 	void PlayerAttacked(Vector3 targetPos);
 
 private:
@@ -106,5 +107,6 @@ private:
 	int _death;
 
 	HitEffect* _hitEffect;
+	HDData::ParticleSystem* _particleSystem;
 };
 

@@ -124,7 +124,8 @@ void RoundManager::InitGame()
 		}
 		else
 		{
-			_playerObjs[index]->AddComponent<PlayerInfo>(info);
+			auto playerInfo = _playerObjs[index]->AddComponent<PlayerInfo>(info);
+			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
@@ -166,21 +167,16 @@ void RoundManager::InitRound()
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
 	}
 
-	HDData::SkinnedMeshRenderer* mesh = nullptr;
-	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	GameManager::Instance()->GetMyInfo()->SetParticleSystem(_myObj->GetComponentInChildren<HDData::ParticleSystem>());
 
-	_myObj->GetComponent<PlayerInfo>()->Init();
 	_myObj->SetSelfActive(true);
 
 	for (auto& [uid, player] : _players)
 	{
-		player->GetComponent<PlayerInfo>()->Init();
-		player->SetSelfActive(true);
-
-		HDData::SkinnedMeshRenderer* mesh = nullptr;
-
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
-		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		info->SetParticleSystem(player->GetComponentInChildren<HDData::ParticleSystem>());
+		info->Init();
+		player->SetSelfActive(true);
 	}
 }
 
@@ -407,7 +403,7 @@ void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
-	_initTimer->Update();
+	//_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 
