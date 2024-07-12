@@ -17,7 +17,7 @@ RoundManager* RoundManager::Instance()
 	{
 		_instance = new RoundManager;
 	}
-	
+
 	return _instance;
 }
 
@@ -30,18 +30,28 @@ void RoundManager::Start()
 {
 	_gameEndTimer = new Timer;
 	_gameEndTimer->duration = 2;
-	_headshoteffect = new UIEffect(_headshotImg->GetGameObject()->GetTransform()->GetPositionRef(), Vector3{ 400, 350, 0 }, HDData::eEasing::INOUTQUART);
 	_gameEndTimer->onExpiration = [&]() {
 		_showResultTimer->Start();
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		EndGame();
 		};
-	
+
+	//_headshoteffect = new UIEffect(_headshotImg->GetGameObject()->GetTransform()->GetPositionRef(), Vector3{ 400, 350, 0 }, HDData::eEasing::INOUTQUART);
+
+	_initTimer = new Timer;
+	_initTimer->duration = 3;
+	_initTimer->onExpiration = [&]() {
+		_initTimer->Stop();
+		_initTimertxt->GetGameObject()->SetSelfActive(false);
+		};
+
 	_showResultTimer = new Timer;
 	_showResultTimer->duration = 10;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		};
+
+	SetUIActive(false);
 }
 
 void RoundManager::Update()
@@ -72,7 +82,6 @@ void RoundManager::Update()
 	{
 		_ESCMenuOn = false;
 	}
-
 }
 
 void RoundManager::SetRoundScene(HDData::Scene* scene)
@@ -102,10 +111,8 @@ void RoundManager::InitGame()
 		p->SetSelfActive(false);
 	}
 
-	_timerUI->GetGameObject()->SetSelfActive(true);
-	_hpUI->GetGameObject()->SetSelfActive(true);
-	_ammoUI->GetGameObject()->SetSelfActive(true);
-	lowHPEffect->GetGameObject()->SetSelfActive(true);
+	_initTimer->Start();
+	_initTimertxt->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -140,10 +147,7 @@ void RoundManager::InitGame()
 void RoundManager::EndGame()
 {
 	// UI 활성화, 비활성화
-	_timerUI->GetGameObject()->SetSelfActive(false);
-	_hpUI->GetGameObject()->SetSelfActive(false);
-	_ammoUI->GetGameObject()->SetSelfActive(false);
-	lowHPEffect->GetGameObject()->SetSelfActive(false);
+	SetUIActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -193,10 +197,24 @@ void RoundManager::UpdateRound()
 	UpdateDesiredKillChecker();
 }
 
+void RoundManager::SetUIActive(bool isActive)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
+	}
+	_timerUI->GetGameObject()->SetSelfActive(isActive);
+	_hpUI->GetGameObject()->SetSelfActive(isActive);
+	_ammoUI->GetGameObject()->SetSelfActive(isActive);
+	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
+}
+
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
 	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-	_headshoteffect->Play();
+	//_headshoteffect->Play();
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
 }
 
@@ -246,7 +264,7 @@ void RoundManager::CheckWinner()
 		int index = 0;
 		for (auto& [uid, player] : _players)
 		{
-			if(_winnerUID == uid) continue;
+			if (_winnerUID == uid) continue;
 			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
 			++index;
 		}
@@ -269,8 +287,9 @@ bool RoundManager::GetIsRoundStart()
 
 void RoundManager::SetIsRoundStart(bool isStart)
 {
-	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 	_isRoundStart = isStart;
+	SetUIActive(true);
+	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 }
 
 void RoundManager::SetEndCam(HDData::GameObject* cam)
@@ -369,7 +388,7 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
-		
+
 		}
 	}
 }
@@ -409,13 +428,16 @@ void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
-	//_initTimer->Update();
+	_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 
-	if (!_showResultTimer->IsActive()) return;
+	if (_showResultTimer->IsActive())
+	{
+		_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
+	}
 
-	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
+	_initTimertxt->SetText(std::to_string(static_cast<int>(_initTimer->duration - _initTimer->GetElapsedTime())));
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)

@@ -35,8 +35,10 @@ public:
 public:
 	void InitRound();
 	void UpdateRound();
+	void SetUIActive(bool isActive);
 
 
+public:
 	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
