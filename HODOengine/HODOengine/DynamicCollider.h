@@ -29,8 +29,8 @@ namespace HDData
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
 		void SetPhysScene(physx::PxScene* scene);
 		void LockPlayerRotation(bool isLock);
-		void SetParentCollider(HDData::DynamicCollider* col);
-		void SetChildCollider(HDData::DynamicCollider* childCol);
+		//void SetParentCollider(HDData::DynamicCollider* col);
+		//void SetChildCollider(HDData::DynamicCollider* childCol);
 		void SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit);
 
 	// getter

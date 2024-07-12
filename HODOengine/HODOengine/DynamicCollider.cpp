@@ -46,16 +46,16 @@ void HDData::DynamicCollider::LockPlayerRotation(bool isLock)
 	_physXRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, isLock);
 }
 
-void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
-{
-	_parentCollider = col;
-	col->SetChildCollider(this);
-}
-
-void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol)
-{
-	_childColliders.push_back(childCol);
-}
+//void HDData::DynamicCollider::SetParentCollider(HDData::DynamicCollider* col)
+//{
+//	_parentCollider = col;
+//	col->SetChildCollider(this);
+//}
+//
+//void HDData::DynamicCollider::SetChildCollider(HDData::DynamicCollider* childCol)
+//{
+//	_childColliders.push_back(childCol);
+//}
 
 void HDData::DynamicCollider::SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit)
 {
@@ -70,15 +70,12 @@ bool HDData::DynamicCollider::GetFreezeRotation()
 
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTime)
 {
-	//_physXRigid->wakeUp();
 	//physx::PxTransform playerPos = _physXRigid->getGlobalPose();
-
 	//playerPos.p.x += moveStep.x * speed * deltaTime;
 	//playerPos.p.z += moveStep.z * speed * deltaTime;
-
 	//_physXRigid->setGlobalPose(playerPos);
-	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
 
+	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
 	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 10.0f, velo.y, moveStep.z * speed * 10.0f));
 
 	for (auto& child : _childColliders)
@@ -131,7 +128,11 @@ void HDData::DynamicCollider::SetColliderRotation(Quaternion rot)
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->SetColliderRotation(rot);
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->SetColliderRotation(rot);
+		}
 	}
 }
 
@@ -145,7 +146,11 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(posDif, 1.0f, 1.0f);
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->Move(posDif, 1.0f, 1.0f);
+		}
 	}
 }
 
@@ -184,7 +189,8 @@ void HDData::DynamicCollider::ClearVeloY()
 	velo.y = 0.0f;
 
 	_physXRigid->clearForce();
-	_physXRigid->setLinearVelocity(velo);
+	_physXRigid->clearTorque();
+	//_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
 }
 
@@ -202,7 +208,11 @@ void HDData::DynamicCollider::ClearForceXYZ()
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->ClearForceXYZ();
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->ClearForceXYZ();
+		}
 	}
 }
 

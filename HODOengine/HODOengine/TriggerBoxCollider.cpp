@@ -7,6 +7,7 @@ HDData::TriggerBoxCollider::TriggerBoxCollider()
 {
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;
+	_isTriggerType = true;
 }
 
 HDData::TriggerBoxCollider::TriggerBoxCollider(float width, float height, float depth)
@@ -14,19 +15,20 @@ HDData::TriggerBoxCollider::TriggerBoxCollider(float width, float height, float 
 {
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;
+	_isTriggerType = true;
 }
 
-float HDData::TriggerBoxCollider::GetHeight()
+float HDData::TriggerBoxCollider::GetHeight() const
 {
 	return _height;
 }
 
-float HDData::TriggerBoxCollider::GetWidth()
+float HDData::TriggerBoxCollider::GetWidth() const
 {
 	return _width;
 }
 
-float HDData::TriggerBoxCollider::GetDepth()
+float HDData::TriggerBoxCollider::GetDepth() const
 {
 	return _depth;
 }

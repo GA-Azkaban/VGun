@@ -80,6 +80,8 @@ public:
 public:
 	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
 	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
+	virtual void OnTriggerEnter(HDData::Collider** colArr, unsigned int count) override;
+	virtual void OnTriggerExit(HDData::Collider** colArr, unsigned int count) override;
 
 public:
 	HDData::ParticleSystem* fireParticle;
@@ -90,6 +92,7 @@ private:
 	bool _isOnGround;
 	bool _isFirstPersonPerspective;
 	bool _isHeadCam;
+	bool _isMoveableOnJump;
 
 private:
 	float _deltaTime;

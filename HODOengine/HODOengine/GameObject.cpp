@@ -1,4 +1,4 @@
-#include "GameObject.h"
+﻿#include "GameObject.h"
 #include "Transform.h"
 #include "ObjectSystem.h"
 #include "SceneSystem.h"
@@ -74,7 +74,7 @@ namespace HDData
 
 		for (int i = 0; i < _componentsIndexed.size(); ++i)
 		{
-			if(!_componentsIndexed[i]->_isStarted) continue;
+			if (!_componentsIndexed[i]->_isStarted) continue;
 			else { _componentsIndexed[i]->Update(); }
 		}
 	}
@@ -110,18 +110,18 @@ namespace HDData
 	}
 
 	void GameObject::OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count)
-{
+	{
 		if (!_selfActive)
 		{
 			return;
 		}
 
-		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(), 
-			[&_colArr, &count](auto& iter){ iter->OnCollisionEnter(_colArr, count); });
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
+			[&_colArr, &count](auto& iter) { iter->OnCollisionEnter(_colArr, count); });
 	}
 
 	void GameObject::OnCollisionStay(PhysicsCollision** _colArr, unsigned int count)
-{
+	{
 		if (!_selfActive)
 		{
 			return;
@@ -132,7 +132,7 @@ namespace HDData
 	}
 
 	void GameObject::OnCollisionExit(PhysicsCollision** _colArr, unsigned int count)
-{
+	{
 		if (!_selfActive)
 		{
 			return;
@@ -140,6 +140,34 @@ namespace HDData
 
 		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
 			[&_colArr, &count](auto& iter) { iter->OnCollisionExit(_colArr, count); });
+	}
+
+	void GameObject::OnTriggerEnter(Collider** _colArr, unsigned int count)
+	{
+		if (!_selfActive)
+		{
+			return;
+		}
+
+		if (GetParentObject() != nullptr)
+		{
+			GetParentObject()->OnTriggerEnter(_colArr, count);
+			return;
+		}
+
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
+			[&_colArr, &count](auto& iter) { iter->OnTriggerEnter(_colArr, count); });
+	}
+
+	void GameObject::OnTriggerExit(Collider** _colArr, unsigned int count)
+	{
+		if (!_selfActive)
+		{
+			return;
+		}
+
+		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
+			[&_colArr, &count](auto& iter) { iter->OnTriggerExit(_colArr, count); });
 	}
 
 	const std::vector<Component*>& GameObject::GetAllComponents() const
@@ -158,12 +186,12 @@ namespace HDData
 			return this;
 
 		for (int i = 0; i < _childGameObjectsIndexed.size(); ++i)
-		{		
+		{
 			GameObject* founded = _childGameObjectsIndexed[i]->GetGameObjectByNameInChildren(objectName);
 			if (founded != nullptr)
 				return founded;
 		}
-		
+
 		return nullptr;
 	}
 
@@ -314,11 +342,11 @@ namespace HDData
 		newObject->GetTransform()->SetLocalTM(node->nodeTransformOffset);
 		node->nodeTransform = newObject->GetTransform()->_nodeTransform;
 		//newObject->AddComponent<StaticBoxCollider>();
-		
+
 		for (int i = 0; i < node->children.size(); ++i)
 		{
 			ProcessNode(scene, &(node->children[i]), newObject);
 		}
 	}
-	
+
 }

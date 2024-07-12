@@ -68,13 +68,13 @@ namespace HDEngine
 			//c.SwapObjects();
 
 			//OnCollisionExit 함수들 발동.
-			if (!pair._first->GetIsTrigger())
+			if (!pair._first->GetIsTriggerType())
 			{
 				pair._first->Collider_OnCollisionExit(c);
 			}
 			c.SwapObjects();
 
-			if (!pair._second->GetIsTrigger())
+			if (!pair._second->GetIsTriggerType())
 			{
 				pair._second->Collider_OnCollisionExit(c);
 			}
@@ -90,13 +90,13 @@ namespace HDEngine
 			auto& c = _collisions[pair];
 
 			//OnCollisionEnter 함수를 발동.
-			if (!pair._first->GetIsTrigger())
+			if (!pair._first->GetIsTriggerType())
 			{
 				pair._first->Collider_OnCollisionEnter(c);
 			}
 			c.SwapObjects();
 
-			if (!pair._second->GetIsTrigger())
+			if (!pair._second->GetIsTriggerType())
 			{
 				pair._second->Collider_OnCollisionEnter(c);
 			}
@@ -106,7 +106,35 @@ namespace HDEngine
 
 	void CollisionCallback::SendTriggerEvents()
 	{
+		for (int i = 0; i < _lostTriggerPairs.size(); i++)
+		{
+			const auto& c = _lostTriggerPairs[i];
 
+			//서로의 함수를 호출. (OnTriggerExit)
+			if (c._first->GetIsTriggerType())
+			{
+				c._first->Collider_OnTriggerExit(c._second);
+			}
+			if (c._second->GetIsTriggerType())
+			{
+				c._second->Collider_OnTriggerExit(c._first);
+			}
+		}
+
+		for (int i = 0; i < _newTriggerPairs.size(); i++)
+		{
+			//서로의 함수를 호출. (OnTriggerEnter)
+			const auto& c = _newTriggerPairs[i];
+
+			if (c._first->GetIsTriggerType())
+			{
+				c._first->Collider_OnTriggerEnter(c._second);
+			}
+			if (c._second->GetIsTriggerType())
+			{
+				c._second->Collider_OnTriggerEnter(c._first);
+			}
+		}
 	}
 
 	void CollisionCallback::OnColliderRemoved(HDData::Collider* collider)
