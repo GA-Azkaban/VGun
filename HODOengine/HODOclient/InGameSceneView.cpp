@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -12,6 +12,7 @@
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "CloudRotate.h"
+#include "UIEffect.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -382,26 +383,26 @@ void InGameSceneView::Initialize()
 	auto timer = API::CreateTextbox(_scene, "timer");
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
 	
-	// 디버그용 state
-	HDData::GameObject* state = API::CreateTextbox(_scene, "state");
-	HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
-	stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
-	playerMove->_plStateText = stateText;
+	//// 디버그용 state
+	//HDData::GameObject* state = API::CreateTextbox(_scene, "state");
+	//HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
+	//stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
+	//playerMove->_plStateText = stateText;
 
-	// 디버그용 cooltime
-	HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
-	HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
-	coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
-	playerMove->_tumbleText = coolTimeText;
+	//// 디버그용 cooltime
+	//HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
+	//HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
+	//coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
+	//playerMove->_tumbleText = coolTimeText;
 
-	// 디버그용 포지션
-	HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
-	HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
-	posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
-	playerMove->_plPosText = posText;
+	//// 디버그용 포지션
+	//HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
+	//HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
+	//posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
+	//playerMove->_plPosText = posText;
 
 	/// game end
 
@@ -506,12 +507,19 @@ void InGameSceneView::Initialize()
 
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");
+	initCounter->GetTransform()->SetPosition(API::GetScreenWidth() /2, API::GetScreenHeight() / 2, 0);
+	initCounter->SetSelfActive(false);
 	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
-	countertxt->SetText("");
+	countertxt->SetFont("Resources/Font/KRAFTON_200.spriteFont");
+	countertxt->SetColor(DirectX::Colors::Red);
 	RoundManager::Instance()->SetInitRoundTimer(countertxt);
 
 	// 헤드샷 이펙트
 	auto headshot = API::CreateImageBox(_scene);
+	headshot->GetTransform()->SetPosition(API::GetScreenWidth(), API::GetScreenHeight() / 4, 0);
+	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
+	headshotimg->SetImage("Headshot.png");
+	RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

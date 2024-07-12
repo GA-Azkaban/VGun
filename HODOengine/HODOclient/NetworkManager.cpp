@@ -162,8 +162,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 2, 5, 0 };
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = Vector3{2, 5, 0};
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
@@ -172,8 +172,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	}
 	else
 	{
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 2, 5, 0 };
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = Vector3{ 2, 5, 0 };
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -503,8 +503,8 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	RoundManager::Instance()->InitGame();
 
 	// 스폰 포인트로 위치 갱신
-	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	auto pos = Vector3{ 0, 2, 0 };
+	auto pos = API::GetSpawnPointArr()[spawnpointindex];
+	//auto pos = Vector3{ 0, 2, 0 };
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -688,7 +688,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	//current->SetPosition(interpolatedPos);
+	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)
