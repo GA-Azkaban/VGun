@@ -91,15 +91,17 @@ public:
 	void UpdateHPText();
 	void SetAmmoText(HDData::TextUI* txt);
 	void UpdateAmmoText();
-	void UpdateResultTimer();
+	void UpdateBeginEndTimer();
 	void SetResultTimerUI(HDData::TextUI* txt);
 	Timer* GetGameEndTimer();
-
+	void SetInitRoundTimer(HDData::TextUI* txt);
+	
 
 private:
 	HDData::TextUI* _timerUI;
 	int _timer;			
 
+	Timer* _initTimer;
 	Timer* _gameEndTimer;
 	Timer* _showResultTimer;
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
@@ -107,6 +109,7 @@ private:
 	HDData::TextUI* _hpUI;
 	HDData::TextUI* _ammoUI;
 	HDData::TextUI* _resultTimerUI;
+	HDData::TextUI* _initTimer;
 
 public:
 	void UpdateDesiredKillChecker();
@@ -114,25 +117,27 @@ public:
 	int& GetDesiredKill();
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
 	void SetKillCountBack(HDData::ImageUI* img, int index);
-	
+	void SetHeadshotUI(HDData::ImageUI* img);
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
 private:
 	// obj 보관용
 	std::pair<HDData::TextUI*, HDData::TextUI*> _killCountObjs[6];
+	// 인게임
+	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;
 
 	// 스폰 지점
 	Vector3 _spawnPoint[15];
 	int _index = 0;
 
-	// 인게임
-	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;
-
-	int _desiredKill;	// 목표 킬수
+	// 킬 카운트
+	int _desiredKill;
 	int _nowMaxKill;
 	int _winnerUID;
 
+	// UI
 	HDData::ImageUI* _backIMG[6];
+	HDData::ImageUI* _headshotImg;
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
