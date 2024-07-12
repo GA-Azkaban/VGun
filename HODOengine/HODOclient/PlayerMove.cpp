@@ -113,6 +113,7 @@ void PlayerMove::SetHitParticle(std::vector<HDData::ParticleSphereCollider*> par
 // 조이스틱 개념
 void PlayerMove::CheckMoveInfo()
 {
+	_prevDirection = _moveDirection;
 	_moveDirection = 5;
 
 	if (!_isHeadCam)
@@ -468,12 +469,14 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::WALK:
 		{
 			_moveSpeed = 3.0f;
+			_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
 			_moveSpeed = 6.0f;
+			_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
@@ -561,11 +564,17 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::IDLE:
 		{
 			_playerColliderStanding->ClearVeloY();
+			_playerColliderStanding->Stop();
+
 			break;	
 		}
 		case ePlayerMoveState::WALK:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			if (_moveDirection != _prevDirection)
+			{
+				_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
@@ -574,6 +583,10 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			if (_moveDirection != _prevDirection)
+			{
+				_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
@@ -641,11 +654,13 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::WALK:
 		{
+			_playerColliderStanding->Stop();
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
+			_playerColliderStanding->Stop();
 
 			break;
 		}
@@ -865,10 +880,11 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 
 void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 {
-	if (_playerState.first == ePlayerMoveState::TUMBLE)
-	{
-		return;
-	}
+	//if (_playerState.first == ePlayerMoveState::TUMBLE)
+	//{
+	//	return;
+	//}
+
 
 	// 지형인 경우
 	if ((*colArr)->GetColType() == eColliderRole::TERRAIN)
@@ -886,7 +902,10 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 
 void PlayerMove::OnTriggerExit(HDData::Collider** colArr, unsigned int count)
 {
-	int i = 0;
+	if (_playerState.first != ePlayerMoveState::JUMP)
+	{
+
+	}
 	return;
 }
 

@@ -46,7 +46,7 @@ namespace HDEngine
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
 		_playerMaterial = _physics->createMaterial(0.9f, 0.7f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.5f, 0.4f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.9f, 0.7f, 0.0f);
 
 		_collisionCallback = std::make_unique<CollisionCallback>();
 		_pxScene->setSimulationEventCallback(_collisionCallback.get());
@@ -73,6 +73,12 @@ namespace HDEngine
 		_collisionCallback->Clear();
 
 		//ResizeCollider();
+
+#ifdef _DEBUG
+		_pxScene->simulate(0.00167f);
+#else
+		_pxScene->simulate(0.0005f);
+#endif
 
 		_pxScene->simulate(0.00167f);
 		_pxScene->fetchResults(true);

@@ -166,6 +166,12 @@ namespace HDData
 			return;
 		}
 
+		if (GetParentObject() != nullptr)
+		{
+			GetParentObject()->OnTriggerExit(_colArr, count);
+			return;
+		}
+
 		std::for_each(_componentsIndexed.begin(), _componentsIndexed.end(),
 			[&_colArr, &count](auto& iter) { iter->OnTriggerExit(_colArr, count); });
 	}

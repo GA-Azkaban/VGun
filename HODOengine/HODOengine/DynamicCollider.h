@@ -39,6 +39,7 @@ namespace HDData
 
 	// Move and Control
 	public:
+		void SetVelocity(Vector3 moveStep, float speed);
 		void Move(Vector3 moveStep, float speed, float deltaTime);
 		void Rotate(Quaternion rot);
 		void RotateY(float rotationAmount);
