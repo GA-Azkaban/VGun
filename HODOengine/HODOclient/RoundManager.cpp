@@ -428,7 +428,7 @@ Timer* RoundManager::GetGameEndTimer()
 
 void RoundManager::SetInitRoundTimer(HDData::TextUI* txt)
 {
-	_initTimer = txt;
+	_initTimertxt = txt;
 }
 
 void RoundManager::UpdateDesiredKillChecker()

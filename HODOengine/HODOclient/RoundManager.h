@@ -109,7 +109,7 @@ private:
 	HDData::TextUI* _hpUI;
 	HDData::TextUI* _ammoUI;
 	HDData::TextUI* _resultTimerUI;
-	HDData::TextUI* _initTimer;
+	HDData::TextUI* _initTimertxt;
 
 public:
 	void UpdateDesiredKillChecker();
