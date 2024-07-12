@@ -344,7 +344,6 @@ void PlayerMove::ShootGun()
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
 	// 총구 화염 이펙트
-	fireParticle->Play();
 
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
@@ -781,12 +780,12 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	_plStateText->SetText(first + "/" + second);
+	//_plStateText->SetText(first + "/" + second);
 
-	_tumbleText->SetText(std::to_string(_tumbleCooldown));
+	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
-	std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
-	_plPosText->SetText(posText);
+	//std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
+	//_plPosText->SetText(posText);
 }
 
 int& PlayerMove::GetBulletCount()

@@ -149,6 +149,10 @@ bool PlayerInfo::GetIsMyInfo()
 void PlayerInfo::SetIsShoot(bool isShoot)
 {
 	_isShoot = isShoot;
+	if (_isShoot)
+	{
+		_particleSystem->Play();
+	}
 }
 
 void PlayerInfo::SetIsJump(bool isJump)
@@ -174,6 +178,11 @@ void PlayerInfo::SetParticleObj(HDData::ParticleSystem* particle)
 void PlayerInfo::SetHitEffectObj(HitEffect* hitEffect)
 {
 	_hitEffect = hitEffect;
+}
+
+void PlayerInfo::SetParticleSystem(HDData::ParticleSystem* particleSystem)
+{
+	_particleSystem = particleSystem;
 }
 
 void PlayerInfo::PlayerAttacked(Vector3 targetPos)

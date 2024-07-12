@@ -5,6 +5,7 @@
 
 #include "../HODOengine/HODO_API.h"
 #include "PlayerInfo.h"
+#include "UIEffect.h"
 #include "Timer.h"
 
 class LowHPEffect;
@@ -34,8 +35,10 @@ public:
 public:
 	void InitRound();
 	void UpdateRound();
+	void SetUIActive(bool isActive);
 
 
+public:
 	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
@@ -138,6 +141,7 @@ private:
 	// UI
 	HDData::ImageUI* _backIMG[6];
 	HDData::ImageUI* _headshotImg;
+	UIEffect* _headshoteffect;
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);

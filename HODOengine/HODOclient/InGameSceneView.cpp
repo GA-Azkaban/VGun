@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -12,6 +12,7 @@
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "CloudRotate.h"
+#include "UIEffect.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -137,17 +138,6 @@ void InGameSceneView::Initialize()
 	weaponComp->LoadMaterial(chMat, 3);
 	weaponComp->SetShadowActive(false);
 
-	// 궤적
-	auto trailObj = API::CreateObject(_scene, "Trail");
-	trailObj->GetTransform()->SetPosition(1.0f, 1.0f, 1.0f);
-	auto trailComp = trailObj->AddComponent<HDData::MeshRenderer>();
-	trailComp->LoadMesh("trail.fbx");
-	trailComp->LoadMaterial(chMat, 0);
-	trailComp->LoadMaterial(chMat, 1);
-	trailComp->LoadMaterial(chMat, 2);
-	trailComp->LoadMaterial(chMat, 3);
-	trailComp->SetShadowActive(false);
-
 	// 총구 이펙트
 	auto particleSystemObj = API::CreateObject(_scene, "ParticleEffect", weaponTest);
 	particleSystemObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
@@ -203,10 +193,6 @@ void InGameSceneView::Initialize()
 	ak.push_back(alphaKey2);
 	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
-	playerMove->fireParticle = particleSystem;
-
-	auto playerInfo = player->AddComponent<PlayerInfo>();
-
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
 	{
@@ -257,6 +243,75 @@ void InGameSceneView::Initialize()
 		otherMeshComp->LoadAnimation("TP");
 		otherMeshComp->LoadMaterial(chMat, 0);
 		otherMeshComp->PlayAnimation("RV_idle", true);
+
+		// 총
+		std::string weaponObjectName = "weapon" + std::to_string(i);
+		auto enemyHand = otherPlayer->GetGameObjectByNameInChildren("Thumb_01.001");
+		auto enemyWeapon = API::CreateObject(_scene, weaponObjectName, enemyHand);
+		enemyWeapon->GetComponent<HDData::Transform>()->SetLocalPosition(-2.892f, 8.082f, 7.923f);
+		enemyWeapon->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.061f, -0.606f, -0.093f, 0.787f });
+		auto enemyWeaponComp = enemyWeapon->AddComponent<HDData::MeshRenderer>();
+		enemyWeaponComp->LoadMesh("SM_Wep_Revolver_02.fbx");
+		enemyWeaponComp->LoadMaterial(chMat, 0);
+		enemyWeaponComp->LoadMaterial(chMat, 1);
+		enemyWeaponComp->LoadMaterial(chMat, 2);
+		enemyWeaponComp->LoadMaterial(chMat, 3);
+
+		// 파티클
+		std::string particleObjName = "EnemyParticleEffect" + std::to_string(i);
+		auto enemyParticleSystemObj = API::CreateObject(_scene, particleObjName, enemyWeapon);
+		enemyParticleSystemObj->GetTransform()->SetLocalScale(20.0f, 20.0f, 20.0f);
+		enemyParticleSystemObj->GetTransform()->SetLocalPosition(0.0f, 40.5722f, 6.8792f);
+		enemyParticleSystemObj->GetTransform()->SetLocalRotation(-0.6989f, 0.0f, 0.0f, -0.7150f);
+		auto enemyParticleSystem = enemyParticleSystemObj->AddComponent<HDData::ParticleSystem>();
+		enemyParticleSystem->main.duration = 0.08f;
+		enemyParticleSystem->main.loop = false;
+		enemyParticleSystem->main.minStartColor = { 255, 255, 197, 255 };
+		enemyParticleSystem->main.maxStartColor = { 255, 255, 255, 255 };
+		enemyParticleSystem->main.minStartLifetime = 0.04f;
+		enemyParticleSystem->main.maxStartLifetime = 0.08f;
+		enemyParticleSystem->main.minStartRotation = 90.0f;
+		enemyParticleSystem->main.maxStartRotation = 90.0f;
+		enemyParticleSystem->main.minStartSize = 0.05f;
+		enemyParticleSystem->main.maxStartSize = 0.075f;
+		enemyParticleSystem->main.minStartSpeed = 0.0f;
+		enemyParticleSystem->main.maxStartSpeed = 0.0f;
+		enemyParticleSystem->emission.enabled = true;
+		HDData::Burst newBurst2(0.0f, 1);
+		enemyParticleSystem->emission.SetBurst(newBurst2);
+		enemyParticleSystem->sizeOverLifetime.enabled = true;
+		HDData::AnimationCurve curve2;
+		curve.AddKey(0.0f, 1.0f, [](float t) { return -3.8f * t * t + 3.7f * t + 0.1f; });
+		enemyParticleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+		HDEngine::MaterialDesc flashMatDesc2;
+		flashMatDesc2.materialName = "muzzleFlash";
+		flashMatDesc2.albedo = "T_MuzzleFlash_D.png";
+		flashMatDesc2.color = { 255, 140, 85, 255 };
+		HDData::Material* flashMat2 = API::CreateMaterial(flashMatDesc2);
+		enemyParticleSystem->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+		enemyParticleSystem->rendererModule.material = flashMat2;
+		enemyParticleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
+
+		// colorKey, alphaKey 생성
+		std::vector<HDData::GradientColorKey> ck;
+		std::vector<HDData::GradientAlphaKey> ak;
+		HDData::GradientColorKey colorkey1;
+		colorkey1.color = { 255, 255, 255 };
+		colorkey1.time = 0.556f;
+		ck.push_back(colorkey1);
+		HDData::GradientColorKey colorkey2;
+		colorkey2.color = { 255, 79, 0 };
+		colorkey2.time = 1.0f;
+		ck.push_back(colorkey2);
+		HDData::GradientAlphaKey alphaKey1;
+		alphaKey1.alpha = 255;
+		alphaKey1.time = 0.0f;
+		ak.push_back(alphaKey1);
+		HDData::GradientAlphaKey alphaKey2;
+		alphaKey2.alpha = 255;
+		alphaKey2.time = 1.0f;
+		ak.push_back(alphaKey2);
+		enemyParticleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
 		otherPlayer->AddComponent<OthersAnim>();
 
@@ -328,26 +383,26 @@ void InGameSceneView::Initialize()
 	auto timer = API::CreateTextbox(_scene, "timer");
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
 	
-	// 디버그용 state
-	HDData::GameObject* state = API::CreateTextbox(_scene, "state");
-	HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
-	stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
-	playerMove->_plStateText = stateText;
+	//// 디버그용 state
+	//HDData::GameObject* state = API::CreateTextbox(_scene, "state");
+	//HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
+	//stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
+	//playerMove->_plStateText = stateText;
 
-	// 디버그용 cooltime
-	HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
-	HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
-	coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
-	playerMove->_tumbleText = coolTimeText;
+	//// 디버그용 cooltime
+	//HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
+	//HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
+	//coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
+	//playerMove->_tumbleText = coolTimeText;
 
-	// 디버그용 포지션
-	HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
-	HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
-	posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
-	playerMove->_plPosText = posText;
+	//// 디버그용 포지션
+	//HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
+	//HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
+	//posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
+	//playerMove->_plPosText = posText;
 
 	/// game end
 
@@ -452,12 +507,19 @@ void InGameSceneView::Initialize()
 
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");
+	initCounter->GetTransform()->SetPosition(API::GetScreenWidth() /2, API::GetScreenHeight() / 2, 0);
+	initCounter->SetSelfActive(false);
 	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
-	countertxt->SetText("");
+	countertxt->SetFont("Resources/Font/KRAFTON_200.spriteFont");
+	countertxt->SetColor(DirectX::Colors::Red);
 	RoundManager::Instance()->SetInitRoundTimer(countertxt);
 
 	// 헤드샷 이펙트
 	auto headshot = API::CreateImageBox(_scene);
+	headshot->GetTransform()->SetPosition(API::GetScreenWidth(), API::GetScreenHeight() / 4, 0);
+	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
+	headshotimg->SetImage("Headshot.png");
+	RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
