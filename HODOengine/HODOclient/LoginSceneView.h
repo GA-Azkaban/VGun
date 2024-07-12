@@ -24,5 +24,5 @@ private:
 	HDData::Scene* _scene;
 
 	LobbyManager& _lobbyManager;
-	FadeInOut& _fadeInOut;
+	//FadeInOut& _fadeInOut;
 };

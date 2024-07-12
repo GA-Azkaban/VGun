@@ -9,6 +9,7 @@ private:
 	~FadeInOut() = default;
 	HDData::GameObject* _fadeImage = nullptr;
 
+
 	Timer _fadeInTimer;
 	Timer _fadeOutTimer;
 

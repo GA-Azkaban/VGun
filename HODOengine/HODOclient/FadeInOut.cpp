@@ -26,6 +26,6 @@ void FadeInOut::FadeOut()
 
 bool FadeInOut::GetComplete()
 {
-
+	return true;
 }
 

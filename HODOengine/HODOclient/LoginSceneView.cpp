@@ -9,8 +9,7 @@
 #include "BtnHoveringScript.h"
 
 LoginSceneView::LoginSceneView()
-	: _lobbyManager(LobbyManager::Instance()),
-	_fadeInOut(FadeInOut::Instance())
+	: _lobbyManager(LobbyManager::Instance())
 {
 
 }
@@ -54,7 +53,7 @@ void LoginSceneView::LoginView()
 	mainCanvasImage->SetActive(true);
 
 	// fadeIn Test
-	FadeInOut::Instance().FadeOut();
+	//FadeInOut::Instance().FadeOut();
 
 	// login Control Object
 	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
