@@ -87,7 +87,7 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 	//_physXRigid->setGlobalPose(playerPos);
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
-	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 10.0f, velo.y, moveStep.z * speed * 10.0f));
+	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 25.0f, velo.y, moveStep.z * speed * 25.0f));
 	//_physXRigid->setForceAndTorque(physx::PxVec3(moveStep.x * speed * 300.0f, 0.0f, moveStep.z * speed * 300.0f), physx::PxVec3());
 
 	for (auto& child : _childColliders)
