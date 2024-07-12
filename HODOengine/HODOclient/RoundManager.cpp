@@ -407,13 +407,14 @@ void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
-	_initTimer->Update();
+	//_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 
 	if (!_showResultTimer->IsActive()) return;
 
 	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
+	_resultTimerUI->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
