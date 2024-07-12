@@ -45,8 +45,8 @@ namespace HDEngine
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
-		_playerMaterial = _physics->createMaterial(0.9f, 0.7f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.5f, 0.4f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.8f, 0.6f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.6f, 0.4f, 0.0f);
 
 		_collisionCallback = std::make_unique<CollisionCallback>();
 		_pxScene->setSimulationEventCallback(_collisionCallback.get());
@@ -72,7 +72,13 @@ namespace HDEngine
 
 		_collisionCallback->Clear();
 
-		ResizeCollider();
+		//ResizeCollider();
+
+#ifdef _DEBUG
+		_pxScene->simulate(0.00167f);
+#else
+		_pxScene->simulate(0.0005f);
+#endif
 
 #ifdef _DEBUG
 		_pxScene->simulate(0.00167f);
@@ -99,7 +105,7 @@ namespace HDEngine
 			//}
 
 			// 트리거가 아닌 경우 onCollision 함수들 실행
-			if (dynamicCol->GetIsTrigger() == false)
+			if (dynamicCol->GetIsTriggerType() == false)
 			{
 				if (!dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
 				{
@@ -113,6 +119,22 @@ namespace HDEngine
 				else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
 				{
 					dynamicCol->GetGameObject()->OnCollisionExit(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+				}
+			}
+			else
+			{
+				if (!dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
+				{
+ 					dynamicCol->GetGameObject()->OnTriggerEnter(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
+				}
+				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
+				else if (dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
+				{
+					//dynamicCol->GetGameObject()->OnTriggerStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+				}
+				else if (dynamicCol->GetPrevIsTriggerCollide() && !dynamicCol->GetIsTriggerCollide())
+				{
+					dynamicCol->GetGameObject()->OnTriggerExit(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
 				}
 			}
 
@@ -453,13 +475,7 @@ namespace HDEngine
 				shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 				shape->userData = box;
 
-				// TODO : 여기 작업하고 있었음.
-				Vector3 position = object->GetTransform()->GetPosition();
-
-				if (collider->GetPositionOffset() != Vector3::Zero)
-				{
-					position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
-				}
+				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 
 				Quaternion rot = object->GetTransform()->GetRotation();
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
@@ -468,15 +484,15 @@ namespace HDEngine
 				localTransform.q.z = rot.z;
 				localTransform.q.w = rot.w;
 
-				physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
+				//physx::PxRigidStatic* boxRigid = _physics->createRigidStatic(localTransform);
+				physx::PxRigidDynamic* boxRigid = _physics->createRigidDynamic(localTransform);
 				boxRigid->attachShape(*shape);
-				//_pxScene->addActor(*boxRigid);
-				_rigidStatics.push_back(boxRigid);
+				//_rigidStatics.push_back(boxRigid);
+				_rigidDynamics.push_back(boxRigid);
 				boxRigid->userData = box;
 				box->SetPhysXRigid(boxRigid);
+				box->SetPhysScene(_pxScene);
 				shape->release();
-
-				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
 		}
 	}
@@ -667,18 +683,18 @@ namespace HDEngine
 				Vector3 localPose = thisCol->GetTransform()->GetLocalPosition();
 				localTransform.p = { localPose.x, localPose.y, localPose.z };
 
-				if (thisCol->GetGameObject()->GetObjectName() == "head")
-				{
-					physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
-						parentCol->GetPhysXRigid(), localTransform);
-					_joints.push_back(resultJoint);
-				}
-				else
-				{
+				//if (thisCol->GetGameObject()->GetObjectName() == "head")
+				//{
+				//	physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
+				//		parentCol->GetPhysXRigid(), localTransform);
+				//	_joints.push_back(resultJoint);
+				//}
+				//else
+				//{
 					physx::PxFixedJoint* resultJoint = physx::PxFixedJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
 						parentCol->GetPhysXRigid(), localTransform);
 					_joints.push_back(resultJoint);
-				}
+				//}
 			}
 		}
 	}

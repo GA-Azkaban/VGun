@@ -11,7 +11,7 @@ namespace HDData
 		, _scaleOffset(Vector3::One),
 		_parentCollider(nullptr),
 		_collisionFilterNum(0),
-		_isTrigger(false),
+		_isTriggerType(false),
 		_colType(eColliderRole::NONE)
 	{
 		
@@ -134,12 +134,22 @@ namespace HDData
 
 	void Collider::SetTrigger(bool isTrigger)
 	{
-		_isTrigger = isTrigger;
+		_isTriggerType = isTrigger;
 	}
 
-	bool Collider::GetIsTrigger()
+	bool Collider::GetIsTriggerType() const
+{
+		return _isTriggerType;
+	}
+
+	bool Collider::GetIsTriggerCollide() const
 	{
-		return _isTrigger;
+		return _isTriggerCollide;
+	}
+
+	bool Collider::GetPrevIsTriggerCollide() const
+	{
+		return _prevIsTriggerCollide;
 	}
 
 	int Collider::GetColFilterNum() const
@@ -162,9 +172,25 @@ namespace HDData
 		return _collisionStorage;
 	}
 
+	std::vector<Collider*> Collider::GetTriggerStorage() const
+	{
+		return _triggerStorage;
+	}
+
 	eColliderRole Collider::GetColType() const
 	{
 		return _colType;
+	}
+
+	void Collider::SetParentCollider(HDData::Collider* col)
+	{
+		_parentCollider = col;
+		col->SetChildCollider(this);
+	}
+
+	void Collider::SetChildCollider(HDData::Collider* childCol)
+	{
+		_childColliders.push_back(childCol);
 	}
 
 	HDData::Collider* Collider::GetParentCollider() const
@@ -177,12 +203,12 @@ namespace HDData
 		_prevIsCollide = false;
 		_isCollide = false;
 
-		//_wasTriggered = false;
-		_isTrigger = false;
+		_prevIsTriggerCollide = false;
+		_isTriggerCollide = false;
 
 		//매 프레임 체크할 때 마다 초기화.
 		_collisionStorage.clear();
-		//_triggerStorage.clear();
+		_triggerStorage.clear();
 	}
 
 	void Collider::OnCollision(Collider* opponent, int actionType)
@@ -232,11 +258,19 @@ namespace HDData
 
 	void Collider::Collider_OnTriggerEnter(Collider* col)
 	{
+		std::string tRes = "Collider_OnTriggerEnter : ";
 
+		this->_isTriggerCollide = true;
+		this->_prevIsTriggerCollide = false;
+		_triggerStorage.push_back(col);
 	}
 
 	void Collider::Collider_OnTriggerExit(Collider* col)
 	{
+		std::string tRes = "Collider_OnTriggerExit : ";
 
+		this->_isTriggerCollide = false;
+		this->_prevIsTriggerCollide = true;
+		_triggerStorage.push_back(col);
 	}
 }
