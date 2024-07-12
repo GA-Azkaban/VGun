@@ -173,8 +173,7 @@ void RoundManager::InitRound()
 
 	HDData::SkinnedMeshRenderer* mesh = nullptr;
 	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-
-	_myObj->GetComponent<PlayerInfo>()->Init();
+	
 	_myObj->SetSelfActive(true);
 
 	for (auto& [uid, player] : _players)

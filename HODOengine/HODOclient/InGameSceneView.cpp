@@ -206,8 +206,6 @@ void InGameSceneView::Initialize()
 
 	playerMove->fireParticle = particleSystem;
 
-	auto playerInfo = player->AddComponent<PlayerInfo>();
-
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
 	{
@@ -462,7 +460,7 @@ void InGameSceneView::Initialize()
 
 	// 헤드샷 이펙트
 	auto headshot = API::CreateImageBox(_scene);
-	headshot->GetTransform()->SetPosition(-400, 350, 0);
+	headshot->GetTransform()->SetPosition(API::GetScreenWidth(), API::GetScreenHeight() / 4, 0);
 	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
 	headshotimg->SetImage("Headshot.png");
 	RoundManager::Instance()->SetHeadshotUI(headshotimg);
