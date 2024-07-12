@@ -30,6 +30,7 @@ void RoundManager::Start()
 {
 	_gameEndTimer = new Timer;
 	_gameEndTimer->duration = 2;
+	_headshoteffect = new UIEffect(_headshotImg->GetGameObject()->GetTransform()->GetPositionRef(), Vector3{ 400, 350, 0 }, HDData::eEasing::INOUTQUART);
 	_gameEndTimer->onExpiration = [&]() {
 		_showResultTimer->Start();
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
@@ -195,7 +196,7 @@ void RoundManager::UpdateRound()
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
 	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-	
+	_headshoteffect->Play();
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
 }
 
@@ -336,6 +337,7 @@ void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 void RoundManager::SetRoundTimer(int time)
 {
 	_timer = time;
+	_timerUI->SetText(ChangeSecToMin(time));
 }
 
 void RoundManager::SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time)
@@ -407,7 +409,7 @@ void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
-	_initTimer->Update();
+	//_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 

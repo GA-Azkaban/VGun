@@ -12,6 +12,7 @@
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "CloudRotate.h"
+#include "UIEffect.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -458,6 +459,10 @@ void InGameSceneView::Initialize()
 
 	// 헤드샷 이펙트
 	auto headshot = API::CreateImageBox(_scene);
+	headshot->GetTransform()->SetPosition(-400, 350, 0);
+	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
+	headshotimg->SetImage("Headshot.png");
+	RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

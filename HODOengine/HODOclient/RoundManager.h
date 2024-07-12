@@ -5,6 +5,7 @@
 
 #include "../HODOengine/HODO_API.h"
 #include "PlayerInfo.h"
+#include "UIEffect.h"
 #include "Timer.h"
 
 class LowHPEffect;
@@ -138,6 +139,7 @@ private:
 	// UI
 	HDData::ImageUI* _backIMG[6];
 	HDData::ImageUI* _headshotImg;
+	UIEffect* _headshoteffect;
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
