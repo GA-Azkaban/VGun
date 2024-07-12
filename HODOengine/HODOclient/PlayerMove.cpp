@@ -559,7 +559,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-
+			_playerColliderStanding->ClearVeloY();
 			break;	
 		}
 		case ePlayerMoveState::WALK:

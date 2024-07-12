@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -424,7 +424,7 @@ void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
-	//_initTimer->Update();
+	_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 
