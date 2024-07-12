@@ -1679,7 +1679,8 @@ namespace RocketCore::Graphics
 
 		for (UINT i = 0; i < 6; ++i)
 		{
-			float roughness = (float)i / 5.0;
+			//float roughness = (float)i / 5.0;
+			float roughness = 1.0f;
 			ps->SetFloat("roughnessValue", roughness);
 			D3D11_VIEWPORT viewport
 			{

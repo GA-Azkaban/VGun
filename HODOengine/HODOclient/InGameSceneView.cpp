@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -489,10 +489,10 @@ void InGameSceneView::Initialize()
 	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
 	hitEffectObj->AddComponent<HitEffect>();
 
-	//auto dirLight = API::GetObjectByName(_scene, "DirectionalLight");
-	//auto lightComp = dirLight->GetComponent<HDData::Light>();
-	////lightComp->SetColor({ 249.0f / 255.0f, 176.0f / 255.0f, 44.0f / 255.0f, 1.0f });
-	//lightComp->SetColor({ 251.0f / 255.0f, 209.0f / 255.0f, 129.0f / 255.0f, 1.0f });
+	auto dirLight = API::GetObjectByName(_scene, "DirectionalLight");
+	auto lightComp = dirLight->GetComponent<HDData::Light>();
+	//lightComp->SetColor({ 249.0f / 255.0f, 176.0f / 255.0f, 44.0f / 255.0f, 1.0f });
+	lightComp->SetColor({ 251.0f / 255.0f, 209.0f / 255.0f, 129.0f / 255.0f, 1.0f });
 
 	IndicatorPool::Instance().player = player;
 
