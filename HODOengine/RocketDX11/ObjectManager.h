@@ -55,7 +55,7 @@ namespace RocketCore::Graphics
 		HelperObject* CreateHelperObject();
 		StaticMeshObject* CreateStaticMeshObject();
 		SkinningMeshObject* CreateSkinningMeshObject();
-		Cubemap* CreateCubeMap();
+		Cubemap* GetCubeMap();
 		LightAdapter* CreateLight();
 		TextRenderer* CreateText();
 		ImageRenderer* CreateImage();

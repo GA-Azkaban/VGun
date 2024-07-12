@@ -38,6 +38,8 @@ namespace HDData
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
+		GameObject* GetGameObjectByName(std::string objectName);
+
 	private:
 		std::vector<GameObject*> _gameObjects;
 		std::vector<GameObject*> _runningObjects;

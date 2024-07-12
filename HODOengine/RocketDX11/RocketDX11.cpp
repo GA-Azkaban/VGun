@@ -197,9 +197,14 @@ namespace RocketCore::Graphics
 		}
 
 		// load all skybox texture
-		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
-		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
-		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
+		const auto& SBtextures = GetEveryTextureFileNamesInFolder("Textures/Skybox");
+		for(int i = 0; i < SBtextures.size(); ++i)
+		{
+			_resourceManager.LoadCubeMapTextureFile("Skybox/" + SBtextures[i]);
+		}
+		//_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
+		//_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+		//_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
 
 		/// fbx
 
@@ -225,7 +230,8 @@ namespace RocketCore::Graphics
 		CreateDepthStencilStates();
 		
 		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
-		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
+		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
@@ -252,6 +258,7 @@ namespace RocketCore::Graphics
 
 		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
 		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
+		//Cubemap::Instance().LoadCubeMapTexture("Sunset.dds");
 		Cubemap::Instance().SetEnvLightIntensity(1.0f);
 
 		/// DEBUG Obejct

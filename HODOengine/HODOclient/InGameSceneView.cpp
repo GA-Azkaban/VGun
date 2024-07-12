@@ -11,8 +11,6 @@
 #include "LowHPEffect.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
-#include "IndicatorTest.h"
-
 #include "CloudRotate.h"
 
 InGameSceneView::InGameSceneView()
@@ -157,13 +155,10 @@ void InGameSceneView::Initialize()
 	particleSystemObj->GetTransform()->SetLocalRotation(-0.6989f, 0.0f, 0.0f, -0.7150f);
 	auto particleSystem = particleSystemObj->AddComponent<HDData::ParticleSystem>();
 	particleSystem->main.duration = 0.08f;
-	//particleSystem->main.duration = 2000.0f;
 	particleSystem->main.loop = false;
 	particleSystem->main.minStartColor = { 255, 255, 197, 255 };
 	particleSystem->main.maxStartColor = { 255, 255, 255, 255 };
-	//particleSystem->main.minStartLifetime = 2000.0f;
 	particleSystem->main.minStartLifetime = 0.04f;
-	//particleSystem->main.maxStartLifetime = 2000.0f;
 	particleSystem->main.maxStartLifetime = 0.08f;
 	particleSystem->main.minStartRotation = 90.0f;
 	particleSystem->main.maxStartRotation = 90.0f;
@@ -209,7 +204,6 @@ void InGameSceneView::Initialize()
 	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
 	playerMove->fireParticle = particleSystem;
-	//particleSystem->Play();
 
 	auto playerInfo = player->AddComponent<PlayerInfo>();
 
@@ -376,6 +370,14 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetRoundEndButton(endButton);
 
+	// ESC Menu
+	HDData::GameObject* esc_controlObj = API::CreateImageBox(_scene,"escControlObj");
+	esc_controlObj->SetSelfActive(false);
+	esc_controlObj->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
+
+	auto inGameESCMenuCanvas = API::CreateImageBox(_scene,"ESCMenuCanvas",esc_controlObj);
+
+
 	// 우승자
 	auto winnerObj = API::CreateObject(_scene, "winner");
 	winnerObj->LoadFBXFile("SKM_GunManTP_X_default.fbx");
@@ -427,15 +429,26 @@ void InGameSceneView::Initialize()
 
 	// low hp screen effect
 	auto hpEffectObj = API::CreateObject(_scene, "LowHPEffect");
-	hpEffectObj->AddComponent<LowHPEffect>();
+	RoundManager::Instance()->lowHPEffect = hpEffectObj->AddComponent<LowHPEffect>();
 
 	auto hitEffectObj = API::CreateObject(_scene, "HitEffect");
 	hitEffectObj->AddComponent<HitEffect>();
 
+	//auto dirLight = API::GetObjectByName(_scene, "DirectionalLight");
+	//auto lightComp = dirLight->GetComponent<HDData::Light>();
+	////lightComp->SetColor({ 249.0f / 255.0f, 176.0f / 255.0f, 44.0f / 255.0f, 1.0f });
+	//lightComp->SetColor({ 251.0f / 255.0f, 209.0f / 255.0f, 129.0f / 255.0f, 1.0f });
+
 	IndicatorPool::Instance().player = player;
 
-	auto indicatorTest = API::CreateObject(_scene, "IndicatorTest");
-	indicatorTest->AddComponent<IndicatorTest>();
+	if (RoundManager::Instance()->GetMenuStatus())
+	{
+		esc_controlObj->SetSelfActive(true);
+	}
+	else
+	{
+		esc_controlObj->SetSelfActive(false);
+	}
 
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");

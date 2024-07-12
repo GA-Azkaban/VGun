@@ -23,5 +23,6 @@ namespace HDEngine
 		virtual void SetMeshActive(bool isActive, unsigned int index) = 0;
 		virtual void SetShadowActive(bool isActive) = 0;
 		virtual int GetMeshCount() = 0;
+		virtual void SetCullMode(HDEngine::CullMode cullMode) = 0;
 	};
 }

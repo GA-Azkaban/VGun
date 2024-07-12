@@ -17,8 +17,9 @@ namespace RocketCore::Graphics
 {
 	StaticMeshObject::StaticMeshObject()
 		: m_isActive(true), m_receiveTMInfoFlag(false), m_useLight(true),
-		m_world{ XMMatrixIdentity() }, 
-		m_cameraVisible(true), m_lightVisible(true), m_isShadowActive(true)
+		m_world{ XMMatrixIdentity() },
+		m_cameraVisible(true), m_lightVisible(true), m_isShadowActive(true),
+		m_cullMode(HDEngine::CullMode::BACK)
 	{
 		m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
 		m_vertexShader = ResourceManager::Instance().GetVertexShader("VertexShader.cso");
@@ -196,6 +197,25 @@ namespace RocketCore::Graphics
 		return m_meshes.size();
 	}
 
+	void StaticMeshObject::SetCullMode(HDEngine::CullMode cullMode)
+	{
+		m_cullMode = cullMode;
+		switch (cullMode)
+		{
+			case HDEngine::CullMode::NONE:
+				m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::CULLNONESOLID);
+				break;
+
+			case HDEngine::CullMode::FRONT:
+				m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::CULLFRONTSOLID);
+				break;
+
+			case HDEngine::CullMode::BACK:
+				m_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::SOLID);
+				break;
+		}
+	}
+
 	void StaticMeshObject::Render()
 	{
 		if (!m_isActive)
@@ -278,7 +298,7 @@ namespace RocketCore::Graphics
 					m_pixelShader->SetInt("useMetallicMap", 0);
 					m_pixelShader->SetFloat("metallicValue", m_materials[i]->GetRoughnessValue());
 				}
-				
+
 				m_pixelShader->CopyAllBufferData();
 				m_pixelShader->SetShader();
 

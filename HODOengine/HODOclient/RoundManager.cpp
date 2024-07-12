@@ -7,6 +7,7 @@
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -71,8 +72,6 @@ void RoundManager::Update()
 		_ESCMenuOn = false;
 	}
 
-	CheckESCCMenu(_ESCMenuOn);
-
 }
 
 void RoundManager::SetRoundScene(HDData::Scene* scene)
@@ -105,6 +104,7 @@ void RoundManager::InitGame()
 	_timerUI->GetGameObject()->SetSelfActive(true);
 	_hpUI->GetGameObject()->SetSelfActive(true);
 	_ammoUI->GetGameObject()->SetSelfActive(true);
+	lowHPEffect->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -142,6 +142,7 @@ void RoundManager::EndGame()
 	_timerUI->GetGameObject()->SetSelfActive(false);
 	_hpUI->GetGameObject()->SetSelfActive(false);
 	_ammoUI->GetGameObject()->SetSelfActive(false);
+	lowHPEffect->GetGameObject()->SetSelfActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -306,6 +307,8 @@ void RoundManager::ExitGame()
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
+	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
+	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
 
 void RoundManager::SetWinnerText(HDData::TextUI* txt)
@@ -318,16 +321,9 @@ void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
 	_loserTXT[index] = txt;
 }
 
-void RoundManager::CheckESCCMenu(bool escMenu)
+bool RoundManager::GetMenuStatus()
 {
-	if (escMenu)
-	{
-
-	}
-	else
-	{
-
-	}
+	return _ESCMenuOn;
 }
 
 void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
@@ -432,7 +428,7 @@ Timer* RoundManager::GetGameEndTimer()
 
 void RoundManager::SetInitRoundTimer(HDData::TextUI* txt)
 {
-	_initTimer = txt;
+	_initTimertxt = txt;
 }
 
 void RoundManager::UpdateDesiredKillChecker()

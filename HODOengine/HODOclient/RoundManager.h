@@ -7,6 +7,8 @@
 #include "PlayerInfo.h"
 #include "Timer.h"
 
+class LowHPEffect;
+
 class RoundManager : public HDData::Script
 {
 public:
@@ -65,8 +67,10 @@ public:
 	void SetWinnerText(HDData::TextUI* txt);
 	void SetLoserText(HDData::TextUI* txt, int index);
 
-	void CheckESCCMenu(bool escMenu);
+	bool GetMenuStatus();
 	bool _ESCMenuOn = false;
+
+	LowHPEffect* lowHPEffect;
 
 private:
 	bool _isRoundStart = false;
@@ -105,7 +109,7 @@ private:
 	HDData::TextUI* _hpUI;
 	HDData::TextUI* _ammoUI;
 	HDData::TextUI* _resultTimerUI;
-	HDData::TextUI* _initTimer;
+	HDData::TextUI* _initTimertxt;
 
 public:
 	void UpdateDesiredKillChecker();
@@ -141,5 +145,6 @@ public:
 
 private:
 	HDData::GameObject* _animationDummy = nullptr;
+
 };
 

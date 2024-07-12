@@ -41,6 +41,7 @@ namespace RocketCore::Graphics
 		virtual void SetMeshActive(bool isActive, unsigned int index) override;
 		virtual void SetShadowActive(bool isActive) override;
 		virtual int GetMeshCount() override;
+		virtual void SetCullMode(HDEngine::CullMode cullMode) override;
 
 	public:
 		void Render();
@@ -82,5 +83,7 @@ namespace RocketCore::Graphics
 		bool m_lightVisible; // light culling
 
 		bool m_isShadowActive;
+
+		HDEngine::CullMode m_cullMode;
 	};
 }
