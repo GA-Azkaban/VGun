@@ -136,6 +136,7 @@ HWND HODOengine::GetHWND()
 
 void HODOengine::Quit()
 {
+	Finalize();
 	DestroyWindow(_hWnd);
 }
 

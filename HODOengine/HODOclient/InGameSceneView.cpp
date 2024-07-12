@@ -437,6 +437,15 @@ void InGameSceneView::Initialize()
 	auto indicatorTest = API::CreateObject(_scene, "IndicatorTest");
 	indicatorTest->AddComponent<IndicatorTest>();
 
+	// 라운드 시작 카운터
+	auto initCounter = API::CreateTextbox(_scene, "initCounter");
+	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
+	countertxt->SetText("");
+	RoundManager::Instance()->SetInitRoundTimer(countertxt);
+
+	// 헤드샷 이펙트
+	auto headshot = API::CreateImageBox(_scene);
+
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
 

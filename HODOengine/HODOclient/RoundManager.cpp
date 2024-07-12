@@ -44,7 +44,7 @@ void RoundManager::Start()
 
 void RoundManager::Update()
 {
-	UpdateResultTimer();
+	UpdateBeginEndTimer();
 
 	if (!_isRoundStart) return;
 
@@ -194,7 +194,7 @@ void RoundManager::UpdateRound()
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
 	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-
+	
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
 }
 
@@ -407,10 +407,11 @@ void RoundManager::UpdateAmmoText()
 	_ammoUI->SetText(count + "/6");
 }
 
-void RoundManager::UpdateResultTimer()
+void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
+	_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 
@@ -427,6 +428,11 @@ void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
 Timer* RoundManager::GetGameEndTimer()
 {
 	return _gameEndTimer;
+}
+
+void RoundManager::SetInitRoundTimer(HDData::TextUI* txt)
+{
+	_initTimer = txt;
 }
 
 void RoundManager::UpdateDesiredKillChecker()
@@ -463,6 +469,11 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
 {
 	_backIMG[index] = img;
+}
+
+void RoundManager::SetHeadshotUI(HDData::ImageUI* img)
+{
+	_headshotImg = img;
 }
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()

@@ -13,6 +13,9 @@ private:
 	~GameManager();
 
 public:
+	void QuitGame();
+
+public:
 	void SetMyInfo(PlayerInfo* info);
 	PlayerInfo* GetMyInfo();
 	void SetMyObject(HDData::GameObject* obj);
