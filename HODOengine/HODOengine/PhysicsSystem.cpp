@@ -45,8 +45,8 @@ namespace HDEngine
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
-		_playerMaterial = _physics->createMaterial(0.9f, 0.7f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.9f, 0.7f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.8f, 0.6f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.6f, 0.4f, 0.0f);
 
 		_collisionCallback = std::make_unique<CollisionCallback>();
 		_pxScene->setSimulationEventCallback(_collisionCallback.get());
@@ -678,18 +678,18 @@ namespace HDEngine
 				Vector3 localPose = thisCol->GetTransform()->GetLocalPosition();
 				localTransform.p = { localPose.x, localPose.y, localPose.z };
 
-				if (thisCol->GetGameObject()->GetObjectName() == "head")
-				{
-					physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
-						parentCol->GetPhysXRigid(), localTransform);
-					_joints.push_back(resultJoint);
-				}
-				else
-				{
+				//if (thisCol->GetGameObject()->GetObjectName() == "head")
+				//{
+				//	physx::PxSphericalJoint* resultJoint = physx::PxSphericalJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
+				//		parentCol->GetPhysXRigid(), localTransform);
+				//	_joints.push_back(resultJoint);
+				//}
+				//else
+				//{
 					physx::PxFixedJoint* resultJoint = physx::PxFixedJointCreate(*_physics, dynamics, physx::PxTransform(physx::PxIdentity),
 						parentCol->GetPhysXRigid(), localTransform);
 					_joints.push_back(resultJoint);
-				}
+				//}
 			}
 		}
 	}

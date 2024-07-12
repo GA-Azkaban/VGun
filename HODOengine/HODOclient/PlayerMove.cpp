@@ -469,14 +469,14 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::WALK:
 		{
 			_moveSpeed = 3.0f;
-			_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
 			_moveSpeed = 6.0f;
-			_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
@@ -571,10 +571,10 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::WALK:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
-			if (_moveDirection != _prevDirection)
-			{
-				_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
-			}
+			//if (_moveDirection != _prevDirection)
+			//{
+			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
@@ -583,10 +583,10 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
-			if (_moveDirection != _prevDirection)
-			{
-				_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
-			}
+			//if (_moveDirection != _prevDirection)
+			//{
+			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
@@ -1641,6 +1641,11 @@ void PlayerMove::DecidePlayerStateSecond()
 
 void PlayerMove::Behavior()
 {
+	if (_playerState.first != ePlayerMoveState::JUMP)
+	{
+		_playerColliderStanding->ClearVeloY();
+	}
+
 	if (_prevPlayerState.second == _playerState.second)
 	{
 		OnStateStay(_playerState.second);

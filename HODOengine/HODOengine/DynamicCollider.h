@@ -7,7 +7,6 @@ namespace physx
 	class PxRigidDynamic;
 	class PxShape;
 	class PxScene;
-	//class PxVec3;
 }
 
 namespace HDData
@@ -40,6 +39,7 @@ namespace HDData
 	// Move and Control
 	public:
 		void SetVelocity(Vector3 moveStep, float speed);
+		void SetLinearVelocity(Vector3 velocity);
 		void Move(Vector3 moveStep, float speed, float deltaTime);
 		void Rotate(Quaternion rot);
 		void RotateY(float rotationAmount);

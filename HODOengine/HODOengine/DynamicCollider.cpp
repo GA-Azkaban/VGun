@@ -74,6 +74,11 @@ void HDData::DynamicCollider::SetVelocity(Vector3 moveStep, float speed)
 	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 20.0f, velo.y, moveStep.z * speed * 20.0f));
 }
 
+void HDData::DynamicCollider::SetLinearVelocity(Vector3 velocity)
+{
+	_physXRigid->setLinearVelocity(physx::PxVec3(velocity.x, velocity.y, velocity.z));
+}
+
 void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTime)
 {
 	//physx::PxTransform playerPos = _physXRigid->getGlobalPose();
@@ -82,12 +87,14 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 	//_physXRigid->setGlobalPose(playerPos);
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
-	//_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 10.0f, velo.y, moveStep.z * speed * 10.0f));
-	_physXRigid->setForceAndTorque(physx::PxVec3(moveStep.x * speed * 300.0f, 0.0f, moveStep.z * speed * 300.0f), physx::PxVec3());
+	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 10.0f, velo.y, moveStep.z * speed * 10.0f));
+	//_physXRigid->setForceAndTorque(physx::PxVec3(moveStep.x * speed * 300.0f, 0.0f, moveStep.z * speed * 300.0f), physx::PxVec3());
 
 	for (auto& child : _childColliders)
 	{
-		dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed, deltaTime);
+		//dynamic_cast<HDData::DynamicCollider*>(child)->Move(moveStep, speed, deltaTime);
+		//physx::PxVec3 velo = _physXRigid->getLinearVelocity();
+		//dynamic_cast<HDData::DynamicCollider*>(child)->SetLinearVelocity(Vector3(velo.x, velo.y, velo.z));
 	}
 }
 
