@@ -161,25 +161,11 @@ namespace RocketCore::Graphics
 			_resourceManager.LoadTextureFile("StaticMesh/" + SMtextures[i]);
 		}
 
-		// load all skinning texture
-		const auto& SKMtextures = GetEveryTextureFileNamesInFolder("Textures/Character");
-		for (int i = 0; i < SKMtextures.size(); ++i)
-		{
-			_resourceManager.LoadTextureFile("Character/" + SKMtextures[i]);
-		}
-
 		// load all crosshair textures
 		const auto& crosshairTextures = GetEveryTextureFileNamesInFolder("Textures/Crosshair");
 		for (int i = 0; i < crosshairTextures.size(); ++i)
 		{
 			_resourceManager.LoadUITextureFile("Crosshair/" + crosshairTextures[i]);
-		}
-
-		// load all weapon texture
-		const auto& WPtextures = GetEveryTextureFileNamesInFolder("Textures/Weapons");
-		for (int i = 0; i < WPtextures.size(); ++i)
-		{
-			_resourceManager.LoadTextureFile("Weapons/" + WPtextures[i]);
 		}
 
 		// load all particle texture
@@ -197,9 +183,14 @@ namespace RocketCore::Graphics
 		}
 
 		// load all skybox texture
-		_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
-		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
-		_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
+		const auto& SBtextures = GetEveryTextureFileNamesInFolder("Textures/Skybox");
+		for(int i = 0; i < SBtextures.size(); ++i)
+		{
+			_resourceManager.LoadCubeMapTextureFile("Skybox/" + SBtextures[i]);
+		}
+		//_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
+		//_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+		//_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
 
 		/// fbx
 
@@ -225,7 +216,8 @@ namespace RocketCore::Graphics
 		CreateDepthStencilStates();
 		
 		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
-		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
+		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
 		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());

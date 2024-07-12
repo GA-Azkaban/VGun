@@ -87,6 +87,11 @@ namespace HDData
 		return _staticMesh->GetMeshCount();
 	}
 
+	void MeshRenderer::SetCullMode(HDEngine::CullMode cullMode)
+	{
+		_staticMesh->SetCullMode(cullMode);
+	}
+
 	void MeshRenderer::Update()
 	{
 		_staticMesh->SetWorldTM(GetTransform()->GetWorldTM());

@@ -13,6 +13,7 @@
 #include "UIBase.h"
 #include "GraphicsObjFactory.h"
 #include "Collider.h"
+#include "../HODO3DGraphicsInterface/ICubeMap.h"
 
 using GRAPHICS_CREATE_SIGNATURE = HDEngine::I3DRenderer* (*)(void);
 constexpr const char* GRAPHICS_CREATE_NAME = "CreateGraphicsInstance";
@@ -91,6 +92,9 @@ namespace HDEngine
 		_dx11Renderer->OnResize(screenWidth, screenHeight);
 	}
 
-
+	HDEngine::ICubeMap* RenderSystem::GetCubeMap()
+	{
+		return HDEngine::GraphicsObjFactory::Instance().GetFactory()->GetCubeMap();
+	}
 
 }

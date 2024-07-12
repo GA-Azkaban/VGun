@@ -7,6 +7,7 @@
 #include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -16,7 +17,7 @@ RoundManager* RoundManager::Instance()
 	{
 		_instance = new RoundManager;
 	}
-	
+
 	return _instance;
 }
 
@@ -34,17 +35,28 @@ void RoundManager::Start()
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		EndGame();
 		};
-	
+
+	//_headshoteffect = new UIEffect(_headshotImg->GetGameObject()->GetTransform()->GetPositionRef(), Vector3{ 400, 350, 0 }, HDData::eEasing::INOUTQUART);
+
+	_initTimer = new Timer;
+	_initTimer->duration = 3;
+	_initTimer->onExpiration = [&]() {
+		_initTimer->Stop();
+		_initTimertxt->GetGameObject()->SetSelfActive(false);
+		};
+
 	_showResultTimer = new Timer;
 	_showResultTimer->duration = 10;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		};
+
+	SetUIActive(false);
 }
 
 void RoundManager::Update()
 {
-	UpdateResultTimer();
+	UpdateBeginEndTimer();
 
 	if (!_isRoundStart) return;
 
@@ -70,7 +82,6 @@ void RoundManager::Update()
 	{
 		_ESCMenuOn = false;
 	}
-
 }
 
 void RoundManager::SetRoundScene(HDData::Scene* scene)
@@ -84,6 +95,7 @@ void RoundManager::InitGame()
 
 	auto& obj = LobbyManager::Instance().GetPlayerObjects();
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
+	_timerUI->SetColor(DirectX::Colors::White);
 	_nowMaxKill = 0;
 	_winnerUID = NULL;
 
@@ -99,9 +111,8 @@ void RoundManager::InitGame()
 		p->SetSelfActive(false);
 	}
 
-	_timerUI->GetGameObject()->SetSelfActive(true);
-	_hpUI->GetGameObject()->SetSelfActive(true);
-	_ammoUI->GetGameObject()->SetSelfActive(true);
+	_initTimer->Start();
+	_initTimertxt->GetGameObject()->SetSelfActive(true);
 
 	_players.clear();
 
@@ -121,7 +132,8 @@ void RoundManager::InitGame()
 		}
 		else
 		{
-			_playerObjs[index]->AddComponent<PlayerInfo>(info);
+			auto playerInfo = _playerObjs[index]->AddComponent<PlayerInfo>(info);
+			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
@@ -136,9 +148,7 @@ void RoundManager::InitGame()
 void RoundManager::EndGame()
 {
 	// UI 활성화, 비활성화
-	_timerUI->GetGameObject()->SetSelfActive(false);
-	_hpUI->GetGameObject()->SetSelfActive(false);
-	_ammoUI->GetGameObject()->SetSelfActive(false);
+	SetUIActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -162,21 +172,16 @@ void RoundManager::InitRound()
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
 	}
 
-	HDData::SkinnedMeshRenderer* mesh = nullptr;
-	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	GameManager::Instance()->GetMyInfo()->SetParticleSystem(_myObj->GetComponentInChildren<HDData::ParticleSystem>());
 
-	_myObj->GetComponent<PlayerInfo>()->Init();
 	_myObj->SetSelfActive(true);
 
 	for (auto& [uid, player] : _players)
 	{
-		player->GetComponent<PlayerInfo>()->Init();
-		player->SetSelfActive(true);
-
-		HDData::SkinnedMeshRenderer* mesh = nullptr;
-
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
-		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		info->SetParticleSystem(player->GetComponentInChildren<HDData::ParticleSystem>());
+		info->Init();
+		player->SetSelfActive(true);
 	}
 }
 
@@ -188,10 +193,24 @@ void RoundManager::UpdateRound()
 	UpdateDesiredKillChecker();
 }
 
+void RoundManager::SetUIActive(bool isActive)
+{
+	for (int i = 0; i < 6; ++i)
+	{
+		_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
+	}
+	_timerUI->GetGameObject()->SetSelfActive(isActive);
+	_hpUI->GetGameObject()->SetSelfActive(isActive);
+	_ammoUI->GetGameObject()->SetSelfActive(isActive);
+	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
+}
+
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
 	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-
+	//_headshoteffect->Play();
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
 }
 
@@ -241,7 +260,7 @@ void RoundManager::CheckWinner()
 		int index = 0;
 		for (auto& [uid, player] : _players)
 		{
-			if(_winnerUID == uid) continue;
+			if (_winnerUID == uid) continue;
 			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
 			++index;
 		}
@@ -264,8 +283,9 @@ bool RoundManager::GetIsRoundStart()
 
 void RoundManager::SetIsRoundStart(bool isStart)
 {
-	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 	_isRoundStart = isStart;
+	SetUIActive(true);
+	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 }
 
 void RoundManager::SetEndCam(HDData::GameObject* cam)
@@ -303,6 +323,8 @@ void RoundManager::ExitGame()
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
+	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
+	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
 
 void RoundManager::SetWinnerText(HDData::TextUI* txt)
@@ -330,6 +352,7 @@ void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 void RoundManager::SetRoundTimer(int time)
 {
 	_timer = time;
+	_timerUI->SetText(ChangeSecToMin(time));
 }
 
 void RoundManager::SetStartTime(std::chrono::time_point<std::chrono::steady_clock> time)
@@ -361,7 +384,7 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
-		
+
 		}
 	}
 }
@@ -397,16 +420,20 @@ void RoundManager::UpdateAmmoText()
 	_ammoUI->SetText(count + "/6");
 }
 
-void RoundManager::UpdateResultTimer()
+void RoundManager::UpdateBeginEndTimer()
 {
 	if (API::GetCurrentSceneName() != "InGame") return;
 
+	_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
 
-	if (!_showResultTimer->IsActive()) return;
+	if (_showResultTimer->IsActive())
+	{
+		_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
+	}
 
-	_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
+	_initTimertxt->SetText(std::to_string(static_cast<int>(_initTimer->duration - _initTimer->GetElapsedTime())));
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
@@ -417,6 +444,11 @@ void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
 Timer* RoundManager::GetGameEndTimer()
 {
 	return _gameEndTimer;
+}
+
+void RoundManager::SetInitRoundTimer(HDData::TextUI* txt)
+{
+	_initTimertxt = txt;
 }
 
 void RoundManager::UpdateDesiredKillChecker()
@@ -453,6 +485,11 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
 {
 	_backIMG[index] = img;
+}
+
+void RoundManager::SetHeadshotUI(HDData::ImageUI* img)
+{
+	_headshotImg = img;
 }
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()

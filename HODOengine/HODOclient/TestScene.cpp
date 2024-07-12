@@ -8,6 +8,7 @@
 #include "MeshTransformController.h"
 #include "TPScript.h"
 #include "FPAniScript.h"
+#include "UIEffect.h"
 
 TestScene::TestScene()
 {
@@ -15,6 +16,15 @@ TestScene::TestScene()
 
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
+
+	auto image = API::CreateButton(_scene);
+	image->GetTransform()->SetPosition(100, 100, 0);
+
+	UIEffect* effect = new UIEffect(image->GetTransform()->GetPositionRef(), Vector3{ 500, 100, 0 }, HDData::INOUTQUART);
+
+	image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
+		effect->Play();
+		});
 
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
@@ -200,22 +210,10 @@ TestScene::TestScene()
 	buildingDesc1.albedo = "PolygonKRAFTON_Texture_02.png";
 	buildingDesc1.metallic = 0.0f;
 	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
-	for(int i = 0; i < buildingRenderer1->GetMeshCount(); ++i)
+	for (int i = 0; i < buildingRenderer1->GetMeshCount(); ++i)
 	{
 		buildingRenderer1->LoadMaterial(newBuildingMat1, i);
 	}
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 0);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 1);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 2);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 3);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 4);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 5);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 6);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 7);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 8);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 9);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 10);
-	//buildingRenderer1->LoadMaterial(newBuildingMat1, 11);
 
 	// 플레이어 테스트
 	auto playerTest = API::CreateObject(_scene, "player");
@@ -226,10 +224,6 @@ TestScene::TestScene()
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
 	playerTest->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
-
-	//auto comp = playerTest->AddComponent<HDData::AudioSource>();
-	//comp->AddAudio3D("shootother", "./Resources/Sound/swish.wav", HDData::SoundGroup::BackgroundMusic, 10, 300);
-	//comp->Play3DRepeat("shootother", playerTest->GetTransform()->GetPosition());
 
 	//SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
 	//GetComponentInChildren 함수로 가져와서 사용해야 한다.
@@ -244,7 +238,6 @@ TestScene::TestScene()
 	meshComp->LoadMaterial(newMat, 0);
 
 	meshComp->PlayAnimation("RV_idle", true);
-
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
@@ -280,75 +273,6 @@ TestScene::TestScene()
 	//auto groundFloor = API::CreateObject(_scene, "ground");
 	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
-
-	//-----------------------------------------
-	/*auto playerTest2 = API::CreateObject(_scene, "player2");
-	playerTest2->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -20.0f, 0.5f, 0.0f });
-	playerTest2->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp2 = playerTest2->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc2;
-	desc2.materialName = "TP_Green";
-	desc2.albedo = "TP_Green_B.png";
-	HDData::Material* newMat2 = API::CreateMaterial(desc2);
-	meshComp2->LoadMaterial(newMat2, 0);
-	meshComp2->LoadMaterial(newMat2, 1);
-	meshComp2->LoadMaterial(newMat2, 2);
-	meshComp2->LoadMaterial(newMat2, 3);
-	meshComp2->LoadMaterial(newMat2, 4);
-	meshComp2->PlayAnimation("X_idle", true);
-	meshComp2->SetOutlineActive(true);
-
-	auto playerTest3 = API::CreateObject(_scene, "player3");
-	playerTest3->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -50.0f, 0.5f, 0.0f });
-	playerTest3->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp3 = playerTest3->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	HDEngine::MaterialDesc desc3;
-	desc3.materialName = "TP_Blue";
-	desc3.albedo = "TP_Blue_B.png";
-	HDData::Material* newMat3 = API::CreateMaterial(desc3);
-	meshComp3->LoadMaterial(newMat3, 0);
-	meshComp3->LoadMaterial(newMat3, 1);
-	meshComp3->LoadMaterial(newMat3, 2);
-	meshComp3->LoadMaterial(newMat3, 3);
-	meshComp3->LoadMaterial(newMat3, 4);
-	meshComp3->PlayAnimation("X_idle", true);
-	meshComp3->SetOutlineActive(true);
-
-	auto playerTest4 = API::CreateObject(_scene, "player4");
-	playerTest4->GetComponent<HDData::Transform>()->SetPosition(Vector3{ -80.0f, 0.5f, 20.0f });
-	playerTest4->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp4 = playerTest4->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//HDEngine::MaterialDesc desc4;
-	//desc4.materialName = "TP_Blue";
-	//desc4.albedo = "TP_Blue_B.png";
-	//HDData::Material* newMat4 = API::CreateMaterial(desc4);
-	meshComp4->LoadMaterial(newMat2, 0);
-	meshComp4->LoadMaterial(newMat2, 1);
-	meshComp4->LoadMaterial(newMat2, 2);
-	meshComp4->LoadMaterial(newMat2, 3);
-	meshComp4->LoadMaterial(newMat2, 4);
-	meshComp4->PlayAnimation("X_idle", true);
-	meshComp4->SetOutlineActive(true);
-
-	auto playerTest5 = API::CreateObject(_scene, "player5");
-	playerTest5->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 50.0f, 0.5f, -10.0f });
-	playerTest5->LoadFBXFile("SKM_TP_X_idle.fbx");
-
-	auto meshComp5 = playerTest5->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	//HDEngine::MaterialDesc desc5;
-	//desc5.materialName = "TP_Blue";
-	//desc5.albedo = "TP_Blue_B.png";
-	//HDData::Material* newMat5 = API::CreateMaterial(desc4);
-	meshComp5->LoadMaterial(newMat3, 0);
-	meshComp5->LoadMaterial(newMat3, 1);
-	meshComp5->LoadMaterial(newMat3, 2);
-	meshComp5->LoadMaterial(newMat3, 3);
-	meshComp5->LoadMaterial(newMat3, 4);
-	meshComp5->PlayAnimation("X_idle", true);
-	meshComp5->SetOutlineActive(true); */
 
 	auto blackOutObj = API::CreateObject(_scene, "BlackOut");
 	auto blackOutImage = blackOutObj->AddComponent<HDData::ImageUI>();

@@ -162,8 +162,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == playerData.userinfo().uid())
 	{
 		// 위치 갱신
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 2, 2, 0 };
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = Vector3{2, 5, 0};
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
@@ -172,8 +172,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	}
 	else
 	{
-		//auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		auto pos = Vector3{ 2, 2, 0 };
+		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
+		//auto pos = Vector3{ 2, 5, 0 };
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
 		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -503,14 +503,16 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	RoundManager::Instance()->InitGame();
 
 	// 스폰 포인트로 위치 갱신
-	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	auto pos = Vector3{ 0, 2, 0 };
+	auto pos = API::GetSpawnPointArr()[spawnpointindex];
+	//auto pos = Vector3{ 0, 2, 0 };
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
+	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
+	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
 
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());

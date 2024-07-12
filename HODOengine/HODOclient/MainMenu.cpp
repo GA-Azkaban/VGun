@@ -622,12 +622,12 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	main_trainingBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			trainingText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
-		}
-	);
+	//main_trainingBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+	//	[=]()
+	//	{
+	//		trainingText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
+	//	}
+	//);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()
