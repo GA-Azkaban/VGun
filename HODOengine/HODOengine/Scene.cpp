@@ -97,9 +97,9 @@ namespace HDData
 			}
 		}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		_fpsText->SetText("FPS: " + std::to_string(HDEngine::TimeSystem::Instance().GetFramePerSecond()));
-#endif
+//#endif
 	}
 
 	void Scene::LateUpdate()

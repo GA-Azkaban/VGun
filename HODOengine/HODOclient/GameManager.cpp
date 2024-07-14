@@ -26,8 +26,6 @@ GameManager::~GameManager()
 void GameManager::QuitGame()
 {
 	// TODO) 게임 종료 전에 해야 하는 것들
-
-
 	API::QuitWindow();
 }
 

@@ -36,8 +36,6 @@ void RoundManager::Start()
 		EndGame();
 		};
 
-	//_headshoteffect = new UIEffect(_headshotImg->GetGameObject()->GetTransform()->GetPositionRef(), Vector3{ 400, 350, 0 }, HDData::eEasing::INOUTQUART);
-
 	_initTimer = new Timer;
 	_initTimer->duration = 3;
 	_initTimer->onExpiration = [&]() {
@@ -132,7 +130,8 @@ void RoundManager::InitGame()
 		}
 		else
 		{
-			_playerObjs[index]->AddComponent<PlayerInfo>(info);
+			auto playerInfo = _playerObjs[index]->AddComponent<PlayerInfo>(info);
+			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
@@ -171,20 +170,16 @@ void RoundManager::InitRound()
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
 	}
 
-	HDData::SkinnedMeshRenderer* mesh = nullptr;
-	mesh = _myObj->GetGameObjectByNameInChildren("meshShell")->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	
+	GameManager::Instance()->GetMyInfo()->SetParticleSystem(_myObj->GetComponentInChildren<HDData::ParticleSystem>());
+
 	_myObj->SetSelfActive(true);
 
 	for (auto& [uid, player] : _players)
 	{
-		player->GetComponent<PlayerInfo>()->Init();
-		player->SetSelfActive(true);
-
-		HDData::SkinnedMeshRenderer* mesh = nullptr;
-
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
-		mesh = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		info->SetParticleSystem(player->GetComponentInChildren<HDData::ParticleSystem>());
+		info->Init();
+		player->SetSelfActive(true);
 	}
 }
 
@@ -213,7 +208,6 @@ void RoundManager::SetUIActive(bool isActive)
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
 	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-	//_headshoteffect->Play();
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
 }
 
@@ -430,13 +424,13 @@ void RoundManager::UpdateBeginEndTimer()
 	_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
+	_initTimertxt->SetText(std::to_string(static_cast<int>(_initTimer->duration - _initTimer->GetElapsedTime())));
 
 	if (_showResultTimer->IsActive())
 	{
 		_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
 	}
 
-	_initTimertxt->SetText(std::to_string(static_cast<int>(_initTimer->duration - _initTimer->GetElapsedTime())));
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)

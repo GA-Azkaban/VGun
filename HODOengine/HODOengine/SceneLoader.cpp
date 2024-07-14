@@ -1,4 +1,4 @@
-#include <fstream>
+﻿#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -45,6 +45,7 @@ namespace HDEngine
 
 		HDEngine::MaterialDesc plane;
 		plane.color = { 142, 118, 89, 255 };
+		plane.roughnessValue = 1.0f;
 
 		_plane = MaterialManager::Instance().CreateMaterial(plane);
 

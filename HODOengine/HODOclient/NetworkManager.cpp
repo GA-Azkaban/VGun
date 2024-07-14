@@ -94,6 +94,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	if (myUID == playerData.userinfo().uid())
 	{
 		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
+		GameManager::Instance()->GetMyInfo()->AddSerialKillCount();
 	}
 	else
 	{
