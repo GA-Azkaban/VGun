@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
+#include "Timer.h"
 
 enum class eHITLOC
 {
@@ -74,6 +75,8 @@ public:
 	void SetParticleSystem(HDData::ParticleSystem* particleSystem);
 	void PlayerAttacked(Vector3 targetPos);
 
+	void AddSerialKillCount();
+
 private:
 	bool _isMyInfo = false;
 
@@ -105,6 +108,10 @@ private:
 	// count info
 	int _kill;
 	int _death;
+
+	// serial kill
+	Timer* _timer;
+	int _serialkillcount;
 
 	HitEffect* _hitEffect;
 	HDData::ParticleSystem* _particleSystem;
