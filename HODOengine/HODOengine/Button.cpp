@@ -86,14 +86,14 @@ namespace HDData
 		return _button;
 	}
 
-	void Button::FadeIn()
+	void Button::FadeIn(float time)
 	{
-		_button->FadeIn();
+		_button->FadeIn(time);
 	}
 
-	void Button::FadeOut()
+	void Button::FadeOut(float time)
 	{
-		_button->FadeOut();
+		_button->FadeOut(time);
 	}
 
 	bool Button::GetFadeMode()
@@ -101,9 +101,9 @@ namespace HDData
 		return _button->GetFadeMode();
 	}
 
-	bool Button::SetFadeMode(bool SetFade)
+	bool Button::SetFadeMode(bool SetFade, float time)
 	{
-		return _button->SetFadeMode(SetFade);
+		return _button->SetFadeMode(SetFade,time);
 	}
 
 }
