@@ -36,8 +36,6 @@ void RoundManager::Start()
 		EndGame();
 		};
 
-	//_headshoteffect = new UIEffect(_headshotImg->GetGameObject()->GetTransform()->GetPositionRef(), Vector3{ 400, 350, 0 }, HDData::eEasing::INOUTQUART);
-
 	_initTimer = new Timer;
 	_initTimer->duration = 3;
 	_initTimer->onExpiration = [&]() {
@@ -210,7 +208,6 @@ void RoundManager::SetUIActive(bool isActive)
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
 	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-	//_headshoteffect->Play();
 	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
 }
 
@@ -427,13 +424,13 @@ void RoundManager::UpdateBeginEndTimer()
 	_initTimer->Update();
 	_gameEndTimer->Update();
 	_showResultTimer->Update();
+	_initTimertxt->SetText(std::to_string(static_cast<int>(_initTimer->duration - _initTimer->GetElapsedTime())));
 
 	if (_showResultTimer->IsActive())
 	{
 		_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
 	}
 
-	_initTimertxt->SetText(std::to_string(static_cast<int>(_initTimer->duration - _initTimer->GetElapsedTime())));
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)

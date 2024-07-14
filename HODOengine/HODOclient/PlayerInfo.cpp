@@ -13,6 +13,12 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	_playerUID = info->GetPlayerUID();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
+
+	_timer = new Timer;
+	_timer->duration = 5;
+	_timer->onExpiration = [=]() {
+		_serialkillcount = 0;
+		};
 }
 
 void PlayerInfo::Start()
@@ -26,15 +32,27 @@ void PlayerInfo::Update()
 	{
 		_isShoot = false;
 	}
+
+	if (_serialkillcount >= 1)
+	{
+		if (!_timer->IsActive())
+		{
+			_timer->Start();
+		}
+		_timer->Update();
+	}
+
+
 }
 
 void PlayerInfo::Init()
 {
-	this-> _kill = 0;
-	this-> _death = 0;
+	this->_kill = 0;
+	this->_death = 0;
 	this->_isDie = false;
 	this->_bulletCount = 6;
 	this->_currentHP = 70;
+	this->_serialkillcount = 0;
 	this->_state = ePlayerState::IDLE;
 }
 
@@ -189,6 +207,32 @@ void PlayerInfo::PlayerAttacked(Vector3 targetPos)
 {
 	_hitEffect->SetEffectOn();
 	IndicatorPool::Instance().SummonIndicator(targetPos);
+}
+
+void PlayerInfo::AddSerialKillCount()
+{
+	_serialkillcount++;
+
+	switch (_serialkillcount)
+	{
+		case 1:
+		{
+			//kill!
+		}
+		break;
+		case 2:
+		{
+			// double kill!
+		}
+		break;
+		case 3:
+		{
+			// triple kill!
+		}
+		break;
+		default:
+			break;
+	}
 }
 
 bool& PlayerInfo::GetPlayerDie()
