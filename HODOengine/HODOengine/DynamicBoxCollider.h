@@ -8,7 +8,7 @@ namespace HDData
 	{
 	public:
 		DynamicBoxCollider();
-		DynamicBoxCollider(float w, float h, float d, int colliderGroup);
+		DynamicBoxCollider(float w, float h, float d, int colliderGroup = 0);
 
 		void SetVolume(float w, float h, float d);
 		virtual float GetWidth() const override;

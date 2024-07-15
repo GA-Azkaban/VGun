@@ -38,8 +38,8 @@ namespace HDData
 		float GetTop();
 		float GetBottom();
 
-		void FadeIn();
-		void FadeOut();
+		void FadeIn(float time);
+		void FadeOut(float time);
 
 		virtual void OnClickEvent() {};
 

@@ -20,11 +20,11 @@ TestScene::TestScene()
 	auto image = API::CreateButton(_scene);
 	image->GetTransform()->SetPosition(100, 100, 0);
 
-	UIEffect* effect = new UIEffect(image->GetTransform()->GetPositionRef(), Vector3{ 500, 100, 0 }, HDData::INOUTQUART);
+	/*UIEffect* effect = new UIEffect(image->GetTransform()->GetPositionRef(), Vector3{ 500, 100, 0 }, HDData::INOUTQUART);
 
 	image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
 		effect->Play();
-		});
+		});*/
 
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);

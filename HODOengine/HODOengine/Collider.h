@@ -59,19 +59,26 @@ namespace HDData
 		void Setflag(int flag);
 		int GetFlag();
 		void SetTrigger(bool isTrigger);
-		bool GetIsTrigger();
+		bool GetIsTriggerType() const;
+		bool GetIsTriggerCollide() const;
+		bool GetPrevIsTriggerCollide() const;
 		int GetColFilterNum() const;
 		bool GetIsCollide() const;
 		bool GetPrevIsCollide() const;
 		std::vector<PhysicsCollision*> GetCollisionStorage() const;
+		std::vector<Collider*> GetTriggerStorage() const;
 		eColliderRole GetColType() const;
+		void SetParentCollider(HDData::Collider* col);
+		void SetChildCollider(HDData::Collider* childCol);
 		Collider* GetParentCollider() const;
 
 		void Flush();
 
 	protected:
 		int _flag;
-		bool _isTrigger;
+		bool _isTriggerType;
+		bool _isTriggerCollide;
+		bool _prevIsTriggerCollide;
 		bool _isCollide;
 		bool _prevIsCollide;
 		int _collisionFilterNum;
@@ -95,6 +102,7 @@ namespace HDData
 
 		// copy ver
 		std::vector<PhysicsCollision*> _collisionStorage;
+		std::vector<Collider*> _triggerStorage;
 
 	protected:
 		HDData::Collider* _parentCollider;

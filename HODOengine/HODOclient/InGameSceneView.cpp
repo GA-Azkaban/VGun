@@ -89,11 +89,16 @@ void InGameSceneView::Initialize()
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.6f, 0.05f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 	headCollider->SetParentCollider(playerCollider);
 	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
+	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
+	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
+	//auto helperBox = landingHelper->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.06f, 0.2f);
+	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
+	helperBox->SetParentCollider(playerCollider);
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
 	// 메인 카메라에 오디오 리스너 컴포넌트가 붙기 때문
@@ -382,27 +387,6 @@ void InGameSceneView::Initialize()
 	// Timer
 	auto timer = API::CreateTextbox(_scene, "timer");
 	RoundManager::Instance()->SetRoundTimerObject(timer->GetComponent<HDData::TextUI>());
-	
-	//// 디버그용 state
-	//HDData::GameObject* state = API::CreateTextbox(_scene, "state");
-	//HDData::TextUI* stateText = state->GetComponent<HDData::TextUI>();
-	//stateText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	//stateText->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
-	//playerMove->_plStateText = stateText;
-
-	//// 디버그용 cooltime
-	//HDData::GameObject* tumbleCooltime = API::CreateTextbox(_scene, "coolTime");
-	//HDData::TextUI* coolTimeText = tumbleCooltime->GetComponent<HDData::TextUI>();
-	//coolTimeText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	//coolTimeText->GetTransform()->SetPosition(200.0f, 1300.0f, 0.0f);
-	//playerMove->_tumbleText = coolTimeText;
-
-	//// 디버그용 포지션
-	//HDData::GameObject* plPos = API::CreateTextbox(_scene, "plPos");
-	//HDData::TextUI* posText = plPos->GetComponent<HDData::TextUI>();
-	//posText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	//posText->GetTransform()->SetPosition(2300.0f, 50.0f, 0.0f);
-	//playerMove->_plPosText = posText;
 
 	/// game end
 
@@ -505,6 +489,7 @@ void InGameSceneView::Initialize()
 		esc_controlObj->SetSelfActive(false);
 	}
 
+	/// init round
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");
 	initCounter->GetTransform()->SetPosition(API::GetScreenWidth() /2, API::GetScreenHeight() / 2, 0);
@@ -516,7 +501,7 @@ void InGameSceneView::Initialize()
 
 	// 헤드샷 이펙트
 	auto headshot = API::CreateImageBox(_scene);
-	headshot->GetTransform()->SetPosition(API::GetScreenWidth(), API::GetScreenHeight() / 4, 0);
+	headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
 	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
 	headshotimg->SetImage("Headshot.png");
 	RoundManager::Instance()->SetHeadshotUI(headshotimg);

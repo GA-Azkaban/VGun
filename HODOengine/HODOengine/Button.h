@@ -37,10 +37,10 @@ namespace HDData
 		ImageUI* GetButtonComp();
 
 		// FadeIn & out
-		void FadeIn();
-		void FadeOut();
+		void FadeIn(float time);
+		void FadeOut(float time);
 		bool GetFadeMode();
-		bool SetFadeMode(bool SetFade);
+		bool SetFadeMode(bool SetFade, float time);
 
 	private:
 		ImageUI* _button;

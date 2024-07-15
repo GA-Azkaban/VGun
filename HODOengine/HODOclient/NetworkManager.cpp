@@ -94,6 +94,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	if (myUID == playerData.userinfo().uid())
 	{
 		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
+		GameManager::Instance()->GetMyInfo()->AddSerialKillCount();
 	}
 	else
 	{
@@ -164,22 +165,25 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
 		//auto pos = Vector3{2, 5, 0};
-		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
-		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 	}
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
 		//auto pos = Vector3{ 2, 5, 0 };
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+
 	}
 }
 
@@ -665,6 +669,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
+	info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)

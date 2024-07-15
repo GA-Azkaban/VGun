@@ -1,21 +1,20 @@
 ﻿#pragma once
+#include "Timer.h"
 #include "../HODOengine/HODO_API.h"
 
-class UIEffect
+class UIEffect : public HDData::Script
 {
 public:
-	UIEffect(Vector3& start, Vector3 end, HDData::eEasing type);
-	~UIEffect();
+	//UIEffect(Vector2 endScale, float time);
+	//~UIEffect();
+
+	void Start() override;
+	void Update() override;
+
 	void Play();
-	void SetOrigin();
 
 private:
-	bool _isStart;
-	HDData::Tween* _tween;
+	void ScaleUpdate();
 
-	Vector3 _originposCopied;
-
-	Vector3& _start;
-	Vector3 _end;
-	HDData::eEasing type;
+	Timer* _timer;
 };
