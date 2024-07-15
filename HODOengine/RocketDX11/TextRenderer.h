@@ -52,11 +52,11 @@ namespace RocketCore::Graphics
 		virtual float GetWidth() override;
 		virtual float GetHeight() override;
 
-		virtual void FadeIn() override;
-		virtual void FadeOut() override;
+		virtual void FadeIn(float time) override;
+		virtual void FadeOut(float time) override;
 		virtual bool GetComplete() override;
 		virtual bool GetFadeMode() override;
-		virtual bool SetFadeMode(bool isFade) override;
+		virtual bool SetFadeMode(bool isFade, float time) override;
 
 		virtual void SetSortOrder(float order) override;
 		float GetSortOrder() const { return _sortOrder; }

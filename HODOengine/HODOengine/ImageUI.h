@@ -34,11 +34,11 @@ namespace HDData
 		void SetCenter(float x, float y);
 
 		// fade In & out
-		void FadeIn();
-		void FadeOut();
+		void FadeIn(float time);
+		void FadeOut(float time);
 		bool GetComplete();
 		bool GetFadeMode();
-		bool SetFadeMode(bool SetFade);
+		bool SetFadeMode(bool SetFade,float time);
 
 	private:
 		HDEngine::ISketchableImage* _imageUI;
