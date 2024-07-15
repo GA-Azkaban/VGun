@@ -257,24 +257,30 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 	_sortOrder = order;
 }
 
-void RocketCore::Graphics::ImageRenderer::FadeIn()
+void RocketCore::Graphics::ImageRenderer::FadeIn(float time)
 {
-	_fadeMode = true;
+	//_fadeMode = true;
+	SetFadeMode(true, time);
 }
 
-void RocketCore::Graphics::ImageRenderer::FadeOut()
+void RocketCore::Graphics::ImageRenderer::FadeOut(float time)
 {
-	_fadeMode = false;
+	SetFadeMode(false, time);
 }
 
 bool RocketCore::Graphics::ImageRenderer::GetFadeMode()
-{
+{	
+	// 검은색 배경의 페이드인 / 아웃이 있다면
+	// 페이드인 후 이 함수로 다시 페이드 아웃 하기
 	return _fadeMode;
 }
 
-bool RocketCore::Graphics::ImageRenderer::SetFadeMode(bool SetFade)
+bool RocketCore::Graphics::ImageRenderer::SetFadeMode(bool SetFade,float time)
 {
-	return _fadeMode = SetFade;
+	_fadeMode = SetFade;
+	_fadeDuration = time;
+	_fadeIncrement = 1.0f / (_fadeDuration * 60.0f); // 60fps
+	return _fadeMode;
 }
 
 bool RocketCore::Graphics::ImageRenderer::GetComplete()

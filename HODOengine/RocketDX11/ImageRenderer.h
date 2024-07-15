@@ -9,8 +9,6 @@
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
 #include "MathHeader.h"
 
-
-
 namespace RocketCore::Graphics
 {
 	class Mesh;
@@ -62,11 +60,11 @@ namespace RocketCore::Graphics
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 		// fade
-		virtual void FadeIn() override;
-		virtual void FadeOut() override;
+		virtual bool SetFadeMode(bool SetFade,float time) override;
+		virtual void FadeIn(float time) override;
+		virtual void FadeOut(float time) override;
 		virtual bool GetFadeMode() override;
 		virtual bool GetComplete() override;
-		virtual bool SetFadeMode(bool SetFade) override;
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
@@ -98,6 +96,8 @@ namespace RocketCore::Graphics
 		bool _fadeMode = true;
 		bool _isComplete = false;
 		float _fadeAlpha = 1.0f;
+		float _fadeDuration;	// 페이드인 아웃에 걸리는시간
+		float _fadeIncrement;	// 한 프레임에서 증가할 알파 값
 
 		ID3D11Device* _device;
 		ID3D11DeviceContext* _deviceContext;
