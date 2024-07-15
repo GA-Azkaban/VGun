@@ -5,7 +5,7 @@
 class UIEffect : public HDData::Script
 {
 public:
-	//UIEffect(eUIEFFECT type, Vector2 endScale, float time);
+	//UIEffect(Vector2 endScale, float time);
 	//~UIEffect();
 
 	void Start() override;

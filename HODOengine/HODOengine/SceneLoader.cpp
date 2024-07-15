@@ -255,6 +255,7 @@ namespace HDEngine
 				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
 			}
 
+			if (info.name == "SpawnPoint") return;
 			object->GetTransform()->Rotate(0, -180, 0);
 
 		}

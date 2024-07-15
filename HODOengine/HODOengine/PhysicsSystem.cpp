@@ -65,10 +65,6 @@ namespace HDEngine
 	void PhysicsSystem::Update()
 	{
 		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
-		if (sceneIter->GetSceneName() != "InGame")
-		{
-			return;
-		}
 
 		_collisionCallback->Clear();
 
@@ -96,13 +92,7 @@ namespace HDEngine
 		{
 			// Collider On/Off
 			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
-			//rigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !dynamicCol->GetIsActive());
-			//if (!dynamicCol->GetIsActive())
-			//{
-			//	// 삭제가 용이하게 추후 맵으로 바꾸자
-			//	erase_if(_rigidDynamics, [&](physx::PxRigidDynamic* rd) {return rd == rigid; });
-			//	_pxScene->removeActor(*rigid);
-			//}
+			if (!dynamicCol->GetIsStarted()) continue;
 
 			// 트리거가 아닌 경우 onCollision 함수들 실행
 			if (dynamicCol->GetIsTriggerType() == false)
@@ -137,7 +127,10 @@ namespace HDEngine
 					dynamicCol->GetGameObject()->OnTriggerExit(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
 				}
 			}
+		}
 
+		for (auto& rigid : _rigidDynamics)
+		{
 			// Transform Update
 			physx::PxTransform nowTransform = rigid->getGlobalPose();
 			Vector3 pos;
@@ -153,6 +146,7 @@ namespace HDEngine
 			rot.w = nowTransform.q.w;
 
 			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+
 		}
 
 		for (auto& rigid : _movableStatics)
