@@ -30,7 +30,6 @@
 #include "ParticleSphereCollider.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
-#include "CubeMapRenderer.h"
 #include "InputData.h"
 #include "TextUI.h"
 #include "Button.h"
@@ -54,6 +53,7 @@
 
 #include "RenderSystem.h"
 #include "ObjectSystem.h"
+#include "../HODO3DGraphicsInterface/ICubeMap.h"
 
 namespace API
 {
@@ -87,11 +87,12 @@ namespace API
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::Tween* CreateTween();
 
-		// 사운드시스템
-		//HODO_API HDData::AudioSource* CreateSoundPlayer(HDData::Scene* scene, std::string soundName, std::string soundPath, HDData::SoundGroup soundType);
+		HODO_API HDData::GameObject* GetObjectByName(HDData::Scene* scene, std::string objectName);
+
+		HODO_API HDEngine::ICubeMap* GetCubeMap();
 
 		// 현재 씬
-		HODO_API HDData::Scene* GetCurrenScene();
+		HODO_API HDData::Scene* GetCurrentScene();
 
 		// 메인 카메라 조작을 위한 함수
 		HODO_API HDData::Camera* GetCurrenSceneMainCamera();
@@ -134,6 +135,9 @@ namespace API
 
 		// Destroy window
 		HODO_API void QuitWindow();
+
+		// Show cursor
+		HODO_API void ShowWindowCursor(bool isShow);
 	}
 }
 

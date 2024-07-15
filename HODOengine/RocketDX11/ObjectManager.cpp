@@ -56,7 +56,7 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
-	Cubemap* ObjectManager::CreateCubeMap()
+	Cubemap* ObjectManager::GetCubeMap()
 	{
 		Cubemap* temp = &(Cubemap::Instance());
 		return temp;

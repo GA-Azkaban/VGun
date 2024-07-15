@@ -2,19 +2,21 @@
 
 #include "dllExporter.h"
 #include "StaticCollider.h"
+#include "DynamicCollider.h"
 
 namespace HDData
 {
-	class HODO_API TriggerBoxCollider : public StaticCollider
+	//class HODO_API TriggerBoxCollider : public StaticCollider
+	class HODO_API TriggerBoxCollider : public DynamicCollider
 	{
 	public:
 		TriggerBoxCollider();
 		TriggerBoxCollider(float width, float height, float depth);
 
 	public:
-		float GetHeight();
-		float GetWidth();
-		float GetDepth();
+		virtual float GetWidth() const override;
+		virtual float GetHeight() const override;
+		virtual float GetDepth() const override;
 
 		void SetHeight(float val);
 		void SetWidth(float val);

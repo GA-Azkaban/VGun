@@ -7,7 +7,7 @@
 #include "NetworkManager.h"
 
 PlayerMove::PlayerMove()
-	: _isMovable(true),
+	: _isMovable(true), _isMoveableOnJump(true),
 	_particleIndex(0),
 	_shootCooldown(0.0f),
 	_jumpCooldown(0.0f),
@@ -30,6 +30,7 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
+	// asdf
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -113,6 +114,7 @@ void PlayerMove::SetHitParticle(std::vector<HDData::ParticleSphereCollider*> par
 // 조이스틱 개념
 void PlayerMove::CheckMoveInfo()
 {
+	_prevDirection = _moveDirection;
 	_moveDirection = 5;
 
 	if (!_isHeadCam)
@@ -343,6 +345,8 @@ void PlayerMove::ShootGun()
 
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
+	// 총구 화염 이펙트
+
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
 
@@ -363,6 +367,7 @@ void PlayerMove::ShootGun()
 	{
 		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
+		_hitPoint = hitPoint;
 	}
 
 	// 적군의 머리를 맞췄을 때
@@ -424,6 +429,17 @@ void PlayerMove::ApplyRecoil()
 	_rotAngleX += _sprayCamera[_shootCount].second;
 }
 
+void PlayerMove::ShootTrail(Vector3 endPoint)
+{
+	Vector3 forward = _headCam->GetTransform()->GetForward();
+	Vector3 up = _headCam->GetTransform()->GetUp();
+	Vector3 right = _headCam->GetTransform()->GetRight();
+
+	Vector3 startPoint = _headCam->GetTransform()->GetPosition() + forward * 1.75f - up * 0.15f + right * 0.25f;
+	Vector3 endPoint2 = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 50.0f;
+	API::DrawLine(startPoint, endPoint2, Vector4(1.0f, 0.0f, 0.0f, 0.0f));
+}
+
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
@@ -453,12 +469,14 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::WALK:
 		{
 			_moveSpeed = 3.0f;
+			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
 			_moveSpeed = 6.0f;
+			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
@@ -521,7 +539,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_fpmesh->SetMeshActive(false, 0);
 			_playerAudio->PlayOnce("reload");
-			_reloadTimer = 3.0f;
+			_reloadTimer = 2.6f;
 
 			break;
 		}
@@ -545,28 +563,41 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
+			_playerColliderStanding->ClearVeloY();
+			_playerColliderStanding->Stop();
 
-			break;
+			break;	
 		}
 		case ePlayerMoveState::WALK:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			//if (_moveDirection != _prevDirection)
+			//{
+			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying("walk");
+			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			//if (_moveDirection != _prevDirection)
+			//{
+			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
+			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying("run");
+			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			if (_isMoveableOnJump)
+			{
+				_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+			}
 
 			break;
 		}
@@ -585,6 +616,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::FIRE:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			ShootTrail(_hitPoint);
 
 			break;
 		}
@@ -622,11 +654,13 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::WALK:
 		{
+			_playerColliderStanding->Stop();
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
+			_playerColliderStanding->Stop();
 
 			break;
 		}
@@ -639,7 +673,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::TUMBLE:
 		{
 			Reload();
-			_headCam->TumbleCamera(_deltaTime);
+			_headCam->ResetCameraPos();
 			_headCam->ToggleCameraShake(false);
 			_fpmesh->SetMeshActive(true, 0);
 			_weapon->SetMeshActive(true, 0);
@@ -765,12 +799,12 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	_plStateText->SetText(first + "/" + second);
+	//_plStateText->SetText(first + "/" + second);
 
-	_tumbleText->SetText(std::to_string(_tumbleCooldown));
+	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
-	std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
-	_plPosText->SetText(posText);
+	//std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
+	//_plPosText->SetText(posText);
 }
 
 int& PlayerMove::GetBulletCount()
@@ -798,6 +832,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 	//	return;
 	//}
 
+	/*
 	if (_playerState.first == ePlayerMoveState::TUMBLE)
 	{
 		return;
@@ -813,11 +848,19 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		// 일단 
 		OnStateExit(ePlayerMoveState::JUMP);
 	}
+	*/
+	auto& opponentCollider = (*colArr)->_otherActor;
+
+	if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
+	{
+		_isMoveableOnJump = false;
+	}
 }
 
 void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
 {
 	auto& opponentCollider = (*colArr)->_otherActor;
+
 	//// plane인 경우
 	//if (opponentCollider == nullptr)
 	//{
@@ -833,6 +876,37 @@ void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int
 	//{
 	//	_playerColliderStanding->ClearForceXYZ();
 	//}
+}
+
+void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
+{
+	//if (_playerState.first == ePlayerMoveState::TUMBLE)
+	//{
+	//	return;
+	//}
+
+
+	// 지형인 경우
+	if ((*colArr)->GetColType() == eColliderRole::TERRAIN)
+	{
+		// 착지 판정
+		_playerState.first = ePlayerMoveState::IDLE;
+		_isMoveableOnJump = true;
+
+		// 일단 
+		OnStateExit(ePlayerMoveState::JUMP);
+	}
+
+	return;
+}
+
+void PlayerMove::OnTriggerExit(HDData::Collider** colArr, unsigned int count)
+{
+	if (_playerState.first != ePlayerMoveState::JUMP)
+	{
+
+	}
+	return;
 }
 
 void PlayerMove::UpdatePlayerPositionDebug()
@@ -1391,6 +1465,8 @@ void PlayerMove::DecidePlayerState()
 	{
 		_playerState.first = ePlayerMoveState::TUMBLE;
 		_playerState.second = ePlayerMoveState::AIM;
+		_headCam->ResetCameraPos();
+
 		return;
 	}
 
@@ -1535,15 +1611,6 @@ void PlayerMove::DecidePlayerStateSecond()
 		return;
 	}
 
-	//else if (API::GetMouseUp(MOUSE_LEFT))
-	//{
-	//	_playerState.second = ePlayerMoveState::IDLE;
-	//}
-	//else if (_shootCooldown <= 0.0f)
-	//{
-	//	_playerState.second = ePlayerMoveState::IDLE;
-	//}
-
 	if (_shootCooldown <= 0.0f)
 	{
 		if (API::GetMouseDown(MOUSE_LEFT))
@@ -1574,15 +1641,9 @@ void PlayerMove::DecidePlayerStateSecond()
 
 void PlayerMove::Behavior()
 {
-
-	if (_prevPlayerState.first == _playerState.first)
+	if (_playerState.first != ePlayerMoveState::JUMP)
 	{
-		OnStateStay(_playerState.first);
-	}
-	else
-	{
-		OnStateExit(_prevPlayerState.first);
-		OnStateEnter(_playerState.first);
+		_playerColliderStanding->ClearVeloY();
 	}
 
 	if (_prevPlayerState.second == _playerState.second)
@@ -1593,6 +1654,16 @@ void PlayerMove::Behavior()
 	{
 		OnStateExit(_prevPlayerState.second);
 		OnStateEnter(_playerState.second);
+	}
+
+	if (_prevPlayerState.first == _playerState.first)
+	{
+		OnStateStay(_playerState.first);
+	}
+	else
+	{
+		OnStateExit(_prevPlayerState.first);
+		OnStateEnter(_playerState.first);
 	}
 
 	/*

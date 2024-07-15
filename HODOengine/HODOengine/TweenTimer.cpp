@@ -4,7 +4,7 @@
 namespace HDEngine
 {
 	TweenTimer::TweenTimer()
-		: _time(0.f), _isActive(false), _duration(0.f), _delayTime(0.f)
+		: _time(0.f), _isActive(false),_isComplete(false), _duration(0.f), _delayTime(0.f)
 	{
 
 	}
@@ -37,7 +37,9 @@ namespace HDEngine
 
 			if (_time == _duration)
 			{
+				_isComplete = true;
 				_isActive = false;
+				_time = 0.f;
 			}
 		}
 	}

@@ -56,7 +56,6 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
 	mainCanvasImage->SetImage("_blur_background_image.png");
-	//mainCanvasImage->SetImage("_card_holder.png");
 	mainCanvasImage->SetSortOrder(0.0f);
 	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvasImage->ChangeScale(scale, scale);
@@ -71,7 +70,7 @@ void MainMenuScene::MainMenu()
 	fadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
 	fadeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	fadeCanvas->GetTransform()->SetPosition(960.0f * width / 1920, 540.f * height / 1080, 0.f);
-	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut();
+	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut(1.0f);
 	fadeCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 	HDData::GameObject* main_controlCanvas = API::CreateImageBox(_scene, "controlObject", mainCanvas);
@@ -521,7 +520,19 @@ void MainMenuScene::MainMenu()
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
-	// event
+	//Test
+	auto ButtonTest = API::CreateImageBox(_scene);
+	ButtonTest->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
+	auto ButtonTestImg = ButtonTest->GetComponent<HDData::ImageUI>();
+	ButtonTestImg->SetImage("Button_02.png");
+
+	/// event
+	/// event
+	/// event
+	/// event
+	/// event
+	/// event
+
 	// game play btn
 	main_playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
@@ -623,12 +634,6 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	main_trainingBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			trainingText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
-		}
-	);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()

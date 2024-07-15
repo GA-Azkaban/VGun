@@ -136,7 +136,13 @@ HWND HODOengine::GetHWND()
 
 void HODOengine::Quit()
 {
+	Finalize();
 	DestroyWindow(_hWnd);
+}
+
+void HODOengine::ShowWindowCursor(bool show)
+{
+	ShowCursor(show);
 }
 
 void HODOengine::Run()
@@ -156,7 +162,6 @@ void HODOengine::Run()
 	// draw
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
-
 
 	_eventSystem.InvokeEvent();
 	_objectSystem.UpdateDisableList();

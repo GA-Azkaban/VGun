@@ -57,6 +57,9 @@ namespace HDData
 		void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count);
 		void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count);
 
+		void OnTriggerEnter(Collider** _colArr, unsigned int count);
+		void OnTriggerExit(Collider** _colArr, unsigned int count);
+
 		template <ComponentConcept ComponentType, typename... Args>
 		ComponentType* AddComponent(Args&&... args) {
 			ComponentType* component = new ComponentType(std::forward<Args>(args)...);

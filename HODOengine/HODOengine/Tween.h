@@ -64,9 +64,9 @@ namespace HDData
 		Vector3* _data3V;
 		Quaternion* _dataQuat;
 		Transform* _dataTR;
-		std::function<void()> _onCompleteFunc = nullptr;
 
 	public:
+		std::function<void()> _onCompleteFunc = nullptr;
 		std::function<void()> GetCompleteFunc();
 
 		/// Get data

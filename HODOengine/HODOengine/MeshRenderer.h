@@ -28,6 +28,7 @@ namespace HDData
 		void SetMeshActive(bool isActive, unsigned int index);
 		void SetShadowActive(bool isActive);
 		int GetMeshCount();
+		void SetCullMode(HDEngine::CullMode cullMode);
 
 	protected:
 		virtual void Update() override;

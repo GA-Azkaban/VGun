@@ -25,14 +25,14 @@ void LobbySceneView::Initialize()
 	int height = static_cast<int>(API::GetScreenHeight());
 
 	auto mainCam = _scene->GetMainCamera();
-	mainCam->GetGameObject()->AddComponent<CameraMove>();
-	mainCam->GetGameObject()->GetTransform()->SetPosition(2.5f, 0.57f, -5.48f);
-	//mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
+	//mainCam->GetGameObject()->AddComponent<CameraMove>();
+	mainCam->GetGameObject()->GetTransform()->SetPosition(2.6f, 0.57f, -4.4f);
+	mainCam->GetGameObject()->GetTransform()->Rotate(0, -0.5, 0);
 
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
-	testBox1->GetTransform()->SetScale(4, 4, 4);
+	testBox1->GetTransform()->SetScale(6, 6, 6);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->SetUseLight(false);
 	boxRender1->LoadMesh("primitiveQuad");

@@ -29,7 +29,7 @@ namespace HDEngine
 		virtual ICamera* CreateCamera() = 0;
 		virtual IStaticMesh* CreateStaticMeshObject() = 0;
 		virtual ISkinnedMesh* CreateSkinnedMeshObject() = 0;
-		virtual ICubeMap* CreateCubeMap() = 0;
+		virtual ICubeMap* GetCubeMap() = 0;
 		virtual ISketchableText* CreateText() = 0;
 		virtual ISketchableImage* CreateImage() = 0;
 		virtual ILight* CreateLight() = 0;

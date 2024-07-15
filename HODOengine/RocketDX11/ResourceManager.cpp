@@ -499,6 +499,26 @@ namespace RocketCore::Graphics
 		HR(_device->CreateRasterizerState(&solidDesc, &solid));
 		_rasterizerStates.emplace_back(solid);
 
+		D3D11_RASTERIZER_DESC cullFrontSolidDesc;
+		ZeroMemory(&cullFrontSolidDesc, sizeof(D3D11_RASTERIZER_DESC));
+		cullFrontSolidDesc.FillMode = D3D11_FILL_SOLID;
+		cullFrontSolidDesc.CullMode = D3D11_CULL_FRONT;
+		cullFrontSolidDesc.FrontCounterClockwise = false;
+		cullFrontSolidDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* cullFrontSolid;
+		HR(_device->CreateRasterizerState(&cullFrontSolidDesc, &cullFrontSolid));
+		_rasterizerStates.emplace_back(cullFrontSolid);
+
+		D3D11_RASTERIZER_DESC cullNoneSolidDesc;
+		ZeroMemory(&cullNoneSolidDesc, sizeof(D3D11_RASTERIZER_DESC));
+		cullNoneSolidDesc.FillMode = D3D11_FILL_SOLID;
+		cullNoneSolidDesc.CullMode = D3D11_CULL_NONE;
+		cullNoneSolidDesc.FrontCounterClockwise = false;
+		cullNoneSolidDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* cullNoneSolid;
+		HR(_device->CreateRasterizerState(&cullNoneSolidDesc, &cullNoneSolid));
+		_rasterizerStates.emplace_back(cullNoneSolid);
+
 		D3D11_RASTERIZER_DESC wireframeDesc;
 		ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
 		wireframeDesc.FillMode = D3D11_FILL_WIREFRAME;
@@ -1659,7 +1679,8 @@ namespace RocketCore::Graphics
 
 		for (UINT i = 0; i < 6; ++i)
 		{
-			float roughness = (float)i / 5.0;
+			//float roughness = (float)i / 5.0;
+			float roughness = 1.0f;
 			ps->SetFloat("roughnessValue", roughness);
 			D3D11_VIEWPORT viewport
 			{

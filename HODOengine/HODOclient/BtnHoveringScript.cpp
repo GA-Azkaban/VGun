@@ -21,7 +21,7 @@ void BtnHoveringScript::Update()
 	if (GetGameObject()->GetComponent<HDData::Button>()->GetButtonComp()->GetIsHovering())
 	{
 		newCursor = SetCursor(LoadCursor(NULL, IDC_HAND));
-		_btnObject->GetComponent<HDData::Button>()->SetColor(DirectX::Colors::Aqua);
+		_btnObject->GetComponent<HDData::Button>()->SetColor(DirectX::Colors::Gold);
 	}
 	else
 	{

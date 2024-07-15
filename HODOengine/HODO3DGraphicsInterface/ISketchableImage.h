@@ -21,12 +21,13 @@ namespace HDEngine
 
 		virtual void SetDefalutColor(DirectX::FXMVECTOR color) = 0;
 		virtual	void RetunDefalutColor() = 0;
-
-		virtual void FadeIn() override = 0;
-		virtual void FadeOut() override = 0;
+		
+		// Fade
+		virtual void FadeIn(float time) override = 0;
+		virtual void FadeOut(float time) override = 0;
 		virtual bool GetFadeMode() override = 0;
 		virtual bool GetComplete() override = 0;
-		virtual bool SetFadeMode(bool SetFade) override = 0;
+		virtual bool SetFadeMode(bool SetFade,float time) override = 0;
 
 	};
 }

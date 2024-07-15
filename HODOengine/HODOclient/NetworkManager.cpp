@@ -13,7 +13,6 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
-#include "FadeInOut.h"
 
 #include <fstream>
 
@@ -95,6 +94,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	if (myUID == playerData.userinfo().uid())
 	{
 		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
+		GameManager::Instance()->GetMyInfo()->AddSerialKillCount();
 	}
 	else
 	{
@@ -164,18 +164,26 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		//auto pos = Vector3{2, 5, 0};
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 	}
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		//auto pos = Vector3{ 2, 5, 0 };
+
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+
 	}
 }
 
@@ -376,6 +384,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
+	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -498,13 +507,18 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	RoundManager::Instance()->InitGame();
 
 	// 스폰 포인트로 위치 갱신
-	//auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+	auto pos = API::GetSpawnPointArr()[spawnpointindex];
+	
+	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
-
+	API::ShowWindowCursor(false);
+	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
+	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
+	   
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
@@ -512,7 +526,6 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 void NetworkManager::RecvGameStart()
 {
-	API::SetRecursiveMouseMode(true);
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
@@ -520,9 +533,9 @@ void NetworkManager::RecvGameStart()
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
+	API::ShowWindowCursor(true);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
-	FadeInOut::Instance().FadeIn();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -588,7 +601,6 @@ void NetworkManager::SendPlayJump()
 	auto info = GameManager::Instance()->GetMyInfo();
 
 	auto data = ConvertPlayerInfoToData(mine, info);
-
 	*packet.mutable_playerdata() = data;
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
@@ -643,6 +655,8 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 	data.set_host(info->GetIsHost());
 
+	//data.set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
+
 	data.mutable_userinfo()->set_uid(info->GetPlayerUID());
 	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
@@ -658,6 +672,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
+	//info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
@@ -681,7 +696,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 	// 현재 Transform에 보간된 값 설정
-	//current->SetPosition(interpolatedPos);
+	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
 
 	if (t >= 1.0f)
@@ -720,19 +735,19 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	}
 	if (state == "ROLL_F")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_FORWARD;
 	}
 	if (state == "ROLL_B")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_BACK;
 	}
 	if (state == "ROLL_R")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_RIGHT;
 	}
 	if (state == "ROLL_L")
 	{
-		return Protocol::eAnimationState::ANIMATION_STATE_ROLL;
+		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_LEFT;
 	}
 	if (state == "RELOAD")
 	{
@@ -783,9 +798,24 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 			return ePlayerState::JUMP;
 		}
 		break;
-		case Protocol::ANIMATION_STATE_ROLL:
+		case Protocol::ANIMATION_STATE_ROLL_FORWARD:
 		{
-			return ePlayerState::ROLL;
+			return ePlayerState::ROLL_F;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_ROLL_BACK:
+		{
+			return ePlayerState::ROLL_B;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_ROLL_RIGHT:
+		{
+			return ePlayerState::ROLL_R;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_ROLL_LEFT:
+		{
+			return ePlayerState::ROLL_L;
 		}
 		break;
 		case Protocol::ANIMATION_STATE_RELOAD:

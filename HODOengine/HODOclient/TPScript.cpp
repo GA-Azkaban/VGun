@@ -2,6 +2,8 @@
 #include "GameManager.h"
 #include "PlayerMove.h"
 #include "PlayerMoveState.h"
+#include "RoundManager.h"
+
 #include "../HODOengine/HODO_API.h"
 
 TPScript::TPScript()
@@ -16,6 +18,8 @@ void TPScript::Start()
 
 void TPScript::Update()
 {
+	if (!RoundManager::Instance()->GetIsRoundStart()) return;
+
 	if (API::GetKeyPressing(DIK_W))
 	{
 		_animator->GetAllAC()->SetBool("isRunFront", true);
@@ -91,9 +95,12 @@ void TPScript::Update()
 		_animator->GetAllAC()->SetTrigger("isReload");
 	}
 
-	if (API::GetKeyDown(DIK_LSHIFT))
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie())
 	{
-		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(1) != ePlayerMoveState::TUMBLE) return;
-		_animator->GetAllAC()->SetTrigger("isRollFront");
+		_animator->GetAllAC()->SetBool("isDie", true);
+	}
+	else
+	{
+		_animator->GetAllAC()->SetBool("isDie", false);
 	}
 }

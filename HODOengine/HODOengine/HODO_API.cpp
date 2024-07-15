@@ -13,8 +13,8 @@
 #include "Animator.h"
 #include "UISystem.h"
 #include "AnimationLoader.h"
-
 #include "TweenSystem.h"
+
 
 namespace API
 {
@@ -299,7 +299,17 @@ namespace API
 			return &(HDEngine::TweenSystem::Instance().CreateTween());
 		}
 
-		HODO_API HDData::Scene* GetCurrenScene()
+		HODO_API HDData::GameObject* GetObjectByName(HDData::Scene* scene, std::string objectName)
+		{
+			return scene->GetGameObjectByName(objectName);
+		}
+
+		HODO_API HDEngine::ICubeMap* GetCubeMap()
+		{
+			return HDEngine::RenderSystem::Instance().GetCubeMap();
+		}
+
+		HODO_API HDData::Scene* GetCurrentScene()
 		{
 			return HDEngine::SceneSystem::Instance().GetCurrentScene();
 		}
@@ -316,6 +326,11 @@ namespace API
 		HODO_API void QuitWindow()
 		{
 			HODOengine::Instance().Quit();
+		}
+
+		HODO_API void ShowWindowCursor(bool isShow)
+		{
+			HODOengine::Instance().ShowWindowCursor(isShow);
 		}
 
 		HODO_API Vector3* GetSpawnPointArr()

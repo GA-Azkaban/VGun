@@ -9,8 +9,7 @@
 #include "BtnHoveringScript.h"
 
 LoginSceneView::LoginSceneView()
-	: _lobbyManager(LobbyManager::Instance()),
-	_fadeInOut(FadeInOut::Instance())
+	: _lobbyManager(LobbyManager::Instance())
 {
 
 }
@@ -52,9 +51,6 @@ void LoginSceneView::LoginView()
 	mainCanvasImage->ChangeScale(scale, scale);
 	mainCanvasImage->SetSortOrder(0.0f);
 	mainCanvasImage->SetActive(true);
-
-	// fadeIn Test
-	FadeInOut::Instance().FadeOut();
 
 	// login Control Object
 	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
@@ -328,6 +324,25 @@ void LoginSceneView::LoginView()
 				LobbyManager::Instance().showOff(loginControlObject);
 				LobbyManager::Instance().showOn(joinControlObject);
 			}
+		}
+	);
+
+	//EXIT Btn
+	HDData::GameObject* exit_Btn = API::CreateButton(_scene, "TestingBtn");
+	exit_Btn->GetTransform()->SetPosition(2480.0f,1400.0f,0.0f);
+	exit_Btn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
+	exit_Btn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	exit_Btn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	exit_Btn->AddComponent<BtnTextScript>();
+	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", exit_Btn);
+	tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
+	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
+
+	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[]()
+		{
+			API::QuitWindow();
 		}
 	);
 

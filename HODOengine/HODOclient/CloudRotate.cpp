@@ -1,4 +1,4 @@
-﻿#include "CloudRotate.h"
+#include "CloudRotate.h"
 
 CloudRotateScript::CloudRotateScript(std::string name)
 {
@@ -13,12 +13,14 @@ CloudRotateScript::~CloudRotateScript()
 void CloudRotateScript::Start()
 {
 	_pivotObject = this->GetGameObject();
-	_cloudPos = API::GetCloudPosition();
+
 }
 
 void CloudRotateScript::Update()
 {
+	// 구름들의 포인터로 받아 부모를 회전시키면 자식도 돌아감
 	
+
 }
 
 

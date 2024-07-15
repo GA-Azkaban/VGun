@@ -24,7 +24,7 @@ namespace HDData
 		// 씬이 생성될 때 메인카메라에 오디오리스너 컴포넌트를 생성하여 부착한다
 		camObj->AddComponent<AudioListner>();
 		// 씬이 생성될 때 Directional Light를 자동으로 생성한다.
-		GameObject* dirLight = CreateObject("DirLight");
+		GameObject* dirLight = CreateObject("DirectionalLight");
 		auto dirLightComp = dirLight->AddComponent<Light>();
 		dirLightComp->SetDirection(Vector4(0, -3, -2, 0));
 		dirLightComp->SetColor(Vector4(255/255.0f, 255/255.0f, 255/255.0f, 1.0f));
@@ -97,9 +97,9 @@ namespace HDData
 			}
 		}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 		_fpsText->SetText("FPS: " + std::to_string(HDEngine::TimeSystem::Instance().GetFramePerSecond()));
-#endif
+//#endif
 	}
 
 	void Scene::LateUpdate()
@@ -147,6 +147,19 @@ namespace HDData
 	void Scene::SetSceneName(std::string sceneName)
 	{
 		_sceneName = sceneName;
+	}
+
+	HDData::GameObject* Scene::GetGameObjectByName(std::string objectName)
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->GetObjectName() == objectName)
+			{
+				return gameObject;
+			}
+		}
+
+		return nullptr;
 	}
 
 	HDData::Camera* Scene::GetMainCamera()

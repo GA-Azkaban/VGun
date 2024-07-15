@@ -1,4 +1,4 @@
-#include <fstream>
+﻿#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -45,6 +45,7 @@ namespace HDEngine
 
 		HDEngine::MaterialDesc plane;
 		plane.color = { 142, 118, 89, 255 };
+		plane.roughnessValue = 1.0f;
 
 		_plane = MaterialManager::Instance().CreateMaterial(plane);
 
@@ -164,6 +165,7 @@ namespace HDEngine
 				_spawnIndex++;
 			}
 
+			//포지션은 필요없지 않나?
 			if (meshName.compare("Env_Cloud_01") == 0)
 			{
 				_cloudPoint[_cloudIndex] = info.position;
@@ -253,6 +255,7 @@ namespace HDEngine
 				object->GetTransform()->SetLocalScale(info.scale.x, 0.1, info.scale.z);
 			}
 
+			if (info.name == "SpawnPoint") continue;
 			object->GetTransform()->Rotate(0, -180, 0);
 
 		}
