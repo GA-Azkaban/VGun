@@ -1,4 +1,4 @@
-﻿#include "PhysicsSystem.h"
+#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -75,13 +75,6 @@ namespace HDEngine
 #else
 		_pxScene->simulate(0.0005f);
 #endif
-
-#ifdef _DEBUG
-		_pxScene->simulate(0.00167f);
-#else
-		_pxScene->simulate(0.0005f);
-#endif
-
 		_pxScene->fetchResults(true);
 
 		_collisionCallback->CollectResults();
