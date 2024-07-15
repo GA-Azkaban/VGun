@@ -10,4 +10,11 @@ namespace HDEngine
 		virtual void SetWorldTM(const Matrix& worldTM) = 0;
 		virtual void SetActive(bool isActive) = 0;
 	};
+
+	enum class CullMode
+	{
+		NONE,
+		FRONT,
+		BACK
+	};
 }

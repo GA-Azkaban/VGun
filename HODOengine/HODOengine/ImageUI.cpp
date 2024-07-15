@@ -96,14 +96,14 @@ namespace HDData
 		_imageUI->SetCenter(x, y);
 	}
 
-	void ImageUI::FadeIn()
+	void ImageUI::FadeIn(float time)
 	{
-		return _imageUI->FadeIn();
+		return _imageUI->FadeIn(time);
 	}
 
-	void ImageUI::FadeOut()
+	void ImageUI::FadeOut(float time)
 	{
-		return _imageUI->FadeOut();
+		return _imageUI->FadeOut(time);
 	}
 
 	bool ImageUI::GetComplete()
@@ -116,9 +116,9 @@ namespace HDData
 		return _imageUI->GetFadeMode();
 	}
 
-	bool ImageUI::SetFadeMode(bool SetFade)
+	bool ImageUI::SetFadeMode(bool SetFade, float time)
 	{
-		return _imageUI->SetFadeMode(SetFade);
+		return _imageUI->SetFadeMode(SetFade,time);
 	}
 
 }

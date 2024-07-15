@@ -7,7 +7,6 @@ namespace physx
 	class PxRigidDynamic;
 	class PxShape;
 	class PxScene;
-	//class PxVec3;
 }
 
 namespace HDData
@@ -29,8 +28,8 @@ namespace HDData
 		void SetPhysXRigid(physx::PxRigidDynamic* rigid);
 		void SetPhysScene(physx::PxScene* scene);
 		void LockPlayerRotation(bool isLock);
-		void SetParentCollider(HDData::DynamicCollider* col);
-		void SetChildCollider(HDData::DynamicCollider* childCol);
+		//void SetParentCollider(HDData::DynamicCollider* col);
+		//void SetChildCollider(HDData::DynamicCollider* childCol);
 		void SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit);
 
 	// getter
@@ -39,6 +38,8 @@ namespace HDData
 
 	// Move and Control
 	public:
+		void SetVelocity(Vector3 moveStep, float speed);
+		void SetLinearVelocity(Vector3 velocity);
 		void Move(Vector3 moveStep, float speed, float deltaTime);
 		void Rotate(Quaternion rot);
 		void RotateY(float rotationAmount);

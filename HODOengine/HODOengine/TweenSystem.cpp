@@ -15,11 +15,13 @@ void HDEngine::TweenSystem::Update()
 		{
 			tween->_timer->Update();
 		}
-		else
+
+		if (tween->_timer->_isComplete)
 		{
 			if (tween->GetCompleteFunc() != nullptr)
 			{
-				tween->GetCompleteFunc();
+				tween->_onCompleteFunc();
+				tween->_timer->_isComplete = false;
 			}
 			//_over.push_back(tween);
 		}

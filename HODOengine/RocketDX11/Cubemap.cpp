@@ -13,7 +13,7 @@ namespace RocketCore::Graphics
 {
 
 	Cubemap::Cubemap()
-		: m_material(nullptr), m_isActive(true), m_size(50.0f), m_envLightIntensity(1.0f)
+		: m_material(nullptr), m_isActive(true), m_size(10000.0f), m_envLightIntensity(1.0f)
 	{
 		m_mesh = ResourceManager::Instance().GetMeshes("skybox")[0];
 		m_material = ResourceManager::Instance().GetMaterials("skybox")[0];

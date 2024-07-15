@@ -24,6 +24,10 @@ namespace RocketCore::Graphics
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_nearWindowWidth = _nearWindowHeight * _aspect;
 		_farWindowWidth = _farWindowHeight * _aspect;
+
+		_boundingSphere.Center = { 0.0f, 0.0f, 0.0f };
+		_boundingSphere.Radius = 12.5f;
+
 		UpdateProjectionMatrix();
 	}
 
@@ -125,6 +129,8 @@ namespace RocketCore::Graphics
 		// 		right_.z,		up_.z,			look_.z,		0.0f,
 		// 		-position_.x,	-position_.y,	-position_.z,	1.0f
 		// 	};
+
+		//_boundingSphere.Transform(_boundingSphere, XMMatrixTranslation(_position.x, _position.y, _position.z));
 	}
 
 	void Camera::FrustumCulling()
@@ -132,11 +138,14 @@ namespace RocketCore::Graphics
 		BoundingFrustum frustum = _boundingFrustum;
 		frustum.Transform(frustum, XMMatrixInverse(nullptr, _viewMatrix));
 
-		XMMATRIX lightView = LightManager::Instance().GetLightView();
-		XMMATRIX lightProj = LightManager::Instance().GetLightProj();
+		BoundingSphere sphere = _boundingSphere;
+		sphere.Transform(sphere, XMMatrixInverse(nullptr, _viewMatrix));
 
-		BoundingFrustum lightFrustum(lightProj);
-		lightFrustum.Transform(lightFrustum, XMMatrixInverse(nullptr, lightView));
+		//XMMATRIX lightView = LightManager::Instance().GetLightView();
+		//XMMATRIX lightProj = LightManager::Instance().GetLightProj();
+
+		//BoundingFrustum lightFrustum(lightProj);
+		//lightFrustum.Transform(lightFrustum, XMMatrixInverse(nullptr, lightView));
 
 		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
 		{
@@ -148,8 +157,17 @@ namespace RocketCore::Graphics
 			}
 			bool isInCameraFrustum = frustum.Intersects(staticMeshObj->GetBoundingBox());
 			staticMeshObj->SetCameraVisible(isInCameraFrustum);
-			bool isInLightFrustum = lightFrustum.Intersects(staticMeshObj->GetBoundingBox());
-			staticMeshObj->SetLightVisible(isInLightFrustum);
+			//bool isInLightFrustum = lightFrustum.Intersects(staticMeshObj->GetBoundingBox());
+			bool isInLightFrustum = frustum.Intersects(staticMeshObj->GetBoundingBox());
+			if (!isInLightFrustum)
+			{
+				bool isInCullingSphere = sphere.Intersects(staticMeshObj->GetBoundingBox());
+				staticMeshObj->SetLightVisible(isInCullingSphere);
+			}
+			else
+			{
+				staticMeshObj->SetLightVisible(isInLightFrustum);
+			}						
 		}
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())

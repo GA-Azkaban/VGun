@@ -19,6 +19,7 @@ namespace HDData
 namespace HDEngine
 {
 	class IRenderable;
+	class ICubeMap;
 }
 
 namespace HDEngine
@@ -43,6 +44,9 @@ namespace HDEngine
 
 		//test
 		void OnResize(int screenWidth, int screenHeight);
+
+		HDEngine::ICubeMap* GetCubeMap();
+
 	private:
 		void UpdateRenderData();
 

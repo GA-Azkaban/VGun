@@ -151,12 +151,12 @@ namespace RocketCore::Graphics
 		_sortOrder = order;
 	}
 
-	void TextRenderer::FadeIn()
+	void TextRenderer::FadeIn(float time)
 	{
 
 	}
 
-	void TextRenderer::FadeOut()
+	void TextRenderer::FadeOut(float time)
 	{
 
 	}
@@ -166,7 +166,7 @@ namespace RocketCore::Graphics
 		return true;
 	}
 
-	bool TextRenderer::SetFadeMode(bool isFade)
+	bool TextRenderer::SetFadeMode(bool isFade, float time)
 	{
 		return true;
 	}

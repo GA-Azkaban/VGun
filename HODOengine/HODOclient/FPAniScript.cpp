@@ -3,6 +3,7 @@
 #include "PlayerMove.h"
 #include "PlayerMoveState.h"
 #include "NetworkManager.h"
+#include "RoundManager.h"
 
 FPAniScript::FPAniScript()
 {
@@ -16,6 +17,8 @@ void FPAniScript::Start()
 
 void FPAniScript::Update()
 {
+	if (!RoundManager::Instance()->GetIsRoundStart()) return;
+
 	// play animation in FP
 	if (API::GetMouseDown(MOUSE_LEFT))
 	{

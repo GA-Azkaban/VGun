@@ -202,7 +202,7 @@ void LobbyManager::RoomEnterSUCCESS()
 
 void LobbyManager::RefreshRoom()
 {
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 6; ++i) 
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
@@ -218,6 +218,11 @@ void LobbyManager::RefreshRoom()
 		info->SetPlayerUID(data[i]->GetPlayerUID());
 		info->SetNickName(data[i]->GetPlayerNickName());
 		info->SetIsHost(data[i]->GetIsHost());
+
+		if (data[i]->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		{
+			GameManager::Instance()->GetMyInfo()->SetIsHost(data[i]->GetIsHost());
+		}
 	}
 
 	for (int i = 0; i < _playerNum; ++i)
@@ -237,6 +242,7 @@ void LobbyManager::RefreshRoom()
 		else if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
 			_quitButtons[i]->SetSelfActive(false);
+			_inGameStartButton->SetSelfActive(false);
 		}
 	}
 }
