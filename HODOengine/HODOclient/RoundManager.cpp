@@ -281,7 +281,7 @@ bool RoundManager::GetIsRoundStart()
 void RoundManager::SetIsRoundStart(bool isStart)
 {
 	_isRoundStart = isStart;
-	SetUIActive(true);
+	SetUIActive(isStart);
 	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 }
 
@@ -383,7 +383,6 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
-
 		}
 	}
 }
