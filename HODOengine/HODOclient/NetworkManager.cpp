@@ -504,7 +504,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//auto pos = Vector3{ 0, 2, 0 };
+	
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -513,7 +513,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	API::SetRecursiveMouseMode(true);
 	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
-
+	   
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
