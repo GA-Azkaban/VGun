@@ -30,6 +30,7 @@ PlayerMove::PlayerMove()
 
 void PlayerMove::Start()
 {
+	// asdf
 	_playerColliderStanding = GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>();
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
