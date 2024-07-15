@@ -515,6 +515,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// 씬 로드
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
+	API::ShowWindowCursor(false);
 	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
 	   
@@ -525,7 +526,6 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 void NetworkManager::RecvGameStart()
 {
-	API::SetRecursiveMouseMode(true);
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
@@ -533,6 +533,7 @@ void NetworkManager::RecvGameStart()
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
+	API::ShowWindowCursor(true);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 }
