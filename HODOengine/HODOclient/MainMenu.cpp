@@ -90,6 +90,12 @@ void MainMenuScene::MainMenu()
 	main_playText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
 	main_playText->GetComponent<HDData::TextUI>()->SetText("PLAY");
 
+	/// TestingImage
+	HDData::GameObject* fadeImgTest = API::CreateImageBox(_scene, "testingFade");
+	fadeImgTest->GetComponent<HDData::ImageUI>()->SetImage("1234.png");
+	fadeImgTest->GetTransform()->SetPosition(1880.0f, 1200.0f, 0.0f);
+	fadeImgTest->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+
 	// RoomEnter Btn
 	HDData::GameObject* main_enterBtn = API::CreateButton(_scene, "roomEnter", main_playBtn);
 	main_enterBtn->GetTransform()->SetPosition(365.f * width / 1920, 190.f * height / 1080, 0.55f);
@@ -520,7 +526,13 @@ void MainMenuScene::MainMenu()
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
-	// event
+	/// event
+	/// event
+	/// event
+	/// event
+	/// event
+	/// event
+
 	// game play btn
 	main_playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
@@ -622,12 +634,13 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	//main_trainingBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-	//	[=]()
-	//	{
-	//		trainingText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
-	//	}
-	//);
+	main_trainingBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			//trainingText->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Aqua);
+			fadeImgTest->GetComponent<HDData::ImageUI>()->FadeOut(3.0f);
+		}
+	);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()

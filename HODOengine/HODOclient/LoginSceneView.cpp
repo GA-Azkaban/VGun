@@ -52,9 +52,6 @@ void LoginSceneView::LoginView()
 	mainCanvasImage->SetSortOrder(0.0f);
 	mainCanvasImage->SetActive(true);
 
-	// fadeIn Test
-	//FadeInOut::Instance().FadeOut();
-
 	// login Control Object
 	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
 	loginControlObject->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
