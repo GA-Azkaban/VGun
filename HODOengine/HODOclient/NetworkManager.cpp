@@ -508,16 +508,17 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//auto pos = Vector3{ 0, 2, 0 };
+	
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
 	API::SetRecursiveMouseMode(true);
+	API::ShowWindowCursor(false);
 	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
-
+	   
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
@@ -525,7 +526,6 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 void NetworkManager::RecvGameStart()
 {
-	API::SetRecursiveMouseMode(true);
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
 }
@@ -533,6 +533,7 @@ void NetworkManager::RecvGameStart()
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
 	API::SetRecursiveMouseMode(false);
+	API::ShowWindowCursor(true);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 }
@@ -654,6 +655,8 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 	data.set_host(info->GetIsHost());
 
+	//data.set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
+
 	data.mutable_userinfo()->set_uid(info->GetPlayerUID());
 	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
@@ -669,7 +672,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
-	info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
+	//info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)

@@ -37,6 +37,7 @@ public:
 	HWND GetHWND();
 
 	void Quit();
+	void ShowWindowCursor(bool show);
 
 private:
 	void Run();

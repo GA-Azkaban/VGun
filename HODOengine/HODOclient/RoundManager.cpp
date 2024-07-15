@@ -281,7 +281,7 @@ bool RoundManager::GetIsRoundStart()
 void RoundManager::SetIsRoundStart(bool isStart)
 {
 	_isRoundStart = isStart;
-	SetUIActive(true);
+	SetUIActive(isStart);
 	_myObj->GetComponent<PlayerMove>()->SetMovable(isStart);
 }
 
@@ -320,6 +320,8 @@ void RoundManager::ExitGame()
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
+	API::SetRecursiveMouseMode(false);
+	API::ShowWindowCursor(true);
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
@@ -381,7 +383,6 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
-
 		}
 	}
 }

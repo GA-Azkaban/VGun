@@ -56,7 +56,7 @@ public:
 	int GetMaxBulletCount();
 	bool& GetIsDie();
 
-	bool GetIsStateChange();
+	bool& GetIsStateChange();
 	void SetIsStateChange(bool isChange);
 	ePlayerState GetPrevPlayerState();
 	ePlayerState GetPlayerState();

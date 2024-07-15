@@ -372,7 +372,7 @@ namespace RocketCore::Graphics
 		_outlinePass->Render();
 
 #ifdef _DEBUG
-		static bool isDebugRender = true;
+		static bool isDebugRender = false;
 		if (GetAsyncKeyState(VK_F12) & 0x8000)
 		{
 			isDebugRender = !isDebugRender;

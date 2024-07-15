@@ -41,8 +41,6 @@ void PlayerInfo::Update()
 		}
 		_timer->Update();
 	}
-
-
 }
 
 void PlayerInfo::Init()
@@ -133,7 +131,7 @@ bool& PlayerInfo::GetIsDie()
 	return _isDie;
 }
 
-bool PlayerInfo::GetIsStateChange()
+bool& PlayerInfo::GetIsStateChange()
 {
 	return _isStateChange;
 }

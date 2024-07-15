@@ -140,6 +140,11 @@ void HODOengine::Quit()
 	DestroyWindow(_hWnd);
 }
 
+void HODOengine::ShowWindowCursor(bool show)
+{
+	ShowCursor(show);
+}
+
 void HODOengine::Run()
 {
 	_timeSystem.Update();
