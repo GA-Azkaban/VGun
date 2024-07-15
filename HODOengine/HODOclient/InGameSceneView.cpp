@@ -14,6 +14,8 @@
 #include "CloudRotate.h"
 #include "UIEffect.h"
 
+#include "BtnTextScript.h"
+
 InGameSceneView::InGameSceneView()
 {
 
@@ -391,16 +393,19 @@ void InGameSceneView::Initialize()
 	/// game end
 
 	auto endButton = API::CreateButton(_scene, "endBtn");
-	endButton->GetTransform()->SetPosition(1350.0f, 1200.0f, 0.0f);
+	endButton->GetTransform()->SetPosition(850.0f, 1300.0f, 0.0f);
+	endButton->AddComponent<BtnTextScript>();
 	auto endComp = endButton->GetComponent<HDData::Button>();
-	endComp->SetImage("start.png");
+	endComp->SetImage("Button_02.png");
 	endComp->SetOnClickEvent([=]()
 		{
 			RoundManager::Instance()->ExitGame();
 		});
 
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
-	endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
+	//endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
+	//endText->GetTransform()->SetPosition(1225.0f, 1285.0f, 0.0f);
+	endText->GetTransform()->SetPosition(725.0f, 1285.0f, 0.0f);
 	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
 	endTXTcomp->SetText("EXIT GAME");
 	endTXTcomp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
@@ -457,9 +462,9 @@ void InGameSceneView::Initialize()
 
 	// 다시 로비 진입을 위한 타이머 UI
 	auto resultTimer = API::CreateTextbox(_scene, "resultTimer");
-	resultTimer->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	resultTimer->GetTransform()->SetPosition(200.0f, 1400.0f, 0.0f);
 	auto resultTimerComp = resultTimer->GetComponent<HDData::TextUI>();
-	resultTimerComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	resultTimerComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	resultTimerComp->SetColor(DirectX::Colors::OrangeRed);
 
 	resultTimer->SetSelfActive(false);
@@ -492,7 +497,7 @@ void InGameSceneView::Initialize()
 	/// init round
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");
-	initCounter->GetTransform()->SetPosition(API::GetScreenWidth() /2, API::GetScreenHeight() / 2, 0);
+	initCounter->GetTransform()->SetPosition(500.0f,1400.0f,0.0f);
 	initCounter->SetSelfActive(false);
 	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
 	countertxt->SetFont("Resources/Font/KRAFTON_200.spriteFont");
@@ -505,6 +510,19 @@ void InGameSceneView::Initialize()
 	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
 	headshotimg->SetImage("Headshot.png");
 	RoundManager::Instance()->SetHeadshotUI(headshotimg);
+
+	/// Testing
+	auto recoil = API::CreateImageBox(_scene);
+	recoil->GetTransform()->SetPosition(2000.0f,1300.0f,0.0f);
+	auto recoilImg = recoil->GetComponent<HDData::ImageUI>();
+	recoilImg->SetImage("Recoil.png");
+	recoilImg->SetColor(DirectX::Colors::White);
+
+	auto bullet = API::CreateImageBox(_scene);
+	bullet->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
+	auto bulletImg = bullet->GetComponent<HDData::ImageUI>();
+	bulletImg->SetImage("Bullet.png");
+
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
