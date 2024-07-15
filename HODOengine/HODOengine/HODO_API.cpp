@@ -328,6 +328,11 @@ namespace API
 			HODOengine::Instance().Quit();
 		}
 
+		HODO_API void ShowWindowCursor(bool isShow)
+		{
+			HODOengine::Instance().ShowWindowCursor(isShow);
+		}
+
 		HODO_API Vector3* GetSpawnPointArr()
 		{
 			return HDEngine::SceneLoader::Instance().GetRespawnPoint();

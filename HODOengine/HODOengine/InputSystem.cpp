@@ -212,22 +212,22 @@ namespace HDEngine
 		GetWindowRect(_hWnd, &windowRect);		
 
 		/// when cursor get out of the window
-		if (_mousePos.x >= windowRect.right)
+		if (_mousePos.x >= windowRect.right - 1)
 		{
 			_prevMousePos = { windowRect.left, _mousePos.y };
-			SetCursorPos(windowRect.left + 7, _mousePos.y);
+			SetCursorPos(windowRect.left + 8, _mousePos.y);
 		}
-		else if (_mousePos.x <= windowRect.left)
+		else if (_mousePos.x <= windowRect.left + 1)
 		{
 			_prevMousePos = { windowRect.right, _mousePos.y };
-			SetCursorPos(windowRect.right - 7, _mousePos.y);
+			SetCursorPos(windowRect.right - 8, _mousePos.y);
 		}
-		if (_mousePos.y >= windowRect.bottom)
+		if (_mousePos.y >= windowRect.bottom - 1)
 		{
 			_prevMousePos = { _mousePos.x, windowRect.top};
 			SetCursorPos(_mousePos.x, windowRect.top + 10);
 		}
-		else if (_mousePos.y <= windowRect.top)
+		else if (_mousePos.y <= windowRect.top + 1)
 		{
 			_prevMousePos = { _mousePos.x, windowRect.bottom };
 			SetCursorPos(_mousePos.x, windowRect.bottom - 10);

@@ -237,7 +237,7 @@ TestScene::TestScene()
 	HDData::Material* newMat = API::CreateMaterial(desc);
 	meshComp->LoadMaterial(newMat, 0);
 
-	meshComp->PlayAnimation("RV_idle", true);
+	meshComp->PlayAnimation("RV_runR", true);
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
@@ -245,24 +245,24 @@ TestScene::TestScene()
 
 	//// 오른손 노드의 오브젝트를 가져와서
 	//// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	////auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
-	//auto hand = playerTest->GetGameObjectByNameInChildren("Thumb_01.001");
-	//auto weaponTest = API::CreateObject(_scene, "weapon", hand);
-	////weaponTest->AddComponent<MeshTransformController>();
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-0.9743f, 9.1915f, 8.1839f);
-	//weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ -0.0286f, -0.6265f, -0.0238f, 0.7784f });
-	//auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
-	//weaponComp->LoadMesh("SM_Wep_Revolver_01.fbx");
-	//HDEngine::MaterialDesc weaponMatDesc;
-	//weaponMatDesc.materialName = "Revolver01Mat";
-	//weaponMatDesc.albedo = "PolygonKRAFTON_Texture_01_A.png";
-	//weaponMatDesc.metallic = "PolygonKRAFTON_Texture_Metallic.png";
-	//HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
-	//
-	//weaponComp->LoadMaterial(weaponMat1, 0);
-	//weaponComp->LoadMaterial(weaponMat1, 1);
-	//weaponComp->LoadMaterial(weaponMat1, 2);
-	//weaponComp->LoadMaterial(weaponMat1, 3);
+	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
+	auto hand = playerTest->GetGameObjectByNameInChildren("Thumb_01.001");
+	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
+	weaponTest->AddComponent<MeshTransformController>();
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.1510f, 8.9123f, 7.9229f);
+	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.0398f, -0.6211f, 0.0026f, 0.7820f });
+	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
+	weaponComp->LoadMesh("SM_Wep_Revolver_01.fbx");
+	HDEngine::MaterialDesc weaponMatDesc;
+	weaponMatDesc.materialName = "Revolver01Mat";
+	weaponMatDesc.albedo = "PolygonKRAFTON_Texture_01_A.png";
+	weaponMatDesc.metallic = "PolygonKRAFTON_Texture_Metallic.png";
+	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
+	
+	weaponComp->LoadMaterial(weaponMat1, 0);
+	weaponComp->LoadMaterial(weaponMat1, 1);
+	weaponComp->LoadMaterial(weaponMat1, 2);
+	weaponComp->LoadMaterial(weaponMat1, 3);
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
@@ -274,12 +274,6 @@ TestScene::TestScene()
 	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
-	auto blackOutObj = API::CreateObject(_scene, "BlackOut");
-	auto blackOutImage = blackOutObj->AddComponent<HDData::ImageUI>();
-	blackOutImage->SetImage("blackout0003.png");
-	blackOutImage->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0);
-	blackOutImage->ChangeScale(1.334f, 1.334f);
-	blackOutImage->SetColor({ 0.0f, 0.0f, 0.0f, 1.0f });
 }
 
 TestScene::~TestScene()

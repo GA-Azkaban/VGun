@@ -135,6 +135,9 @@ namespace API
 
 		// Destroy window
 		HODO_API void QuitWindow();
+
+		// Show cursor
+		HODO_API void ShowWindowCursor(bool isShow);
 	}
 }
 
