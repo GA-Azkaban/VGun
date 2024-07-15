@@ -165,22 +165,25 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
 		//auto pos = Vector3{2, 5, 0};
-		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
-		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+
+		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
+		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 	}
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
 		//auto pos = Vector3{ 2, 5, 0 };
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
+		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+
 	}
 }
 
