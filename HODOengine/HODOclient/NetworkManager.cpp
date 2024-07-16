@@ -655,6 +655,8 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 	data.set_host(info->GetIsHost());
 
+	//data.set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
+
 	data.mutable_userinfo()->set_uid(info->GetPlayerUID());
 	data.mutable_userinfo()->set_nickname(info->GetPlayerNickName());
 
@@ -670,7 +672,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
-	info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
+	//info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
