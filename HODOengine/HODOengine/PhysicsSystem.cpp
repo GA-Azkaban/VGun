@@ -81,6 +81,7 @@ namespace HDEngine
 		//ResizeCollider();
 
 		_pxScene->simulate(0.0167f);
+		_pxScene->fetchResults(true);
 
 		_collisionCallback->CollectResults();
 		_collisionCallback->SendTriggerEvents();
