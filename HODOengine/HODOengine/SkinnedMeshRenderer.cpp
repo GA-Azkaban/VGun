@@ -80,11 +80,13 @@ namespace HDData
 
 	void SkinnedMeshRenderer::PlayAnimation(const std::string& animName, bool isLoop /*= true*/, float blendDuration /*= 0.1f*/, bool hasExitTime /*= true*/, float exitTime /*= 0.0f*/)
 	{
+		_currentAnimName = animName;
 		_skinnedMesh->PlayAnimation(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
 	void SkinnedMeshRenderer::PlayAnimationAtOnce(const std::string& animName, bool isLoop, float blendDuration, bool hasExitTime, float exitTime)
 	{
+		_currentAnimName = animName;
 		_skinnedMesh->PlayAnimationAtOnce(animName, isLoop, blendDuration, hasExitTime, exitTime);
 	}
 
@@ -126,6 +128,11 @@ namespace HDData
 	int SkinnedMeshRenderer::GetMeshCount()
 	{
 		return _skinnedMesh->GetMeshCount();
+	}
+
+	std::string SkinnedMeshRenderer::GetCurrentAnimName()
+	{
+		return _currentAnimName;
 	}
 
 	void SkinnedMeshRenderer::Update()

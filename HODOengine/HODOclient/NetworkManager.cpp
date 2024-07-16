@@ -164,7 +164,6 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		//auto pos = Vector3{2, 5, 0};
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
@@ -175,15 +174,15 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		//auto pos = Vector3{ 2, 5, 0 };
 
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
-
+		auto player = RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()];
+		player->GetTransform()->SetPosition(pos);
+		player->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->SetMeshActive(true, 0);
+		player->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 	}
 }
 
@@ -504,6 +503,7 @@ void NetworkManager::SendGameStart()
 void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex)
 {
 	// 라운드 초기화
+	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->InitGame();
 
 	// 스폰 포인트로 위치 갱신
