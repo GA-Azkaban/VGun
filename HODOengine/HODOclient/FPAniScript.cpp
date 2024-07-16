@@ -28,5 +28,10 @@ void FPAniScript::Update()
 	{
 		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(2) != ePlayerMoveState::RELOAD) return;
 		_animator->GetAllAC()->SetTrigger("isReload");
+		_animator->GetAllAC()->SetBool("isIdle", false);
+	}
+	if (API::GetKeyDown(DIK_LSHIFT))
+	{
+		_animator->GetAllAC()->SetBool("isIdle", true);
 	}
 }
