@@ -229,6 +229,16 @@ void InGameSceneView::Initialize()
 	posX += 1;
 	posT += 315;
 
+	// 디버그용 state
+	auto stateInfo = API::CreateTextbox(_scene, "stateInfo");
+	stateInfo->GetTransform()->SetPosition(300, 300, 0);
+	auto stateInfoComp = stateInfo->GetComponent<HDData::TextUI>();
+	stateInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	stateInfoComp->SetColor(DirectX::Colors::Black);
+	stateInfoComp->SetText("");
+	stateInfoComp->SetSortOrder(0.7);
+	playerMove->_plStateText = stateInfoComp;
+
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
 	{
