@@ -799,7 +799,7 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	//_plStateText->SetText(first + "/" + second);
+	_plStateText->SetText(first + "/" + second);
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
@@ -1617,7 +1617,8 @@ void PlayerMove::DecidePlayerStateSecond()
 		{
 			if (_bulletCount == 0)
 			{
-				_playerState.second = ePlayerMoveState::EMPTY;
+				//_playerState.second = ePlayerMoveState::EMPTY;
+				_playerState.second = ePlayerMoveState::RELOAD;
 			}
 			else
 			{

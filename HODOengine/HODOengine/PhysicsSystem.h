@@ -30,6 +30,7 @@ namespace HDEngine
 		void Initialize();
 		void PreparePhysics();
 		void Update();
+		void UpdateTransform();
 		void Finalize();
 
 	public:
@@ -52,6 +53,7 @@ namespace HDEngine
 		void CreateParticleSphereCollider(HDData::GameObject* object);
 
 		void ResizeCollider();
+		void InterpolateTransform(float alpha);
 
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);

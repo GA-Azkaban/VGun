@@ -8,6 +8,7 @@ OthersAnim::OthersAnim()
 
 void OthersAnim::Start()
 {
+	auto a = GetGameObject();
 	_mesh = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_info = GetGameObject()->GetComponent<PlayerInfo>();
 	_audio = GetGameObject()->GetComponent<HDData::AudioSource>();
@@ -15,6 +16,11 @@ void OthersAnim::Start()
 
 void OthersAnim::Update()
 {
+	if (_mesh->GetCurrentAnimName() == "RV_dying")
+	{
+		if (_mesh->IsAnimationEnd()) _mesh->SetMeshActive(false, 0);
+	}
+
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 	if (!_info->GetIsStateChange()) return;
 
