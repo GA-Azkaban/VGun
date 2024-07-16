@@ -9,6 +9,7 @@
 #include "TPScript.h"
 #include "FPAniScript.h"
 #include "UIEffect.h"
+#include "ImageTest.h"
 
 TestScene::TestScene()
 {
@@ -17,13 +18,13 @@ TestScene::TestScene()
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	auto image = API::CreateButton(_scene);
-	image->GetTransform()->SetPosition(1000, 800, 0);
-	image->GetComponent<HDData::Button>()->GetButtonComp()->SetImage("headshot.png");
-	auto effect = image->AddComponent<UIEffect>(Vector2{1.5, 1.5}, 3);
-	image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
-			effect->Play();
-		});
+	//auto image = API::CreateButton(_scene);
+	//image->GetTransform()->SetPosition(1000, 800, 0);
+	//image->GetComponent<HDData::Button>()->GetButtonComp()->SetImage("headshot.png");
+	//auto effect = image->AddComponent<UIEffect>(Vector2{1.5, 1.5}, 3);
+	//image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
+	//		effect->Play();
+	//	});
 	
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
@@ -273,6 +274,11 @@ TestScene::TestScene()
 	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
+	auto imageTest = API::CreateObject(_scene, "ImageTest");
+	imageTest->AddComponent<ImageTest>();
+	imageTest->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0.0f);
+	auto imageComp = imageTest->AddComponent<HDData::ImageUI>();
+	imageComp->SetImage("headshot.png");
 }
 
 TestScene::~TestScene()
