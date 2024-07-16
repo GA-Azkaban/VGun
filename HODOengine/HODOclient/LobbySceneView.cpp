@@ -7,6 +7,8 @@
 #include "FPAniScript.h"
 #include "RoundManager.h"
 
+#include "BtnTextScript.h"
+
 LobbySceneView::LobbySceneView()
 {
 
@@ -47,9 +49,9 @@ void LobbySceneView::Initialize()
 
 	// game start button
 	auto startButton = API::CreateButton(_scene, "gameStartButton");
-	startButton->GetComponent<HDData::Button>()->SetImage("start.png");
+	startButton->GetComponent<HDData::Button>()->SetImage("Button_02.png");
 	startButton->GetTransform()->SetPosition(1600.0f * width / 1920, 950.0f * height / 1080, 0);
-
+	startButton->AddComponent<BtnTextScript>();
 	auto startText = API::CreateTextbox(_scene, "gameStartText", startButton);
 	auto sTex = startText->GetComponent<HDData::TextUI>();
 	sTex->SetText("GAME START");
@@ -65,12 +67,21 @@ void LobbySceneView::Initialize()
 
 	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
 	quitButton->GetTransform()->SetPosition(320.0f * width / 1920, 950.0f * height / 1080, 0);
+	quitButton->AddComponent<BtnTextScript>();
 	auto qBtn = quitButton->GetComponent<HDData::Button>();
-	qBtn->GetButtonComp()->SetImage("exitRoom.png");
+	qBtn->GetButtonComp()->SetImage("Button_02.png");
 	qBtn->SetOnClickEvent([]()
 		{
 			NetworkManager::Instance().SendRoomLeave();
 		});
+	auto quitText = API::CreateTextbox(_scene, "roomQuitText", quitButton);
+	auto qTex = quitText->GetComponent<HDData::TextUI>();
+	qTex->SetText("QUIT ROOM");
+	qTex->SetColor(DirectX::Colors::OrangeRed);
+	qTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	float qTextWidth = sTex->GetTextWidth();
+	float qTextHeight = sTex->GetTextHeight();
+	qTex->GetTransform()->SetPosition((320.0f * width / 1920-qTextWidth*0.75f)+20, 950.0f * height / 1080 - qTextHeight * 0.25f, 0);
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;

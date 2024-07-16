@@ -393,7 +393,7 @@ void InGameSceneView::Initialize()
 	/// game end
 
 	auto endButton = API::CreateButton(_scene, "endBtn");
-	endButton->GetTransform()->SetPosition(850.0f, 1300.0f, 0.0f);
+	endButton->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
 	endButton->AddComponent<BtnTextScript>();
 	auto endComp = endButton->GetComponent<HDData::Button>();
 	endComp->SetImage("Button_02.png");
@@ -405,7 +405,7 @@ void InGameSceneView::Initialize()
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
 	//endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
 	//endText->GetTransform()->SetPosition(1225.0f, 1285.0f, 0.0f);
-	endText->GetTransform()->SetPosition(725.0f, 1285.0f, 0.0f);
+	endText->GetTransform()->SetPosition(2175.0f, 1285.0f, 0.0f);	//endbutton.x -125
 	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
 	endTXTcomp->SetText("EXIT GAME");
 	endTXTcomp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
@@ -421,7 +421,6 @@ void InGameSceneView::Initialize()
 
 	auto inGameESCMenuCanvas = API::CreateImageBox(_scene,"ESCMenuCanvas",esc_controlObj);
 
-
 	// 우승자
 	auto winnerObj = API::CreateObject(_scene, "winner");
 	winnerObj->LoadFBXFile("SKM_GunManTP_X_default.fbx");
@@ -431,11 +430,17 @@ void InGameSceneView::Initialize()
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_sillyDancing");
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadMaterial(chMat, 0);
 
+	auto winnerTextImg = API::CreateImageBox(_scene, "winnerImg");
+	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth()/2,400.0f,0.0f);
+	auto winnerTextImgComp = winnerTextImg->GetComponent<HDData::ImageUI>();
+	winnerTextImgComp->SetImage("winner.png");
+	winnerTextImgComp->SetColor(DirectX::Colors::Gold);	// 노란색 이미지를 가져올것
+
 	auto winnerName = API::CreateTextbox(_scene, "winner");
-	winnerName->GetTransform()->SetPosition(1000.0f, 900.0f, 0.0f);
+	winnerName->GetTransform()->SetPosition((API::GetScreenWidth()/2)-30, 1200.0f, 0.0f);
 	auto winnerComp = winnerName->GetComponent<HDData::TextUI>();
 	winnerComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	winnerComp->SetColor(DirectX::Colors::Red);
+	winnerComp->SetColor(DirectX::Colors::Gold);
 	
 	RoundManager::Instance()->SetWinnerText(winnerComp);
 
@@ -497,7 +502,7 @@ void InGameSceneView::Initialize()
 	/// init round
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");
-	initCounter->GetTransform()->SetPosition(500.0f,1400.0f,0.0f);
+	initCounter->GetTransform()->SetPosition(API::GetScreenWidth()/2,API::GetScreenHeight()/2,0.0f);
 	initCounter->SetSelfActive(false);
 	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
 	countertxt->SetFont("Resources/Font/KRAFTON_200.spriteFont");
@@ -512,17 +517,16 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	/// Testing
-	auto recoil = API::CreateImageBox(_scene);
-	recoil->GetTransform()->SetPosition(2000.0f,1300.0f,0.0f);
-	auto recoilImg = recoil->GetComponent<HDData::ImageUI>();
-	recoilImg->SetImage("Recoil.png");
-	recoilImg->SetColor(DirectX::Colors::White);
+	//auto recoil = API::CreateImageBox(_scene);
+	//recoil->GetTransform()->SetPosition(2000.0f,1300.0f,0.0f);
+	//auto recoilImg = recoil->GetComponent<HDData::ImageUI>();
+	//recoilImg->SetImage("Recoil.png");
+	//recoilImg->SetColor(DirectX::Colors::White);
 
-	auto bullet = API::CreateImageBox(_scene);
-	bullet->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
-	auto bulletImg = bullet->GetComponent<HDData::ImageUI>();
-	bulletImg->SetImage("Bullet.png");
-
+	//auto bullet = API::CreateImageBox(_scene);
+	//bullet->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
+	//auto bulletImg = bullet->GetComponent<HDData::ImageUI>();
+	//bulletImg->SetImage("Bullet.png");
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }
