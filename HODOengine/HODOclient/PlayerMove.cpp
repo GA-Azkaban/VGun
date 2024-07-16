@@ -1617,7 +1617,8 @@ void PlayerMove::DecidePlayerStateSecond()
 		{
 			if (_bulletCount == 0)
 			{
-				_playerState.second = ePlayerMoveState::EMPTY;
+				//_playerState.second = ePlayerMoveState::EMPTY;
+				_playerState.second = ePlayerMoveState::RELOAD;
 			}
 			else
 			{
