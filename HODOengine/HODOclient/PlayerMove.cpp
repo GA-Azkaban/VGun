@@ -799,7 +799,7 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	//_plStateText->SetText(first + "/" + second);
+	_plStateText->SetText(first + "/" + second);
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
