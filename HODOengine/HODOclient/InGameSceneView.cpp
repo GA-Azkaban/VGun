@@ -520,11 +520,11 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->SetInitRoundTimer(countertxt);
 
 	// 헤드샷 이펙트
-	auto headshot = API::CreateImageBox(_scene);
-	headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
-	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
-	headshotimg->SetImage("Headshot.png");
-	RoundManager::Instance()->SetHeadshotUI(headshotimg);
+	//auto headshot = API::CreateImageBox(_scene);
+	//headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
+	//auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
+	//headshotimg->SetImage("Headshot.png");
+	//RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	/// Testing
 	//auto recoil = API::CreateImageBox(_scene);
