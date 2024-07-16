@@ -9,7 +9,6 @@
 #include "TPScript.h"
 #include "FPAniScript.h"
 #include "UIEffect.h"
-#include "ImageTest.h"
 
 TestScene::TestScene()
 {
@@ -274,11 +273,6 @@ TestScene::TestScene()
 	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
 	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
 
-	auto imageTest = API::CreateObject(_scene, "ImageTest");
-	imageTest->AddComponent<ImageTest>();
-	imageTest->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() / 2.0f, 0.0f);
-	auto imageComp = imageTest->AddComponent<HDData::ImageUI>();
-	imageComp->SetImage("headshot.png");
 }
 
 TestScene::~TestScene()
