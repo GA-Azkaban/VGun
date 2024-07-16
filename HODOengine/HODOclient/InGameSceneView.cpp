@@ -68,7 +68,7 @@ void InGameSceneView::Initialize()
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	auto playerMove = player->AddComponent<PlayerMove>();
-	playerMove->SetMovable(false);
+	//playerMove->SetMovable(false);
 	player->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 

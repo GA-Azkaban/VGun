@@ -78,8 +78,6 @@ namespace HDEngine
 		POINT					_mouseDelta;
 		POINT					_prevMouseDelta;
 		int						_mouseWheel;
-		int						_wheelMax;
-		int						_wheelMin;
 
 		// 무한마우스를 조건부로 하기 위해 추가. 24.2.1.AJY.
 		bool					_isFirstPersonPerspective = false;
