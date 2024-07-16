@@ -77,6 +77,27 @@ void MainMenuScene::MainMenu()
 	main_controlCanvas->SetSelfActive(true);
 	main_controlCanvas->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
 
+	// TeamLogo
+	auto teamLogo = API::CreateImageBox(_scene, "teamLogo");
+	teamLogo->GetTransform()->SetPosition(2300.0f, 700.0f, 0.0f);
+	auto teamLogoComp = teamLogo->GetComponent<HDData::ImageUI>();
+	teamLogoComp->SetImage("teamLogo.png");
+	teamLogoComp->ChangeScale(0.3f, 0.3f);
+
+	// gameLogo
+	auto gameLogo = API::CreateImageBox(_scene, "gameLogo", main_controlCanvas);
+	gameLogo->GetTransform()->SetPosition(2300.0f, 400.0f, 0.0f);
+	auto gameLogoComp = gameLogo->GetComponent<HDData::ImageUI>();
+	gameLogoComp->SetImage("gameLogo.png");
+	gameLogoComp->ChangeScale(0.4f,0.4f);
+
+	//Test
+	auto ButtonTest = API::CreateImageBox(_scene);
+	ButtonTest->GetTransform()->SetPosition(2300.0f, 500.0f, 0.0f);
+	auto ButtonTestImg = ButtonTest->GetComponent<HDData::ImageUI>();
+	ButtonTestImg->SetImage("Button_02.png");
+	ButtonTestImg->ChangeScale(1.0f,3.0f);
+
 	// play->RoomEnter & make sequence
 	HDData::GameObject* main_playBtn = API::CreateButton(_scene, "playBtn", main_controlCanvas);
 	main_playBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
@@ -519,12 +540,6 @@ void MainMenuScene::MainMenu()
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-	//Test
-	auto ButtonTest = API::CreateImageBox(_scene);
-	ButtonTest->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
-	auto ButtonTestImg = ButtonTest->GetComponent<HDData::ImageUI>();
-	ButtonTestImg->SetImage("Button_02.png");
 
 	/// event
 	/// event

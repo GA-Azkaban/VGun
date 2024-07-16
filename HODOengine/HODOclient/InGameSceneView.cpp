@@ -432,6 +432,7 @@ void InGameSceneView::Initialize()
 
 	auto winnerTextImg = API::CreateImageBox(_scene, "winnerImg");
 	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth()/2,400.0f,0.0f);
+	winnerTextImg->SetSelfActive(false);
 	auto winnerTextImgComp = winnerTextImg->GetComponent<HDData::ImageUI>();
 	winnerTextImgComp->SetImage("winner.png");
 	winnerTextImgComp->SetColor(DirectX::Colors::Gold);	// 노란색 이미지를 가져올것
@@ -510,11 +511,11 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->SetInitRoundTimer(countertxt);
 
 	// 헤드샷 이펙트
-	auto headshot = API::CreateImageBox(_scene);
-	headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
-	auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
-	headshotimg->SetImage("Headshot.png");
-	RoundManager::Instance()->SetHeadshotUI(headshotimg);
+	//auto headshot = API::CreateImageBox(_scene);
+	//headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
+	//auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
+	//headshotimg->SetImage("headshot.png");
+	//RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	/// Testing
 	//auto recoil = API::CreateImageBox(_scene);
