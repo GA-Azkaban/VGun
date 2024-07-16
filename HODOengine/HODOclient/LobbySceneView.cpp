@@ -7,6 +7,8 @@
 #include "FPAniScript.h"
 #include "RoundManager.h"
 
+#include "BtnTextScript.h"
+
 LobbySceneView::LobbySceneView()
 {
 
@@ -47,9 +49,9 @@ void LobbySceneView::Initialize()
 
 	// game start button
 	auto startButton = API::CreateButton(_scene, "gameStartButton");
-	startButton->GetComponent<HDData::Button>()->SetImage("start.png");
+	startButton->GetComponent<HDData::Button>()->SetImage("Button_02.png");
 	startButton->GetTransform()->SetPosition(1600.0f * width / 1920, 950.0f * height / 1080, 0);
-
+	startButton->AddComponent<BtnTextScript>();
 	auto startText = API::CreateTextbox(_scene, "gameStartText", startButton);
 	auto sTex = startText->GetComponent<HDData::TextUI>();
 	sTex->SetText("GAME START");
@@ -65,12 +67,21 @@ void LobbySceneView::Initialize()
 
 	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
 	quitButton->GetTransform()->SetPosition(320.0f * width / 1920, 950.0f * height / 1080, 0);
+	quitButton->AddComponent<BtnTextScript>();
 	auto qBtn = quitButton->GetComponent<HDData::Button>();
-	qBtn->GetButtonComp()->SetImage("exitRoom.png");
+	qBtn->GetButtonComp()->SetImage("Button_02.png");
 	qBtn->SetOnClickEvent([]()
 		{
 			NetworkManager::Instance().SendRoomLeave();
 		});
+	auto quitText = API::CreateTextbox(_scene, "roomQuitText", quitButton);
+	auto qTex = quitText->GetComponent<HDData::TextUI>();
+	qTex->SetText("QUIT ROOM");
+	qTex->SetColor(DirectX::Colors::OrangeRed);
+	qTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	float qTextWidth = sTex->GetTextWidth();
+	float qTextHeight = sTex->GetTextHeight();
+	qTex->GetTransform()->SetPosition((320.0f * width / 1920-qTextWidth*0.75f)+20, 950.0f * height / 1080 - qTextHeight * 0.25f, 0);
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
@@ -122,7 +133,7 @@ void LobbySceneView::Initialize()
 
 	float posX = 0;
 	//float posT = 165;
-	float posT = 100 * width / 1920;
+	float posT = 150 * width / 1920;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -144,16 +155,17 @@ void LobbySceneView::Initialize()
 
 		HDData::GameObject* text = API::CreateTextbox(_scene, "player" + std::to_string(i), player);
 		auto textUI = text->GetComponent<HDData::TextUI>();
+		textUI->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 		float textWidth = textUI->GetTextWidth();
 		float textHeight = textUI->GetTextHeight();
-		text->GetTransform()->SetPosition(posT * width / 1920 - textWidth * 0.75f, 30.0f * height / 1080 - textHeight * 0.25f, 0);
+		text->GetTransform()->SetPosition(posT * width / 1920 - textWidth * 0.75f, 770.0f * height / 1080 - textHeight * 0.25f, 0);
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
 		player->SetSelfActive(false);
 
 		posX += 1;
-		posT += 315;
+		posT += 300;
 	}
 
 

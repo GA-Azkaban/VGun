@@ -520,6 +520,12 @@ void MainMenuScene::MainMenu()
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
 	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
+	//Test
+	auto ButtonTest = API::CreateImageBox(_scene);
+	ButtonTest->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
+	auto ButtonTestImg = ButtonTest->GetComponent<HDData::ImageUI>();
+	ButtonTestImg->SetImage("Button_02.png");
+
 	/// event
 	/// event
 	/// event

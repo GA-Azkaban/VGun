@@ -30,6 +30,7 @@ namespace HDEngine
 		void Initialize();
 		void PreparePhysics();
 		void Update();
+		void UpdateTransform();
 		void Finalize();
 
 	public:
@@ -52,6 +53,7 @@ namespace HDEngine
 		void CreateParticleSphereCollider(HDData::GameObject* object);
 
 		void ResizeCollider();
+		void InterpolateTransform(float alpha);
 
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
@@ -82,5 +84,8 @@ namespace HDEngine
 		// 맘에 들진 않지만 플레이어를 여기에 저장해두자
 		physx::PxRigidDynamic* _playerRigid;
 		physx::PxShape* _playerShape;
+
+	private:
+		float _accumulateTime = 0.0f;
 	};
 }

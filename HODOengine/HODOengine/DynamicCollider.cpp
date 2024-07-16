@@ -87,7 +87,9 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 	//_physXRigid->setGlobalPose(playerPos);
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
-	_physXRigid->setLinearVelocity(physx::PxVec3(moveStep.x * speed * 25.0f, velo.y, moveStep.z * speed * 25.0f));
+	velo.x = moveStep.x * speed * 2;
+	velo.z = moveStep.z * speed * 2;
+	_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setForceAndTorque(physx::PxVec3(moveStep.x * speed * 300.0f, 0.0f, moveStep.z * speed * 300.0f), physx::PxVec3());
 
 	for (auto& child : _childColliders)
@@ -172,7 +174,7 @@ void HDData::DynamicCollider::Jump(Vector3 direction)
 {
 	//_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 	//_physXRigid->addForce(physx::PxVec3(0.0f, 1.2f, 0.0f) * 120.0f, physx::PxForceMode::eIMPULSE);
-	_physXRigid->addForce(physx::PxVec3(0.0f, 100000.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 1500.0f, 0.0f), physx::PxForceMode::eFORCE);
 }
 
 void HDData::DynamicCollider::Sleep()

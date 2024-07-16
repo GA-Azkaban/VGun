@@ -320,8 +320,6 @@ void RoundManager::ExitGame()
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
-	API::SetRecursiveMouseMode(false);
-	API::ShowWindowCursor(true);
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
@@ -389,10 +387,28 @@ void RoundManager::UpdateRoundTimer()
 
 std::string RoundManager::ChangeSecToMin(int second)
 {
-	int min = second / 60;
-	int sec = second % 60;
+	std::string min = "";
+	std::string sec = "";
 
-	std::string result = std::to_string(min) + " : " + std::to_string(sec);
+	if (second / 60 == 0)
+	{
+		min = "00";
+	}
+	else
+	{
+		min = std::to_string(second / 60);
+	}
+
+	if (second % 60 < 10)
+	{
+		sec = "0" + std::to_string(second % 60);
+	}
+	else
+	{
+		sec = std::to_string(second % 60);
+	}
+
+	std::string result = min + " : " + sec;
 
 	return result;
 }

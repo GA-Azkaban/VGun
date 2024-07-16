@@ -45,8 +45,8 @@ namespace HDEngine
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
-		_playerMaterial = _physics->createMaterial(0.8f, 0.6f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.6f, 0.4f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.04f, 0.02f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.05f, 0.03f, 0.0f);
 
 		_collisionCallback = std::make_unique<CollisionCallback>();
 		_pxScene->setSimulationEventCallback(_collisionCallback.get());
@@ -64,103 +64,92 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
-		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
-
-		_collisionCallback->Clear();
-
-		//ResizeCollider();
-
-#ifdef _DEBUG
-		_pxScene->simulate(0.00167f);
-#else
-		_pxScene->simulate(0.0005f);
-#endif
-		_pxScene->fetchResults(true);
-
-		_collisionCallback->CollectResults();
-		_collisionCallback->SendTriggerEvents();
-		_collisionCallback->SendCollisionEvents();
-
-		for (auto& rigid : _rigidDynamics)
+		_accumulateTime += API::GetDeltaTime();
+		if (_accumulateTime >= 0.0167f)
 		{
-			// Collider On/Off
-			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
-			if (!dynamicCol->GetIsStarted()) continue;
+			_accumulateTime -= 0.0167f;
 
-			// 트리거가 아닌 경우 onCollision 함수들 실행
-			if (dynamicCol->GetIsTriggerType() == false)
+			_collisionCallback->Clear();
+
+			_pxScene->simulate(0.0167f);
+			_pxScene->fetchResults(true);
+
+			_collisionCallback->CollectResults();
+			_collisionCallback->SendTriggerEvents();
+			_collisionCallback->SendCollisionEvents();
+
+			for (auto& rigid : _rigidDynamics)
 			{
-				if (!dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+				// Collider On/Off
+				HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
+				if (!dynamicCol->GetIsStarted()) continue;
+
+				// 트리거가 아닌 경우 onCollision 함수들 실행
+				if (dynamicCol->GetIsTriggerType() == false)
 				{
-					dynamicCol->GetGameObject()->OnCollisionEnter(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					if (!dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+					{
+						dynamicCol->GetGameObject()->OnCollisionEnter(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+					// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
+					else if (dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+					{
+						dynamicCol->GetGameObject()->OnCollisionStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+					else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
+					{
+						dynamicCol->GetGameObject()->OnCollisionExit(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
 				}
-				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
-				else if (dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+				else
 				{
-					dynamicCol->GetGameObject()->OnCollisionStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-				else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
-				{
-					dynamicCol->GetGameObject()->OnCollisionExit(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					if (!dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
+					{
+						dynamicCol->GetGameObject()->OnTriggerEnter(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
+					}
+					// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
+					else if (dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
+					{
+						//dynamicCol->GetGameObject()->OnTriggerStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+					else if (dynamicCol->GetPrevIsTriggerCollide() && !dynamicCol->GetIsTriggerCollide())
+					{
+						dynamicCol->GetGameObject()->OnTriggerExit(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
+					}
 				}
 			}
-			else
-			{
-				if (!dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
-				{
- 					dynamicCol->GetGameObject()->OnTriggerEnter(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
-				}
-				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
-				else if (dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
-				{
-					//dynamicCol->GetGameObject()->OnTriggerStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-				else if (dynamicCol->GetPrevIsTriggerCollide() && !dynamicCol->GetIsTriggerCollide())
-				{
-					dynamicCol->GetGameObject()->OnTriggerExit(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
-				}
-			}
-		}
 
+			UpdateTransform();
+		}
+	}
+
+	void PhysicsSystem::UpdateTransform()
+	{
 		for (auto& rigid : _rigidDynamics)
 		{
-			// Transform Update
-			physx::PxTransform nowTransform = rigid->getGlobalPose();
-			Vector3 pos;
-			Quaternion rot;
-
-			pos.x = nowTransform.p.x;
-			pos.y = nowTransform.p.y;
-			pos.z = nowTransform.p.z;
-
-			rot.x = nowTransform.q.x;
-			rot.y = nowTransform.q.y;
-			rot.z = nowTransform.q.z;
-			rot.w = nowTransform.q.w;
-
-			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
-
-		}
-
-		for (auto& rigid : _movableStatics)
-		{
-
+			HDData::DynamicCollider* col = static_cast<HDData::DynamicCollider*>(rigid->userData);
 
 			// Transform Update
-			physx::PxTransform nowTransform = rigid->getGlobalPose();
-			Vector3 pos;
-			Quaternion rot;
+			float alpha = _accumulateTime / 0.0167f;
+			physx::PxTransform nowTr = rigid->getGlobalPose();
+			Vector3 pos = Vector3(nowTr.p.x, nowTr.p.y, nowTr.p.z);
+			Quaternion rot = Quaternion(nowTr.q.x, nowTr.q.y, nowTr.q.z, nowTr.q.w);
 
-			pos.x = nowTransform.p.x;
-			pos.y = nowTransform.p.y;
-			pos.z = nowTransform.p.z;
+			col->UpdateFromPhysics(pos, rot);
 
-			rot.x = nowTransform.q.x;
-			rot.y = nowTransform.q.y;
-			rot.z = nowTransform.q.z;
-			rot.w = nowTransform.q.w;
-
-			static_cast<HDData::StaticCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+			// Child Velocity
+			for (auto& child : col->GetChildColliderVec())
+			{
+				// 손자뻘이 없음을 가정하고 만듦
+				physx::PxRigidDynamic* childRigid = static_cast<HDData::DynamicCollider*>(child)->GetPhysXRigid();
+				//childRigid->setLinearVelocity(rigid->getLinearVelocity());
+				physx::PxVec3 childPos = nowTr.p;
+				Vector3 localPos = child->GetTransform()->GetLocalPosition();
+				childPos.x += (child->GetTransform()->GetForward() * localPos.z).x;
+				childPos.y += localPos.y;
+				childPos.z += (child->GetTransform()->GetForward() * localPos.z).z;
+				childRigid->setGlobalPose(physx::PxTransform(childPos, nowTr.q));
+			}
 		}
 	}
 
@@ -184,7 +173,7 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 150.0f, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 2, 0.0f);
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
