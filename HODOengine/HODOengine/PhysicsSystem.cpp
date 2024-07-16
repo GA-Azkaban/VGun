@@ -64,18 +64,23 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		_accumulateTime += API::GetDeltaTime();
+		if (_accumulateTime < 0.0167f)
+		{
+			return;
+		}
+		else
+		{
+			_accumulateTime -= 0.0167f;
+		}
+
 		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
 
 		_collisionCallback->Clear();
 
 		//ResizeCollider();
 
-#ifdef _DEBUG
-		_pxScene->simulate(0.00167f);
-#else
-		_pxScene->simulate(0.0005f);
-#endif
-		_pxScene->fetchResults(true);
+		_pxScene->simulate(0.0167f);
 
 		_collisionCallback->CollectResults();
 		_collisionCallback->SendTriggerEvents();
@@ -199,7 +204,7 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 150.0f, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 2, 0.0f);
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
