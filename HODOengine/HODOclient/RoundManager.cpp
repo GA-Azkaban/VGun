@@ -320,8 +320,6 @@ void RoundManager::ExitGame()
 	// 로비로 복귀
 	API::LoadSceneByName("Lobby");
 	LobbyManager::Instance().RefreshRoom();
-	API::SetRecursiveMouseMode(false);
-	API::ShowWindowCursor(true);
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
