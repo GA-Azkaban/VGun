@@ -118,22 +118,22 @@ namespace HDEngine
 					}
 				}
 			}
+
+			UpdateTransform();
 		}
-		UpdateTransform();
 	}
 
 	void PhysicsSystem::UpdateTransform()
 	{
-
 		for (auto& rigid : _rigidDynamics)
 		{
 			HDData::DynamicCollider* col = static_cast<HDData::DynamicCollider*>(rigid->userData);
 
 			// Transform Update
 			float alpha = _accumulateTime / 0.0167f;
-			Vector3 pos = InterpolateTransform(alpha);
-
-			Quaternion rot;
+			physx::PxTransform nowTr = rigid->getGlobalPose();
+			Vector3 pos = Vector3(nowTr.p.x, nowTr.p.y, nowTr.p.z);
+			Quaternion rot = Quaternion(nowTr.q.x, nowTr.q.y, nowTr.q.z, nowTr.q.w);
 
 			col->UpdateFromPhysics(pos, rot);
 
@@ -143,12 +143,12 @@ namespace HDEngine
 				// 손자뻘이 없음을 가정하고 만듦
 				physx::PxRigidDynamic* childRigid = static_cast<HDData::DynamicCollider*>(child)->GetPhysXRigid();
 				//childRigid->setLinearVelocity(rigid->getLinearVelocity());
-				//physx::PxVec3 childPos = nowTransform.p;
+				physx::PxVec3 childPos = nowTr.p;
 				Vector3 localPos = child->GetTransform()->GetLocalPosition();
 				childPos.x += (child->GetTransform()->GetForward() * localPos.z).x;
 				childPos.y += localPos.y;
 				childPos.z += (child->GetTransform()->GetForward() * localPos.z).z;
-				childRigid->setGlobalPose(physx::PxTransform(childPos, nowTransform.q));
+				childRigid->setGlobalPose(physx::PxTransform(childPos, nowTr.q));
 			}
 		}
 	}
@@ -644,12 +644,6 @@ namespace HDEngine
 			CreateSphericalJoint();
 			capsule->SetSitStand(0);
 		}
-	}
-
-	Vector3 PhysicsSystem::InterpolateTransform(float alpha)
-	{
-		physx::PxVec3 interpolatedPos = _prevTransform.p * (1.0f - alpha) + _currentTransform.p * alpha;
-		return Vector3(interpolatedPos.x, interpolatedPos.y, interpolatedPos.z);
 	}
 
 	void PhysicsSystem::CreateSphericalJoint()

@@ -87,7 +87,5 @@ namespace HDEngine
 
 	private:
 		float _accumulateTime = 0.0f;
-		physx::PxTransform _prevTransform;
-		physx::PxTransform _currentTransform;
 	};
 }
