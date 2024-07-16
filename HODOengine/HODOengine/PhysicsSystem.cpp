@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -124,6 +124,8 @@ namespace HDEngine
 
 		for (auto& rigid : _rigidDynamics)
 		{
+			HDData::DynamicCollider* col = static_cast<HDData::DynamicCollider*>(rigid->userData);		
+
 			// Transform Update
 			physx::PxTransform nowTransform = rigid->getGlobalPose();
 			Vector3 pos;
@@ -138,8 +140,21 @@ namespace HDEngine
 			rot.z = nowTransform.q.z;
 			rot.w = nowTransform.q.w;
 
-			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+			col->UpdateFromPhysics(pos, rot);
 
+			// Child Velocity
+			for (auto& child : col->GetChildColliderVec())
+			{
+				// 손자뻘이 없음을 가정하고 만듦
+				physx::PxRigidDynamic* childRigid = static_cast<HDData::DynamicCollider*>(child)->GetPhysXRigid();
+				//childRigid->setLinearVelocity(rigid->getLinearVelocity());
+				physx::PxVec3 childPos = nowTransform.p;
+				Vector3 localPos = child->GetTransform()->GetLocalPosition();
+				childPos.x += (child->GetTransform()->GetForward() * localPos.z).x;
+				childPos.y += localPos.y;
+				childPos.z += (child->GetTransform()->GetForward() * localPos.z).z;
+				childRigid->setGlobalPose(physx::PxTransform(childPos, nowTransform.q));
+			}
 		}
 
 		for (auto& rigid : _movableStatics)
