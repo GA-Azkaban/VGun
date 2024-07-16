@@ -132,7 +132,7 @@ void LobbySceneView::Initialize()
 
 	float posX = 0;
 	//float posT = 165;
-	float posT = 100 * width / 1920;
+	float posT = 150 * width / 1920;
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -154,16 +154,17 @@ void LobbySceneView::Initialize()
 
 		HDData::GameObject* text = API::CreateTextbox(_scene, "player" + std::to_string(i), player);
 		auto textUI = text->GetComponent<HDData::TextUI>();
+		textUI->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 		float textWidth = textUI->GetTextWidth();
 		float textHeight = textUI->GetTextHeight();
-		text->GetTransform()->SetPosition(posT * width / 1920 - textWidth * 0.75f, 30.0f * height / 1080 - textHeight * 0.25f, 0);
+		text->GetTransform()->SetPosition(posT * width / 1920 - textWidth * 0.75f, 770.0f * height / 1080 - textHeight * 0.25f, 0);
 
 		LobbyManager::Instance().GetNickNameObjects().push_back(text);
 
 		player->SetSelfActive(false);
 
 		posX += 1;
-		posT += 315;
+		posT += 300;
 	}
 
 

@@ -93,6 +93,10 @@ void HODOengine::Initialize()
 	_physicsSystem.Initialize();
 	_uiSystem.Initialize();
 	_materialLoader.LoadMaterialData("materialData.json");
+
+	//RECT rect;
+	//GetClientRect(_hWnd, &rect);
+	//ClipCursor(&rect);
 }
 
 void HODOengine::Loop()

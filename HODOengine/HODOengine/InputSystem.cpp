@@ -10,9 +10,6 @@ namespace HDEngine
 		_hWnd = hWnd;
 		_instance = instance;
 
-		_wheelMax = 500;
-		_wheelMin = -500;
-
 		StartDXInput();
 	}
 
@@ -42,18 +39,23 @@ namespace HDEngine
 			_mouseState[i] = _DImouseState.rgbButtons[i];
 		}
 
+		if (GetKeyDown(DIK_O))
+		{
+			_isFirstPersonPerspective = !_isFirstPersonPerspective;
+		}
+
+		if (_isFirstPersonPerspective)
+		{
+			RecursiveMouse();
+		}
+
 		// 스크린 좌표와 맞추기
 		GetCursorPos(&_mousePos);
 		ScreenToClient(_hWnd, &_mousePos);
 
 		_mousePos.x += _DImouseState.lX;
 		_mousePos.y += _DImouseState.lY;
-		_mouseWheel += _DImouseState.lZ;
-
-		if (GetKeyDown(DIK_O))
-		{
-			_isFirstPersonPerspective = !_isFirstPersonPerspective;
-		}
+		_mouseWheel += _DImouseState.lZ;			
 	}
 
 	void InputSystem::Finalize()
@@ -199,38 +201,34 @@ namespace HDEngine
 
 		_prevMousePos = _mousePos;
 		_isKeyPressed = false;
-
-		if (_isFirstPersonPerspective)
-		{
-			RecursiveMouse();
-		}
 	}
 
 	void InputSystem::RecursiveMouse()
 	{
-		RECT windowRect;
-		GetWindowRect(_hWnd, &windowRect);		
+		RECT clientRect;
+		GetClientRect(_hWnd, &clientRect);
 
 		/// when cursor get out of the window
-		if (_mousePos.x >= windowRect.right - 1)
+		if (_mousePos.x >= clientRect.right - 1)
 		{
-			_prevMousePos = { windowRect.left, _mousePos.y };
-			SetCursorPos(windowRect.left + 8, _mousePos.y);
+			_prevMousePos = { clientRect.left, _mousePos.y };
+			SetCursorPos(clientRect.left + 8, _mousePos.y);
 		}
-		else if (_mousePos.x <= windowRect.left + 1)
+		else if (_mousePos.x <= clientRect.left + 1)
 		{
-			_prevMousePos = { windowRect.right, _mousePos.y };
-			SetCursorPos(windowRect.right - 8, _mousePos.y);
+			_prevMousePos = { clientRect.right, _mousePos.y };
+			SetCursorPos(clientRect.right - 8, _mousePos.y);
 		}
-		if (_mousePos.y >= windowRect.bottom - 1)
+
+		if (_mousePos.y >= clientRect.bottom - 1)
 		{
-			_prevMousePos = { _mousePos.x, windowRect.top};
-			SetCursorPos(_mousePos.x, windowRect.top + 10);
+			_prevMousePos = { _mousePos.x, clientRect.top};
+			SetCursorPos(_mousePos.x, clientRect.top + 10);
 		}
-		else if (_mousePos.y <= windowRect.top + 1)
+		else if (_mousePos.y <= clientRect.top + 1)
 		{
-			_prevMousePos = { _mousePos.x, windowRect.bottom };
-			SetCursorPos(_mousePos.x, windowRect.bottom - 10);
+			_prevMousePos = { _mousePos.x, clientRect.bottom };
+			SetCursorPos(_mousePos.x, clientRect.bottom - 10);
 		}
 	}
 	void InputSystem::SetRecursiveMouseMode(bool isModeOn)

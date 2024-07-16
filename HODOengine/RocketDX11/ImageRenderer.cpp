@@ -22,8 +22,6 @@ RocketCore::Graphics::ImageRenderer::ImageRenderer()
 	_scaleX(1.0f),
 	_scaleY(1.0f),
 	_rotationRadian(0.0f),
-	_imageWidth(),
-	_imageHeight(),
 	_active(true),
 	_receiveTMInfoFlag(false),
 	_sortOrder(),
@@ -60,11 +58,14 @@ void RocketCore::Graphics::ImageRenderer::SetImage(const std::string& filePath)
 	ID3D11Texture2D* texture2D = static_cast<ID3D11Texture2D*>(resource);
 	texture2D->GetDesc(&textureDesc);
 
-	_imageWidth = textureDesc.Width;
-	_imageHeight = textureDesc.Height;
+	_originalImageWidth = textureDesc.Width;
+	_originalImageHeight = textureDesc.Height;
 
-	_centerX = _imageWidth / 2.0f;
-	_centerY = _imageHeight / 2.0f;
+	_currentImageWidth = _originalImageWidth;
+	_currentImageHeight = _originalImageHeight;
+
+	_centerX = _originalImageWidth / 2.0f;
+	_centerY = _originalImageHeight / 2.0f;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetScreenSpacePosition(float x, float y)
@@ -201,12 +202,13 @@ void RocketCore::Graphics::ImageRenderer::InitalizeImageRenderer(ID3D11Device* d
 
 void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 {
+	// 원본 이미지 사이즈 기준으로 스케일 변경된다.
 	_scaleX = x;
 	_scaleY = y;
-	_imageWidth *= _scaleX;
-	_imageHeight *= _scaleY;
-	_centerX = _imageWidth / 2.0f;
-	_centerY = _imageHeight / 2.0f;
+	_currentImageWidth = _originalImageWidth * _scaleX;
+	_currentImageHeight = _originalImageHeight * _scaleY;
+	_centerX = _currentImageWidth / 2.0f;
+	_centerY = _currentImageHeight / 2.0f;
 }
 
 void RocketCore::Graphics::ImageRenderer::SetAngle(float angle)
@@ -239,12 +241,12 @@ float RocketCore::Graphics::ImageRenderer::GetScreenSpacePositionY()
 
 float RocketCore::Graphics::ImageRenderer::GetWidth()
 {
-	return _imageWidth;
+	return _currentImageWidth;
 }
 
 float RocketCore::Graphics::ImageRenderer::GetHeight()
 {
-	return _imageHeight;
+	return _currentImageHeight;
 }
 
 DirectX::FXMVECTOR RocketCore::Graphics::ImageRenderer::SetColor(DirectX::FXMVECTOR color)
@@ -259,7 +261,6 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 
 void RocketCore::Graphics::ImageRenderer::FadeIn(float time)
 {
-	//_fadeMode = true;
 	SetFadeMode(true, time);
 }
 

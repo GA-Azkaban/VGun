@@ -5,8 +5,8 @@
 class UIEffect : public HDData::Script
 {
 public:
-	//UIEffect(Vector2 endScale, float time);
-	//~UIEffect();
+	UIEffect(Vector2 destScale, float time);
+	~UIEffect();
 
 	void Start() override;
 	void Update() override;
@@ -15,6 +15,13 @@ public:
 
 private:
 	void ScaleUpdate();
+	void Shake();
+	void EndEffect();
 
+	HDData::ImageUI* _ui;
+	bool _isPlay;
+	bool _isShake;
+	float _time;
+	Vector2 _start;
 	Timer* _timer;
 };

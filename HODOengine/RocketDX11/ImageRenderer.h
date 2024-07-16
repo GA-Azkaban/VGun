@@ -89,8 +89,10 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX translationMatrix;
 
 		// 이미지 정보
-		float _imageWidth;
-		float _imageHeight;
+		float _currentImageWidth;
+		float _originalImageWidth;
+		float _currentImageHeight;
+		float _originalImageHeight;
 
 		// 페이드 인 & 아웃
 		bool _fadeMode = true;

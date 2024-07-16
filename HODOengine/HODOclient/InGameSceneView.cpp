@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -13,7 +13,6 @@
 #include "IndicatorPool.h"
 #include "CloudRotate.h"
 #include "UIEffect.h"
-
 #include "BtnTextScript.h"
 
 InGameSceneView::InGameSceneView()
@@ -60,17 +59,11 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetEndCam(gameendCam);
 
-	// 구름 회전
-	//auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
-	//cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
-	//cloudPivotObj->AddComponent<CloudRotateScript>();
-	//cloudPivotObj->GetTransform()->Rotate(0.0f, 5.0f, 0.0f);
-
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
 	auto playerMove = player->AddComponent<PlayerMove>();
-	playerMove->SetMovable(false);
+	//playerMove->SetMovable(false);
 	player->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
 
@@ -98,7 +91,6 @@ void InGameSceneView::Initialize()
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
 	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
-	//auto helperBox = landingHelper->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.06f, 0.2f);
 	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
 	helperBox->SetParentCollider(playerCollider);
 
@@ -124,7 +116,7 @@ void InGameSceneView::Initialize()
 	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
-	fpMeshObj->GetTransform()->Rotate(0.0f, -5.0f, 0.0f);
+	fpMeshObj->GetTransform()->SetLocalRotation(-0.0925f, -0.0168f, 0.0014f, 0.9955f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	fpMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
 	fpMeshComp->LoadAnimation("TP");
@@ -228,6 +220,16 @@ void InGameSceneView::Initialize()
 
 	posX += 1;
 	posT += 315;
+
+	// 디버그용 state
+	auto stateInfo = API::CreateTextbox(_scene, "stateInfo");
+	stateInfo->GetTransform()->SetPosition(300, 300, 0);
+	auto stateInfoComp = stateInfo->GetComponent<HDData::TextUI>();
+	stateInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	stateInfoComp->SetColor(DirectX::Colors::Black);
+	stateInfoComp->SetText("");
+	stateInfoComp->SetSortOrder(0.7);
+	playerMove->_plStateText = stateInfoComp;
 
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
@@ -514,7 +516,7 @@ void InGameSceneView::Initialize()
 	//auto headshot = API::CreateImageBox(_scene);
 	//headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
 	//auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
-	//headshotimg->SetImage("headshot.png");
+	//headshotimg->SetImage("Headshot.png");
 	//RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
 	/// Testing
