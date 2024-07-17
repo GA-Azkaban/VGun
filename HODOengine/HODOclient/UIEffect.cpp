@@ -106,7 +106,8 @@ void UIEffect::Shake()
 
 void UIEffect::EndEffect()
 {
-	if(_isFade) _ui->FadeOut(2.f);
+	if (_isFade) _ui->FadeOut(2.f);
+	else _ui->GetGameObject()->SetSelfActive(false);
 	_shakeTimer->Stop();
 	_isShake = false;
 }

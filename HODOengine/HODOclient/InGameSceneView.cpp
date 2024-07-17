@@ -517,7 +517,7 @@ void InGameSceneView::Initialize()
 
 	auto gamestarttxt = API::CreateImageBox(_scene);
 	gamestarttxt->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0.0f);
-	gamestarttxt->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, true, 10);
+	gamestarttxt->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, false, 10);
 	auto startimg = gamestarttxt->GetComponent<HDData::ImageUI>();
 	startimg->SetImage("gamestart.png");
 	RoundManager::Instance()->startRoundimg = startimg;
