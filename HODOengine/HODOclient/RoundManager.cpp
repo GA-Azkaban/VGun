@@ -40,6 +40,7 @@ void RoundManager::Start()
 	_initTimer->duration = 3;
 	_initTimer->onExpiration = [&]() {
 		_initTimer->Stop();
+		startRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		_initTimertxt->GetGameObject()->SetSelfActive(false);
 		};
 
@@ -147,6 +148,7 @@ void RoundManager::EndGame()
 {
 	// UI 활성화, 비활성화
 	SetUIActive(false);
+	finRoundimg->GetGameObject()->SetSelfActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -381,6 +383,7 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
+			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 	}
 }
@@ -499,11 +502,6 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
 {
 	_backIMG[index] = img;
-}
-
-void RoundManager::SetHeadshotUI(HDData::ImageUI* img)
-{
-	_headshotImg = img;
 }
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()

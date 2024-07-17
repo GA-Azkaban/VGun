@@ -23,6 +23,7 @@ public:
 
 public: // 에러 코드
 	void RecvFail(int32 errorCode);
+	HDData::GameObject* cube;
 
 public: // 계정 관련
 	// Debug

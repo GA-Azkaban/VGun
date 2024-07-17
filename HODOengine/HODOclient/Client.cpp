@@ -42,7 +42,7 @@ void Client::Initialize()
 	//unity.Start();
 
 	//AnimationLoaderTest loader;
-	//loader.Start();
+	//loader.Start(); 
 
 	LoginSceneView login;		//Scene Name : Login
 	login.Initialize();
