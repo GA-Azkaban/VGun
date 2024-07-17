@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
+#include "UIEffect.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -18,6 +19,7 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	_timer->duration = 5;
 	_timer->onExpiration = [=]() {
 		_serialkillcount = 0;
+		_timer->Stop();
 		};
 }
 
@@ -131,6 +133,16 @@ bool& PlayerInfo::GetIsDie()
 	return _isDie;
 }
 
+void PlayerInfo::SetIsRespawn(bool isRespawn)
+{
+	_isRespawn = isRespawn;
+}
+
+bool PlayerInfo::GetIsRespawn()
+{
+	return _isRespawn;
+}
+
 bool& PlayerInfo::GetIsStateChange()
 {
 	return _isStateChange;
@@ -216,21 +228,37 @@ void PlayerInfo::AddSerialKillCount()
 		case 1:
 		{
 			//kill!
+			_timer->Start();
 		}
 		break;
 		case 2:
 		{
 			// double kill!
+			_killEffectImg->SetImage("doublekill.png");
+			_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 		break;
 		case 3:
 		{
 			// triple kill!
+			_killEffectImg->SetImage("triplekill.png");
+			_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 		break;
 		default:
 			break;
 	}
+}
+
+void PlayerInfo::SetKillEffectImg(HDData::ImageUI* img)
+{
+	_killEffectImg = img;
+}
+
+void PlayerInfo::PlayHeadShotEffect()
+{
+	_killEffectImg->SetImage("headshot.png");
+	_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
 }
 
 bool& PlayerInfo::GetPlayerDie()

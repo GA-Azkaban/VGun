@@ -16,15 +16,11 @@ void OthersAnim::Start()
 
 void OthersAnim::Update()
 {
-	if (_mesh->GetCurrentAnimName() == "RV_dying")
-	{
-		if (_mesh->IsAnimationEnd()) _mesh->SetMeshActive(false, 0);
-	}
 
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 	if (!_info->GetIsStateChange()) return;
 
-	if(_info->GetIsShoot())
+	if (_info->GetIsShoot())
 	{
 		_audio->Play3DOnce("shootother", GetGameObject()->GetTransform()->GetPosition());
 	}
@@ -99,6 +95,7 @@ void OthersAnim::Update()
 		case ePlayerState::DIE:
 		{
 			_mesh->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
+			//GetGameObject()->GetComponent<PlayerInfo>()->SetIsRespawn(true);
 		}
 		break;
 		default:

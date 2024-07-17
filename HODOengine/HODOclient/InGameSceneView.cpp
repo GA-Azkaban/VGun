@@ -13,6 +13,7 @@
 #include "IndicatorPool.h"
 #include "CloudRotate.h"
 #include "UIEffect.h"
+#include "GameManager.h"
 
 #include "BtnTextScript.h"
 
@@ -230,14 +231,14 @@ void InGameSceneView::Initialize()
 	posT += 315;
 
 	// 디버그용 state
-	auto stateInfo = API::CreateTextbox(_scene, "stateInfo");
-	stateInfo->GetTransform()->SetPosition(300, 300, 0);
-	auto stateInfoComp = stateInfo->GetComponent<HDData::TextUI>();
-	stateInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-	stateInfoComp->SetColor(DirectX::Colors::Black);
-	stateInfoComp->SetText("");
-	stateInfoComp->SetSortOrder(0.7);
-	playerMove->_plStateText = stateInfoComp;
+	//auto stateInfo = API::CreateTextbox(_scene, "stateInfo");
+	//stateInfo->GetTransform()->SetPosition(300, 300, 0);
+	//auto stateInfoComp = stateInfo->GetComponent<HDData::TextUI>();
+	//stateInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	//stateInfoComp->SetColor(DirectX::Colors::Black);
+	//stateInfoComp->SetText("");
+	//stateInfoComp->SetSortOrder(0.7);
+	//playerMove->_plStateText = stateInfoComp;
 
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
@@ -441,6 +442,7 @@ void InGameSceneView::Initialize()
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadMaterial(chMat, 0);
 
 	auto winnerTextImg = API::CreateImageBox(_scene, "winnerImg");
+	winnerTextImg->SetSelfActive(false);
 	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth()/2,400.0f,0.0f);
 	auto winnerTextImgComp = winnerTextImg->GetComponent<HDData::ImageUI>();
 	winnerTextImgComp->SetImage("winner.png");
@@ -520,11 +522,15 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->SetInitRoundTimer(countertxt);
 
 	// 헤드샷 이펙트
-	//auto headshot = API::CreateImageBox(_scene);
-	//headshot->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
-	//auto headshotimg = headshot->GetComponent<HDData::ImageUI>();
-	//headshotimg->SetImage("Headshot.png");
-	//RoundManager::Instance()->SetHeadshotUI(headshotimg);
+	auto killEffect = API::CreateImageBox(_scene);
+	killEffect->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
+	auto killEffectImg = killEffect->GetComponent<HDData::ImageUI>();
+	killEffect->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2);
+	
+	//killEffect->SetSelfActive(false);
+
+	GameManager::Instance()->GetMyInfo()->SetKillEffectImg(killEffectImg);
+	
 
 	/// Testing
 	//auto recoil = API::CreateImageBox(_scene);
@@ -537,6 +543,12 @@ void InGameSceneView::Initialize()
 	//bullet->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
 	//auto bulletImg = bullet->GetComponent<HDData::ImageUI>();
 	//bulletImg->SetImage("Bullet.png");
+
+	//auto cube = API::CreateObject(_scene);
+	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");
+	//cube->GetTransform()->SetPosition(-10, 3, 0);
+
+	//NetworkManager::Instance().cube = cube;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

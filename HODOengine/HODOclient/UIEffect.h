@@ -21,7 +21,9 @@ private:
 	HDData::ImageUI* _ui;
 	bool _isPlay;
 	bool _isShake;
+	bool _isLeft;
 	float _time;
 	Vector2 _start;
-	Timer* _timer;
+	Timer* _scaleTimer;
+	Timer* _shakeTimer;
 };

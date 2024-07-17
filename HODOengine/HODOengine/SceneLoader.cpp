@@ -28,7 +28,7 @@ namespace HDEngine
 	{
 		for (auto& pos : _spawnPoint)
 		{
-			pos = { 1, 2, 1 };
+			//pos = { 1, 2, 1 };
 		}
 	}
 
@@ -55,7 +55,7 @@ namespace HDEngine
 		SetTransform();
 	}
 
-	Vector3* SceneLoader::GetRespawnPoint()
+	std::unordered_map<int, Vector3>& SceneLoader::GetRespawnPoint()
 	{
 		return _spawnPoint;
 	}
@@ -157,12 +157,14 @@ namespace HDEngine
 			{
 				_spawnPoint[0] = tempPosition;
 			}
-
-			if (objName == "SpawnPoint")
+			
+			
+			if (objName.find("SpawnPoint") != std::string::npos)
 			{
+				int index = std::stoi(std::string{ objName.begin() + 11, objName.end() });
+				
 				// 스폰 위치 받아와서 배열에 추가
-				_spawnPoint[_spawnIndex] = tempPosition;
-				_spawnIndex++;
+				_spawnPoint[index] = tempPosition;
 			}
 
 			//포지션은 필요없지 않나?

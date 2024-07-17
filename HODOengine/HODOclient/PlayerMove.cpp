@@ -375,6 +375,7 @@ void PlayerMove::ShootGun()
 	if (hitDynamicSphere != nullptr)
 	{
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
+		GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
 		_isShootHead = true;
 		//_playerAudio->PlayOnce("hitBody");
 		//_playerAudio->PlayOnce("hitHead");
@@ -799,7 +800,7 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	_plStateText->SetText(first + "/" + second);
+	//_plStateText->SetText(first + "/" + second);
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 

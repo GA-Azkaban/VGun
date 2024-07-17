@@ -501,11 +501,6 @@ void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
 	_backIMG[index] = img;
 }
 
-void RoundManager::SetHeadshotUI(HDData::ImageUI* img)
-{
-	_headshotImg = img;
-}
-
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
 {
 	return _inGameKillCounts;
