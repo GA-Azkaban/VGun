@@ -121,9 +121,4 @@ namespace HDData
 		return _imageUI->GetFadeMode();
 	}
 
-	bool ImageUI::SetFadeMode(bool SetFade, float time)
-	{
-		return _imageUI->SetFadeMode(SetFade,time);
-	}
-
 }
