@@ -60,11 +60,12 @@ namespace RocketCore::Graphics
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
 		// fade
-		virtual bool SetFadeMode(bool SetFade,float time) override;
 		virtual void FadeIn(float time) override;
 		virtual void FadeOut(float time) override;
 		virtual bool GetFadeMode() override;
 		virtual bool GetComplete() override;
+	private:
+		bool SetFadeMode(bool SetFade,float time);
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);

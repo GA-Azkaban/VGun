@@ -27,7 +27,6 @@ namespace HDEngine
 		virtual void FadeOut(float time) override = 0;
 		virtual bool GetFadeMode() override = 0;
 		virtual bool GetComplete() override = 0;
-		virtual bool SetFadeMode(bool SetFade,float time) override = 0;
 
 	};
 }

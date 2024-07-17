@@ -38,7 +38,6 @@ namespace HDData
 		void FadeOut(float time);
 		bool GetComplete();
 		bool GetFadeMode();
-		bool SetFadeMode(bool SetFade,float time);
 
 	private:
 		HDEngine::ISketchableImage* _imageUI;
