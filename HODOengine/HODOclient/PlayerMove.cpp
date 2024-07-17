@@ -854,7 +854,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 
 	if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
 	{
-		_isMoveableOnJump = false;
+		//_isMoveableOnJump = false;
 	}
 }
 
@@ -892,7 +892,7 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
-		_isMoveableOnJump = true;
+		//_isMoveableOnJump = true;
 
 		// 일단 
 		//OnStateExit(ePlayerMoveState::JUMP);
