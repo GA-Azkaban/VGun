@@ -156,7 +156,7 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 {
 	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
 	
-	Vector3 posDif = {pos.x - currentTransform.p.x, pos.y - currentTransform.p.y, pos.z - currentTransform.p.z };
+	//Vector3 posDif = {pos.x - currentTransform.p.x, pos.y - currentTransform.p.y, pos.z - currentTransform.p.z };
 
 	_physXRigid->setGlobalPose(physx::PxTransform(physx::PxVec3(pos.x, pos.y, pos.z), currentTransform.q));
 
@@ -165,7 +165,10 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
 		if (dynamicChild != nullptr)
 		{
-			dynamicChild->Move(posDif, 1.0f, 1.0f);
+			//dynamicChild->Move(posDif, 1.0f, 1.0f);
+			// 손자뻘이 없다고 가정하고 작성
+			Vector3 localPos = dynamicChild->GetTransform()->GetLocalPosition();
+			dynamicChild->SetColliderPosition(Vector3(pos.x + localPos.x, pos.y + localPos.y, pos.z + localPos.z));
 		}
 	}
 }
