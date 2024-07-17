@@ -17,13 +17,13 @@ TestScene::TestScene()
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
 
-	auto image = API::CreateButton(_scene);
-	image->GetTransform()->SetPosition(1000, 800, 0);
-	image->GetComponent<HDData::Button>()->GetButtonComp()->SetImage("headshot.png");
-	auto effect = image->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2);
-	image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
-		effect->Play();
-		});
+	//auto image = API::CreateButton(_scene);
+	//image->GetTransform()->SetPosition(1000, 800, 0);
+	//image->GetComponent<HDData::Button>()->GetButtonComp()->SetImage("headshot.png");
+	//auto effect = image->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, false);
+	//image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
+	//	effect->Play();
+	//	});
 	
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);

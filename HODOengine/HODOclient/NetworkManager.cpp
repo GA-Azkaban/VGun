@@ -580,7 +580,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		//	cube->GetTransform()->SetPosition(tempPos[i]);
 		//	i++;
 		//	i %= 4;
-		//	temp = ::GetTickCount64() + 1000;
+		//	temp = ::GetTickCount64() + 1000;gg
 		//}
 	}
 
@@ -598,7 +598,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
-
+		
 		info->SetServerTransform(pos, rot);
 		info->SetCurrentHP(player.hp());
 

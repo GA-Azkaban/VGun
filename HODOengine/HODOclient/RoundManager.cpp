@@ -147,6 +147,7 @@ void RoundManager::EndGame()
 {
 	// UI 활성화, 비활성화
 	SetUIActive(false);
+	finRoundimg->GetGameObject()->SetSelfActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -381,6 +382,7 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
+			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 	}
 }

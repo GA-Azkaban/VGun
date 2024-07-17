@@ -21,7 +21,8 @@ namespace HDEngine
 
 		virtual void SetDefalutColor(DirectX::FXMVECTOR color) = 0;
 		virtual	void RetunDefalutColor() = 0;
-		
+		virtual Vector2 GetImageScale() = 0;
+
 		// Fade
 		virtual void FadeIn(float time) override = 0;
 		virtual void FadeOut(float time) override = 0;

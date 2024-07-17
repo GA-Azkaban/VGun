@@ -299,3 +299,8 @@ void RocketCore::Graphics::ImageRenderer::RetunDefalutColor()
 	_color = _defalutcolor;
 }
 
+Vector2 RocketCore::Graphics::ImageRenderer::GetImageScale()
+{
+	return { _scaleX, _scaleY };
+}
+

@@ -6,7 +6,12 @@
 
 PlayerInfo::PlayerInfo()
 {
-
+	_timer = new Timer;
+	_timer->duration = 5;
+	_timer->onExpiration = [=]() {
+		_serialkillcount = 0;
+		_timer->Stop();
+		};
 }
 
 PlayerInfo::PlayerInfo(PlayerInfo* info)
@@ -235,6 +240,7 @@ void PlayerInfo::AddSerialKillCount()
 		{
 			// double kill!
 			_killEffectImg->SetImage("doublekill.png");
+			_killEffectImg->ChangeScale(0.5, 0.5);
 			_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 		break;
@@ -242,6 +248,7 @@ void PlayerInfo::AddSerialKillCount()
 		{
 			// triple kill!
 			_killEffectImg->SetImage("triplekill.png");
+			_killEffectImg->ChangeScale(0.5, 0.5);
 			_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 		break;
@@ -258,6 +265,7 @@ void PlayerInfo::SetKillEffectImg(HDData::ImageUI* img)
 void PlayerInfo::PlayHeadShotEffect()
 {
 	_killEffectImg->SetImage("headshot.png");
+	_killEffectImg->ChangeScale(0.5, 0.5);
 	_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
 }
 

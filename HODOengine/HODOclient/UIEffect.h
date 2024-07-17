@@ -5,7 +5,7 @@
 class UIEffect : public HDData::Script
 {
 public:
-	UIEffect(Vector2 destScale, float time);
+	UIEffect(Vector2 destScale, float time, bool isFade, float power);
 	~UIEffect();
 
 	void Start() override;
@@ -22,8 +22,12 @@ private:
 	bool _isPlay;
 	bool _isShake;
 	bool _isLeft;
+	bool _isFade;
 	float _time;
+	float _power;
 	Vector2 _start;
+	Vector2 _originPos;
+	Vector2 _originScale;
 	Timer* _scaleTimer;
 	Timer* _shakeTimer;
 };

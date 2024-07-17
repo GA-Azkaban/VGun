@@ -74,6 +74,7 @@ public:
 	bool _ESCMenuOn = false;
 
 	LowHPEffect* lowHPEffect;
+	HDData::ImageUI* finRoundimg;
 
 private:
 	bool _isRoundStart = false;

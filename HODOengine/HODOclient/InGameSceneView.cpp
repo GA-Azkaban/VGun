@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -519,11 +519,17 @@ void InGameSceneView::Initialize()
 	auto killEffect = API::CreateImageBox(_scene);
 	killEffect->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
 	auto killEffectImg = killEffect->GetComponent<HDData::ImageUI>();
-	killEffect->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2);
-	
-	//killEffect->SetSelfActive(false);
-
+	killEffectImg->ChangeScale(0.5, 0.5);
+	killEffect->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, true, 5);
 	GameManager::Instance()->GetMyInfo()->SetKillEffectImg(killEffectImg);
+
+	// round finish
+	auto roundfin = API::CreateImageBox(_scene);
+	roundfin->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
+	roundfin->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, false, 10);
+	auto finimg = roundfin->GetComponent<HDData::ImageUI>();
+	finimg->SetImage("finRound2.png");
+	RoundManager::Instance()->finRoundimg = finimg;
 	
 
 	/// Testing
