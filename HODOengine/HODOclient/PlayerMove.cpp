@@ -673,7 +673,8 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::TUMBLE:
 		{
 			Reload();
-			_headCam->ResetCameraPos();
+			_headCam->TumbleCamera(_deltaTime);
+			//_headCam->ResetCameraPos();
 			_headCam->ToggleCameraShake(false);
 			_fpmesh->SetMeshActive(true, 0);
 			_weapon->SetMeshActive(true, 0);
@@ -887,14 +888,14 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 
 
 	// 지형인 경우
-	if ((*colArr)->GetColType() == eColliderRole::TERRAIN)
+	if ((*colArr)->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
 		_isMoveableOnJump = true;
 
 		// 일단 
-		OnStateExit(ePlayerMoveState::JUMP);
+		//OnStateExit(ePlayerMoveState::JUMP);
 	}
 
 	return;
@@ -1496,110 +1497,10 @@ void PlayerMove::DecidePlayerState()
 			_playerState.first = ePlayerMoveState::RUN;
 		}
 	}
-
-
-	/*
-	_prevPlayerState.first = _playerState.first;
-	_prevPlayerState.second = _playerState.second;
-
-	if (_playerState.first == ePlayerMoveState::TUMBLE)
-	{
-		if (_tumbleTimer > 0.0f)
-		{
-			_tumbleTimer -= _deltaTime;
-			return;
-		}
-		else
-		{
-			_playerState.first = ePlayerMoveState::IDLE;
-
-			_weapon->SetMeshActive(true, 0);
-			_weapon->SetMeshActive(true, 1);
-			_weapon->SetMeshActive(true, 2);
-			_weapon->SetMeshActive(true, 3);
-			_fpmesh->SetMeshActive(true, 0);
-		}
-	}
-
-	// jump가 아닐 때만 walk나 run이 될 수 있다.
-	if (_playerState.first != ePlayerMoveState::JUMP)
-	{
-		if (_moveDirection == 5)
-		{
-			_playerState.first = ePlayerMoveState::IDLE;
-		}
-		else
-		{
-			if (API::GetKeyPressing(DIK_LCONTROL))
-			{
-				_playerState.first = ePlayerMoveState::WALK;
-			}
-			else
-			{
-				_playerState.first = ePlayerMoveState::RUN;
-			}
-		}
-
-		// jump, tumble 들어오면 덮어씌우고
-		if (API::GetKeyDown(DIK_SPACE))
-		{
-			_playerState.first = ePlayerMoveState::JUMP;
-		}
-		else if (API::GetKeyDown(DIK_LSHIFT))
-		{
-			if (_tumbleCooldown <= 0.0f)
-			{
-				_playerState.first = ePlayerMoveState::TUMBLE;
-				// 구르기 쿨타임 5초로 설정
-				_tumbleCooldown = 5.0f;
-
-				// 재장전 or 사격 중에 구르는 경우
-				if (_prevPlayerState.second == ePlayerMoveState::RELOAD)
-				{
-					_playerAudio->Stop("reload");
-					_reloadTimer = 0.0f;
-				}
-				else if (_shootCooldown > 0.0f)
-				{
-					_headCam->ResetCameraPos();
-					_prevPlayerState.second = ePlayerMoveState::IDLE;
-				}
-			}
-		}
-	}
-	// shoot, reload 는 second에 넣어주고
-	//if (_playerState.second == ePlayerMoveState::RELOAD)
-	//{
-	//	if (_reloadTimer > 0.0f)
-	//	{o
-	//		_reloadTimer -= _deltaTime;
-	//		return;
-	//	}
-	//}
-
-	if (_playerState.second != ePlayerMoveState::RELOAD && _playerState.first != ePlayerMoveState::TUMBLE)
-	{
-		if (API::GetMouseDown(MOUSE_LEFT))
-		{
-			_playerState.second = ePlayerMoveState::FIRE;
-		}
-		else if (API::GetMouseUp(MOUSE_LEFT))
-		{
-			_playerState.second = ePlayerMoveState::IDLE;
-			_shootCount = 0;
-		}
-		if (API::GetKeyDown(DIK_R) && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
-		{
-			//_playerAudio->PlayOnce("reload");
-			_playerState.second = ePlayerMoveState::RELOAD;
-		}
-	}
-	*/
 }
 
 void PlayerMove::DecidePlayerStateSecond()
 {
-
 	// 재장전, 사격 (BULLET_MAX 6)
 	if (_reloadTimer > 0.0f)
 	{
@@ -1636,7 +1537,6 @@ void PlayerMove::DecidePlayerStateSecond()
 		{
 			_playerState.second = ePlayerMoveState::AIM;
 		}
-
 	}
 }
 
@@ -1906,13 +1806,22 @@ void PlayerMove::CameraMove()
 	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0005f);
 	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0005f);
 
-	if (_rotAngleX >= 1.5f)
+	if (_rotAngleX >= 1.5708f)
 	{
-		_rotAngleX = 1.5f;
+		_rotAngleX = 1.5708f;
 	}
-	if (_rotAngleX <= -1.5f)
+	if (_rotAngleX <= -1.5708f)
 	{
-		_rotAngleX = -1.5f;
+		_rotAngleX = -1.5708f;
+	}
+
+	if (_rotAngleY > 6.2832f)
+	{
+		_rotAngleY -= 6.2832f;
+	}
+	if (_rotAngleY < -6.2832f)
+	{
+		_rotAngleY += 6.2832f;
 	}
 
 	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
