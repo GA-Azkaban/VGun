@@ -570,7 +570,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::WALK:
 		{
-			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			//_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			//if (_moveDirection != _prevDirection)
 			//{
 			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
@@ -582,7 +582,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			//_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			//if (_moveDirection != _prevDirection)
 			//{
 			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);

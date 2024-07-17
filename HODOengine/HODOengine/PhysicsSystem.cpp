@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -137,6 +137,18 @@ namespace HDEngine
 
 			col->UpdateFromPhysics(pos, rot);
 
+			//auto headCam = col->GetGameObject()->GetComponentInChildren<HDData::Camera>();
+			//if (headCam != nullptr)
+			//{
+			//	headCam->GetTransform()->SetPosition(pos + Vector3(0.0f, 1.65f, 0.175f));
+			//}
+
+			auto fpMeshObj = col->GetGameObject()->GetGameObjectByNameInChildren("meshShell");
+			if (fpMeshObj != nullptr)
+			{
+				//fpMeshObj->GetTransform()->SetPosition(pos + fpMeshObj->GetTransform()->GetLocalPosition());
+			}
+
 			// Child Velocity
 			for (auto& child : col->GetChildColliderVec())
 			{
@@ -149,7 +161,9 @@ namespace HDEngine
 				childPos.y += localPos.y;
 				childPos.z += (child->GetTransform()->GetForward() * localPos.z).z;
 				childRigid->setGlobalPose(physx::PxTransform(childPos, nowTr.q));
+				//dynamic_cast<HDData::DynamicCollider*>(child)->UpdateFromPhysics(Vector3(childPos.x, childPos.y, childPos.z), rot);
 			}
+
 		}
 	}
 
