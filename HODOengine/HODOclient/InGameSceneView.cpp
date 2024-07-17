@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -61,12 +61,6 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->SetEndCam(gameendCam);
 
-	// 구름 회전
-	//auto cloudPivotObj = API::CreateObject(_scene, "cloudObj");
-	//cloudPivotObj->GetTransform()->SetPosition(0, 0, 0);
-	//cloudPivotObj->AddComponent<CloudRotateScript>();
-	//cloudPivotObj->GetTransform()->Rotate(0.0f, 5.0f, 0.0f);
-
 	// 내 캐릭터 생성	
 	std::string objName1 = "playerSelf";
 	HDData::GameObject* player = API::CreateObject(_scene, objName1);
@@ -99,7 +93,6 @@ void InGameSceneView::Initialize()
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
 	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
-	//auto helperBox = landingHelper->AddComponent<HDData::DynamicBoxCollider>(0.2f, 0.06f, 0.2f);
 	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
 	helperBox->SetParentCollider(playerCollider);
 
@@ -125,7 +118,7 @@ void InGameSceneView::Initialize()
 	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
-	fpMeshObj->GetTransform()->Rotate(0.0f, -5.0f, 0.0f);
+	fpMeshObj->GetTransform()->SetLocalRotation(-0.0925f, -0.0168f, 0.0014f, 0.9955f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	fpMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
 	fpMeshComp->LoadAnimation("TP");
@@ -444,6 +437,7 @@ void InGameSceneView::Initialize()
 	auto winnerTextImg = API::CreateImageBox(_scene, "winnerImg");
 	winnerTextImg->SetSelfActive(false);
 	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth()/2,400.0f,0.0f);
+	winnerTextImg->SetSelfActive(false);
 	auto winnerTextImgComp = winnerTextImg->GetComponent<HDData::ImageUI>();
 	winnerTextImgComp->SetImage("winner.png");
 	winnerTextImgComp->SetColor(DirectX::Colors::Gold);	// 노란색 이미지를 가져올것
