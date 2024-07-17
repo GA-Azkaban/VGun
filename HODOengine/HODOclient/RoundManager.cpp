@@ -40,6 +40,7 @@ void RoundManager::Start()
 	_initTimer->duration = 3;
 	_initTimer->onExpiration = [&]() {
 		_initTimer->Stop();
+		startRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		_initTimertxt->GetGameObject()->SetSelfActive(false);
 		};
 

@@ -512,8 +512,15 @@ void InGameSceneView::Initialize()
 	initCounter->SetSelfActive(false);
 	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
 	countertxt->SetFont("Resources/Font/KRAFTON_200.spriteFont");
-	countertxt->SetColor(DirectX::Colors::Red);
+	countertxt->SetColor(DirectX::Colors::LightYellow);
 	RoundManager::Instance()->SetInitRoundTimer(countertxt);
+
+	auto gamestarttxt = API::CreateImageBox(_scene);
+	gamestarttxt->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0.0f);
+	gamestarttxt->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, true, 10);
+	auto startimg = gamestarttxt->GetComponent<HDData::ImageUI>();
+	startimg->SetImage("gamestart.png");
+	RoundManager::Instance()->startRoundimg = startimg;
 
 	// 헤드샷 이펙트
 	auto killEffect = API::CreateImageBox(_scene);

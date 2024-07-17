@@ -75,6 +75,7 @@ public:
 
 	LowHPEffect* lowHPEffect;
 	HDData::ImageUI* finRoundimg;
+	HDData::ImageUI* startRoundimg;
 
 private:
 	bool _isRoundStart = false;

@@ -55,7 +55,6 @@ void UIEffect::Update()
 
 void UIEffect::Play()
 {
-	//_ui->SetFadeMode(false, 1);
 	GetGameObject()->SetSelfActive(true);
 	_scaleTimer->Start();
 	_ui->ChangeScale(_start.x, _start.y);
