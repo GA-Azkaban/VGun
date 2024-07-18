@@ -413,6 +413,24 @@ void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 	this->_service->BroadCast(sendBuffer);
 }
 
+void NetworkManager::SendRoomChat(std::string chat)
+{
+	// 보낼 메세지만 전송
+	Protocol::C_ROOM_CHAT packet;
+
+	packet.set_chat(chat);
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+}
+
+void NetworkManager::RecvRoomChat(std::string nickName, std::string chat)
+{
+	// Todo 채팅이 깨질수도 있음
+	
+
+}
+
 void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 {
 	auto info = LobbyManager::Instance().GetRoomData();

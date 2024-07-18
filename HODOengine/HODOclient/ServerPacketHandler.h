@@ -46,6 +46,8 @@ enum : uint16
 	PKT_S_PLAY_ROLL = 1037,
 	PKT_C_PLAY_RELOAD = 1038,
 	PKT_S_PLAY_RELOAD = 1039,
+	PKT_C_ROOM_CHAT = 1040,
+	PKT_S_ROOM_CHAT = 1041,
 };
 
 // Custom Handlers
@@ -72,6 +74,7 @@ bool Handle_S_PLAY_KILL_DEATH(Horang::PacketSessionRef& session, Protocol::S_PLA
 bool Handle_S_PLAY_RESPAWN(Horang::PacketSessionRef& session, Protocol::S_PLAY_RESPAWN& pkt);
 bool Handle_S_PLAY_ROLL(Horang::PacketSessionRef& session, Protocol::S_PLAY_ROLL& pkt);
 bool Handle_S_PLAY_RELOAD(Horang::PacketSessionRef& session, Protocol::S_PLAY_RELOAD& pkt);
+bool Handle_S_ROOM_CHAT(Horang::PacketSessionRef& session, Protocol::S_ROOM_CHAT& pkt);
 
 class ServerPacketHandler
 {
@@ -102,6 +105,7 @@ public:
 		GPacketHandler[PKT_S_PLAY_RESPAWN] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAY_RESPAWN>(Handle_S_PLAY_RESPAWN, session, buffer, len); };
 		GPacketHandler[PKT_S_PLAY_ROLL] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAY_ROLL>(Handle_S_PLAY_ROLL, session, buffer, len); };
 		GPacketHandler[PKT_S_PLAY_RELOAD] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAY_RELOAD>(Handle_S_PLAY_RELOAD, session, buffer, len); };
+		GPacketHandler[PKT_S_ROOM_CHAT] = [](Horang::PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ROOM_CHAT>(Handle_S_ROOM_CHAT, session, buffer, len); };
 	}
 
 	static bool HandlePacket(Horang::PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -127,6 +131,7 @@ public:
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_PLAY_SHOOT& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAY_SHOOT); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_PLAY_ROLL& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAY_ROLL); }
 	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_PLAY_RELOAD& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAY_RELOAD); }
+	static Horang::SendBufferRef MakeSendBuffer(Protocol::C_ROOM_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_ROOM_CHAT); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>
