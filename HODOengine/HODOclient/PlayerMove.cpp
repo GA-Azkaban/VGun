@@ -1,6 +1,5 @@
 ﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
-#include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
 #include "RoundManager.h"
@@ -43,6 +42,9 @@ void PlayerMove::Start()
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
+
+	_fpanimator = GetGameObject()->GetGameObjectByNameInChildren("FPMesh")->GetComponent<HDData::Animator>();
+	_tpanimator = GetGameObject()->GetComponent<HDData::Animator>();
 
 	//_playerAudio->PlayRepeat("bgm");
 }
@@ -463,6 +465,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
+			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 			_playerColliderStanding->Stop();
 
 			break;
@@ -524,6 +527,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::FIRE:
 		{
 			ShootGun();
+			_fpanimator->GetAllAC()->SetTrigger("isFire");
 			_headCam->ToggleCameraShake(true);
 			_playerAudio->PlayOnce("shoot");
 
@@ -539,6 +543,8 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::RELOAD:
 		{
 			_fpmesh->SetMeshActive(false, 0);
+			_fpanimator->GetAllAC()->SetBool("isIdle", false);
+			_fpanimator->GetAllAC()->SetTrigger("isReload");
 			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 2.6f;
 

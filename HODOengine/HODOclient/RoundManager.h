@@ -121,7 +121,7 @@ public:
 	void SetDesiredKill(int count);
 	int& GetDesiredKill();
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
-	void SetKillCountBack(HDData::ImageUI* img, int index);
+	//void SetKillCountBack(HDData::ImageUI* img, int index);
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
 private:

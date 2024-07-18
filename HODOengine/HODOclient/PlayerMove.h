@@ -156,4 +156,11 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
+
+	// 애니메이션과 결합
+private:
+	HDData::Animator* _fpanimator;
+	HDData::Animator* _tpanimator;
+
+
 };

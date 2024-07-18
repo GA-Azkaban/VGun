@@ -73,9 +73,6 @@
     <ClCompile Include="MeshTransformController.cpp">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
-    <ClCompile Include="FPAniScript.cpp">
-      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
-    </ClCompile>
     <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClCompile>
@@ -215,9 +212,6 @@
     </ClInclude>
     <ClInclude Include="MeshTransformController.h">
       <Filter>02_Client\01_Script\99_test</Filter>
-    </ClInclude>
-    <ClInclude Include="FPAniScript.h">
-      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
     <ClInclude Include="TPScript.h">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>

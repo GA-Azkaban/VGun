@@ -79,7 +79,9 @@ public:
 
 	void AddSerialKillCount();
 	void SetKillEffectImg(HDData::ImageUI* img);
+	void SetDieEffectImg(HDData::ImageUI* img);
 	void PlayHeadShotEffect();
+	void PlayDieEffect();
 
 private:
 	bool _isMyInfo = false;
@@ -121,5 +123,6 @@ private:
 	HitEffect* _hitEffect;
 	HDData::ParticleSystem* _particleSystem;
 	HDData::ImageUI* _killEffectImg;
+	HDData::ImageUI* _dieEffectImg;
 };
 

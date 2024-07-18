@@ -4,7 +4,6 @@
 #include "PlayerMove.h"
 #include "GameManager.h"
 #include "MenuManager.h"
-#include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
 #include "LowHPEffect.h"
@@ -127,6 +126,8 @@ void RoundManager::InitGame()
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
 			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+			_killCountObjs[index].first->SetColor(DirectX::Colors::WhiteSmoke);
+			_killCountObjs[index].second->SetColor(DirectX::Colors::WhiteSmoke);
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 		else
@@ -135,6 +136,8 @@ void RoundManager::InitGame()
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
+			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
+			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 
@@ -152,7 +155,7 @@ void RoundManager::EndGame()
 
 	for (int i = 0; i < 6; ++i)
 	{
-		_backIMG[i]->GetGameObject()->SetSelfActive(false);
+		//_backIMG[i]->GetGameObject()->SetSelfActive(false);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 	}
@@ -167,7 +170,7 @@ void RoundManager::InitRound()
 {
 	for (int i = 0; i < _players.size() + 1; ++i)
 	{
-		_backIMG[i]->GetGameObject()->SetSelfActive(true);
+		//_backIMG[i]->GetGameObject()->SetSelfActive(true);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
 	}
@@ -197,7 +200,7 @@ void RoundManager::SetUIActive(bool isActive)
 {
 	for (int i = 0; i < 6; ++i)
 	{
-		_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
+		//_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}
@@ -345,7 +348,7 @@ void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 {
 	_timerUI = obj;
 	_timerUI->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	_timerUI->GetTransform()->SetPosition(1350.0f, 60.0f, 0.0f);
+	_timerUI->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 60.0f, 0.0f);
 }
 
 void RoundManager::SetRoundTimer(int time)
@@ -499,10 +502,10 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 	_killCountObjs[index] = std::make_pair(nick, count);
 }
 
-void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
-{
-	_backIMG[index] = img;
-}
+//void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
+//{
+//	_backIMG[index] = img;
+//}
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
 {

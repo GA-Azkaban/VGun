@@ -262,11 +262,21 @@ void PlayerInfo::SetKillEffectImg(HDData::ImageUI* img)
 	_killEffectImg = img;
 }
 
+void PlayerInfo::SetDieEffectImg(HDData::ImageUI* img)
+{
+	_dieEffectImg = img;
+}
+
 void PlayerInfo::PlayHeadShotEffect()
 {
 	_killEffectImg->SetImage("headshot.png");
 	_killEffectImg->ChangeScale(0.5, 0.5);
 	_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
+}
+
+void PlayerInfo::PlayDieEffect()
+{
+	_dieEffectImg->FadeIn(2);
 }
 
 bool& PlayerInfo::GetPlayerDie()
