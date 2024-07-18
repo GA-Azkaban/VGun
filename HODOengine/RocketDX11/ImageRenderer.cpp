@@ -1,4 +1,4 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -87,7 +87,8 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	{
 		if (_fadeAlpha <= 1.0f)
 		{
-			_fadeAlpha += 0.02f;
+			//_fadeAlpha += 0.02f;
+			_fadeAlpha += _fadeIncrement;
 			if (_fadeAlpha > 1.0f)
 			{
 				_fadeAlpha = 1.0f;
@@ -103,7 +104,8 @@ void RocketCore::Graphics::ImageRenderer::Render(DirectX::SpriteBatch* spriteBat
 	{
 		if (_fadeAlpha >= 0.0f)
 		{
-			_fadeAlpha -= 0.02f;
+			//_fadeAlpha -= 0.02f;
+			_fadeAlpha -= _fadeIncrement;
 			if (_fadeAlpha < 0.0f)
 			{
 				_fadeAlpha = 0.0f;
@@ -267,11 +269,13 @@ void RocketCore::Graphics::ImageRenderer::SetSortOrder(float order)
 void RocketCore::Graphics::ImageRenderer::FadeIn(float time)
 {
 	SetFadeMode(true, time);
+	_fadeAlpha = 0.0f;
 }
 
 void RocketCore::Graphics::ImageRenderer::FadeOut(float time)
 {
 	SetFadeMode(false, time);
+	_fadeAlpha = 1.0f;
 }
 
 bool RocketCore::Graphics::ImageRenderer::GetFadeMode()
@@ -303,3 +307,9 @@ void RocketCore::Graphics::ImageRenderer::RetunDefalutColor()
 {
 	_color = _defalutcolor;
 }
+
+Vector2 RocketCore::Graphics::ImageRenderer::GetImageScale()
+{
+	return { _scaleX, _scaleY };
+}
+

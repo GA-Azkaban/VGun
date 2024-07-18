@@ -55,6 +55,8 @@ public:
 	int& GetCurrentBulletCount();
 	int GetMaxBulletCount();
 	bool& GetIsDie();
+	void SetIsRespawn(bool isRespawn);
+	bool GetIsRespawn();
 
 	bool& GetIsStateChange();
 	void SetIsStateChange(bool isChange);
@@ -76,6 +78,8 @@ public:
 	void PlayerAttacked(Vector3 targetPos);
 
 	void AddSerialKillCount();
+	void SetKillEffectImg(HDData::ImageUI* img);
+	void PlayHeadShotEffect();
 
 private:
 	bool _isMyInfo = false;
@@ -108,6 +112,7 @@ private:
 	// count info
 	int _kill;
 	int _death;
+	bool _isRespawn;
 
 	// serial kill
 	Timer* _timer;
@@ -115,5 +120,6 @@ private:
 
 	HitEffect* _hitEffect;
 	HDData::ParticleSystem* _particleSystem;
+	HDData::ImageUI* _killEffectImg;
 };
 

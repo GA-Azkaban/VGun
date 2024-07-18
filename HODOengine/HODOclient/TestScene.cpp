@@ -20,9 +20,9 @@ TestScene::TestScene()
 	//auto image = API::CreateButton(_scene);
 	//image->GetTransform()->SetPosition(1000, 800, 0);
 	//image->GetComponent<HDData::Button>()->GetButtonComp()->SetImage("headshot.png");
-	//auto effect = image->AddComponent<UIEffect>(Vector2{1.5, 1.5}, 3);
+	//auto effect = image->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, false);
 	//image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
-	//		effect->Play();
+	//	effect->Play();
 	//	});
 	
 	//auto testBox1 = API::CreateObject(_scene);

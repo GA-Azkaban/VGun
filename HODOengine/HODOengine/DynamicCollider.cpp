@@ -87,8 +87,8 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 	//_physXRigid->setGlobalPose(playerPos);
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
-	velo.x = moveStep.x * speed * 2;
-	velo.z = moveStep.z * speed * 2;
+	velo.x = moveStep.x * speed;
+	velo.z = moveStep.z * speed;
 	_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setForceAndTorque(physx::PxVec3(moveStep.x * speed * 300.0f, 0.0f, moveStep.z * speed * 300.0f), physx::PxVec3());
 
@@ -156,7 +156,7 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 {
 	physx::PxTransform currentTransform = _physXRigid->getGlobalPose();
 	
-	Vector3 posDif = {pos.x - currentTransform.p.x, pos.y - currentTransform.p.y, pos.z - currentTransform.p.z };
+	//Vector3 posDif = {pos.x - currentTransform.p.x, pos.y - currentTransform.p.y, pos.z - currentTransform.p.z };
 
 	_physXRigid->setGlobalPose(physx::PxTransform(physx::PxVec3(pos.x, pos.y, pos.z), currentTransform.q));
 
@@ -165,7 +165,10 @@ void HDData::DynamicCollider::SetColliderPosition(Vector3 pos)
 		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
 		if (dynamicChild != nullptr)
 		{
-			dynamicChild->Move(posDif, 1.0f, 1.0f);
+			//dynamicChild->Move(posDif, 1.0f, 1.0f);
+			// 손자뻘이 없다고 가정하고 작성
+			Vector3 localPos = dynamicChild->GetTransform()->GetLocalPosition();
+			dynamicChild->SetColliderPosition(Vector3(pos.x + localPos.x, pos.y + localPos.y, pos.z + localPos.z));
 		}
 	}
 }

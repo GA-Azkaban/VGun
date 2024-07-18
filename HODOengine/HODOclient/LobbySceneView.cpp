@@ -34,18 +34,17 @@ void LobbySceneView::Initialize()
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
-	testBox1->GetTransform()->SetScale(6, 6, 6);
+	testBox1->GetTransform()->SetScale(4,3, 3);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->SetUseLight(false);
 	boxRender1->LoadMesh("primitiveQuad");
 	HDEngine::MaterialDesc boxMat1;
-	boxMat1.materialName = "_blur_background_image";
-	boxMat1.albedo = "_blur_background_image.png";
+	boxMat1.materialName = "_blur_LobbyBackGround";
+	boxMat1.albedo = "_blur_LobbyBackGround.png";
 	HDData::Material* newBoxMat1 = API::CreateMaterial(boxMat1);
 	boxRender1->LoadMaterial(newBoxMat1, 0);
 
 	// MAP SELECT
-
 
 	// game start button
 	auto startButton = API::CreateButton(_scene, "gameStartButton");

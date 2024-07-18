@@ -183,7 +183,7 @@ namespace HDData
 
 		if (_shakeTime < 0.3f)
 		{
-			float distY = sin(_shakeTime * 10.472f);
+			float distY = sin(_shakeTime * 10.471f);
 
 			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f - distY, 0.175f));
 

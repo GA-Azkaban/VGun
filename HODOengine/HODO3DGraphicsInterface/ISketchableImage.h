@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <string>
 #include "ISketchable.h"
 
@@ -22,12 +22,13 @@ namespace HDEngine
 
 		virtual void SetDefalutColor(DirectX::FXMVECTOR color) = 0;
 		virtual	void RetunDefalutColor() = 0;
-		
+		virtual Vector2 GetImageScale() = 0;
+
 		// Fade
 		virtual void FadeIn(float time) override = 0;
 		virtual void FadeOut(float time) override = 0;
 		virtual bool GetFadeMode() override = 0;
 		virtual bool GetComplete() override = 0;
-		virtual bool SetFadeMode(bool SetFade,float time) override = 0;
+
 	};
 }
