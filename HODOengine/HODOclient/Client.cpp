@@ -31,11 +31,9 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
-	//FadeInOut::Instance();
 	
 	// 씬 초기화
 	//TestScene test;
-
 	//API::LoadSceneByName("Test");
 
 	//UnitySceneLoaderTest unity;
@@ -46,10 +44,10 @@ void Client::Initialize()
 
 	LoginSceneView login;		//Scene Name : Login
 	login.Initialize();
-
+	
 	LobbySceneView lobby;
 	lobby.Initialize();
-
+	
 	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();
 	

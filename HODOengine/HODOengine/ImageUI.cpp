@@ -11,7 +11,6 @@ namespace HDData
 	ImageUI::ImageUI()
 		: _imageUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
-		//HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable = _imageUI;
 		_imageUI->SetActive(true);
 	}
@@ -79,6 +78,11 @@ namespace HDData
 	void ImageUI::ChangeScale(float x, float y)
 	{
 		_imageUI->ChangeScale(x, y);
+	}
+
+	DirectX::XMFLOAT2 ImageUI::GetScale()
+	{
+		return _imageUI->GetScale();
 	}
 
 	void ImageUI::SetAngle(float angle)

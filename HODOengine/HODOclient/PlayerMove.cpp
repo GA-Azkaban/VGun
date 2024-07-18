@@ -5,6 +5,8 @@
 #include "GameManager.h"
 #include "RoundManager.h"
 #include "NetworkManager.h"
+#include "CooldownAlpha.h"
+#include "CooldownText.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true), _isMoveableOnJump(true),
@@ -492,6 +494,8 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_tumbleTimer = 0.3f;
 			_tumbleCooldown = 2.0f;
+			recoilCooldown->SetTimerOn();
+			cooldownCountText->SetTimerOn();
 
 			_headCam->ToggleCameraShake(true);
 			_fpmesh->SetMeshActive(false, 0);

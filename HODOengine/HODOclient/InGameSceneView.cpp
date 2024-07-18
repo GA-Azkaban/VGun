@@ -14,6 +14,10 @@
 #include "CloudRotate.h"
 #include "UIEffect.h"
 #include "BtnTextScript.h"
+#include "CooldownAlpha.h"
+#include "CooldownText.h"
+#include "MeshTransformController.h"
+#include "UITransformController.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -487,7 +491,6 @@ void InGameSceneView::Initialize()
 
 	auto dirLight = API::GetObjectByName(_scene, "DirectionalLight");
 	auto lightComp = dirLight->GetComponent<HDData::Light>();
-	//lightComp->SetColor({ 249.0f / 255.0f, 176.0f / 255.0f, 44.0f / 255.0f, 1.0f });
 	lightComp->SetColor({ 251.0f / 255.0f, 209.0f / 255.0f, 129.0f / 255.0f, 1.0f });
 
 	IndicatorPool::Instance().player = player;
@@ -518,17 +521,30 @@ void InGameSceneView::Initialize()
 	//headshotimg->SetImage("Headshot.png");
 	//RoundManager::Instance()->SetHeadshotUI(headshotimg);
 
-	/// Testing
-	//auto recoil = API::CreateImageBox(_scene);
-	//recoil->GetTransform()->SetPosition(2000.0f,1300.0f,0.0f);
-	//auto recoilImg = recoil->GetComponent<HDData::ImageUI>();
-	//recoilImg->SetImage("Recoil.png");
-	//recoilImg->SetColor(DirectX::Colors::White);
+	// 구르기 UI
+	auto tumbleObj = API::CreateObject(_scene, "Tumble");
+	tumbleObj->GetTransform()->SetPosition(1750, 1350, 0);
+	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
+	tumbleComp->SetImage("recoil_rounded.png");
+	tumbleComp->SetSortOrder(0.7f);
 
-	//auto bullet = API::CreateImageBox(_scene);
-	//bullet->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
-	//auto bulletImg = bullet->GetComponent<HDData::ImageUI>();
-	//bulletImg->SetImage("Bullet.png");
+	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
+	tumbleAlphaObj->GetTransform()->SetPosition(1750, 1350, 0);
+	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
+	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
+	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
+	tumbleAlphaImage->SetSortOrder(0.8f);
+
+	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
+	tumbleCooldownCountObj->GetTransform()->SetPosition(1750 - 5, 1350 + 5, 0);
+	auto tumbleCooldownCount = tumbleCooldownCountObj->AddComponent<CooldownText>();
+	auto tumbleCooldownText = tumbleCooldownCountObj->AddComponent<HDData::TextUI>();
+	tumbleCooldownText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	tumbleCooldownText->SetText("0");
+	tumbleCooldownText->SetSortOrder(0.9f);
+
+	playerMove->recoilCooldown = tumbleCooldown;
+	playerMove->cooldownCountText = tumbleCooldownCount;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

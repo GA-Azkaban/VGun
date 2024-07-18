@@ -211,6 +211,11 @@ void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 	_centerY = _currentImageHeight / 2.0f;
 }
 
+DirectX::XMFLOAT2 RocketCore::Graphics::ImageRenderer::GetScale()
+{
+	return DirectX::XMFLOAT2(_scaleX, _scaleY);
+}
+
 void RocketCore::Graphics::ImageRenderer::SetAngle(float angle)
 {
 	//_rotationRadian = angle * std::numbers::pi / 180.0f;
@@ -298,4 +303,3 @@ void RocketCore::Graphics::ImageRenderer::RetunDefalutColor()
 {
 	_color = _defalutcolor;
 }
-

@@ -120,64 +120,61 @@ TestScene::TestScene()
 	ak.push_back(alphaKey2);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
 
-	particleSystem->Play();
+	particleSystem->Play(); */
 
-	//auto particleSystemObj2 = API::CreateObject(_scene, "particleSystem2", particleSystemObj);
-	//auto particleSystemObj2 = API::CreateObject(_scene);
-	//particleSystemObj2->GetComponent<HDData::Transform>()->Rotate(-90.0f, 0.0f, 0.0f);
-	//auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
-	//particleSystem2->main.duration = 0.2f;
-	//particleSystem2->main.loop = true;
-	//particleSystem2->main.minStartColor = { 255, 93, 36, 255 };
-	//particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
-	//particleSystem2->main.minStartLifetime = 0.25f;
-	//particleSystem2->main.maxStartLifetime = 0.75f;
-	//particleSystem2->main.minStartRotation = -250.0f;
-	//particleSystem2->main.maxStartRotation = 250.0f;
-	//particleSystem2->main.minStartSize = 0.1f;
-	//particleSystem2->main.maxStartSize = 0.2f;
-	//particleSystem2->main.minStartSpeed = 10.0f;
-	//particleSystem2->main.maxStartSpeed = 15.0f;
-	//particleSystem2->emission.enabled = true;
-	////HDData::Burst newBurst2(0.0f, 4, 16);
-	//HDData::Burst newBurst2(0.0f, 4, 16, 2, 0.1);
-	//particleSystem2->emission.SetBurst(newBurst2);
+	auto particleSystemObj2 = API::CreateObject(_scene, "BulletParticle");
+	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
+	particleSystem2->main.duration = 2.0f;
+	particleSystem2->main.loop = true;
+	particleSystem2->main.minStartColor = { 255, 113, 36, 255 };
+	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem2->main.minStartLifetime = 2.0f;
+	particleSystem2->main.maxStartLifetime = 2.0f;
+	particleSystem2->main.minStartRotation = 75.0f;
+	particleSystem2->main.maxStartRotation = 75.0f;
+	particleSystem2->main.minStartSize = 0.08f;
+	particleSystem2->main.maxStartSize = 0.12f;
+	particleSystem2->main.minStartSpeed = 1.0f;
+	particleSystem2->main.maxStartSpeed = 1.0f;
+	particleSystem2->emission.enabled = true;
+	HDData::Burst newBurst2(0.0f, 1);
+	particleSystem2->emission.SetBurst(newBurst2);
 	//particleSystem2->sizeOverLifetime.enabled = true;
 	//HDData::AnimationCurve curve2;
-	//curve2.AddKey(0.0f, 1.0f, [](float t) { return -0.6 * t * t + 0.6 * t; });
+	//curve2.AddKey(0.0f, 1.0f, [](float t) { return -6 * t * t + 6 * t; });
 	//particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
 	//particleSystem2->rotationOverLifetime.enabled = true;
 	//particleSystem2->rotationOverLifetime.angularVelocity = 750.0f;
-	//HDEngine::MaterialDesc particleMatDesc;
-	//particleMatDesc.materialName = "particleMat";
-	////particleMatDesc.albedo = "T_Ember_D.png";
-	//particleMatDesc.color = { 255, 90, 0, 255 };
-	//HDData::Material* particleMat = API::CreateMaterial(particleMatDesc);
-	//particleSystem2->rendererModule.material = particleMat;
-	//particleSystem2->rendererModule.mesh = "primitiveSphere";
-	//particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
-	//particleSystem2->colorOverLifetime.enabled = true;
-	//// colorKey, alphaKey 생성
-	//std::vector<HDData::GradientColorKey> ck;
-	//std::vector<HDData::GradientAlphaKey> ak;
-	//HDData::GradientColorKey colorkey1;
-	//colorkey1.color = { 255, 255, 255 };
-	//colorkey1.time = 0.556f;
-	//ck.push_back(colorkey1);
-	//HDData::GradientColorKey colorkey2;
-	//colorkey2.color = { 80, 70, 60 };
-	//colorkey2.time = 1.0f;
-	//ck.push_back(colorkey2);
-	//HDData::GradientAlphaKey alphaKey1;
-	//alphaKey1.alpha = 255;
-	//alphaKey1.time = 0.0f;
-	//ak.push_back(alphaKey1);
-	//HDData::GradientAlphaKey alphaKey2;
-	//alphaKey2.alpha = 255;
-	//alphaKey2.time = 1.0f;
-	//ak.push_back(alphaKey2);
-	//particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
-	//particleSystem2->Play();
+	HDEngine::MaterialDesc particleMatDesc;
+	particleMatDesc.materialName = "particleMat";
+	//particleMatDesc.albedo = "T_Sparks_D.png";
+	particleMatDesc.color = { 255, 0, 0, 255 };
+	HDData::Material* particleMat = API::CreateMaterial(particleMatDesc);
+	particleSystem2->rendererModule.material = particleMat;
+	particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem2->rendererModule.mesh = "primitiveQuad";
+	particleSystem2->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck;
+	std::vector<HDData::GradientAlphaKey> ak;
+	HDData::GradientColorKey colorkey1;
+	colorkey1.color = { 255, 255, 255 };
+	colorkey1.time = 0.556f;
+	ck.push_back(colorkey1);
+	HDData::GradientColorKey colorkey2;
+	colorkey2.color = { 255, 79, 0 };
+	colorkey2.time = 1.0f;
+	ck.push_back(colorkey2);
+	HDData::GradientAlphaKey alphaKey1;
+	alphaKey1.alpha = 255;
+	alphaKey1.time = 0.0f;
+	ak.push_back(alphaKey1);
+	HDData::GradientAlphaKey alphaKey2;
+	alphaKey2.alpha = 255;
+	alphaKey2.time = 1.0f;
+	ak.push_back(alphaKey2);
+	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
+	particleSystem2->Play();
 
 	//auto testBox2 = API::CreateObject(_scene);
 	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
@@ -215,7 +212,7 @@ TestScene::TestScene()
 	}
 
 	// 플레이어 테스트
-	auto playerTest = API::CreateObject(_scene, "player");
+	/*auto playerTest = API::CreateObject(_scene, "player");
 	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
 	playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
@@ -266,7 +263,7 @@ TestScene::TestScene()
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
 
-	//playerTest->AddComponent<TPScript>();
+	//playerTest->AddComponent<TPScript>(); */
 
 	// 바닥
 	//auto groundFloor = API::CreateObject(_scene, "ground");
