@@ -548,6 +548,7 @@ void InGameSceneView::Initialize()
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
 	tumbleComp->SetSortOrder(0.7f);
+	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
 	tumbleAlphaObj->GetTransform()->SetPosition(1750, 1350, 0);
