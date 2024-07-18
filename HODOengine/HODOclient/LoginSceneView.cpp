@@ -63,6 +63,7 @@ void LoginSceneView::LoginView()
 	auto gameLogo = API::CreateImageBox(_scene, "gameLogo", loginControlObject);
 	gameLogo->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 600.0f, 0.0f);
 	auto gameLogoComp = gameLogo->GetComponent<HDData::ImageUI>();
+	gameLogoComp->SetSortOrder(0.0f);
 	gameLogoComp->SetImage("gameLogo.png");
 
 	// TeamLogo

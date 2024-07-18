@@ -44,7 +44,7 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start(); 
 
-	LoginSceneView login;		//Scene Name : Login
+	LoginSceneView login;		//Scene N@ame : Login
 	login.Initialize();
 
 	LobbySceneView lobby;

@@ -157,8 +157,7 @@ namespace HDEngine
 			{
 				_spawnPoint[0] = tempPosition;
 			}
-			
-			
+				
 			if (objName.find("SpawnPoint") != std::string::npos)
 			{
 				int index = std::stoi(std::string{ objName.begin() + 11, objName.end() });
