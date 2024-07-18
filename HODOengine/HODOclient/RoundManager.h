@@ -77,6 +77,8 @@ public:
 	HDData::ImageUI* finRoundimg;
 	HDData::ImageUI* startRoundimg;
 
+	HDData::ImageUI* tumbleImage;
+
 private:
 	bool _isRoundStart = false;
 	HDData::Camera* _startCam;

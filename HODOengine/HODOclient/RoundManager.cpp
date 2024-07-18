@@ -208,6 +208,7 @@ void RoundManager::SetUIActive(bool isActive)
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
+	tumbleImage->GetGameObject()->SetSelfActive(isActive);
 }
 
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)

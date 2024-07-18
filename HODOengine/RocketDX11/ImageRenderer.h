@@ -41,6 +41,8 @@ namespace RocketCore::Graphics
 
 		virtual void ChangeScale(float x, float y) override;
 
+		virtual DirectX::XMFLOAT2 GetScale() override;
+
 		virtual void SetAngle(float angle) override;
 
 		virtual void SetOrigin(float x, float y) override;

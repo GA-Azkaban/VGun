@@ -124,6 +124,12 @@
     <ClCompile Include="UIEffect.cpp">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
     </ClCompile>
+    <ClCompile Include="CooldownAlpha.cpp">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CooldownText.cpp">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -273,6 +279,15 @@
     <ClInclude Include="UIEffect.h">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
     </ClInclude>
+    <ClInclude Include="UITransformController.h">
+      <Filter>02_Client\01_Script\99_test</Filter>
+    </ClInclude>
+    <ClInclude Include="CooldownAlpha.h">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CooldownText.h">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -414,6 +429,9 @@
     </Filter>
     <Filter Include="02_Client\01_Script\Effect\TextEffect">
       <UniqueIdentifier>{22af6bc9-505f-41c5-ad4f-145a7b01a825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\CooldownUI">
+      <UniqueIdentifier>{b832df59-f007-419a-a495-e4bd9930fd0d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

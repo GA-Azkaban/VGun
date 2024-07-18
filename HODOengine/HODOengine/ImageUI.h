@@ -28,6 +28,7 @@ namespace HDData
 		void OnClickEvent() override;
 
 		void ChangeScale(float x, float y);
+		DirectX::XMFLOAT2 GetScale();
 
 		void SetAngle(float angle);
 		void SetOrigin(float x, float y);

@@ -6,6 +6,8 @@
 /// 플레이어 움직임과 관련된 스크립트
 /// </summary>
 
+class CooldownAlpha;
+class CooldownText;
 
 class PlayerMove : public HDData::Script
 {
@@ -82,6 +84,10 @@ public:
 	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
 	virtual void OnTriggerEnter(HDData::Collider** colArr, unsigned int count) override;
 	virtual void OnTriggerExit(HDData::Collider** colArr, unsigned int count) override;
+
+public:
+	CooldownAlpha* recoilCooldown;
+	CooldownText* cooldownCountText;
 
 private:
 	bool _isMovable;

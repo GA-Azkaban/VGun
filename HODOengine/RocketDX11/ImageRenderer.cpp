@@ -1,4 +1,4 @@
-﻿#include <locale>
+#include <locale>
 #include <codecvt>
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
@@ -211,6 +211,11 @@ void RocketCore::Graphics::ImageRenderer::ChangeScale(float x, float y)
 	_currentImageHeight = _originalImageHeight * _scaleY;
 	_centerX = _currentImageWidth / 2.0f;
 	_centerY = _currentImageHeight / 2.0f;
+}
+
+DirectX::XMFLOAT2 RocketCore::Graphics::ImageRenderer::GetScale()
+{
+	return DirectX::XMFLOAT2(_scaleX, _scaleY);
 }
 
 void RocketCore::Graphics::ImageRenderer::SetAngle(float angle)
