@@ -23,5 +23,7 @@ enum class ErrorCode : int32
 	ROOM_NOT_ENTERED, // 방에 입장하지 않음
 	ROOM_PLAYING, // 방이 플레이 중임
 	ROOM_NOT_PLAYING, // 방이 플레이 중이지 않음
-	ROOM_
+	ROOM_NOT_HOST, // 방장이 아님
+	ROOM_NOT_ENOUGH_PLAYER, // 인원수 부족
+	ROOM_ENDING, // 방이 종료중
 };

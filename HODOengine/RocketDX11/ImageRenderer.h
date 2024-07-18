@@ -59,6 +59,8 @@ namespace RocketCore::Graphics
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
+		Vector2 GetImageScale();
+
 		// fade
 		virtual void FadeIn(float time) override;
 		virtual void FadeOut(float time) override;

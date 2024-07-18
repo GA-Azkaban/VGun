@@ -333,7 +333,7 @@ namespace API
 			HODOengine::Instance().ShowWindowCursor(isShow);
 		}
 
-		HODO_API Vector3* GetSpawnPointArr()
+		HODO_API std::unordered_map<int, Vector3>& GetSpawnPointArr()
 		{
 			return HDEngine::SceneLoader::Instance().GetRespawnPoint();
 		}

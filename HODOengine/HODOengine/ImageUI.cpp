@@ -96,6 +96,11 @@ namespace HDData
 		_imageUI->SetCenter(x, y);
 	}
 
+	Vector2 ImageUI::GetImageScale()
+	{
+		return _imageUI->GetImageScale();
+	}
+
 	void ImageUI::FadeIn(float time)
 	{
 		return _imageUI->FadeIn(time);

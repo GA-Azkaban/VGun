@@ -33,6 +33,8 @@ namespace HDData
 		void SetOrigin(float x, float y);
 		void SetCenter(float x, float y);
 
+		Vector2 GetImageScale();
+
 		// fade In & out
 		void FadeIn(float time);
 		void FadeOut(float time);

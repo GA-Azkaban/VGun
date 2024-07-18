@@ -74,6 +74,8 @@ public:
 	bool _ESCMenuOn = false;
 
 	LowHPEffect* lowHPEffect;
+	HDData::ImageUI* finRoundimg;
+	HDData::ImageUI* startRoundimg;
 
 private:
 	bool _isRoundStart = false;
@@ -120,7 +122,6 @@ public:
 	int& GetDesiredKill();
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
 	void SetKillCountBack(HDData::ImageUI* img, int index);
-	void SetHeadshotUI(HDData::ImageUI* img);
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
 private:
@@ -140,8 +141,6 @@ private:
 
 	// UI
 	HDData::ImageUI* _backIMG[6];
-	HDData::ImageUI* _headshotImg;
-	UIEffect* _headshoteffect;
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);

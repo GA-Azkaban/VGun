@@ -23,6 +23,7 @@ public:
 
 public: // 에러 코드
 	void RecvFail(int32 errorCode);
+	HDData::GameObject* cube;
 
 public: // 계정 관련
 	// Debug
@@ -47,6 +48,10 @@ public: // 방 관련
 
 	void SendRoomCreate(std::string roomName, std::string password = "", int32 maxPlayerCount = 6, bool isPrivate = false, bool isTeam = true);
 	void SetRoom(Protocol::RoomInfo roomInfo);
+
+	// 채팅
+	void SendRoomChat(std::string chat);
+	void RecvRoomChat(std::string nickName, std::string chat);
 
 public: // 다른 플레이어
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);
