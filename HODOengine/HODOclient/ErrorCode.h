@@ -1,27 +1,29 @@
-ï»¿#pragma once
+#pragma once
 
 enum class ErrorCode : int32
 {
-	SIGNIN = 1000, // ë¡œê·¸ì¸
-	SIGNIN_FAIL,	// ë¡œê·¸ì¸ ì‹¤íŒ¨
-	SIGNIN_DUPLICATE, // ì¤‘ë³µ ë¡œê·¸ì¸
-	SIGNIN_AUTOLOIGN_FAIL, // ìžë™ ë¡œê·¸ì¸ ì‹¤íŒ¨
-	SIGNIN_ALREADY, // ì´ë¯¸ ë¡œê·¸ì¸ ì¤‘
+	SIGNIN = 1000, // ·Î±×ÀÎ
+	SIGNIN_FAIL,	// ·Î±×ÀÎ ½ÇÆÐ
+	SIGNIN_DUPLICATE, // Áßº¹ ·Î±×ÀÎ
+	SIGNIN_AUTOLOIGN_FAIL, // ÀÚµ¿ ·Î±×ÀÎ ½ÇÆÐ
+	SIGNIN_ALREADY, // ÀÌ¹Ì ·Î±×ÀÎ Áß
 
-	SIGNUP = 2000, // íšŒì›ê°€ìž…
-	SIGNUP_FAIL, // íšŒì›ê°€ìž… ì‹¤íŒ¨
-	SIGNUP_ID_DUPLICATE, // ID ì¤‘ë³µ
-	SIGNUP_NICKNAME_DUPLICATE, // ID ì¤‘ë³µ
+	SIGNUP = 2000, // È¸¿ø°¡ÀÔ
+	SIGNUP_FAIL, // È¸¿ø°¡ÀÔ ½ÇÆÐ
+	SIGNUP_ID_DUPLICATE, // ID Áßº¹
+	SIGNUP_NICKNAME_DUPLICATE, // ID Áßº¹
 
-	ROOM = 5000, // ë°©
-	ROOM_ENTER_FAIL, // ë°© ìž…ìž¥ ì‹¤íŒ¨
-	ROOM_LEAVE_FAIL, // ë°© í‡´ìž¥ ì‹¤íŒ¨
-	ROOM_PASSWORD_INCORRECT, // ë°© ë¹„ë°€ë²ˆí˜¸ í‹€ë¦¼
-	ROOM_FULL, // ë°©ì´ ê½‰ ì°¸
-	ROOM_NOT_FOUND, // ë°©ì„ ì°¾ì„ ìˆ˜ ì—†ìŒ
-	ROOM_ALREADY_ENTERED, // ì´ë¯¸ ë°©ì— ìž…ìž¥í•¨
-	ROOM_NOT_ENTERED, // ë°©ì— ìž…ìž¥í•˜ì§€ ì•ŠìŒ
-	ROOM_PLAYING, // ë°©ì´ í”Œë ˆì´ ì¤‘ìž„
-	ROOM_NOT_PLAYING, // ë°©ì´ í”Œë ˆì´ ì¤‘ì´ì§€ ì•ŠìŒ
-	ROOM_
+	ROOM = 5000, // ¹æ
+	ROOM_ENTER_FAIL, // ¹æ ÀÔÀå ½ÇÆÐ
+	ROOM_LEAVE_FAIL, // ¹æ ÅðÀå ½ÇÆÐ
+	ROOM_PASSWORD_INCORRECT, // ¹æ ºñ¹Ð¹øÈ£ Æ²¸²
+	ROOM_FULL, // ¹æÀÌ ²Ë Âü
+	ROOM_NOT_FOUND, // ¹æÀ» Ã£À» ¼ö ¾øÀ½
+	ROOM_ALREADY_ENTERED, // ÀÌ¹Ì ¹æ¿¡ ÀÔÀåÇÔ
+	ROOM_NOT_ENTERED, // ¹æ¿¡ ÀÔÀåÇÏÁö ¾ÊÀ½
+	ROOM_PLAYING, // ¹æÀÌ ÇÃ·¹ÀÌ ÁßÀÓ
+	ROOM_NOT_PLAYING, // ¹æÀÌ ÇÃ·¹ÀÌ ÁßÀÌÁö ¾ÊÀ½
+	ROOM_NOT_HOST, // ¹æÀåÀÌ ¾Æ´Ô
+	ROOM_NOT_ENOUGH_PLAYER, // ÀÎ¿ø¼ö ºÎÁ·
+	ROOM_ENDING, // ¹æÀÌ Á¾·áÁß
 };
