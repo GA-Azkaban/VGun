@@ -85,7 +85,7 @@ void LobbySceneView::Initialize()
 	auto chatCanvas = API::CreateImageBox(_scene, "chatCanvas");
 	chatCanvas->GetTransform()->SetPosition(390.0f * width / 1920, 900.0f * height / 1080, 0);
 	auto chatCanvasComp = chatCanvas->GetComponent<HDData::ImageUI>();
-	chatCanvasComp->SetImage("Button_Horizon_02.png");
+	chatCanvasComp->SetImage("Button_horizon_02.png");
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
