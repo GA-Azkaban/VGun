@@ -266,7 +266,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
     <ClInclude Include="SliderSoundScript.h" />
-    <ClInclude Include="SoundPlayer.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestScene.h" />
@@ -313,7 +313,7 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="SliderSoundScript.cpp" />
-    <ClCompile Include="SoundPlayer.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Struct.pb.cc" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="UIEffect.cpp" />
