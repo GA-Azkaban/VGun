@@ -2,12 +2,22 @@
 #include "dllExporter.h"
 #include "Collider.h"
 
-namespace physx
+#include "../include/physX/PxPhysics.h"
+#include "../include/physX/PxPhysicsAPI.h"
+
+//namespace physx
+//{
+//	class PxRigidDynamic;
+//	class PxShape;
+//	class PxScene;
+//	class PxTransform;
+//}
+
+struct TransformInfo
 {
-	class PxRigidDynamic;
-	class PxShape;
-	class PxScene;
-}
+	Vector3 pos;
+	Quaternion rot;
+};
 
 namespace HDData
 {
@@ -71,6 +81,12 @@ namespace HDData
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
 
+	public:
+		TransformInfo GetPrevTransform() const;
+		TransformInfo GetCurTransform() const;
+		void SetPrevTransform(TransformInfo info);
+		void SetCurTransform(TransformInfo info);
+
 	protected:
 		bool _freezeRotation;
 
@@ -83,6 +99,10 @@ namespace HDData
 		physx::PxScene* _physScene;
 		physx::PxShape* _standingShape;
 		physx::PxShape* _sittingShape;
+
+	private:
+		TransformInfo _prevTransform;
+		TransformInfo _currentTransform;
 	};
 }
 

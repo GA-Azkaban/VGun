@@ -52,8 +52,10 @@ namespace HDEngine
 		void CreateTriggerBoxCollider(HDData::GameObject* object);
 		void CreateParticleSphereCollider(HDData::GameObject* object);
 
+	private:
 		void ResizeCollider();
-		void InterpolateTransform(float alpha);
+		physx::PxTransform InterpolateTransform(const TransformInfo& prev, const TransformInfo& cur, float alpha);
+		physx::PxQuat Slerp(const physx::PxQuat& qa, const physx::PxQuat& qb, float time);
 
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
@@ -87,5 +89,7 @@ namespace HDEngine
 
 	private:
 		float _accumulateTime = 0.0f;
+		physx::PxQuat _prevPlayerRot;
+		physx::PxQuat _currentPlayerRot;
 	};
 }

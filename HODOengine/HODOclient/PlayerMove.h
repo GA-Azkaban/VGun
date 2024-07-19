@@ -75,6 +75,7 @@ private:
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
 	void UpdateStateText();
+	//Quaternion Slerp(const Quaternion& qa, const Quaternion& qb, float time);
 
 public:
 	int& GetBulletCount();
@@ -110,6 +111,7 @@ public:
 	HDData::TextUI* _plStateText;
 	HDData::TextUI* _tumbleText;
 	HDData::TextUI* _plPosText;
+	HDData::TextUI* _anyText;
 	int melon;
 
 private:
