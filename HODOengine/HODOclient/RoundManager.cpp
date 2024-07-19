@@ -157,6 +157,8 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
+	tumbleAlphaImage->SetActive(false);
+	tumbleCountText->SetActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -327,9 +329,10 @@ void RoundManager::ExitGame()
 	_endObj->SetSelfActive(false);
 	_showResultTimer->Stop();
 	_resultTimerUI->GetGameObject()->SetSelfActive(false);
+	NetworkManager::Instance().SendRoomLeave();
 
 	// 로비로 복귀
-	API::LoadSceneByName("Lobby");
+	API::LoadSceneByName("MainMenu");
 	LobbyManager::Instance().RefreshRoom();
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
