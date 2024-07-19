@@ -620,6 +620,7 @@ void InGameSceneView::Initialize()
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
 	tumbleAlphaImage->SetSortOrder(0.8f);
+	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
 	tumbleCooldownCountObj->GetTransform()->SetPosition(1750 - 5, 1350 + 5, 0);
@@ -628,6 +629,7 @@ void InGameSceneView::Initialize()
 	tumbleCooldownText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	tumbleCooldownText->SetText("0");
 	tumbleCooldownText->SetSortOrder(0.9f);
+	RoundManager::Instance()->tumbleCountText = tumbleCooldownText;
 
 	playerMove->recoilCooldown = tumbleCooldown;
 	playerMove->cooldownCountText = tumbleCooldownCount;

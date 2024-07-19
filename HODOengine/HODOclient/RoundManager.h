@@ -78,6 +78,8 @@ public:
 	HDData::ImageUI* startRoundimg;
 
 	HDData::ImageUI* tumbleImage;
+	HDData::ImageUI* tumbleAlphaImage;
+	HDData::TextUI* tumbleCountText;
 
 private:
 	bool _isRoundStart = false;
