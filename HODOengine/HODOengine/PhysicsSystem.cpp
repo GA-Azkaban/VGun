@@ -241,7 +241,11 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
+#ifdef _DEBUG
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 6, 0.0f);
+#else
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3, 0.0f);
+#endif
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
