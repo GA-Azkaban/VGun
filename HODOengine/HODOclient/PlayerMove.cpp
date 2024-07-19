@@ -581,7 +581,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::WALK:
 		{
-			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			//_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			//if (_moveDirection != _prevDirection)
 			//{
 			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
@@ -593,7 +593,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
+			//_headCam->ShakeCamera(_deltaTime, _rotAngleX);
 			//if (_moveDirection != _prevDirection)
 			//{
 			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
@@ -818,6 +818,7 @@ void PlayerMove::UpdateStateText()
 	//std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
 	//_plPosText->SetText(posText);
 }
+
 
 int& PlayerMove::GetBulletCount()
 {
@@ -1799,34 +1800,38 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
-	if (mouseDelta.x > 500.0f)
+	if (mouseDelta.x > 400.0f)
 	{
-		mouseDelta.x = 500.0f;
+		mouseDelta.x = 400.0f;
 	}
-	if (mouseDelta.x < -500.0f)
+	if (mouseDelta.x < -400.0f)
 	{
-		mouseDelta.x = -500.0f;
-	}
-
-	if (mouseDelta.y > 500.0f)
-	{
-		mouseDelta.y = 500.0f;
-	}
-	if (mouseDelta.y < -500.0f)
-	{
-		mouseDelta.y = -500.0f;
+		mouseDelta.x = -400.0f;
 	}
 
-	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0005f);
-	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0005f);
-
-	if (_rotAngleX >= 1.5708f)
+	if (mouseDelta.y > 400.0f)
 	{
-		_rotAngleX = 1.5708f;
+		mouseDelta.y = 400.0f;
 	}
-	if (_rotAngleX <= -1.5708f)
+	if (mouseDelta.y < -400.0f)
 	{
-		_rotAngleX = -1.5708f;
+		mouseDelta.y = -400.0f;
+	}
+
+	//Quaternion prevRot = Quaternion::CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
+	//Quaternion prevPitchRot = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	//Quaternion prevMeshRot = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
+
+	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0003f);
+	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0003f);
+
+	if (_rotAngleX >= 1.57f)
+	{
+		_rotAngleX = 1.57f;
+	}
+	if (_rotAngleX <= -1.57f)
+	{
+		_rotAngleX = -1.57f;
 	}
 
 	if (_rotAngleY > 6.2832f)
