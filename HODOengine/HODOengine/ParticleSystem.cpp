@@ -82,6 +82,7 @@ namespace HDData
 		_particleSystem->SetMesh(rendererModule.mesh);
 		_particleSystem->SetMaterial(rendererModule.material->Get());
 		_particleSystem->SetRenderMode(rendererModule.renderMode);
+		_particleSystem->SetAlphaBlend(rendererModule.alphaBlending);
 	}
 
 	void ParticleSystem::Update()

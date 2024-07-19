@@ -202,18 +202,18 @@ void InGameSceneView::Initialize()
 	particleSystemObj2->GetTransform()->SetLocalRotation({ -0.380f, 0.1325f, -0.0551f, 0.9138f });
 	particleSystemObj2->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
-	particleSystem2->main.duration = 2.0f;
+	particleSystem2->main.duration = 1.5f;
 	particleSystem2->main.loop = false;
 	particleSystem2->main.minStartColor = { 255, 255, 255, 255 };
 	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
-	particleSystem2->main.minStartLifetime = 1.5f;
-	particleSystem2->main.maxStartLifetime = 1.5f;
+	particleSystem2->main.minStartLifetime = 1.0f;
+	particleSystem2->main.maxStartLifetime = 1.0f;
 	particleSystem2->main.minStartRotation = 0.0f;
-	particleSystem2->main.maxStartRotation = 360.0f;
+	particleSystem2->main.maxStartRotation = 180.0f;
 	particleSystem2->main.minStartSize = 0.25f;
 	particleSystem2->main.maxStartSize = 0.6f;
-	particleSystem2->main.minStartSpeed = 400.0f;
-	particleSystem2->main.maxStartSpeed = 700.0f;
+	particleSystem2->main.minStartSpeed = 500.0f;
+	particleSystem2->main.maxStartSpeed = 800.0f;
 	particleSystem2->emission.enabled = true;
 	HDData::Burst newBurst2(0.0f, 4);
 	particleSystem2->emission.SetBurst(newBurst2);
@@ -229,6 +229,7 @@ void InGameSceneView::Initialize()
 	HDData::Material* smokeMat = API::CreateMaterial(smokeMatDesc);
 	particleSystem2->rendererModule.material = smokeMat;
 	particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem2->rendererModule.alphaBlending = true;
 	particleSystem2->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
 	particleSystem2->colorOverLifetime.enabled = true;
 	// colorKey, alphaKey 생성
@@ -247,7 +248,7 @@ void InGameSceneView::Initialize()
 	alphaKey3.time = 0.0f;
 	ak2.push_back(alphaKey3);
 	HDData::GradientAlphaKey alphaKey4;
-	alphaKey4.alpha = 16;
+	alphaKey4.alpha = 8;
 	alphaKey4.time = 0.703f;
 	ak2.push_back(alphaKey4);
 	HDData::GradientAlphaKey alphaKey5;

@@ -13,6 +13,7 @@ namespace HDEngine
 		virtual void SetMesh(const std::string& meshName) = 0;
 		virtual void SetMaterial(HDEngine::IMaterial* material) = 0;
 		virtual void SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode) = 0;
+		virtual void SetAlphaBlend(bool isAlphaBlend) = 0;
 		virtual IParticle* SummonParticle() = 0;
 		virtual void DestroyParticle(IParticle* particle) = 0;
 	};
