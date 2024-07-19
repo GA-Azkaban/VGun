@@ -194,12 +194,13 @@ void InGameSceneView::Initialize()
 	alphaKey2.alpha = 255;
 	alphaKey2.time = 1.0f;
 	ak.push_back(alphaKey2);
-	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
+	particleSystem->colorOverLifetime.color.SetKeys(ck, ak); 
 
 	// 총구 연기 이펙트
 	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle", particleSystemObj);
 	//particleSystemObj2->AddComponent<MeshTransformController>();
 	particleSystemObj2->GetTransform()->SetLocalRotation({ -0.380f, 0.1325f, -0.0551f, 0.9138f });
+	particleSystemObj2->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
 	particleSystem2->main.duration = 2.0f;
 	particleSystem2->main.loop = false;
@@ -209,12 +210,12 @@ void InGameSceneView::Initialize()
 	particleSystem2->main.maxStartLifetime = 1.5f;
 	particleSystem2->main.minStartRotation = 0.0f;
 	particleSystem2->main.maxStartRotation = 360.0f;
-	particleSystem2->main.minStartSize = 0.05f;
-	particleSystem2->main.maxStartSize = 0.2f;
-	particleSystem2->main.minStartSpeed = 3.0f;
-	particleSystem2->main.maxStartSpeed = 6.0f;
+	particleSystem2->main.minStartSize = 0.25f;
+	particleSystem2->main.maxStartSize = 0.6f;
+	particleSystem2->main.minStartSpeed = 400.0f;
+	particleSystem2->main.maxStartSpeed = 700.0f;
 	particleSystem2->emission.enabled = true;
-	HDData::Burst newBurst2(0.0f, 5);
+	HDData::Burst newBurst2(0.0f, 4);
 	particleSystem2->emission.SetBurst(newBurst2);
 	particleSystem2->sizeOverLifetime.enabled = true;
 	HDData::AnimationCurve curve2;
@@ -222,12 +223,13 @@ void InGameSceneView::Initialize()
 	curve2.AddKey(0.2f, 1.0f, [](float t) { return 0.3125f * t + 0.6875f; });
 	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
 	particleSystem2->rotationOverLifetime.enabled = true;
-	particleSystem2->rotationOverLifetime.angularVelocity = 1000.0f;
+	particleSystem2->rotationOverLifetime.angularVelocity = 100.0f;
 	HDEngine::MaterialDesc smokeMatDesc;
 	smokeMatDesc.materialName = "smokeMat";
-	smokeMatDesc.albedo = "PolygonParticles_Circle_01.png";
 	HDData::Material* smokeMat = API::CreateMaterial(smokeMatDesc);
 	particleSystem2->rendererModule.material = smokeMat;
+	particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem2->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
 	particleSystem2->colorOverLifetime.enabled = true;
 	// colorKey, alphaKey 생성
 	std::vector<HDData::GradientColorKey> ck2;
@@ -241,11 +243,11 @@ void InGameSceneView::Initialize()
 	colorkey4.time = 1.0f;
 	ck2.push_back(colorkey4);
 	HDData::GradientAlphaKey alphaKey3;
-	alphaKey3.alpha = 150;
+	alphaKey3.alpha = 64;
 	alphaKey3.time = 0.0f;
 	ak2.push_back(alphaKey3);
 	HDData::GradientAlphaKey alphaKey4;
-	alphaKey4.alpha = 64;
+	alphaKey4.alpha = 16;
 	alphaKey4.time = 0.703f;
 	ak2.push_back(alphaKey4);
 	HDData::GradientAlphaKey alphaKey5;
@@ -283,16 +285,6 @@ void InGameSceneView::Initialize()
 	posX += 1;
 	posT += 315;
 
-	// 디버그용 state
-	//auto stateInfo = API::CreateTextbox(_scene, "stateInfo");
-	//stateInfo->GetTransform()->SetPosition(300, 300, 0);
-	//auto stateInfoComp = stateInfo->GetComponent<HDData::TextUI>();
-	//stateInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-	//stateInfoComp->SetColor(DirectX::Colors::Black);
-	//stateInfoComp->SetText("");
-	//stateInfoComp->SetSortOrder(0.7);
-	//playerMove->_plStateText = stateInfoComp;
-
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
 	{
@@ -308,7 +300,6 @@ void InGameSceneView::Initialize()
 		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
-		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadAnimation("TP");
@@ -348,12 +339,12 @@ void InGameSceneView::Initialize()
 		enemyParticleSystem->main.minStartSpeed = 0.0f;
 		enemyParticleSystem->main.maxStartSpeed = 0.0f;
 		enemyParticleSystem->emission.enabled = true;
-		HDData::Burst newBurst2(0.0f, 1);
-		enemyParticleSystem->emission.SetBurst(newBurst2);
+		HDData::Burst enemyBurst(0.0f, 1);
+		enemyParticleSystem->emission.SetBurst(enemyBurst);
 		enemyParticleSystem->sizeOverLifetime.enabled = true;
-		HDData::AnimationCurve curve2;
-		curve.AddKey(0.0f, 1.0f, [](float t) { return -3.8f * t * t + 3.7f * t + 0.1f; });
-		enemyParticleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+		HDData::AnimationCurve enemyCurve;
+		enemyCurve.AddKey(0.0f, 1.0f, [](float t) { return -3.8f * t * t + 3.7f * t + 0.1f; });
+		enemyParticleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, enemyCurve);
 		HDEngine::MaterialDesc flashMatDesc2;
 		flashMatDesc2.materialName = "muzzleFlash";
 		flashMatDesc2.albedo = "T_MuzzleFlash_D.png";
@@ -364,25 +355,25 @@ void InGameSceneView::Initialize()
 		enemyParticleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
 
 		// colorKey, alphaKey 생성
-		std::vector<HDData::GradientColorKey> ck;
-		std::vector<HDData::GradientAlphaKey> ak;
-		HDData::GradientColorKey colorkey1;
-		colorkey1.color = { 255, 255, 255 };
-		colorkey1.time = 0.556f;
-		ck.push_back(colorkey1);
-		HDData::GradientColorKey colorkey2;
-		colorkey2.color = { 255, 79, 0 };
-		colorkey2.time = 1.0f;
-		ck.push_back(colorkey2);
-		HDData::GradientAlphaKey alphaKey1;
-		alphaKey1.alpha = 255;
-		alphaKey1.time = 0.0f;
-		ak.push_back(alphaKey1);
-		HDData::GradientAlphaKey alphaKey2;
-		alphaKey2.alpha = 255;
-		alphaKey2.time = 1.0f;
-		ak.push_back(alphaKey2);
-		enemyParticleSystem->colorOverLifetime.color.SetKeys(ck, ak);
+		std::vector<HDData::GradientColorKey> enemyCK;
+		std::vector<HDData::GradientAlphaKey> enemyAK;
+		HDData::GradientColorKey enemyColorkey1;
+		enemyColorkey1.color = { 255, 255, 255 };
+		enemyColorkey1.time = 0.556f;
+		enemyCK.push_back(enemyColorkey1);
+		HDData::GradientColorKey enemyColorkey2;
+		enemyColorkey2.color = { 255, 79, 0 };
+		enemyColorkey2.time = 1.0f;
+		enemyCK.push_back(enemyColorkey2);
+		HDData::GradientAlphaKey enemyAlphaKey1;
+		enemyAlphaKey1.alpha = 255;
+		enemyAlphaKey1.time = 0.0f;
+		enemyAK.push_back(enemyAlphaKey1);
+		HDData::GradientAlphaKey enemyAlphaKey2;
+		enemyAlphaKey2.alpha = 255;
+		enemyAlphaKey2.time = 1.0f;
+		enemyAK.push_back(enemyAlphaKey2);
+		enemyParticleSystem->colorOverLifetime.color.SetKeys(enemyCK, enemyAK);
 
 		otherPlayer->AddComponent<OthersAnim>();
 

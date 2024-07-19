@@ -36,8 +36,8 @@ namespace HDData
 		{
 			// 회전값 갱신
 			float radian = DirectX::XMConvertToRadians(e.first->GetAngle());
-			//Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
-			Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
+			Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
+			//Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
 			e.first->SetRotation(Quaternion::Concatenate(e.first->GetRotation(), rot));
 			//e.first->SetRotation(rot);
 			// 위치값 갱신
@@ -55,7 +55,7 @@ namespace HDData
 			Vector3 currentPos = e.first->GetPosition();
 			e.first->SetPosition(delta + currentPos);
 			// worldTM 정보 넘겨주기
-				// 파티클의 localTM을 구해서 파티클렌더러의 worldTM과 곱해서 넘겨준다.
+			// 파티클의 localTM을 구해서 파티클렌더러의 worldTM과 곱해서 넘겨준다.
 			Matrix localTM;
 			localTM *= Matrix::CreateScale(e.first->GetScale());
 			localTM *= Matrix::CreateFromQuaternion(e.first->GetRotation());
@@ -64,15 +64,23 @@ namespace HDData
 			// 빌보드일 경우 카메라 방향을 바라보게 회전
 			if (_particleSystem->rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Billboard)
 			{
+				Quaternion systemRotation = GetGameObject()->GetTransform()->GetRotation();
+				Quaternion particleRotation = Quaternion::Concatenate(e.first->GetRotation(), systemRotation);
+				Matrix particleRotationMat = Matrix::CreateFromQuaternion(particleRotation);
+				Vector3 particleForward = Vector3::Transform(Vector3(0.0f, 0.0f, -1.0f), particleRotationMat);
+				
 				HDData::Camera* mainCam = HDEngine::SceneSystem::Instance().GetCurrentScene()->GetMainCamera();
 				Vector3 cameraPosition = mainCam->GetTransform()->GetPosition();
-				//Vector3 cameraForward = mainCam->GetTransform()->GetForward();
 				Vector3 toCamera = cameraPosition - currentPos;
 				toCamera.y = 0.0f;
-				Matrix particleRotMat = Matrix::CreateFromQuaternion(e.first->GetRotation());
-				Vector3 particleForward = Vector3::Transform(Vector3(0.0f, 0.0f, 1.0f), particleRotMat);
-				float radian = std::atan2(currentPos.x - cameraPosition.x, currentPos.z - cameraPosition.z);
+				toCamera.Normalize();
+
+				float scalar = particleForward.x * toCamera.x + particleForward.z * toCamera.z;
+				float length1 = particleForward.Length();
+				float length2 = toCamera.Length();
+				float radian = std::acosf(scalar / (length1 * length2));
 				Quaternion rotToCamY = Quaternion::CreateFromYawPitchRoll({ 0, radian, 0});
+				//Quaternion rotToCamY = Quaternion::CreateFromYawPitchRoll({ 0, 0, radian});
 
 				XMMATRIX worldMat = e.first->GetWorldTM();
 				XMVECTOR s;
