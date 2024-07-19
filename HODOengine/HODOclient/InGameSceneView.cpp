@@ -539,11 +539,22 @@ void InGameSceneView::Initialize()
 
 	// die image
 	auto dieblack = API::CreateImageBox(_scene);
-	dieblack->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
 	dieblack->SetSelfActive(false);
 	auto dieblackimg = dieblack->GetComponent<HDData::ImageUI>();
+	dieblackimg->ChangeScale(4, 4);
 	dieblackimg->SetImage("black.png");
 	GameManager::Instance()->GetMyInfo()->SetDieEffectImg(dieblackimg);
+
+	// kill log 
+	auto log = API::CreateTextbox(_scene);
+	log->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
+	auto logComp = log->GetComponent<HDData::TextUI>();
+	logComp->SetColor(DirectX::Colors::Red);
+	logComp->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	logComp->SetText("Log");
+	log->SetSelfActive(false);
+
+	GameManager::Instance()->GetMyInfo()->SetLogUI(logComp);
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");

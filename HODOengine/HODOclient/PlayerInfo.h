@@ -82,6 +82,10 @@ public:
 	void SetDieEffectImg(HDData::ImageUI* img);
 	void PlayHeadShotEffect();
 	void PlayDieEffect();
+	void PlayRespawnEffect();
+	void SetLogUI(HDData::TextUI* txt);
+	void PlayKillLog(std::string log);
+	void KillLogExit();
 
 private:
 	bool _isMyInfo = false;
@@ -124,5 +128,6 @@ private:
 	HDData::ParticleSystem* _particleSystem;
 	HDData::ImageUI* _killEffectImg;
 	HDData::ImageUI* _dieEffectImg;
+	HDData::TextUI* _killLog;
 };
 

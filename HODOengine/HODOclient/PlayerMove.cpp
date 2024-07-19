@@ -1453,11 +1453,14 @@ void PlayerMove::ToggleSit(bool isSit)
 
 void PlayerMove::Die()
 {
+	auto origin = _headCam->GetTransform()->GetPosition();
+	_headCam->GetTransform()->Rotate(0, 90, 0);
 	_playerColliderStanding->OnDisable();
 }
 
 void PlayerMove::Respawn()
 {
+	
 	_playerColliderStanding->OnEnable();
 }
 
