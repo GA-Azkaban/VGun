@@ -196,6 +196,64 @@ void InGameSceneView::Initialize()
 	ak.push_back(alphaKey2);
 	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
+	// 총구 연기 이펙트
+	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle", particleSystemObj);
+	//particleSystemObj2->AddComponent<MeshTransformController>();
+	particleSystemObj2->GetTransform()->SetLocalRotation({ -0.380f, 0.1325f, -0.0551f, 0.9138f });
+	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
+	particleSystem2->main.duration = 2.0f;
+	particleSystem2->main.loop = false;
+	particleSystem2->main.minStartColor = { 255, 255, 255, 255 };
+	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem2->main.minStartLifetime = 1.5f;
+	particleSystem2->main.maxStartLifetime = 1.5f;
+	particleSystem2->main.minStartRotation = 0.0f;
+	particleSystem2->main.maxStartRotation = 360.0f;
+	particleSystem2->main.minStartSize = 0.05f;
+	particleSystem2->main.maxStartSize = 0.2f;
+	particleSystem2->main.minStartSpeed = 3.0f;
+	particleSystem2->main.maxStartSpeed = 6.0f;
+	particleSystem2->emission.enabled = true;
+	HDData::Burst newBurst2(0.0f, 5);
+	particleSystem2->emission.SetBurst(newBurst2);
+	particleSystem2->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve2;
+	curve2.AddKey(0.0f, 0.2f, [](float t) { return 3.75f * t; });
+	curve2.AddKey(0.2f, 1.0f, [](float t) { return 0.3125f * t + 0.6875f; });
+	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+	particleSystem2->rotationOverLifetime.enabled = true;
+	particleSystem2->rotationOverLifetime.angularVelocity = 1000.0f;
+	HDEngine::MaterialDesc smokeMatDesc;
+	smokeMatDesc.materialName = "smokeMat";
+	smokeMatDesc.albedo = "PolygonParticles_Circle_01.png";
+	HDData::Material* smokeMat = API::CreateMaterial(smokeMatDesc);
+	particleSystem2->rendererModule.material = smokeMat;
+	particleSystem2->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck2;
+	std::vector<HDData::GradientAlphaKey> ak2;
+	HDData::GradientColorKey colorkey3;
+	colorkey3.color = { 255, 255, 255 };
+	colorkey3.time = 0.0f;
+	ck2.push_back(colorkey3);
+	HDData::GradientColorKey colorkey4;
+	colorkey4.color = { 63, 63, 63 };
+	colorkey4.time = 1.0f;
+	ck2.push_back(colorkey4);
+	HDData::GradientAlphaKey alphaKey3;
+	alphaKey3.alpha = 150;
+	alphaKey3.time = 0.0f;
+	ak2.push_back(alphaKey3);
+	HDData::GradientAlphaKey alphaKey4;
+	alphaKey4.alpha = 64;
+	alphaKey4.time = 0.703f;
+	ak2.push_back(alphaKey4);
+	HDData::GradientAlphaKey alphaKey5;
+	alphaKey5.alpha = 0;
+	alphaKey5.time = 1.0f;
+	ak2.push_back(alphaKey5);
+	particleSystem2->colorOverLifetime.color.SetKeys(ck2, ak2);
+
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
 	{
