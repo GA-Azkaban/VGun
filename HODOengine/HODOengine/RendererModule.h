@@ -12,7 +12,7 @@ namespace HDData
 		RendererModule()
 			: renderMode(HDEngine::ParticleSystemRenderMode::Billboard),
 			material(HDEngine::MaterialManager::Instance().GetMaterial("Default-ParticleSystem")), mesh(""),
-			minParticleSize(0.0f), maxParticleSize(0.5f)
+			minParticleSize(0.0f), maxParticleSize(0.5f), alphaBlending(false)
 		{
 			
 		}
@@ -23,5 +23,6 @@ namespace HDData
 		std::string mesh;
 		float minParticleSize;
 		float maxParticleSize;
+		bool alphaBlending;
 	};
 }

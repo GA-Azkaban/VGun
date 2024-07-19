@@ -203,11 +203,6 @@ bool PlayerInfo::GetIsJump()
 	return _isJump;
 }
 
-void PlayerInfo::SetParticleObj(HDData::ParticleSystem* particle)
-{
-	_shootParticle = particle;
-}
-
 void PlayerInfo::SetHitEffectObj(HitEffect* hitEffect)
 {
 	_hitEffect = hitEffect;
@@ -250,6 +245,7 @@ void PlayerInfo::AddSerialKillCount()
 			_killEffectImg->SetImage("triplekill.png");
 			_killEffectImg->ChangeScale(0.5, 0.5);
 			_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
+			_serialkillcount = 0;
 		}
 		break;
 		default:
@@ -262,11 +258,45 @@ void PlayerInfo::SetKillEffectImg(HDData::ImageUI* img)
 	_killEffectImg = img;
 }
 
+void PlayerInfo::SetDieEffectImg(HDData::ImageUI* img)
+{
+	_dieEffectImg = img;
+}
+
 void PlayerInfo::PlayHeadShotEffect()
 {
 	_killEffectImg->SetImage("headshot.png");
 	_killEffectImg->ChangeScale(0.5, 0.5);
 	_killEffectImg->GetGameObject()->GetComponent<UIEffect>()->Play();
+}
+
+void PlayerInfo::PlayDieEffect()
+{
+	_dieEffectImg->GetGameObject()->SetSelfActive(true);
+	_dieEffectImg->FadeIn(1);
+}
+
+void PlayerInfo::PlayRespawnEffect()
+{
+	_dieEffectImg->GetGameObject()->SetSelfActive(false);
+	// TODO) 리스폰 이펙트 
+}
+
+void PlayerInfo::SetLogUI(HDData::TextUI* txt)
+{
+	_killLog = txt;
+}
+
+void PlayerInfo::PlayKillLog(std::string log)
+{
+	_killLog->SetText("Killed by..." + log);
+	_killLog->GetGameObject()->SetSelfActive(true);
+	//_killLog->FadeOut(3);
+}
+
+void PlayerInfo::KillLogExit()
+{
+	_killLog->GetGameObject()->SetSelfActive(false);
 }
 
 bool& PlayerInfo::GetPlayerDie()

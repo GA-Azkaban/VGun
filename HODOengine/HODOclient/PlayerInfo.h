@@ -71,15 +71,19 @@ public:
 	bool GetIsShoot();
 	bool GetIsJump();
 
-	void SetParticleObj(HDData::ParticleSystem* particle);
-
 	void SetHitEffectObj(HitEffect* hitEffect);
 	void SetParticleSystem(HDData::ParticleSystem* particleSystem);
 	void PlayerAttacked(Vector3 targetPos);
 
 	void AddSerialKillCount();
 	void SetKillEffectImg(HDData::ImageUI* img);
+	void SetDieEffectImg(HDData::ImageUI* img);
 	void PlayHeadShotEffect();
+	void PlayDieEffect();
+	void PlayRespawnEffect();
+	void SetLogUI(HDData::TextUI* txt);
+	void PlayKillLog(std::string log);
+	void KillLogExit();
 
 private:
 	bool _isMyInfo = false;
@@ -106,8 +110,6 @@ private:
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
-
-	HDData::ParticleSystem* _shootParticle;
 	
 	// count info
 	int _kill;
@@ -121,5 +123,7 @@ private:
 	HitEffect* _hitEffect;
 	HDData::ParticleSystem* _particleSystem;
 	HDData::ImageUI* _killEffectImg;
+	HDData::ImageUI* _dieEffectImg;
+	HDData::TextUI* _killLog;
 };
 

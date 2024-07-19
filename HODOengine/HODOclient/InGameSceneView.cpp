@@ -3,7 +3,6 @@
 #include "PlayerMove.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
-#include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
 #include "TPScript.h"
@@ -119,7 +118,6 @@ void InGameSceneView::Initialize()
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
-	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
 	fpMeshObj->GetTransform()->SetLocalRotation(-0.0925f, -0.0168f, 0.0014f, 0.9955f);
@@ -196,7 +194,68 @@ void InGameSceneView::Initialize()
 	alphaKey2.alpha = 255;
 	alphaKey2.time = 1.0f;
 	ak.push_back(alphaKey2);
-	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
+	particleSystem->colorOverLifetime.color.SetKeys(ck, ak); 
+
+	// 총구 연기 이펙트
+	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle", particleSystemObj);
+	//particleSystemObj2->AddComponent<MeshTransformController>();
+	particleSystemObj2->GetTransform()->SetLocalRotation({ -0.380f, 0.1325f, -0.0551f, 0.9138f });
+	particleSystemObj2->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
+	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
+	particleSystem2->main.duration = 1.5f;
+	particleSystem2->main.loop = false;
+	particleSystem2->main.minStartColor = { 255, 255, 255, 255 };
+	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
+	particleSystem2->main.minStartLifetime = 1.0f;
+	particleSystem2->main.maxStartLifetime = 1.0f;
+	particleSystem2->main.minStartRotation = 0.0f;
+	particleSystem2->main.maxStartRotation = 180.0f;
+	particleSystem2->main.minStartSize = 0.25f;
+	particleSystem2->main.maxStartSize = 0.5f;
+	particleSystem2->main.minStartSpeed = 500.0f;
+	particleSystem2->main.maxStartSpeed = 800.0f;
+	particleSystem2->emission.enabled = true;
+	HDData::Burst newBurst2(0.0f, 4);
+	particleSystem2->emission.SetBurst(newBurst2);
+	particleSystem2->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve2;
+	curve2.AddKey(0.0f, 0.2f, [](float t) { return 3.75f * t; });
+	curve2.AddKey(0.2f, 1.0f, [](float t) { return 0.3125f * t + 0.6875f; });
+	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+	particleSystem2->rotationOverLifetime.enabled = true;
+	particleSystem2->rotationOverLifetime.angularVelocity = 100.0f;
+	HDEngine::MaterialDesc smokeMatDesc;
+	smokeMatDesc.materialName = "smokeMat";
+	HDData::Material* smokeMat = API::CreateMaterial(smokeMatDesc);
+	particleSystem2->rendererModule.material = smokeMat;
+	particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem2->rendererModule.alphaBlending = true;
+	particleSystem2->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
+	particleSystem2->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck2;
+	std::vector<HDData::GradientAlphaKey> ak2;
+	HDData::GradientColorKey colorkey3;
+	colorkey3.color = { 255, 255, 255 };
+	colorkey3.time = 0.0f;
+	ck2.push_back(colorkey3);
+	HDData::GradientColorKey colorkey4;
+	colorkey4.color = { 63, 63, 63 };
+	colorkey4.time = 1.0f;
+	ck2.push_back(colorkey4);
+	HDData::GradientAlphaKey alphaKey3;
+	alphaKey3.alpha = 64;
+	alphaKey3.time = 0.0f;
+	ak2.push_back(alphaKey3);
+	HDData::GradientAlphaKey alphaKey4;
+	alphaKey4.alpha = 8;
+	alphaKey4.time = 0.703f;
+	ak2.push_back(alphaKey4);
+	HDData::GradientAlphaKey alphaKey5;
+	alphaKey5.alpha = 0;
+	alphaKey5.time = 1.0f;
+	ak2.push_back(alphaKey5);
+	particleSystem2->colorOverLifetime.color.SetKeys(ck2, ak2);
 
 	std::vector<HDData::ParticleSphereCollider*> particleVec;
 	for (int i = 0; i < 30; ++i)
@@ -227,16 +286,6 @@ void InGameSceneView::Initialize()
 	posX += 1;
 	posT += 315;
 
-	// 디버그용 state
-	//auto stateInfo = API::CreateTextbox(_scene, "stateInfo");
-	//stateInfo->GetTransform()->SetPosition(300, 300, 0);
-	//auto stateInfoComp = stateInfo->GetComponent<HDData::TextUI>();
-	//stateInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-	//stateInfoComp->SetColor(DirectX::Colors::Black);
-	//stateInfoComp->SetText("");
-	//stateInfoComp->SetSortOrder(0.7);
-	//playerMove->_plStateText = stateInfoComp;
-
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
 	{
@@ -252,7 +301,6 @@ void InGameSceneView::Initialize()
 		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
-		//ohterPlayerHeadCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadAnimation("TP");
@@ -292,12 +340,12 @@ void InGameSceneView::Initialize()
 		enemyParticleSystem->main.minStartSpeed = 0.0f;
 		enemyParticleSystem->main.maxStartSpeed = 0.0f;
 		enemyParticleSystem->emission.enabled = true;
-		HDData::Burst newBurst2(0.0f, 1);
-		enemyParticleSystem->emission.SetBurst(newBurst2);
+		HDData::Burst enemyBurst(0.0f, 1);
+		enemyParticleSystem->emission.SetBurst(enemyBurst);
 		enemyParticleSystem->sizeOverLifetime.enabled = true;
-		HDData::AnimationCurve curve2;
-		curve.AddKey(0.0f, 1.0f, [](float t) { return -3.8f * t * t + 3.7f * t + 0.1f; });
-		enemyParticleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+		HDData::AnimationCurve enemyCurve;
+		enemyCurve.AddKey(0.0f, 1.0f, [](float t) { return -3.8f * t * t + 3.7f * t + 0.1f; });
+		enemyParticleSystem->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, enemyCurve);
 		HDEngine::MaterialDesc flashMatDesc2;
 		flashMatDesc2.materialName = "muzzleFlash";
 		flashMatDesc2.albedo = "T_MuzzleFlash_D.png";
@@ -308,25 +356,25 @@ void InGameSceneView::Initialize()
 		enemyParticleSystem->rendererModule.mesh = "SM_MuzzleFlash.fbx";
 
 		// colorKey, alphaKey 생성
-		std::vector<HDData::GradientColorKey> ck;
-		std::vector<HDData::GradientAlphaKey> ak;
-		HDData::GradientColorKey colorkey1;
-		colorkey1.color = { 255, 255, 255 };
-		colorkey1.time = 0.556f;
-		ck.push_back(colorkey1);
-		HDData::GradientColorKey colorkey2;
-		colorkey2.color = { 255, 79, 0 };
-		colorkey2.time = 1.0f;
-		ck.push_back(colorkey2);
-		HDData::GradientAlphaKey alphaKey1;
-		alphaKey1.alpha = 255;
-		alphaKey1.time = 0.0f;
-		ak.push_back(alphaKey1);
-		HDData::GradientAlphaKey alphaKey2;
-		alphaKey2.alpha = 255;
-		alphaKey2.time = 1.0f;
-		ak.push_back(alphaKey2);
-		enemyParticleSystem->colorOverLifetime.color.SetKeys(ck, ak);
+		std::vector<HDData::GradientColorKey> enemyCK;
+		std::vector<HDData::GradientAlphaKey> enemyAK;
+		HDData::GradientColorKey enemyColorkey1;
+		enemyColorkey1.color = { 255, 255, 255 };
+		enemyColorkey1.time = 0.556f;
+		enemyCK.push_back(enemyColorkey1);
+		HDData::GradientColorKey enemyColorkey2;
+		enemyColorkey2.color = { 255, 79, 0 };
+		enemyColorkey2.time = 1.0f;
+		enemyCK.push_back(enemyColorkey2);
+		HDData::GradientAlphaKey enemyAlphaKey1;
+		enemyAlphaKey1.alpha = 255;
+		enemyAlphaKey1.time = 0.0f;
+		enemyAK.push_back(enemyAlphaKey1);
+		HDData::GradientAlphaKey enemyAlphaKey2;
+		enemyAlphaKey2.alpha = 255;
+		enemyAlphaKey2.time = 1.0f;
+		enemyAK.push_back(enemyAlphaKey2);
+		enemyParticleSystem->colorOverLifetime.color.SetKeys(enemyCK, enemyAK);
 
 		otherPlayer->AddComponent<OthersAnim>();
 
@@ -347,17 +395,16 @@ void InGameSceneView::Initialize()
 	for (int i = 0; i < 6; ++i)
 	{
 		// killCount UI
-		auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
-		uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
-		uiBack->GetTransform()->SetScale(1, 3, 0);
-		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
-		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+		//auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
+		//uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
+		//uiBack->GetTransform()->SetScale(1, 3, 0);
+		//uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
+		//uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
 
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		nickComp->SetColor(DirectX::Colors::Black);
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
@@ -365,11 +412,10 @@ void InGameSceneView::Initialize()
 		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		countComp->SetColor(DirectX::Colors::Blue);
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
-		RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
+		//RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
@@ -540,7 +586,25 @@ void InGameSceneView::Initialize()
 	auto finimg = roundfin->GetComponent<HDData::ImageUI>();
 	finimg->SetImage("finRound2.png");
 	RoundManager::Instance()->finRoundimg = finimg;
-	
+
+	// die image
+	auto dieblack = API::CreateImageBox(_scene);
+	dieblack->SetSelfActive(false);
+	auto dieblackimg = dieblack->GetComponent<HDData::ImageUI>();
+	dieblackimg->ChangeScale(4, 4);
+	dieblackimg->SetImage("black.png");
+	GameManager::Instance()->GetMyInfo()->SetDieEffectImg(dieblackimg);
+
+	// kill log 
+	auto log = API::CreateTextbox(_scene);
+	log->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
+	auto logComp = log->GetComponent<HDData::TextUI>();
+	logComp->SetColor(DirectX::Colors::Red);
+	logComp->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	logComp->SetText("Log");
+	log->SetSelfActive(false);
+
+	GameManager::Instance()->GetMyInfo()->SetLogUI(logComp);
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");

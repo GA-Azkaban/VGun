@@ -7,7 +7,6 @@
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
 #include "TPScript.h"
-#include "FPAniScript.h"
 #include "UIEffect.h"
 
 TestScene::TestScene()
@@ -122,79 +121,61 @@ TestScene::TestScene()
 
 	particleSystem->Play(); */
 
-	auto particleSystemObj2 = API::CreateObject(_scene, "BulletParticle");
+	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle");
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
-	particleSystem2->main.duration = 2.0f;
+	particleSystem2->main.duration = 2.5f;
 	particleSystem2->main.loop = true;
-	particleSystem2->main.minStartColor = { 255, 113, 36, 255 };
+	particleSystem2->main.minStartColor = { 255, 255, 255, 255 };
 	particleSystem2->main.maxStartColor = { 255, 255, 255, 255 };
 	particleSystem2->main.minStartLifetime = 2.0f;
 	particleSystem2->main.maxStartLifetime = 2.0f;
-	particleSystem2->main.minStartRotation = 75.0f;
-	particleSystem2->main.maxStartRotation = 75.0f;
-	particleSystem2->main.minStartSize = 0.08f;
-	particleSystem2->main.maxStartSize = 0.12f;
+	particleSystem2->main.minStartRotation = 0.0f;
+	particleSystem2->main.maxStartRotation = 360.0f;
+	particleSystem2->main.minStartSize = 0.1f;
+	particleSystem2->main.maxStartSize = 0.2f;
 	particleSystem2->main.minStartSpeed = 1.0f;
 	particleSystem2->main.maxStartSpeed = 1.0f;
 	particleSystem2->emission.enabled = true;
-	HDData::Burst newBurst2(0.0f, 1);
+	HDData::Burst newBurst2(0.0f, 4);
 	particleSystem2->emission.SetBurst(newBurst2);
-	//particleSystem2->sizeOverLifetime.enabled = true;
-	//HDData::AnimationCurve curve2;
-	//curve2.AddKey(0.0f, 1.0f, [](float t) { return -6 * t * t + 6 * t; });
-	//particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
-	//particleSystem2->rotationOverLifetime.enabled = true;
-	//particleSystem2->rotationOverLifetime.angularVelocity = 750.0f;
+	particleSystem2->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve2;
+	curve2.AddKey(0.0f, 0.2f, [](float t) { return 3.75f * t; });
+	curve2.AddKey(0.2f, 1.0f, [](float t) { return 0.3125f * t + 0.6875f; });
+	particleSystem2->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve2);
+	particleSystem2->rotationOverLifetime.enabled = true;
+	particleSystem2->rotationOverLifetime.angularVelocity = 100.0f;
 	HDEngine::MaterialDesc particleMatDesc;
 	particleMatDesc.materialName = "particleMat";
-	//particleMatDesc.albedo = "T_Sparks_D.png";
-	particleMatDesc.color = { 255, 0, 0, 255 };
+	particleMatDesc.albedo = "PolygonParticles_Circle_01.png";
 	HDData::Material* particleMat = API::CreateMaterial(particleMatDesc);
 	particleSystem2->rendererModule.material = particleMat;
-	particleSystem2->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
-	particleSystem2->rendererModule.mesh = "primitiveQuad";
 	particleSystem2->colorOverLifetime.enabled = true;
 	// colorKey, alphaKey 생성
 	std::vector<HDData::GradientColorKey> ck;
 	std::vector<HDData::GradientAlphaKey> ak;
 	HDData::GradientColorKey colorkey1;
 	colorkey1.color = { 255, 255, 255 };
-	colorkey1.time = 0.556f;
+	colorkey1.time = 0.0f;
 	ck.push_back(colorkey1);
 	HDData::GradientColorKey colorkey2;
-	colorkey2.color = { 255, 79, 0 };
+	colorkey2.color = { 63, 63, 63 };
 	colorkey2.time = 1.0f;
 	ck.push_back(colorkey2);
 	HDData::GradientAlphaKey alphaKey1;
-	alphaKey1.alpha = 255;
+	alphaKey1.alpha = 150;
 	alphaKey1.time = 0.0f;
 	ak.push_back(alphaKey1);
 	HDData::GradientAlphaKey alphaKey2;
-	alphaKey2.alpha = 255;
-	alphaKey2.time = 1.0f;
+	alphaKey2.alpha = 64;
+	alphaKey2.time = 0.703f;
 	ak.push_back(alphaKey2);
+	HDData::GradientAlphaKey alphaKey3;
+	alphaKey3.alpha = 0;
+	alphaKey3.time = 1.0f;
+	ak.push_back(alphaKey3);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
 	particleSystem2->Play();
-
-	//auto testBox2 = API::CreateObject(_scene);
-	//testBox2->GetComponent<HDData::Transform>()->SetPosition(-20.0f, -1.0f, 0.0f);
-	//auto boxRender2 = testBox2->AddComponent<HDData::MeshRenderer>();
-	//boxRender2->LoadMesh("primitiveCube");
-	//
-	//auto testBox3 = API::CreateObject(_scene);
-	//testBox3->GetComponent<HDData::Transform>()->SetPosition(-50.0f, -1.0f, 0.0f);
-	//auto boxRender3 = testBox3->AddComponent<HDData::MeshRenderer>();
-	//boxRender3->LoadMesh("primitiveCube");
-	//
-	//auto testBox4 = API::CreateObject(_scene);
-	//testBox4->GetComponent<HDData::Transform>()->SetPosition(-80.0f, -1.0f, 20.0f);
-	//auto boxRender4 = testBox4->AddComponent<HDData::MeshRenderer>();
-	//boxRender4->LoadMesh("primitiveCube");
-	//
-	//auto testBox5 = API::CreateObject(_scene);
-	//testBox5->GetComponent<HDData::Transform>()->SetPosition(50.0f, -1.0f, -10.0f);
-	//auto boxRender5 = testBox5->AddComponent<HDData::MeshRenderer>();
-	//boxRender5->LoadMesh("primitiveCube"); */
 
 	auto buildingTest1 = API::CreateObject(_scene);
 	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);

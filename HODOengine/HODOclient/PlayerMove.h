@@ -75,6 +75,7 @@ private:
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
 	void UpdateStateText();
+	//Quaternion Slerp(const Quaternion& qa, const Quaternion& qb, float time);
 
 public:
 	int& GetBulletCount();
@@ -110,6 +111,7 @@ public:
 	HDData::TextUI* _plStateText;
 	HDData::TextUI* _tumbleText;
 	HDData::TextUI* _plPosText;
+	HDData::TextUI* _anyText;
 	int melon;
 
 private:
@@ -162,4 +164,11 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
+
+	// 애니메이션과 결합
+private:
+	HDData::Animator* _fpanimator;
+	HDData::Animator* _tpanimator;
+
+
 };

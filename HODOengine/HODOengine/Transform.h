@@ -37,7 +37,9 @@ namespace HDData
 		void SetLocalTM(const Matrix& localTM);
 		void SetPosition(const Vector3& position);
 		void SetPosition(float x, float y, float z);
+		void SetPositionFromPhysics(float x, float y, float z);
 		void SetRotation(const Quaternion& rotation);
+		void SetRotationFromPhysics(const Quaternion& rotation);
 		void SetRotation(float w, float x, float y, float z);
 		void SetScale(const Vector3& scale);
 		void SetScale(float x, float y, float z);

@@ -21,19 +21,24 @@ namespace RocketCore::Graphics
 		blendDesc.AlphaToCoverageEnable = false;
 		blendDesc.IndependentBlendEnable = false;
 		blendDesc.RenderTarget[0].BlendEnable = true;
-		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-		//blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-		//blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
 		blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-		//blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
-		//blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
 		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
 		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
 		blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		ResourceManager::Instance().GetDevice()->CreateBlendState(&blendDesc, _blendState.GetAddressOf());
+		ResourceManager::Instance().GetDevice()->CreateBlendState(&blendDesc, _additiveBlendState.GetAddressOf());
+
+		blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
+		blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+		blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+
+		ResourceManager::Instance().GetDevice()->CreateBlendState(&blendDesc, _defaultBlendState.GetAddressOf());
+
+
 	}
 
 	ParticlePass::~ParticlePass()
@@ -45,7 +50,6 @@ namespace RocketCore::Graphics
 	void ParticlePass::Render()
 	{
 		_quadBuffer->SetRenderTargets(_deferredBuffers->GetDepthStencilView());
-		ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(_blendState.Get(), _blendFactor, 0xFFFFFFFF);
 
 		XMMATRIX view = Camera::GetMainCamera()->GetViewMatrix();
 		XMMATRIX proj = Camera::GetMainCamera()->GetProjectionMatrix();
@@ -55,6 +59,14 @@ namespace RocketCore::Graphics
 		std::vector<ParticleSystem*>& psList = ObjectManager::Instance().GetParticleSystemList();
 		for (int i = 0; i < psList.size(); ++i)
 		{
+			if (psList[i]->IsAlphaBlend())
+			{
+				ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(_additiveBlendState.Get(), _blendFactor, 0xFFFFFFFF);
+			}
+			else
+			{
+				ResourceManager::Instance().GetDeviceContext()->OMSetBlendState(_defaultBlendState.Get(), _blendFactor, 0xFFFFFFFF);
+			}
 			psList[i]->Render();
 		}
 

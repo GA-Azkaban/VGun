@@ -4,7 +4,6 @@
 #include "LobbyManager.h"
 #include "GameManager.h"
 #include "NetworkManager.h"
-#include "FPAniScript.h"
 #include "RoundManager.h"
 
 #include "BtnTextScript.h"
@@ -117,7 +116,7 @@ void LobbySceneView::Initialize()
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
 		subCanvas->GetTransform()->SetPosition(rgbCanvas * width / 1920, 800.0f * height / 1080, 0);
 
-		auto QuitMemberButton = API::CreateButton(_scene, "QuitButton");
+	/*	auto QuitMemberButton = API::CreateButton(_scene, "QuitButton");
 		QuitMemberButton->GetComponent<HDData::Button>()->SetSortOrder(0.3);
 		QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
 		QuitMemberButton->GetTransform()->SetPosition(rgbCanvas * width / 1920, 60.0f * height / 1080, 0);
@@ -125,7 +124,7 @@ void LobbySceneView::Initialize()
 			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetPlayerObjects()[i]->GetComponent<PlayerInfo>()->GetPlayerNickName());
 			});
 		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
-		QuitMemberButton->SetSelfActive(false);
+		QuitMemberButton->SetSelfActive(false);*/
 
 		defaultX += 1.2f;
 		rgbCanvas += 322.5f;
