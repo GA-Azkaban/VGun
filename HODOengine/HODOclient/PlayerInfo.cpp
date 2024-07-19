@@ -203,11 +203,6 @@ bool PlayerInfo::GetIsJump()
 	return _isJump;
 }
 
-void PlayerInfo::SetParticleObj(HDData::ParticleSystem* particle)
-{
-	_shootParticle = particle;
-}
-
 void PlayerInfo::SetHitEffectObj(HitEffect* hitEffect)
 {
 	_hitEffect = hitEffect;

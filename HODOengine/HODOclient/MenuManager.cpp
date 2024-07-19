@@ -286,7 +286,7 @@ void MenuManager::RenderRoomList()
 		_roomObject[i].id->SetText(std::to_string(_roomList[infoIndex]->id));
 		_roomObject[i].title->SetText(_roomList[infoIndex]->title);
 
-		if (_roomList[infoIndex]->isTeam)
+		/*if (_roomList[infoIndex]->isTeam)
 		{
 			_roomObject[i].isTeam->SetImage("team.png");
 		}
@@ -302,15 +302,13 @@ void MenuManager::RenderRoomList()
 		else
 		{
 			_roomObject[i].isPrivate->SetImage("no_private.png");
-		}
+		}*/
 
 		_roomObject[i].maxCount->SetImage(GetNumberImage(_roomList[infoIndex]->maxPlayerCount));
 		_roomObject[i].currentCount->SetImage(GetNumberImage(_roomList[infoIndex]->currentPlayerCount));
 
 		_roomObject[i].id->GetGameObject()->SetSelfActive(true);
 		_roomObject[i].title->GetGameObject()->SetSelfActive(true);
-		_roomObject[i].isTeam->GetGameObject()->SetSelfActive(true);
-		_roomObject[i].isPrivate->GetGameObject()->SetSelfActive(true);
 		_roomObject[i].maxCount->GetGameObject()->SetSelfActive(true);
 		_roomObject[i].currentCount->GetGameObject()->SetSelfActive(true);
 	}

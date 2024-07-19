@@ -31,6 +31,7 @@ public:
 public:
 	bool IsShootHead();
 	bool IsShootBody();
+	void StopMoving();
 
 	// check ~~ series
 private:
@@ -75,6 +76,7 @@ private:
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
 	void UpdateStateText();
+	//Quaternion Slerp(const Quaternion& qa, const Quaternion& qb, float time);
 
 public:
 	int& GetBulletCount();
@@ -110,6 +112,7 @@ public:
 	HDData::TextUI* _plStateText;
 	HDData::TextUI* _tumbleText;
 	HDData::TextUI* _plPosText;
+	HDData::TextUI* _anyText;
 	int melon;
 
 private:
@@ -136,6 +139,8 @@ private:
 	Quaternion _prevCameraRot;
 	float _rotAngleX;
 	float _rotAngleY;
+	float _prevRotAngleX;
+	float _prevRotAngleY;
 
 	int _particleIndex;
 	float _shootCooldown;

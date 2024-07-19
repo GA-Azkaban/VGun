@@ -15,7 +15,7 @@ namespace HDData
 		_farWindowHeight(),
 		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera()),
 		_isShakingCamera(false),
-		_shakeTime(0.1f),
+		_shakeTime(0.0f),
 		_distYOnShoot(0.0f),
 		_camActive(true)
 	{
@@ -158,7 +158,7 @@ namespace HDData
 		else if (_shakeTime < 0.4f)
 		{
 			shakeFrequency = 7.86f;
-			shakeIntensity = 0.002f;
+			shakeIntensity = 0.00463f;
 
 			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
 			angleX += _distYOnShoot;
@@ -215,12 +215,12 @@ namespace HDData
 	}
 
 	void Camera::SetCamActive(bool active)
-{
+	{
 		_camActive = active;
 	}
 
 	bool Camera::GetCamActive() const
-{
+	{
 		return _camActive;
 	}
 

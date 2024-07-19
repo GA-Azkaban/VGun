@@ -6,7 +6,6 @@
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 
-#include "FadeInOut.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"

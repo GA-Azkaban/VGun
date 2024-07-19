@@ -23,8 +23,9 @@ namespace RocketCore::Graphics
 		virtual void SetRenderMode(HDEngine::ParticleSystemRenderMode renderMode) override;
 		virtual HDEngine::IParticle* SummonParticle() override;
 		virtual void DestroyParticle(HDEngine::IParticle* particle) override;
-
+		virtual void SetAlphaBlend(bool isAlphaBlend) override;
 		void Render();
+		bool IsAlphaBlend() const;
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> _rasterizerState;
@@ -32,6 +33,7 @@ namespace RocketCore::Graphics
 		Material* _material;
 		HDEngine::ParticleSystemRenderMode _renderMode;
 		bool _isActive;
+		bool _isAlphaBlend;
 
 		std::unordered_set<HDEngine::IParticle*> _activatedParticles;
 

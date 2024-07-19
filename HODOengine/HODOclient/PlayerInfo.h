@@ -71,8 +71,6 @@ public:
 	bool GetIsShoot();
 	bool GetIsJump();
 
-	void SetParticleObj(HDData::ParticleSystem* particle);
-
 	void SetHitEffectObj(HitEffect* hitEffect);
 	void SetParticleSystem(HDData::ParticleSystem* particleSystem);
 	void PlayerAttacked(Vector3 targetPos);
@@ -112,8 +110,6 @@ private:
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
-
-	HDData::ParticleSystem* _shootParticle;
 	
 	// count info
 	int _kill;
