@@ -51,7 +51,6 @@ void TPScript::Update()
 		_animator->GetAllAC()->SetBool("isRunLeft", false);
 	}
 
-
 	if (API::GetKeyPressing(DIK_S))
 	{
 		_animator->GetAllAC()->SetBool("isRunBack", true);
@@ -67,7 +66,6 @@ void TPScript::Update()
 		_animator->GetAllAC()->SetBool("isRunBack", false);
 	}
 
-
 	if (API::GetKeyPressing(DIK_D))
 	{
 		_animator->GetAllAC()->SetBool("isRunRight", true);
@@ -82,7 +80,6 @@ void TPScript::Update()
 	{
 		_animator->GetAllAC()->SetBool("isRunRight", false);
 	}
-
 
 	if (API::GetKeyDown(DIK_SPACE))
 	{
