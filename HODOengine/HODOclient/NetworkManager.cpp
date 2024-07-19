@@ -134,6 +134,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(deathPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+
+		GameManager::Instance()->GetMyInfo()->PlayDieEffect();
+		GameManager::Instance()->GetMyInfo()->PlayKillLog(killPlayerData.userinfo().nickname());
 	}
 	else
 	{
@@ -175,6 +178,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+		GameManager::Instance()->GetMyInfo()->PlayRespawnEffect();
+		GameManager::Instance()->GetMyInfo()->KillLogExit();
 	}
 	else
 	{

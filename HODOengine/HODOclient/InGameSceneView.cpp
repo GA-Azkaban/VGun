@@ -3,7 +3,6 @@
 #include "PlayerMove.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
-#include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
 #include "TPScript.h"
@@ -119,7 +118,6 @@ void InGameSceneView::Initialize()
 	fpMeshObj->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
-	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.15f, -1.7f, 0.5f);
 	fpMeshObj->GetTransform()->SetLocalRotation(-0.0925f, -0.0168f, 0.0014f, 0.9955f);
@@ -347,17 +345,16 @@ void InGameSceneView::Initialize()
 	for (int i = 0; i < 6; ++i)
 	{
 		// killCount UI
-		auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
-		uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
-		uiBack->GetTransform()->SetScale(1, 3, 0);
-		uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
-		uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
+		//auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
+		//uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
+		//uiBack->GetTransform()->SetScale(1, 3, 0);
+		//uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
+		//uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
 
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		nickComp->SetColor(DirectX::Colors::Black);
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
@@ -365,11 +362,10 @@ void InGameSceneView::Initialize()
 		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		countComp->SetColor(DirectX::Colors::Blue);
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
-		RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
+		//RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
@@ -540,7 +536,25 @@ void InGameSceneView::Initialize()
 	auto finimg = roundfin->GetComponent<HDData::ImageUI>();
 	finimg->SetImage("finRound2.png");
 	RoundManager::Instance()->finRoundimg = finimg;
-	
+
+	// die image
+	auto dieblack = API::CreateImageBox(_scene);
+	dieblack->SetSelfActive(false);
+	auto dieblackimg = dieblack->GetComponent<HDData::ImageUI>();
+	dieblackimg->ChangeScale(4, 4);
+	dieblackimg->SetImage("black.png");
+	GameManager::Instance()->GetMyInfo()->SetDieEffectImg(dieblackimg);
+
+	// kill log 
+	auto log = API::CreateTextbox(_scene);
+	log->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
+	auto logComp = log->GetComponent<HDData::TextUI>();
+	logComp->SetColor(DirectX::Colors::Red);
+	logComp->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	logComp->SetText("Log");
+	log->SetSelfActive(false);
+
+	GameManager::Instance()->GetMyInfo()->SetLogUI(logComp);
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");
