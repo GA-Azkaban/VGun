@@ -49,7 +49,7 @@ void LobbySceneView::Initialize()
 	// game start button
 	auto startButton = API::CreateButton(_scene, "gameStartButton");
 	startButton->GetComponent<HDData::Button>()->SetImage("Button_02.png");
-	startButton->GetTransform()->SetPosition(1600.0f * width / 1920, 950.0f * height / 1080, 0);
+	startButton->GetTransform()->SetPosition(1600.0f * width / 1920, 850.0f * height / 1080, 0);
 	startButton->AddComponent<BtnTextScript>();
 	auto startText = API::CreateTextbox(_scene, "gameStartText", startButton);
 	auto sTex = startText->GetComponent<HDData::TextUI>();
@@ -58,17 +58,18 @@ void LobbySceneView::Initialize()
 	sTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	float startTextWidth = sTex->GetTextWidth();
 	float startTextHeight = sTex->GetTextHeight();
-	startText->GetTransform()->SetPosition(1600.0f * width / 1920 - startTextWidth * 0.75f, 950.0f * height / 1080 - startTextHeight * 0.25f, 0);
+	startText->GetTransform()->SetPosition(1600.0f * width / 1920 - startTextWidth * 0.75f, 850.0f * height / 1080 - startTextHeight * 0.25f, 0);
 
 	LobbyManager::Instance().SetInGameStartButton(startButton);
 
 	startButton->SetSelfActive(false);
 
 	auto quitButton = API::CreateButton(_scene, "roomQuitBtn");
-	quitButton->GetTransform()->SetPosition(320.0f * width / 1920, 950.0f * height / 1080, 0);
+	quitButton->GetTransform()->SetPosition(1600.0f * width / 1920, 1000.0f * height / 1080, 0);
 	quitButton->AddComponent<BtnTextScript>();
 	auto qBtn = quitButton->GetComponent<HDData::Button>();
 	qBtn->GetButtonComp()->SetImage("Button_02.png");
+	//qBtn->GetButtonComp()->SetImage("Quit.png");
 	qBtn->SetOnClickEvent([]()
 		{
 			NetworkManager::Instance().SendRoomLeave();
@@ -80,7 +81,12 @@ void LobbySceneView::Initialize()
 	qTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	float qTextWidth = sTex->GetTextWidth();
 	float qTextHeight = sTex->GetTextHeight();
-	qTex->GetTransform()->SetPosition((320.0f * width / 1920-qTextWidth*0.75f)+20, 950.0f * height / 1080 - qTextHeight * 0.25f, 0);
+	qTex->GetTransform()->SetPosition((1600.0f * width / 1920-qTextWidth*0.75f)+20, 1000.0f * height / 1080 - qTextHeight * 0.25f, 0);
+
+	auto chatCanvas = API::CreateImageBox(_scene, "chatCanvas");
+	chatCanvas->GetTransform()->SetPosition(390.0f * width / 1920, 900.0f * height / 1080, 0);
+	auto chatCanvasComp = chatCanvas->GetComponent<HDData::ImageUI>();
+	chatCanvasComp->SetImage("Button_Horizon_02.png");
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
@@ -88,7 +94,6 @@ void LobbySceneView::Initialize()
 	red.albedo = "PolygonWestern_Texture_01_A.png";
 
 	HDData::Material* M_Red = API::CreateMaterial(red);
-
 
 	float defaultX = -0.5f;
 	float rgbCanvas = 155.0f;
@@ -104,7 +109,7 @@ void LobbySceneView::Initialize()
 		canvasRenderer->LoadMesh("primitiveQuad");
 		HDEngine::MaterialDesc canvasMat;
 		canvasMat.materialName = "canvas";
-		canvasMat.albedo = "settingCanvas.png";
+		canvasMat.albedo = "Button_vertical_02.png";
 		HDData::Material* newCanvasMat = API::CreateMaterial(canvasMat);
 		canvasRenderer->LoadMaterial(newCanvasMat, 0);
 

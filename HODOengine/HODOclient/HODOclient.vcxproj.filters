@@ -91,9 +91,6 @@
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>02_Client\01_Script\Player\PlayerInfo</Filter>
     </ClCompile>
-    <ClCompile Include="FadeInOut.cpp">
-      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
-    </ClCompile>
     <ClCompile Include="SoundPlayer.cpp">
       <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
     </ClCompile>
@@ -246,9 +243,6 @@
     <ClInclude Include="PlayerState.h">
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="FadeInOut.h">
-      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
-    </ClInclude>
     <ClInclude Include="SoundPlayer.h">
       <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
     </ClInclude>
@@ -381,9 +375,6 @@
     </Filter>
     <Filter Include="02_Client\01_Script\Effect">
       <UniqueIdentifier>{5a996260-c4e4-474d-874e-63697805f3a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\Effect\FadeInOut">
-      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
     </Filter>
     <Filter Include="02_Client\01_Script\UI">
       <UniqueIdentifier>{2bd02384-316b-4567-9388-d69965fb1901}</UniqueIdentifier>
