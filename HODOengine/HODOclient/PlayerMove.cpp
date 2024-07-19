@@ -814,7 +814,7 @@ void PlayerMove::UpdateStateText()
 
 	//_plStateText->SetText(first + "/" + second);
 
-	_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
+	//_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
