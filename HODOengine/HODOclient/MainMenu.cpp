@@ -221,7 +221,7 @@ void MainMenuScene::MainMenu()
 
 	/// room enter check button
 	HDData::GameObject* enter_enterCheckCanvas = API::CreateImageBox(_scene, "enterCheck", enter_roomLstCanvas);
-	enter_enterCheckCanvas->GetTransform()->SetPosition(2000.0f * width / 1920, 540.0f * height / 1080, 0);
+	enter_enterCheckCanvas->GetTransform()->SetPosition(1600.0f * width / 1920, 540.0f * height / 1080, 0);
 	auto enterCheckImg = enter_enterCheckCanvas->GetComponent<HDData::ImageUI>();
 	//enterCheckImg->SetImage("enterCheckCanvas.png");
 	enterCheckImg->SetImage("Button_vertical_02.png");
