@@ -139,6 +139,8 @@ private:
 	Quaternion _prevCameraRot;
 	float _rotAngleX;
 	float _rotAngleY;
+	float _prevRotAngleX;
+	float _prevRotAngleY;
 
 	int _particleIndex;
 	float _shootCooldown;
