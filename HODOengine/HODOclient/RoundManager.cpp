@@ -152,6 +152,8 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
+	tumbleAlphaImage->SetActive(false);
+	tumbleCountText->SetActive(false);
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -209,8 +211,6 @@ void RoundManager::SetUIActive(bool isActive)
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
-	tumbleAlphaImage->GetGameObject()->SetSelfActive(isActive);
-	tumbleCountText->GetGameObject()->SetSelfActive(isActive);
 }
 
 void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
