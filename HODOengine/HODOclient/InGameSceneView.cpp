@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -211,7 +211,7 @@ void InGameSceneView::Initialize()
 	particleSystem2->main.minStartRotation = 0.0f;
 	particleSystem2->main.maxStartRotation = 180.0f;
 	particleSystem2->main.minStartSize = 0.25f;
-	particleSystem2->main.maxStartSize = 0.6f;
+	particleSystem2->main.maxStartSize = 0.5f;
 	particleSystem2->main.minStartSpeed = 500.0f;
 	particleSystem2->main.maxStartSpeed = 800.0f;
 	particleSystem2->emission.enabled = true;
