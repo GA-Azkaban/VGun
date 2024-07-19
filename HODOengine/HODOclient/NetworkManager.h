@@ -50,7 +50,7 @@ public: // 방 관련
 
 	// 채팅
 	void SendRoomChat(std::string chat);
-	void RecvRoomChat(std::string nickName, std::string chat);
+	void RecvRoozmChat(std::string nickName, std::string chat);
 
 public: // 다른 플레이어
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);

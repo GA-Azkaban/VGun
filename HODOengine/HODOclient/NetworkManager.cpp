@@ -412,7 +412,6 @@ void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::SendRoomChat(std::string chat)
 {
-	// 보낼 메세지만 전송
 	Protocol::C_ROOM_CHAT packet;
 
 	packet.set_chat(chat);
@@ -424,7 +423,7 @@ void NetworkManager::SendRoomChat(std::string chat)
 void NetworkManager::RecvRoomChat(std::string nickName, std::string chat)
 {
 	// Todo 채팅이 깨질수도 있음
-	
+
 
 }
 
@@ -526,7 +525,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	
+
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -536,7 +535,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	API::ShowWindowCursor(false);
 	API::GetCubeMap()->LoadCubeMapTexture("Sunset.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(2.0f);
-	   
+
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
