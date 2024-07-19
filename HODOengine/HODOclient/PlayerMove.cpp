@@ -352,11 +352,12 @@ void PlayerMove::ShootGun()
 
 	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 1.0f;
 	Vector3 hitPoint = { 314.0f, 314.0f, 314.0f };
-
-	Vector3 recoilDirection = _headCam->GetTransform()->GetForward() +
-		_headCam->GetTransform()->GetRight() * _sprayPattern[_shootCount].first * -4.0f +
-		_headCam->GetTransform()->GetUp() * _sprayPattern[_shootCount].second * -0.02f;
-	recoilDirection.Normalize(recoilDirection);
+	
+	Vector3 recoilDirection = _headCam->GetTransform()->GetForward();
+	//Vector3 recoilDirection = _headCam->GetTransform()->GetForward() +
+	//	_headCam->GetTransform()->GetRight() * _sprayPattern[_shootCount].first * -4.0f +
+	//	_headCam->GetTransform()->GetUp() * _sprayPattern[_shootCount].second * -0.02f;
+	//recoilDirection.Normalize(recoilDirection);
 	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
 	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 	_playerAudio->PlayOnce("shoot");
@@ -491,7 +492,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::TUMBLE:
 		{
 			_tumbleTimer = 0.3f;
-			_tumbleCooldown = 2.0f;
+			_tumbleCooldown = 6.0f;
 
 			_headCam->ToggleCameraShake(true);
 			_fpmesh->SetMeshActive(false, 0);
@@ -801,6 +802,8 @@ void PlayerMove::UpdateStateText()
 	}
 
 	_plStateText->SetText(first + "/" + second);
+
+	_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
@@ -1808,6 +1811,9 @@ void PlayerMove::CameraMove()
 	//Quaternion prevPitchRot = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	//Quaternion prevMeshRot = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
 
+	_prevRotAngleX = _rotAngleX;
+	_prevRotAngleY = _rotAngleY;
+
 	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0003f);
 	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0003f);
 
@@ -1829,15 +1835,20 @@ void PlayerMove::CameraMove()
 		_rotAngleY += 6.2832f;
 	}
 
-	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
+	float ratio = _deltaTime * 10;
+	
+	float finalRotX = _rotAngleX * (1.0f - ratio) + _prevRotAngleX * ratio;
+	float finalRotY = _rotAngleY * (1.0f - ratio) + _prevRotAngleY * ratio;
+
+	Quaternion rot = rot.CreateFromYawPitchRoll(finalRotY, 0.0f, 0.0f);
 	_playerColliderStanding->SetColliderRotation(rot);
 
 	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
-	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(finalRotY, finalRotX, 0.0f);
 	_headCam->GetTransform()->SetRotation(pitchRotQuat);
 
 	// 메쉬 회전
-	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
+	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, finalRotX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
 
 }
