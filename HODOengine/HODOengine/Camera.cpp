@@ -215,12 +215,12 @@ namespace HDData
 	}
 
 	void Camera::SetCamActive(bool active)
-{
+	{
 		_camActive = active;
 	}
 
 	bool Camera::GetCamActive() const
-{
+	{
 		return _camActive;
 	}
 

@@ -1,8 +1,7 @@
 ﻿#include "DynamicCollider.h"
 #include "Transform.h"
 
-#include "../include/physX/PxPhysics.h"
-#include "../include/physX/PxPhysicsAPI.h"
+
 
 HDData::DynamicCollider::DynamicCollider()
 	: _physXRigid(nullptr), _freezeRotation(false)
@@ -87,8 +86,8 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 	//_physXRigid->setGlobalPose(playerPos);
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
-	velo.x = moveStep.x * speed * 2;
-	velo.z = moveStep.z * speed * 2;
+	velo.x = moveStep.x * speed * 1;
+	velo.z = moveStep.z * speed * 1;
 	_physXRigid->setLinearVelocity(velo);
 	//_physXRigid->setForceAndTorque(physx::PxVec3(moveStep.x * speed * 300.0f, 0.0f, moveStep.z * speed * 300.0f), physx::PxVec3());
 
@@ -177,7 +176,7 @@ void HDData::DynamicCollider::Jump(Vector3 direction)
 {
 	//_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 	//_physXRigid->addForce(physx::PxVec3(0.0f, 1.2f, 0.0f) * 120.0f, physx::PxForceMode::eIMPULSE);
-	_physXRigid->addForce(physx::PxVec3(0.0f, 1500.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 3200.0f, 0.0f), physx::PxForceMode::eFORCE);
 }
 
 void HDData::DynamicCollider::Sleep()
@@ -282,8 +281,8 @@ void HDData::DynamicCollider::UpdateToPhysics()
 
 void HDData::DynamicCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
 {
-	GetTransform()->SetPosition(pos.x, pos.y, pos.z);
-	GetTransform()->SetRotation(quat);
+	GetTransform()->SetPositionFromPhysics(pos.x, pos.y, pos.z);
+	GetTransform()->SetRotationFromPhysics(quat);
 }
 
 void HDData::DynamicCollider::Collide()
@@ -332,4 +331,26 @@ void HDData::DynamicCollider::OnDisable()
 			dynamic_cast<HDData::DynamicCollider*>(child)->OnDisable();
 		}
 	}
+}
+
+TransformInfo HDData::DynamicCollider::GetPrevTransform() const
+{
+	return _prevTransform;
+}
+
+TransformInfo HDData::DynamicCollider::GetCurTransform() const
+{
+	return _currentTransform;
+}
+
+void HDData::DynamicCollider::SetPrevTransform(TransformInfo info)
+{
+	_prevTransform.pos = info.pos;
+	_prevTransform.rot = info.rot;
+}
+
+void HDData::DynamicCollider::SetCurTransform(TransformInfo info)
+{
+	_currentTransform.pos = info.pos;
+	_currentTransform.rot = info.rot;
 }

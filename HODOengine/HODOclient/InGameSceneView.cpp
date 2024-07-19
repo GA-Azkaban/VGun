@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -230,6 +230,15 @@ void InGameSceneView::Initialize()
 	stateInfoComp->SetText("");
 	stateInfoComp->SetSortOrder(0.7);
 	playerMove->_plStateText = stateInfoComp;
+
+	auto anyInfo = API::CreateTextbox(_scene, "anyInfo");
+	anyInfo->GetTransform()->SetPosition(1600, 300, 0);
+	auto anyInfoComp = anyInfo->GetComponent<HDData::TextUI>();
+	anyInfoComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	anyInfoComp->SetColor(DirectX::Colors::Black);
+	anyInfoComp->SetText("");
+	anyInfoComp->SetSortOrder(0.7);
+	playerMove->_anyText = anyInfoComp;
 
 	// 상대방 캐릭터 생성
 	for (int i = 1; i < 6; ++i)
