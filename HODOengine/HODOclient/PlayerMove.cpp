@@ -1136,6 +1136,11 @@ bool PlayerMove::IsShootBody()
 	return _isShootBody;
 }
 
+void PlayerMove::StopMoving()
+{
+	_playerColliderStanding->Stop();
+}
+
 void PlayerMove::ToggleCam()
 {
 	if (_isHeadCam)

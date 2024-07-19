@@ -31,6 +31,7 @@ public:
 public:
 	bool IsShootHead();
 	bool IsShootBody();
+	void StopMoving();
 
 	// check ~~ series
 private:
