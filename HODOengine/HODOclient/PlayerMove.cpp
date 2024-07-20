@@ -37,7 +37,6 @@ void PlayerMove::Start()
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
 	_moveSpeed = 3.0f;
-	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
 	PresetSprayPattern(2);
 	StartRoundCam();
@@ -312,18 +311,6 @@ void PlayerMove::Move(int direction)
 	else
 	{
 		_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-
-		if (!(_playerAudio->IsSoundPlaying("walk") || _playerAudio->IsSoundPlaying("run") || _isJumping))
-		{
-			if (_isRunning)
-			{
-				_playerAudio->PlayOnce("run");
-			}
-			else
-			{
-				_playerAudio->PlayOnce("walk");
-			}
-		}
 	}
 
 	_prevDirection = _moveDirection;
@@ -364,13 +351,10 @@ void PlayerMove::ShootGun()
 	//recoilDirection.Normalize(recoilDirection);
 	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
 	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
-	_playerAudio->PlayOnce("shoot");
-	_playerAudio->PlayOnce("shoot2");
 
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
 	{
-		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
 		_hitPoint = hitPoint;
 	}
@@ -382,8 +366,6 @@ void PlayerMove::ShootGun()
 		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
 		GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
 		_isShootHead = true;
-		//_playerAudio->PlayOnce("hitBody");
-		//_playerAudio->PlayOnce("hitHead");
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -392,7 +374,6 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
-		//_playerAudio->PlayOnce("hitBody");
 	}
 
 	++_shootCount;
@@ -457,11 +438,6 @@ void PlayerMove::PlayPlayerSound()
 
 }
 
-void PlayerMove::OnEnable()
-{
-	//_playerAudio->PlayRepeat("bgm");
-}
-
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
 {
 	switch (state)
@@ -491,7 +467,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_moveSpeed = 5.0f;
 			_playerColliderStanding->Jump(Vector3::Zero);
-			_playerAudio->PlayOnce("jump");
 
 			break;
 		}
@@ -519,8 +494,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			}
 
 			_headCam->TumbleCamera(_deltaTime);
-			_playerAudio->PlayOnce("tumble");
-			_playerAudio->PlayOnce("tumblingMan");
 
 			break;
 		}
@@ -534,14 +507,12 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			ShootGun();
 			_fpanimator->GetAllAC()->SetTrigger("isFire");
 			_headCam->ToggleCameraShake(true);
-			_playerAudio->PlayOnce("shoot");
 
 			break;
 		}
 		case ePlayerMoveState::EMPTY:
 		{
 			_shootCooldown = 0.8f;
-			_playerAudio->PlayOnce("empty");
 
 			break;
 		}
@@ -550,7 +521,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_fpmesh->SetMeshActive(false, 0);
 			_fpanimator->GetAllAC()->SetBool("isIdle", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
-			_playerAudio->PlayOnce("reload");
 			_reloadTimer = 2.6f;
 
 			break;
@@ -588,7 +558,6 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
 			break;
 		}
@@ -600,7 +569,6 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
 			break;
 		}
@@ -721,8 +689,6 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		{
 			Reload();
 			_fpmesh->SetMeshActive(true, 0);
-
-			_playerAudio->Stop("reload");
 			_reloadTimer = 0.0f;
 
 			break;
@@ -1172,7 +1138,6 @@ void PlayerMove::Jump(Vector3 direction)
 	{
 		// 점프
 		_playerColliderStanding->Jump(direction);
-		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
 		_isOnGround = false;
 
@@ -1773,7 +1738,6 @@ void PlayerMove::Landing()
 {
 	_isOnGround = true;
 	_isJumping = false;
-	_playerAudio->PlayOnce("land");
 	_playerColliderStanding->ClearForceXYZ();
 }
 

@@ -305,6 +305,7 @@ void InGameSceneView::Initialize()
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadAnimation("TP");
 		otherMeshComp->LoadMaterial(chMat, 0);
+		otherMeshComp->SetOutlineActive(true);
 		otherMeshComp->PlayAnimation("RV_idle", true);
 
 		// 총

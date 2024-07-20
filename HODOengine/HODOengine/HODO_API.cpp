@@ -14,6 +14,7 @@
 #include "UISystem.h"
 #include "AnimationLoader.h"
 #include "TweenSystem.h"
+#include "UISystem.h";
 
 
 namespace API
@@ -347,6 +348,12 @@ namespace API
 		{
 			return HDEngine::SceneLoader::Instance().GetCloudPoint();
 		}
+
+		HODO_API std::string GetPrevSceneName()
+		{
+			return HDEngine::SceneSystem::Instance().GetPrevScene()->GetSceneName();
+		}
 	}
+
 
 }

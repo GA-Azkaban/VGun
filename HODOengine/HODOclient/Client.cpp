@@ -10,6 +10,7 @@
 #include "LobbyManager.h"
 #include "MenuManager.h"
 #include "RoundManager.h"
+#include "SoundManager.h"
 
 
 
@@ -26,6 +27,7 @@ Client::~Client()
 void Client::Initialize()
 {	
 	// 매니저 초기화
+	SoundManager::Instance();
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();

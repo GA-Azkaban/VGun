@@ -64,7 +64,6 @@ namespace API
 		HODO_API void LoadScene(HDData::Scene* scene);
 		HODO_API HDData::Scene* LoadSceneByName(std::string scene);
 		HODO_API std::vector<HDData::UIBase*>& GetAllUIList();
-		HODO_API std::string GetCurrentSceneName();
 
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
@@ -93,6 +92,8 @@ namespace API
 
 		// 현재 씬
 		HODO_API HDData::Scene* GetCurrentScene();
+		HODO_API std::string GetCurrentSceneName();
+		HODO_API std::string GetPrevSceneName();
 
 		// 메인 카메라 조작을 위한 함수
 		HODO_API HDData::Camera* GetCurrenSceneMainCamera();

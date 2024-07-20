@@ -149,16 +149,12 @@ void RoundManager::InitGame()
 
 void RoundManager::EndGame()
 {
-	for (auto& p : _playerObjs)
-	{
-		p->GetComponent<PlayerMove>()->StopMoving();
-	}
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->StopMoving();
 
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	tumbleAlphaImage->SetActive(false);
-	tumbleCountText->SetActive(false);
+	
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -211,6 +207,9 @@ void RoundManager::SetUIActive(bool isActive)
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}
+
+	tumbleAlphaImage->SetActive(isActive);
+	tumbleCountText->SetActive(isActive);
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);

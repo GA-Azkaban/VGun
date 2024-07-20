@@ -71,7 +71,6 @@ private:
 	void ShootTrail(Vector3 endPoint);
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
-	virtual void OnEnable() override;
 	void OnStateEnter(ePlayerMoveState state);
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
@@ -126,9 +125,6 @@ private:
 	HDData::SkinnedMeshRenderer* _fpmesh;
 	HDData::MeshRenderer* _weapon;
 	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
-
-private:
-	HDData::AudioSource* _playerAudio = nullptr;
 
 private:
 	HDData::TextUI* _playerInfoText;

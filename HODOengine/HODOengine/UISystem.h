@@ -7,6 +7,7 @@
 namespace HDData
 {
 	class Scene;
+	class Button;
 	class UIBase;
 }
 
