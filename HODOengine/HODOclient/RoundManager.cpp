@@ -1,4 +1,4 @@
-﻿#include "RoundManager.h"
+#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -6,6 +6,7 @@
 #include "MenuManager.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "SoundManager.h"
 #include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
@@ -152,8 +153,7 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	tumbleAlphaImage->SetActive(false);
-	tumbleCountText->SetActive(false);
+	
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -188,6 +188,8 @@ void RoundManager::InitRound()
 		info->Init();
 		player->SetSelfActive(true);
 	}
+
+	SoundManager::Instance().PlayUI("sfx_bell");
 }
 
 void RoundManager::UpdateRound()
@@ -206,6 +208,9 @@ void RoundManager::SetUIActive(bool isActive)
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}
+
+	tumbleAlphaImage->SetActive(isActive);
+	tumbleCountText->SetActive(isActive);
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);

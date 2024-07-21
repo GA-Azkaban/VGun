@@ -45,10 +45,10 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "loginCanvas");
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
+	mainCanvasImage->SetIsIgnoreFocus(true);
 	mainCanvasImage->SetImage("_blur_background_image.png");
-	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvasImage->ChangeScale(scale, scale);
-	mainCanvasImage->SetSortOrder(0.0f);
+	mainCanvasImage->SetSortOrder(0.1f);
 	mainCanvasImage->SetActive(true);
 
 	// login Control Object
@@ -62,7 +62,8 @@ void LoginSceneView::LoginView()
 	auto gameLogo = API::CreateImageBox(_scene, "gameLogo", loginControlObject);
 	gameLogo->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 600.0f, 0.0f);
 	auto gameLogoComp = gameLogo->GetComponent<HDData::ImageUI>();
-	gameLogoComp->SetSortOrder(0.0f);
+	gameLogoComp->SetSortOrder(0.12f);
+	gameLogoComp->SetIsIgnoreFocus(true);
 	gameLogoComp->SetImage("gameLogo.png");
 
 	// TeamLogo
@@ -76,24 +77,24 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* idTextbox = API::CreateTextInputBox(_scene, "idTextBox", loginControlObject);
 	auto id = idTextbox->GetComponent<HDData::TextInputBoxUI>();
 	idTextbox->GetTransform()->SetPosition(960.0f * width / 1920, (440.f * height / 1080) + 500, 0.f);
-	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.1f);
-	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.11f);
-	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.11f);
+	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
+	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
+	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 
 	HDData::GameObject* idTextLabel = API::CreateTextbox(_scene, "idTextLabel", loginControlObject);
 	idTextLabel->GetTransform()->SetPosition((770.f * width / 1920) + 25, (440.f * height / 1080) + 500, 0.f);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetText("ID");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Red);
-	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
+	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	// password input box
 	HDData::GameObject* passwordTextbox = API::CreateTextInputBox(_scene, "passwordTextBox", loginControlObject);
 	auto pw = passwordTextbox->GetComponent<HDData::TextInputBoxUI>();
 	passwordTextbox->GetTransform()->SetPosition(960.0f * width / 1920, (540.f * height / 1080) + 500, 0.f);
-	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.1f);
-	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.11f);
-	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.11f);
+	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
+	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
+	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
 
 	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", loginControlObject);
 	passwordTextboxLabel->GetTransform()->SetPosition(725.f * width / 1920, (540.f * height / 1080) + 500, 0.f);
@@ -101,13 +102,13 @@ void LoginSceneView::LoginView()
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Red);
 	//passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor({ 163 / 255.0f, 29 / 255.0f, 17 / 255.0f,1.0f });
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.11f);
+	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
 	// login button
 	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", loginControlObject);
 	loginBtn->GetTransform()->SetPosition(865.f * width / 1920, (640.f * height / 1080) + 500, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.11f);
+	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
 	loginBtn->AddComponent<BtnTextScript>();
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
@@ -127,9 +128,11 @@ void LoginSceneView::LoginView()
 	);
 	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);
 	loginText->GetTransform()->SetPosition(loginBtn->GetTransform()->GetPosition());
-	loginText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	loginText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::Red);
-	loginText->GetComponent<HDData::TextUI>()->SetText("LOGIN");
+	auto logintxt = loginText->GetComponent<HDData::TextUI>();
+	logintxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	logintxt->SetDefaultColor(DirectX::Colors::Red);
+	logintxt->SetSortOrder(0.65f);
+	logintxt->SetText("LOGIN");
 
 	// sign up control
 	HDData::GameObject* joinControlObject = API::CreateImageBox(_scene, "joinControlObject");

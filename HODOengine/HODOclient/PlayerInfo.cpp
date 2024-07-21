@@ -30,6 +30,7 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 
 void PlayerInfo::Start()
 {
+	_audio = SoundManager::Instance().AddAudioSourceInObject(GetGameObject());
 	this->Init();
 }
 
@@ -297,6 +298,11 @@ void PlayerInfo::PlayKillLog(std::string log)
 void PlayerInfo::KillLogExit()
 {
 	_killLog->GetGameObject()->SetSelfActive(false);
+}
+
+void PlayerInfo::Init3DSound()
+{
+	//_audio->AddAudio3D()
 }
 
 bool& PlayerInfo::GetPlayerDie()

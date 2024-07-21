@@ -88,12 +88,6 @@
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>02_Client\01_Script\Player\PlayerInfo</Filter>
     </ClCompile>
-    <ClCompile Include="SoundPlayer.cpp">
-      <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
-    </ClCompile>
-    <ClCompile Include="FadeInOut.cpp">
-      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
-    </ClCompile>
     <ClCompile Include="TrainigSceneView.cpp">
       <Filter>04_SceneView\Training</Filter>
     </ClCompile>
@@ -132,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>02_Client\01_Script\Sound\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetting.cpp">
+      <Filter>03_Manager\SettingManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,12 +240,6 @@
     <ClInclude Include="PlayerState.h">
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="FadeInOut.h">
-      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundPlayer.h">
-      <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
-    </ClInclude>
     <ClInclude Include="TrainigSceneView.h">
       <Filter>04_SceneView\Training</Filter>
     </ClInclude>
@@ -293,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>02_Client\01_Script\Sound\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSetting.h">
+      <Filter>03_Manager\SettingManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -435,6 +429,9 @@
     </Filter>
     <Filter Include="02_Client\01_Script\Sound\SoundManager">
       <UniqueIdentifier>{2c9f3765-46ba-4b9c-8c5a-0aa3bcedbbb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\SettingManager">
+      <UniqueIdentifier>{d4439aad-4fd8-4460-9764-f7f72e9f19ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

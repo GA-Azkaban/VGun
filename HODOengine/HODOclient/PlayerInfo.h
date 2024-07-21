@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
+#include "SoundManager.h"
 #include "Timer.h"
 
 enum class eHITLOC
@@ -125,5 +126,9 @@ private:
 	HDData::ImageUI* _killEffectImg;
 	HDData::ImageUI* _dieEffectImg;
 	HDData::TextUI* _killLog;
+
+private:
+	void Init3DSound();
+	HDData::AudioSource* _audio;
 };
 
