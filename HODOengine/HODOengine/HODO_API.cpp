@@ -375,7 +375,7 @@ namespace API
 
 			auto valueText = HDEngine::ObjectSystem::Instance().CreateStaticObject("value", obj);
 			valueText->AddComponent<HDData::TextUI>();
-			valueText->GetComponent<HDData::TextUI>()->SetText(std::to_string(50));
+			valueText->GetComponent<HDData::TextUI>()->SetText(std::to_string(100));
 			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
 
 			return obj;
