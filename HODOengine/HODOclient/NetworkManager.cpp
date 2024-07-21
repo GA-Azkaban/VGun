@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
+#include "SoundManager.h"
 
 #include "Service.h"
 #include "ServerPacketHandler.h"
@@ -297,6 +298,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
 
+	SoundManager::Instance().PlayUI("sfx_entry");
 	API::LoadSceneByName("MainMenu");
 }
 

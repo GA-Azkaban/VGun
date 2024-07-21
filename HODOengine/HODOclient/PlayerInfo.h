@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
+#include "SoundManager.h"
 #include "Timer.h"
 
 enum class eHITLOC
@@ -110,7 +111,7 @@ private:
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
-	
+
 	// count info
 	int _kill;
 	int _death;
@@ -125,5 +126,8 @@ private:
 	HDData::ImageUI* _killEffectImg;
 	HDData::ImageUI* _dieEffectImg;
 	HDData::TextUI* _killLog;
+
+public:
+	HDData::AudioSource* audio;
 };
 

@@ -6,6 +6,7 @@
 #include "MenuManager.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "SoundManager.h"
 #include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
@@ -125,6 +126,7 @@ void RoundManager::InitGame()
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
+			GameManager::Instance()->GetMyInfo()->audio = info->audio;
 			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 			_killCountObjs[index].first->SetColor(DirectX::Colors::WhiteSmoke);
 			_killCountObjs[index].second->SetColor(DirectX::Colors::WhiteSmoke);
@@ -152,8 +154,7 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	tumbleAlphaImage->SetActive(false);
-	tumbleCountText->SetActive(false);
+	
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -188,6 +189,8 @@ void RoundManager::InitRound()
 		info->Init();
 		player->SetSelfActive(true);
 	}
+
+	SoundManager::Instance().PlayUI("sfx_bell");
 }
 
 void RoundManager::UpdateRound()
@@ -206,6 +209,9 @@ void RoundManager::SetUIActive(bool isActive)
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}
+
+	tumbleAlphaImage->SetActive(isActive);
+	tumbleCountText->SetActive(isActive);
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);

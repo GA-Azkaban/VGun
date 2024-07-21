@@ -14,6 +14,7 @@
 #include "UISystem.h"
 #include "AnimationLoader.h"
 #include "TweenSystem.h"
+#include "UISystem.h";
 
 
 namespace API
@@ -347,6 +348,39 @@ namespace API
 		{
 			return HDEngine::SceneLoader::Instance().GetCloudPoint();
 		}
+
+		HODO_API std::string GetPrevSceneName()
+		{
+			return HDEngine::SceneSystem::Instance().GetPrevScene()->GetSceneName();
+		}
+
+		HODO_API HDData::GameObject* CreateStaticSlider(std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			auto obj = HDEngine::ObjectSystem::Instance().CreateStaticObject(objectName, parentObject);
+			obj->AddComponent<HDData::SliderUI>();
+
+			auto background = HDEngine::ObjectSystem::Instance().CreateStaticObject("bar", obj);
+			background->AddComponent<HDData::ImageUI>();
+			background->GetComponent<HDData::ImageUI>()->SetImage("bar.png");
+
+			auto fill = HDEngine::ObjectSystem::Instance().CreateStaticObject("fill", obj);
+			fill->AddComponent<HDData::ImageUI>();
+			fill->GetComponent<HDData::ImageUI>()->SetImage("fill.png");
+			fill->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+
+			auto handle = HDEngine::ObjectSystem::Instance().CreateStaticObject("handle", obj);
+			handle->AddComponent<HDData::ImageUI>();
+			handle->GetComponent<HDData::ImageUI>()->SetImage("point.png");
+			handle->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
+
+			auto valueText = HDEngine::ObjectSystem::Instance().CreateStaticObject("value", obj);
+			valueText->AddComponent<HDData::TextUI>();
+			valueText->GetComponent<HDData::TextUI>()->SetText(std::to_string(100));
+			valueText->GetComponent<HDData::TextUI>()->SetIsIgnoreFocus(true);
+
+			return obj;
+		}
 	}
+
 
 }

@@ -20,6 +20,12 @@ void TPScript::Update()
 {
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 
+	if (API::GetKeyDown(DIK_LSHIFT))
+	{
+		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(1) != ePlayerMoveState::TUMBLE) return;
+		_animator->GetAllAC()->SetTrigger("isRollFront");
+	}
+
 	if (API::GetKeyPressing(DIK_W))
 	{
 		_animator->GetAllAC()->SetBool("isRunFront", true);

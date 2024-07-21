@@ -19,6 +19,7 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	_playerUID = info->GetPlayerUID();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
+	audio = info->audio;
 
 	_timer = new Timer;
 	_timer->duration = 5;
@@ -30,6 +31,8 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 
 void PlayerInfo::Start()
 {
+	audio = SoundManager::Instance().AddAudioSourceInObject(GetGameObject());
+	SoundManager::Instance().InitializePlayerAudio(audio);
 	this->Init();
 }
 
