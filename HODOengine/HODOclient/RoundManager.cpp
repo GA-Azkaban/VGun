@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -126,6 +126,7 @@ void RoundManager::InitGame()
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
+			GameManager::Instance()->GetMyInfo()->audio = info->audio;
 			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 			_killCountObjs[index].first->SetColor(DirectX::Colors::WhiteSmoke);
 			_killCountObjs[index].second->SetColor(DirectX::Colors::WhiteSmoke);

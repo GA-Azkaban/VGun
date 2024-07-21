@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -477,6 +477,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			_moveSpeed = 5.0f;
 			_playerColliderStanding->Jump(Vector3::Zero);
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 
 			break;
 		}
@@ -486,6 +487,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_tumbleCooldown = 6.0f;
 			recoilCooldown->SetTimerOn();
 			cooldownCountText->SetTimerOn();
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_roll");
 
 			_headCam->ToggleCameraShake(true);
 			_fpmesh->SetMeshActive(false, 0);
@@ -516,6 +518,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			ShootGun();
 			_fpanimator->GetAllAC()->SetTrigger("isFire");
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_fire");
 			_headCam->ToggleCameraShake(true);
 
 			break;
@@ -531,12 +534,14 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_fpmesh->SetMeshActive(false, 0);
 			_fpanimator->GetAllAC()->SetBool("isIdle", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
 			_reloadTimer = 2.6f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
 			Die();
 
 			break;
