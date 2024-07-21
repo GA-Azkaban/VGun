@@ -53,7 +53,7 @@ void Client::Initialize()
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 	
-	API::LoadSceneByName("Login");
+	API::LoadSceneByName("MainMenu");
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
