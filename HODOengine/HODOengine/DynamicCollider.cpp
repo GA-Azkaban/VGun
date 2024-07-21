@@ -201,10 +201,18 @@ void HDData::DynamicCollider::Stop()
 	_physXRigid->clearTorque();
 }
 
-void HDData::DynamicCollider::AddForce(Vector3 direction, float force)
+void HDData::DynamicCollider::AddForce(Vector3 direction, float force /*= 1.0f*/, int forceType /*= 1*/)
 {
 	direction.Normalize();
-	_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
+	
+	if (forceType == 0)
+	{
+		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eFORCE);
+	}
+	else if (forceType == 1)
+	{
+		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
+	}
 }
 
 void HDData::DynamicCollider::AdjustVelocity(float ratio)
