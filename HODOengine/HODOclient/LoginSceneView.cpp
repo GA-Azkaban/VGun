@@ -62,7 +62,7 @@ void LoginSceneView::LoginView()
 	auto gameLogo = API::CreateImageBox(_scene, "gameLogo", loginControlObject);
 	gameLogo->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 600.0f, 0.0f);
 	auto gameLogoComp = gameLogo->GetComponent<HDData::ImageUI>();
-	gameLogoComp->SetSortOrder(0.1f);
+	gameLogoComp->SetSortOrder(0.12f);
 	gameLogoComp->SetIsIgnoreFocus(true);
 	gameLogoComp->SetImage("gameLogo.png");
 
@@ -128,9 +128,11 @@ void LoginSceneView::LoginView()
 	);
 	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);
 	loginText->GetTransform()->SetPosition(loginBtn->GetTransform()->GetPosition());
-	loginText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	loginText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::Red);
-	loginText->GetComponent<HDData::TextUI>()->SetText("LOGIN");
+	auto logintxt = loginText->GetComponent<HDData::TextUI>();
+	logintxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	logintxt->SetDefaultColor(DirectX::Colors::Red);
+	logintxt->SetSortOrder(0.65f);
+	logintxt->SetText("LOGIN");
 
 	// sign up control
 	HDData::GameObject* joinControlObject = API::CreateImageBox(_scene, "joinControlObject");

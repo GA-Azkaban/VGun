@@ -28,13 +28,13 @@ GameSetting::GameSetting()
 
 	_bgmSoundController = API::CreateStaticObject("bgmSound", _settingCanvas);
 	auto bgming = _bgmSoundController->AddComponent<HDData::ImageUI>();
-	bgming->SetSortOrder(0.81f);
+	bgming->SetSortOrder(0.8f);
 	_bgmSoundController->GetTransform()->SetPosition(960.f * width / 1920, 530, 0.f);
 	bgming->SetImage("PrefBtntemp.png");
 
 	_sfxSoundController = API::CreateStaticObject("sfxSound", _settingCanvas);
 	auto sfximg = _sfxSoundController->AddComponent<HDData::ImageUI>();
-	sfximg->SetSortOrder(0.81f);
+	sfximg->SetSortOrder(0.8f);
 	_sfxSoundController->GetTransform()->SetPosition(960.f * width / 1920, 650, 0.f);
 	sfximg->SetImage("PrefBtntemp.png");
 
@@ -51,6 +51,7 @@ GameSetting::GameSetting()
 	_sfxSoundIndex = API::CreateStaticObject();
 	_sfxSoundIndex->GetTransform()->SetPosition(600, 650, 0);
 	auto sfxindex = _sfxSoundIndex->AddComponent<HDData::TextUI>();
+	sfxindex->SetSortOrder(0.81f);
 	sfxindex->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	sfxindex->SetText("EFFECT");
 
@@ -66,7 +67,8 @@ GameSetting::~GameSetting()
 
 void GameSetting::Start()
 {
-
+	_bgmSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.83f);
+	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.83f);
 }
 
 void GameSetting::Update()

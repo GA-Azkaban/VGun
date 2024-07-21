@@ -32,6 +32,8 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
+	GameSetting::Instance();
+	SoundManager::Instance();
 	
 	// 씬 초기화
 	//TestScene test;
@@ -56,8 +58,6 @@ void Client::Initialize()
 	inGame.Initialize();
 	
 
-	GameSetting::Instance();
-	SoundManager::Instance();
 
 	API::LoadSceneByName("Login");
 

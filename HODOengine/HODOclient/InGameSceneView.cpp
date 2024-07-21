@@ -605,6 +605,7 @@ void InGameSceneView::Initialize()
 	roundfin->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
 	roundfin->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, false, 10);
 	auto finimg = roundfin->GetComponent<HDData::ImageUI>();
+	finimg->SetSortOrder(0.5f);
 	finimg->SetImage("finRound2.png");
 	RoundManager::Instance()->finRoundimg = finimg;
 
