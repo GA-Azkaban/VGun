@@ -33,7 +33,8 @@ namespace RocketCore::Graphics
 		VertexShader* vertexShader = ResourceManager::Instance().GetVertexShader("BillboardVertexShader.cso");
 		vertexShader->SetMatrix4x4("viewProjection", XMMatrixTranspose(view * proj));
 
-		_spriteBatch->Begin(DX11::SpriteSortMode_Deferred, _states->NonPremultiplied());
+		//_spriteBatch->Begin(DX11::SpriteSortMode_Deferred, _states->NonPremultiplied());
+		_spriteBatch->Begin(DX11::SpriteSortMode_FrontToBack, _states->NonPremultiplied());
 		RenderImage();
 		RenderText();
 		_spriteBatch->End();
