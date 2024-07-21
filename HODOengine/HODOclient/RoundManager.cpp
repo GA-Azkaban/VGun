@@ -6,6 +6,7 @@
 #include "MenuManager.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "SoundManager.h"
 #include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
@@ -189,6 +190,8 @@ void RoundManager::InitRound()
 		info->Init();
 		player->SetSelfActive(true);
 	}
+
+	SoundManager::Instance().PlayUI("sfx_bell");
 }
 
 void RoundManager::UpdateRound()

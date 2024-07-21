@@ -5,7 +5,6 @@
 #include "GameManager.h"
 #include "NetworkManager.h"
 #include "RoundManager.h"
-
 #include "BtnTextScript.h"
 
 LobbySceneView::LobbySceneView()

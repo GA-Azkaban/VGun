@@ -297,7 +297,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
 
-	SoundManager::Instance().PlayUI("sfx_enter");
+	SoundManager::Instance().PlayUI("sfx_entry");
 	API::LoadSceneByName("MainMenu");
 }
 

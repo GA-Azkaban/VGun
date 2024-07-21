@@ -1,4 +1,4 @@
-#include "Component.h"
+﻿#include "Component.h"
 #include "GameObject.h"
 
 HDData::GameObject* HDData::Component::GetGameObject() const

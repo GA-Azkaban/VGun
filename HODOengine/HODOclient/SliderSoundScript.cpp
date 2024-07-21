@@ -27,7 +27,7 @@ void SliderSoundScript::Update()
 {
 	if (_isSettingOn == true)
 	{
-		_soundVolume = _slider->GetValueText() * 0.01f;
-		_audio->SetSoundVolumeAll(_soundVolume);
+		/*_soundVolume = _slider->GetValueText() * 0.01f;
+		_audio->SetSoundVolumeAll(_soundVolume);*/
 	}
 }

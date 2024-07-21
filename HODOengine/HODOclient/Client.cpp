@@ -11,6 +11,7 @@
 #include "MenuManager.h"
 #include "RoundManager.h"
 #include "SoundManager.h"
+#include "GameSetting.h"
 
 
 
@@ -27,7 +28,6 @@ Client::~Client()
 void Client::Initialize()
 {	
 	// 매니저 초기화
-	SoundManager::Instance();
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();
@@ -35,7 +35,7 @@ void Client::Initialize()
 	
 	// 씬 초기화
 	//TestScene test;
-	//API::LoadSceneByName("Test");
+	//API::LoadSceneByName("T est");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
@@ -55,6 +55,10 @@ void Client::Initialize()
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 	
+
+	GameSetting::Instance();
+	SoundManager::Instance();
+
 	API::LoadSceneByName("Login");
 
 	//InGameSceneView inGame;			//Scene Name : InGame

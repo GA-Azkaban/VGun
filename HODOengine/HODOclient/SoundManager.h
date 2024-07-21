@@ -3,6 +3,8 @@
 
 #include "../HODOengine/HODO_API.h"
 
+#include "GameSetting.h"
+
 /// <summary>
 /// 게임의 사운드들을 제어하는 시스템
 /// BGM, 나 자신의 사운드는 2D로 관리하면 된다
@@ -69,10 +71,12 @@ public:
 private:
 	// 현재 씬이 바뀔 때마다 씬을 체크하고 BGM 변경
 	void CheckSceneBGM();
-	void CheckUIClicked();
+	void UpdateBGMVolume();
+	void UpdateSFXVolume();
 
 private:
 	std::string _currentSceneName;
+	float _volume;
 
 public:
 	HDData::AudioSource* AddAudioSourceInObject(HDData::GameObject* obj);
@@ -80,6 +84,8 @@ public:
 private:
 	HDData::GameObject* _audioController;
 	HDData::AudioSource* _2DsoundController;
+	HDData::GameObject* _UIaudioController;
+	HDData::AudioSource* _UISoundController;
 
 
 	std::vector<HDData::AudioSource*> _sources;

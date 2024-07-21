@@ -29,16 +29,22 @@ SoundManager::~SoundManager()
 void SoundManager::Start()
 {
 	_audioController = API::CreateStaticObject();
+	_UIaudioController = API::CreateStaticObject();
 	_2DsoundController = _audioController->AddComponent<HDData::AudioSource>();
+	_UISoundController = _UIaudioController->AddComponent<HDData::AudioSource>();
 	_currentSceneName = API::GetCurrentSceneName();
+	SetAllVolume(1);
 	InitializeAudios();
 	PlayBGM("bgm_lobby");
+	//PlayUI("sfx_bell");
 }
 
 void SoundManager::Update()
 {
 	CheckSceneBGM();
-	CheckUIClicked();
+	UpdateBGMVolume();
+	UpdateSFXVolume();
+	_sources;
 }
 
 void SoundManager::SetAllVolume(float vol)
@@ -73,7 +79,7 @@ void SoundManager::SetSFXVolume(float vol)
 
 void SoundManager::PlayBGM(std::string sourceName)
 {
-	_2DsoundController->StopAll();
+	_2DsoundController->StopSoundGroup(HDData::SoundGroup::BackgroundMusic);
 	_2DsoundController->PlayRepeat(sourceName);
 }
 
@@ -100,14 +106,21 @@ void SoundManager::CheckSceneBGM()
 	}
 }
 
-void SoundManager::PlayUI(std::string souceName)
+void SoundManager::UpdateBGMVolume()
 {
-	_2DsoundController->PlayOnce(souceName);
+	auto val = GameSetting::Instance()._bgmSoundSlider->GetComponent<HDData::SliderUI>()->GetValueText();
+	SetBGMVolme(GameSetting::Instance()._bgmSoundSlider->GetComponent<HDData::SliderUI>()->GetValueText() * 0.01);
 }
 
-void SoundManager::CheckUIClicked()
+void SoundManager::UpdateSFXVolume()
 {
+	auto val = GameSetting::Instance()._sfxSoundSlider->GetComponent<HDData::SliderUI>()->GetValueText();
+	SetSFXVolume(GameSetting::Instance()._sfxSoundSlider->GetComponent<HDData::SliderUI>()->GetValueText() * 0.01);
+}
 
+void SoundManager::PlayUI(std::string souceName)
+{
+	_UISoundController->PlayOnce(souceName);
 }
 
 HDData::AudioSource* SoundManager::AddAudioSourceInObject(HDData::GameObject* obj)
@@ -126,9 +139,10 @@ void SoundManager::InitializeAudios()
 	_2DsoundController->AddAudio("bgm_defeat", "Resources/Sound/BGM/VICTORY.mp3", HDData::SoundGroup::BackgroundMusic);
 
 	// UI
-	_2DsoundController->AddAudio("sfx_button", "Resources/Sound/BGM/BUTTON.mp3", HDData::SoundGroup::EffectSound);
-	_2DsoundController->AddAudio("sfx_entry", "Resources/Sound/BGM/ENTRY.mp3", HDData::SoundGroup::EffectSound);
+	_UISoundController->AddAudio("sfx_button", "Resources/Sound/SFX/BUTTON.wav", HDData::SoundGroup::EffectSound);
+	_UISoundController->AddAudio("sfx_entry", "Resources/Sound/SFX/ENTRY.wav", HDData::SoundGroup::EffectSound);
+	_UISoundController->AddAudio("sfx_bell", "Resources/Sound/SFX/BELL.mp3", HDData::SoundGroup::EffectSound);
 
 	// SFX
-
+	_2DsoundController->AddAudio("sfx_footstep", "Resources/Sound/SFX/FOOTSTEP.mp3", HDData::SoundGroup::MoveSound);
 }
