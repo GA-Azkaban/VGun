@@ -149,11 +149,6 @@ void RoundManager::InitGame()
 
 void RoundManager::EndGame()
 {
-	for (auto& p : _playerObjs)
-	{
-		p->GetComponent<PlayerMove>()->StopMoving();
-	}
-
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
