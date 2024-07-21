@@ -1,4 +1,4 @@
-﻿#include "RoundManager.h"
+#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -150,8 +150,6 @@ void RoundManager::InitGame()
 
 void RoundManager::EndGame()
 {
-	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->StopMoving();
-
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
@@ -220,10 +218,19 @@ void RoundManager::SetUIActive(bool isActive)
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
 }
 
-void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
+bool RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
-	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
+	auto parentCol = collider->GetParentCollider();
+	if (parentCol == nullptr)
+	{
+		return false;
+	}
+	else
+	{
+		int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
+		NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
+		return true;
+	}
 }
 
 void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider)
@@ -388,6 +395,49 @@ void RoundManager::UpdateRoundTimer()
 		auto nowElapsed = static_cast<int>(_timer - elapsedTime.count());
 		_timerUI->SetText(ChangeSecToMin(nowElapsed));
 
+		if (nowElapsed >= 56 && nowElapsed <= 60)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(2.0f, -1.0f, 0.0f), 5.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 46 && nowElapsed <= 50)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(-2.0f, -1.0f, 0.0f), 5.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 36 && nowElapsed <= 40)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(0.0f, -1.0f, 2.0f), 5.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 26 && nowElapsed <= 30)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(0.0f, -1.0f, -2.0f), 5.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 16 && nowElapsed <= 20)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(1.0f, -1.0f, 1.0f), 5.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 6 && nowElapsed <= 10)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(-1.0f, -1.0f, -1.0f), 5.0f, 0);
+			}
+		}
+
 		if (nowElapsed <= 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
@@ -531,5 +581,10 @@ void RoundManager::SetAnimationDummy(HDData::GameObject* obj)
 HDData::GameObject* RoundManager::GetAnimationDummy()
 {
 	return _animationDummy;
+}
+
+void RoundManager::SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec)
+{
+	_weedColVector = vec;
 }
 

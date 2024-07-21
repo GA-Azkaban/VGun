@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -363,9 +363,19 @@ void PlayerMove::ShootGun()
 	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
 	if (hitDynamicSphere != nullptr)
 	{
-		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
-		GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
-		_isShootHead = true;
+		if (RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere))
+		{
+			_isShootHead = true;
+			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
+		}
+		else
+		{
+			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(direction, 20.0f);
+		}
+
+		//_playerAudio->PlayOnce("hitBody");
+		//_playerAudio->PlayOnce("hitHead");
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -1105,9 +1115,14 @@ bool PlayerMove::IsShootBody()
 	return _isShootBody;
 }
 
-void PlayerMove::StopMoving()
+bool PlayerMove::GetIsIngamePlaying()
 {
-	_playerColliderStanding->Stop();
+	return _isIngamePlaying;
+}
+
+void PlayerMove::SetIsIngamePlaying(bool isPlaying)
+{
+	_isIngamePlaying = isPlaying;
 }
 
 void PlayerMove::ToggleCam()

@@ -8,6 +8,7 @@
 #include "HODO_API.h"
 #include "CollisionCallback.h"
 
+#include "../HODOclient/PlayerMove.h"
 #include "../include/physX/PxPhysics.h"
 #include "../include/physX/PxPhysicsAPI.h"
 
@@ -86,6 +87,7 @@ namespace HDEngine
 		// 맘에 들진 않지만 플레이어를 여기에 저장해두자
 		physx::PxRigidDynamic* _playerRigid;
 		physx::PxShape* _playerShape;
+		PlayerMove* _plMove;
 
 	private:
 		float _accumulateTime = 0.0f;
