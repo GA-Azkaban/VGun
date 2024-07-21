@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -1139,9 +1139,14 @@ bool PlayerMove::IsShootBody()
 	return _isShootBody;
 }
 
-void PlayerMove::StopMoving()
+bool PlayerMove::GetIsIngamePlaying()
 {
-	_playerColliderStanding->Stop();
+	return _isIngamePlaying;
+}
+
+void PlayerMove::SetIsIngamePlaying(bool isPlaying)
+{
+	_isIngamePlaying = isPlaying;
 }
 
 void PlayerMove::ToggleCam()

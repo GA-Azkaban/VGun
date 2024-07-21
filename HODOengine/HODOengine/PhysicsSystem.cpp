@@ -64,6 +64,11 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		if (static_cast<HDData::DynamicCollider*>(_playerRigid->userData)->GetGameObject()->GetComponent<PlayerMove>()->_isIngamePlaying == false)
+		{
+			return;
+		}
+
 		_accumulateTime += API::GetDeltaTime();
 		if (_accumulateTime >= 0.008333f)
 		{
@@ -450,8 +455,11 @@ namespace HDEngine
 
 				// 앉을 때 switch 해줄 두 shape 를 넣어준다.
 				//collider->SetPlayerShapes(standingShape, sittingShape);
-				_playerRigid = capsuleRigid;
-				_playerShape = standingShape;
+				if (capsule->GetGameObject()->GetObjectName() == "playerSelf")
+				{
+					_playerRigid = capsuleRigid;
+					_playerShape = standingShape;
+				}
 
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
