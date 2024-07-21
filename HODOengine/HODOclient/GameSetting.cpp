@@ -69,6 +69,7 @@ void GameSetting::Start()
 {
 	_bgmSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.83f);
 	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.83f);
+	SetSettingCanvasActive(false);
 }
 
 void GameSetting::Update()
