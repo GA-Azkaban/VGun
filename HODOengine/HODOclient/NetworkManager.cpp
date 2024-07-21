@@ -13,6 +13,7 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
+#include "PlayerMove.h"
 
 #include <fstream>
 
@@ -522,6 +523,8 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
+
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameStart()
@@ -536,6 +539,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	API::ShowWindowCursor(true);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
 }
 
 void NetworkManager::SendPlayUpdate()

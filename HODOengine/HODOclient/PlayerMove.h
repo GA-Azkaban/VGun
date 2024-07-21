@@ -29,6 +29,8 @@ public:
 public:
 	bool IsShootHead();
 	bool IsShootBody();
+	bool GetIsIngamePlaying();
+	void SetIsIngamePlaying(bool isPlaying);
 
 	// check ~~ series
 private:
@@ -160,4 +162,7 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
+
+public:
+	bool _isIngamePlaying;
 };

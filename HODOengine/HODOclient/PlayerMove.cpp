@@ -803,7 +803,8 @@ void PlayerMove::UpdateStateText()
 
 	_plStateText->SetText(first + "/" + second);
 
-	_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
+	//_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
+	_anyText->SetText(std::to_string(GetTransform()->GetPosition().z));
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
@@ -1126,6 +1127,16 @@ bool PlayerMove::IsShootHead()
 bool PlayerMove::IsShootBody()
 {
 	return _isShootBody;
+}
+
+bool PlayerMove::GetIsIngamePlaying()
+{
+	return _isIngamePlaying;
+}
+
+void PlayerMove::SetIsIngamePlaying(bool isPlaying)
+{
+	_isIngamePlaying = isPlaying;
 }
 
 void PlayerMove::ToggleCam()
