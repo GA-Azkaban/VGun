@@ -111,7 +111,7 @@ private:
 	bool _isStateChange = false;
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
-	
+
 	// count info
 	int _kill;
 	int _death;
@@ -127,8 +127,7 @@ private:
 	HDData::ImageUI* _dieEffectImg;
 	HDData::TextUI* _killLog;
 
-private:
-	void Init3DSound();
-	HDData::AudioSource* _audio;
+public:
+	HDData::AudioSource* audio;
 };
 

@@ -61,8 +61,9 @@ public:
 	void SetBGMVolme(float vol);
 	void SetSFXVolume(float vol);
 
-private:
+public:
 	void InitializeAudios();
+	void InitializePlayerAudio(HDData::AudioSource* audio);
 
 public:
 	void PlayBGM(std::string sourceName);

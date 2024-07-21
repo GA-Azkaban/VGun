@@ -19,6 +19,7 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	_playerUID = info->GetPlayerUID();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
+	audio = info->audio;
 
 	_timer = new Timer;
 	_timer->duration = 5;
@@ -30,7 +31,8 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 
 void PlayerInfo::Start()
 {
-	_audio = SoundManager::Instance().AddAudioSourceInObject(GetGameObject());
+	audio = SoundManager::Instance().AddAudioSourceInObject(GetGameObject());
+	SoundManager::Instance().InitializePlayerAudio(audio);
 	this->Init();
 }
 
@@ -298,11 +300,6 @@ void PlayerInfo::PlayKillLog(std::string log)
 void PlayerInfo::KillLogExit()
 {
 	_killLog->GetGameObject()->SetSelfActive(false);
-}
-
-void PlayerInfo::Init3DSound()
-{
-	//_audio->AddAudio3D()
 }
 
 bool& PlayerInfo::GetPlayerDie()
