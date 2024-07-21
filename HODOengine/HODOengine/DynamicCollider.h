@@ -59,7 +59,7 @@ namespace HDData
 		void Jump(Vector3 direction);
 		void Sleep();
 		void Stop();
-		void AddForce(Vector3 direction, float force = 1.0f);
+		void AddForce(Vector3 direction, float force = 1.0f, int forceType = 1);
 		void AdjustVelocity(float ratio);
 		void ClearVeloY();
 		void ClearForceXYZ();

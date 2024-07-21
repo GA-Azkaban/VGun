@@ -39,7 +39,7 @@ public:
 
 
 public:
-	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
+	bool CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
 	void SendJump(int uid);
@@ -149,9 +149,10 @@ private:
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
 	HDData::GameObject* GetAnimationDummy();
+	void SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec);
 
 private:
 	HDData::GameObject* _animationDummy = nullptr;
-
+	std::vector<HDData::DynamicSphereCollider*> _weedColVector;
 };
 

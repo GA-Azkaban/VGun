@@ -44,7 +44,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
+		_material = _physics->createMaterial(0.5f, 0.4f, 0.0f);
 		_playerMaterial = _physics->createMaterial(0.04f, 0.02f, 0.0f);
 		_planeMaterial = _physics->createMaterial(0.05f, 0.03f, 0.0f);
 
@@ -489,7 +489,15 @@ namespace HDEngine
 			{
 				HDData::DynamicSphereCollider* sphere = dynamic_cast<HDData::DynamicSphereCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_playerMaterial);
+				physx::PxShape* shape;
+				if (sphere->GetParentCollider() == nullptr)
+				{
+					shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
+				}
+				else
+				{
+					shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_playerMaterial);
+				}
 				shape->userData = sphere;
 
 				physx::PxFilterData headFilterData;
@@ -501,6 +509,7 @@ namespace HDEngine
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
 				physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
+				sphereRigid->setMass(0.2f);
 				sphereRigid->attachShape(*shape);
 
 				//_pxScene->addActor(*sphereRigid);

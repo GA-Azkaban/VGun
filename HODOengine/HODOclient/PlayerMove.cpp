@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -379,9 +379,17 @@ void PlayerMove::ShootGun()
 	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
 	if (hitDynamicSphere != nullptr)
 	{
-		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
-		GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
-		_isShootHead = true;
+		if (RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere))
+		{
+			_isShootHead = true;
+			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
+		}
+		else
+		{
+			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(direction, 20.0f);
+		}
+
 		//_playerAudio->PlayOnce("hitBody");
 		//_playerAudio->PlayOnce("hitHead");
 	}
