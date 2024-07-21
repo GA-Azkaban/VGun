@@ -375,8 +375,15 @@ void PlayerMove::ShootGun()
 	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
 	if (hitDynamicSphere != nullptr)
 	{
-		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
-		_isShootHead = true;
+		if (RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere))
+		{
+			_isShootHead = true;
+		}
+		else
+		{
+			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(direction, 20.0f);
+		}
 		//_playerAudio->PlayOnce("hitBody");
 		//_playerAudio->PlayOnce("hitHead");
 	}
