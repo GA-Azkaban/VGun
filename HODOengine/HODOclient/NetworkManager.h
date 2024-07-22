@@ -27,13 +27,16 @@ public: // 에러 코드
 
 public: // 계정 관련
 	// Debug
-	void SendAutoLogin();
+	void SendAutoLogin(std::string nickName = "");
 
 	void SendLogin(std::string id, std::string password);
 	void SendCreateAccount(std::string id, std::string password, std::string nickname);
 
 	void RecvLogin(int32 uid, std::string id);
 	void RecvCreateAccount();
+
+	void SendLogout();
+	void RecvLogout();
 
 public: // 방 리스트 관련
 	void SendRoomListRequest();

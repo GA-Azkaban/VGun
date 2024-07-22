@@ -8,6 +8,8 @@ namespace Horang
 	class DeadLockProfiler;
 	class DBConnectionPool;
 	class GlobalQueue;
+	class JobTimer;
+	class Log;
 }
 
 extern Horang::ThreadManager* GThreadManager;
@@ -16,3 +18,4 @@ extern Horang::SendBufferManager* GSendBufferManager;
 extern Horang::DeadLockProfiler* GDeadLockProfiler;
 extern Horang::DBConnectionPool* GDBConnectionPool;
 extern Horang::GlobalQueue* GGlobalQueue;
+extern Horang::JobTimer* GJobTimer;

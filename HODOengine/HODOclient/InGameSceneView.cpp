@@ -87,8 +87,8 @@ void InGameSceneView::Initialize()
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.6f, 0.05f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
 	headCollider->SetParentCollider(playerCollider);
 	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
@@ -150,13 +150,13 @@ void InGameSceneView::Initialize()
 		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 1.0f, weedPos[i-1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
 		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
-		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.2f, 1.3f));
+		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
 		auto weedMeshComp = tumbleWeed->AddComponent<HDData::MeshRenderer>();
 		weedMeshComp->LoadMesh("SM_Prop_Tumbleweed_01.fbx");
 		weedMeshComp->LoadMaterial(chMat, 0);
 		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
+		weedCollider->SetScaleOffset(Vector3(0.38f, 0.38f, 0.38f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);
@@ -317,10 +317,10 @@ void InGameSceneView::Initialize()
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadAnimation("TP");
