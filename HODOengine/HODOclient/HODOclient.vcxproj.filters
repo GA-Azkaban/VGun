@@ -276,9 +276,6 @@
     <ClInclude Include="CloudRotate.h">
       <Filter>02_Client\01_Script\Cloud</Filter>
     </ClInclude>
-    <ClInclude Include="IndicatorTest.h">
-      <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator</Filter>
-    </ClInclude>
     <ClInclude Include="UIEffect.h">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
     </ClInclude>
@@ -437,7 +434,7 @@
     <None Include="..\Include\Protobuf\Protocol.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
-    <None Include="..\include\Protobuf\Struct.proto">
+    <None Include="..\Include\Protobuf\Struct.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
   </ItemGroup>
