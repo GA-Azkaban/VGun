@@ -17,6 +17,7 @@ public:
 
 public:
 	void SetSettingCanvasActive(bool _isActive);
+	void SetMyNickname(std::string nick);
 
 public:
 	HDData::GameObject* _settingCanvas;
@@ -33,5 +34,7 @@ public:
 
 	HDData::GameObject* _sfxSoundIndex;
 	HDData::GameObject* _sfxSoundSlider;
+
+	HDData::GameObject* _quitButton;
 };
 

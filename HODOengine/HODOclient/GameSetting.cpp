@@ -32,7 +32,7 @@ GameSetting::GameSetting()
 	_infoController = API::CreateStaticObject("myinfo", _settingCanvas);
 	auto info = _infoController->AddComponent<HDData::ImageUI>();
 	_infoController->GetTransform()->SetPosition(960.f * width / 1920, 500, 0.f);
-	info->SetSortOrder(0.75f);
+	info->SetSortOrder(0.71f);
 	info->SetImage("PrefBtntemp.png");
 
 	_bgmSoundController = API::CreateStaticObject("bgmSound", _settingCanvas);
@@ -48,16 +48,17 @@ GameSetting::GameSetting()
 	sfximg->SetImage("PrefBtntemp.png");
 
 	_infoIndex = API::CreateStaticObject("infoindex", _settingCanvas);
-	_infoIndex->GetTransform()->SetPosition(600 * width / 1920, 500, 0.f);
+	_infoIndex->GetTransform()->SetPosition(600, 500, 0.f);
 	auto infoindexcomp = _infoIndex->AddComponent<HDData::TextUI>();
+	infoindexcomp->SetSortOrder(0.75f);
 	infoindexcomp->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	infoindexcomp->SetText("NICKNAME");
 
 	_nicknameText = API::CreateStaticObject("nick", _settingCanvas);
-	_nicknameText->GetTransform()->SetPosition(960.f * width / 1920, 500, 0.f);
+	_nicknameText->GetTransform()->SetPosition(1000, 500, 0.f);
 	auto nickcomp = _nicknameText->AddComponent<HDData::TextUI>();
+	nickcomp->SetSortOrder(0.75f);
 	nickcomp->SetFont("Resources/Font/KRAFTON_30.spritefont");
-	nickcomp->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 
 	_bgmSoundIndex = API::CreateStaticObject("bgmindex", _settingCanvas);
 	_bgmSoundIndex->GetTransform()->SetPosition(600.f, 650, 0);
@@ -78,6 +79,8 @@ GameSetting::GameSetting()
 
 	_sfxSoundSlider = API::CreateStaticSlider("sfxslider", _settingCanvas);
 	_sfxSoundSlider->GetTransform()->SetPosition(1000, 770, 0);
+
+	//_quitButton = API::CreateStaticObject("quit", _settingCanvas);
 
 }
 
@@ -122,4 +125,9 @@ void GameSetting::SetSettingCanvasActive(bool _isActive)
 	_sfxSoundIndex->SetSelfActive(_isActive);
 	_sfxSoundSlider->SetSelfActive(false);
 	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetActive(_isActive);
+}
+
+void GameSetting::SetMyNickname(std::string nick)
+{
+	_nicknameText->GetComponent<HDData::TextUI>()->SetText(nick);
 }
