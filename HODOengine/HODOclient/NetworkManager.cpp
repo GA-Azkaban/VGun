@@ -600,20 +600,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
 
-	{
-		//static uint64 temp = 0;
-		//static int i = 0;
-		//static const Vector3 tempPos[4] = { {0,10,0},{0,10,50},{50,10,50},{50,10,0} };
-		//if (temp < ::GetTickCount64())
-		//{
-		//	cube->GetTransform()->SetPosition(tempPos[i]);
-		//	i++;
-		//	i %= 4;
-		//	temp = ::GetTickCount64() + 1000;gg
-		//}
-	}
-
-
 	for (auto& player : roominfo.users())
 	{
 		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
@@ -746,10 +732,10 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	current->SetRotation(interpolatedRot);
 
 	// 보간 후에도 너무 멀리 있다면 즉시 이동
-	if (Vector3::Distance(currentPos, serverPos) > 1)
-	{
-		currentPos = serverPos;
-	}
+	//if (Vector3::Distance(currentPos, serverPos) > 1)
+	//{
+	//	currentPos = serverPos;
+	//}
 
 	if (t >= 1.0f)
 		lerpTime = 0.0f;
