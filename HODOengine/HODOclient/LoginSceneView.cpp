@@ -70,7 +70,7 @@ void LoginSceneView::LoginView()
 	auto teamLogo = API::CreateImageBox(_scene, "teamLogo");
 	teamLogo->GetTransform()->SetPosition(150.0f, 1300.0f, 0.0f);
 	auto teamLogoComp = teamLogo->GetComponent<HDData::ImageUI>();
-	teamLogoComp->SetSortOrder(0.1f);
+	teamLogoComp->SetSortOrder(0.12f);
 	teamLogoComp->SetImage("teamLogo.png");
 	teamLogoComp->ChangeScale(0.3f, 0.3f);
 
