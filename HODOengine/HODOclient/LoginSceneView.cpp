@@ -117,16 +117,18 @@ void LoginSceneView::LoginView()
 	(
 		[=]()
 		{
-			if ((id->GetCurrentText() == "") && (pw->GetCurrentText() == ""))
-			{
-				NetworkManager::Instance().SendAutoLogin();
-			}
-			else
-			{
-				std::string ID = id->GetCurrentText();
-				std::string password = pw->GetCurrentText();
-				LobbyManager::Instance().Login(ID, password);
-			}
+			NetworkManager::Instance().SendAutoLogin(id->GetTextUI()->GetText());
+			id->SetOrigin();
+			//if ((id->GetCurrentText() == "") && (pw->GetCurrentText() == ""))
+			//{
+			//	NetworkManager::Instance().SendAutoLogin();
+			//}
+			//else
+			//{
+			//	std::string ID = id->GetCurrentText();
+			//	std::string password = pw->GetCurrentText();
+			//	LobbyManager::Instance().Login(ID, password);
+			//}
 		}
 	);
 	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);

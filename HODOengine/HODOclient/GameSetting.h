@@ -20,8 +20,13 @@ public:
 
 public:
 	HDData::GameObject* _settingCanvas;
+
+	HDData::GameObject* _infoController;
 	HDData::GameObject* _bgmSoundController;
 	HDData::GameObject* _sfxSoundController;
+
+	HDData::GameObject* _infoIndex;
+	HDData::GameObject* _nicknameText;
 
 	HDData::GameObject* _bgmSoundIndex;
 	HDData::GameObject* _bgmSoundSlider;

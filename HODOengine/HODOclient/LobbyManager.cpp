@@ -86,7 +86,7 @@ void LobbyManager::LoginFAIL(int errorCode)
 
 void LobbyManager::LoginSucess(int uid, std::string nickname)
 {
-	_loginSucessCanvas->OnEnable();
+	//_loginSucessCanvas->OnEnable();
 }
 
 void LobbyManager::SetidDupl(HDData::GameObject* iddupl)

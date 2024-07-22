@@ -318,14 +318,12 @@ void NetworkManager::SendLogout()
 	this->_service->BroadCast(sendBuffer);
 
 	// Todo 보내고 동작을 해야될까?
-
-
 }
 
 void NetworkManager::RecvLogout()
 {
 	// Todo 로그아웃을 받아서 동작해야할까?
-
+	API::LoadSceneByName("Login");
 }
 
 void NetworkManager::SendRoomListRequest()
