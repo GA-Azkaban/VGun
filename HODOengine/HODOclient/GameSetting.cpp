@@ -80,6 +80,13 @@ GameSetting::GameSetting()
 	_sfxSoundSlider = API::CreateStaticSlider("sfxslider", _settingCanvas);
 	_sfxSoundSlider->GetTransform()->SetPosition(1000, 770, 0);
 
+	_settingBackground = API::CreateStaticObject("blackCanvas");
+	_settingBackground->GetTransform()->SetPosition(width / 2, height / 2, 0);
+	auto _settingBackgroundkimg = _settingBackground->AddComponent<HDData::ImageUI>();
+	_settingBackgroundkimg->SetSortOrder(0.69f);
+	_settingBackgroundkimg->ChangeScale(1.1f,1.1f);
+	_settingBackgroundkimg->SetImage("settingBackground.png");
+
 	//_quitButton = API::CreateStaticObject("quit", _settingCanvas);
 
 }
@@ -125,9 +132,15 @@ void GameSetting::SetSettingCanvasActive(bool _isActive)
 	_sfxSoundIndex->SetSelfActive(_isActive);
 	_sfxSoundSlider->SetSelfActive(_isActive);
 	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetActive(_isActive);
+	_settingBackground->SetSelfActive(_isActive);
 }
 
 void GameSetting::SetMyNickname(std::string nick)
 {
 	_nicknameText->GetComponent<HDData::TextUI>()->SetText(nick);
+}
+
+bool GameSetting::GetSettingCanvasActive()
+{
+	return _settingCanvas->GetSelfActive();
 }

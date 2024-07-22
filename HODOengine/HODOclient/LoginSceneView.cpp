@@ -324,7 +324,6 @@ void LoginSceneView::LoginView()
 
 	//EXIT Btn
 	HDData::GameObject* exit_Btn = API::CreateButton(_scene, "TestingBtn");
-	//exit_Btn->GetTransform()->SetPosition(2300.0f, 1400.0f, 0.0f);
 	exit_Btn->GetTransform()->SetPosition(API::GetScreenWidth() / 2 + 150, API::GetScreenHeight() / 2, 0.0f);
 	exit_Btn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	exit_Btn->GetComponent<HDData::Button>()->SetSortOrder(0.9f);
@@ -332,7 +331,6 @@ void LoginSceneView::LoginView()
 	exit_Btn->AddComponent<BtnTextScript>();
 
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", exit_Btn);
-	//tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
 	tempText->GetTransform()->SetPosition(API::GetScreenWidth() / 2 + 150, API::GetScreenHeight() / 2, 0.0f);
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
