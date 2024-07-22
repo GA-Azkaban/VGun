@@ -370,8 +370,8 @@ void PlayerMove::ShootGun()
 		}
 		else
 		{
-			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(direction, 20.0f);
+			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint - Vector3(0.0f, 0.1f, 0.0f);
+			hitDynamicSphere->AddForce(direction, 3.0f, 1);
 		}
 
 		//_playerAudio->PlayOnce("hitBody");

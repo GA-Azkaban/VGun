@@ -400,42 +400,42 @@ void RoundManager::UpdateRoundTimer()
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(2.0f, -1.0f, 0.0f), 5.0f, 0);
+				col->AddForce(Vector3(1.0f, -2.0f, 0.0f), 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 46 && nowElapsed <= 50)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(-2.0f, -1.0f, 0.0f), 5.0f, 0);
+				col->AddForce(Vector3(-1.0f, -2.0f, 0.0f), 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 36 && nowElapsed <= 40)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(0.0f, -1.0f, 2.0f), 5.0f, 0);
+				col->AddForce(Vector3(0.0f, -2.0f, 1.0f), 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 26 && nowElapsed <= 30)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(0.0f, -1.0f, -2.0f), 5.0f, 0);
+				col->AddForce(Vector3(0.0f, -2.0f, -1.0f), 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 16 && nowElapsed <= 20)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(1.0f, -1.0f, 1.0f), 5.0f, 0);
+				col->AddForce(Vector3(1.0f, -2.0f, 1.0f), 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 6 && nowElapsed <= 10)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(-1.0f, -1.0f, -1.0f), 5.0f, 0);
+				col->AddForce(Vector3(-1.0f, -2.0f, -1.0f), 2.0f, 0);
 			}
 		}
 
