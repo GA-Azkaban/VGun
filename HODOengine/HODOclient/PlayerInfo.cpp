@@ -51,6 +51,12 @@ void PlayerInfo::Update()
 		}
 		_timer->Update();
 	}
+
+	if (_isJump)
+	{
+		GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>()->Jump(Vector3{ 0.f, 1.f, 0.f });
+		_isJump = false;
+	}
 }
 
 void PlayerInfo::Init()
