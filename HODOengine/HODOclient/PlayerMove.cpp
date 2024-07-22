@@ -92,6 +92,10 @@ void PlayerMove::Update()
 void PlayerMove::SetMovable(bool movable)
 {
 	_isMovable = movable;
+	if (movable == true)
+	{
+		_playerColliderStanding->Stop();
+	}
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -297,8 +301,19 @@ void PlayerMove::ShootGun()
 		}
 		else
 		{
-			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(direction, 5.0f, 1);
+			//Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			//hitDynamicSphere->AddForce(direction, 4.0f, 1);
+			//Vector3 axis = GetTransform()->GetRight();
+			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
+			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
+			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(forceDirection, 2.0f, 1);
+			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
+			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
+							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
+							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
+			hitDynamicSphere->AddTorque(axis, 500.0f, 0);
 		}
 	}
 
@@ -691,6 +706,7 @@ void PlayerMove::UpdateStateText()
 	//_plStateText->SetText(first + "/" + second);
 
 	//_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
+	_anyText->SetText(std::to_string(GetTransform()->GetPosition().y));
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
@@ -993,6 +1009,12 @@ bool PlayerMove::GetIsIngamePlaying()
 void PlayerMove::SetIsIngamePlaying(bool isPlaying)
 {
 	_isIngamePlaying = isPlaying;
+}
+
+void PlayerMove::StopMoving()
+{
+	_playerColliderStanding->Stop();
+	_moveDirection = 5;
 }
 
 void PlayerMove::ToggleCam()

@@ -96,7 +96,7 @@ void InGameSceneView::Initialize()
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
 	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
-	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
+	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.1f, 0.14f, 0.1f);
 	helperBox->SetParentCollider(playerCollider);
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -158,7 +158,7 @@ void InGameSceneView::Initialize()
 		weedMeshComp->LoadMaterial(chMat, 0);
 		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.36f, 0.36f, 0.36f));
+		weedCollider->SetScaleOffset(Vector3(0.38f, 0.38f, 0.38f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);

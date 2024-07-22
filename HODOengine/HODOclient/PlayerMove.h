@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PlayerMoveState.h"
 #include "../HODOengine/HODO_API.h"
 
@@ -33,6 +33,7 @@ public:
 	bool IsShootBody();
 	bool GetIsIngamePlaying();
 	void SetIsIngamePlaying(bool isPlaying);
+	void StopMoving();
 
 	// check ~~ series
 private:
