@@ -32,7 +32,7 @@ void LobbySceneView::Initialize()
 	// 백그라운드
 	auto testBox1 = API::CreateObject(_scene);
 	testBox1->GetComponent<HDData::Transform>()->SetPosition(2.5f, 0.f, 1.0f);
-	testBox1->GetTransform()->SetScale(4,3, 3);
+	testBox1->GetTransform()->SetScale(4, 3, 3);
 	auto boxRender1 = testBox1->AddComponent<HDData::MeshRenderer>();
 	boxRender1->SetUseLight(false);
 	boxRender1->LoadMesh("primitiveQuad");
@@ -67,7 +67,6 @@ void LobbySceneView::Initialize()
 	quitButton->AddComponent<BtnTextScript>();
 	auto qBtn = quitButton->GetComponent<HDData::Button>();
 	qBtn->GetButtonComp()->SetImage("Button_02.png");
-	//qBtn->GetButtonComp()->SetImage("Quit.png");
 	qBtn->SetOnClickEvent([]()
 		{
 			NetworkManager::Instance().SendRoomLeave();
@@ -79,12 +78,64 @@ void LobbySceneView::Initialize()
 	qTex->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	float qTextWidth = sTex->GetTextWidth();
 	float qTextHeight = sTex->GetTextHeight();
-	qTex->GetTransform()->SetPosition((1600.0f * width / 1920-qTextWidth*0.75f)+20, 1000.0f * height / 1080 - qTextHeight * 0.25f, 0);
+	qTex->GetTransform()->SetPosition((1600.0f * width / 1920 - qTextWidth * 0.75f) + 20, 1000.0f * height / 1080 - qTextHeight * 0.25f, 0);
 
-	auto chatCanvas = API::CreateImageBox(_scene, "chatCanvas");
-	chatCanvas->GetTransform()->SetPosition(390.0f * width / 1920, 900.0f * height / 1080, 0);
-	auto chatCanvasComp = chatCanvas->GetComponent<HDData::ImageUI>();
-	chatCanvasComp->SetImage("Button_horizon_02.png");
+	// game Rule
+	auto ruleCanvas = API::CreateImageBox(_scene, "ruleCanvas");
+	ruleCanvas->GetTransform()->SetPosition(390.0f * width / 1920, 932.0f * height / 1080, 0);
+	auto ruleCanvasComp = ruleCanvas->GetComponent<HDData::ImageUI>();
+	ruleCanvasComp->SetImage("Button_horizon_02.png");
+
+	auto ruleImg = API::CreateImageBox(_scene, "ruleImg");
+	ruleImg->GetTransform()->SetPosition(550.0f * width / 1920, (960.0f * height / 1080) + 30.0f, 0);
+	auto ruleImgComp = ruleImg->GetComponent<HDData::ImageUI>();
+	ruleImgComp->ChangeScale(0.6192f, 0.6314f);
+	ruleImgComp->SetImage("gamerule.png");
+
+	// Key
+	auto keyInfoCanvas = API::CreateImageBox(_scene, "keyInfo");
+	keyInfoCanvas->GetTransform()->SetPosition(1000.0f * width / 1920, 932.0f * height / 1080, 0);
+	auto keyCanvasImg = keyInfoCanvas->GetComponent<HDData::ImageUI>();
+	keyCanvasImg->ChangeScale(0.5f,1.0f);
+	keyCanvasImg->SetImage("Button_horizon_02.png");
+
+	auto aKey = API::CreateImageBox(_scene, "aKey");
+	aKey->GetTransform()->SetPosition(750.0f * width / 1920, 900.0f * height / 1080, 0);
+	auto aKeyImg = aKey->GetComponent<HDData::ImageUI>();
+	aKeyImg->SetImage("keyboard_a.png");
+
+	auto sKey = API::CreateImageBox(_scene, "sKey");
+	sKey->GetTransform()->SetPosition(790.0f * width / 1920, 900.0f * height / 1080, 0);
+	auto sKeyImg = sKey->GetComponent<HDData::ImageUI>();
+	sKeyImg->SetImage("keyboard_s.png");
+
+	auto wKey = API::CreateImageBox(_scene, "sKey");
+	wKey->GetTransform()->SetPosition(790.0f * width / 1920, 860.0f * height / 1080, 0);
+	auto wKeyImg = wKey->GetComponent<HDData::ImageUI>();
+	wKeyImg->SetImage("keyboard_w.png");
+	
+	auto dKey = API::CreateImageBox(_scene, "dKey");
+	dKey->GetTransform()->SetPosition(830.0f * width / 1920, 900.0f * height / 1080, 0);
+	auto dKeyImg = dKey->GetComponent<HDData::ImageUI>();
+	dKeyImg->SetImage("keyboard_d.png");
+
+	auto shiftKey = API::CreateImageBox(_scene, "shiftKey");
+	shiftKey->GetTransform()->SetPosition(740.0f * width / 1920, 940.0f * height / 1080, 0);
+	auto shiftKeyImg = shiftKey->GetComponent<HDData::ImageUI>();
+	shiftKeyImg->ChangeScale(1.7f, 1.7f);
+	shiftKeyImg->SetImage("keyboard_shift.png");
+
+	auto spaceKey = API::CreateImageBox(_scene, "spaceKey");
+	spaceKey->GetTransform()->SetPosition(860.0f * width / 1920, 940.0f * height / 1080, 0);
+	auto spaceKeyImg = spaceKey->GetComponent<HDData::ImageUI>();
+	spaceKeyImg->ChangeScale(1.7f,1.7f);
+	spaceKeyImg->SetImage("keyboard_space.png");
+
+	auto mouseKey = API::CreateImageBox(_scene, "mouseKey");
+	mouseKey->GetTransform()->SetPosition(940.0f * width / 1920, 900.0f * height / 1080, 0);
+	auto mouseKeyImg = mouseKey->GetComponent<HDData::ImageUI>();
+	mouseKeyImg->ChangeScale(1.7f, 1.7f);
+	mouseKeyImg->SetImage("mouse_left.png");
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
@@ -115,15 +166,15 @@ void LobbySceneView::Initialize()
 		subCanvas->GetComponent<HDData::ImageUI>()->SetImage("all_alpha.png");
 		subCanvas->GetTransform()->SetPosition(rgbCanvas * width / 1920, 800.0f * height / 1080, 0);
 
-	/*	auto QuitMemberButton = API::CreateButton(_scene, "QuitButton");
-		QuitMemberButton->GetComponent<HDData::Button>()->SetSortOrder(0.3);
-		QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
-		QuitMemberButton->GetTransform()->SetPosition(rgbCanvas * width / 1920, 60.0f * height / 1080, 0);
-		QuitMemberButton->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
-			NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetPlayerObjects()[i]->GetComponent<PlayerInfo>()->GetPlayerNickName());
-			});
-		LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
-		QuitMemberButton->SetSelfActive(false);*/
+		/*	auto QuitMemberButton = API::CreateButton(_scene, "QuitButton");
+			QuitMemberButton->GetComponent<HDData::Button>()->SetSortOrder(0.3);
+			QuitMemberButton->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
+			QuitMemberButton->GetTransform()->SetPosition(rgbCanvas * width / 1920, 60.0f * height / 1080, 0);
+			QuitMemberButton->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
+				NetworkManager::Instance().SendKickPlayer(LobbyManager::Instance().GetPlayerObjects()[i]->GetComponent<PlayerInfo>()->GetPlayerNickName());
+				});
+			LobbyManager::Instance().GetQuitButtonObjects().push_back(QuitMemberButton);
+			QuitMemberButton->SetSelfActive(false);*/
 
 		defaultX += 1.2f;
 		rgbCanvas += 322.5f;
