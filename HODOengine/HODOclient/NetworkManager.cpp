@@ -318,14 +318,12 @@ void NetworkManager::SendLogout()
 	this->_service->BroadCast(sendBuffer);
 
 	// Todo 보내고 동작을 해야될까?
-
-
 }
 
 void NetworkManager::RecvLogout()
 {
 	// Todo 로그아웃을 받아서 동작해야할까?
-
+	API::LoadSceneByName("Login");
 }
 
 void NetworkManager::SendRoomListRequest()
@@ -632,7 +630,17 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		auto& obj = playerobj[player.userinfo().uid()];
 		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
 
-		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
+		Vector3 pos = { 0, 0, 0 };
+
+		if (info->GetIsJump())
+		{
+			pos = { player.transform().vector3().x(), 0.07, player.transform().vector3().z() };
+		}
+		else
+		{
+			pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
+		}
+
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 
 		info->SetServerTransform(pos, rot);

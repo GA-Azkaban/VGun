@@ -13,6 +13,7 @@ private:
 	~GameManager();
 
 public:
+	void Logout();
 	void QuitGame();
 
 public:

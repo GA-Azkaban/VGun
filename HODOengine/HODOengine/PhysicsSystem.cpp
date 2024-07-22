@@ -64,6 +64,11 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		if (!_playerRigid)
+		{
+			return;
+		}
+
 		if (static_cast<HDData::DynamicCollider*>(_playerRigid->userData)->GetGameObject()->GetComponent<PlayerMove>()->_isIngamePlaying == false)
 		{
 			return;

@@ -1,5 +1,6 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
+#include "GameSetting.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "UIEffect.h"
@@ -50,6 +51,12 @@ void PlayerInfo::Update()
 			_timer->Start();
 		}
 		_timer->Update();
+	}
+
+	if (_isJump)
+	{
+		GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>()->Jump(Vector3{ 0.f, 1.f, 0.f });
+		_isJump = false;
 	}
 }
 
@@ -134,6 +141,7 @@ void PlayerInfo::SetIsHost(bool isHost)
 void PlayerInfo::SetNickName(std::string nickName)
 {
 	_playerNickname = nickName;
+	GameSetting::Instance().SetMyNickname(nickName);
 }
 
 bool& PlayerInfo::GetIsDie()

@@ -1,4 +1,4 @@
-#include "Client.h"
+﻿#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -37,7 +37,7 @@ void Client::Initialize()
 	
 	// 씬 초기화
 	//TestScene test;
-	//API::LoadSceneByName("T est");
+	//API::LoadSceneByName("Test");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();

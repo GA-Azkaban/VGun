@@ -62,6 +62,7 @@ cbuffer MaterialData : register(b5)
 	int useOccMetalRough;
 	int useRoughnessMap;
 	int useMetallicMap;
+    int useMaskMap;
 	int useEnvMap;
 }
 

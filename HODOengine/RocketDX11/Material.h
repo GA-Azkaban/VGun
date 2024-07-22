@@ -25,6 +25,7 @@ namespace RocketCore::Graphics
 		virtual void LoadARMTexture(const std::string& fileName);
 		virtual void LoadMetallicTexture(const std::string& fileName);
 		virtual void LoadRoughnessTexture(const std::string& fileName);
+		virtual void LoadMaskTexture(const std::string& fileName);
 		virtual void SetMetallicValue(float value);
 		virtual void SetRoughnessValue(float value);
 
@@ -36,6 +37,7 @@ namespace RocketCore::Graphics
 		virtual const std::string& GetARMTextureName() const;
 		virtual const std::string& GetMetallicTextureName() const;
 		virtual const std::string& GetRoughnessTextureName() const;
+		virtual const std::string& GetMaskTextureName() const;
 		virtual float GetMetallicValue() const;
 		virtual float GetRoughnessValue() const;
 
@@ -44,12 +46,14 @@ namespace RocketCore::Graphics
 		ID3D11ShaderResourceView* GetRoughnessMap();
 		ID3D11ShaderResourceView* GetMetallicMap();
 		ID3D11ShaderResourceView* GetOcclusionRoughnessMetalMap();
+		ID3D11ShaderResourceView* GetMaskMap();
 
 		void SetAlbedoMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
 		void SetNormalMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
 		void SetOcclusionRoughnessMetalMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
 		void SetRoughnessMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
 		void SetMetallicMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+		void SetMaskMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
 
 		VertexShader* GetVertexShader() const;
 		PixelShader* GetPixelShader() const;
@@ -69,6 +73,7 @@ namespace RocketCore::Graphics
 		std::string _occlusionRoughMatel;
 		std::string _metallic;
 		std::string _roughness;
+		std::string _mask;
 		float _metallicValue;
 		float _roughnessValue;
 
@@ -80,6 +85,7 @@ namespace RocketCore::Graphics
 		ComPtr<ID3D11ShaderResourceView> _materialARM;
 		ComPtr<ID3D11ShaderResourceView> _materialMetallic;
 		ComPtr<ID3D11ShaderResourceView> _materialRoughness;
+		ComPtr<ID3D11ShaderResourceView> _materialMask;
 	};
 }
 

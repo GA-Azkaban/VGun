@@ -1,7 +1,6 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "Timer.h"
-#include <vector>
 
 class Indicator : public HDData::Script
 {

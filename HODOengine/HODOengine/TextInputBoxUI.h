@@ -23,6 +23,7 @@ namespace HDData
 		void SetCursorImage(HDData::ImageUI* val) { _cursor = val; }
 		void SetTextUI(HDData::TextUI* val) { _text = val; }
 
+		void SetOrigin();
 		void SetSortOrder(float value);
 
 	private:
