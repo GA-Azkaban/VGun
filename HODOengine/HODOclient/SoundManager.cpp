@@ -36,7 +36,6 @@ void SoundManager::Start()
 	SetAllVolume(1);
 	InitializeAudios();
 	PlayBGM("bgm_lobby");
-	//PlayUI("sfx_bell");
 }
 
 void SoundManager::Update()
