@@ -280,9 +280,11 @@ void NetworkManager::RecvFail(int32 errorCode)
 	LobbyManager::Instance().RoomEnterFAIL(errorCode);
 }
 
-void NetworkManager::SendAutoLogin()
+void NetworkManager::SendAutoLogin(std::string nickName)
 {
 	Protocol::C_AUTOLOGIN packet;
+
+	packet.set_nickname(nickName);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -305,6 +307,25 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 void NetworkManager::RecvCreateAccount()
 {
 	LobbyManager::Instance().ShowSignSuccess();
+}
+
+void NetworkManager::SendLogout()
+{
+	// 로그아웃을 보냈다
+	Protocol::C_SIGNOUT packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+
+	// Todo 보내고 동작을 해야될까?
+
+
+}
+
+void NetworkManager::RecvLogout()
+{
+	// Todo 로그아웃을 받아서 동작해야할까?
+
 }
 
 void NetworkManager::SendRoomListRequest()
@@ -423,7 +444,6 @@ void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::SendRoomChat(std::string chat)
 {
-	// 보낼 메세지만 전송
 	Protocol::C_ROOM_CHAT packet;
 
 	packet.set_chat(chat);
@@ -435,7 +455,7 @@ void NetworkManager::SendRoomChat(std::string chat)
 void NetworkManager::RecvRoomChat(std::string nickName, std::string chat)
 {
 	// Todo 채팅이 깨질수도 있음
-	
+
 
 }
 
@@ -538,7 +558,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//auto pos = API::GetSpawnPointArr()[1];
+
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -569,6 +589,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -600,20 +621,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
 
-	{
-		//static uint64 temp = 0;
-		//static int i = 0;
-		//static const Vector3 tempPos[4] = { {0,10,0},{0,10,50},{50,10,50},{50,10,0} };
-		//if (temp < ::GetTickCount64())
-		//{
-		//	cube->GetTransform()->SetPosition(tempPos[i]);
-		//	i++;
-		//	i %= 4;
-		//	temp = ::GetTickCount64() + 1000;gg
-		//}
-	}
-
-
 	for (auto& player : roominfo.users())
 	{
 		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
@@ -627,7 +634,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
-		
+
 		info->SetServerTransform(pos, rot);
 		info->SetCurrentHP(player.hp());
 
@@ -727,7 +734,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot) 
+	if (currentPos == serverPos && currentRot == serverRot)
 		return;
 
 	static float lerpTime = 0.0f;
@@ -746,10 +753,10 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	current->SetRotation(interpolatedRot);
 
 	// 보간 후에도 너무 멀리 있다면 즉시 이동
-	if (Vector3::Distance(currentPos, serverPos) > 1)
-	{
-		currentPos = serverPos;
-	}
+	//if (Vector3::Distance(currentPos, serverPos) > 1)
+	//{
+	//	currentPos = serverPos;
+	//}
 
 	if (t >= 1.0f)
 		lerpTime = 0.0f;
@@ -761,51 +768,51 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
 	}
-	if (state == "IDLE")
+	else if (state == "IDLE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
-	if (state == "RUN_R")
+	else if (state == "RUN_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RIGHT;
 	}
-	if (state == "RUN_L")
+	else if (state == "RUN_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_LEFT;
 	}
-	if (state == "RUN_F")
+	else if (state == "RUN_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_FORWARD;
 	}
-	if (state == "RUN_B")
+	else if (state == "RUN_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
 	}
-	if (state == "JUMP")
+	else if (state == "JUMP")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
 	}
-	if (state == "ROLL_F")
+	else if (state == "ROLL_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_FORWARD;
 	}
-	if (state == "ROLL_B")
+	else if (state == "ROLL_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_BACK;
 	}
-	if (state == "ROLL_R")
+	else if (state == "ROLL_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_RIGHT;
 	}
-	if (state == "ROLL_L")
+	else if (state == "ROLL_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_LEFT;
 	}
-	if (state == "RELOAD")
+	else if (state == "RELOAD")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RELOAD;
 	}
-	if (state == "DIE")
+	else if (state == "DIE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_DEATH;
 	}

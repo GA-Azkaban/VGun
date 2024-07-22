@@ -1,4 +1,7 @@
 ﻿#include "GameSetting.h"
+#include "RoundManager.h"
+#include "GameManager.h"
+#include "PlayerMove.h"
 
 GameSetting& GameSetting::Instance()
 {
@@ -43,7 +46,7 @@ GameSetting::GameSetting()
 	auto bgmindex = _bgmSoundIndex->AddComponent<HDData::TextUI>();
 	bgmindex->SetSortOrder(0.81f);
 	bgmindex->SetFont("Resources/Font/KRAFTON_30.spritefont");
- 	bgmindex->SetText("BGM");
+	bgmindex->SetText("BGM");
 
 	_bgmSoundSlider = API::CreateStaticSlider("bgmslider", _settingCanvas);
 	_bgmSoundSlider->GetTransform()->SetPosition(1000, 530, 0);
@@ -77,6 +80,13 @@ void GameSetting::Update()
 	if (API::GetKeyDown(DIK_ESCAPE))
 	{
 		SetSettingCanvasActive(!_settingCanvas->GetSelfActive());
+		API::ShowWindowCursor(_settingCanvas->GetSelfActive());
+
+		if (RoundManager::Instance()->GetIsRoundStart())
+		{
+			GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->_isIngamePlaying = !_settingCanvas->GetSelfActive();
+			GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(!_settingCanvas->GetSelfActive());
+		}
 	}
 }
 

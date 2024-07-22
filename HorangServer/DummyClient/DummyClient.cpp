@@ -5,6 +5,7 @@
 #include "ThreadManager.h"
 #include "BufferReader.h"
 #include "ServerPacketHandler.h"
+#include <fstream>
 
 using namespace std::chrono_literals;
 
@@ -44,15 +45,41 @@ int main()
 {
 	ServerPacketHandler::Init();
 
-
 	int count = 64 * 4;
 
-	Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"172.16.1.13", 7777),
-		Horang::MakeShared<Horang::IocpCore>(),
-		Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
-		1
-	);
+	Horang::ClientServiceRef service;
+
+	std::wifstream ipAddressFile("serverIP.txt");
+	std::wstring ipAddressStr = L"";
+	if (ipAddressFile.is_open())
+	{
+		std::getline(ipAddressFile, ipAddressStr);
+
+		service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(ipAddressStr, 7776),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
+			1
+		);
+	}
+	else
+	{
+		service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(L"172.16.1.13", 7776),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
+			1
+		);
+	}
+
+	ipAddressFile.close();
+
+	//Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
+	//	Horang::NetAddress(L"172.16.1.13", 7777),
+	//	Horang::MakeShared<Horang::IocpCore>(),
+	//	Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
+	//	1
+	//);
 
 	ASSERT_CRASH(service->Start());
 
@@ -71,69 +98,57 @@ int main()
 
 	std::this_thread::sleep_for(1s);
 
+	{
+		Protocol::C_AUTOLOGIN packet;
+
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+		service->BroadCast(sendBuffer);
+	}
+
 	while (true)
 	{
 		int menu = 0;
-		std::cout << "1. Login" << std::endl;
-		std::cout << "2. Create Account" << std::endl;
+		std::cout << "1. Room List" << std::endl;
+		std::cout << "2. Enter Room" << std::endl;
+		std::cout << "3. Create Room" << std::endl;
 		std::cout << " Select : ";
 		std::cin >> menu;
 
 		::system("cls");
 		if (menu == 1)
 		{
-			std::string id;
-			std::string password;
+			Protocol::C_ROOM_LIST_REQUEST packet;
 
-			std::cout << "ID : ";
-			std::cin >> id;
-
-			std::cout << "Password : ";
-			std::cin >> password;
-
-			{
-				Protocol::C_SIGNIN signInPkt;
-
-				signInPkt.set_id(id);
-				signInPkt.set_password(password);
-
-				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signInPkt);
-				service->BroadCast(sendBuffer);
-				break;
-			}
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+			service->BroadCast(sendBuffer);
 		}
 		else if (menu == 2)
 		{
-			std::string id;
-			std::string password;
-			std::string nickname;
+			Protocol::C_ROOM_ENTER packet;
+			std::string roomCode = "";
+			std::string password = "";
 
-			std::cout << "ID : ";
-			std::cin >> id;
-
+			std::cout << "Room Code : ";
+			std::cin >> roomCode;
 			std::cout << "Password : ";
 			std::cin >> password;
 
-			std::cout << "Nickname : ";
-			std::cin >> nickname;
+			packet.set_roomcode(roomCode);
+			packet.set_password(password);
 
-			{
-				Protocol::C_SIGNUP signUpPkt;
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+			service->BroadCast(sendBuffer);
+		}
+		else if (menu == 3)
+		{
 
-				signUpPkt.set_id(id);
-				signUpPkt.set_password(password);
-				signUpPkt.set_nickname(nickname);
-
-				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signUpPkt);
-				service->BroadCast(sendBuffer);
-			}
 		}
 		::system("pause");
 		::system("cls");
 
 	}
 
-	while (true)
+	/*while (true)
 	{
 		Protocol::C_PLAY_UPDATE packet;
 		auto playerData = packet.mutable_playerdata();
@@ -155,7 +170,7 @@ int main()
 		service->BroadCast(sendBuffer);
 
 		::system("pause");
-	}
+	}*/
 
 
 

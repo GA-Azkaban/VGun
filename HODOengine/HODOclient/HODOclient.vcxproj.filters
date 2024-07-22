@@ -73,9 +73,6 @@
     <ClCompile Include="MeshTransformController.cpp">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
-    <ClCompile Include="TPScript.cpp">
-      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
-    </ClCompile>
     <ClCompile Include="OthersAnim.cpp">
       <Filter>02_Client\01_Script\Player\Animation\OhtersScript</Filter>
     </ClCompile>
@@ -224,9 +221,6 @@
     </ClInclude>
     <ClInclude Include="MeshTransformController.h">
       <Filter>02_Client\01_Script\99_test</Filter>
-    </ClInclude>
-    <ClInclude Include="TPScript.h">
-      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
     <ClInclude Include="OthersAnim.h">
       <Filter>02_Client\01_Script\Player\Animation\OhtersScript</Filter>
@@ -397,9 +391,6 @@
     <Filter Include="02_Client\01_Script\Player\Animation">
       <UniqueIdentifier>{8ce18128-7823-4273-b215-0583c5b2ea8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\01_Script\Player\Animation\MyScript">
-      <UniqueIdentifier>{873f5d52-415b-49f4-848d-7d5ba42dd6aa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02_Client\01_Script\Player\Animation\OhtersScript">
       <UniqueIdentifier>{14d37520-ce9f-4583-a8f1-6f3d633b11bc}</UniqueIdentifier>
     </Filter>
@@ -464,7 +455,7 @@
     <None Include="..\Include\Protobuf\Protocol.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
-    <None Include="..\include\Protobuf\Struct.proto">
+    <None Include="..\Include\Protobuf\Struct.proto">
       <Filter>03_Manager\NetworkManager\Protocol</Filter>
     </None>
   </ItemGroup>

@@ -5,7 +5,6 @@
 #include "../HODOEngine/CollisionCallback.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
@@ -80,7 +79,6 @@ void InGameSceneView::Initialize()
 
 	player->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(player, "TP_animation.json");
-	player->AddComponent<TPScript>();
 	RoundManager::Instance()->SetAnimationDummy(player);
 
 	RoundManager::Instance()->_myObj = player;
@@ -89,8 +87,8 @@ void InGameSceneView::Initialize()
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.6f, 0.05f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
 	headCollider->SetParentCollider(playerCollider);
 	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
@@ -142,21 +140,23 @@ void InGameSceneView::Initialize()
 	weaponComp->SetShadowActive(false);
 
 	// 수박...이 아니라 회전초
+	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
+							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
 	std::vector<HDData::DynamicSphereCollider*> weedColVector;
 	weedColVector.reserve(20);
 	for (int i = 1; i <= 20; ++i)
 	{
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
-		tumbleWeed->GetTransform()->SetPosition(Vector3(-30.0f + 3 * i, 5.0f + i, -30.0f + 3 * i));
+		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 1.0f, weedPos[i-1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
-		tumbleWeedMesh->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
-		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.2f, 1.3f));
-		auto weedMeshComp = tumbleWeed->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		weedMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
+		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
+		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
+		auto weedMeshComp = tumbleWeed->AddComponent<HDData::MeshRenderer>();
+		weedMeshComp->LoadMesh("SM_Prop_Tumbleweed_01.fbx");
 		weedMeshComp->LoadMaterial(chMat, 0);
-		weedMeshComp->SetShadowActive(false);
+		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.5f, 0.5f, 0.5f));
+		weedCollider->SetScaleOffset(Vector3(0.38f, 0.38f, 0.38f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);
@@ -317,10 +317,10 @@ void InGameSceneView::Initialize()
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.0f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.15f);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
-		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
+		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadAnimation("TP");
@@ -400,11 +400,6 @@ void InGameSceneView::Initialize()
 		otherPlayer->AddComponent<OthersAnim>();
 
 		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
-
-		// sound 추가
-		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio3D("shootother", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::EffectSound, 10, 150);
-		otherPlayerSound->AddAudio3D("walkother", "./Resources/Sound/Walk/footstep.wav", HDData::SoundGroup::EffectSound, 10, 250);
 
 		posX += 2;
 		posT += 315;

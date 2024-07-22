@@ -110,6 +110,126 @@ inline bool eRoomState_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eRoomState>(
     eRoomState_descriptor(), name, value);
 }
+enum eTeamColor : int {
+  TEAM_COLOR_NONE = 0,
+  TEAM_COLOR_RED = 1,
+  TEAM_COLOR_GREEN = 2,
+  TEAM_COLOR_BLUE = 3,
+  eTeamColor_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eTeamColor_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eTeamColor_IsValid(int value);
+constexpr eTeamColor eTeamColor_MIN = TEAM_COLOR_NONE;
+constexpr eTeamColor eTeamColor_MAX = TEAM_COLOR_BLUE;
+constexpr int eTeamColor_ARRAYSIZE = eTeamColor_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eTeamColor_descriptor();
+template<typename T>
+inline const std::string& eTeamColor_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eTeamColor>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eTeamColor_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eTeamColor_descriptor(), enum_t_value);
+}
+inline bool eTeamColor_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eTeamColor* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eTeamColor>(
+    eTeamColor_descriptor(), name, value);
+}
+enum eRGBMap : int {
+  MAP_NONE = 0,
+  MAP_RANDOM = 1,
+  MAP_DESERT = 2,
+  eRGBMap_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eRGBMap_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eRGBMap_IsValid(int value);
+constexpr eRGBMap eRGBMap_MIN = MAP_NONE;
+constexpr eRGBMap eRGBMap_MAX = MAP_DESERT;
+constexpr int eRGBMap_ARRAYSIZE = eRGBMap_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eRGBMap_descriptor();
+template<typename T>
+inline const std::string& eRGBMap_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eRGBMap>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eRGBMap_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eRGBMap_descriptor(), enum_t_value);
+}
+inline bool eRGBMap_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eRGBMap* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eRGBMap>(
+    eRGBMap_descriptor(), name, value);
+}
+enum eHitLocation : int {
+  HIT_LOCATION_NONE = 0,
+  HIT_LOCATION_NO_HIT = 1,
+  HIT_LOCATION_HEAD = 2,
+  HIT_LOCATION_BODY = 3,
+  HIT_LOCATION_ARM = 4,
+  HIT_LOCATION_LEG = 5,
+  eHitLocation_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eHitLocation_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eHitLocation_IsValid(int value);
+constexpr eHitLocation eHitLocation_MIN = HIT_LOCATION_NONE;
+constexpr eHitLocation eHitLocation_MAX = HIT_LOCATION_LEG;
+constexpr int eHitLocation_ARRAYSIZE = eHitLocation_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eHitLocation_descriptor();
+template<typename T>
+inline const std::string& eHitLocation_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eHitLocation>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eHitLocation_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eHitLocation_descriptor(), enum_t_value);
+}
+inline bool eHitLocation_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eHitLocation* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eHitLocation>(
+    eHitLocation_descriptor(), name, value);
+}
+enum eAnimationState : int {
+  ANIMATION_STATE_NONE = 0,
+  ANIMATION_STATE_IDLE = 1,
+  ANIMATION_STATE_FORWARD = 2,
+  ANIMATION_STATE_BACK = 3,
+  ANIMATION_STATE_LEFT = 4,
+  ANIMATION_STATE_RIGHT = 5,
+  ANIMATION_STATE_SHOOT = 6,
+  ANIMATION_STATE_JUMP = 7,
+  ANIMATION_STATE_ROLL = 8,
+  ANIMATION_STATE_RELOAD = 9,
+  ANIMATION_STATE_DEATH = 10,
+  ANIMATION_STATE_ROLL_FORWARD = 11,
+  ANIMATION_STATE_ROLL_LEFT = 12,
+  ANIMATION_STATE_ROLL_RIGHT = 13,
+  ANIMATION_STATE_ROLL_BACK = 14,
+  eAnimationState_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  eAnimationState_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool eAnimationState_IsValid(int value);
+constexpr eAnimationState eAnimationState_MIN = ANIMATION_STATE_NONE;
+constexpr eAnimationState eAnimationState_MAX = ANIMATION_STATE_ROLL_BACK;
+constexpr int eAnimationState_ARRAYSIZE = eAnimationState_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eAnimationState_descriptor();
+template<typename T>
+inline const std::string& eAnimationState_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, eAnimationState>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function eAnimationState_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    eAnimationState_descriptor(), enum_t_value);
+}
+inline bool eAnimationState_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, eAnimationState* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<eAnimationState>(
+    eAnimationState_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -141,6 +261,26 @@ template <> struct is_proto_enum< ::Protocol::eRoomState> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eRoomState>() {
   return ::Protocol::eRoomState_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eTeamColor> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eTeamColor>() {
+  return ::Protocol::eTeamColor_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eRGBMap> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eRGBMap>() {
+  return ::Protocol::eRGBMap_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eHitLocation> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eHitLocation>() {
+  return ::Protocol::eHitLocation_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::eAnimationState> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::eAnimationState>() {
+  return ::Protocol::eAnimationState_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE
