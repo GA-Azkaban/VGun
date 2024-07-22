@@ -218,7 +218,6 @@ void InGameSceneView::Initialize()
 
 	// 총구 연기 이펙트
 	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle", particleSystemObj);
-	//particleSystemObj2->AddComponent<MeshTransformController>();
 	particleSystemObj2->GetTransform()->SetLocalRotation({ -0.380f, 0.1325f, -0.0551f, 0.9138f });
 	particleSystemObj2->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
@@ -277,15 +276,64 @@ void InGameSceneView::Initialize()
 	ak2.push_back(alphaKey5);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck2, ak2);
 
-	std::vector<HDData::ParticleSphereCollider*> particleVec;
-	for (int i = 0; i < 30; ++i)
-	{
-		auto particleObj = API::CreateObject(_scene);
-		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
-		particle->SetScaleOffset(Vector3(0.01f, 0.01f, 0.01f));
-		particleVec.push_back(particle);
-	}
-	playerMove->SetHitParticle(particleVec);
+	// 피 파티클
+	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
+	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
+	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
+	particleSystem3->main.duration = 1.5f;
+	particleSystem3->main.loop = false;
+	particleSystem3->main.minStartColor = { 90, 0, 0, 255 };
+	particleSystem3->main.maxStartColor = { 90, 0, 0, 255 };
+	particleSystem3->main.minStartLifetime = 1.0f;
+	particleSystem3->main.maxStartLifetime = 1.0f;
+	particleSystem3->main.minStartRotation = 0.0f;
+	particleSystem3->main.maxStartRotation = -180.0f;
+	particleSystem3->main.minStartSize = 0.25f;
+	particleSystem3->main.maxStartSize = 0.5f;
+	particleSystem3->main.minStartSpeed = 500.0f;
+	particleSystem3->main.maxStartSpeed = 800.0f;
+	particleSystem3->emission.enabled = true;
+	HDData::Burst newBurst3(0.0f, 4);
+	particleSystem3->emission.SetBurst(newBurst3);
+	particleSystem3->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve3;
+	curve3.AddKey(0.0f, 0.2f, [](float t) { return 3.75f * t; });
+	curve3.AddKey(0.2f, 1.0f, [](float t) { return 0.3125f * t + 0.6875f; });
+	particleSystem3->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve3);
+	particleSystem3->rotationOverLifetime.enabled = true;
+	particleSystem3->rotationOverLifetime.angularVelocity = 100.0f;
+	HDEngine::MaterialDesc bloodMatDesc;
+	bloodMatDesc.materialName = "bloodMat";
+	HDData::Material* bloodMat = API::CreateMaterial(bloodMatDesc);
+	particleSystem3->rendererModule.material = bloodMat;
+	particleSystem3->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem3->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
+	particleSystem3->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck3;
+	std::vector<HDData::GradientAlphaKey> ak3;
+	HDData::GradientColorKey colorkey5;
+	colorkey5.color = { 90, 0, 0 };
+	colorkey5.time = 0.0f;
+	ck3.push_back(colorkey5);
+	HDData::GradientColorKey colorkey6;
+	colorkey6.color = { 158, 0, 0 };
+	colorkey6.time = 0.144f;
+	ck3.push_back(colorkey6);
+	HDData::GradientColorKey colorkey7;
+	colorkey7.color = { 101, 0, 0 };
+	colorkey7.time = 0.403f;
+	ck3.push_back(colorkey7);
+	HDData::GradientAlphaKey alphaKey6;
+	alphaKey6.alpha = 255;
+	alphaKey6.time = 0.0f;
+	ak3.push_back(alphaKey6);
+	HDData::GradientAlphaKey alphaKey7;
+	alphaKey7.alpha = 255;
+	alphaKey7.time = 1.0f;
+	ak3.push_back(alphaKey7);
+	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
+	playerMove->bloodParticle = particleSystem3;
 
 	// sound 추가
 	//HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
@@ -650,12 +698,6 @@ void InGameSceneView::Initialize()
 
 	playerMove->recoilCooldown = tumbleCooldown;
 	playerMove->cooldownCountText = tumbleCooldownCount;
-
-	//auto cube = API::CreateObject(_scene);
-	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");
-	//cube->GetTransform()->SetPosition(-10, 3, 0);
-
-	//NetworkManager::Instance().cube = cube;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

@@ -6,16 +6,18 @@ DecalPool::DecalPool()
 {
 	HDEngine::MaterialDesc decalWoodMat;
 	decalWoodMat.materialName = "BulletHoleWoodMat";
-	decalWoodMat.albedo = "T_Reinforced_BC.png";
-	decalWoodMat.normalMap = "T_Reinforced_02_N.png";
-	decalWoodMat.mask = "T_Reinforced_02_M.png";
+	//decalWoodMat.color = { 92, 83, 73, 255 };
+	decalWoodMat.color = { 46, 41, 36, 255 };
+	//decalWoodMat.albedo = "T_Reinforced_BC.png";
+	decalWoodMat.normalMap = "T_Wood_08_N.png";
+	decalWoodMat.mask = "T_Wood_08_M.png";
 
 	_decalWoodMaterial = API::CreateMaterial(decalWoodMat);
 }
 
 DecalPool::~DecalPool()
 {
-	for(auto decal : _decalList)
+	for (auto decal : _decalList)
 	{
 		delete decal;
 		decal = nullptr;
@@ -25,7 +27,7 @@ DecalPool::~DecalPool()
 
 DecalPool& DecalPool::Instance()
 {
-	if(_instance == nullptr)
+	if (_instance == nullptr)
 	{
 		_instance = new DecalPool();
 	}
@@ -34,11 +36,11 @@ DecalPool& DecalPool::Instance()
 
 Decal* DecalPool::SummonDecal(Vector3 targetPos)
 {
-	if(_decalList.empty())
+	if (_decalList.empty())
 	{
 		for (int i = 0; i < 10; ++i)
 		{
-			auto newDecal = Decal::CreateDecal();			
+			auto newDecal = Decal::CreateDecal();
 			_decalList.push_back(newDecal);
 		}
 	}

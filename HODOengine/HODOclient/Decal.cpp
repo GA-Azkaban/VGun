@@ -4,14 +4,12 @@
 Decal::Decal()
 {
 	_curve.AddKey(0.0f, 0.5f, [](float t) { return 1.0f; });
-	_curve.AddKey(0.5f, 1.0f, [](float t) { return -2.0f * t + 2.0f; });
+	_curve.AddKey(0.5f, 1.0f, [](float t) { return -1.6f * t + 1.8f; });
 
 	_decalTimer.isRepeat = false;
 	_decalTimer.duration = 1.0f;
 	_decalTimer.onUpdate = [&](float progress)
 	{
-		// 각도 변환
-		
 		// 알파 빼기
 		float value = _curve.Evaluate(progress);
 		int valueInt = static_cast<int>(value * 255);

@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -105,11 +105,6 @@ void PlayerMove::SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim)
 {
 	_playerInfoText = pos;
 	_aimText = aim;
-}
-
-void PlayerMove::SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec)
-{
-	_hitParticles = particleVec;
 }
 
 // 조이스틱 개념
@@ -283,7 +278,6 @@ void PlayerMove::ShootGun()
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
 	{
-		SpawnParticle(hitPoint);
 		_hitPoint = hitPoint;
 	}
 
@@ -295,6 +289,8 @@ void PlayerMove::ShootGun()
 		{
 			_isShootHead = true;
 			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
+			bloodParticle->GetTransform()->SetPosition(hitPoint);
+			bloodParticle->Play();
 		}
 		else
 		{
@@ -309,6 +305,8 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
+		bloodParticle->GetTransform()->SetPosition(hitPoint);
+		bloodParticle->Play();
 	}
 
 	// 건물을 맞췄을 때
@@ -330,21 +328,6 @@ void PlayerMove::Reload()
 	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
-void PlayerMove::SpawnParticle(Vector3 position)
-{
-	_hitParticles[_particleIndex]->SetGlobalPosition(position);
-	_hitParticles[_particleIndex]->SetTimerActive();
-
-	if (_particleIndex < 29)
-	{
-		++_particleIndex;
-	}
-	else
-	{
-		_particleIndex = 0;
-	}
-}
-
 void PlayerMove::ApplyRecoil()
 {
 	//// 고정된 값으로 spray 해주는 버전
@@ -356,17 +339,6 @@ void PlayerMove::ApplyRecoil()
 
 	_rotAngleY += _sprayCamera[_shootCount].first;
 	_rotAngleX += _sprayCamera[_shootCount].second;
-}
-
-void PlayerMove::ShootTrail(Vector3 endPoint)
-{
-	Vector3 forward = _headCam->GetTransform()->GetForward();
-	Vector3 up = _headCam->GetTransform()->GetUp();
-	Vector3 right = _headCam->GetTransform()->GetRight();
-
-	Vector3 startPoint = _headCam->GetTransform()->GetPosition() + forward * 1.75f - up * 0.15f + right * 0.25f;
-	Vector3 endPoint2 = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 50.0f;
-	API::DrawLine(startPoint, endPoint2, Vector4(1.0f, 0.0f, 0.0f, 0.0f));
 }
 
 void PlayerMove::Tumble(Vector3 direction)
@@ -547,8 +519,6 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::FIRE:
 		{
 			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
-			ShootTrail(_hitPoint);
-
 			break;
 		}
 		case ePlayerMoveState::EMPTY:
