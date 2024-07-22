@@ -280,9 +280,11 @@ void NetworkManager::RecvFail(int32 errorCode)
 	LobbyManager::Instance().RoomEnterFAIL(errorCode);
 }
 
-void NetworkManager::SendAutoLogin()
+void NetworkManager::SendAutoLogin(std::string nickName)
 {
 	Protocol::C_AUTOLOGIN packet;
+
+	packet.set_nickname(nickName);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -556,11 +558,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
-<<<<<<< HEAD
-	//auto pos = API::GetSpawnPointArr()[1];
-=======
 
->>>>>>> Network
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -650,7 +648,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
-		
+
 		info->SetServerTransform(pos, rot);
 		info->SetCurrentHP(player.hp());
 
@@ -750,7 +748,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot) 
+	if (currentPos == serverPos && currentRot == serverRot)
 		return;
 
 	static float lerpTime = 0.0f;
