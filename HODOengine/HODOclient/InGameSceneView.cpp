@@ -158,7 +158,7 @@ void InGameSceneView::Initialize()
 		weedMeshComp->LoadMaterial(chMat, 0);
 		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.36f, 0.36f, 0.36f));
+		weedCollider->SetScaleOffset(Vector3(0.38f, 0.38f, 0.38f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);
