@@ -8,11 +8,6 @@
 PlayerInfo::PlayerInfo()
 {
 	_timer = new Timer;
-	_timer->duration = 5;
-	_timer->onExpiration = [=]() {
-		_serialkillcount = 0;
-		_timer->Stop();
-		};
 }
 
 PlayerInfo::PlayerInfo(PlayerInfo* info)
@@ -23,11 +18,6 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	audio = info->audio;
 
 	_timer = new Timer;
-	_timer->duration = 5;
-	_timer->onExpiration = [=]() {
-		_serialkillcount = 0;
-		_timer->Stop();
-		};
 }
 
 void PlayerInfo::Start()
@@ -44,14 +34,7 @@ void PlayerInfo::Update()
 		_isShoot = false;
 	}
 
-	if (_serialkillcount >= 1)
-	{
-		if (!_timer->IsActive())
-		{
-			_timer->Start();
-		}
-		_timer->Update();
-	}
+	_timer->Update();
 
 	if (_isJump)
 	{
@@ -116,6 +99,7 @@ void PlayerInfo::SetCurrentState(ePlayerState state)
 {
 	this->_prevState = _state;
 	this->_state = state;
+	this->_isStateChange = true;
 }
 
 void PlayerInfo::SetCurrentBulletCount(int count)
@@ -239,6 +223,11 @@ void PlayerInfo::AddSerialKillCount()
 		case 1:
 		{
 			//kill!
+			_timer->duration = 5;
+			//_timer->onExpiration = [&]() {
+			//	_serialkillcount = 0;
+			//	_timer->Stop();
+			//	};
 			_timer->Start();
 		}
 		break;
