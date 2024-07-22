@@ -222,3 +222,11 @@ bool Handle_S_ROOM_CHAT(Horang::PacketSessionRef& session, Protocol::S_ROOM_CHAT
 
 	return true;
 }
+
+bool Handle_S_SIGNOUT_OK(Horang::PacketSessionRef& session, Protocol::S_SIGNOUT_OK& pkt)
+{
+	// Todo 로그아웃 성공시 오는데 쓸 일 있을까
+	NetworkManager::Instance().RecvLogout();
+
+	return true;
+}

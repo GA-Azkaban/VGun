@@ -307,6 +307,25 @@ void NetworkManager::RecvCreateAccount()
 	LobbyManager::Instance().ShowSignSuccess();
 }
 
+void NetworkManager::SendLogout()
+{
+	// 로그아웃을 보냈다
+	Protocol::C_SIGNOUT packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+
+	// Todo 보내고 동작을 해야될까?
+
+
+}
+
+void NetworkManager::RecvLogout()
+{
+	// Todo 로그아웃을 받아서 동작해야할까?
+
+}
+
 void NetworkManager::SendRoomListRequest()
 {
 	Protocol::C_ROOM_LIST_REQUEST packet;
@@ -423,7 +442,6 @@ void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::SendRoomChat(std::string chat)
 {
-	// 보낼 메세지만 전송
 	Protocol::C_ROOM_CHAT packet;
 
 	packet.set_chat(chat);
@@ -435,7 +453,7 @@ void NetworkManager::SendRoomChat(std::string chat)
 void NetworkManager::RecvRoomChat(std::string nickName, std::string chat)
 {
 	// Todo 채팅이 깨질수도 있음
-	
+
 
 }
 
@@ -538,7 +556,11 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
+<<<<<<< HEAD
 	//auto pos = API::GetSpawnPointArr()[1];
+=======
+
+>>>>>>> Network
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 

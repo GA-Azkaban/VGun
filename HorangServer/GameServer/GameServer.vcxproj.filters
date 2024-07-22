@@ -45,14 +45,8 @@
     <ClCompile Include="Struct.pb.cc">
       <Filter>Protocol\ProtoSource</Filter>
     </ClCompile>
-    <ClCompile Include="Enum.pb.cc">
-      <Filter>Protocol\ProtoSource</Filter>
-    </ClCompile>
     <ClCompile Include="Protocol.pb.cc">
       <Filter>Protocol\ProtoSource</Filter>
-    </ClCompile>
-    <ClCompile Include="Job.cpp">
-      <Filter>GameContents</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>GameContents\Room</Filter>
@@ -62,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="AuthenticationManager.cpp">
       <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Enum.pb.cc">
+      <Filter>Protocol\ProtoSource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +91,6 @@
     </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>Protocol\ProtoSource</Filter>
-    </ClInclude>
-    <ClInclude Include="Job.h">
-      <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>GameContents\Room</Filter>

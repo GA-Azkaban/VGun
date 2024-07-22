@@ -8,7 +8,9 @@ public:
 	~RoomManager();
 
 public:
-	RoomRef CreateRoom(std::string roomName = "DefaultRoomName", std::string password = "", int32 maxPlayerCount = 6, bool isPrivate = false, bool isTeam = false);
+	void Initialize();
+
+	RoomRef CreateRoom(std::string roomName = "DefaultRoomName", std::string password = "", int32 maxPlayerCount = 6, bool isPrivate = false, bool isTeam = false, int32 dummyClient = 0);
 
 	void DestroyRoom(RoomRef room);
 
@@ -17,7 +19,7 @@ public:
 	void SendRoomList(PlayerWeakRef player);
 
 public:
-	void EnterRoom(PlayerWeakRef player, int32 roomId);
+	void EnterRoom(PlayerWeakRef player, int32 roomId, std::string password = "");
 
 private:
 	Horang::HashMap<int32, RoomRef> _rooms;
@@ -27,7 +29,8 @@ private:
 	Protocol::S_ROOM_LIST _roomList;
 };
 
-extern RoomManager GRoomManager;
+using RoomManagerRef = std::shared_ptr<RoomManager>;
+extern RoomManagerRef GRoomManager;
 
 class CreateRoomJob : public Horang::IJob
 {
@@ -38,10 +41,9 @@ public:
 
 	virtual void Execute() override
 	{
-		auto room = GRoomManager.CreateRoom(_roomName, _password, _maxPlayerCount, _isPrivate, _isTeam);
+		RoomRef room = GRoomManager->CreateRoom(_roomName, _password, _maxPlayerCount, _isPrivate, _isTeam);
 
-		if (room)
-			room->Push(Horang::MakeShared<EnterJob>(room, _player));
+		room->Push(Horang::MakeShared<EnterJob>(room->GetWeakRef(), _player, _password));
 	}
 
 private:
@@ -56,17 +58,17 @@ private:
 class DestroyRoomJob : public Horang::IJob
 {
 public:
-	DestroyRoomJob(RoomRef room)
+	DestroyRoomJob(RoomWeakRef room)
 		: _room(room)
 	{}
 
 	virtual void Execute() override
 	{
-		GRoomManager.DestroyRoom(_room);
+		GRoomManager->DestroyRoom(_room.lock());
 	}
 
 private:
-	RoomRef _room;
+	RoomWeakRef _room;
 };
 
 class RoomListUpdateJob : public Horang::IJob
@@ -74,7 +76,7 @@ class RoomListUpdateJob : public Horang::IJob
 public:
 	virtual void Execute() override
 	{
-		GRoomManager.RoomListUpdate();
+		GRoomManager->RoomListUpdate();
 	}
 };
 
@@ -87,7 +89,7 @@ public:
 
 	virtual void Execute() override
 	{
-		GRoomManager.SendRoomList(_player);
+		GRoomManager->SendRoomList(_player);
 	}
 
 private:
@@ -97,16 +99,17 @@ private:
 class EnterRoomJob : public Horang::IJob
 {
 public:
-	EnterRoomJob(PlayerWeakRef player, int32 roomId)
-		: _player(player), _roomId(roomId)
+	EnterRoomJob(PlayerWeakRef player, int32 roomId, std::string password = "")
+		: _player(player), _roomId(roomId), _password(password)
 	{}
 
 	virtual void Execute() override
 	{
-		GRoomManager.EnterRoom(_player, _roomId);
+		GRoomManager->EnterRoom(_player, _roomId, _password);
 	}
 
 private:
 	PlayerWeakRef _player;
 	int32 _roomId;
+	std::string _password;
 };
