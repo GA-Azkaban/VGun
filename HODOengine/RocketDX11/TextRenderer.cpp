@@ -20,7 +20,7 @@ namespace RocketCore::Graphics
 		_sortOrder(0)
 	{
 		_font = ResourceManager::Instance().GetDefaultFont();
-		_str = "Default Text";
+		_str = "";
 		_color = DirectX::Colors::White;
 		_defaultColor = DirectX::Colors::White;
 	}

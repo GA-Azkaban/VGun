@@ -90,27 +90,8 @@ void LoginSceneView::LoginView()
 	idTextLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Red);
 	idTextLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
 
-	// password input box
-	HDData::GameObject* passwordTextbox = API::CreateTextInputBox(_scene, "passwordTextBox", loginControlObject);
-	passwordTextbox->SetSelfActive(false);
-	auto pw = passwordTextbox->GetComponent<HDData::TextInputBoxUI>();
-	passwordTextbox->GetTransform()->SetPosition(960.0f * width / 1920, (540.f * height / 1080) + 500, 0.f);
-	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
-	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
-	passwordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
-
-	HDData::GameObject* passwordTextboxLabel = API::CreateTextbox(_scene, "passwordTextboxLabel", loginControlObject);
-	passwordTextboxLabel->SetSelfActive(false);
-	passwordTextboxLabel->GetTransform()->SetPosition(725.f * width / 1920, (540.f * height / 1080) + 500, 0.f);
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetText("PASSWORD");
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::Colors::Red);
-	//passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetColor({ 163 / 255.0f, 29 / 255.0f, 17 / 255.0f,1.0f });
-	passwordTextboxLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
-
 	// login button
 	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", loginControlObject);
-	//loginBtn->GetTransform()->SetPosition((955.f * width / 1920)+90.0f, 1200.f * height / 1080, 0.f);
 	loginBtn->GetTransform()->SetPosition((API::GetScreenWidth() / 2) - 10.0f, (API::GetScreenHeight() / 2) + 600.0f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
@@ -121,21 +102,10 @@ void LoginSceneView::LoginView()
 		{
 			NetworkManager::Instance().SendAutoLogin(id->GetTextUI()->GetText());
 			id->SetOrigin();
-			//if ((id->GetCurrentText() == "") && (pw->GetCurrentText() == ""))
-			//{
-			//	NetworkManager::Instance().SendAutoLogin();
-			//}
-			//else
-			//{
-			//	std::string ID = id->GetCurrentText();
-			//	std::string password = pw->GetCurrentText();
-			//	LobbyManager::Instance().Login(ID, password);
-			//}
 		}
 	);
 	HDData::GameObject* loginText = API::CreateTextbox(_scene, "loginText", loginBtn);
 	loginText->GetTransform()->SetPosition(loginBtn->GetTransform()->GetPosition());
-	//loginText->GetTransform()->SetPosition((865.f * width / 1920) + 100.0f, (640.f * height / 1080) + 240, 0.f);
 	auto logintxt = loginText->GetComponent<HDData::TextUI>();
 	logintxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	logintxt->SetDefaultColor(DirectX::Colors::Red);

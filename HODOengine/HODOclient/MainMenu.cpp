@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 
@@ -99,11 +99,11 @@ void MainMenuScene::MainMenu()
 	credit->SetSelfActive(false);
 	auto creditImg = credit->GetComponent<HDData::ImageUI>();
 	creditImg->SetImage("joinCanvas.png");
-	creditImg->ChangeScale(1.7375f, 0.91875f);
+	creditImg->ChangeScale(1.5f, 0.91875f);
 	creditImg->SetSortOrder(0.6f);
 
 	auto creditText = API::CreateImageBox(_scene, "creditPeople", credit);
-	creditText->GetTransform()->SetPosition(API::GetScreenWidth() / 2, (API::GetScreenHeight() / 2)-25.0f, 0.0f);
+	creditText->GetTransform()->SetPosition((API::GetScreenWidth() / 2)+115.0f, (API::GetScreenHeight() / 2)-25.0f, 0.0f);
 	auto creditTextImg = creditText->GetComponent<HDData::ImageUI>();
 	creditTextImg->SetImage("credit.png");
 	creditTextImg->SetSortOrder(0.61f);

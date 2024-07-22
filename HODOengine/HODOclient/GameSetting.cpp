@@ -123,7 +123,7 @@ void GameSetting::SetSettingCanvasActive(bool _isActive)
 	_bgmSoundSlider->SetSelfActive(_isActive);
 	_bgmSoundSlider->GetComponent<HDData::SliderUI>()->SetActive(_isActive);
 	_sfxSoundIndex->SetSelfActive(_isActive);
-	_sfxSoundSlider->SetSelfActive(false);
+	_sfxSoundSlider->SetSelfActive(_isActive);
 	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetActive(_isActive);
 }
 
