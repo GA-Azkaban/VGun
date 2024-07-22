@@ -280,9 +280,11 @@ void NetworkManager::RecvFail(int32 errorCode)
 	LobbyManager::Instance().RoomEnterFAIL(errorCode);
 }
 
-void NetworkManager::SendAutoLogin()
+void NetworkManager::SendAutoLogin(std::string nickName)
 {
 	Protocol::C_AUTOLOGIN packet;
+
+	packet.set_nickname(nickName);
 
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 	this->_service->BroadCast(sendBuffer);
@@ -305,6 +307,23 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 void NetworkManager::RecvCreateAccount()
 {
 	LobbyManager::Instance().ShowSignSuccess();
+}
+
+void NetworkManager::SendLogout()
+{
+	// 로그아웃을 보냈다
+	Protocol::C_SIGNOUT packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+
+	// Todo 보내고 동작을 해야될까?
+}
+
+void NetworkManager::RecvLogout()
+{
+	// Todo 로그아웃을 받아서 동작해야할까?
+	API::LoadSceneByName("Login");
 }
 
 void NetworkManager::SendRoomListRequest()
@@ -423,7 +442,6 @@ void NetworkManager::SetRoom(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::SendRoomChat(std::string chat)
 {
-	// 보낼 메세지만 전송
 	Protocol::C_ROOM_CHAT packet;
 
 	packet.set_chat(chat);
@@ -435,7 +453,7 @@ void NetworkManager::SendRoomChat(std::string chat)
 void NetworkManager::RecvRoomChat(std::string nickName, std::string chat)
 {
 	// Todo 채팅이 깨질수도 있음
-	
+
 
 }
 
@@ -538,7 +556,7 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
-	//auto pos = API::GetSpawnPointArr()[1];
+
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -569,6 +587,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -613,7 +632,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
-		
+
 		info->SetServerTransform(pos, rot);
 		info->SetCurrentHP(player.hp());
 
@@ -713,7 +732,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot) 
+	if (currentPos == serverPos && currentRot == serverRot)
 		return;
 
 	static float lerpTime = 0.0f;

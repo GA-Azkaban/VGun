@@ -22,7 +22,6 @@ public:
 	void SetMovable(bool movable);
 	void SetPlayerCamera(HDData::Camera* camera);
 	void SetPlayerText(HDData::TextUI* pos, HDData::TextUI* aim);
-	void SetHitParticle(std::vector<HDData::ParticleSphereCollider*> particleVec);
 	void SetHeadCam(HDData::Camera* cam);
 	void SetPlayerColliders(HDData::DynamicCapsuleCollider* standing, HDData::DynamicCapsuleCollider* sitting);
 	void PresetSprayPattern(int gunType);
@@ -67,16 +66,13 @@ private:
 	void Landing();
 	void ShootGun();
 	void Reload();
-	void SpawnParticle(Vector3 position);
 	void ApplyRecoil();
-	void ShootTrail(Vector3 endPoint);
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
 	void OnStateEnter(ePlayerMoveState state);
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
 	void UpdateStateText();
-	//Quaternion Slerp(const Quaternion& qa, const Quaternion& qb, float time);
 
 public:
 	int& GetBulletCount();
@@ -88,6 +84,7 @@ public:
 	virtual void OnTriggerExit(HDData::Collider** colArr, unsigned int count) override;
 
 public:
+	HDData::ParticleSystem* bloodParticle;
 	CooldownAlpha* recoilCooldown;
 	CooldownText* cooldownCountText;
 
@@ -116,7 +113,6 @@ public:
 	int melon;
 
 private:
-	//HDData::DynamicBoxCollider* _playerCollider;
 	HDData::DynamicCapsuleCollider* _playerColliderStanding;
 	HDData::DynamicCapsuleCollider* _playerColliderSitting;
 	HDData::Camera* _playerCamera;
@@ -125,7 +121,6 @@ private:
 	HDData::GameObject* _fpMeshObj;
 	HDData::SkinnedMeshRenderer* _fpmesh;
 	HDData::MeshRenderer* _weapon;
-	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
 
 private:
 	HDData::TextUI* _playerInfoText;
@@ -169,8 +164,6 @@ private:
 private:
 	HDData::Animator* _fpanimator;
 	HDData::Animator* _tpanimator;
-
-
 
 public:
 	bool _isIngamePlaying;

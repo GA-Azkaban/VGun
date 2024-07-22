@@ -16,6 +16,7 @@ namespace HDEngine
 		virtual void LoadARMTexture(const std::string& fileName) = 0;
 		virtual void LoadMetallicTexture(const std::string& fileName) = 0;
 		virtual void LoadRoughnessTexture(const std::string& fileName) = 0;
+		virtual void LoadMaskTexture(const std::string& fileName) = 0;
 		virtual void SetMetallicValue(float value) = 0;
 		virtual void SetRoughnessValue(float value) = 0;
 
@@ -40,6 +41,7 @@ namespace HDEngine
 		std::string occlusionRoughMatel = "";
 		std::string metallic = "";
 		std::string roughness = "";
+		std::string mask = "";
 		float metallicValue = 0.0f;
 		float roughnessValue = 0.0f;
 	};

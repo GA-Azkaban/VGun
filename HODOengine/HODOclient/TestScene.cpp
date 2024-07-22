@@ -120,7 +120,7 @@ TestScene::TestScene()
 
 	particleSystem->Play(); */
 
-	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle");
+	/*auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle");
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
 	particleSystem2->main.duration = 2.5f;
 	particleSystem2->main.loop = true;
@@ -174,7 +174,7 @@ TestScene::TestScene()
 	alphaKey3.time = 1.0f;
 	ak.push_back(alphaKey3);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
-	particleSystem2->Play();
+	particleSystem2->Play(); */
 
 	auto buildingTest1 = API::CreateObject(_scene);
 	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
@@ -193,7 +193,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	/*auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 30.0f, 0.0f, 0.0f });
 	playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
@@ -245,11 +245,17 @@ TestScene::TestScene()
 
 	//playerTest->AddComponent<TPScript>(); */
 
-	// 바닥
-	//auto groundFloor = API::CreateObject(_scene, "ground");
-	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
+	auto decalObj = API::CreateObject(_scene, "DecalTest");
+	auto decalRenderer = decalObj->AddComponent<HDData::MeshRenderer>();
+	decalRenderer->LoadMesh("primitiveQuad");
+	HDEngine::MaterialDesc decalMat;
+	decalMat.materialName = "BulletHoleMat";
+	decalMat.albedo = "T_Wood_BC.png";
+	decalMat.normalMap = "T_Wood_08_N.png";
+	decalMat.mask = "T_Wood_08_M.png";
 
+	HDData::Material* decalMaterial = API::CreateMaterial(decalMat);
+	decalRenderer->LoadMaterial(decalMaterial);
 }
 
 TestScene::~TestScene()

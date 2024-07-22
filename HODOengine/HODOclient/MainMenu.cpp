@@ -55,7 +55,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* mainCanvas = API::CreateImageBox(_scene, "mainmenuCanvas");
 	auto mainCanvasImage = mainCanvas->GetComponent<HDData::ImageUI>();
 	mainCanvasImage->SetImage("_blur_background_image.png");
-	mainCanvasImage->SetSortOrder(0.0f);
+	mainCanvasImage->SetSortOrder(0.1f);
 	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvasImage->ChangeScale(scale, scale);
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
@@ -76,20 +76,30 @@ void MainMenuScene::MainMenu()
 	main_controlCanvas->SetSelfActive(true);
 	main_controlCanvas->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
 
-
 	// gameLogo
 	auto gameLogo = API::CreateImageBox(_scene, "gameLogo", main_controlCanvas);
 	gameLogo->GetTransform()->SetPosition(200.0f, 950.0f, 0.0f);
 	auto gameLogoComp = gameLogo->GetComponent<HDData::ImageUI>();
+	gameLogoComp->SetSortOrder(0.11);
 	gameLogoComp->SetImage("gameLogo.png");
-	gameLogoComp->ChangeScale(0.4f,0.4f);
+	gameLogoComp->ChangeScale(0.4f, 0.4f);
 
 	// TeamLogo
-	auto teamLogo = API::CreateImageBox(_scene, "teamLogo",main_controlCanvas);
+	// credit event
+	auto teamLogo = API::CreateButton(_scene, "teamLogo", main_controlCanvas);
 	teamLogo->GetTransform()->SetPosition(200.0f, 1250.0f, 0.0f);
-	auto teamLogoComp = teamLogo->GetComponent<HDData::ImageUI>();
+	auto teamLogoComp = teamLogo->GetComponent<HDData::Button>();
 	teamLogoComp->SetImage("teamLogo.png");
+	teamLogoComp->SetSortOrder(0.6f);
 	teamLogoComp->ChangeScale(0.3f, 0.3f);
+
+	// credit
+	auto credit = API::CreateImageBox(_scene, "credit", teamLogo);
+	credit->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0.0f);
+	credit->SetSelfActive(false);
+	auto creditImg = credit->GetComponent<HDData::ImageUI>();
+	creditImg->SetImage("");
+	creditImg->SetSortOrder(0.65f);
 
 	// play->RoomEnter & make sequence
 	HDData::GameObject* main_playBtn = API::CreateButton(_scene, "playBtn", main_controlCanvas);
@@ -102,6 +112,7 @@ void MainMenuScene::MainMenu()
 	main_playText->GetTransform()->SetPosition(main_playBtn->GetTransform()->GetPosition());
 	main_playText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	main_playText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::OrangeRed);
+	main_playText->GetComponent<HDData::TextUI>()->SetSortOrder(0.6f);
 	main_playText->GetComponent<HDData::TextUI>()->SetText("PLAY");
 
 	// RoomEnter Btn
@@ -114,8 +125,10 @@ void MainMenuScene::MainMenu()
 	main_enterBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_enterText = API::CreateTextbox(_scene, "roomEnterText", main_enterBtn);
 	main_enterText->GetTransform()->SetPosition(main_enterBtn->GetTransform()->GetPosition());
-	main_enterText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	main_enterText->GetComponent<HDData::TextUI>()->SetText("ENTER");
+	auto entertxt = main_enterText->GetComponent<HDData::TextUI>();
+	entertxt->SetSortOrder(0.5f);
+	entertxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	entertxt->SetText("ENTER");
 
 	// room List Canvas
 	HDData::GameObject* enter_roomLstCanvas = API::CreateImageBox(_scene, "roomListCanvas", main_enterBtn);
@@ -147,7 +160,7 @@ void MainMenuScene::MainMenu()
 	pageLeftButton->GetTransform()->SetLocalPosition(-325.0f + (width - 1920) * (-0.17f), 0, 0);
 	pageLeftButton->AddComponent<BtnHoveringScript>();
 	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
-	lBtn->SetImage("leftArrow.png");
+	lBtn->SetImage("Left.png");
 	lBtn->SetSortOrder(0.6f);
 	lBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	lBtn->SetOnClickEvent([]() {
@@ -198,7 +211,7 @@ void MainMenuScene::MainMenu()
 	inputPW_enter->GetTransform()->SetLocalPosition(-100.0f, 110.0f, 0.0f);
 	auto inputPW_enterbtn = inputPW_enter->GetComponent<HDData::Button>();
 	inputPW_enterbtn->SetImage("Button_02.png");
-	inputPW_enterbtn->ChangeScale(0.45f,0.6154f);
+	inputPW_enterbtn->ChangeScale(0.45f, 0.6154f);
 	inputPW_enterbtn->SetSortOrder(0.93f);
 	//inputPW_enterbtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	inputPW_enterbtn->SetOnClickEvent([=]()
@@ -211,7 +224,7 @@ void MainMenuScene::MainMenu()
 	inputPW_exit->GetTransform()->SetLocalPosition(100.0f, 110.0f, 0.0f);
 	auto inputPW_exitbtn = inputPW_exit->GetComponent<HDData::Button>();
 	inputPW_exitbtn->SetImage("Button_02.png");
-	inputPW_exitbtn->ChangeScale(0.45f,0.6154f);
+	inputPW_exitbtn->ChangeScale(0.45f, 0.6154f);
 	inputPW_exitbtn->SetSortOrder(0.93f);
 	//inputPW_exitbtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	inputPW_exitbtn->SetOnClickEvent([=]()
@@ -220,51 +233,38 @@ void MainMenuScene::MainMenu()
 		});
 
 	/// room enter check button
+	/// 좀 더 진한 이미지를 사용해야함
 	HDData::GameObject* enter_enterCheckCanvas = API::CreateImageBox(_scene, "enterCheck", enter_roomLstCanvas);
 	enter_enterCheckCanvas->GetTransform()->SetPosition(1600.0f * width / 1920, 540.0f * height / 1080, 0);
 	auto enterCheckImg = enter_enterCheckCanvas->GetComponent<HDData::ImageUI>();
-	//enterCheckImg->SetImage("enterCheckCanvas.png");
 	enterCheckImg->SetImage("Button_vertical_02.png");
 	enterCheckImg->SetSortOrder(0.9f);
-	//enterCheckImg->ChangeScale(1.25f,2.3f);
-	//enterCheckImg->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	enter_enterCheckCanvas->SetSelfActive(false);
 
-	HDData::GameObject* enter_enterCheckText = API::CreateTextbox(_scene, "enterCheckText", enter_enterCheckCanvas);
-	enter_enterCheckText->GetTransform()->SetLocalPosition(0, -30.0f * height / 1080, 0);
-	auto enterText = enter_enterCheckText->GetComponent<HDData::TextUI>();
-	enterText->SetText("Join?");
-	enterText->SetFont("Resources/Font/KRAFTON_25.spriteFont");
-	enterText->SetColor(DirectX::Colors::OrangeRed);
-	enterText->SetIsIgnoreFocus(true);
-	enterText->SetSortOrder(0.91);
-	enterText->ChangeScale(width / 1920.0f);
-
-	HDData::GameObject* enter_enterCheckExitBtn = API::CreateButton(_scene, "enterCheckExit", enter_enterCheckCanvas);
-	enter_enterCheckExitBtn->GetTransform()->SetLocalPosition(-105.0f + (width - 1920) * (-0.035f), 80, 0);
-	auto enter_exitImg = enter_enterCheckExitBtn->GetComponent<HDData::Button>();
-	enter_exitImg->SetImage("Button_01.png");
-	enter_exitImg->ChangeScale(0.45f,0.6154f);
-	enter_exitImg->SetSortOrder(0.91);
-	//enter_exitImg->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-	enter_exitImg->SetOnClickEvent([=]()
-		{
-			MenuManager::Instance().ShowCheckEnterCanvas(false);
-		});
 	MenuManager::Instance().SetCheckEnterCanvas(enter_enterCheckCanvas);
 
 	HDData::GameObject* enter_enterBtn = API::CreateButton(_scene, "enterButton", enter_enterCheckCanvas);
-	enter_enterBtn->GetTransform()->SetLocalPosition(105.0f + (width - 1920) * 0.035f, 80, 0);
+	enter_enterBtn->GetTransform()->SetLocalPosition(0.0f, 300.0f, 0);
+	enter_enterBtn->AddComponent<BtnTextScript>();
 	auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
 	enter_enterImg->SetImage("Button_01.png");
 	enter_enterImg->SetSortOrder(0.95);
-	enter_enterImg->ChangeScale(0.45f,0.6145f);
-	//enter_enterImg->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	enter_enterImg->ChangeScale(0.45f, 0.6145f);
 	enter_enterImg->SetOnClickEvent([=]()
 		{
 			MenuManager::Instance().ShowCheckEnterCanvas(false);
 			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id));
 		});
+
+	HDData::GameObject* enter_enterCheckText = API::CreateTextbox(_scene, "enterCheckText", enter_enterBtn);
+	enter_enterCheckText->GetTransform()->SetLocalPosition(-25.0f, -5.0f, 0);
+	auto enterText = enter_enterCheckText->GetComponent<HDData::TextUI>();
+	enterText->SetText("Join");
+	enterText->SetFont("Resources/Font/KRAFTON_25.spriteFont");
+	enterText->SetColor(DirectX::Colors::OrangeRed);
+	enterText->SetIsIgnoreFocus(true);
+	enterText->SetSortOrder(0.91);
+	enterText->ChangeScale(width / 1920.0f);
 
 	// room
 	float posY = 235.0f + (height - 1080) * 0.0138f;
@@ -370,7 +370,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* main_makeBtn = API::CreateButton(_scene, "roomMake", main_playBtn);
 	main_makeBtn->GetTransform()->SetPosition(365.f * width / 1920, 290.f * height / 1080, 0.6f);
 	main_makeBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	main_makeBtn->GetComponent<HDData::Button>()->SetSortOrder(0.9f);
+	main_makeBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
 	main_makeBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	main_makeBtn->SetSelfActive(false);
 	main_makeBtn->AddComponent<BtnTextScript>();
@@ -378,6 +378,7 @@ void MainMenuScene::MainMenu()
 	main_makeText->GetTransform()->SetPosition(main_makeBtn->GetTransform()->GetPosition());
 	main_makeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	main_makeText->GetComponent<HDData::TextUI>()->SetText("MAKE");
+	main_makeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.6f);
 
 	/// make room ui
 
@@ -385,28 +386,30 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* make_canvas = API::CreateImageBox(_scene, "lobbyCanvas", main_makeBtn);
 	make_canvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
 	make_canvas->GetTransform()->SetPosition(960.0f * width / 1920, 540.0f * height / 1080, 0.f);
-	make_canvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.7f);
-	make_canvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	make_canvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
+	make_canvas->GetComponent<HDData::ImageUI>()->ChangeScale(0.75f, 0.5f);
 	make_canvas->SetSelfActive(false);
 
 	// room name Set
 	HDData::GameObject* make_roomNameLabel = API::CreateTextbox(_scene, "roomNameTextLabel", make_canvas);
-	make_roomNameLabel->GetTransform()->SetPosition(710.0f * width / 1920, 240.0f * height / 1080, 0.f);
+	//make_roomNameLabel->GetTransform()->SetPosition((710.0f * width / 1920), 240.0f * height / 1080, 0.f);
+	make_roomNameLabel->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 450.0f * height / 1080, 0.0f);
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetText("RoomName");
 	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
-	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.75f);
+	make_roomNameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
 	if (width / 1920 > 1.0f)
 	{
 		make_roomNameLabel->GetComponent<HDData::TextUI>()->ChangeScale(width / 1920.0f * 1.35f);
 	}
 
 	HDData::GameObject* make_roomNameInput = API::CreateTextInputBox(_scene, "roomNameTextBox", make_canvas);
-	make_roomNameInput->GetTransform()->SetPosition(960.0f * width / 1920, 240.0f * height / 1080, 0.0f);
+	//make_roomNameInput->GetTransform()->SetPosition(960.0f * width / 1920, 240.0f * height / 1080, 0.0f);
+	make_roomNameInput->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 500.0f * height / 1080, 0.0f);
 	auto newRoomName = make_roomNameInput->GetComponent<HDData::TextInputBoxUI>();
-	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.75f);
-	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.75f);
-	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.77f);
+	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.65f);
+	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.65f);
+	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.65f);
 
 	// privateRoom Set
 	//HDData::GameObject* make_passwordLabel = API::CreateTextbox(_scene, "privateRoomTextLabel", make_canvas);
@@ -436,10 +439,10 @@ void MainMenuScene::MainMenu()
 
 	// room setting
 	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", make_canvas);
-	roomSetBtn->GetTransform()->SetPosition(960.0f * width / 1920, 840.0f * height / 1080, 0.f);
+	roomSetBtn->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 620.0f * height / 1080, 0.f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.9f);
+	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.66f);
 	roomSetBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	roomSetBtn->AddComponent<BtnTextScript>();
 
@@ -447,18 +450,19 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetTransform()->SetPosition(roomSetBtn->GetTransform()->GetPosition());
 	setRoomText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
-	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.8f);
+	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.67f);
 
 	// Training Btn
 	HDData::GameObject* main_trainingBtn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
 	main_trainingBtn->GetTransform()->SetPosition((150.0f - (width - 1920) * 0.0078f) * width / 1920, 330.0f * height / 1080, 0.f);
 	main_trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	main_trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	main_trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
 	main_trainingBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	main_trainingBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", main_trainingBtn);
 	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
+	trainingText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
 	float trainingTextWidth = trainingText->GetComponent<HDData::TextUI>()->GetTextWidth();
 	trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
 
@@ -472,6 +476,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* tempText = API::CreateTextbox(_scene, "tempText", exit_Btn);
 	tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	tempText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
 	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
 
 	// setting & option
@@ -480,7 +485,7 @@ void MainMenuScene::MainMenu()
 	preferencesBtn->AddComponent<BtnHoveringScript>();
 	auto prefBtn = preferencesBtn->GetComponent<HDData::Button>();
 	prefBtn->SetImage("icon_cog.png");
-	prefBtn->SetSortOrder(0.6f);
+	prefBtn->SetSortOrder(0.65f);
 	prefBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 	// ex)해상도, BGM 볼륨, 환경볼륨, 마우스 감도
@@ -503,8 +508,8 @@ void MainMenuScene::MainMenu()
 	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
 	float mouseSensitivityTextWidth = mouseSensitivityText->GetComponent<HDData::TextUI>()->GetTextWidth();
 	float mouseSensitivityTextHeight = mouseSensitivityText->GetComponent<HDData::TextUI>()->GetTextHeight();
-	mouseSensitivityText->GetTransform()->SetPosition((300.0f * width / 1920)+80, (250.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
-	
+	mouseSensitivityText->GetTransform()->SetPosition((300.0f * width / 1920) + 80, (250.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
+
 	HDData::GameObject* MouseSensitivityCanvas = API::CreateImageBox(_scene, "MouseSensitivityCanvas", preferencesCanvas);
 	MouseSensitivityCanvas->GetTransform()->SetPosition(960.f * width / 1920, 240.0f * height / 1080, 0.f);
 	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
@@ -513,7 +518,7 @@ void MainMenuScene::MainMenu()
 
 	/// 이부분 추가수정
 	HDData::GameObject* BGMVolumeText = API::CreateTextbox(_scene, "BGMVolumeText", preferencesCanvas);
-	BGMVolumeText->GetTransform()->SetPosition((302.0f * width / 1920)+20, (350.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
+	BGMVolumeText->GetTransform()->SetPosition((302.0f * width / 1920) + 20, (350.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
 	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
 	BGMVolumeText->GetComponent<HDData::TextUI>()->SetText("BGM Volume");
 	BGMVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
@@ -647,11 +652,25 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
+	// game Logo & credit event
+	teamLogo->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			if (credit->GetSelfActive())
+			{
+				credit->SetSelfActive(false);
+			}
+			else
+			{
+				credit->SetSelfActive(true);
+			}
+		}
+	);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()
 		{
-			API::QuitWindow();
+			NetworkManager::Instance().SendLogout();
 		}
 	);
 

@@ -299,6 +299,16 @@ namespace RocketCore::Graphics
 					m_pixelShader->SetFloat("metallicValue", m_materials[i]->GetRoughnessValue());
 				}
 
+				if (m_materials[i]->GetMaskMap())
+				{
+					m_pixelShader->SetInt("useMaskMap", 1);
+					m_pixelShader->SetShaderResourceView("MaskMap", m_materials[i]->GetMaskMap());
+				}
+				else
+				{
+					m_pixelShader->SetInt("useMaskMap", 0);
+				}
+
 				m_pixelShader->CopyAllBufferData();
 				m_pixelShader->SetShader();
 

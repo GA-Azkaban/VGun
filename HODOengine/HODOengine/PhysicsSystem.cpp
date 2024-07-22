@@ -44,7 +44,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.5f, 0.4f, 0.0f);
+		_material = _physics->createMaterial(0.8f, 0.6f, 0.0f);
 		_playerMaterial = _physics->createMaterial(0.04f, 0.02f, 0.0f);
 		_planeMaterial = _physics->createMaterial(0.05f, 0.03f, 0.0f);
 
@@ -64,6 +64,11 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
+		if (!_playerRigid)
+		{
+			return;
+		}
+
 		if (static_cast<HDData::DynamicCollider*>(_playerRigid->userData)->GetGameObject()->GetComponent<PlayerMove>()->_isIngamePlaying == false)
 		{
 			return;

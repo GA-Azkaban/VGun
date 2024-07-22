@@ -47,7 +47,7 @@ namespace HDData
 
 		_min = GetTransform()->GetPosition().x - (_background->GetImageWidth() / 2);
 		_max = GetTransform()->GetPosition().x + _background->GetImageWidth() / 2;
-
+		_handle->GetTransform()->SetPosition(_max, GetTransform()->GetPosition().y, 0);
 		_value->GetTransform()->SetPosition(_background->GetTransform()->GetPosition().x + _background->GetImageWidth() + 1, _handle->GetTransform()->GetPosition().y, 0);
 	}
 

@@ -1,4 +1,4 @@
-#include "DynamicCollider.h"
+﻿#include "DynamicCollider.h"
 #include "Transform.h"
 
 
@@ -183,9 +183,9 @@ void HDData::DynamicCollider::Jump(Vector3 direction)
 	//_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 	//_physXRigid->addForce(physx::PxVec3(0.0f, 1.2f, 0.0f) * 120.0f, physx::PxForceMode::eIMPULSE);
 #ifdef _DEBUG
-	_physXRigid->addForce(physx::PxVec3(0.0f, 4800.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 4200.0f, 0.0f), physx::PxForceMode::eFORCE);
 #else
-	_physXRigid->addForce(physx::PxVec3(0.0f, 3600.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 2800.0f, 0.0f), physx::PxForceMode::eFORCE);
 #endif
 }
 
@@ -211,7 +211,8 @@ void HDData::DynamicCollider::AddForce(Vector3 direction, float force /*= 1.0f*/
 	}
 	else if (forceType == 1)
 	{
-		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
+		// 회전초
+		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y - 1.0f, direction.z) * force, physx::PxForceMode::eIMPULSE);
 	}
 }
 

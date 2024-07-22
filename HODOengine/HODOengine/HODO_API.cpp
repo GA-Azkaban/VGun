@@ -365,7 +365,7 @@ namespace API
 
 			auto fill = HDEngine::ObjectSystem::Instance().CreateStaticObject("fill", obj);
 			fill->AddComponent<HDData::ImageUI>();
-			fill->GetComponent<HDData::ImageUI>()->SetImage("fill.png");
+			fill->GetComponent<HDData::ImageUI>()->SetImage("bar.png");
 			fill->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
 
 			auto handle = HDEngine::ObjectSystem::Instance().CreateStaticObject("handle", obj);
