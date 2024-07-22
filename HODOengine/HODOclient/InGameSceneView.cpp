@@ -286,8 +286,8 @@ void InGameSceneView::Initialize()
 	particleSystem3->main.maxStartColor = { 90, 0, 0, 255 };
 	particleSystem3->main.minStartLifetime = 1.0f;
 	particleSystem3->main.maxStartLifetime = 1.0f;
-	particleSystem3->main.minStartRotation = 0.0f;
-	particleSystem3->main.maxStartRotation = -180.0f;
+	particleSystem3->main.minStartRotation = -180.0f;
+	particleSystem3->main.maxStartRotation = 0.0f;
 	particleSystem3->main.minStartSize = 0.25f;
 	particleSystem3->main.maxStartSize = 0.5f;
 	particleSystem3->main.minStartSpeed = 500.0f;
