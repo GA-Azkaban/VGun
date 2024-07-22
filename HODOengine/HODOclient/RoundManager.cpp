@@ -191,6 +191,7 @@ void RoundManager::InitRound()
 	}
 
 	SoundManager::Instance().PlayUI("sfx_bell");
+	ResetWeedPos();
 }
 
 void RoundManager::UpdateRound()
@@ -615,5 +616,16 @@ HDData::GameObject* RoundManager::GetAnimationDummy()
 void RoundManager::SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec)
 {
 	_weedColVector = vec;
+}
+
+void RoundManager::ResetWeedPos()
+{
+	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
+						{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
+
+	for (int i = 0; i < 20; ++i)
+	{
+		_weedColVector[i]->SetColliderPosition(Vector3(weedPos[i][0], 1.0f, weedPos[i][1]));
+	}
 }
 

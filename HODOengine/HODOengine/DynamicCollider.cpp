@@ -250,8 +250,16 @@ void HDData::DynamicCollider::ClearVeloY()
 
 	_physXRigid->clearForce();
 	_physXRigid->clearTorque();
-	//_physXRigid->setLinearVelocity(velo);
-	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+	_physXRigid->setLinearVelocity(velo);
+
+	for (auto& child : _childColliders)
+	{
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->ClearVeloY();
+		}
+	}
 }
 
 void HDData::DynamicCollider::ClearForceXYZ()

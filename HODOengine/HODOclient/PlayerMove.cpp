@@ -400,13 +400,13 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_moveSpeed = 6.0f;
+			_moveSpeed = 6.4f;
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 4.0f;
+			_moveSpeed = 4.8f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 
@@ -703,10 +703,9 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	//_plStateText->SetText(first + "/" + second);
+	_plStateText->SetText(first + "/" + second);
 
 	//_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
-	_anyText->SetText(std::to_string(GetTransform()->GetPosition().y));
 
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
