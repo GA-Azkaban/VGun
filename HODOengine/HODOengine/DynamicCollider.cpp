@@ -212,7 +212,7 @@ void HDData::DynamicCollider::AddForce(Vector3 direction, float force /*= 1.0f*/
 	else if (forceType == 1)
 	{
 		// 회전초
-		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y - 0.5f, direction.z) * force, physx::PxForceMode::eIMPULSE);
+		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y - 1.0f, direction.z) * force, physx::PxForceMode::eIMPULSE);
 	}
 }
 
