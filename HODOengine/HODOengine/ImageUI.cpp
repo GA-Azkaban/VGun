@@ -11,7 +11,6 @@ namespace HDData
 	ImageUI::ImageUI()
 		: _imageUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
-		//HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable = _imageUI;
 		_imageUI->SetActive(true);
 	}
@@ -81,6 +80,11 @@ namespace HDData
 		_imageUI->ChangeScale(x, y);
 	}
 
+	DirectX::XMFLOAT2 ImageUI::GetScale()
+	{
+		return _imageUI->GetScale();
+	}
+
 	void ImageUI::SetAngle(float angle)
 	{
 		_imageUI->SetAngle(angle);
@@ -94,6 +98,11 @@ namespace HDData
 	void ImageUI::SetCenter(float x, float y)
 	{
 		_imageUI->SetCenter(x, y);
+	}
+
+	Vector2 ImageUI::GetImageScale()
+	{
+		return _imageUI->GetImageScale();
 	}
 
 	void ImageUI::FadeIn(float time)
@@ -114,11 +123,6 @@ namespace HDData
 	bool ImageUI::GetFadeMode()
 	{
 		return _imageUI->GetFadeMode();
-	}
-
-	bool ImageUI::SetFadeMode(bool SetFade, float time)
-	{
-		return _imageUI->SetFadeMode(SetFade,time);
 	}
 
 }

@@ -37,6 +37,7 @@ namespace HDData
 		void SetShadowActive(bool isActive);
 		Node* GetNode();
 		int GetMeshCount();
+		std::string GetCurrentAnimName();
 
 	protected:
 		virtual void Update() override;
@@ -44,6 +45,7 @@ namespace HDData
 		virtual void OnDisable() override;
 
 	private:
+		std::string _currentAnimName;
 		HDEngine::ISkinnedMesh* _skinnedMesh;
 	};
 }

@@ -39,7 +39,7 @@ public:
 
 
 public:
-	void CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
+	bool CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
 
 	void SendJump(int uid);
@@ -74,6 +74,12 @@ public:
 	bool _ESCMenuOn = false;
 
 	LowHPEffect* lowHPEffect;
+	HDData::ImageUI* finRoundimg;
+	HDData::ImageUI* startRoundimg;
+
+	HDData::ImageUI* tumbleImage;
+	HDData::ImageUI* tumbleAlphaImage;
+	HDData::TextUI* tumbleCountText;
 
 private:
 	bool _isRoundStart = false;
@@ -119,8 +125,7 @@ public:
 	void SetDesiredKill(int count);
 	int& GetDesiredKill();
 	void SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, int index);
-	void SetKillCountBack(HDData::ImageUI* img, int index);
-	void SetHeadshotUI(HDData::ImageUI* img);
+	//void SetKillCountBack(HDData::ImageUI* img, int index);
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
 private:
@@ -140,15 +145,14 @@ private:
 
 	// UI
 	HDData::ImageUI* _backIMG[6];
-	HDData::ImageUI* _headshotImg;
-	UIEffect* _headshoteffect;
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
 	HDData::GameObject* GetAnimationDummy();
+	void SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec);
 
 private:
 	HDData::GameObject* _animationDummy = nullptr;
-
+	std::vector<HDData::DynamicSphereCollider*> _weedColVector;
 };
 

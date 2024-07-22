@@ -91,6 +91,9 @@
     <FxCompile Include="PostProcessPS.hlsl">
       <Filter>Resource\Shader\HLSL\PostProcess</Filter>
     </FxCompile>
+    <FxCompile Include="SpritePreprocessPS.hlsl">
+      <Filter>Resource\Shader\UI</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -630,6 +633,9 @@
     </Filter>
     <Filter Include="Resource\Shader\HLSL\PostProcess">
       <UniqueIdentifier>{6b6521f1-b7a7-491a-af8a-4af600272a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\UI">
+      <UniqueIdentifier>{96068b70-ce97-4b53-b6f7-fb3d7d0919d7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

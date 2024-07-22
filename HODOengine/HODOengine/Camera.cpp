@@ -15,7 +15,7 @@ namespace HDData
 		_farWindowHeight(),
 		_graphicsCamera(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCamera()),
 		_isShakingCamera(false),
-		_shakeTime(0.1f),
+		_shakeTime(0.0f),
 		_distYOnShoot(0.0f),
 		_camActive(true)
 	{
@@ -136,7 +136,7 @@ namespace HDData
 			return;
 		}
 
-		float shakeIntensity = 0.008f;
+		float shakeIntensity = 0.016f;
 		float shakeFrequency = 31.4f;
 
 		if (_shakeTime < 0.1f)
@@ -158,7 +158,7 @@ namespace HDData
 		else if (_shakeTime < 0.4f)
 		{
 			shakeFrequency = 7.86f;
-			shakeIntensity = 0.002f;
+			shakeIntensity = 0.00463f;
 
 			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
 			angleX += _distYOnShoot;
@@ -183,7 +183,7 @@ namespace HDData
 
 		if (_shakeTime < 0.3f)
 		{
-			float distY = sin(_shakeTime * 10.472f);
+			float distY = sin(_shakeTime * 10.471f);
 
 			GetGameObject()->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f - distY, 0.175f));
 
@@ -215,12 +215,12 @@ namespace HDData
 	}
 
 	void Camera::SetCamActive(bool active)
-{
+	{
 		_camActive = active;
 	}
 
 	bool Camera::GetCamActive() const
-{
+	{
 		return _camActive;
 	}
 

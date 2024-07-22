@@ -8,6 +8,7 @@ OthersAnim::OthersAnim()
 
 void OthersAnim::Start()
 {
+	auto a = GetGameObject();
 	_mesh = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_info = GetGameObject()->GetComponent<PlayerInfo>();
 	_audio = GetGameObject()->GetComponent<HDData::AudioSource>();
@@ -15,10 +16,11 @@ void OthersAnim::Start()
 
 void OthersAnim::Update()
 {
+
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 	if (!_info->GetIsStateChange()) return;
 
-	if(_info->GetIsShoot())
+	if (_info->GetIsShoot())
 	{
 		_audio->Play3DOnce("shootother", GetGameObject()->GetTransform()->GetPosition());
 	}
@@ -93,6 +95,7 @@ void OthersAnim::Update()
 		case ePlayerState::DIE:
 		{
 			_mesh->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
+			//GetGameObject()->GetComponent<PlayerInfo>()->SetIsRespawn(true);
 		}
 		break;
 		default:

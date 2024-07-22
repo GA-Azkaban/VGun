@@ -73,9 +73,6 @@
     <ClCompile Include="MeshTransformController.cpp">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClCompile>
-    <ClCompile Include="FPAniScript.cpp">
-      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
-    </ClCompile>
     <ClCompile Include="TPScript.cpp">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClCompile>
@@ -90,12 +87,6 @@
     </ClCompile>
     <ClCompile Include="PlayerInfo.cpp">
       <Filter>02_Client\01_Script\Player\PlayerInfo</Filter>
-    </ClCompile>
-    <ClCompile Include="FadeInOut.cpp">
-      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundPlayer.cpp">
-      <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
     </ClCompile>
     <ClCompile Include="TrainigSceneView.cpp">
       <Filter>04_SceneView\Training</Filter>
@@ -126,6 +117,18 @@
     </ClCompile>
     <ClCompile Include="UIEffect.cpp">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="CooldownAlpha.cpp">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CooldownText.cpp">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>02_Client\01_Script\Sound\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="GameSetting.cpp">
+      <Filter>03_Manager\SettingManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -216,9 +219,6 @@
     <ClInclude Include="MeshTransformController.h">
       <Filter>02_Client\01_Script\99_test</Filter>
     </ClInclude>
-    <ClInclude Include="FPAniScript.h">
-      <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
-    </ClInclude>
     <ClInclude Include="TPScript.h">
       <Filter>02_Client\01_Script\Player\Animation\MyScript</Filter>
     </ClInclude>
@@ -239,12 +239,6 @@
     </ClInclude>
     <ClInclude Include="PlayerState.h">
       <Filter>02_Client\01_Script\Player\PlayerState</Filter>
-    </ClInclude>
-    <ClInclude Include="FadeInOut.h">
-      <Filter>02_Client\01_Script\Effect\FadeInOut</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundPlayer.h">
-      <Filter>02_Client\01_Script\Sound\SoundPlayer</Filter>
     </ClInclude>
     <ClInclude Include="TrainigSceneView.h">
       <Filter>04_SceneView\Training</Filter>
@@ -278,6 +272,21 @@
     </ClInclude>
     <ClInclude Include="UIEffect.h">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="UITransformController.h">
+      <Filter>02_Client\01_Script\99_test</Filter>
+    </ClInclude>
+    <ClInclude Include="CooldownAlpha.h">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClInclude>
+    <ClInclude Include="CooldownText.h">
+      <Filter>02_Client\01_Script\UI\CooldownUI</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>02_Client\01_Script\Sound\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSetting.h">
+      <Filter>03_Manager\SettingManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +376,6 @@
     <Filter Include="02_Client\01_Script\Effect">
       <UniqueIdentifier>{5a996260-c4e4-474d-874e-63697805f3a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02_Client\01_Script\Effect\FadeInOut">
-      <UniqueIdentifier>{b2f2f894-d35d-4d3b-8695-fc1b96188023}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02_Client\01_Script\UI">
       <UniqueIdentifier>{2bd02384-316b-4567-9388-d69965fb1901}</UniqueIdentifier>
     </Filter>
@@ -387,9 +393,6 @@
     </Filter>
     <Filter Include="02_Client\01_Script\Sound">
       <UniqueIdentifier>{66f16f2e-0b2e-4c75-8e51-0e9e258984f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\Sound\SoundPlayer">
-      <UniqueIdentifier>{7364da8c-8cb4-4c2b-8d8c-aa7b71117ae3}</UniqueIdentifier>
     </Filter>
     <Filter Include="02_Client\01_Script\UI\ButtonScript">
       <UniqueIdentifier>{f79ac5cb-0ffd-4cb6-b845-794c6ce5da10}</UniqueIdentifier>
@@ -420,6 +423,15 @@
     </Filter>
     <Filter Include="02_Client\01_Script\Effect\TextEffect">
       <UniqueIdentifier>{22af6bc9-505f-41c5-ad4f-145a7b01a825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\CooldownUI">
+      <UniqueIdentifier>{b832df59-f007-419a-a495-e4bd9930fd0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Sound\SoundManager">
+      <UniqueIdentifier>{2c9f3765-46ba-4b9c-8c5a-0aa3bcedbbb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03_Manager\SettingManager">
+      <UniqueIdentifier>{d4439aad-4fd8-4460-9764-f7f72e9f19ee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

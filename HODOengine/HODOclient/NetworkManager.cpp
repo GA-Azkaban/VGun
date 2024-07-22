@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
+#include "SoundManager.h"
 
 #include "Service.h"
 #include "ServerPacketHandler.h"
@@ -13,6 +14,7 @@
 #include "MenuManager.h"
 #include "GameStruct.h"
 #include "ErrorCode.h"
+#include "PlayerMove.h"
 
 #include <fstream>
 
@@ -67,6 +69,10 @@ void NetworkManager::Update()
 	for (auto& [uid, player] : playerObj)
 	{
 		auto info = player->GetComponent<PlayerInfo>();
+		if (player->GetComponent<PlayerInfo>()->GetIsDie())
+		{
+			continue;
+		}
 		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
 	}
 }
@@ -94,7 +100,6 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	if (myUID == playerData.userinfo().uid())
 	{
 		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
-		GameManager::Instance()->GetMyInfo()->AddSerialKillCount();
 	}
 	else
 	{
@@ -131,6 +136,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(deathPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+
+		GameManager::Instance()->GetMyInfo()->PlayDieEffect();
+		GameManager::Instance()->GetMyInfo()->PlayKillLog(killPlayerData.userinfo().nickname());
 	}
 	else
 	{
@@ -140,12 +148,13 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 	}
 
-
 	if (myUID == killPlayerData.userinfo().uid())
 	{
 		ConvertDataToPlayerInfo(killPlayerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
+
+		GameManager::Instance()->GetMyInfo()->AddSerialKillCount();
 	}
 	else
 	{
@@ -164,26 +173,27 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 	{
 		// 위치 갱신
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		//auto pos = Vector3{2, 5, 0};
+		//auto pos = API::GetSpawnPointArr()[1];
 		ConvertDataToPlayerInfo(playerData,
 			GameManager::Instance()->GetMyObject(),
 			GameManager::Instance()->GetMyInfo());
 
 		GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 		GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+		GameManager::Instance()->GetMyInfo()->PlayRespawnEffect();
+		GameManager::Instance()->GetMyInfo()->KillLogExit();
 	}
 	else
 	{
 		auto pos = API::GetSpawnPointArr()[spawnPointIndex];
-		//auto pos = Vector3{ 2, 5, 0 };
-
+		//auto pos = API::GetSpawnPointArr()[1];
 		ConvertDataToPlayerInfo(playerData,
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetTransform()->SetPosition(pos);
-		RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
-
+		auto player = RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()];
+		player->GetTransform()->SetPosition(pos);
+		player->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 	}
 }
 
@@ -288,6 +298,7 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
 
+	SoundManager::Instance().PlayUI("sfx_entry");
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -540,11 +551,16 @@ void NetworkManager::SendGameStart()
 void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex)
 {
 	// 라운드 초기화
+	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->InitGame();
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
+<<<<<<< HEAD
+	//auto pos = API::GetSpawnPointArr()[1];
+=======
 
+>>>>>>> Network
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
 	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
 
@@ -558,6 +574,8 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
+
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameStart()
@@ -572,6 +590,8 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	API::ShowWindowCursor(true);
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -584,14 +604,12 @@ void NetworkManager::SendPlayUpdate()
 	vector3->set_x(playerobj->GetTransform()->GetPosition().x);
 	vector3->set_y(playerobj->GetTransform()->GetPosition().y);
 	vector3->set_z(playerobj->GetTransform()->GetPosition().z);
-	vector3;
 
 	auto quaternion = packet.mutable_playerdata()->mutable_transform()->mutable_quaternion();
 	quaternion->set_w(playerobj->GetTransform()->GetRotation().w);
 	quaternion->set_x(playerobj->GetTransform()->GetRotation().x);
 	quaternion->set_y(playerobj->GetTransform()->GetRotation().y);
 	quaternion->set_z(playerobj->GetTransform()->GetRotation().z);
-	quaternion;
 
 	packet.mutable_playerdata()->
 		set_animationstate(ConvertStateToEnum(RoundManager::Instance()->GetAnimationDummy()->GetComponent<HDData::Animator>()->GetAllAC()->GetCurrentState()));
@@ -604,6 +622,20 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
+
+	{
+		//static uint64 temp = 0;
+		//static int i = 0;
+		//static const Vector3 tempPos[4] = { {0,10,0},{0,10,50},{50,10,50},{50,10,0} };
+		//if (temp < ::GetTickCount64())
+		//{
+		//	cube->GetTransform()->SetPosition(tempPos[i]);
+		//	i++;
+		//	i %= 4;
+		//	temp = ::GetTickCount64() + 1000;gg
+		//}
+	}
+
 
 	for (auto& player : roominfo.users())
 	{
@@ -618,7 +650,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 
 		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
-
+		
 		info->SetServerTransform(pos, rot);
 		info->SetCurrentHP(player.hp());
 
@@ -718,14 +750,15 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot) return;
+	if (currentPos == serverPos && currentRot == serverRot) 
+		return;
 
 	static float lerpTime = 0.0f;
 	lerpTime += dt * intermediateValue;
 	float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
 	float t = x * x * (3 - 2 * x);
 
-	// 포지션 선형 보간
+	// 포지션 비선형 보간
 	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, t);
 
 	// 로테이션 구면 선형 보간
@@ -734,6 +767,12 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	// 현재 Transform에 보간된 값 설정
 	current->SetPosition(interpolatedPos);
 	current->SetRotation(interpolatedRot);
+
+	// 보간 후에도 너무 멀리 있다면 즉시 이동
+	if (Vector3::Distance(currentPos, serverPos) > 1)
+	{
+		currentPos = serverPos;
+	}
 
 	if (t >= 1.0f)
 		lerpTime = 0.0f;

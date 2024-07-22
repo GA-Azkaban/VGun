@@ -1,4 +1,4 @@
-﻿#include "Client.h"
+#include "Client.h"
 #include "TestScene.h"
 #include "LoginSceneView.h"
 #include "TrainigSceneView.h"
@@ -6,11 +6,12 @@
 #include "InGameSceneView.h"
 #include "LobbySceneView.h"
 
-#include "FadeInOut.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
 #include "RoundManager.h"
+#include "SoundManager.h"
+#include "GameSetting.h"
 
 
 
@@ -31,31 +32,33 @@ void Client::Initialize()
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
-	//FadeInOut::Instance();
+	GameSetting::Instance();
+	SoundManager::Instance();
 	
 	// 씬 초기화
 	//TestScene test;
-
-	//API::LoadSceneByName("Test");
+	//API::LoadSceneByName("T est");
 
 	//UnitySceneLoaderTest unity;
 	//unity.Start();
 
 	//AnimationLoaderTest loader;
-	//loader.Start();
+	//loader.Start(); 
 
-	LoginSceneView login;		//Scene Name : Login
+	LoginSceneView login;		//Scene N@ame : Login
 	login.Initialize();
-
+	
 	LobbySceneView lobby;
 	lobby.Initialize();
-
+	
 	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();
 	
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
 	
+
+
 	API::LoadSceneByName("Login");
 
 	//InGameSceneView inGame;			//Scene Name : InGame

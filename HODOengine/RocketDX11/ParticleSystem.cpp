@@ -14,7 +14,7 @@ namespace RocketCore::Graphics
 
 	ParticleSystem::ParticleSystem()
 		: _mesh(nullptr), _material(nullptr),
-		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard), _isActive(true)
+		_renderMode(HDEngine::ParticleSystemRenderMode::Billboard), _isActive(true), _isAlphaBlend(false)
 	{
 		_rasterizerState = ResourceManager::Instance().GetRasterizerState(ResourceManager::eRasterizerState::CULLNONESOLID);
 		_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
@@ -61,10 +61,7 @@ namespace RocketCore::Graphics
 		{
 			_mesh = ResourceManager::Instance().GetMeshes("primitiveQuad")[0];
 		}
-		//else if (_renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
-		//{
-		//	//_material->SetVertexShader()
-		//}
+		
 	}
 
 	HDEngine::IParticle* ParticleSystem::SummonParticle()
@@ -89,6 +86,11 @@ namespace RocketCore::Graphics
 				_activatedParticles.erase(iter);
 			}
 		}
+	}
+
+	void ParticleSystem::SetAlphaBlend(bool isAlphaBlend)
+	{
+		_isAlphaBlend = isAlphaBlend;
 	}
 
 	void ParticleSystem::Render()
@@ -138,5 +140,9 @@ namespace RocketCore::Graphics
 		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
 	}
 
+	bool ParticleSystem::IsAlphaBlend() const
+	{
+		return _isAlphaBlend;
+	}
 
 }

@@ -206,7 +206,7 @@ void LobbyManager::RefreshRoom()
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
-		_quitButtons[i]->SetSelfActive(false);
+		//_quitButtons[i]->SetSelfActive(false);
 	}
 
 	auto& data = _roomData->_players;
@@ -236,12 +236,12 @@ void LobbyManager::RefreshRoom()
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
-			_quitButtons[i]->SetSelfActive(true);
+			//_quitButtons[i]->SetSelfActive(true);
 			_inGameStartButton->SetSelfActive(true);
 		}
 		else if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			_quitButtons[i]->SetSelfActive(false);
+			//_quitButtons[i]->SetSelfActive(false);
 			_inGameStartButton->SetSelfActive(false);
 		}
 	}
@@ -256,11 +256,6 @@ std::vector<HDData::GameObject*>& LobbyManager::GetPlayerObjects()
 std::vector<HDData::GameObject*>& LobbyManager::GetNickNameObjects()
 {
 	return _nickNameIndex;
-}
-
-std::vector<HDData::GameObject*>& LobbyManager::GetQuitButtonObjects()
-{
-	return _quitButtons;
 }
 
 int LobbyManager::GetPlayerNum()

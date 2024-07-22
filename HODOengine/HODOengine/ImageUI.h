@@ -28,17 +28,19 @@ namespace HDData
 		void OnClickEvent() override;
 
 		void ChangeScale(float x, float y);
+		DirectX::XMFLOAT2 GetScale();
 
 		void SetAngle(float angle);
 		void SetOrigin(float x, float y);
 		void SetCenter(float x, float y);
+
+		Vector2 GetImageScale();
 
 		// fade In & out
 		void FadeIn(float time);
 		void FadeOut(float time);
 		bool GetComplete();
 		bool GetFadeMode();
-		bool SetFadeMode(bool SetFade,float time);
 
 	private:
 		HDEngine::ISketchableImage* _imageUI;

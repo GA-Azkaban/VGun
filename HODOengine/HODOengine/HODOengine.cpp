@@ -93,6 +93,10 @@ void HODOengine::Initialize()
 	_physicsSystem.Initialize();
 	_uiSystem.Initialize();
 	_materialLoader.LoadMaterialData("materialData.json");
+
+	//RECT rect;
+	//GetClientRect(_hWnd, &rect);
+	//ClipCursor(&rect);
 }
 
 void HODOengine::Loop()
@@ -154,27 +158,29 @@ void HODOengine::Run()
 	_debugSystem.Update();
 	_uiSystem.Update();
 
+
+
 	_objectSystem.UpdateCurrentSceneObjects();
 	_soundSystem.Update();
 
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
+	// physicsUpdate, temporary location
+	_physicsSystem.Update();
+
 	// draw
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
+
 
 	_eventSystem.InvokeEvent();
 	_objectSystem.UpdateDisableList();
 	_objectSystem.UpdateEnableList();
 
-	// physicsUpdate, temporary location
 	_physicsSystem.Flush();
-	_physicsSystem.Update();
-
 	// refresh input for next frame
 	_inputSystem.Flush();
 	_tweenSystem.Update();
-
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)

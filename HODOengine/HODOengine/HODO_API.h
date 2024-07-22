@@ -64,11 +64,10 @@ namespace API
 		HODO_API void LoadScene(HDData::Scene* scene);
 		HODO_API HDData::Scene* LoadSceneByName(std::string scene);
 		HODO_API std::vector<HDData::UIBase*>& GetAllUIList();
-		HODO_API std::string GetCurrentSceneName();
 
 		// 씬 데이터에서 씬 로드
 		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
-		HODO_API Vector3* GetSpawnPointArr();
+		HODO_API std::unordered_map<int, Vector3>& GetSpawnPointArr();
 		HODO_API Vector3* GetCloudPosition();
 
 		// 애니메이션 툴 데이터에서 FSM 로드
@@ -83,6 +82,7 @@ namespace API
 		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateStaticSlider(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::Tween* CreateTween();
@@ -93,6 +93,8 @@ namespace API
 
 		// 현재 씬
 		HODO_API HDData::Scene* GetCurrentScene();
+		HODO_API std::string GetCurrentSceneName();
+		HODO_API std::string GetPrevSceneName();
 
 		// 메인 카메라 조작을 위한 함수
 		HODO_API HDData::Camera* GetCurrenSceneMainCamera();

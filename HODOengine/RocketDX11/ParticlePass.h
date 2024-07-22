@@ -19,7 +19,8 @@ namespace RocketCore::Graphics
 	private:
 		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;
-		Microsoft::WRL::ComPtr<ID3D11BlendState> _blendState;
+		Microsoft::WRL::ComPtr<ID3D11BlendState> _defaultBlendState;
+		Microsoft::WRL::ComPtr<ID3D11BlendState> _additiveBlendState;
 		const float _blendFactor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	};
 }

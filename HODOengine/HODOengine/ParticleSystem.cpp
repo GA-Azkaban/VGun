@@ -82,6 +82,7 @@ namespace HDData
 		_particleSystem->SetMesh(rendererModule.mesh);
 		_particleSystem->SetMaterial(rendererModule.material->Get());
 		_particleSystem->SetRenderMode(rendererModule.renderMode);
+		_particleSystem->SetAlphaBlend(rendererModule.alphaBlending);
 	}
 
 	void ParticleSystem::Update()
@@ -140,10 +141,10 @@ namespace HDData
 							}
 							else
 							{
-								//float radian = DirectX::XMConvertToRadians(angle);
-								//Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
-								//particle->SetRotation(rot);
-								//particle->SetPosition(0.0f, 0.0f, 0.0f);
+								float radian = DirectX::XMConvertToRadians(angle);
+								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
+								particle->SetRotation(rot);
+								particle->SetPosition(0.0f, 0.0f, 0.0f);
 							}
 							float randomLifetime = real_dist(_gen);
 							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));

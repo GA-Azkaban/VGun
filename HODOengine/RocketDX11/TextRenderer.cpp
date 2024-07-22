@@ -166,11 +166,6 @@ namespace RocketCore::Graphics
 		return true;
 	}
 
-	bool TextRenderer::SetFadeMode(bool isFade, float time)
-	{
-		return true;
-	}
-
 	bool TextRenderer::GetComplete()
 	{
 		return true;

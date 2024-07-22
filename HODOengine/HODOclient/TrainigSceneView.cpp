@@ -1,7 +1,6 @@
 ﻿#include "TrainigSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
-#include "FPAniScript.h"
 #include "MeshTransformController.h"
 
 TrainigSceneView::TrainigSceneView()
@@ -71,7 +70,6 @@ void TrainigSceneView::Initialzie()
 	fpMeshObj->LoadFBXFile("SKM_CowboyTP_X_Default.fbx");
 	fpMeshObj->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(fpMeshObj, "FP_animation.json");
-	fpMeshObj->AddComponent<FPAniScript>();
 
 	fpMeshObj->GetTransform()->SetLocalPosition(0.05f, -1.7f, 0.45f);
 	auto fpMeshComp = fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();

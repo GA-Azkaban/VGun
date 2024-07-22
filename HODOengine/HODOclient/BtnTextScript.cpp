@@ -1,4 +1,5 @@
 ﻿#include "BtnTextScript.h"
+#include "SoundManager.h"
 
 BtnTextScript::BtnTextScript(std::string Name)
 	:imgName(Name),
@@ -38,6 +39,11 @@ void BtnTextScript::Update()
 	else
 	{
 		_childTextObject->GetComponent<HDData::TextUI>()->ReturnDefaultColor();
+	}
+
+	if (GetGameObject()->GetComponent<HDData::Button>()->GetButtonComp()->GetIsClicked())
+	{
+		SoundManager::Instance().PlayUI("sfx_button");
 	}
 
 	if (_currentCursor != newCursor)

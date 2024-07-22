@@ -14,7 +14,6 @@ namespace HDEngine
 		virtual float GetWidth() = 0;
 		virtual float GetHeight() = 0;
 	
-		virtual bool SetFadeMode(bool SetFadem,float time) = 0;
 		virtual void FadeIn(float time) = 0;
 		virtual void FadeOut(float time) = 0;
 		virtual bool GetFadeMode() = 0;

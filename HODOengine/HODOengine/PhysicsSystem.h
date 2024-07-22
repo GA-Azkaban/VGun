@@ -8,6 +8,7 @@
 #include "HODO_API.h"
 #include "CollisionCallback.h"
 
+#include "../HODOclient/PlayerMove.h"
 #include "../include/physX/PxPhysics.h"
 #include "../include/physX/PxPhysicsAPI.h"
 
@@ -30,6 +31,7 @@ namespace HDEngine
 		void Initialize();
 		void PreparePhysics();
 		void Update();
+		void UpdateTransform();
 		void Finalize();
 
 	public:
@@ -51,7 +53,10 @@ namespace HDEngine
 		void CreateTriggerBoxCollider(HDData::GameObject* object);
 		void CreateParticleSphereCollider(HDData::GameObject* object);
 
+	private:
 		void ResizeCollider();
+		physx::PxTransform InterpolateTransform(const TransformInfo& prev, const TransformInfo& cur, float alpha);
+		physx::PxQuat Slerp(const physx::PxQuat& qa, const physx::PxQuat& qb, float time);
 
 	public:
 		//HDData::Collider* RayCast(Vector3 origin, Vector3 direction, float length, int* type);
@@ -82,5 +87,11 @@ namespace HDEngine
 		// 맘에 들진 않지만 플레이어를 여기에 저장해두자
 		physx::PxRigidDynamic* _playerRigid;
 		physx::PxShape* _playerShape;
+		PlayerMove* _plMove;
+
+	private:
+		float _accumulateTime = 0.0f;
+		physx::PxQuat _prevPlayerRot;
+		physx::PxQuat _currentPlayerRot;
 	};
 }

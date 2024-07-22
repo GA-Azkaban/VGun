@@ -22,8 +22,8 @@ struct roomInfoObj
 		title->GetGameObject()->SetSelfActive(false);
 		maxCount->GetGameObject()->SetSelfActive(false);
 		currentCount->GetGameObject()->SetSelfActive(false);
-		isPrivate->GetGameObject()->SetSelfActive(false);
-		isTeam->GetGameObject()->SetSelfActive(false);
+		//isPrivate->GetGameObject()->SetSelfActive(false);
+		//isTeam->GetGameObject()->SetSelfActive(false);
 	}
 };
 

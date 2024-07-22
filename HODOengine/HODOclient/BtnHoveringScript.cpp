@@ -1,4 +1,5 @@
 ﻿#include "BtnHoveringScript.h"
+#include "SoundManager.h"
 
 BtnHoveringScript::BtnHoveringScript(std::string Name)
 {
@@ -22,6 +23,7 @@ void BtnHoveringScript::Update()
 	{
 		newCursor = SetCursor(LoadCursor(NULL, IDC_HAND));
 		_btnObject->GetComponent<HDData::Button>()->SetColor(DirectX::Colors::Gold);
+
 	}
 	else
 	{

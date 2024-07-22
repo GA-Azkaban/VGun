@@ -17,5 +17,9 @@ float4 main(VertexToPixel input) : SV_TARGET
     {
         textureColor = Albedo.Sample(LinearWrapSampler, input.uv);
     }
+    if (textureColor.a < 0.15f)
+    {
+        discard;
+    }
     return textureColor * input.color * albedoColor;
 }
