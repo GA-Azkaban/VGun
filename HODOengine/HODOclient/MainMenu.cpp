@@ -105,7 +105,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* main_playBtn = API::CreateButton(_scene, "playBtn", main_controlCanvas);
 	main_playBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	main_playBtn->GetTransform()->SetPosition(130.f * width / 1920, 240.f * height / 1080, 0.6f);
-	main_playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
+	main_playBtn->GetComponent<HDData::Button>()->SetSortOrder(0.7f);
 	main_playBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	main_playBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_playText = API::CreateTextbox(_scene, "playText", main_playBtn);
@@ -442,7 +442,7 @@ void MainMenuScene::MainMenu()
 	roomSetBtn->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 620.0f * height / 1080, 0.f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.66f);
+	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.68f);
 	roomSetBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	roomSetBtn->AddComponent<BtnTextScript>();
 
