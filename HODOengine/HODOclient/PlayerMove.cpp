@@ -389,6 +389,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_moveSpeed = 4.0f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
+			NetworkManager::Instance().SendPlayJump();
 
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
 			break;
