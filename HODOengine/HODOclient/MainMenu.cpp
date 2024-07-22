@@ -154,7 +154,7 @@ void MainMenuScene::MainMenu()
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
 	freshBtn->SetImage("flair_arrow_3.png");
-	freshBtn->SetSortOrder(0.7f);
+	freshBtn->SetSortOrder(0.65f);
 	freshBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	freshBtn->SetOnClickEvent(
 		[]()
@@ -283,7 +283,7 @@ void MainMenuScene::MainMenu()
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
 		//enter_roomCanvas->GetTransform()->SetPosition((960.0f + 130.0f) * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetTransform()->SetPosition(960.0f * width / 1920, posY * height / 1080, 0);
-		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.7f);
+		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
 		enter_roomCanvas->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
