@@ -32,6 +32,7 @@ public:
 	bool IsShootBody();
 	bool GetIsIngamePlaying();
 	void SetIsIngamePlaying(bool isPlaying);
+	void StopMoving();
 
 	// check ~~ series
 private:

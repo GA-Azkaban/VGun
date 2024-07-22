@@ -185,7 +185,7 @@ void HDData::DynamicCollider::Jump(Vector3 direction)
 #ifdef _DEBUG
 	_physXRigid->addForce(physx::PxVec3(0.0f, 4200.0f, 0.0f), physx::PxForceMode::eFORCE);
 #else
-	_physXRigid->addForce(physx::PxVec3(0.0f, 2800.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 1600.0f, 0.0f), physx::PxForceMode::eFORCE);
 #endif
 }
 
@@ -212,7 +212,28 @@ void HDData::DynamicCollider::AddForce(Vector3 direction, float force /*= 1.0f*/
 	else if (forceType == 1)
 	{
 		// 회전초
-		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y - 1.0f, direction.z) * force, physx::PxForceMode::eIMPULSE);
+		_physXRigid->addForce(physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxForceMode::eIMPULSE);
+	}
+}
+
+void HDData::DynamicCollider::AddForceAtPoint(Vector3 point, Vector3 direction, float force /*= 1.0f*/, int forceType /*= 1*/)
+{
+	direction.Normalize();
+	physx::PxRigidBodyExt::addForceAtPos(*_physXRigid, physx::PxVec3(direction.x, direction.y, direction.z) * force, physx::PxVec3(point.x, point.y, point.z), physx::PxForceMode::eIMPULSE);
+}
+
+void HDData::DynamicCollider::AddTorque(Vector3 axis, float force /*= 1.0f*/, int forceType /*= 1*/)
+{
+	axis.Normalize();
+
+	if (forceType == 0)
+	{
+		_physXRigid->addTorque(physx::PxVec3(axis.x, axis.y, axis.z) * force, physx::PxForceMode::eFORCE);
+	}
+	else if (forceType == 1)
+	{
+		// 회전초
+		_physXRigid->addTorque(physx::PxVec3(axis.x, axis.y, axis.z) * force, physx::PxForceMode::eIMPULSE);
 	}
 }
 
@@ -229,8 +250,16 @@ void HDData::DynamicCollider::ClearVeloY()
 
 	_physXRigid->clearForce();
 	_physXRigid->clearTorque();
-	//_physXRigid->setLinearVelocity(velo);
-	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_GRAVITY, true);
+	_physXRigid->setLinearVelocity(velo);
+
+	for (auto& child : _childColliders)
+	{
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->ClearVeloY();
+		}
+	}
 }
 
 void HDData::DynamicCollider::ClearForceXYZ()
