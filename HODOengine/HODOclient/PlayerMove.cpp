@@ -82,7 +82,7 @@ void PlayerMove::Update()
 	DecidePlayerState();
 	Behavior();
 
-	UpdateStateText();
+	//UpdateStateText();
 
 	// sound 관련
 	PlayPlayerSound();
@@ -401,7 +401,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 4.8f;
+			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			NetworkManager::Instance().SendPlayJump();
@@ -710,7 +710,7 @@ void PlayerMove::UpdateStateText()
 		}
 	}
 
-	_plStateText->SetText(first + "/" + second);
+	//_plStateText->SetText(first + "/" + second);
 
 	//_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
 
