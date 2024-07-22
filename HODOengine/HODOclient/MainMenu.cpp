@@ -1,4 +1,4 @@
-#include "MainMenu.h"
+﻿#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 
@@ -58,6 +58,7 @@ void MainMenuScene::MainMenu()
 	mainCanvasImage->SetSortOrder(0.1f);
 	//mainCanvasImage->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	mainCanvasImage->ChangeScale(scale, scale);
+	mainCanvasImage->SetIsIgnoreFocus(true);
 	mainCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
 	mainCanvasImage->SetActive(true);
 	_menuManager.Instance().SetMainMenuCanvas(mainCanvas);
@@ -66,7 +67,7 @@ void MainMenuScene::MainMenu()
 	// 페이드 아웃용 검은색 캔버스는 0.5f 1에 가까울수록 UI 낮을수록 배경
 	HDData::GameObject* fadeCanvas = API::CreateImageBox(_scene, "fadeCanvas");
 	fadeCanvas->GetComponent<HDData::ImageUI>()->SetImage("black.png");
-	fadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.9f);
+	fadeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.1f);
 	fadeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	fadeCanvas->GetTransform()->SetPosition(960.0f * width / 1920, 540.f * height / 1080, 0.f);
 	fadeCanvas->GetComponent<HDData::ImageUI>()->FadeOut(1.0f);
@@ -90,7 +91,7 @@ void MainMenuScene::MainMenu()
 	teamLogo->AddComponent<BtnHoveringScript>();
 	auto teamLogoComp = teamLogo->GetComponent<HDData::Button>();
 	teamLogoComp->SetImage("teamLogo.png");
-	teamLogoComp->SetSortOrder(0.6f);
+	teamLogoComp->SetSortOrder(0.2f);
 	teamLogoComp->ChangeScale(0.3f, 0.3f);
 
 	// credit
@@ -126,14 +127,14 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* main_enterBtn = API::CreateButton(_scene, "roomEnter", main_playBtn);
 	main_enterBtn->GetTransform()->SetPosition(365.f * width / 1920, 190.f * height / 1080, 0.55f);
 	main_enterBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	main_enterBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
+	main_enterBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
 	main_enterBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	main_enterBtn->SetSelfActive(false);
 	main_enterBtn->AddComponent<BtnTextScript>();
 	HDData::GameObject* main_enterText = API::CreateTextbox(_scene, "roomEnterText", main_enterBtn);
 	main_enterText->GetTransform()->SetPosition(main_enterBtn->GetTransform()->GetPosition());
 	auto entertxt = main_enterText->GetComponent<HDData::TextUI>();
-	entertxt->SetSortOrder(0.5f);
+	entertxt->SetSortOrder(0.6f);
 	entertxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	entertxt->SetText("ENTER");
 
@@ -168,7 +169,7 @@ void MainMenuScene::MainMenu()
 	pageLeftButton->AddComponent<BtnHoveringScript>();
 	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
 	lBtn->SetImage("Left.png");
-	lBtn->SetSortOrder(0.6f);
+	lBtn->SetSortOrder(0.65f);
 	lBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	lBtn->SetOnClickEvent([]() {
 		if (MenuManager::Instance().currentPage > 1)
@@ -183,7 +184,7 @@ void MainMenuScene::MainMenu()
 	pageRightButton->AddComponent<BtnHoveringScript>();
 	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
 	rBtn->SetImage("Right.png");
-	rBtn->SetSortOrder(0.6f);
+	rBtn->SetSortOrder(0.65f);
 	rBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	rBtn->SetOnClickEvent([]() {
 		if (MenuManager::Instance().currentPage < MenuManager::Instance().pageCount)
@@ -198,20 +199,20 @@ void MainMenuScene::MainMenu()
 	enter_inputPasswordCanvas->GetTransform()->SetPosition(960.0f * width / 1920, 540.0f * height / 1080, 0.0f);
 	auto enter_psswordCanvasImg = enter_inputPasswordCanvas->GetComponent<HDData::ImageUI>();
 	enter_psswordCanvasImg->SetImage("enterCheckCanvas.png");
-	enter_psswordCanvasImg->SetSortOrder(0.9f);
+	enter_psswordCanvasImg->SetSortOrder(0.7f);
 	enter_psswordCanvasImg->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	enter_inputPasswordCanvas->SetSelfActive(false);
 
 	HDData::GameObject* inputPW_Text = API::CreateTextbox(_scene, "inputPW_Text", enter_inputPasswordCanvas);
 	inputPW_Text->GetTransform()->SetLocalPosition(0.0f, -80.0f, 0.0f);
 	auto inputPW_Texttxt = inputPW_Text->GetComponent<HDData::TextUI>();
-	inputPW_Texttxt->SetSortOrder(0.91f);
+	inputPW_Texttxt->SetSortOrder(0.71f);
 	inputPW_Texttxt->SetText("Enter your password");
 
 	HDData::GameObject* inputPW_inputBox = API::CreateTextInputBox(_scene, "inputPW_inputBox", enter_inputPasswordCanvas);
 	inputPW_inputBox->GetTransform()->SetLocalPosition(0.0f, 0.0f, 0.0f);
 	auto inputPW_inputBoxComp = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>();
-	inputPW_inputBoxComp->SetSortOrder(0.92f);
+	inputPW_inputBoxComp->SetSortOrder(0.72f);
 
 	/// 이부분 이미지 수정
 	HDData::GameObject* inputPW_enter = API::CreateButton(_scene, "inputPW_enter", enter_inputPasswordCanvas);
@@ -219,7 +220,7 @@ void MainMenuScene::MainMenu()
 	auto inputPW_enterbtn = inputPW_enter->GetComponent<HDData::Button>();
 	inputPW_enterbtn->SetImage("Button_02.png");
 	inputPW_enterbtn->ChangeScale(0.45f, 0.6154f);
-	inputPW_enterbtn->SetSortOrder(0.93f);
+	inputPW_enterbtn->SetSortOrder(0.73f);
 	//inputPW_enterbtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	inputPW_enterbtn->SetOnClickEvent([=]()
 		{
@@ -232,7 +233,7 @@ void MainMenuScene::MainMenu()
 	auto inputPW_exitbtn = inputPW_exit->GetComponent<HDData::Button>();
 	inputPW_exitbtn->SetImage("Button_02.png");
 	inputPW_exitbtn->ChangeScale(0.45f, 0.6154f);
-	inputPW_exitbtn->SetSortOrder(0.93f);
+	inputPW_exitbtn->SetSortOrder(0.73f);
 	//inputPW_exitbtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	inputPW_exitbtn->SetOnClickEvent([=]()
 		{
@@ -245,7 +246,7 @@ void MainMenuScene::MainMenu()
 	enter_enterCheckCanvas->GetTransform()->SetPosition(1600.0f * width / 1920, 540.0f * height / 1080, 0);
 	auto enterCheckImg = enter_enterCheckCanvas->GetComponent<HDData::ImageUI>();
 	enterCheckImg->SetImage("Button_vertical_02.png");
-	enterCheckImg->SetSortOrder(0.9f);
+	enterCheckImg->SetSortOrder(0.7f);
 	enter_enterCheckCanvas->SetSelfActive(false);
 
 	MenuManager::Instance().SetCheckEnterCanvas(enter_enterCheckCanvas);
@@ -255,7 +256,7 @@ void MainMenuScene::MainMenu()
 	enter_enterBtn->AddComponent<BtnTextScript>();
 	auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
 	enter_enterImg->SetImage("Button_01.png");
-	enter_enterImg->SetSortOrder(0.95);
+	enter_enterImg->SetSortOrder(0.75);
 	enter_enterImg->ChangeScale(0.45f, 0.6145f);
 	enter_enterImg->SetOnClickEvent([=]()
 		{
@@ -270,7 +271,7 @@ void MainMenuScene::MainMenu()
 	enterText->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 	enterText->SetColor(DirectX::Colors::OrangeRed);
 	enterText->SetIsIgnoreFocus(true);
-	enterText->SetSortOrder(0.91);
+	enterText->SetSortOrder(0.71);
 	enterText->ChangeScale(width / 1920.0f);
 
 	// room
@@ -291,7 +292,7 @@ void MainMenuScene::MainMenu()
 		enter_roomTitle->GetTransform()->SetLocalPosition(-80, 0, 0);
 		auto roomT = enter_roomTitle->GetComponent<HDData::TextUI>();
 		roomT->SetText("Title");
-		roomT->SetSortOrder(0.81f);
+		roomT->SetSortOrder(0.71f);
 		roomT->SetColor(DirectX::Colors::BlanchedAlmond);
 
 		enter_roomTitle->SetSelfActive(false);
@@ -303,7 +304,7 @@ void MainMenuScene::MainMenu()
 		auto roomid = enter_roomID->GetComponent<HDData::TextUI>();
 		roomid->SetText("ID");
 		roomid->SetColor(DirectX::Colors::BlanchedAlmond);
-		roomid->SetSortOrder(0.81f);
+		roomid->SetSortOrder(0.71f);
 
 		enter_roomID->SetSelfActive(false);
 
@@ -324,7 +325,7 @@ void MainMenuScene::MainMenu()
 		enter_currentCount->GetTransform()->SetLocalPosition(320, 0, 0);
 		auto current = enter_currentCount->GetComponent<HDData::ImageUI>();
 		current->SetImage("flair_number_2_outline.png");
-		current->SetSortOrder(0.81);
+		current->SetSortOrder(0.71);
 		current->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		enter_currentCount->SetSelfActive(false);

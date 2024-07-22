@@ -55,7 +55,7 @@ namespace RocketCore::Graphics
 	{
 		_device = device;
 		_deviceContext = deviceContext;
-
+		 
 		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
 		//_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
 

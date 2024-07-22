@@ -59,19 +59,16 @@ namespace HDData
 			auto newValue = ((_handle->GetTransform()->GetPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;
 
 			_handle->GetTransform()->SetPosition(mouseX, _background->GetTransform()->GetPosition().y, 0);
-			//_value->GetTransform()->SetPosition(mouseX - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 			_value->SetText(std::to_string((int)newValue));
 
 			if (mouseX > _max)
 			{
 				_handle->GetTransform()->SetPosition(_max, _handle->GetTransform()->GetPosition().y, 0);
-				//_value->GetTransform()->SetPosition(_max - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 				_value->SetText("100");
 			}
 			if (mouseX < _min)
 			{
 				_handle->GetTransform()->SetPosition(_min, _handle->GetTransform()->GetPosition().y, 0);
-				//_value->GetTransform()->SetPosition(_min - 20, _handle->GetTransform()->GetPosition().y - 50, 0);
 				_value->SetText("0");
 			}
 		}
@@ -119,8 +116,8 @@ namespace HDData
 	void SliderUI::SetSortOrder(float value)
 	{
 		_background->SetSortOrder(value);
-		_handle->SetSortOrder(value + 0.1f);
-		_value->SetSortOrder(value);
+		_handle->SetSortOrder(value + 0.01f);
+		_value->SetSortOrder(value + 0.02f);
 	}
 
 	void SliderUI::SetValueText(std::string val)
