@@ -6,6 +6,7 @@ Texture2D NormalMap : register(t1);
 Texture2D OcclusionRoughnessMetal : register(t2);
 Texture2D Roughness : register(t3);
 Texture2D Metallic : register(t4);
+Texture2D MaskMap : register(t5);
 
 struct VertexToPixel
 {
@@ -75,6 +76,15 @@ PSOutput main(VertexToPixel input)
 		metallic = Metallic.Sample(LinearWrapSampler, input.uv).r;
 	}
 
+	if(useMaskMap)
+    {
+        float maskValue = MaskMap.Sample(LinearWrapSampler, input.uv).r;
+		if(maskValue < 0.2f)
+		{
+            clip(-1);
+        }
+    }
+	
 	output.position = float4(input.worldPos, 1.0f);
 	output.diffuse = textureColor * albedoColor;
 	output.normal = float4(input.normal * 0.5f + 0.5f, 1.0f);

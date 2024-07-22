@@ -130,6 +130,12 @@
     <ClCompile Include="GameSetting.cpp">
       <Filter>03_Manager\SettingManager</Filter>
     </ClCompile>
+    <ClCompile Include="Decal.cpp">
+      <Filter>02_Client\01_Script\Decal</Filter>
+    </ClCompile>
+    <ClCompile Include="DecalPool.cpp">
+      <Filter>02_Client\01_Script\Decal\Pool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -288,6 +294,12 @@
     <ClInclude Include="GameSetting.h">
       <Filter>03_Manager\SettingManager</Filter>
     </ClInclude>
+    <ClInclude Include="Decal.h">
+      <Filter>02_Client\01_Script\Decal</Filter>
+    </ClInclude>
+    <ClInclude Include="DecalPool.h">
+      <Filter>02_Client\01_Script\Decal\Pool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -432,6 +444,12 @@
     </Filter>
     <Filter Include="03_Manager\SettingManager">
       <UniqueIdentifier>{d4439aad-4fd8-4460-9764-f7f72e9f19ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Decal">
+      <UniqueIdentifier>{bdff704f-8916-4744-a64b-0aa4e7c3fb42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\Decal\Pool">
+      <UniqueIdentifier>{4ca97fbb-d632-4dc3-984e-718607b7e37d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -236,6 +236,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="CloudRotate.h" />
     <ClInclude Include="CooldownText.h" />
     <ClInclude Include="Crosshair.h" />
+    <ClInclude Include="Decal.h" />
+    <ClInclude Include="DecalPool.h" />
     <ClInclude Include="Enum.pb.h" />
     <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="GameManager.h" />
@@ -288,6 +290,8 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="CloudRotate.cpp" />
     <ClCompile Include="CooldownText.cpp" />
     <ClCompile Include="Crosshair.cpp" />
+    <ClCompile Include="Decal.cpp" />
+    <ClCompile Include="DecalPool.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="Enum.pb.cc" />
     <ClCompile Include="GameManager.cpp" />

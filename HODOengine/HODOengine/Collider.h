@@ -50,6 +50,10 @@ namespace HDData
 		Matrix GetTransformMatrix();
 
 	protected:
+		void SetColliderTag(const std::string& tag);
+		const std::string& GetColliderTag();
+
+	protected:
 		Vector3 _positionOffset;
 		Quaternion _rotationOffset;
 		Vector3 _scaleOffset;
@@ -108,6 +112,7 @@ namespace HDData
 		HDData::Collider* _parentCollider;
 		std::vector<HDData::Collider*> _childColliders;
 		eColliderRole _colType;
+		std::string _colliderTag;
 	};
 }
 

@@ -45,6 +45,11 @@ namespace RocketCore::Graphics
 
 		ID3D11ShaderResourceView* nullSRV = nullptr;
 		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(0, 1, &nullSRV);
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(1, 1, &nullSRV);
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(2, 1, &nullSRV);
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(3, 1, &nullSRV);
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(4, 1, &nullSRV);
+		ResourceManager::Instance().GetDeviceContext()->PSSetShaderResources(5, 1, &nullSRV);
 	}
 
 }

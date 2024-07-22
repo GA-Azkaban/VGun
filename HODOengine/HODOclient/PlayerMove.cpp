@@ -6,6 +6,7 @@
 #include "NetworkManager.h"
 #include "CooldownAlpha.h"
 #include "CooldownText.h"
+#include "DecalPool.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true), _isMoveableOnJump(true),
@@ -384,6 +385,13 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
+	}
+
+	// 건물을 맞췄을 때
+	HDData::StaticBoxCollider* hitStaticBox = dynamic_cast<HDData::StaticBoxCollider*>(hitCollider);
+	if (hitStaticBox != nullptr)
+	{
+		DecalPool::Instance().SummonDecal(hitPoint);
 	}
 
 	++_shootCount;
