@@ -569,6 +569,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
 }
 
 void NetworkManager::SendPlayUpdate()
