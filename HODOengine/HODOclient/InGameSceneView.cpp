@@ -142,12 +142,14 @@ void InGameSceneView::Initialize()
 	weaponComp->SetShadowActive(false);
 
 	// 수박...이 아니라 회전초
+	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
+							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
 	std::vector<HDData::DynamicSphereCollider*> weedColVector;
 	weedColVector.reserve(20);
 	for (int i = 1; i <= 20; ++i)
 	{
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
-		tumbleWeed->GetTransform()->SetPosition(Vector3(-30.0f + 3 * i, 5.0f + i, -30.0f + 3 * i));
+		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 1.0f, weedPos[i-1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
 		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
 		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.2f, 1.3f));

@@ -779,7 +779,7 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 
 
 	// 지형인 경우
-	if ((*colArr)->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
+	if ((*colArr)->GetColType() != eColliderRole::PLAYER && _playerState.first == ePlayerMoveState::JUMP)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
