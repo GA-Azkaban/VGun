@@ -149,14 +149,14 @@ void InGameSceneView::Initialize()
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
 		tumbleWeed->GetTransform()->SetPosition(Vector3(-30.0f + 3 * i, 5.0f + i, -30.0f + 3 * i));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
-		tumbleWeedMesh->LoadFBXFile("SKM_CowboyFP_X_default.fbx");
+		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
 		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.2f, 1.3f));
-		auto weedMeshComp = tumbleWeed->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-		weedMeshComp->LoadMesh("SKM_CowgirlFP_X_default.fbx");
+		auto weedMeshComp = tumbleWeed->AddComponent<HDData::MeshRenderer>();
+		weedMeshComp->LoadMesh("SM_Prop_Tumbleweed_01.fbx");
 		weedMeshComp->LoadMaterial(chMat, 0);
-		weedMeshComp->SetShadowActive(false);
+		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.5f, 0.5f, 0.5f));
+		weedCollider->SetScaleOffset(Vector3(0.4f, 0.4f, 0.4f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);
