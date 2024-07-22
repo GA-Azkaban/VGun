@@ -56,8 +56,6 @@ void Client::Initialize()
 	
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
-	
-
 
 	API::LoadSceneByName("Login");
 

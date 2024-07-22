@@ -6,7 +6,6 @@
 #include "NetworkManager.h"
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
-#include "TPScript.h"
 #include "UIEffect.h"
 
 TestScene::TestScene()

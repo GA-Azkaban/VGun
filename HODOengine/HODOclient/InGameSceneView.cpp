@@ -5,7 +5,6 @@
 #include "../HODOEngine/CollisionCallback.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
@@ -80,7 +79,6 @@ void InGameSceneView::Initialize()
 
 	player->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(player, "TP_animation.json");
-	player->AddComponent<TPScript>();
 	RoundManager::Instance()->SetAnimationDummy(player);
 
 	RoundManager::Instance()->_myObj = player;
@@ -402,11 +400,6 @@ void InGameSceneView::Initialize()
 		otherPlayer->AddComponent<OthersAnim>();
 
 		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
-
-		// sound 추가
-		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio3D("shootother", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::EffectSound, 10, 150);
-		otherPlayerSound->AddAudio3D("walkother", "./Resources/Sound/Walk/footstep.wav", HDData::SoundGroup::EffectSound, 10, 250);
 
 		posX += 2;
 		posT += 315;

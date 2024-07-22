@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -381,11 +381,26 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 			_playerColliderStanding->Stop();
 
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
 			_moveSpeed = 6.0f;
+
+			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
+			else if (_moveDirection == 4)
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
+			else if (_moveDirection == 6)
+				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
+			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
+
+			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
@@ -395,6 +410,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 
+			_tpanimator->GetAllAC()->SetTrigger("isJump");
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
@@ -414,10 +430,20 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 
 			if (_moveDirection == 5)
 			{
+				_tpanimator->GetAllAC()->SetTrigger("isRollFront");
 				_tumbleDirection = GetTransform()->GetForward();
 			}
 			else
 			{
+				if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+					_tpanimator->GetAllAC()->SetTrigger("isRollFront");
+				else if (_moveDirection == 4)
+					_tpanimator->GetAllAC()->SetTrigger("isRollLeft");
+				else if (_moveDirection == 6)
+					_tpanimator->GetAllAC()->SetTrigger("isRollRight");
+				else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+					_tpanimator->GetAllAC()->SetTrigger("isRollBack");
+
 				_tumbleDirection = DecideDisplacement(_moveDirection);
 			}
 
@@ -447,9 +473,9 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpmesh->SetMeshActive(false, 0);
 			_fpanimator->GetAllAC()->SetBool("isIdle", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
+			_tpanimator->GetAllAC()->SetTrigger("isReload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
 			_reloadTimer = 2.6f;
 
@@ -458,6 +484,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::DIE:
 		{
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
+			_tpanimator->GetAllAC()->SetBool("isDie", true);
 			Die();
 
 			break;
@@ -523,7 +550,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-
+			_fpmesh->SetMeshActive(false, 0);
 			break;
 		}
 		case ePlayerMoveState::DIE:
@@ -597,14 +624,15 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			Reload();
 			_fpmesh->SetMeshActive(true, 0);
+			Reload();
 			_reloadTimer = 0.0f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			_fpanimator->GetAllAC()->SetBool("isDie", false);
 			Respawn();
 
 			break;
