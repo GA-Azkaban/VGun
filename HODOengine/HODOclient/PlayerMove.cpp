@@ -82,7 +82,7 @@ void PlayerMove::Update()
 	DecidePlayerState();
 	Behavior();
 
-	UpdateStateText();
+	//UpdateStateText();
 
 	// sound 관련
 	PlayPlayerSound();
@@ -93,6 +93,10 @@ void PlayerMove::Update()
 void PlayerMove::SetMovable(bool movable)
 {
 	_isMovable = movable;
+	if (movable == true)
+	{
+		_playerColliderStanding->Stop();
+	}
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -294,8 +298,19 @@ void PlayerMove::ShootGun()
 		}
 		else
 		{
-			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(direction, 5.0f, 1);
+			//Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			//hitDynamicSphere->AddForce(direction, 4.0f, 1);
+			//Vector3 axis = GetTransform()->GetRight();
+			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
+			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
+			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(forceDirection, 2.0f, 1);
+			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
+			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
+							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
+							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
+			hitDynamicSphere->AddTorque(axis, 500.0f, 0);
 		}
 	}
 
@@ -369,7 +384,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_moveSpeed = 6.0f;
+			_moveSpeed = 6.4f;
 
 			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
 				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
@@ -386,7 +401,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 4.0f;
+			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			NetworkManager::Instance().SendPlayJump();
@@ -1000,6 +1015,12 @@ bool PlayerMove::GetIsIngamePlaying()
 void PlayerMove::SetIsIngamePlaying(bool isPlaying)
 {
 	_isIngamePlaying = isPlaying;
+}
+
+void PlayerMove::StopMoving()
+{
+	_playerColliderStanding->Stop();
+	_moveDirection = 5;
 }
 
 void PlayerMove::ToggleCam()

@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -94,7 +94,7 @@ void InGameSceneView::Initialize()
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
 	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
-	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
+	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.01f, 0.15f, 0.01f);
 	helperBox->SetParentCollider(playerCollider);
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -698,6 +698,20 @@ void InGameSceneView::Initialize()
 
 	playerMove->recoilCooldown = tumbleCooldown;
 	playerMove->cooldownCountText = tumbleCooldownCount;
+
+	//auto cube = API::CreateObject(_scene);
+	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");
+	//cube->GetTransform()->SetPosition(-10, 3, 0);
+
+	//NetworkManager::Instance().cube = cube;
+
+	// 디버그용 텍스트니깐 주석처리하면서 계속 쓸거임
+	//auto playerState = API::CreateTextbox(_scene, "plState");
+	//playerState->GetTransform()->SetPosition(1200.0f, 1400.0f, 0.0f);
+	//auto playerStateComp = playerState->GetComponent<HDData::TextUI>();
+	//playerStateComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//playerStateComp->SetColor(DirectX::Colors::OrangeRed);
+	//playerMove->_plStateText = playerStateComp;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

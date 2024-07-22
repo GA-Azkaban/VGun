@@ -150,6 +150,7 @@ public:
 	void SetAnimationDummy(HDData::GameObject* obj);
 	HDData::GameObject* GetAnimationDummy();
 	void SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec);
+	void ResetWeedPos();
 
 private:
 	HDData::GameObject* _animationDummy = nullptr;

@@ -1,4 +1,4 @@
-﻿#include "MainMenu.h"
+#include "MainMenu.h"
 #include "MenuManager.h"
 #include "NetworkManager.h"
 
@@ -85,9 +85,9 @@ void MainMenuScene::MainMenu()
 	gameLogoComp->ChangeScale(0.4f, 0.4f);
 
 	// TeamLogo
-	// credit event
 	auto teamLogo = API::CreateButton(_scene, "teamLogo", main_controlCanvas);
 	teamLogo->GetTransform()->SetPosition(200.0f, 1250.0f, 0.0f);
+	teamLogo->AddComponent<BtnHoveringScript>();
 	auto teamLogoComp = teamLogo->GetComponent<HDData::Button>();
 	teamLogoComp->SetImage("teamLogo.png");
 	teamLogoComp->SetSortOrder(0.6f);
@@ -98,8 +98,15 @@ void MainMenuScene::MainMenu()
 	credit->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0.0f);
 	credit->SetSelfActive(false);
 	auto creditImg = credit->GetComponent<HDData::ImageUI>();
-	creditImg->SetImage("");
-	creditImg->SetSortOrder(0.65f);
+	creditImg->SetImage("joinCanvas.png");
+	creditImg->ChangeScale(1.7375f, 0.91875f);
+	creditImg->SetSortOrder(0.6f);
+
+	auto creditText = API::CreateImageBox(_scene, "creditPeople", credit);
+	creditText->GetTransform()->SetPosition(API::GetScreenWidth() / 2, (API::GetScreenHeight() / 2)-25.0f, 0.0f);
+	auto creditTextImg = creditText->GetComponent<HDData::ImageUI>();
+	creditTextImg->SetImage("credit.png");
+	creditTextImg->SetSortOrder(0.61f);
 
 	// play->RoomEnter & make sequence
 	HDData::GameObject* main_playBtn = API::CreateButton(_scene, "playBtn", main_controlCanvas);
@@ -175,7 +182,7 @@ void MainMenuScene::MainMenu()
 	pageRightButton->GetTransform()->SetLocalPosition(325.0f + (width - 1920) * 0.17f, 0, 0);
 	pageRightButton->AddComponent<BtnHoveringScript>();
 	auto rBtn = pageRightButton->GetComponent<HDData::Button>();
-	rBtn->SetImage("rightArrow.png");
+	rBtn->SetImage("Right.png");
 	rBtn->SetSortOrder(0.6f);
 	rBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	rBtn->SetOnClickEvent([]() {

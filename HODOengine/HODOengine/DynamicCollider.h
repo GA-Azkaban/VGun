@@ -60,6 +60,8 @@ namespace HDData
 		void Sleep();
 		void Stop();
 		void AddForce(Vector3 direction, float force = 1.0f, int forceType = 1);
+		void AddForceAtPoint(Vector3 point, Vector3 direction, float force = 1.0f, int forceType = 1);
+		void AddTorque(Vector3 axis, float force = 1.0f, int forceType = 1);
 		void AdjustVelocity(float ratio);
 		void ClearVeloY();
 		void ClearForceXYZ();
