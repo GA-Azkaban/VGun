@@ -401,11 +401,6 @@ void InGameSceneView::Initialize()
 
 		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
 
-		// sound 추가
-		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio3D("shootother", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::EffectSound, 10, 150);
-		otherPlayerSound->AddAudio3D("walkother", "./Resources/Sound/Walk/footstep.wav", HDData::SoundGroup::EffectSound, 10, 250);
-
 		posX += 2;
 		posT += 315;
 	}

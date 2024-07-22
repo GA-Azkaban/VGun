@@ -148,8 +148,8 @@ void SoundManager::InitializeAudios()
 void SoundManager::InitializePlayerAudio(HDData::AudioSource* audio)
 {
 	// 3d sound
-	audio->AddAudio3D("3d_fire", "Resources/Sound/SFX/FIRE.wav", HDData::SoundGroup::EffectSound, 10, 100);
-	audio->AddAudio3D("3d_footstep", "Resources/Sound/SFX/FOOTSTEP.mp3", HDData::SoundGroup::EffectSound, 10, 100);
+	audio->AddAudio3D("3d_fire", "Resources/Sound/SFX/FIRE.wav", HDData::SoundGroup::EffectSound, 10, 150);
+	audio->AddAudio3D("3d_footstep", "Resources/Sound/SFX/FOOTSTEP.mp3", HDData::SoundGroup::EffectSound, 10, 250);
 	
 	// 2d sound
 	audio->AddAudio("2d_jump", "Resources/Sound/SFX/JUMP.wav", HDData::SoundGroup::EffectSound);
