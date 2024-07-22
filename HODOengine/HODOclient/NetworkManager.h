@@ -34,6 +34,9 @@ public: // 계정 관련
 	void RecvLogin(int32 uid, std::string id);
 	void RecvCreateAccount();
 
+	void SendLogout();
+	void RecvLogout();
+
 public: // 방 리스트 관련
 	void SendRoomListRequest();
 	void RecvRoomList(Protocol::S_ROOM_LIST roomList);
@@ -50,7 +53,7 @@ public: // 방 관련
 
 	// 채팅
 	void SendRoomChat(std::string chat);
-	void RecvRoozmChat(std::string nickName, std::string chat);
+	void RecvRoomChat(std::string nickName, std::string chat);
 
 public: // 다른 플레이어
 	void RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo);

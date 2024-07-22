@@ -296,6 +296,25 @@ void NetworkManager::RecvCreateAccount()
 	LobbyManager::Instance().ShowSignSuccess();
 }
 
+void NetworkManager::SendLogout()
+{
+	// 로그아웃을 보냈다
+	Protocol::C_SIGNOUT packet;
+
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+	this->_service->BroadCast(sendBuffer);
+
+	// Todo 보내고 동작을 해야될까?
+
+
+}
+
+void NetworkManager::RecvLogout()
+{
+	// Todo 로그아웃을 받아서 동작해야할까?
+
+}
+
 void NetworkManager::SendRoomListRequest()
 {
 	Protocol::C_ROOM_LIST_REQUEST packet;
