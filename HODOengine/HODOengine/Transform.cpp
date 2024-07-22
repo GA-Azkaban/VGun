@@ -207,6 +207,19 @@ namespace HDData
 // 		}
 	}
 
+	void Transform::SetPositionFromPhysics(float x, float y, float z)
+	{
+		Vector3 result = { x,y,z };
+		GameObject* parent = GetGameObject()->GetParentGameObject();
+
+		if (parent)
+		{
+			result = Vector3::Transform(result, parent->GetTransform()->GetWorldTM().Invert());
+		}
+
+		_nodeTransform->_position = result;
+	}
+
 	void Transform::SetRotation(const Quaternion& rotation)
 	{
 		SetRotation(rotation.x, rotation.y, rotation.z, rotation.w);
@@ -232,6 +245,22 @@ namespace HDData
 		{
 			bodyCol->SetColliderRotation(Quaternion(x,y,z,w));
 		}
+	}
+
+	void Transform::SetRotationFromPhysics(const Quaternion& rotation)
+	{
+		Quaternion result = rotation;
+		GameObject* parent = GetGameObject()->GetParentGameObject();
+
+		if (parent)
+		{
+			Quaternion parentRot = parent->GetTransform()->GetRotation();
+			parentRot.Conjugate();
+
+			result = Quaternion::Concatenate(result, parentRot);
+		}
+
+		_nodeTransform->_rotation = result;
 	}
 
 	void Transform::SetScale(const Vector3& scale)

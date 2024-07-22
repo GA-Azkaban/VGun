@@ -1,10 +1,11 @@
 ﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
-#include "FPAniScript.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
 #include "RoundManager.h"
 #include "NetworkManager.h"
+#include "CooldownAlpha.h"
+#include "CooldownText.h"
 
 PlayerMove::PlayerMove()
 	: _isMovable(true), _isMoveableOnJump(true),
@@ -36,15 +37,14 @@ void PlayerMove::Start()
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
 	_moveSpeed = 3.0f;
-	_playerAudio = GetGameObject()->GetComponent<HDData::AudioSource>();
 
-	PresetSprayPattern(2);
 	StartRoundCam();
 
 	_prevPlayerState.first = ePlayerMoveState::IDLE;
 	_playerState.first = ePlayerMoveState::IDLE;
 
-	//_playerAudio->PlayRepeat("bgm");
+	_fpanimator = GetGameObject()->GetGameObjectByNameInChildren("FPMesh")->GetComponent<HDData::Animator>();
+	_tpanimator = GetGameObject()->GetComponent<HDData::Animator>();
 }
 
 void PlayerMove::Update()
@@ -187,32 +187,6 @@ void PlayerMove::CheckMoveInfo()
 			_moveDirection = 3;
 		}
 	}
-	/*
-	if (_moveDirection != 5)
-	{
-		//if (!_playerAudio->IsSoundPlaying("walk"))
-		//{
-		//	_playerAudio->PlayOnce("walk");
-		//}
-	}
-	if (API::GetKeyDown(DIK_SPACE))
-	{
-		//CheckIsOnGround();
-		Jump(Vector3::Zero);
-	}
-	if (API::GetKeyDown(DIK_LSHIFT))
-	{
-		//_playerCollider->AdjustVelocity(2.0f);
-		_isRunning = true;
-		_moveSpeed = 6.0f;
-	}
-	if (API::GetKeyUp(DIK_LSHIFT))
-	{
-		//_playerCollider->AdjustVelocity(0.5f); // 0.5f -> can be replaced with certain ratio or variable
-		_isRunning = false;
-		_moveSpeed = 3.0f;
-	}
-	*/
 }
 
 
@@ -223,42 +197,6 @@ void PlayerMove::CheckLookDirection()
 
 bool PlayerMove::CheckIsOnGround()
 {
-	/*
-	Vector3 pos = this->GetTransform()->GetPosition();
-	const float delta = 0.2f;
-	float x[9] = { -delta, -delta,0, delta,delta,delta,0,-delta,0 };
-	float z[9] = { 0,delta,delta,delta,0,-delta,-delta,-delta,0 };
-
-	for (int i = 0; i < 9; ++i)
-	{
-		float halfHeight = _playerCollider->GetHeight() / 2.0f;
-		Vector3 worldPos = Vector3(pos.x + x[i], pos.y - halfHeight - 0.001f * (i - 1), pos.z + z[i]);
-
-		int type = 0;
-		HDData::Collider* temp = API::ShootRay({ worldPos.x, worldPos.y, worldPos.z }, { 0.0f, -1.0f,0.0f }, 0.05f, &type);
-		API::DrawLineDir(worldPos, Vector3(0.f, -1.f, 0.f), 0.05f, Vector4(1.f, 0.f, 0.f, 0.f));
-
-		if (temp)
-		{
-			// type 1이 rigidStatic.
-			if (type == 1)
-			{
-				// 상태 변경 및 착지 Sound.
-				if (_isOnGround == false)
-				{
-					_isOnGround = true;
-					_isJumping = false;
-					//_playerAudio->PlayOnce("landing");
-					//_jumpCount = 0;
-				}
-				return true;
-			}
-		}
-	}
-	_isOnGround = false;
-	*/
-	//return false;
-
 	Vector3 pos = this->GetTransform()->GetPosition();
 
 	float halfHeight = _playerColliderStanding->GetHeight() / 2.0f;
@@ -301,25 +239,12 @@ void PlayerMove::Move(int direction)
 	{
 		if (_prevDirection != 0)
 		{
-			//_playerCollider->Move(DecideMovement(_prevDirection) * -30.0f);
 			_playerColliderStanding->Stop();
 		}
 	}
 	else
 	{
 		_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-
-		if (!(_playerAudio->IsSoundPlaying("walk") || _playerAudio->IsSoundPlaying("run") || _isJumping))
-		{
-			if (_isRunning)
-			{
-				_playerAudio->PlayOnce("run");
-			}
-			else
-			{
-				_playerAudio->PlayOnce("walk");
-			}
-		}
 	}
 
 	_prevDirection = _moveDirection;
@@ -340,7 +265,6 @@ void PlayerMove::ShootGun()
 	}
 
 	// 총기 반동
-	//ApplyRecoil();
 	_headCam->ToggleCameraShake(true);
 
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
@@ -352,20 +276,12 @@ void PlayerMove::ShootGun()
 
 	Vector3 rayOrigin = _headCam->GetTransform()->GetPosition() + _headCam->GetTransform()->GetForward() * 1.0f;
 	Vector3 hitPoint = { 314.0f, 314.0f, 314.0f };
-
-	Vector3 recoilDirection = _headCam->GetTransform()->GetForward() +
-		_headCam->GetTransform()->GetRight() * _sprayPattern[_shootCount].first * -4.0f +
-		_headCam->GetTransform()->GetUp() * _sprayPattern[_shootCount].second * -0.02f;
-	recoilDirection.Normalize(recoilDirection);
-	hitCollider = API::ShootRayHitPoint(rayOrigin, recoilDirection, hitPoint);
-	//hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
-	_playerAudio->PlayOnce("shoot");
-	_playerAudio->PlayOnce("shoot2");
+	
+	hitCollider = API::ShootRayHitPoint(rayOrigin, _headCam->GetTransform()->GetForward(), hitPoint);
 
 	// 맞은 데에 빨간 점 나오게 하기
 	if (hitCollider != nullptr)
 	{
-		//_playerAudio->PlayOnce("hit");
 		SpawnParticle(hitPoint);
 		_hitPoint = hitPoint;
 	}
@@ -374,10 +290,16 @@ void PlayerMove::ShootGun()
 	HDData::DynamicSphereCollider* hitDynamicSphere = dynamic_cast<HDData::DynamicSphereCollider*>(hitCollider);
 	if (hitDynamicSphere != nullptr)
 	{
-		RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere);
-		_isShootHead = true;
-		//_playerAudio->PlayOnce("hitBody");
-		//_playerAudio->PlayOnce("hitHead");
+		if (RoundManager::Instance()->CheckHeadColliderOwner(hitDynamicSphere))
+		{
+			_isShootHead = true;
+			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
+		}
+		else
+		{
+			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(direction, 5.0f, 1);
+		}
 	}
 
 	// 적군의 몸을 맞췄을 때
@@ -386,7 +308,6 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
-		//_playerAudio->PlayOnce("hitBody");
 	}
 
 	++_shootCount;
@@ -451,47 +372,38 @@ void PlayerMove::PlayPlayerSound()
 
 }
 
-void PlayerMove::OnEnable()
-{
-	//_playerAudio->PlayRepeat("bgm");
-}
-
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
 {
 	switch (state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
+			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 			_playerColliderStanding->Stop();
-
-			break;
-		}
-		case ePlayerMoveState::WALK:
-		{
-			_moveSpeed = 3.0f;
-			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
 			_moveSpeed = 6.0f;
-			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 5.0f;
+			_moveSpeed = 4.0f;
 			_playerColliderStanding->Jump(Vector3::Zero);
-			_playerAudio->PlayOnce("jump");
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
 		{
 			_tumbleTimer = 0.3f;
-			_tumbleCooldown = 2.0f;
+			_tumbleCooldown = 6.0f;
+			recoilCooldown->SetTimerOn();
+			cooldownCountText->SetTimerOn();
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_roll");
 
 			_headCam->ToggleCameraShake(true);
 			_fpmesh->SetMeshActive(false, 0);
@@ -510,8 +422,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			}
 
 			_headCam->TumbleCamera(_deltaTime);
-			_playerAudio->PlayOnce("tumble");
-			_playerAudio->PlayOnce("tumblingMan");
 
 			break;
 		}
@@ -523,28 +433,31 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::FIRE:
 		{
 			ShootGun();
+			_fpanimator->GetAllAC()->SetTrigger("isFire");
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_fire");
 			_headCam->ToggleCameraShake(true);
-			_playerAudio->PlayOnce("shoot");
 
 			break;
 		}
 		case ePlayerMoveState::EMPTY:
 		{
 			_shootCooldown = 0.8f;
-			_playerAudio->PlayOnce("empty");
 
 			break;
 		}
 		case ePlayerMoveState::RELOAD:
 		{
 			_fpmesh->SetMeshActive(false, 0);
-			_playerAudio->PlayOnce("reload");
+			_fpanimator->GetAllAC()->SetBool("isIdle", false);
+			_fpanimator->GetAllAC()->SetTrigger("isReload");
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
 			_reloadTimer = 2.6f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
 			Die();
 
 			break;
@@ -568,27 +481,10 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 			break;	
 		}
-		case ePlayerMoveState::WALK:
-		{
-			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
-			//if (_moveDirection != _prevDirection)
-			//{
-			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
-			//}
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying2("walk", "run");
 
-			break;
-		}
 		case ePlayerMoveState::RUN:
 		{
-			_headCam->ShakeCamera(_deltaTime, _rotAngleX);
-			//if (_moveDirection != _prevDirection)
-			//{
-			//	_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
-			//}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			_playerAudio->PlayOnceIfNotPlaying2("run", "walk");
 
 			break;
 		}
@@ -652,12 +548,6 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 
 			break;
 		}
-		case ePlayerMoveState::WALK:
-		{
-			_playerColliderStanding->Stop();
-
-			break;
-		}
 		case ePlayerMoveState::RUN:
 		{
 			_playerColliderStanding->Stop();
@@ -673,7 +563,8 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::TUMBLE:
 		{
 			Reload();
-			_headCam->ResetCameraPos();
+			_headCam->TumbleCamera(_deltaTime);
+			//_headCam->ResetCameraPos();
 			_headCam->ToggleCameraShake(false);
 			_fpmesh->SetMeshActive(true, 0);
 			_weapon->SetMeshActive(true, 0);
@@ -708,8 +599,6 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		{
 			Reload();
 			_fpmesh->SetMeshActive(true, 0);
-
-			_playerAudio->Stop("reload");
 			_reloadTimer = 0.0f;
 
 			break;
@@ -801,11 +690,14 @@ void PlayerMove::UpdateStateText()
 
 	//_plStateText->SetText(first + "/" + second);
 
+	//_anyText->SetText(std::to_string(_rotAngleX) + "/" + std::to_string(_rotAngleY));
+
 	//_tumbleText->SetText(std::to_string(_tumbleCooldown));
 
 	//std::string posText = std::to_string((int)(_playerPos.x)) + "/" + std::to_string((int)(_playerPos.y)) + "/" + std::to_string((int)(_playerPos.z));
 	//_plPosText->SetText(posText);
 }
+
 
 int& PlayerMove::GetBulletCount()
 {
@@ -853,7 +745,7 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 
 	if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
 	{
-		_isMoveableOnJump = false;
+		//_isMoveableOnJump = false;
 	}
 }
 
@@ -887,14 +779,14 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 
 
 	// 지형인 경우
-	if ((*colArr)->GetColType() == eColliderRole::TERRAIN)
+	if ((*colArr)->GetColType() != eColliderRole::PLAYER && _playerState.first == ePlayerMoveState::JUMP)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
-		_isMoveableOnJump = true;
+		//_isMoveableOnJump = true;
 
 		// 일단 
-		OnStateExit(ePlayerMoveState::JUMP);
+		//OnStateExit(ePlayerMoveState::JUMP);
 	}
 
 	return;
@@ -1071,37 +963,7 @@ void PlayerMove::PresetSprayPattern(int gunType)
 
 		default:
 		{
-			// 카메라를 돌려주는 방식의 경우
-			//_sprayPattern[0] = std::make_pair(0.001f * scale, -0.3f * scale);
-			//_sprayPattern[1] = std::make_pair(-0.001f * scale, -1.0f * scale);
-			//_sprayPattern[2] = std::make_pair(0.001f * scale, -1.5f * scale);
-			//_sprayPattern[3] = std::make_pair(0.001f * scale, -1.5f * scale);
-			//_sprayPattern[4] = std::make_pair(-0.003f * scale, -1.7f * scale);
-			//_sprayPattern[5] = std::make_pair(-0.002f * scale, -1.5f * scale);
-			//_sprayPattern[6] = std::make_pair(-0.003f * scale, -1.0f * scale);
-			//_sprayPattern[7] = std::make_pair(0.004f * scale, -1.0f * scale);
-			//_sprayPattern[8] = std::make_pair(0.01f * scale, 0.5f * scale);
-			//_sprayPattern[9] = std::make_pair(0.005f * scale, -0.3f * scale);
-			//_sprayPattern[10] = std::make_pair(-0.003f * scale, -0.6f * scale);
-			//_sprayPattern[11] = std::make_pair(0.004f * scale, -0.6f * scale);
-			//_sprayPattern[12] = std::make_pair(0.008f * scale, 0.7f * scale);
-			//_sprayPattern[13] = std::make_pair(0.001f * scale, -0.2f * scale);
-			//_sprayPattern[14] = std::make_pair(-0.011f * scale, -0.1f * scale);
-			//_sprayPattern[15] = std::make_pair(-0.003f * scale, -0.4f * scale);
-			//_sprayPattern[16] = std::make_pair(-0.003f * scale, -0.6f * scale);
-			//_sprayPattern[17] = std::make_pair(-0.006f * scale, 0.3f * scale);
-			//_sprayPattern[18] = std::make_pair(-0.003f * scale, 0.7f * scale);
-			//_sprayPattern[19] = std::make_pair(-0.005f * scale, -0.1f * scale);
-			//_sprayPattern[20] = std::make_pair(0.004f * scale, 0.0f * scale);
-			//_sprayPattern[21] = std::make_pair(0.001f * scale, -1.0f * scale);
-			//_sprayPattern[22] = std::make_pair(0.001f * scale, -0.4f * scale);
-			//_sprayPattern[23] = std::make_pair(-0.005f * scale, 0.1f * scale);
-			//_sprayPattern[24] = std::make_pair(0.004f * scale, 0.0f * scale);
-			//_sprayPattern[25] = std::make_pair(0.008f * scale, 0.6f * scale);
-			//_sprayPattern[26] = std::make_pair(0.01f * scale, 1.3f * scale);
-			//_sprayPattern[27] = std::make_pair(0.004f * scale, -0.4f * scale);
-			//_sprayPattern[28] = std::make_pair(0.002f * scale, -0.2f * scale);
-			//_sprayPattern[29] = std::make_pair(0.001f * scale, -0.1f * scale);
+
 			break;
 		}
 	}
@@ -1121,6 +983,16 @@ bool PlayerMove::IsShootHead()
 bool PlayerMove::IsShootBody()
 {
 	return _isShootBody;
+}
+
+bool PlayerMove::GetIsIngamePlaying()
+{
+	return _isIngamePlaying;
+}
+
+void PlayerMove::SetIsIngamePlaying(bool isPlaying)
+{
+	_isIngamePlaying = isPlaying;
 }
 
 void PlayerMove::ToggleCam()
@@ -1151,7 +1023,6 @@ void PlayerMove::Jump(Vector3 direction)
 	{
 		// 점프
 		_playerColliderStanding->Jump(direction);
-		_playerAudio->PlayOnce("jump");
 		_isJumping = true;
 		_isOnGround = false;
 
@@ -1310,89 +1181,6 @@ void PlayerMove::CameraControl()
 // 마우스 이동에 따른 시야 변경을 위한 함수
 void PlayerMove::Pitch(float rotationValue)
 {
-	/*
-	HDData::Transform* cameraTransform = _headCam->GetGameObject()->GetTransform();
-	Quaternion rot = cameraTransform->GetLocalRotation();
-	float eulerAngleX = std::atan2(2.0f * (rot.w * rot.x + rot.y * rot.z), 1.0f - 2.0f * (rot.x * rot.x + rot.y * rot.y));
-
-	Vector3 rotAngle = rot.ToEuler() * 60.0f;
-
-	Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
-	rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
-
-
-	if (rotAngle.x > 60.0f)
-	{
-		//constexpr float radX = HDMath::ToRadian(89.0f) * 0.5f;
-		//constexpr float radX = DirectX::XMConvertToRadians(89.0f);
-		//Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
-
-		//cameraTransform->SetLocalRotation(closedAngle);
-		//cameraTransform->SetLocalRotation(Quaternion(rot.x, DirectX::XMConvertToRadians(89.0f), rot.z, rot.w));
-
-		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(360.0f));
-		cameraTransform->SetLocalRotation(temp);
-	}
-	else if (rotAngle.x < -60.0f)
-	{
-		////constexpr float radX = HDMath::ToRadian(-89.0f) * 0.5f;
-		//constexpr float radX = DirectX::XMConvertToRadians(-89.0f) * 0.5f;
-		//Quaternion closedAngle = { std::cos(radX), std::sin(radX), 0.f, 0.f };
-
-		//cameraTransform->SetLocalRotation(closedAngle);
-
-		Quaternion temp = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), DirectX::XMConvertToRadians(-360.0f));
-		cameraTransform->SetLocalRotation(temp);
-	}
-	else
-	{
-		Vector4 rotationAxis{ 1.f, 0.f, 0.f, 0.f };
-		rotationAxis = XMVector4Transform(rotationAxis, Matrix::CreateFromQuaternion(cameraTransform->GetRotation()));
-
-		_pitchAngle += rotationValue;
-		Quaternion rotToX = Quaternion::CreateFromAxisAngle(Vector3(rotationAxis.x, rotationAxis.y, rotationAxis.z), _pitchAngle);
-
-		cameraTransform->SetLocalRotation(rotToX);
-	}*/
-
-	/*
-	HDData::Transform* cameraTransform = _headCam->GetTransform();
-
-	float rotAngleX = DirectX::XMConvertToDegrees(cameraTransform->GetLocalRotation().ToEuler().x);
-	if (rotAngleX >= 79.0f)
-	{
-		if (rotationValue >= -0.0f)
-		{
-			return;
-		}
-	}
-	else if (rotAngleX <= -79.0f)
-	{
-		if (rotationValue <= 0.0f)
-		{
-			return;
-		}
-	}
-
-	HDData::Transform copy = *cameraTransform;
-	copy.Rotate(rotationValue, 0.0f, 0.0f);
-
-	float rotAnglePrediction = DirectX::XMConvertToDegrees(copy.GetLocalRotation().ToEuler().x);
-
-	if (rotAnglePrediction >= 79.0f)
-	{
-		cameraTransform->SetLocalRotationEuler(Vector3(80.0f, 0.0f, 0.0f));
-	}
-	else if (rotAnglePrediction <= -79.0f)
-	{
-		cameraTransform->SetLocalRotationEuler(Vector3(-80.0f, 0.0f, 0.0f));
-	}
-	else
-	{
-		cameraTransform->Rotate(rotationValue, 0.0f, 0.0f);
-	}
-	*/
-
 	HDData::Transform* headTrasnform = _headCam->GetGameObject()->GetParentGameObject()->GetTransform();
 
 	float rotAngleX = DirectX::XMConvertToDegrees(headTrasnform->GetLocalRotation().ToEuler().x);
@@ -1413,9 +1201,7 @@ void PlayerMove::Pitch(float rotationValue)
 
 	Vector3 rotAxis = headTrasnform->GetRight();
 	rotAxis.y = 0.0f;
-	//Quaternion rotVal = XMQuaternionRotationAxis(rotAxis, rotationValue);
-	//Quaternion newRot = XMQuaternionMultiply(headTrasnform->GetRotation(), rotVal);
-	//headTrasnform->Rotate(rotVal);
+
 	static_cast<HDData::DynamicCollider*>(_playerColliderStanding->GetChildColliderVec()[0])->RotateOnAxis(rotationValue * 0.1f, rotAxis);
 }
 
@@ -1423,29 +1209,24 @@ void PlayerMove::ToggleSit(bool isSit)
 {
 	if (isSit)
 	{
-		//_playerColliderStanding->DisableCollider();
-		//_playerColliderSitting->EnableCollider();
-
-		//_playerColliderStanding->EnableStanding(false);
 		_playerColliderStanding->SetSitStand(1);
 	}
 	else
 	{
-		//_playerColliderSitting->DisableCollider();
-		//_playerColliderStanding->EnableCollider();
-
-		//_playerColliderStanding->EnableStanding(true);
 		_playerColliderStanding->SetSitStand(2);
 	}
 }
 
 void PlayerMove::Die()
 {
+	auto origin = _headCam->GetTransform()->GetPosition();
+	_headCam->GetTransform()->Rotate(0, 90, 0);
 	_playerColliderStanding->OnDisable();
 }
 
 void PlayerMove::Respawn()
 {
+	
 	_playerColliderStanding->OnEnable();
 }
 
@@ -1487,119 +1268,12 @@ void PlayerMove::DecidePlayerState()
 	}
 	else
 	{
-		if (API::GetKeyPressing(DIK_LCONTROL))
-		{
-			_playerState.first = ePlayerMoveState::WALK;
-		}
-		else
-		{
-			_playerState.first = ePlayerMoveState::RUN;
-		}
+		_playerState.first = ePlayerMoveState::RUN;
 	}
-
-
-	/*
-	_prevPlayerState.first = _playerState.first;
-	_prevPlayerState.second = _playerState.second;
-
-	if (_playerState.first == ePlayerMoveState::TUMBLE)
-	{
-		if (_tumbleTimer > 0.0f)
-		{
-			_tumbleTimer -= _deltaTime;
-			return;
-		}
-		else
-		{
-			_playerState.first = ePlayerMoveState::IDLE;
-
-			_weapon->SetMeshActive(true, 0);
-			_weapon->SetMeshActive(true, 1);
-			_weapon->SetMeshActive(true, 2);
-			_weapon->SetMeshActive(true, 3);
-			_fpmesh->SetMeshActive(true, 0);
-		}
-	}
-
-	// jump가 아닐 때만 walk나 run이 될 수 있다.
-	if (_playerState.first != ePlayerMoveState::JUMP)
-	{
-		if (_moveDirection == 5)
-		{
-			_playerState.first = ePlayerMoveState::IDLE;
-		}
-		else
-		{
-			if (API::GetKeyPressing(DIK_LCONTROL))
-			{
-				_playerState.first = ePlayerMoveState::WALK;
-			}
-			else
-			{
-				_playerState.first = ePlayerMoveState::RUN;
-			}
-		}
-
-		// jump, tumble 들어오면 덮어씌우고
-		if (API::GetKeyDown(DIK_SPACE))
-		{
-			_playerState.first = ePlayerMoveState::JUMP;
-		}
-		else if (API::GetKeyDown(DIK_LSHIFT))
-		{
-			if (_tumbleCooldown <= 0.0f)
-			{
-				_playerState.first = ePlayerMoveState::TUMBLE;
-				// 구르기 쿨타임 5초로 설정
-				_tumbleCooldown = 5.0f;
-
-				// 재장전 or 사격 중에 구르는 경우
-				if (_prevPlayerState.second == ePlayerMoveState::RELOAD)
-				{
-					_playerAudio->Stop("reload");
-					_reloadTimer = 0.0f;
-				}
-				else if (_shootCooldown > 0.0f)
-				{
-					_headCam->ResetCameraPos();
-					_prevPlayerState.second = ePlayerMoveState::IDLE;
-				}
-			}
-		}
-	}
-	// shoot, reload 는 second에 넣어주고
-	//if (_playerState.second == ePlayerMoveState::RELOAD)
-	//{
-	//	if (_reloadTimer > 0.0f)
-	//	{o
-	//		_reloadTimer -= _deltaTime;
-	//		return;
-	//	}
-	//}
-
-	if (_playerState.second != ePlayerMoveState::RELOAD && _playerState.first != ePlayerMoveState::TUMBLE)
-	{
-		if (API::GetMouseDown(MOUSE_LEFT))
-		{
-			_playerState.second = ePlayerMoveState::FIRE;
-		}
-		else if (API::GetMouseUp(MOUSE_LEFT))
-		{
-			_playerState.second = ePlayerMoveState::IDLE;
-			_shootCount = 0;
-		}
-		if (API::GetKeyDown(DIK_R) && _bulletCount < GameManager::Instance()->GetMyInfo()->GetMaxBulletCount())
-		{
-			//_playerAudio->PlayOnce("reload");
-			_playerState.second = ePlayerMoveState::RELOAD;
-		}
-	}
-	*/
 }
 
 void PlayerMove::DecidePlayerStateSecond()
 {
-
 	// 재장전, 사격 (BULLET_MAX 6)
 	if (_reloadTimer > 0.0f)
 	{
@@ -1617,7 +1291,8 @@ void PlayerMove::DecidePlayerStateSecond()
 		{
 			if (_bulletCount == 0)
 			{
-				_playerState.second = ePlayerMoveState::EMPTY;
+				//_playerState.second = ePlayerMoveState::EMPTY;
+				_playerState.second = ePlayerMoveState::RELOAD;
 			}
 			else
 			{
@@ -1635,7 +1310,6 @@ void PlayerMove::DecidePlayerStateSecond()
 		{
 			_playerState.second = ePlayerMoveState::AIM;
 		}
-
 	}
 }
 
@@ -1665,157 +1339,6 @@ void PlayerMove::Behavior()
 		OnStateExit(_prevPlayerState.first);
 		OnStateEnter(_playerState.first);
 	}
-
-	/*
-	// 카메라 셰이크는 매 프레임 들어가긴 해야한다.
-	if (_playerState.first != ePlayerMoveState::TUMBLE)
-	{
-		_headCam->ShakeCamera(_deltaTime, _rotAngleX);
-	}
-
-	// 움직임
-	switch (_playerState.first)
-	{
-		case ePlayerMoveState::IDLE:
-		{
-			_playerColliderStanding->Stop();
-			break;
-		}
-		case ePlayerMoveState::WALK:
-		{
-			if (!_playerAudio->IsSoundPlaying("walk"))
-			{
-				_playerAudio->PlayOnce("walk");
-			}
-			_moveSpeed = 3.0f;
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			break;
-		}
-		case ePlayerMoveState::RUN:
-		{
-			if (!_playerAudio->IsSoundPlaying("run"))
-			{
-				_playerAudio->PlayOnce("run");
-			}
-			_moveSpeed = 6.0f;
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-			break;
-		}
-		case ePlayerMoveState::JUMP:
-		{
-			if (_prevPlayerState.first != ePlayerMoveState::JUMP)
-			{
-				Jump(DecideDisplacement(_moveDirection) * _moveSpeed);
-			}
-
-			_moveSpeed = 5.0f;
-			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
-
-			break;
-		}
-		case ePlayerMoveState::TUMBLE:
-		{
-			if (_prevPlayerState.first != ePlayerMoveState::TUMBLE)
-			{
-				_playerAudio->PlayOnce("tumblingMan");
-				_playerAudio->PlayOnce("tumble");
-
-				_tumbleTimer = 0.3f;
-				_headCam->ToggleCameraShake(true);
-
-				if (_moveDirection == 5)
-				{
-					_tumbleDirection = GetTransform()->GetForward();
-				}
-				else
-				{
-					_tumbleDirection = DecideDisplacement(_moveDirection);
-				}
-			}
-
-			Tumble(_tumbleDirection);
-			_headCam->TumbleCamera(_deltaTime);
-
-			break;
-		}
-		default:
-		{
-
-		}
-	}
-
-	// 총 쏘거나 재장전
-	if (_playerState.second == ePlayerMoveState::FIRE)
-	{
-		if (_shootCooldown <= 0.0f)
-		{
-			if (_bulletCount == 0)
-			{
-				if (_prevPlayerState.second != ePlayerMoveState::FIRE)
-				{
-					_playerAudio->PlayOnce("empty");
-				}
-			}
-			else
-			{
-				if (_prevPlayerState.second != ePlayerMoveState::FIRE)
-				{
-					_headCam->ToggleCameraShake(true);
-				}
-				ShootGun();
-			}
-		}
-	}
-	else if (_playerState.second == ePlayerMoveState::RELOAD)
-	{
-		if (_prevPlayerState.second != ePlayerMoveState::RELOAD)
-		{
-			_fpmesh->SetMeshActive(false, 0);
-			_playerAudio->PlayOnce("reload");
-			_reloadTimer = 3.0f;
-		}
-		else
-		{
-			if (_reloadTimer > 0.0f)
-			{
-				_reloadTimer -= _deltaTime;
-			}
-			else
-			{
-				_fpmesh->SetMeshActive(true, 0);
-				Reload();
-			}
-		}
-	}
-
-	if (_prevPlayerState.first != _playerState.first)
-	{
-		if (_prevPlayerState.first == ePlayerMoveState::JUMP)
-		{
-			Landing();
-		}
-		if (_prevPlayerState.first == ePlayerMoveState::TUMBLE)
-		{
-			Reload();
-			_shootCooldown = 0.0f;
-			if (API::GetMouseHold(MOUSE_LEFT))
-			{
-				_playerState.second = ePlayerMoveState::FIRE;
-			}
-			else
-			{
-				_playerState.second = ePlayerMoveState::IDLE;
-			}
-		}
-		if (_prevPlayerState.second == ePlayerMoveState::FIRE)
-		{
-			// 반동 초기화
-			_shootCount = 0;
-			_headCam->ToggleCameraShake(false);
-			_headCam->ResetCameraPos();
-		}
-	}
-	*/
 }
 
 void PlayerMove::CoolTime()
@@ -1849,7 +1372,6 @@ void PlayerMove::Landing()
 {
 	_isOnGround = true;
 	_isJumping = false;
-	_playerAudio->PlayOnce("land");
 	_playerColliderStanding->ClearForceXYZ();
 }
 
@@ -1884,45 +1406,61 @@ void PlayerMove::CameraMove()
 {
 	Vector2 mouseDelta = API::GetMouseDelta();
 
-	if (mouseDelta.x > 500.0f)
+	if (mouseDelta.x > 400.0f)
 	{
-		mouseDelta.x = 500.0f;
+		mouseDelta.x = 400.0f;
 	}
-	if (mouseDelta.x < -500.0f)
+	if (mouseDelta.x < -400.0f)
 	{
-		mouseDelta.x = -500.0f;
-	}
-
-	if (mouseDelta.y > 500.0f)
-	{
-		mouseDelta.y = 500.0f;
-	}
-	if (mouseDelta.y < -500.0f)
-	{
-		mouseDelta.y = -500.0f;
+		mouseDelta.x = -400.0f;
 	}
 
-	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0005f);
-	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0005f);
-
-	if (_rotAngleX >= 1.5f)
+	if (mouseDelta.y > 400.0f)
 	{
-		_rotAngleX = 1.5f;
+		mouseDelta.y = 400.0f;
 	}
-	if (_rotAngleX <= -1.5f)
+	if (mouseDelta.y < -400.0f)
 	{
-		_rotAngleX = -1.5f;
+		mouseDelta.y = -400.0f;
 	}
 
-	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
+	_prevRotAngleX = _rotAngleX;
+	_prevRotAngleY = _rotAngleY;
+
+	_rotAngleY = (_rotAngleY + mouseDelta.x * 0.0003f);
+	_rotAngleX = (_rotAngleX + mouseDelta.y * 0.0003f);
+
+	if (_rotAngleX >= 1.57f)
+	{
+		_rotAngleX = 1.57f;
+	}
+	if (_rotAngleX <= -1.57f)
+	{
+		_rotAngleX = -1.57f;
+	}
+
+	if (_rotAngleY > 6.2832f)
+	{
+		_rotAngleY -= 6.2832f;
+	}
+	if (_rotAngleY < -6.2832f)
+	{
+		_rotAngleY += 6.2832f;
+	}
+
+	float ratio = _deltaTime * 10;
+	
+	float finalRotX = _rotAngleX * (1.0f - ratio) + _prevRotAngleX * ratio;
+	float finalRotY = _rotAngleY * (1.0f - ratio) + _prevRotAngleY * ratio;
+
+	Quaternion rot = rot.CreateFromYawPitchRoll(finalRotY, 0.0f, 0.0f);
 	_playerColliderStanding->SetColliderRotation(rot);
 
 	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
-	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
+	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(finalRotY, finalRotX, 0.0f);
 	_headCam->GetTransform()->SetRotation(pitchRotQuat);
 
 	// 메쉬 회전
-	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
+	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, finalRotX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
-
 }

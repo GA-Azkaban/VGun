@@ -4,9 +4,9 @@
 #include "PlayerMove.h"
 #include "GameManager.h"
 #include "MenuManager.h"
-#include "FPAniScript.h"
 #include "MeshTransformController.h"
 #include "CameraMove.h"
+#include "SoundManager.h"
 #include "LowHPEffect.h"
 
 RoundManager* RoundManager::_instance = nullptr;
@@ -40,6 +40,7 @@ void RoundManager::Start()
 	_initTimer->duration = 3;
 	_initTimer->onExpiration = [&]() {
 		_initTimer->Stop();
+		startRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		_initTimertxt->GetGameObject()->SetSelfActive(false);
 		};
 
@@ -125,7 +126,10 @@ void RoundManager::InitGame()
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
+			GameManager::Instance()->GetMyInfo()->audio = info->audio;
 			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+			_killCountObjs[index].first->SetColor(DirectX::Colors::WhiteSmoke);
+			_killCountObjs[index].second->SetColor(DirectX::Colors::WhiteSmoke);
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 		else
@@ -134,6 +138,8 @@ void RoundManager::InitGame()
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
+			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
+			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
 
@@ -147,10 +153,12 @@ void RoundManager::EndGame()
 {
 	// UI 활성화, 비활성화
 	SetUIActive(false);
+	finRoundimg->GetGameObject()->SetSelfActive(false);
+	
 
 	for (int i = 0; i < 6; ++i)
 	{
-		_backIMG[i]->GetGameObject()->SetSelfActive(false);
+		//_backIMG[i]->GetGameObject()->SetSelfActive(false);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 	}
@@ -165,7 +173,7 @@ void RoundManager::InitRound()
 {
 	for (int i = 0; i < _players.size() + 1; ++i)
 	{
-		_backIMG[i]->GetGameObject()->SetSelfActive(true);
+		//_backIMG[i]->GetGameObject()->SetSelfActive(true);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
 	}
@@ -181,6 +189,8 @@ void RoundManager::InitRound()
 		info->Init();
 		player->SetSelfActive(true);
 	}
+
+	SoundManager::Instance().PlayUI("sfx_bell");
 }
 
 void RoundManager::UpdateRound()
@@ -195,20 +205,33 @@ void RoundManager::SetUIActive(bool isActive)
 {
 	for (int i = 0; i < 6; ++i)
 	{
-		_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
+		//_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}
+
+	tumbleAlphaImage->SetActive(isActive);
+	tumbleCountText->SetActive(isActive);
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
+	tumbleImage->GetGameObject()->SetSelfActive(isActive);
 }
 
-void RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
+bool RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
 {
-	int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
-	NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
+	auto parentCol = collider->GetParentCollider();
+	if (parentCol == nullptr)
+	{
+		return false;
+	}
+	else
+	{
+		int uid = collider->GetParentCollider()->GetGameObject()->GetComponent<PlayerInfo>()->GetPlayerUID();
+		NetworkManager::Instance().SendPlayShoot(collider->GetTransform(), uid, Protocol::HIT_LOCATION_HEAD);
+		return true;
+	}
 }
 
 void RoundManager::CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider)
@@ -316,12 +339,11 @@ void RoundManager::ExitGame()
 	_endObj->SetSelfActive(false);
 	_showResultTimer->Stop();
 	_resultTimerUI->GetGameObject()->SetSelfActive(false);
+	NetworkManager::Instance().SendRoomLeave();
 
 	// 로비로 복귀
-	API::LoadSceneByName("Lobby");
+	API::LoadSceneByName("MainMenu");
 	LobbyManager::Instance().RefreshRoom();
-	API::SetRecursiveMouseMode(false);
-	API::ShowWindowCursor(true);
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
@@ -345,7 +367,7 @@ void RoundManager::SetRoundTimerObject(HDData::TextUI* obj)
 {
 	_timerUI = obj;
 	_timerUI->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	_timerUI->GetTransform()->SetPosition(1350.0f, 60.0f, 0.0f);
+	_timerUI->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 60.0f, 0.0f);
 }
 
 void RoundManager::SetRoundTimer(int time)
@@ -374,6 +396,49 @@ void RoundManager::UpdateRoundTimer()
 		auto nowElapsed = static_cast<int>(_timer - elapsedTime.count());
 		_timerUI->SetText(ChangeSecToMin(nowElapsed));
 
+		if (nowElapsed >= 56 && nowElapsed <= 60)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(1.0f, -2.0f, 0.0f), 2.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 46 && nowElapsed <= 50)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(-1.0f, -2.0f, 0.0f), 2.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 36 && nowElapsed <= 40)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(0.0f, -2.0f, 1.0f), 2.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 26 && nowElapsed <= 30)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(0.0f, -2.0f, -1.0f), 2.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 16 && nowElapsed <= 20)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(1.0f, -2.0f, 1.0f), 2.0f, 0);
+			}
+		}
+		else if (nowElapsed >= 6 && nowElapsed <= 10)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForce(Vector3(-1.0f, -2.0f, -1.0f), 2.0f, 0);
+			}
+		}
+
 		if (nowElapsed <= 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
@@ -383,16 +448,35 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_isRoundStart = false;
 			_gameEndTimer->Start();
+			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 		}
 	}
 }
 
 std::string RoundManager::ChangeSecToMin(int second)
 {
-	int min = second / 60;
-	int sec = second % 60;
+	std::string min = "";
+	std::string sec = "";
 
-	std::string result = std::to_string(min) + " : " + std::to_string(sec);
+	if (second / 60 == 0)
+	{
+		min = "00";
+	}
+	else
+	{
+		min = std::to_string(second / 60);
+	}
+
+	if (second % 60 < 10)
+	{
+		sec = "0" + std::to_string(second % 60);
+	}
+	else
+	{
+		sec = std::to_string(second % 60);
+	}
+
+	std::string result = min + " : " + sec;
 
 	return result;
 }
@@ -480,15 +564,10 @@ void RoundManager::SetKillCountUI(HDData::TextUI* nick, HDData::TextUI* count, i
 	_killCountObjs[index] = std::make_pair(nick, count);
 }
 
-void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
-{
-	_backIMG[index] = img;
-}
-
-void RoundManager::SetHeadshotUI(HDData::ImageUI* img)
-{
-	_headshotImg = img;
-}
+//void RoundManager::SetKillCountBack(HDData::ImageUI* img, int index)
+//{
+//	_backIMG[index] = img;
+//}
 
 std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& RoundManager::GetKillCountMap()
 {
@@ -503,5 +582,10 @@ void RoundManager::SetAnimationDummy(HDData::GameObject* obj)
 HDData::GameObject* RoundManager::GetAnimationDummy()
 {
 	return _animationDummy;
+}
+
+void RoundManager::SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec)
+{
+	_weedColVector = vec;
 }
 

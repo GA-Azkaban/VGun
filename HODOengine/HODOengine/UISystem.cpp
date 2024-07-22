@@ -1,8 +1,10 @@
 ﻿#include "UISystem.h"
 #include "Scene.h"
+#include "Button.h"
 #include "GameObject.h"
 #include "UIBase.h"
 #include "InputSystem.h"
+#include "ObjectSystem.h"
 #include "SceneSystem.h"
 
 
@@ -36,6 +38,28 @@ namespace HDEngine
 		}
 
 		_uiList.clear();
+
+		for (const auto& obj : ObjectSystem::Instance().GetStaticObjectList())
+		{
+			for (const auto& comp : obj->GetAllComponents())
+			{
+				if (HDData::UIBase* one = dynamic_cast<HDData::UIBase*>(comp))
+				{
+					_uiList.push_back(one);
+				}
+			}
+		}
+
+		for (const auto& obj : ObjectSystem::Instance().GetRunningStaticObjectList())
+		{
+			for (const auto& comp : obj->GetAllComponents())
+			{
+				if (HDData::UIBase* one = dynamic_cast<HDData::UIBase*>(comp))
+				{
+					_uiList.push_back(one);
+				}
+			}
+		}
 
 		for (const auto& obj : currentScene->GetGameObjectList())
 		{

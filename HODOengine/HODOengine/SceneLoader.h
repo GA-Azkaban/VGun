@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -39,7 +39,7 @@ namespace HDEngine
 
 	public:
 		void LoadUnityScene(std::string fileName, HDData::Scene* scene);
-		Vector3* GetRespawnPoint();
+		std::unordered_map<int, Vector3>& GetRespawnPoint();
 		Vector3* GetCloudPoint();
 
 	private:
@@ -49,7 +49,8 @@ namespace HDEngine
 		void SetTransform();
 
 		// 스폰 지점
-		Vector3 _spawnPoint[20];
+		//Vector3 _spawnPoint[20];
+		std::unordered_map<int, Vector3> _spawnPoint;
 		int _spawnIndex = 1;
 
 		// 구름 위치 지정

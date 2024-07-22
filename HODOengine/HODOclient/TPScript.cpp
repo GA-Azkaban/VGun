@@ -20,6 +20,12 @@ void TPScript::Update()
 {
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 
+	if (API::GetKeyDown(DIK_LSHIFT))
+	{
+		if (GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetPlayerMoveEnum(1) != ePlayerMoveState::TUMBLE) return;
+		_animator->GetAllAC()->SetTrigger("isRollFront");
+	}
+
 	if (API::GetKeyPressing(DIK_W))
 	{
 		_animator->GetAllAC()->SetBool("isRunFront", true);
@@ -51,7 +57,6 @@ void TPScript::Update()
 		_animator->GetAllAC()->SetBool("isRunLeft", false);
 	}
 
-
 	if (API::GetKeyPressing(DIK_S))
 	{
 		_animator->GetAllAC()->SetBool("isRunBack", true);
@@ -67,7 +72,6 @@ void TPScript::Update()
 		_animator->GetAllAC()->SetBool("isRunBack", false);
 	}
 
-
 	if (API::GetKeyPressing(DIK_D))
 	{
 		_animator->GetAllAC()->SetBool("isRunRight", true);
@@ -82,7 +86,6 @@ void TPScript::Update()
 	{
 		_animator->GetAllAC()->SetBool("isRunRight", false);
 	}
-
 
 	if (API::GetKeyDown(DIK_SPACE))
 	{

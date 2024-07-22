@@ -41,6 +41,8 @@ namespace RocketCore::Graphics
 
 		virtual void ChangeScale(float x, float y) override;
 
+		virtual DirectX::XMFLOAT2 GetScale() override;
+
 		virtual void SetAngle(float angle) override;
 
 		virtual void SetOrigin(float x, float y) override;
@@ -59,12 +61,15 @@ namespace RocketCore::Graphics
 
 		void InitalizeImageRenderer(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 
+		Vector2 GetImageScale();
+
 		// fade
-		virtual bool SetFadeMode(bool SetFade,float time) override;
 		virtual void FadeIn(float time) override;
 		virtual void FadeOut(float time) override;
 		virtual bool GetFadeMode() override;
 		virtual bool GetComplete() override;
+	private:
+		bool SetFadeMode(bool SetFade,float time);
 
 	public:
 		void Render(DirectX::SpriteBatch* spriteBatch);
@@ -89,8 +94,10 @@ namespace RocketCore::Graphics
 		DirectX::XMMATRIX translationMatrix;
 
 		// 이미지 정보
-		float _imageWidth;
-		float _imageHeight;
+		float _currentImageWidth;
+		float _originalImageWidth;
+		float _currentImageHeight;
+		float _originalImageHeight;
 
 		// 페이드 인 & 아웃
 		bool _fadeMode = true;

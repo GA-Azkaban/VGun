@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -44,9 +44,9 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.2f, 0.2f, 0.0f);
-		_playerMaterial = _physics->createMaterial(0.8f, 0.6f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.6f, 0.4f, 0.0f);
+		_material = _physics->createMaterial(0.8f, 0.6f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.04f, 0.02f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.05f, 0.03f, 0.0f);
 
 		_collisionCallback = std::make_unique<CollisionCallback>();
 		_pxScene->setSimulationEventCallback(_collisionCallback.get());
@@ -64,103 +64,165 @@ namespace HDEngine
 
 	void PhysicsSystem::Update()
 	{
-		const auto& sceneIter = SceneSystem::Instance().GetCurrentScene();
+		if (static_cast<HDData::DynamicCollider*>(_playerRigid->userData)->GetGameObject()->GetComponent<PlayerMove>()->_isIngamePlaying == false)
+		{
+			return;
+		}
 
-		_collisionCallback->Clear();
+		_accumulateTime += API::GetDeltaTime();
+		if (_accumulateTime >= 0.008333f)
+		{
+			_accumulateTime -= 0.008333f;
+			for (auto& rigid : _rigidDynamics)
+			{
+				HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
+				if (dynamicCol->GetGameObject()->GetObjectName() == "playerSelf")
+				{
+					//physx::PxTransform temp = rigid->getGlobalPose();
+					//TransformInfo tempInfo;
+					//tempInfo.pos = Vector3(temp.p.x, temp.p.y, temp.p.z);
+					//tempInfo.rot = Quaternion(temp.q.x, temp.q.y, temp.q.z, temp.q.w);
+					//dynamicCol->SetPrevTransform(tempInfo);
+					_prevPlayerRot = rigid->getGlobalPose().q;
+				}
+			}
+			_collisionCallback->Clear();
 
-		//ResizeCollider();
+			_pxScene->simulate(0.008333f);
+			_pxScene->fetchResults(true);
 
-#ifdef _DEBUG
-		_pxScene->simulate(0.00167f);
-#else
-		_pxScene->simulate(0.0005f);
-#endif
-		_pxScene->fetchResults(true);
+			_collisionCallback->CollectResults();
+			_collisionCallback->SendTriggerEvents();
+			_collisionCallback->SendCollisionEvents();
 
-		_collisionCallback->CollectResults();
-		_collisionCallback->SendTriggerEvents();
-		_collisionCallback->SendCollisionEvents();
+			for (auto& rigid : _rigidDynamics)
+			{
+				// Collider On/Off
+				HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
+				if (!dynamicCol->GetIsStarted()) continue;
+
+				if (dynamicCol->GetGameObject()->GetObjectName() == "playerSelf")
+				{
+					//physx::PxTransform temp = rigid->getGlobalPose();
+					//TransformInfo tempInfo;
+					//tempInfo.pos = Vector3(temp.p.x, temp.p.y, temp.p.z);
+					//tempInfo.rot = Quaternion(temp.q.x, temp.q.y, temp.q.z, temp.q.w);
+					//dynamicCol->SetCurTransform(tempInfo);
+					_currentPlayerRot = rigid->getGlobalPose().q;
+				}
+
+				// 트리거가 아닌 경우 onCollision 함수들 실행
+				if (dynamicCol->GetIsTriggerType() == false)
+				{
+					if (!dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+					{
+						dynamicCol->GetGameObject()->OnCollisionEnter(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+					// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
+					else if (dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+					{
+						dynamicCol->GetGameObject()->OnCollisionStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+					else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
+					{
+						dynamicCol->GetGameObject()->OnCollisionExit(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+				}
+				else
+				{
+					if (!dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
+					{
+						dynamicCol->GetGameObject()->OnTriggerEnter(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
+					}
+					// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
+					else if (dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
+					{
+						//dynamicCol->GetGameObject()->OnTriggerStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					}
+					else if (dynamicCol->GetPrevIsTriggerCollide() && !dynamicCol->GetIsTriggerCollide())
+					{
+						dynamicCol->GetGameObject()->OnTriggerExit(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
+					}
+				}
+			}
+
+		UpdateTransform();
+		}
+	}
+
+	void PhysicsSystem::UpdateTransform()
+	{
+		// Transform Update
 
 		for (auto& rigid : _rigidDynamics)
 		{
-			// Collider On/Off
-			HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
-			if (!dynamicCol->GetIsStarted()) continue;
+			HDData::DynamicCollider* col = static_cast<HDData::DynamicCollider*>(rigid->userData);
 
-			// 트리거가 아닌 경우 onCollision 함수들 실행
-			if (dynamicCol->GetIsTriggerType() == false)
+			if (col->GetGameObject()->GetObjectName() == "playerSelf")
 			{
-				if (!dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
+				//float alpha = _accumulateTime / 0.008333f;
+
+				physx::PxTransform nowTr = rigid->getGlobalPose();
+				//sphysx::PxQuat newRot = Slerp(_prevPlayerRot, _currentPlayerRot, alpha);
+
+				Vector3 pos = Vector3(nowTr.p.x, nowTr.p.y, nowTr.p.z);
+				Quaternion rot = Quaternion(nowTr.q.x, nowTr.q.y, nowTr.q.z, nowTr.q.w);
+				//Quaternion rot = Quaternion(newRot.x, newRot.y, newRot.z, newRot.w);
+
+				col->UpdateFromPhysics(pos, rot);
+
+				// Child Velocity
+				for (auto& child : col->GetChildColliderVec())
 				{
-					dynamicCol->GetGameObject()->OnCollisionEnter(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
-				else if (dynamicCol->GetPrevIsCollide() && dynamicCol->GetIsCollide())
-				{
-					dynamicCol->GetGameObject()->OnCollisionStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-				else if (dynamicCol->GetPrevIsCollide() && !dynamicCol->GetIsCollide())
-				{
-					dynamicCol->GetGameObject()->OnCollisionExit(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
+					// 손자뻘이 없음을 가정하고 만듦
+					physx::PxRigidDynamic* childRigid = static_cast<HDData::DynamicCollider*>(child)->GetPhysXRigid();
+					//childRigid->setLinearVelocity(rigid->getLinearVelocity());
+					physx::PxVec3 childPos = nowTr.p;
+					Vector3 localPos = child->GetTransform()->GetLocalPosition();
+					childPos.x += (child->GetTransform()->GetForward() * localPos.z).x;
+					childPos.y += localPos.y;
+					childPos.z += (child->GetTransform()->GetForward() * localPos.z).z;
+					childRigid->setGlobalPose(physx::PxTransform(childPos, nowTr.q));
+					dynamic_cast<HDData::DynamicCollider*>(child)->UpdateFromPhysics(Vector3(childPos.x, childPos.y, childPos.z), rot);
 				}
 			}
 			else
 			{
-				if (!dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
-				{
- 					dynamicCol->GetGameObject()->OnTriggerEnter(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
-				}
-				// Stay는 잠시 보류해뒀다. PhysX 내부에서 지원해주지 않음.
-				else if (dynamicCol->GetPrevIsTriggerCollide() && dynamicCol->GetIsTriggerCollide())
-				{
-					//dynamicCol->GetGameObject()->OnTriggerStay(dynamicCol->GetCollisionStorage().data(), dynamicCol->GetCollisionStorage().size());
-				}
-				else if (dynamicCol->GetPrevIsTriggerCollide() && !dynamicCol->GetIsTriggerCollide())
-				{
-					dynamicCol->GetGameObject()->OnTriggerExit(dynamicCol->GetTriggerStorage().data(), dynamicCol->GetTriggerStorage().size());
-				}
+				physx::PxTransform nowTr = rigid->getGlobalPose();
+				Vector3 pos = Vector3(nowTr.p.x, nowTr.p.y, nowTr.p.z);
+				Quaternion rot = Quaternion(nowTr.q.x, nowTr.q.y, nowTr.q.z, nowTr.q.w);
+				col->UpdateFromPhysics(pos, rot);
 			}
-		}
+			//auto headCam = col->GetGameObject()->GetComponentInChildren<HDData::Camera>();
+			//if (headCam != nullptr)
+			//{
+			//	Vector3 deltaZ = 0.175f * col->GetTransform()->GetForward();
+			//	headCam->GetTransform()->SetPosition(pos + Vector3(deltaZ.x, 1.65f, deltaZ.z));
+			//}
+			
+			//auto fpMeshShell = col->GetGameObject()->GetGameObjectByNameInChildren("meshShell");
+			//if (fpMeshShell != nullptr)
+			//{
+			//	Vector3 localppp = fpMeshShell->GetTransform()->GetLocalPosition();
+			//	Vector3 ppp;
+			//	Vector3 px = localppp.x * col->GetTransform()->GetRight();
+			//	Vector3 pz = localppp.z * col->GetTransform()->GetForward();
+			//	ppp.x = pos.x + px.x + pz.x;
+			//	ppp.y = pos.y + localppp.y;
+			//	ppp.z = pos.z + pz.z + px.z;
+			//	fpMeshShell->GetTransform()->SetPosition(ppp);
+			//}
 
-		for (auto& rigid : _rigidDynamics)
-		{
-			// Transform Update
-			physx::PxTransform nowTransform = rigid->getGlobalPose();
-			Vector3 pos;
-			Quaternion rot;
-
-			pos.x = nowTransform.p.x;
-			pos.y = nowTransform.p.y;
-			pos.z = nowTransform.p.z;
-
-			rot.x = nowTransform.q.x;
-			rot.y = nowTransform.q.y;
-			rot.z = nowTransform.q.z;
-			rot.w = nowTransform.q.w;
-
-			static_cast<HDData::DynamicCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
-
-		}
-
-		for (auto& rigid : _movableStatics)
-		{
-
-
-			// Transform Update
-			physx::PxTransform nowTransform = rigid->getGlobalPose();
-			Vector3 pos;
-			Quaternion rot;
-
-			pos.x = nowTransform.p.x;
-			pos.y = nowTransform.p.y;
-			pos.z = nowTransform.p.z;
-
-			rot.x = nowTransform.q.x;
-			rot.y = nowTransform.q.y;
-			rot.z = nowTransform.q.z;
-			rot.w = nowTransform.q.w;
-
-			static_cast<HDData::StaticCollider*>(rigid->userData)->UpdateFromPhysics(pos, rot);
+			//auto fpMeshObj = col->GetGameObject()->GetGameObjectByNameInChildren("FPMesh");
+			//if (fpMeshObj != nullptr)
+			//{
+			//	Vector3 localppp = fpMeshObj->GetTransform()->GetLocalPosition() + fpMeshShell->GetTransform()->GetLocalPosition();
+			//	Vector3 ppp;
+			//	ppp.x = pos.x + (localppp.x * col->GetTransform()->GetRight()).x;
+			//	ppp.y = pos.y + localppp.y;
+			//	ppp.z = pos.z + (localppp.z * col->GetTransform()->GetForward()).z;
+			//	fpMeshObj->GetTransform()->SetPosition(ppp);
+			//}
 		}
 	}
 
@@ -184,7 +246,11 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 150.0f, 0.0f);
+#ifdef _DEBUG
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 6, 0.0f);
+#else
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3, 0.0f);
+#endif
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -389,8 +455,11 @@ namespace HDEngine
 
 				// 앉을 때 switch 해줄 두 shape 를 넣어준다.
 				//collider->SetPlayerShapes(standingShape, sittingShape);
-				_playerRigid = capsuleRigid;
-				_playerShape = standingShape;
+				if (capsule->GetGameObject()->GetObjectName() == "playerSelf")
+				{
+					_playerRigid = capsuleRigid;
+					_playerShape = standingShape;
+				}
 
 				//_pxScene->addActor(*capsuleRigid);
 				_rigidDynamics.push_back(capsuleRigid);
@@ -420,7 +489,15 @@ namespace HDEngine
 			{
 				HDData::DynamicSphereCollider* sphere = dynamic_cast<HDData::DynamicSphereCollider*>(collider);
 
-				physx::PxShape* shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_playerMaterial);
+				physx::PxShape* shape;
+				if (sphere->GetParentCollider() == nullptr)
+				{
+					shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_material);
+				}
+				else
+				{
+					shape = _physics->createShape(physx::PxSphereGeometry(sphere->GetRadius()), *_playerMaterial);
+				}
 				shape->userData = sphere;
 
 				physx::PxFilterData headFilterData;
@@ -432,6 +509,7 @@ namespace HDEngine
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
 				physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
+				sphereRigid->setMass(0.2f);
 				sphereRigid->attachShape(*shape);
 
 				//_pxScene->addActor(*sphereRigid);
@@ -657,6 +735,14 @@ namespace HDEngine
 		}
 	}
 
+	physx::PxTransform PhysicsSystem::InterpolateTransform(const TransformInfo& prev, const TransformInfo& cur, float alpha)
+	{
+		physx::PxVec3 interpolatedPos = physx::PxVec3(prev.pos.x, prev.pos.y, prev.pos.z) * (1.0 - alpha) + physx::PxVec3(cur.pos.x, cur.pos.y, cur.pos.z) * alpha;
+		physx::PxQuat interpolatedRot = Slerp(physx::PxQuat(prev.rot.x, prev.rot.y, prev.rot.z, prev.rot.w), physx::PxQuat(cur.rot.x, cur.rot.y, cur.rot.z, cur.rot.w), alpha);
+
+		return physx::PxTransform(interpolatedPos, interpolatedRot);
+	}
+
 	void PhysicsSystem::CreateSphericalJoint()
 	{
 		for (auto& dynamics : _rigidDynamics)
@@ -822,6 +908,45 @@ namespace HDEngine
 
 		return hitCol;
 
+	}
+
+	physx::PxQuat PhysicsSystem::Slerp(const physx::PxQuat& qa, const physx::PxQuat& qb, float time)
+	{
+		float cosHalfTheta = qa.w * qb.w + qa.x * qb.x + qa.y * qb.y + qa.z * qb.z;
+
+		if (std::abs(cosHalfTheta) >= 1.0)
+		{
+			return qa;
+		}
+
+		if (cosHalfTheta < 0.0f)
+		{
+			return Slerp(qa, -qb, time);
+		}
+
+		float halfTheta = std::acos(cosHalfTheta);
+		float sinHalfTheta = std::sqrt(1.0f - cosHalfTheta * cosHalfTheta);
+
+		if (std::abs(sinHalfTheta) < 0.001f)
+		{
+			return physx::PxQuat(
+				(qa.x * 0.5f + qb.x * 0.5f),
+				(qa.y * 0.5f + qb.y * 0.5f),
+				(qa.z * 0.5f + qb.z * 0.5f),
+				(qa.w * 0.5f + qb.w * 0.5f)
+			);
+		}
+
+		float ratioA = std::sin((1 - time) * halfTheta) / sinHalfTheta;
+		float ratioB = std::sin(time * halfTheta) / sinHalfTheta;
+
+		physx::PxQuat result(
+			(qa.x * ratioA + qb.x * ratioB),
+			(qa.y * ratioA + qb.y * ratioB),
+			(qa.z * ratioA + qb.z * ratioB),
+			(qa.w * ratioA + qb.w * ratioB)
+		);
+		return result;
 	}
 
 	physx::PxScene* PhysicsSystem::GetScene() const

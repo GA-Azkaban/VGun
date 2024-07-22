@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "PlayerState.h"
+#include "SoundManager.h"
 #include "Timer.h"
 
 enum class eHITLOC
@@ -55,6 +56,8 @@ public:
 	int& GetCurrentBulletCount();
 	int GetMaxBulletCount();
 	bool& GetIsDie();
+	void SetIsRespawn(bool isRespawn);
+	bool GetIsRespawn();
 
 	bool& GetIsStateChange();
 	void SetIsStateChange(bool isChange);
@@ -69,13 +72,19 @@ public:
 	bool GetIsShoot();
 	bool GetIsJump();
 
-	void SetParticleObj(HDData::ParticleSystem* particle);
-
 	void SetHitEffectObj(HitEffect* hitEffect);
 	void SetParticleSystem(HDData::ParticleSystem* particleSystem);
 	void PlayerAttacked(Vector3 targetPos);
 
 	void AddSerialKillCount();
+	void SetKillEffectImg(HDData::ImageUI* img);
+	void SetDieEffectImg(HDData::ImageUI* img);
+	void PlayHeadShotEffect();
+	void PlayDieEffect();
+	void PlayRespawnEffect();
+	void SetLogUI(HDData::TextUI* txt);
+	void PlayKillLog(std::string log);
+	void KillLogExit();
 
 private:
 	bool _isMyInfo = false;
@@ -103,11 +112,10 @@ private:
 	ePlayerState _prevState = ePlayerState::NONE;
 	ePlayerState _state = ePlayerState::IDLE;
 
-	HDData::ParticleSystem* _shootParticle;
-	
 	// count info
 	int _kill;
 	int _death;
+	bool _isRespawn;
 
 	// serial kill
 	Timer* _timer;
@@ -115,5 +123,11 @@ private:
 
 	HitEffect* _hitEffect;
 	HDData::ParticleSystem* _particleSystem;
+	HDData::ImageUI* _killEffectImg;
+	HDData::ImageUI* _dieEffectImg;
+	HDData::TextUI* _killLog;
+
+public:
+	HDData::AudioSource* audio;
 };
 

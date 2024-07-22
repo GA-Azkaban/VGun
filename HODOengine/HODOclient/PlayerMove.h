@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "PlayerMoveState.h"
 #include "../HODOengine/HODO_API.h"
 
@@ -6,6 +6,8 @@
 /// 플레이어 움직임과 관련된 스크립트
 /// </summary>
 
+class CooldownAlpha;
+class CooldownText;
 
 class PlayerMove : public HDData::Script
 {
@@ -29,6 +31,8 @@ public:
 public:
 	bool IsShootHead();
 	bool IsShootBody();
+	bool GetIsIngamePlaying();
+	void SetIsIngamePlaying(bool isPlaying);
 
 	// check ~~ series
 private:
@@ -68,11 +72,11 @@ private:
 	void ShootTrail(Vector3 endPoint);
 	void Tumble(Vector3 direction);
 	void PlayPlayerSound();
-	virtual void OnEnable() override;
 	void OnStateEnter(ePlayerMoveState state);
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
 	void UpdateStateText();
+	//Quaternion Slerp(const Quaternion& qa, const Quaternion& qb, float time);
 
 public:
 	int& GetBulletCount();
@@ -82,6 +86,10 @@ public:
 	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
 	virtual void OnTriggerEnter(HDData::Collider** colArr, unsigned int count) override;
 	virtual void OnTriggerExit(HDData::Collider** colArr, unsigned int count) override;
+
+public:
+	CooldownAlpha* recoilCooldown;
+	CooldownText* cooldownCountText;
 
 private:
 	bool _isMovable;
@@ -104,6 +112,7 @@ public:
 	HDData::TextUI* _plStateText;
 	HDData::TextUI* _tumbleText;
 	HDData::TextUI* _plPosText;
+	HDData::TextUI* _anyText;
 	int melon;
 
 private:
@@ -119,9 +128,6 @@ private:
 	std::vector<HDData::ParticleSphereCollider*> _hitParticles;
 
 private:
-	HDData::AudioSource* _playerAudio = nullptr;
-
-private:
 	HDData::TextUI* _playerInfoText;
 	HDData::TextUI* _aimText;
 	HDData::TextUI* _hitText;
@@ -130,6 +136,8 @@ private:
 	Quaternion _prevCameraRot;
 	float _rotAngleX;
 	float _rotAngleY;
+	float _prevRotAngleX;
+	float _prevRotAngleY;
 
 	int _particleIndex;
 	float _shootCooldown;
@@ -156,4 +164,14 @@ private:
 	std::pair<float, float> _sprayPattern[30];
 	std::pair<float, float> _sprayCamera[30];
 	std::pair<HDData::DynamicBoxCollider*, HDData::DynamicBoxCollider*> _footColliders;
+
+	// 애니메이션과 결합
+private:
+	HDData::Animator* _fpanimator;
+	HDData::Animator* _tpanimator;
+
+
+
+public:
+	bool _isIngamePlaying;
 };
