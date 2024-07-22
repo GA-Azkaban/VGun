@@ -5,7 +5,6 @@
 #include "../HODOEngine/CollisionCallback.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
@@ -80,7 +79,6 @@ void InGameSceneView::Initialize()
 
 	player->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(player, "TP_animation.json");
-	player->AddComponent<TPScript>();
 	RoundManager::Instance()->SetAnimationDummy(player);
 
 	RoundManager::Instance()->_myObj = player;

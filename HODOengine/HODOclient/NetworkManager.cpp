@@ -747,51 +747,51 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
 	}
-	if (state == "IDLE")
+	else if (state == "IDLE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
-	if (state == "RUN_R")
+	else if (state == "RUN_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RIGHT;
 	}
-	if (state == "RUN_L")
+	else if (state == "RUN_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_LEFT;
 	}
-	if (state == "RUN_F")
+	else if (state == "RUN_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_FORWARD;
 	}
-	if (state == "RUN_B")
+	else if (state == "RUN_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
 	}
-	if (state == "JUMP")
+	else if (state == "JUMP")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
 	}
-	if (state == "ROLL_F")
+	else if (state == "ROLL_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_FORWARD;
 	}
-	if (state == "ROLL_B")
+	else if (state == "ROLL_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_BACK;
 	}
-	if (state == "ROLL_R")
+	else if (state == "ROLL_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_RIGHT;
 	}
-	if (state == "ROLL_L")
+	else if (state == "ROLL_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_LEFT;
 	}
-	if (state == "RELOAD")
+	else if (state == "RELOAD")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RELOAD;
 	}
-	if (state == "DIE")
+	else if (state == "DIE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_DEATH;
 	}
