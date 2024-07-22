@@ -76,7 +76,6 @@ void MainMenuScene::MainMenu()
 	main_controlCanvas->SetSelfActive(true);
 	main_controlCanvas->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
 
-
 	// gameLogo
 	auto gameLogo = API::CreateImageBox(_scene, "gameLogo", main_controlCanvas);
 	gameLogo->GetTransform()->SetPosition(200.0f, 950.0f, 0.0f);
@@ -85,11 +84,21 @@ void MainMenuScene::MainMenu()
 	gameLogoComp->ChangeScale(0.4f, 0.4f);
 
 	// TeamLogo
-	auto teamLogo = API::CreateImageBox(_scene, "teamLogo", main_controlCanvas);
+	// credit event
+	auto teamLogo = API::CreateButton(_scene, "teamLogo", main_controlCanvas);
 	teamLogo->GetTransform()->SetPosition(200.0f, 1250.0f, 0.0f);
-	auto teamLogoComp = teamLogo->GetComponent<HDData::ImageUI>();
+	auto teamLogoComp = teamLogo->GetComponent<HDData::Button>();
 	teamLogoComp->SetImage("teamLogo.png");
+	teamLogoComp->SetSortOrder(0.6f);
 	teamLogoComp->ChangeScale(0.3f, 0.3f);
+
+	// credit
+	auto credit = API::CreateImageBox(_scene, "credit", teamLogo);
+	credit->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0.0f);
+	credit->SetSelfActive(false);
+	auto creditImg = credit->GetComponent<HDData::ImageUI>();
+	creditImg->SetImage("");
+	creditImg->SetSortOrder(0.6f);
 
 	// play->RoomEnter & make sequence
 	HDData::GameObject* main_playBtn = API::CreateButton(_scene, "playBtn", main_controlCanvas);
@@ -147,7 +156,7 @@ void MainMenuScene::MainMenu()
 	pageLeftButton->GetTransform()->SetLocalPosition(-325.0f + (width - 1920) * (-0.17f), 0, 0);
 	pageLeftButton->AddComponent<BtnHoveringScript>();
 	auto lBtn = pageLeftButton->GetComponent<HDData::Button>();
-	lBtn->SetImage("leftArrow.png");
+	lBtn->SetImage("Left.png");
 	lBtn->SetSortOrder(0.6f);
 	lBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	lBtn->SetOnClickEvent([]() {
@@ -244,7 +253,7 @@ void MainMenuScene::MainMenu()
 		});
 
 	HDData::GameObject* enter_enterCheckText = API::CreateTextbox(_scene, "enterCheckText", enter_enterBtn);
-	enter_enterCheckText->GetTransform()->SetLocalPosition(-25.0f,-5.0f, 0);
+	enter_enterCheckText->GetTransform()->SetLocalPosition(-25.0f, -5.0f, 0);
 	auto enterText = enter_enterCheckText->GetComponent<HDData::TextUI>();
 	enterText->SetText("Join");
 	enterText->SetFont("Resources/Font/KRAFTON_25.spriteFont");
@@ -425,7 +434,7 @@ void MainMenuScene::MainMenu()
 
 	// room setting
 	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", make_canvas);
-	roomSetBtn->GetTransform()->SetPosition(API::GetScreenWidth()/2, 620.0f * height / 1080, 0.f);
+	roomSetBtn->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 620.0f * height / 1080, 0.f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.8f);
 	roomSetBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	roomSetBtn->GetComponent<HDData::Button>()->SetSortOrder(0.9f);
@@ -636,6 +645,20 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
+	// game Logo & credit event
+	teamLogo->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			if (credit->GetSelfActive())
+			{
+				credit->SetSelfActive(false);
+			}
+			else
+			{
+				credit->SetSelfActive(true);
+			}
+		}
+	);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[]()
