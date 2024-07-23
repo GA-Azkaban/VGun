@@ -453,18 +453,33 @@ void InGameSceneView::Initialize()
 		posT += 315;
 	}
 
+
+
+	// killcount ui (mine)
+	auto nickname = API::CreateTextbox(_scene, "mine");
+	nickname->GetTransform()->SetPosition(130 - 40, 50, 0);
+	auto nickComp = nickname->GetComponent<HDData::TextUI>();
+	nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	nickComp->SetText("");
+	nickComp->SetSortOrder(0.7);
+
+	auto killcount = API::CreateTextbox(_scene, "mycount");
+	killcount->GetTransform()->SetPosition(130 + 75, 50, 0);
+	auto countComp = killcount->GetComponent<HDData::TextUI>();
+	countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	countComp->SetText("");
+	countComp->SetSortOrder(0.7);
+
+	RoundManager::Instance()->_myKillCount.first = nickComp;
+	RoundManager::Instance()->_myKillCount.second = countComp;
+
+	// killcount ui (others)
+
 	int uiX = 130;
-	int uiY = 52.0f;
+	int uiY = 100.0f;
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		// killCount UI
-		//auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
-		//uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
-		//uiBack->GetTransform()->SetScale(1, 3, 0);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
-
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
@@ -473,13 +488,12 @@ void InGameSceneView::Initialize()
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 65, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 75, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
-		//RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
