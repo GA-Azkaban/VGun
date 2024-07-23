@@ -649,7 +649,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		// animation
 		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
-		info->SetIsStateChange(true);
 	}
 }
 
@@ -772,11 +771,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)
 {
-	if (state == "")
-	{
-		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
-	}
-	else if (state == "IDLE")
+	if (state == "IDLE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
@@ -823,6 +818,10 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	else if (state == "DIE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_DEATH;
+	}
+	else
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
 	}
 }
 

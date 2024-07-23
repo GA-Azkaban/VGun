@@ -96,45 +96,53 @@ void LobbySceneView::Initialize()
 	auto keyInfoCanvas = API::CreateImageBox(_scene, "keyInfo");
 	keyInfoCanvas->GetTransform()->SetPosition(1000.0f * width / 1920, 932.0f * height / 1080, 0);
 	auto keyCanvasImg = keyInfoCanvas->GetComponent<HDData::ImageUI>();
-	keyCanvasImg->ChangeScale(0.5f,1.0f);
+	keyCanvasImg->SetSortOrder(0.09f);
+	keyCanvasImg->ChangeScale(0.8f,1.0f);
 	keyCanvasImg->SetImage("Button_horizon_02.png");
 
 	auto aKey = API::CreateImageBox(_scene, "aKey");
 	aKey->GetTransform()->SetPosition(750.0f * width / 1920, 900.0f * height / 1080, 0);
 	auto aKeyImg = aKey->GetComponent<HDData::ImageUI>();
+	aKeyImg->SetSortOrder(0.15f);
 	aKeyImg->SetImage("keyboard_a.png");
 
 	auto sKey = API::CreateImageBox(_scene, "sKey");
 	sKey->GetTransform()->SetPosition(790.0f * width / 1920, 900.0f * height / 1080, 0);
 	auto sKeyImg = sKey->GetComponent<HDData::ImageUI>();
+	sKeyImg->SetSortOrder(0.15f);
 	sKeyImg->SetImage("keyboard_s.png");
 
 	auto wKey = API::CreateImageBox(_scene, "sKey");
 	wKey->GetTransform()->SetPosition(790.0f * width / 1920, 860.0f * height / 1080, 0);
 	auto wKeyImg = wKey->GetComponent<HDData::ImageUI>();
+	wKeyImg->SetSortOrder(0.15f);
 	wKeyImg->SetImage("keyboard_w.png");
 	
 	auto dKey = API::CreateImageBox(_scene, "dKey");
 	dKey->GetTransform()->SetPosition(830.0f * width / 1920, 900.0f * height / 1080, 0);
 	auto dKeyImg = dKey->GetComponent<HDData::ImageUI>();
+	dKeyImg->SetSortOrder(0.15f);
 	dKeyImg->SetImage("keyboard_d.png");
 
 	auto shiftKey = API::CreateImageBox(_scene, "shiftKey");
-	shiftKey->GetTransform()->SetPosition(740.0f * width / 1920, 940.0f * height / 1080, 0);
+	shiftKey->GetTransform()->SetPosition(745.0f * width / 1920, 960.0f * height / 1080, 0);
 	auto shiftKeyImg = shiftKey->GetComponent<HDData::ImageUI>();
-	shiftKeyImg->ChangeScale(1.7f, 1.7f);
+	shiftKeyImg->ChangeScale(1.6f, 1.6f);
+	shiftKeyImg->SetSortOrder(0.15f);
 	shiftKeyImg->SetImage("keyboard_shift.png");
 
 	auto spaceKey = API::CreateImageBox(_scene, "spaceKey");
-	spaceKey->GetTransform()->SetPosition(860.0f * width / 1920, 940.0f * height / 1080, 0);
+	spaceKey->GetTransform()->SetPosition(960.0f * width / 1920, 960.0f * height / 1080, 0);
 	auto spaceKeyImg = spaceKey->GetComponent<HDData::ImageUI>();
 	spaceKeyImg->ChangeScale(1.7f,1.7f);
+	spaceKeyImg->SetSortOrder(0.15f);
 	spaceKeyImg->SetImage("keyboard_space.png");
 
 	auto mouseKey = API::CreateImageBox(_scene, "mouseKey");
-	mouseKey->GetTransform()->SetPosition(940.0f * width / 1920, 900.0f * height / 1080, 0);
+	mouseKey->GetTransform()->SetPosition(985.0f * width / 1920, 865.0f * height / 1080, 0);
 	auto mouseKeyImg = mouseKey->GetComponent<HDData::ImageUI>();
 	mouseKeyImg->ChangeScale(1.7f, 1.7f);
+	mouseKeyImg->SetSortOrder(0.15f);
 	mouseKeyImg->SetImage("mouse_left.png");
 
 	// Create Meterial

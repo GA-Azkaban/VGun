@@ -473,7 +473,7 @@ void InGameSceneView::Initialize()
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 65, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
@@ -676,7 +676,7 @@ void InGameSceneView::Initialize()
 	tumbleObj->GetTransform()->SetPosition(1750, 1350, 0);
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
-	tumbleComp->SetSortOrder(0.7f);
+	tumbleComp->SetSortOrder(0.6f);
 	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
@@ -684,7 +684,7 @@ void InGameSceneView::Initialize()
 	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
-	tumbleAlphaImage->SetSortOrder(0.8f);
+	tumbleAlphaImage->SetSortOrder(0.61f);
 	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");

@@ -51,7 +51,7 @@ void Client::Initialize()
 	MainMenuScene menu;			//Scene Name : MainMenu
 	menu.Initalize();
 
-	LobbySceneView lobby;
+	LobbySceneView lobby;		//Scene Name : Lobby
 	lobby.Initialize();
 	
 	InGameSceneView inGame;			//Scene Name : InGame

@@ -100,11 +100,11 @@ void MainMenuScene::MainMenu()
 	credit->SetSelfActive(false);
 	auto creditImg = credit->GetComponent<HDData::ImageUI>();
 	creditImg->SetImage("joinCanvas.png");
-	creditImg->ChangeScale(1.7375f, 0.91875f);
+	creditImg->ChangeScale(1.5f, 0.91875f);
 	creditImg->SetSortOrder(0.6f);
 
 	auto creditText = API::CreateImageBox(_scene, "creditPeople", credit);
-	creditText->GetTransform()->SetPosition(API::GetScreenWidth() / 2, (API::GetScreenHeight() / 2)-25.0f, 0.0f);
+	creditText->GetTransform()->SetPosition((API::GetScreenWidth() / 2)+115.0f, (API::GetScreenHeight() / 2)-25.0f, 0.0f);
 	auto creditTextImg = creditText->GetComponent<HDData::ImageUI>();
 	creditTextImg->SetImage("credit.png");
 	creditTextImg->SetSortOrder(0.61f);
@@ -154,7 +154,7 @@ void MainMenuScene::MainMenu()
 	auto freshBtn = refreshButton->GetComponent<HDData::Button>();
 	freshBtn->SetDefaultColor(DirectX::Colors::White);
 	freshBtn->SetImage("flair_arrow_3.png");
-	freshBtn->SetSortOrder(0.7f);
+	freshBtn->SetSortOrder(0.65f);
 	freshBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	freshBtn->SetOnClickEvent(
 		[]()
@@ -283,7 +283,7 @@ void MainMenuScene::MainMenu()
 		enter_roomCanvas->GetComponent<HDData::Button>()->SetImage("subCanvas_alpha_long.png");
 		//enter_roomCanvas->GetTransform()->SetPosition((960.0f + 130.0f) * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetTransform()->SetPosition(960.0f * width / 1920, posY * height / 1080, 0);
-		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.7f);
+		enter_roomCanvas->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
 		enter_roomCanvas->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 
 		MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
