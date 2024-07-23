@@ -348,7 +348,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 
 			break;
 		}
@@ -372,7 +371,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_tumbleCooldown = 6.0f;
 			recoilCooldown->SetTimerOn();
 			cooldownCountText->SetTimerOn();
-			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_roll");
 
 			_headCam->ToggleCameraShake(true);
@@ -415,6 +413,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::AIM:
 		{
+			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 
 			break;
 		}
@@ -435,8 +434,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpanimator->GetAllAC()->SetBool("isIdle", false);
-			_fpanimator->GetAllAC()->SetBool("isFire", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
 			_tpanimator->GetAllAC()->SetTrigger("isReload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
@@ -600,6 +597,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::AIM:
 		{
+			_fpanimator->GetAllAC()->SetBool("isIdle", false);
 
 			break;
 		}
@@ -609,6 +607,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			_shootCount = 0;
 			_headCam->ToggleCameraShake(false);
 			_headCam->ResetCameraPos();
+			_fpanimator->GetAllAC()->SetBool("isFire", false);
 
 			break;
 		}
@@ -619,10 +618,10 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			//_fpmesh->SetMeshActive(true, 0);
 			_fpanimator->GetAllAC()->SetBool("isReload", false);
-			_tpanimator->GetAllAC()->SetBool("isReload", false);
+			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 
-			_fpmesh->SetMeshActive(true, 0);
 			Reload();
 			_reloadTimer = 0.0f;
 			_shootCooldown = 0.2f;
@@ -1357,7 +1356,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		return;
 	}
-	else if ((API::GetKeyDown(DIK_R) && _bulletCount < 6) || (_bulletCount == 0 && _playerState.second == ePlayerMoveState::AIM))
+	else if ((API::GetKeyDown(DIK_R) && _bulletCount < 6) || (_bulletCount == 0 && _shootCooldown <= 0.0f && _playerState.first != ePlayerMoveState::TUMBLE && _playerState.second != ePlayerMoveState::RELOAD))
 	{
 		_playerState.second = ePlayerMoveState::RELOAD;
 		return;

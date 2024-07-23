@@ -87,7 +87,7 @@ void InGameSceneView::Initialize()
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.05f));
 	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.17f);
 	headCollider->SetParentCollider(playerCollider);
 	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
@@ -354,7 +354,7 @@ void InGameSceneView::Initialize()
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.05f));
 		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.17f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
