@@ -1,10 +1,19 @@
 ﻿#include "AudioSource.h"
 #include "SoundSystem.h"
+#include "Transform.h"
 
 HDData::AudioSource::AudioSource()
 	: _soundSystem(HDEngine::SoundSystem::Instance())
 {
 
+}
+
+void HDData::AudioSource::Update()
+{
+	for (auto& sound : _3DSoundList)
+	{
+		_soundSystem.Update3DSoundPosition(sound, GetTransform()->GetPosition());
+	}
 }
 
 void HDData::AudioSource::AddAudio(std::string soundName, std::string soundPath, HDData::SoundGroup soundGroup)
@@ -17,6 +26,7 @@ void HDData::AudioSource::AddAudio3D(std::string soundName, std::string soundPat
 {
 	_soundSystem.CreateSound3D(soundPath, soundGroup, minDistance, maxDistance);
 	_soundSystem.GetSoundPathList().insert(std::make_pair(soundName, soundPath));
+	_3DSoundList.push_back(soundName);
 }
 
 void HDData::AudioSource::PlayOnce(std::string soundName)
@@ -146,9 +156,4 @@ bool HDData::AudioSource::IsSoundPlaying(std::string soundName)
 	}
 
 	return false;
-}
-
-void HDData::AudioSource::Update3DSoundPosition(std::string soundName, Vector3 position)
-{
-	_soundSystem.Update3DSoundPosition(soundName, position);
 }

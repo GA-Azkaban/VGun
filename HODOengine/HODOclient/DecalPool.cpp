@@ -6,9 +6,7 @@ DecalPool::DecalPool()
 {
 	HDEngine::MaterialDesc decalWoodMat;
 	decalWoodMat.materialName = "BulletHoleWoodMat";
-	//decalWoodMat.color = { 92, 83, 73, 255 };
 	decalWoodMat.color = { 46, 41, 36, 255 };
-	//decalWoodMat.albedo = "T_Reinforced_BC.png";
 	decalWoodMat.normalMap = "T_Wood_08_N.png";
 	decalWoodMat.mask = "T_Wood_08_M.png";
 

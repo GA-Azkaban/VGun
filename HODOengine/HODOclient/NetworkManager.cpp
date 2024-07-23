@@ -3,6 +3,7 @@
 #include <chrono>
 #include "NetworkManager.h"
 #include "SoundManager.h"
+#include "GameSetting.h"
 
 #include "Service.h"
 #include "ServerPacketHandler.h"
@@ -73,7 +74,7 @@ void NetworkManager::Update()
 		{
 			continue;
 		}
-		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 1.0f);
 	}
 }
 
@@ -231,7 +232,7 @@ void NetworkManager::Connected()
 {
 	_isConnect = true;
 
-//#if _DEBUG
+// #if _DEBUG
 	FILE* pFile = nullptr;
 
 	if (AllocConsole())
@@ -240,7 +241,7 @@ void NetworkManager::Connected()
 		ASSERT_CRASH(false);
 
 	std::cout << "Connected" << std::endl;
-//#endif
+// #endif
 }
 
 void NetworkManager::Disconnected()
@@ -299,6 +300,8 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	GameManager::Instance()->GetMyInfo()->SetPlayerUID(uid);
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
+
+	GameSetting::Instance().SetMyNickname(nickName);
 
 	SoundManager::Instance().PlayUI("sfx_entry");
 	API::LoadSceneByName("MainMenu");
@@ -588,6 +591,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -630,24 +634,14 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		auto& obj = playerobj[player.userinfo().uid()];
 		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
 
-		Vector3 pos = { 0, 0, 0 };
-
-		if (info->GetIsJump())
-		{
-			pos = { player.transform().vector3().x(), 0.07, player.transform().vector3().z() };
-		}
-		else
-		{
-			pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
-		}
-
+		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
 		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
 
 		info->SetServerTransform(pos, rot);
 		info->SetCurrentHP(player.hp());
 
 		// animation
-		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
+		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) continue;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
 	}
 }
@@ -726,7 +720,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 {
 	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
-
+	
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
@@ -741,32 +735,52 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot)
-		return;
+	//if (currentPos == serverPos && currentRot == serverRot)
+	//	return;
+	Vector3 posDif = currentPos - serverPos;
+	if (posDif.Length() > 0.05f)
+	{
+		//static float lerpTime = 0.0f;
+		//lerpTime += dt * intermediateValue;
+		//float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
+		//float t = x * x * (3 - 2 * x);
 
-	static float lerpTime = 0.0f;
-	lerpTime += dt * intermediateValue;
-	float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
-	float t = x * x * (3 - 2 * x);
+		//// 포지션 비선형 보간
+		//Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, x);
+		//
+		//current->SetPosition(interpolatedPos);
 
-	// 포지션 비선형 보간
-	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, t);
+		//if (t >= 1.0f)
+		//	lerpTime = 0.0f;
 
-	// 로테이션 구면 선형 보간
-	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
+		Vector3 interpolatedPos = (currentPos + serverPos) / 2.0f;
 
-	// 현재 Transform에 보간된 값 설정
-	current->SetPosition(interpolatedPos);
-	current->SetRotation(interpolatedRot);
+		current->SetPosition(interpolatedPos);
+	}
+	else
+	{
+		current->SetPosition(serverPos);
+	}
 
+	float dot = serverRot.Dot(currentRot);
+	float angleDif = 2.0f * acos(dot);
+	if (angleDif > 0.01f)
+	{
+		// 로테이션 구면 선형 보간
+		Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
+
+		// 현재 Transform에 보간된 값 설정
+		current->SetRotation(interpolatedRot);
+	}
+	else
+	{
+		current->SetRotation(serverRot);
+	}
 	// 보간 후에도 너무 멀리 있다면 즉시 이동
 	//if (Vector3::Distance(currentPos, serverPos) > 1)
 	//{
 	//	currentPos = serverPos;
 	//}
-
-	if (t >= 1.0f)
-		lerpTime = 0.0f;
 }
 
 Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)

@@ -1,10 +1,10 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
-#include "GameSetting.h"
 #include "RoundManager.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "UIEffect.h"
+#include "Crosshair.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -46,7 +46,7 @@ void PlayerInfo::Init()
 	this->_death = 0;
 	this->_isDie = false;
 	this->_bulletCount = 6;
-	this->_currentHP = 70;
+	this->_currentHP = 100;
 	this->_serialkillcount = 0;
 	this->_state = ePlayerState::IDLE;
 }
@@ -122,7 +122,6 @@ void PlayerInfo::SetIsHost(bool isHost)
 void PlayerInfo::SetNickName(std::string nickName)
 {
 	_playerNickname = nickName;
-	GameSetting::Instance().SetMyNickname(nickName);
 }
 
 bool& PlayerInfo::GetIsDie()
@@ -266,11 +265,13 @@ void PlayerInfo::PlayDieEffect()
 {
 	_dieEffectImg->GetGameObject()->SetSelfActive(true);
 	_dieEffectImg->FadeIn(1);
+	_crosshair->SetActive(false);
 }
 
 void PlayerInfo::PlayRespawnEffect()
 {
 	_dieEffectImg->GetGameObject()->SetSelfActive(false);
+	_crosshair->SetActive(true);
 	// TODO) 리스폰 이펙트 
 }
 
@@ -289,6 +290,11 @@ void PlayerInfo::PlayKillLog(std::string log)
 void PlayerInfo::KillLogExit()
 {
 	_killLog->GetGameObject()->SetSelfActive(false);
+}
+
+void PlayerInfo::SetCrosshairUI(Crosshair* crosshair)
+{
+	_crosshair = crosshair;
 }
 
 bool& PlayerInfo::GetPlayerDie()

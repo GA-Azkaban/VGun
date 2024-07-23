@@ -289,8 +289,9 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
 
 		HDData::GameObject* enter_roomTitle = API::CreateTextbox(_scene, "title", enter_roomCanvas);
-		enter_roomTitle->GetTransform()->SetLocalPosition(-80, 0, 0);
+		enter_roomTitle->GetTransform()->SetLocalPosition(-30, 10, 0);
 		auto roomT = enter_roomTitle->GetComponent<HDData::TextUI>();
+		roomT->SetFont("Resources/Font/KRAFTON_30.spritefont");
 		roomT->SetText("Title");
 		roomT->SetSortOrder(0.71f);
 		roomT->SetColor(DirectX::Colors::BlanchedAlmond);
@@ -300,8 +301,9 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].title = roomT;
 
 		HDData::GameObject* enter_roomID = API::CreateTextbox(_scene, "roomID", enter_roomCanvas);
-		enter_roomID->GetTransform()->SetLocalPosition(-200, 0, 0);
+		enter_roomID->GetTransform()->SetLocalPosition(-230, 10, 0);
 		auto roomid = enter_roomID->GetComponent<HDData::TextUI>();
+		roomid->SetFont("Resources/Font/KRAFTON_25.spritefont");
 		roomid->SetText("ID");
 		roomid->SetColor(DirectX::Colors::BlanchedAlmond);
 		roomid->SetSortOrder(0.71f);
@@ -311,7 +313,7 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].id = roomid;
 
 		HDData::GameObject* enter_maxCount = API::CreateImageBox(_scene, "maxCount", enter_roomCanvas);
-		enter_maxCount->GetTransform()->SetLocalPosition(280, 0, 0);
+		enter_maxCount->GetTransform()->SetLocalPosition(260.0f, -25.0f, 0);
 		auto max = enter_maxCount->GetComponent<HDData::ImageUI>();
 		max->SetImage("flair_number_6_outline.png");
 		max->SetSortOrder(0.81);
@@ -322,7 +324,7 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].maxCount = max;
 
 		HDData::GameObject* enter_currentCount = API::CreateImageBox(_scene, "currentCount", enter_roomCanvas);
-		enter_currentCount->GetTransform()->SetLocalPosition(320, 0, 0);
+		enter_currentCount->GetTransform()->SetLocalPosition(210.0f, -25.0f, 0);
 		auto current = enter_currentCount->GetComponent<HDData::ImageUI>();
 		current->SetImage("flair_number_2_outline.png");
 		current->SetSortOrder(0.71);
@@ -331,29 +333,6 @@ void MainMenuScene::MainMenu()
 		enter_currentCount->SetSelfActive(false);
 
 		MenuManager::Instance()._roomObject[i].currentCount = current;
-
-		//HDData::GameObject* enter_isPrivate = API::CreateImageBox(_scene, "isLock", enter_roomCanvas);
-		//enter_isPrivate->GetTransform()->SetLocalPosition(100, 25, 0);
-		//auto isP = enter_isPrivate->GetComponent<HDData::ImageUI>();
-		//isP->SetImage("no_private.png");
-		//isP->SetSortOrder(0.82);
-		//isP->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-		//isP->ChangeScale(0.5f,0.5f);
-
-		//enter_isPrivate->SetSelfActive(false);
-
-		//MenuManager::Instance()._roomObject[i].isPrivate = isP;
-
-		//HDData::GameObject* enter_isTeam = API::CreateImageBox(_scene, "isTeam", enter_roomCanvas);
-		//enter_isTeam->GetTransform()->SetLocalPosition(150, 0, 0);
-		//auto isT = enter_isTeam->GetComponent<HDData::ImageUI>();
-		//isT->SetImage("icon_user_filled.png");
-		//isT->SetSortOrder(0.82);
-		//isT->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-		//enter_isTeam->SetSelfActive(false);
-
-		//MenuManager::Instance()._roomObject[i].isTeam = isT;
 
 		posY += 150;
 
@@ -419,32 +398,6 @@ void MainMenuScene::MainMenu()
 	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.65f);
 	make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.65f);
 
-	// privateRoom Set
-	//HDData::GameObject* make_passwordLabel = API::CreateTextbox(_scene, "privateRoomTextLabel", make_canvas);
-	//make_passwordLabel->GetTransform()->SetPosition(710.0f * width / 1920, 320.0f * height / 1080, 0.f);
-	//make_passwordLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-	//make_passwordLabel->GetComponent<HDData::TextUI>()->SetText("RoomPassword");
-	//make_passwordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
-	//make_passwordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.75f);
-	//if (width / 1920 > 1.0f)
-	//{
-	//	make_passwordLabel->GetComponent<HDData::TextUI>()->ChangeScale(width / 1920.0f * 1.35f);
-	//}
-
-	//// privateCheckBox
-	//HDData::GameObject* make_isPrivateCheck = API::CreateToggle(_scene, "privateCheckBox", make_canvas);
-	//make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->GetOnComp()->SetImage("checkbox_background.png");
-	//make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->GetOffComp()->SetImage("checkbox_cross.png");
-	//make_isPrivateCheck->GetTransform()->SetPosition(1200.0f * width / 1920, 240.0f * height / 1080, 0.0f);
-	//make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->SetSortOrder(0.75f);
-
-	//HDData::GameObject* roomPassWordTextBox = API::CreateTextInputBox(_scene, "roomPassWord", make_canvas);
-	//roomPassWordTextBox->GetTransform()->SetPosition(960.0f * width / 1920, 320.0f * height / 1080, 0.0f);
-	//auto newRoomPassWord = roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>();
-	//roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.75f);
-	//roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.75f);
-	//roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.75f);
-
 	// room setting
 	HDData::GameObject* roomSetBtn = API::CreateButton(_scene, "roomSet", make_canvas);
 	roomSetBtn->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 620.0f * height / 1080, 0.f);
@@ -460,23 +413,9 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetComponent<HDData::TextUI>()->SetText("MAKE ROOM");
 	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.67f);
 
-	// Training Btn
-	HDData::GameObject* main_trainingBtn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
-	main_trainingBtn->GetTransform()->SetPosition((150.0f - (width - 1920) * 0.0078f) * width / 1920, 330.0f * height / 1080, 0.f);
-	main_trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	main_trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
-	main_trainingBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-	main_trainingBtn->AddComponent<BtnTextScript>();
-	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", main_trainingBtn);
-	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
-	trainingText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
-	float trainingTextWidth = trainingText->GetComponent<HDData::TextUI>()->GetTextWidth();
-	trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
-
 	//EXIT Btn
 	HDData::GameObject* exit_Btn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
-	exit_Btn->GetTransform()->SetPosition((100.0f + (width - 1920) * 0.012f) * width / 1920, 420.0f * height / 1080, 0.f);
+	exit_Btn->GetTransform()->SetPosition((140.0f - (width - 1920) * 0.0078f) * width / 1920, 330.0f * height / 1080, 0.f);
 	exit_Btn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	exit_Btn->GetComponent<HDData::Button>()->SetSortOrder(0.7f);
 	exit_Btn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
@@ -485,7 +424,7 @@ void MainMenuScene::MainMenu()
 	tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	tempText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
-	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
+	tempText->GetComponent<HDData::TextUI>()->SetText("LOGOUT");
 
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
@@ -563,6 +502,8 @@ void MainMenuScene::MainMenu()
 	main_playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			credit->SetSelfActive(false);
+
 			if (!main_makeBtn->GetSelfActive() && !main_enterBtn->GetSelfActive())
 			{
 				main_makeBtn->SetSelfActive(true);
@@ -585,6 +526,8 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
+			credit->SetSelfActive(false);
+
 			if (!enter_roomLstCanvas->GetSelfActive())
 			{
 				MenuManager::Instance().ShowRoomListCanvas(true);
@@ -601,23 +544,11 @@ void MainMenuScene::MainMenu()
 		}
 	);
 
-	/*make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->SetToggleOnEvent(
-		[=]()
-		{
-			roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetImage("back.png");
-			roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetIsIgnoreFocus(false);
-		});
-
-	make_isPrivateCheck->GetComponent<HDData::ToggleUI>()->SetToggleOffEvent(
-		[=]()
-		{
-			roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetImage("back_NotActive.png");
-			roomPassWordTextBox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetIsIgnoreFocus(true);
-		});*/
-
 	main_makeBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			credit->SetSelfActive(false);
+
 			if (!make_canvas->GetSelfActive())
 			{
 				make_canvas->SetSelfActive(true);
@@ -638,6 +569,7 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
+			credit->SetSelfActive(false);
 			make_canvas->SetSelfActive(false);
 			NetworkManager::Instance().SendRoomCreate(newRoomName->GetCurrentText(), "", 6, false);
 		}
@@ -664,6 +596,8 @@ void MainMenuScene::MainMenu()
 	teamLogo->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			make_canvas->SetSelfActive(false);
+			enter_roomLstCanvas->SetSelfActive(false);
 			if (credit->GetSelfActive())
 			{
 				credit->SetSelfActive(false);
@@ -676,9 +610,10 @@ void MainMenuScene::MainMenu()
 	);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[]()
+		[=]()
 		{
 			NetworkManager::Instance().SendLogout();
+			credit->SetSelfActive(false);
 		}
 	);
 

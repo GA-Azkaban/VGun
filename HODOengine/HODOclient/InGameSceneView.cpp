@@ -83,12 +83,12 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->_myObj = player;
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.05f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.17f);
 	headCollider->SetParentCollider(playerCollider);
 	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
@@ -141,13 +141,13 @@ void InGameSceneView::Initialize()
 
 	// 수박...이 아니라 회전초
 	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
-							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
+							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {20, -7}, {22, 8}, {28, 13}};
 	std::vector<HDData::DynamicSphereCollider*> weedColVector;
 	weedColVector.reserve(20);
 	for (int i = 1; i <= 20; ++i)
 	{
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
-		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 1.0f, weedPos[i-1][1]));
+		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 0.4f, weedPos[i-1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
 		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
 		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
@@ -156,7 +156,7 @@ void InGameSceneView::Initialize()
 		weedMeshComp->LoadMaterial(chMat, 0);
 		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.38f, 0.38f, 0.38f));
+		weedCollider->SetScaleOffset(Vector3(0.37f, 0.37f, 0.37f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);
@@ -280,48 +280,53 @@ void InGameSceneView::Initialize()
 	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
 	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
-	particleSystem3->main.duration = 1.5f;
+	particleSystem3->main.duration = 1.0f;
 	particleSystem3->main.loop = false;
-	particleSystem3->main.minStartColor = { 90, 0, 0, 255 };
-	particleSystem3->main.maxStartColor = { 90, 0, 0, 255 };
-	particleSystem3->main.minStartLifetime = 1.0f;
-	particleSystem3->main.maxStartLifetime = 1.0f;
+	particleSystem3->main.minStartColor = { 180, 0, 0, 255 };
+	particleSystem3->main.maxStartColor = { 180, 0, 0, 255 };
+	particleSystem3->main.minStartLifetime = 0.8f;
+	particleSystem3->main.maxStartLifetime = 0.8f;
 	particleSystem3->main.minStartRotation = -180.0f;
-	particleSystem3->main.maxStartRotation = 0.0f;
-	particleSystem3->main.minStartSize = 0.25f;
-	particleSystem3->main.maxStartSize = 0.5f;
-	particleSystem3->main.minStartSpeed = 500.0f;
-	particleSystem3->main.maxStartSpeed = 800.0f;
+	particleSystem3->main.maxStartRotation = 180.0f;
+	particleSystem3->main.minStartSize = 0.025f;
+	particleSystem3->main.maxStartSize = 0.05f;
+	particleSystem3->main.minStartSpeed = -20.0f;
+	particleSystem3->main.maxStartSpeed = 100.0f;
+	particleSystem3->main.initialVelocity = 0.1f;
+	particleSystem3->main.gravityModifier = 0.2f;
 	particleSystem3->emission.enabled = true;
-	HDData::Burst newBurst3(0.0f, 4);
+	HDData::Burst newBurst3(0.0f, 6);
 	particleSystem3->emission.SetBurst(newBurst3);
+	particleSystem3->limitVelocityOverLifetime.enabled = true;
+	particleSystem3->limitVelocityOverLifetime.drag = true;
 	particleSystem3->sizeOverLifetime.enabled = true;
 	HDData::AnimationCurve curve3;
-	curve3.AddKey(0.0f, 0.2f, [](float t) { return 3.75f * t; });
-	curve3.AddKey(0.2f, 1.0f, [](float t) { return 0.3125f * t + 0.6875f; });
+	curve3.AddKey(0.0f, 0.2f, [](float t) { return 2.875f * t * t * t + (-4.3625f) * t * t + 0.6075f * t + 0.98f; });
 	particleSystem3->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve3);
 	particleSystem3->rotationOverLifetime.enabled = true;
-	particleSystem3->rotationOverLifetime.angularVelocity = 100.0f;
+	particleSystem3->rotationOverLifetime.angularVelocity = 500.0f;
 	HDEngine::MaterialDesc bloodMatDesc;
 	bloodMatDesc.materialName = "bloodMat";
+	bloodMatDesc.color = { 180, 0, 0, 255 };
 	HDData::Material* bloodMat = API::CreateMaterial(bloodMatDesc);
 	particleSystem3->rendererModule.material = bloodMat;
 	particleSystem3->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
 	particleSystem3->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
+	particleSystem3->rendererModule.alphaBlending = true;
 	particleSystem3->colorOverLifetime.enabled = true;
 	// colorKey, alphaKey 생성
 	std::vector<HDData::GradientColorKey> ck3;
 	std::vector<HDData::GradientAlphaKey> ak3;
 	HDData::GradientColorKey colorkey5;
-	colorkey5.color = { 90, 0, 0 };
+	colorkey5.color = { 180, 0, 0 };
 	colorkey5.time = 0.0f;
 	ck3.push_back(colorkey5);
 	HDData::GradientColorKey colorkey6;
-	colorkey6.color = { 158, 0, 0 };
+	colorkey6.color = { 255, 0, 0 };
 	colorkey6.time = 0.144f;
 	ck3.push_back(colorkey6);
 	HDData::GradientColorKey colorkey7;
-	colorkey7.color = { 101, 0, 0 };
+	colorkey7.color = { 220, 0, 0 };
 	colorkey7.time = 0.403f;
 	ck3.push_back(colorkey7);
 	HDData::GradientAlphaKey alphaKey6;
@@ -335,22 +340,6 @@ void InGameSceneView::Initialize()
 	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
 	playerMove->bloodParticle = particleSystem3;
 
-	// sound 추가
-	//HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
-	//playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7-2.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload3.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble_large.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound);
-	//playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
-	//playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
-	//playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
-
 	posX += 1;
 	posT += 315;
 
@@ -361,12 +350,12 @@ void InGameSceneView::Initialize()
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.05f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.17f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
@@ -453,18 +442,33 @@ void InGameSceneView::Initialize()
 		posT += 315;
 	}
 
+
+
+	// killcount ui (mine)
+	auto nickname = API::CreateTextbox(_scene, "mine");
+	nickname->GetTransform()->SetPosition(130 - 40, 50, 0);
+	auto nickComp = nickname->GetComponent<HDData::TextUI>();
+	nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	nickComp->SetText("");
+	nickComp->SetSortOrder(0.7);
+
+	auto killcount = API::CreateTextbox(_scene, "mycount");
+	killcount->GetTransform()->SetPosition(130 + 75, 50, 0);
+	auto countComp = killcount->GetComponent<HDData::TextUI>();
+	countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	countComp->SetText("");
+	countComp->SetSortOrder(0.7);
+
+	RoundManager::Instance()->_myKillCount.first = nickComp;
+	RoundManager::Instance()->_myKillCount.second = countComp;
+
+	// killcount ui (others)
+
 	int uiX = 130;
-	int uiY = 52.0f;
+	int uiY = 100.0f;
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		// killCount UI
-		//auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
-		//uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
-		//uiBack->GetTransform()->SetScale(1, 3, 0);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
-
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
@@ -473,13 +477,12 @@ void InGameSceneView::Initialize()
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 65, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 75, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
-		//RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
@@ -521,8 +524,6 @@ void InGameSceneView::Initialize()
 		});
 
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
-	//endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
-	//endText->GetTransform()->SetPosition(1225.0f, 1285.0f, 0.0f);
 	endText->GetTransform()->SetPosition(2175.0f, 1285.0f, 0.0f);	//endbutton.x -125
 	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
 	endTXTcomp->SetText("EXIT GAME");

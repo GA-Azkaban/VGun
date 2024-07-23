@@ -622,9 +622,6 @@
     <Filter Include="DeferredRendering\RenderPasses\ForwardPass">
       <UniqueIdentifier>{fa17eb72-e773-473a-a0b8-f2625807947d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DeferredRendering\RenderPasses\PostProcess">
-      <UniqueIdentifier>{6c2e683e-002b-4404-8d93-618a426cf585}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader\HLSL\PostProcess">
       <UniqueIdentifier>{6b6521f1-b7a7-491a-af8a-4af600272a9d}</UniqueIdentifier>
     </Filter>

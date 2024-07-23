@@ -37,7 +37,7 @@ void PlayerMove::Start()
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
-	_moveSpeed = 3.0f;
+	_moveSpeed = 6.0f;
 
 	StartRoundCam();
 
@@ -50,42 +50,26 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
-	{
-		if (_isDie)
-		{
-			_isDie = false;
-			Respawn();
-		}
-		else
-		{
-			_isDie = true;
-			Die();
-		}
-	}
-
-	if (!_isMovable || _isDie)
-	{
-		return;
-	}
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	_playerPos = GetTransform()->GetPosition();
+	CoolTime();
+
+	DecidePlayerState();
 
 	_isShootHead = false;
 	_isShootBody = false;
 
-	CameraControl();
-	CheckMoveInfo();
-	CoolTime();
-	DecidePlayerState();
+	if (!_isDie && _isMovable)
+	{
+		CameraControl();
+		CheckMoveInfo();
+	}
 	Behavior();
 
-	//UpdateStateText();
+	//_playerPos = GetTransform()->GetPosition();
 
-	// sound 관련
-	PlayPlayerSound();
+	//UpdateStateText();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 }
@@ -216,7 +200,7 @@ bool PlayerMove::CheckIsOnGround()
 			//{
 			_isOnGround = true;
 			_isJumping = false;
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
@@ -269,8 +253,6 @@ void PlayerMove::ShootGun()
 
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
-	// 총구 화염 이펙트
-
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
 
@@ -293,8 +275,7 @@ void PlayerMove::ShootGun()
 		{
 			_isShootHead = true;
 			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
-			bloodParticle->GetTransform()->SetPosition(hitPoint);
-			bloodParticle->Play();
+			PlayParticle(hitPoint);
 		}
 		else
 		{
@@ -320,8 +301,7 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
-		bloodParticle->GetTransform()->SetPosition(hitPoint);
-		bloodParticle->Play();
+		PlayParticle(hitPoint);
 	}
 
 	// 건물을 맞췄을 때
@@ -339,7 +319,7 @@ void PlayerMove::ShootGun()
 void PlayerMove::Reload()
 {
 	_shootCount = 0;
-	_playerState.second = ePlayerMoveState::IDLE;
+	//_playerState.second = ePlayerMoveState::IDLE;
 	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
@@ -359,12 +339,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
-}
-
-void PlayerMove::PlayPlayerSound()
-{
-
+	_playerColliderStanding->Move(direction, 24.0f, _deltaTime);
 }
 
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
@@ -373,40 +348,21 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_fpanimator->GetAllAC()->SetBool("isIdle", true);
-			_playerColliderStanding->Stop();
 
-			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
-			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
-			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
-			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_moveSpeed = 6.4f;
-
-			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
-				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
-			else if (_moveDirection == 4)
-				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
-			else if (_moveDirection == 6)
-				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
-			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
-				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
-
-			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
-			NetworkManager::Instance().SendPlayJump();
-
+			//NetworkManager::Instance().SendPlayJump();
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
+
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
@@ -432,13 +388,21 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			else
 			{
 				if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollFront");
+				}
 				else if (_moveDirection == 4)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollLeft");
+				}
 				else if (_moveDirection == 6)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollRight");
+				}
 				else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollBack");
+				}
 
 				_tumbleDirection = DecideDisplacement(_moveDirection);
 			}
@@ -449,6 +413,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::AIM:
 		{
+			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 
 			break;
 		}
@@ -469,7 +434,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpanimator->GetAllAC()->SetBool("isIdle", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
 			_tpanimator->GetAllAC()->SetTrigger("isReload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
@@ -480,6 +444,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::DIE:
 		{
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
+			//_fpanimator->GetAllAC()->SetBool("isDie", true);
 			_tpanimator->GetAllAC()->SetBool("isDie", true);
 			Die();
 
@@ -499,7 +464,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			_playerColliderStanding->Stop();
 
 			break;	
@@ -508,6 +473,35 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+
+			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
+			else if (_moveDirection == 4)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			}
+			else if (_moveDirection == 6)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
+			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
 
 			break;
 		}
@@ -544,7 +538,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpmesh->SetMeshActive(false, 0);
+			//_fpmesh->SetMeshActive(false, 0);
 			break;
 		}
 		case ePlayerMoveState::DIE:
@@ -572,6 +566,10 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_playerColliderStanding->Stop();
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 
 			break;
 		}
@@ -599,6 +597,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::AIM:
 		{
+			_fpanimator->GetAllAC()->SetBool("isIdle", false);
 
 			break;
 		}
@@ -608,6 +607,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			_shootCount = 0;
 			_headCam->ToggleCameraShake(false);
 			_headCam->ResetCameraPos();
+			_fpanimator->GetAllAC()->SetBool("isFire", false);
 
 			break;
 		}
@@ -618,15 +618,19 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpmesh->SetMeshActive(true, 0);
+			//_fpmesh->SetMeshActive(true, 0);
+			_fpanimator->GetAllAC()->SetBool("isReload", false);
+			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
+
 			Reload();
 			_reloadTimer = 0.0f;
+			_shootCooldown = 0.2f;
 
 			break;
 		}
 		case ePlayerMoveState::DIE:
 		{
-			_fpanimator->GetAllAC()->SetBool("isDie", false);
+			_tpanimator->GetAllAC()->SetBool("isDie", false);
 			Respawn();
 
 			break;
@@ -720,6 +724,14 @@ void PlayerMove::UpdateStateText()
 	//_plPosText->SetText(posText);
 }
 
+void PlayerMove::PlayParticle(Vector3 position)
+{
+	bloodParticle->GetTransform()->SetPosition(position);
+	//Vector4 cameraRotation = _headCam->GetTransform()->GetRotation();
+	//bloodParticle->GetTransform()->SetRotation(cameraRotation);
+	//bloodParticle->GetTransform()->Rotate(0.0f, 90.0f, 0.0);
+	bloodParticle->Play();
+}
 
 int& PlayerMove::GetBulletCount()
 {
@@ -732,9 +744,13 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	{
 		return _playerState.first;
 	}
-	else
+	else if(index == 2)
 	{
 		return _playerState.second;
+	}
+	else
+	{
+		assert(false);
 	}
 }
 
@@ -1254,8 +1270,8 @@ void PlayerMove::Die()
 
 void PlayerMove::Respawn()
 {
-	
 	_playerColliderStanding->OnEnable();
+	_tpanimator->GetAllAC()->SetBool("isDie", false);
 }
 
 void PlayerMove::DecidePlayerState()
@@ -1264,8 +1280,41 @@ void PlayerMove::DecidePlayerState()
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
+	//_isDie = GameManager::Instance()->GetMyInfo()->GetIsDie();
+	//if (_isDie)
+	//{
+	//	_playerState.first = ePlayerMoveState::DIE;
+	//}
+	//else
+	//{
+	//	_playerState.first = ePlayerMoveState::IDLE;
+	//}
+
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		if (_isDie)
+		{
+			_isDie = false;
+			_playerState.first = ePlayerMoveState::IDLE;
+		}
+		else
+		{
+			_isDie = true;
+			_playerState.first = ePlayerMoveState::DIE;
+		}
+	}
+	if (_isDie)
+	{
+		return;
+	}
+
 	// 구르기 타이머 체크해서 상태 종료
 	if (_tumbleTimer > 0.0f)
+	{
+		return;
+	}
+
+	if (!_isMovable)
 	{
 		return;
 	}
@@ -1307,7 +1356,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		return;
 	}
-	else if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
+	else if ((API::GetKeyDown(DIK_R) && _bulletCount < 6) || (_bulletCount == 0 && _shootCooldown <= 0.0f && _playerState.first != ePlayerMoveState::TUMBLE && _playerState.second != ePlayerMoveState::RELOAD))
 	{
 		_playerState.second = ePlayerMoveState::RELOAD;
 		return;
@@ -1317,12 +1366,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		if (API::GetMouseDown(MOUSE_LEFT))
 		{
-			if (_bulletCount == 0)
-			{
-				//_playerState.second = ePlayerMoveState::EMPTY;
-				_playerState.second = ePlayerMoveState::RELOAD;
-			}
-			else
+			if (_bulletCount != 0)
 			{
 				_playerState.second = ePlayerMoveState::FIRE;
 			}
@@ -1345,7 +1389,7 @@ void PlayerMove::Behavior()
 {
 	if (_playerState.first != ePlayerMoveState::JUMP)
 	{
-		_playerColliderStanding->ClearVeloY();
+		//_playerColliderStanding->ClearVeloY();
 	}
 
 	if (_prevPlayerState.second == _playerState.second)

@@ -12,6 +12,8 @@ public:
 	virtual void Start() override;
 	virtual void Update() override;
 
+	void SetActive(bool isActive);
+
 	PlayerMove* playerMove;
 
 private:

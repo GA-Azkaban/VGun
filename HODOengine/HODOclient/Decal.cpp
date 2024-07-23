@@ -19,7 +19,6 @@ Decal::Decal()
 	{
 		DecalPool::Instance().RetrieveDecal(this);
 	};
-
 }
 
 Decal* Decal::CreateDecal()
@@ -44,7 +43,7 @@ void Decal::SetEffectOn(Vector3 targetPos)
 	_targetPos = targetPos;
 	Vector3 toCamera = API::GetCurrenSceneMainCamera()->GetTransform()->GetPosition() - targetPos;
 	toCamera.Normalize();
-	toCamera *= 0.1f;
+	toCamera *= 0.01f;
 	GetGameObject()->GetTransform()->SetPosition(targetPos + toCamera);
 	_decalTimer.Start();
 
