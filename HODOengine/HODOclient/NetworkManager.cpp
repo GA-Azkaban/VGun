@@ -231,7 +231,7 @@ void NetworkManager::Connected()
 {
 	_isConnect = true;
 
-#if _DEBUG
+//#if _DEBUG
 	FILE* pFile = nullptr;
 
 	if (AllocConsole())
@@ -240,7 +240,7 @@ void NetworkManager::Connected()
 		ASSERT_CRASH(false);
 
 	std::cout << "Connected" << std::endl;
-#endif
+//#endif
 }
 
 void NetworkManager::Disconnected()
@@ -318,14 +318,12 @@ void NetworkManager::SendLogout()
 	this->_service->BroadCast(sendBuffer);
 
 	// Todo 보내고 동작을 해야될까?
-
-
 }
 
 void NetworkManager::RecvLogout()
 {
 	// Todo 로그아웃을 받아서 동작해야할까?
-
+	API::LoadSceneByName("Login");
 }
 
 void NetworkManager::SendRoomListRequest()
@@ -572,14 +570,14 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
-
-	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
+
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
@@ -590,6 +588,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -641,7 +640,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		// animation
 		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
-		info->SetIsStateChange(true);
 	}
 }
 
@@ -734,41 +732,45 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot)
-		return;
+	//if (currentPos == serverPos && currentRot == serverRot)
+	//	return;
+	Vector3 posDif = currentPos - serverPos;
+	if (posDif.Length() > 0.1f)
+	{
+		static float lerpTime = 0.0f;
+		lerpTime += dt * intermediateValue;
+		float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
+		float t = x * x * (3 - 2 * x);
 
-	static float lerpTime = 0.0f;
-	lerpTime += dt * intermediateValue;
-	float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
-	float t = x * x * (3 - 2 * x);
+		// 포지션 비선형 보간
+		Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, x);
+		
+		current->SetPosition(interpolatedPos);
 
-	// 포지션 비선형 보간
-	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, t);
+		if (t >= 1.0f)
+			lerpTime = 0.0f;
+	}
 
-	// 로테이션 구면 선형 보간
-	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
+	float dot = serverRot.Dot(currentRot);
+	float angleDif = 2.0f * acos(dot);
+	if (angleDif > 0.03f)
+	{
+		// 로테이션 구면 선형 보간
+		Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
-	// 현재 Transform에 보간된 값 설정
-	current->SetPosition(interpolatedPos);
-	current->SetRotation(interpolatedRot);
-
+		// 현재 Transform에 보간된 값 설정
+		current->SetRotation(interpolatedRot);
+	}
 	// 보간 후에도 너무 멀리 있다면 즉시 이동
 	//if (Vector3::Distance(currentPos, serverPos) > 1)
 	//{
 	//	currentPos = serverPos;
 	//}
-
-	if (t >= 1.0f)
-		lerpTime = 0.0f;
 }
 
 Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)
 {
-	if (state == "")
-	{
-		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
-	}
-	else if (state == "IDLE")
+	if (state == "IDLE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
@@ -815,6 +817,10 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	else if (state == "DIE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_DEATH;
+	}
+	else
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
 	}
 }
 

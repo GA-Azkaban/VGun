@@ -50,42 +50,26 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
-	{
-		if (_isDie)
-		{
-			_isDie = false;
-			Respawn();
-		}
-		else
-		{
-			_isDie = true;
-			Die();
-		}
-	}
-
-	if (!_isMovable || _isDie)
-	{
-		return;
-	}
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	_playerPos = GetTransform()->GetPosition();
-
-	_isShootHead = false;
-	_isShootBody = false;
-
-	CameraControl();
-	CheckMoveInfo();
 	CoolTime();
+
 	DecidePlayerState();
+
+	if (!_isDie && _isMovable)
+	{
+		_isShootHead = false;
+		_isShootBody = false;
+
+		CameraControl();
+		CheckMoveInfo();
+	}
 	Behavior();
 
-	UpdateStateText();
+	//_playerPos = GetTransform()->GetPosition();
 
-	// sound 관련
-	PlayPlayerSound();
+	//UpdateStateText();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 }
@@ -93,6 +77,10 @@ void PlayerMove::Update()
 void PlayerMove::SetMovable(bool movable)
 {
 	_isMovable = movable;
+	if (movable == true)
+	{
+		_playerColliderStanding->Stop();
+	}
 }
 
 void PlayerMove::SetPlayerCamera(HDData::Camera* camera)
@@ -212,7 +200,7 @@ bool PlayerMove::CheckIsOnGround()
 			//{
 			_isOnGround = true;
 			_isJumping = false;
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
@@ -291,8 +279,19 @@ void PlayerMove::ShootGun()
 		}
 		else
 		{
-			Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(direction, 5.0f, 1);
+			//Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			//hitDynamicSphere->AddForce(direction, 4.0f, 1);
+			//Vector3 axis = GetTransform()->GetRight();
+			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
+			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
+			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			hitDynamicSphere->AddForce(forceDirection, 2.0f, 1);
+			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
+			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
+			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
+							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
+							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
+			hitDynamicSphere->AddTorque(axis, 500.0f, 0);
 		}
 	}
 
@@ -343,11 +342,6 @@ void PlayerMove::Tumble(Vector3 direction)
 	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
-void PlayerMove::PlayPlayerSound()
-{
-
-}
-
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
 {
 	switch (state)
@@ -365,7 +359,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_moveSpeed = 6.0f;
+			_moveSpeed = 6.4f;
 
 			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
 				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
@@ -382,9 +376,10 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 4.0f;
+			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
+			//NetworkManager::Instance().SendPlayJump();
 
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
 			break;
@@ -479,7 +474,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			_playerColliderStanding->Stop();
 
 			break;	
@@ -720,9 +715,13 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	{
 		return _playerState.first;
 	}
-	else
+	else if(index == 2)
 	{
 		return _playerState.second;
+	}
+	else
+	{
+		assert(false);
 	}
 }
 
@@ -1005,6 +1004,12 @@ void PlayerMove::SetIsIngamePlaying(bool isPlaying)
 	_isIngamePlaying = isPlaying;
 }
 
+void PlayerMove::StopMoving()
+{
+	_playerColliderStanding->Stop();
+	_moveDirection = 5;
+}
+
 void PlayerMove::ToggleCam()
 {
 	if (_isHeadCam)
@@ -1236,7 +1241,6 @@ void PlayerMove::Die()
 
 void PlayerMove::Respawn()
 {
-	
 	_playerColliderStanding->OnEnable();
 }
 
@@ -1246,8 +1250,28 @@ void PlayerMove::DecidePlayerState()
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		if (_isDie)
+		{
+			_isDie = false;
+			_playerState.first = ePlayerMoveState::IDLE;
+		}
+		else
+		{
+			_isDie = true;
+			_playerState.first = ePlayerMoveState::DIE;
+		}
+		return;
+	}
+
 	// 구르기 타이머 체크해서 상태 종료
 	if (_tumbleTimer > 0.0f)
+	{
+		return;
+	}
+
+	if (!_isMovable)
 	{
 		return;
 	}
@@ -1327,7 +1351,7 @@ void PlayerMove::Behavior()
 {
 	if (_playerState.first != ePlayerMoveState::JUMP)
 	{
-		_playerColliderStanding->ClearVeloY();
+		//_playerColliderStanding->ClearVeloY();
 	}
 
 	if (_prevPlayerState.second == _playerState.second)

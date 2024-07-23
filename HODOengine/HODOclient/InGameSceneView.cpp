@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -94,7 +94,7 @@ void InGameSceneView::Initialize()
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
 	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
-	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
+	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.01f, 0.15f, 0.01f);
 	helperBox->SetParentCollider(playerCollider);
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -442,18 +442,33 @@ void InGameSceneView::Initialize()
 		posT += 315;
 	}
 
+
+
+	// killcount ui (mine)
+	auto nickname = API::CreateTextbox(_scene, "mine");
+	nickname->GetTransform()->SetPosition(130 - 40, 50, 0);
+	auto nickComp = nickname->GetComponent<HDData::TextUI>();
+	nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	nickComp->SetText("");
+	nickComp->SetSortOrder(0.7);
+
+	auto killcount = API::CreateTextbox(_scene, "mycount");
+	killcount->GetTransform()->SetPosition(130 + 75, 50, 0);
+	auto countComp = killcount->GetComponent<HDData::TextUI>();
+	countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	countComp->SetText("");
+	countComp->SetSortOrder(0.7);
+
+	RoundManager::Instance()->_myKillCount.first = nickComp;
+	RoundManager::Instance()->_myKillCount.second = countComp;
+
+	// killcount ui (others)
+
 	int uiX = 130;
-	int uiY = 52.0f;
+	int uiY = 100.0f;
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		// killCount UI
-		//auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
-		//uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
-		//uiBack->GetTransform()->SetScale(1, 3, 0);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
-
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
@@ -462,13 +477,12 @@ void InGameSceneView::Initialize()
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 75, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
-		//RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
@@ -665,7 +679,7 @@ void InGameSceneView::Initialize()
 	tumbleObj->GetTransform()->SetPosition(1750, 1350, 0);
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
-	tumbleComp->SetSortOrder(0.7f);
+	tumbleComp->SetSortOrder(0.6f);
 	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
@@ -673,7 +687,7 @@ void InGameSceneView::Initialize()
 	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
-	tumbleAlphaImage->SetSortOrder(0.8f);
+	tumbleAlphaImage->SetSortOrder(0.61f);
 	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
@@ -687,6 +701,20 @@ void InGameSceneView::Initialize()
 
 	playerMove->recoilCooldown = tumbleCooldown;
 	playerMove->cooldownCountText = tumbleCooldownCount;
+
+	//auto cube = API::CreateObject(_scene);
+	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");
+	//cube->GetTransform()->SetPosition(-10, 3, 0);
+
+	//NetworkManager::Instance().cube = cube;
+
+	// 디버그용 텍스트니깐 주석처리하면서 계속 쓸거임
+	//auto playerState = API::CreateTextbox(_scene, "plState");
+	//playerState->GetTransform()->SetPosition(1200.0f, 1400.0f, 0.0f);
+	//auto playerStateComp = playerState->GetComponent<HDData::TextUI>();
+	//playerStateComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//playerStateComp->SetColor(DirectX::Colors::OrangeRed);
+	//playerMove->_plStateText = playerStateComp;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

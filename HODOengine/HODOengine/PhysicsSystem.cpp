@@ -252,9 +252,9 @@ namespace HDEngine
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
 #ifdef _DEBUG
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 6, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 12, 0.0f);
 #else
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3.6f, 0.0f);
 #endif
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
@@ -449,7 +449,7 @@ namespace HDEngine
 
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxRigidDynamic* capsuleRigid = _physics->createRigidDynamic(physx::PxTransform(physx::PxVec3(position.x, position.y, position.z)));
-				capsuleRigid->setMass(1.5f);
+				capsuleRigid->setMass(0.1f);
 				capsuleRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, !collider->GetIsActive());
 
 				standingShape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, true);
@@ -513,7 +513,7 @@ namespace HDEngine
 				Vector3 position = Vector3::Transform(collider->GetPositionOffset(), object->GetTransform()->GetWorldTM());
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
-				physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
+				//physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
 				sphereRigid->setMass(0.2f);
 				sphereRigid->attachShape(*shape);
 

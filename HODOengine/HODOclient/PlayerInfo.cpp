@@ -1,17 +1,14 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
+#include "GameSetting.h"
+#include "RoundManager.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "UIEffect.h"
 
 PlayerInfo::PlayerInfo()
 {
-	_timer = new Timer;
-	_timer->duration = 5;
-	_timer->onExpiration = [=]() {
-		_serialkillcount = 0;
-		_timer->Stop();
-		};
+
 }
 
 PlayerInfo::PlayerInfo(PlayerInfo* info)
@@ -20,13 +17,6 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
 	audio = info->audio;
-
-	_timer = new Timer;
-	_timer->duration = 5;
-	_timer->onExpiration = [=]() {
-		_serialkillcount = 0;
-		_timer->Stop();
-		};
 }
 
 void PlayerInfo::Start()
@@ -43,13 +33,10 @@ void PlayerInfo::Update()
 		_isShoot = false;
 	}
 
-	if (_serialkillcount >= 1)
+	if (_isJump)
 	{
-		if (!_timer->IsActive())
-		{
-			_timer->Start();
-		}
-		_timer->Update();
+		//GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>()->Jump(Vector3{ 0.f, 1.f, 0.f });
+		_isJump = false;
 	}
 }
 
@@ -59,7 +46,7 @@ void PlayerInfo::Init()
 	this->_death = 0;
 	this->_isDie = false;
 	this->_bulletCount = 6;
-	this->_currentHP = 70;
+	this->_currentHP = 100;
 	this->_serialkillcount = 0;
 	this->_state = ePlayerState::IDLE;
 }
@@ -109,6 +96,7 @@ void PlayerInfo::SetCurrentState(ePlayerState state)
 {
 	this->_prevState = _state;
 	this->_state = state;
+	this->_isStateChange = true;
 }
 
 void PlayerInfo::SetCurrentBulletCount(int count)
@@ -134,6 +122,7 @@ void PlayerInfo::SetIsHost(bool isHost)
 void PlayerInfo::SetNickName(std::string nickName)
 {
 	_playerNickname = nickName;
+	GameSetting::Instance().SetMyNickname(nickName);
 }
 
 bool& PlayerInfo::GetIsDie()
@@ -231,7 +220,7 @@ void PlayerInfo::AddSerialKillCount()
 		case 1:
 		{
 			//kill!
-			_timer->Start();
+			RoundManager::Instance()->StartSerialKillTimer();
 		}
 		break;
 		case 2:
