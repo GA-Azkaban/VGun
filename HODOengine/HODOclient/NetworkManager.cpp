@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -73,7 +73,7 @@ void NetworkManager::Update()
 		{
 			continue;
 		}
-		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 1.0f);
 	}
 }
 
@@ -231,7 +231,7 @@ void NetworkManager::Connected()
 {
 	_isConnect = true;
 
-// #if _DEBUG
+	// #if _DEBUG
 	FILE* pFile = nullptr;
 
 	if (AllocConsole())
@@ -240,7 +240,7 @@ void NetworkManager::Connected()
 		ASSERT_CRASH(false);
 
 	std::cout << "Connected" << std::endl;
-// #endif
+	// #endif
 }
 
 void NetworkManager::Disconnected()
@@ -734,32 +734,43 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	//if (currentPos == serverPos && currentRot == serverRot)
 	//	return;
+	float speed = 6.4f;
+
 	Vector3 posDif = currentPos - serverPos;
-	if (posDif.Length() > 0.1f)
+	if (posDif.Length() > 5.0f)
 	{
-		static float lerpTime = 0.0f;
-		lerpTime += dt * intermediateValue;
-		float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
-		float t = x * x * (3 - 2 * x);
+		current->SetPosition(serverPos);
+	}
+	else if (posDif.Length() > 0.3f)
+	{
+		Vector3 nomal = posDif * -1;
+		nomal.Normalize();
 
-		// 포지션 비선형 보간
-		Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, x);
-		
-		current->SetPosition(interpolatedPos);
+		// current->GetGameObject()->GetTransform()->Translate(nomal * speed * dt * Vector3{ 1,0,1 });
+		current->SetPosition(currentPos + nomal * speed * dt * Vector3{ 1,0,1 });
 
-		if (t >= 1.0f)
-			lerpTime = 0.0f;
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetInterpolation(true);
+	}
+	else
+	{
+		current->SetPosition(serverPos);
+
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetInterpolation(false);
 	}
 
 	float dot = serverRot.Dot(currentRot);
 	float angleDif = 2.0f * acos(dot);
-	if (angleDif > 0.03f)
+	if (angleDif > 0.01f)
 	{
 		// 로테이션 구면 선형 보간
 		Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
 
 		// 현재 Transform에 보간된 값 설정
 		current->SetRotation(interpolatedRot);
+	}
+	else
+	{
+		current->SetRotation(serverRot);
 	}
 	// 보간 후에도 너무 멀리 있다면 즉시 이동
 	//if (Vector3::Distance(currentPos, serverPos) > 1)

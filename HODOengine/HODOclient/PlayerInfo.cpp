@@ -67,6 +67,16 @@ Quaternion& PlayerInfo::GetServerRotation()
 	return _serverRot;
 }
 
+void PlayerInfo::SetInterpolation(bool isInterpolation)
+{
+	this->_isInterpolation = isInterpolation;
+}
+
+bool PlayerInfo::GetInterpolation()
+{
+	return _isInterpolation;
+}
+
 void PlayerInfo::SetPlayerUID(int uid)
 {
 	_playerUID = uid;
