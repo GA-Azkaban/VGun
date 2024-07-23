@@ -477,14 +477,33 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
 			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+			{
 				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
 			else if (_moveDirection == 4)
+			{
 				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			}
 			else if (_moveDirection == 6)
+			{
 				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
 			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+			{
 				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
-
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
 
 			break;
 		}
