@@ -95,7 +95,7 @@ namespace HDData
 	{
 		_background->SetSortOrder(value);
 		_cursor->SetSortOrder(value + 0.01f);
-		_text->SetSortOrder(value + 0.02f);
+		_text->SetSortOrder(value + 0.03f);
 	}
 
 }

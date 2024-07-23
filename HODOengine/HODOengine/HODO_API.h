@@ -77,7 +77,7 @@ namespace API
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateStaticObject(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API void CreateStaticComponent(HDData::Component* component);
-		HODO_API void CreateStaticButton(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateStaticButton(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateImageBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateButton(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
