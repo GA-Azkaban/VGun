@@ -499,7 +499,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			_playerColliderStanding->Stop();
 
 			break;	
@@ -1345,7 +1345,7 @@ void PlayerMove::Behavior()
 {
 	if (_playerState.first != ePlayerMoveState::JUMP)
 	{
-		_playerColliderStanding->ClearVeloY();
+		//_playerColliderStanding->ClearVeloY();
 	}
 
 	if (_prevPlayerState.second == _playerState.second)
