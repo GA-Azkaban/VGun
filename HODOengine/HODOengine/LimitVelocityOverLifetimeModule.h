@@ -8,5 +8,6 @@ namespace HDData
 		bool enabled = false;
 		float speed = 1.0f;
 		float dampen = 0.0f;
+		bool drag = false;
 	};
 }

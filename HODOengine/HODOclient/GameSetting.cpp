@@ -1,7 +1,8 @@
-#include "GameSetting.h"
+﻿#include "GameSetting.h"
 #include "RoundManager.h"
 #include "GameManager.h"
 #include "PlayerMove.h"
+#include "BtnTextScript.h"
 
 GameSetting& GameSetting::Instance()
 {
@@ -28,6 +29,18 @@ GameSetting::GameSetting()
 	img->SetSortOrder(0.65f);
 	img->SetIsIgnoreFocus(true);
 	img->SetImage("alphaRefCanvas2.png");
+
+	_exitButtonIndex = API::CreateStaticObject("exitIndex", _settingCanvas);
+	_exitButtonIndex->GetTransform()->SetPosition(900.f * width / 1920, (440.f * height / 1080) + 500, 0.f);
+	auto exittxt = _exitButtonIndex->AddComponent<HDData::TextUI>();
+	exittxt->SetText("GAME EXIT");
+	exittxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	exittxt->SetColor(DirectX::Colors::Red);
+
+	//_gameExitButton = API::CreateStaticObject("exit", _settingCanvas);
+	//_gameExitButton->GetTransform()->SetPosition(width / 2, height / 4 * 3, 0);
+	//_gameExitButton->AddComponent<BtnTextScript>();
+	//_gameExitButton->AddComponent<HDData::Button>();
 
 	_infoController = API::CreateStaticObject("myinfo", _settingCanvas);
 	auto info = _infoController->AddComponent<HDData::ImageUI>();
@@ -101,6 +114,8 @@ void GameSetting::Start()
 {
 	_bgmSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.95f);
 	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.96f);
+	_exitButtonIndex->GetComponent<HDData::TextUI>()->SetSortOrder(0.93f);
+
 	SetSettingCanvasActive(false);
 }
 
@@ -121,6 +136,8 @@ void GameSetting::Update()
 
 void GameSetting::SetSettingCanvasActive(bool _isActive)
 {
+	_exitButtonIndex->SetSelfActive(_isActive);
+	//_gameExitButton->SetSelfActive(_isActive);
 	_settingCanvas->SetSelfActive(_isActive);
 	_infoController->SetSelfActive(_isActive);
 	_bgmSoundController->SetSelfActive(_isActive);

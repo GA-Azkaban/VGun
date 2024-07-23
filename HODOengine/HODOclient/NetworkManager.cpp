@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -231,7 +231,7 @@ void NetworkManager::Connected()
 {
 	_isConnect = true;
 
-//#if _DEBUG
+// #if _DEBUG
 	FILE* pFile = nullptr;
 
 	if (AllocConsole())
@@ -240,7 +240,7 @@ void NetworkManager::Connected()
 		ASSERT_CRASH(false);
 
 	std::cout << "Connected" << std::endl;
-//#endif
+// #endif
 }
 
 void NetworkManager::Disconnected()
@@ -638,7 +638,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		info->SetCurrentHP(player.hp());
 
 		// animation
-		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
+		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) continue;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
 	}
 }
