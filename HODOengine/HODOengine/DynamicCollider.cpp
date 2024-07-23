@@ -87,8 +87,8 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
 #ifdef _DEBUG
-	velo.x = moveStep.x * speed * 2;
-	velo.z = moveStep.z * speed * 2;
+	velo.x = moveStep.x * speed * 3;
+	velo.z = moveStep.z * speed * 3;
 #else
 	velo.x = moveStep.x * speed;
 	velo.z = moveStep.z * speed;

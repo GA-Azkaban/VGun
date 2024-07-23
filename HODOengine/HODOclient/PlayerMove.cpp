@@ -216,7 +216,7 @@ bool PlayerMove::CheckIsOnGround()
 			//{
 			_isOnGround = true;
 			_isJumping = false;
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
@@ -732,9 +732,13 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	{
 		return _playerState.first;
 	}
-	else
+	else if(index == 2)
 	{
 		return _playerState.second;
+	}
+	else
+	{
+		assert(false);
 	}
 }
 
@@ -1254,7 +1258,6 @@ void PlayerMove::Die()
 
 void PlayerMove::Respawn()
 {
-	
 	_playerColliderStanding->OnEnable();
 }
 
