@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -147,7 +147,7 @@ void InGameSceneView::Initialize()
 	for (int i = 1; i <= 20; ++i)
 	{
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
-		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 1.0f, weedPos[i-1][1]));
+		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 0.4f, weedPos[i-1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
 		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
 		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
