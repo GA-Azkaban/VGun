@@ -50,42 +50,26 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
-	{
-		if (_isDie)
-		{
-			_isDie = false;
-			Respawn();
-		}
-		else
-		{
-			_isDie = true;
-			Die();
-		}
-	}
-
-	if (!_isMovable || _isDie)
-	{
-		return;
-	}
 	// 델타 타임 체크
 	_deltaTime = API::GetDeltaTime();
 
-	_playerPos = GetTransform()->GetPosition();
-
-	_isShootHead = false;
-	_isShootBody = false;
-
-	CameraControl();
-	CheckMoveInfo();
 	CoolTime();
+
 	DecidePlayerState();
+
+	if (!_isDie && _isMovable)
+	{
+		_isShootHead = false;
+		_isShootBody = false;
+
+		CameraControl();
+		CheckMoveInfo();
+	}
 	Behavior();
 
-	//UpdateStateText();
+	//_playerPos = GetTransform()->GetPosition();
 
-	// sound 관련
-	PlayPlayerSound();
+	//UpdateStateText();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 }
@@ -216,7 +200,7 @@ bool PlayerMove::CheckIsOnGround()
 			//{
 			_isOnGround = true;
 			_isJumping = false;
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			//_playerAudio->PlayOnce("landing");
 		//}
 			return true;
@@ -269,8 +253,6 @@ void PlayerMove::ShootGun()
 
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
-	// 총구 화염 이펙트
-
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
 
@@ -293,8 +275,7 @@ void PlayerMove::ShootGun()
 		{
 			_isShootHead = true;
 			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
-			bloodParticle->GetTransform()->SetPosition(hitPoint);
-			bloodParticle->Play();
+			PlayParticle(hitPoint);
 		}
 		else
 		{
@@ -320,8 +301,7 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
-		bloodParticle->GetTransform()->SetPosition(hitPoint);
-		bloodParticle->Play();
+		PlayParticle(hitPoint);
 	}
 
 	// 건물을 맞췄을 때
@@ -362,11 +342,6 @@ void PlayerMove::Tumble(Vector3 direction)
 	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
 }
 
-void PlayerMove::PlayPlayerSound()
-{
-
-}
-
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
 {
 	switch (state)
@@ -404,7 +379,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
-			NetworkManager::Instance().SendPlayJump();
+			//NetworkManager::Instance().SendPlayJump();
 
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
 			break;
@@ -499,7 +474,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_playerColliderStanding->ClearVeloY();
+			//_playerColliderStanding->ClearVeloY();
 			_playerColliderStanding->Stop();
 
 			break;	
@@ -720,6 +695,14 @@ void PlayerMove::UpdateStateText()
 	//_plPosText->SetText(posText);
 }
 
+void PlayerMove::PlayParticle(Vector3 position)
+{
+	bloodParticle->GetTransform()->SetPosition(position);
+	//Vector4 cameraRotation = _headCam->GetTransform()->GetRotation();
+	//bloodParticle->GetTransform()->SetRotation(cameraRotation);
+	//bloodParticle->GetTransform()->Rotate(0.0f, 90.0f, 0.0);
+	bloodParticle->Play();
+}
 
 int& PlayerMove::GetBulletCount()
 {
@@ -732,9 +715,13 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	{
 		return _playerState.first;
 	}
-	else
+	else if(index == 2)
 	{
 		return _playerState.second;
+	}
+	else
+	{
+		assert(false);
 	}
 }
 
@@ -1254,7 +1241,6 @@ void PlayerMove::Die()
 
 void PlayerMove::Respawn()
 {
-	
 	_playerColliderStanding->OnEnable();
 }
 
@@ -1264,8 +1250,28 @@ void PlayerMove::DecidePlayerState()
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		if (_isDie)
+		{
+			_isDie = false;
+			_playerState.first = ePlayerMoveState::IDLE;
+		}
+		else
+		{
+			_isDie = true;
+			_playerState.first = ePlayerMoveState::DIE;
+		}
+		return;
+	}
+
 	// 구르기 타이머 체크해서 상태 종료
 	if (_tumbleTimer > 0.0f)
+	{
+		return;
+	}
+
+	if (!_isMovable)
 	{
 		return;
 	}
@@ -1345,7 +1351,7 @@ void PlayerMove::Behavior()
 {
 	if (_playerState.first != ePlayerMoveState::JUMP)
 	{
-		_playerColliderStanding->ClearVeloY();
+		//_playerColliderStanding->ClearVeloY();
 	}
 
 	if (_prevPlayerState.second == _playerState.second)

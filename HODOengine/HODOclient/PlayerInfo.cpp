@@ -46,7 +46,7 @@ void PlayerInfo::Init()
 	this->_death = 0;
 	this->_isDie = false;
 	this->_bulletCount = 6;
-	this->_currentHP = 70;
+	this->_currentHP = 100;
 	this->_serialkillcount = 0;
 	this->_state = ePlayerState::IDLE;
 }

@@ -18,6 +18,8 @@ namespace HDEngine
 		virtual void SetRotation(DirectX::XMFLOAT4 rot) = 0;
 		virtual void SetScale(float x, float y, float z) = 0;
 		virtual void SetScale(DirectX::XMFLOAT3 scale) = 0;
+		virtual void SetGravityModifier(float modifierValue) = 0;
+		virtual void SetGravityVelocity(float velocity) = 0;
 
 		virtual DirectX::XMMATRIX GetWorldTM() const = 0;
 		virtual DirectX::XMINT4 GetColor() const = 0;
@@ -29,5 +31,7 @@ namespace HDEngine
 		virtual DirectX::XMFLOAT3 GetPosition() const = 0;
 		virtual DirectX::XMFLOAT4 GetRotation() const = 0;
 		virtual DirectX::XMFLOAT3 GetScale() const = 0;
+		virtual float GetGravityModifier() const = 0;
+		virtual float GetGravityVelocity() const = 0;
 	};
 }
