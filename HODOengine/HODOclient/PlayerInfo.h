@@ -118,8 +118,6 @@ private:
 	bool _isRespawn;
 
 	// serial kill
-	Timer* _timer;
-	int _serialkillcount;
 
 	HitEffect* _hitEffect;
 	HDData::ParticleSystem* _particleSystem;
@@ -129,5 +127,6 @@ private:
 
 public:
 	HDData::AudioSource* audio;
+	int _serialkillcount;
 };
 

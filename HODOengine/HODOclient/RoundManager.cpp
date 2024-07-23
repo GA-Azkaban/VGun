@@ -50,6 +50,14 @@ void RoundManager::Start()
 		ExitGame();
 		};
 
+	_serialKillTimer = new Timer;
+	_serialKillTimer->duration = 8;
+	_serialKillTimer->onExpiration = [&]()
+		{
+			_serialKillTimer->Stop();
+			GameManager::Instance()->GetMyInfo()->_serialkillcount = 0;
+		};
+
 	SetUIActive(false);
 }
 
@@ -201,6 +209,7 @@ void RoundManager::UpdateRound()
 	UpdateHPText();
 	UpdateAmmoText();
 	UpdateDesiredKillChecker();
+	_serialKillTimer->Update();
 }
 
 void RoundManager::SetUIActive(bool isActive)
@@ -561,8 +570,14 @@ void RoundManager::SetInitRoundTimer(HDData::TextUI* txt)
 	_initTimertxt = txt;
 }
 
+void RoundManager::StartSerialKillTimer()
+{
+	_serialKillTimer->Start();
+}
+
 void RoundManager::UpdateDesiredKillChecker()
 {
+
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_inGameKillCounts[GameManager::Instance()->GetMyInfo()->GetPlayerUID()].second->SetText(std::to_string(count));
@@ -573,7 +588,7 @@ void RoundManager::UpdateDesiredKillChecker()
 	{
 		int count = player->GetComponent<PlayerInfo>()->GetPlayerKillCount();
 		_inGameKillCounts[uid].second->SetText(std::to_string(count));
-		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
+		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
 	}
 }
 
