@@ -43,5 +43,6 @@ public:
 	HDData::GameObject* _quitButton;
 
 	HDData::GameObject* _settingBackground;
+
 };
 
