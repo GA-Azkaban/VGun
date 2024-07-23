@@ -73,7 +73,7 @@ void NetworkManager::Update()
 		{
 			continue;
 		}
-		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 2.5);
+		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 1.0f);
 	}
 }
 
