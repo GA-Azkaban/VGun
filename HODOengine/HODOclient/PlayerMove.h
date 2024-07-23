@@ -73,6 +73,7 @@ private:
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);
 	void UpdateStateText();
+	void PlayParticle(Vector3 position);
 
 public:
 	int& GetBulletCount();

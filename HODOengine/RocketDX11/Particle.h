@@ -21,6 +21,8 @@ namespace RocketCore::Graphics
 		virtual DirectX::XMFLOAT3 GetPosition() const override;
 		virtual DirectX::XMFLOAT4 GetRotation() const override;
 		virtual DirectX::XMFLOAT3 GetScale() const override;
+		virtual float GetGravityModifier() const override;
+		virtual float GetGravityVelocity() const override;
 
 		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override;
@@ -35,6 +37,8 @@ namespace RocketCore::Graphics
 		virtual void SetRotation(DirectX::XMFLOAT4 rot) override;
 		virtual void SetScale(float x, float y, float z) override;
 		virtual void SetScale(DirectX::XMFLOAT3 scale) override;
+		virtual void SetGravityModifier(float modifierValue) override;
+		virtual void SetGravityVelocity(float velocity) override;
 
 	private:
 		DirectX::XMMATRIX _world;
@@ -45,6 +49,8 @@ namespace RocketCore::Graphics
 		float _size;
 		float _startSize;
 		float _angle;
+		float _gravityModifier;
+		float _gravityVelocity;
 
 		DirectX::XMFLOAT3 _position;
 		DirectX::XMFLOAT4 _rotation;

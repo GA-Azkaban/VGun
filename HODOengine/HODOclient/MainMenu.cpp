@@ -461,22 +461,22 @@ void MainMenuScene::MainMenu()
 	setRoomText->GetComponent<HDData::TextUI>()->SetSortOrder(0.67f);
 
 	// Training Btn
-	HDData::GameObject* main_trainingBtn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
-	main_trainingBtn->GetTransform()->SetPosition((150.0f - (width - 1920) * 0.0078f) * width / 1920, 330.0f * height / 1080, 0.f);
-	main_trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	main_trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
-	main_trainingBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-	main_trainingBtn->AddComponent<BtnTextScript>();
-	HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", main_trainingBtn);
-	trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
-	trainingText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
-	float trainingTextWidth = trainingText->GetComponent<HDData::TextUI>()->GetTextWidth();
-	trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
+	//HDData::GameObject* main_trainingBtn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
+	//main_trainingBtn->GetTransform()->SetPosition((150.0f - (width - 1920) * 0.0078f) * width / 1920, 330.0f * height / 1080, 0.f);
+	//main_trainingBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
+	//main_trainingBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
+	//main_trainingBtn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+	//main_trainingBtn->AddComponent<BtnTextScript>();
+	//HDData::GameObject* trainingText = API::CreateTextbox(_scene, "trainingRoom", main_trainingBtn);
+	//trainingText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
+	//trainingText->GetComponent<HDData::TextUI>()->SetText("TRAINING");
+	//trainingText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
+	//float trainingTextWidth = trainingText->GetComponent<HDData::TextUI>()->GetTextWidth();
+	//trainingText->GetTransform()->SetPosition(main_trainingBtn->GetTransform()->GetPosition());
 
 	//EXIT Btn
 	HDData::GameObject* exit_Btn = API::CreateButton(_scene, "TestingBtn", main_controlCanvas);
-	exit_Btn->GetTransform()->SetPosition((100.0f + (width - 1920) * 0.012f) * width / 1920, 420.0f * height / 1080, 0.f);
+	exit_Btn->GetTransform()->SetPosition((140.0f - (width - 1920) * 0.0078f) * width / 1920, 330.0f * height / 1080, 0.f);
 	exit_Btn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
 	exit_Btn->GetComponent<HDData::Button>()->SetSortOrder(0.7f);
 	exit_Btn->GetComponent<HDData::Button>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
@@ -485,7 +485,7 @@ void MainMenuScene::MainMenu()
 	tempText->GetTransform()->SetPosition(exit_Btn->GetTransform()->GetPosition());
 	tempText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	tempText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
-	tempText->GetComponent<HDData::TextUI>()->SetText("EXIT");
+	tempText->GetComponent<HDData::TextUI>()->SetText("LOGOUT");
 
 	// setting & option
 	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");

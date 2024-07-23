@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Component.h"
 #include "dllExporter.h"
 #include "MainModule.h"
@@ -50,7 +50,7 @@ namespace HDData
 		MainModule main;
 		ColorOverLifetimeModule colorOverLifetime;
 		EmissionModule emission;
-		//LimitVelocityOverLifetimeModule limitVelocityOverLifetime;
+		LimitVelocityOverLifetimeModule limitVelocityOverLifetime;
 		SizeOverLifetimeModule sizeOverLifetime;
 		RotationOverLifetimeModule rotationOverLifetime;
 		RendererModule rendererModule;
@@ -66,8 +66,7 @@ namespace HDData
 		std::vector<HDEngine::IParticle*> _lifeOverParticles;
 
 		// random
-		std::mt19937 _gen;
-
+		std::mt19937 _gen;		
 	};
 
 }

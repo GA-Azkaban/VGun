@@ -758,7 +758,7 @@ namespace RocketCore::Graphics
 		float radius = 0.5f; // 캡슐의 반지름
 		float height = 1.0f; // 캡슐의 높이
 		int stackCount = 5; // 수평 분할
-		int sliceCount = 20; // 수직 분할
+		int sliceCount = 10; // 수직 분할
 
 		DirectX::GeometricPrimitive::VertexCollection vertices;
 		DirectX::GeometricPrimitive::IndexCollection indices;

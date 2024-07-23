@@ -8,7 +8,7 @@ namespace RocketCore::Graphics
 	Particle::Particle()
 		: _world(DirectX::XMMatrixIdentity()), _isActive(true),
 		_color{ 255, 255, 255, 255 }, _speed(5.0f),
-		_size(1.0f), _startSize(1.0f), _angle(0.0f),
+		_size(1.0f), _startSize(1.0f), _angle(0.0f), _gravityModifier(0.0f), _gravityVelocity(0.0f),
 		_position{0.0f, 0.0f, 0.0f}, _rotation{0.0f, 0.0f, 0.0f, 1.0f}, _scale{1.0f, 1.0f, 1.0f}
 	{
 		
@@ -67,6 +67,16 @@ namespace RocketCore::Graphics
 	DirectX::XMFLOAT3 Particle::GetScale() const
 	{
 		return _scale;
+	}
+
+	float Particle::GetGravityModifier() const
+	{
+		return _gravityModifier;
+	}
+
+	float Particle::GetGravityVelocity() const
+	{
+		return _gravityVelocity;
 	}
 
 	void Particle::SetWorldTM(const Matrix& worldTM)
@@ -139,6 +149,16 @@ namespace RocketCore::Graphics
 	void Particle::SetScale(DirectX::XMFLOAT3 scale)
 	{
 		_scale = scale;
+	}
+
+	void Particle::SetGravityModifier(float modifierValue)
+	{
+		_gravityModifier = modifierValue;
+	}
+
+	void Particle::SetGravityVelocity(float velocity)
+	{
+		_gravityVelocity = velocity;
 	}
 
 }
