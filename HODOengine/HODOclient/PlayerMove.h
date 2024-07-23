@@ -69,7 +69,6 @@ private:
 	void Reload();
 	void ApplyRecoil();
 	void Tumble(Vector3 direction);
-	void PlayPlayerSound();
 	void OnStateEnter(ePlayerMoveState state);
 	void OnStateStay(ePlayerMoveState state);
 	void OnStateExit(ePlayerMoveState state);

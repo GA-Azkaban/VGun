@@ -50,42 +50,39 @@ void PlayerMove::Start()
 
 void PlayerMove::Update()
 {
+	// 델타 타임 체크
+	_deltaTime = API::GetDeltaTime();
+
+	CoolTime();
+
 	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
 	{
 		if (_isDie)
 		{
 			_isDie = false;
-			Respawn();
+			_playerState.first = ePlayerMoveState::IDLE;
 		}
 		else
 		{
 			_isDie = true;
-			Die();
+			_playerState.first = ePlayerMoveState::DIE;
 		}
 	}
 
-	if (!_isMovable || _isDie)
+	if (!_isDie && _isMovable)
 	{
-		return;
+		_isShootHead = false;
+		_isShootBody = false;
+
+		CameraControl();
+		CheckMoveInfo();
+		DecidePlayerState();
 	}
-	// 델타 타임 체크
-	_deltaTime = API::GetDeltaTime();
-
-	_playerPos = GetTransform()->GetPosition();
-
-	_isShootHead = false;
-	_isShootBody = false;
-
-	CameraControl();
-	CheckMoveInfo();
-	CoolTime();
-	DecidePlayerState();
 	Behavior();
 
-	//UpdateStateText();
+	//_playerPos = GetTransform()->GetPosition();
 
-	// sound 관련
-	PlayPlayerSound();
+	//UpdateStateText();
 
 	API::DrawLineDir(_headCam->GetTransform()->GetPosition(), _headCam->GetTransform()->GetForward(), 10.0f, { 1.0f, 0.0f, 1.0f, 1.0f });
 }
@@ -360,11 +357,6 @@ void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
 	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
-}
-
-void PlayerMove::PlayPlayerSound()
-{
-
 }
 
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
@@ -1253,6 +1245,7 @@ void PlayerMove::Die()
 {
 	auto origin = _headCam->GetTransform()->GetPosition();
 	_headCam->GetTransform()->Rotate(0, 90, 0);
+	_playerState.first = ePlayerMoveState::DIE;
 	_playerColliderStanding->OnDisable();
 }
 
