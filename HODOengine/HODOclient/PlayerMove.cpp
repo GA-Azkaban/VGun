@@ -319,7 +319,7 @@ void PlayerMove::ShootGun()
 void PlayerMove::Reload()
 {
 	_shootCount = 0;
-	_playerState.second = ePlayerMoveState::IDLE;
+	//_playerState.second = ePlayerMoveState::IDLE;
 	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
@@ -372,6 +372,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_tumbleCooldown = 6.0f;
 			recoilCooldown->SetTimerOn();
 			cooldownCountText->SetTimerOn();
+			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_roll");
 
 			_headCam->ToggleCameraShake(true);
@@ -389,13 +390,21 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			else
 			{
 				if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollFront");
+				}
 				else if (_moveDirection == 4)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollLeft");
+				}
 				else if (_moveDirection == 6)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollRight");
+				}
 				else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollBack");
+				}
 
 				_tumbleDirection = DecideDisplacement(_moveDirection);
 			}
@@ -427,6 +436,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::RELOAD:
 		{
 			_fpanimator->GetAllAC()->SetBool("isIdle", false);
+			_fpanimator->GetAllAC()->SetBool("isFire", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
 			_tpanimator->GetAllAC()->SetTrigger("isReload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
@@ -531,7 +541,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpmesh->SetMeshActive(false, 0);
+			//_fpmesh->SetMeshActive(false, 0);
 			break;
 		}
 		case ePlayerMoveState::DIE:
@@ -609,9 +619,13 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			_fpanimator->GetAllAC()->SetBool("isReload", false);
+			_tpanimator->GetAllAC()->SetBool("isReload", false);
+
 			_fpmesh->SetMeshActive(true, 0);
 			Reload();
 			_reloadTimer = 0.0f;
+			_shootCooldown = 0.2f;
 
 			break;
 		}
@@ -1343,7 +1357,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		return;
 	}
-	else if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
+	else if ((API::GetKeyDown(DIK_R) && _bulletCount < 6) || (_bulletCount == 0 && _playerState.second == ePlayerMoveState::AIM))
 	{
 		_playerState.second = ePlayerMoveState::RELOAD;
 		return;
@@ -1353,12 +1367,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		if (API::GetMouseDown(MOUSE_LEFT))
 		{
-			if (_bulletCount == 0)
-			{
-				//_playerState.second = ePlayerMoveState::EMPTY;
-				_playerState.second = ePlayerMoveState::RELOAD;
-			}
-			else
+			if (_bulletCount != 0)
 			{
 				_playerState.second = ePlayerMoveState::FIRE;
 			}
