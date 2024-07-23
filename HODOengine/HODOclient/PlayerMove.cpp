@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -350,7 +350,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		{
 			//_fpanimator->GetAllAC()->SetBool("isIdle", true);
 			_tpanimator->GetAllAC()->SetBool("isIdle", true);
-			_playerColliderStanding->Stop();
+			//_playerColliderStanding->Stop();
 
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
