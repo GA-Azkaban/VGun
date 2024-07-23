@@ -647,7 +647,7 @@ void RoundManager::ResetWeedPos()
 
 	for (int i = 0; i < 20; ++i)
 	{
-		_weedColVector[i]->SetColliderPosition(Vector3(weedPos[i][0], 1.0f, weedPos[i][1]));
+		_weedColVector[i]->SetColliderPosition(Vector3(weedPos[i][0], 0.4f, weedPos[i][1]));
 	}
 }
 
