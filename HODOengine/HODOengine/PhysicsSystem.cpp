@@ -254,7 +254,7 @@ namespace HDEngine
 #ifdef _DEBUG
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 12, 0.0f);
 #else
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3.6f, 0.0f);
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3.2f, 0.0f);
 #endif
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
