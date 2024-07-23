@@ -380,7 +380,22 @@ namespace API
 
 			return obj;
 		}
+
+		HODO_API void CreateStaticButton(std::string objectName /*= ""*/, HDData::GameObject* parentObject /*= nullptr*/)
+		{
+			//auto obj = CreateStaticObject(objectName, parentObject);
+			//auto btn = obj->AddComponent<HDData::Button>();
+
+			//auto img = HDEngine::ObjectSystem::Instance().CreateObject(scene, "btn", obj);
+			//auto i = img->AddComponent<HDData::ImageUI>();
+			//btn->SetButtonComp(i);
+
+			//btn->SetImage("defaultImg.png");
+
+			//return obj;
+		}
 	}
+
 
 
 }

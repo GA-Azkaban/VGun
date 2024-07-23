@@ -29,14 +29,29 @@ public:
 	void SetRoundScene(HDData::Scene* scene);
 
 public:
+	//서버에서 게임 허가 떨어졌을 때
 	void InitGame();
-	void EndGame();
 
-public:
+	// 로비에서 데이터를 가져옴
+	void GetNewDataFromLobby();
+	
+	// 값들을 재정비
+	void InitializeValue();
+	
+	// 라운드 시작할 때 호출
 	void InitRound();
+
+	// 라운드 업데이트
 	void UpdateRound();
-	void ExitRoom();
+
+	// 라운드 끝났을 때 호출
+	void EndGame();
 	void SetUIActive(bool isActive);
+	void CheckWinner();
+
+	// 방 나갈 때 호출
+	void SetUIOrigin();
+	void ExitGame();
 
 
 public:
@@ -57,7 +72,6 @@ private:
 	std::unordered_map<int, HDData::GameObject*> _players;
 
 public:
-	void CheckWinner();
 
 	bool GetIsRoundStart();
 	void SetIsRoundStart(bool isStart);
@@ -67,7 +81,6 @@ public:
 	HDData::GameObject* GetEndCam();
 	void SetRoundEndButton(HDData::GameObject* obj);
 	HDData::GameObject* GetRoundEndButton();
-	void ExitGame();
 	void SetWinnerText(HDData::TextUI* txt);
 	void SetLoserText(HDData::TextUI* txt, int index);
 
@@ -148,9 +161,6 @@ public:
 	int _desiredKill;
 	int _nowMaxKill;
 	int _winnerUID;
-
-	// UI
-	HDData::ImageUI* _backIMG[6];
 
 public:
 	void SetAnimationDummy(HDData::GameObject* obj);
