@@ -348,8 +348,8 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			//_fpanimator->GetAllAC()->SetBool("isIdle", true);
-			_tpanimator->GetAllAC()->SetBool("isIdle", true);
+			_fpanimator->GetAllAC()->SetBool("isIdle", true);
+			//_tpanimator->GetAllAC()->SetBool("isIdle", true);
 			//_playerColliderStanding->Stop();
 
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
