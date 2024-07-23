@@ -55,19 +55,7 @@ void PlayerMove::Update()
 
 	CoolTime();
 
-	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
-	{
-		if (_isDie)
-		{
-			_isDie = false;
-			_playerState.first = ePlayerMoveState::IDLE;
-		}
-		else
-		{
-			_isDie = true;
-			_playerState.first = ePlayerMoveState::DIE;
-		}
-	}
+	DecidePlayerState();
 
 	if (!_isDie && _isMovable)
 	{
@@ -76,7 +64,6 @@ void PlayerMove::Update()
 
 		CameraControl();
 		CheckMoveInfo();
-		DecidePlayerState();
 	}
 	Behavior();
 
@@ -1245,7 +1232,6 @@ void PlayerMove::Die()
 {
 	auto origin = _headCam->GetTransform()->GetPosition();
 	_headCam->GetTransform()->Rotate(0, 90, 0);
-	_playerState.first = ePlayerMoveState::DIE;
 	_playerColliderStanding->OnDisable();
 }
 
@@ -1260,8 +1246,28 @@ void PlayerMove::DecidePlayerState()
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
+	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
+	{
+		if (_isDie)
+		{
+			_isDie = false;
+			_playerState.first = ePlayerMoveState::IDLE;
+		}
+		else
+		{
+			_isDie = true;
+			_playerState.first = ePlayerMoveState::DIE;
+		}
+		return;
+	}
+
 	// 구르기 타이머 체크해서 상태 종료
 	if (_tumbleTimer > 0.0f)
+	{
+		return;
+	}
+
+	if (!_isMovable)
 	{
 		return;
 	}

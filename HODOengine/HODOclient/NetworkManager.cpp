@@ -735,7 +735,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	//if (currentPos == serverPos && currentRot == serverRot)
 	//	return;
 	Vector3 posDif = currentPos - serverPos;
-	if (posDif.Length() > 0.1f)
+	if (posDif.Length() > 0.2f)
 	{
 		static float lerpTime = 0.0f;
 		lerpTime += dt * intermediateValue;
