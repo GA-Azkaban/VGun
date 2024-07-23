@@ -27,6 +27,7 @@ public:
 	void Update() override;
 
 public:
+	void GetData(PlayerInfo* info);
 	void Init();
 
 public:

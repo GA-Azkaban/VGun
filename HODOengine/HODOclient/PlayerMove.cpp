@@ -444,7 +444,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::DIE:
 		{
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
-			//_fpanimator->GetAllAC()->SetBool("isDie", true);
 			_tpanimator->GetAllAC()->SetBool("isDie", true);
 			Die();
 
@@ -607,7 +606,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			_shootCount = 0;
 			_headCam->ToggleCameraShake(false);
 			_headCam->ResetCameraPos();
-			_fpanimator->GetAllAC()->SetBool("isFire", false);
+			_fpanimator->GetAllAC()->SetTrigger("isFire");
 
 			break;
 		}
@@ -619,7 +618,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RELOAD:
 		{
 			//_fpmesh->SetMeshActive(true, 0);
-			_fpanimator->GetAllAC()->SetBool("isReload", false);
+			_fpanimator->GetAllAC()->SetTrigger("isReload");
 			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 
 			Reload();
