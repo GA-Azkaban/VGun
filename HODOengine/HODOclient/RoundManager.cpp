@@ -51,7 +51,7 @@ void RoundManager::Start()
 		};
 
 	_serialKillTimer = new Timer;
-	_serialKillTimer->duration = 5;
+	_serialKillTimer->duration = 8;
 	_serialKillTimer->onExpiration = [&]()
 		{
 			_serialKillTimer->Stop();
