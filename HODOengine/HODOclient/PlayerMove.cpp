@@ -361,16 +361,6 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_moveSpeed = 6.4f;
-
-			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
-				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
-			else if (_moveDirection == 4)
-				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
-			else if (_moveDirection == 6)
-				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
-			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
-				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
-
 			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
@@ -485,6 +475,16 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
+
+			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
+			else if (_moveDirection == 4)
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
+			else if (_moveDirection == 6)
+				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
+			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
+
 
 			break;
 		}
