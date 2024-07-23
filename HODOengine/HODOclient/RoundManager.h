@@ -104,6 +104,7 @@ public:
 	void SetResultTimerUI(HDData::TextUI* txt);
 	Timer* GetGameEndTimer();
 	void SetInitRoundTimer(HDData::TextUI* txt);
+	void StartSerialKillTimer();
 	
 
 private:
@@ -113,6 +114,7 @@ private:
 	Timer* _initTimer;
 	Timer* _gameEndTimer;
 	Timer* _showResultTimer;
+	Timer* _serialKillTimer;
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
 	HDData::TextUI* _hpUI;

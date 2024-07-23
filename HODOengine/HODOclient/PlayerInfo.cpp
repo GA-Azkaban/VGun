@@ -1,13 +1,14 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
 #include "GameSetting.h"
+#include "RoundManager.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "UIEffect.h"
 
 PlayerInfo::PlayerInfo()
 {
-	_timer = new Timer;
+
 }
 
 PlayerInfo::PlayerInfo(PlayerInfo* info)
@@ -16,8 +17,6 @@ PlayerInfo::PlayerInfo(PlayerInfo* info)
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
 	audio = info->audio;
-
-	_timer = new Timer;
 }
 
 void PlayerInfo::Start()
@@ -33,8 +32,6 @@ void PlayerInfo::Update()
 	{
 		_isShoot = false;
 	}
-
-	_timer->Update();
 
 	if (_isJump)
 	{
@@ -223,12 +220,7 @@ void PlayerInfo::AddSerialKillCount()
 		case 1:
 		{
 			//kill!
-			_timer->duration = 5;
-			//_timer->onExpiration = [&]() {
-			//	_serialkillcount = 0;
-			//	_timer->Stop();
-			//	};
-			_timer->Start();
+			RoundManager::Instance()->StartSerialKillTimer();
 		}
 		break;
 		case 2:
