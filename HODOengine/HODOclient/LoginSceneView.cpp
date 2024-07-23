@@ -94,7 +94,7 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* loginBtn = API::CreateButton(_scene, "loginBtn", loginControlObject);
 	loginBtn->GetTransform()->SetPosition((API::GetScreenWidth() / 2) - 10.0f, (API::GetScreenHeight() / 2) + 600.0f, 0.f);
 	loginBtn->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
-	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.65f);
+	loginBtn->GetComponent<HDData::Button>()->SetSortOrder(0.66f);
 	loginBtn->AddComponent<BtnTextScript>();
 	loginBtn->GetComponent<HDData::Button>()->SetOnClickEvent
 	(
