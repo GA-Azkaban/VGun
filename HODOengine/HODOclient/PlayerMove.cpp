@@ -57,11 +57,11 @@ void PlayerMove::Update()
 
 	DecidePlayerState();
 
+	_isShootHead = false;
+	_isShootBody = false;
+
 	if (!_isDie && _isMovable)
 	{
-		_isShootHead = false;
-		_isShootBody = false;
-
 		CameraControl();
 		CheckMoveInfo();
 	}
@@ -352,7 +352,8 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_fpanimator->GetAllAC()->SetBool("isIdle", true);
+			//_fpanimator->GetAllAC()->SetBool("isIdle", true);
+			_tpanimator->GetAllAC()->SetBool("isIdle", true);
 			_playerColliderStanding->Stop();
 
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
@@ -459,6 +460,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::DIE:
 		{
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
+			//_fpanimator->GetAllAC()->SetBool("isDie", true);
 			_tpanimator->GetAllAC()->SetBool("isDie", true);
 			Die();
 
@@ -605,7 +607,8 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::DIE:
 		{
-			_fpanimator->GetAllAC()->SetBool("isDie", false);
+			//_fpanimator->GetAllAC()->SetBool("isDie", false);
+			_tpanimator->GetAllAC()->SetBool("isDie", false);
 			Respawn();
 
 			break;
@@ -1246,6 +1249,16 @@ void PlayerMove::DecidePlayerState()
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
 
+	//_isDie = GameManager::Instance()->GetMyInfo()->GetIsDie();
+	//if (_isDie)
+	//{
+	//	_playerState.first = ePlayerMoveState::DIE;
+	//}
+	//else
+	//{
+	//	_playerState.first = ePlayerMoveState::IDLE;
+	//}
+
 	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
 	{
 		if (_isDie)
@@ -1258,6 +1271,9 @@ void PlayerMove::DecidePlayerState()
 			_isDie = true;
 			_playerState.first = ePlayerMoveState::DIE;
 		}
+	}
+	if (_isDie)
+	{
 		return;
 	}
 
