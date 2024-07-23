@@ -737,22 +737,19 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 posDif = currentPos - serverPos;
 	if (posDif.Length() > 0.05f)
 	{
-		static float lerpTime = 0.0f;
-		lerpTime += dt * intermediateValue;
-		float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
-		float t = x * x * (3 - 2 * x);
+		//static float lerpTime = 0.0f;
+		//lerpTime += dt * intermediateValue;
+		//float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
+		//float t = x * x * (3 - 2 * x);
 
-		// 포지션 비선형 보간
-		Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, x);
-		
-		current->SetPosition(interpolatedPos);
+		//// 포지션 비선형 보간
+		//Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, x);
+		//
+		//current->SetPosition(interpolatedPos);
 
-		if (t >= 1.0f)
-			lerpTime = 0.0f;
-	}
-	else if (posDif.Length() > 0.01f)
-	{
-		// 포지션 선형 보간
+		//if (t >= 1.0f)
+		//	lerpTime = 0.0f;
+
 		Vector3 interpolatedPos = (currentPos + serverPos) / 2.0f;
 
 		current->SetPosition(interpolatedPos);
