@@ -137,7 +137,7 @@ namespace HDData
 		}
 
 		//float shakeIntensity = 0.016f;
-		float shakeIntensity = 0.012f;
+		float shakeIntensity = 0.01f;
 		float shakeFrequency = 31.4f;
 
 		if (_shakeTime < 0.1f)
@@ -160,7 +160,7 @@ namespace HDData
 		{
 			shakeFrequency = 7.86f;
 			//shakeIntensity = 0.00463f;
-			shakeIntensity = 0.003473f;
+			shakeIntensity = 0.002893f;
 
 			_distYOnShoot = shakeIntensity * sin(shakeFrequency * _shakeTime);
 			angleX += _distYOnShoot;
