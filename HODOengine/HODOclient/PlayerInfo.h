@@ -34,6 +34,8 @@ public:
 	void SetServerTransform(Vector3 pos, Quaternion rot);
 	Vector3& GetServerPosition();
 	Quaternion& GetServerRotation();
+	void SetInterpolation(bool isInterpolation);
+	bool GetInterpolation();
 
 	void SetPlayerUID(int uid);
 	void SetIsHost(bool isHost);
@@ -96,6 +98,7 @@ private:
 	// server info
 	Vector3 _serverPos;
 	Quaternion _serverRot;
+	bool _isInterpolation = false;
 
 	// player info
 	int _playerUID;
