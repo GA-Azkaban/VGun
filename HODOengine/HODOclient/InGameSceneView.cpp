@@ -12,6 +12,7 @@
 #include "CloudRotate.h"
 #include "UIEffect.h"
 #include "GameManager.h"
+#include "LobbyManager.h"
 
 #include "BtnTextScript.h"
 #include "CooldownAlpha.h"
@@ -521,6 +522,7 @@ void InGameSceneView::Initialize()
 	endComp->SetOnClickEvent([=]()
 		{
 			RoundManager::Instance()->ExitGame();
+			LobbyManager::Instance().RefreshRoom();
 		});
 
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);

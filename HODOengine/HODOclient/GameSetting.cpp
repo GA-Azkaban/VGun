@@ -23,6 +23,19 @@ GameSetting::GameSetting()
 	auto width = API::GetScreenWidth();
 	auto height = API::GetScreenHeight();
 
+	_settingIcon = API::CreateStaticObject("icon");
+	_settingIcon->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 99, 26, 0);
+	auto icon = _settingIcon->AddComponent<HDData::ImageUI>();
+	icon->SetImage("icon_cog.png");
+	icon->SetSortOrder(0.95f);
+
+	_settingText = API::CreateStaticObject("OnSet");
+	_settingText->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 97, 30, 0);
+	auto icontxt = _settingText->AddComponent<HDData::ImageUI>();
+	icontxt->SetImage("escText.png");
+	icontxt->ChangeScale(0.7, 0.7);
+	icontxt->SetSortOrder(0.95);
+
 	_settingCanvas = API::CreateStaticObject("setting");
 	_settingCanvas->GetTransform()->SetPosition(width / 2, height / 2, 0);
 	auto img = _settingCanvas->AddComponent<HDData::ImageUI>();
@@ -30,17 +43,16 @@ GameSetting::GameSetting()
 	img->SetIsIgnoreFocus(true);
 	img->SetImage("alphaRefCanvas2.png");
 
-	_exitButtonIndex = API::CreateStaticObject("exitIndex", _settingCanvas);
+	_gameExitButton = API::CreateStaticButton("exit", _settingCanvas);
+	_gameExitButton->GetTransform()->SetPosition(width / 2, height / 4 * 3, 0);
+	_gameExitButton->AddComponent<BtnTextScript>();
+
+	_exitButtonIndex = API::CreateStaticObject("exitIndex", _gameExitButton);
 	_exitButtonIndex->GetTransform()->SetPosition(900.f * width / 1920, (440.f * height / 1080) + 500, 0.f);
 	auto exittxt = _exitButtonIndex->AddComponent<HDData::TextUI>();
 	exittxt->SetText("GAME EXIT");
 	exittxt->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	exittxt->SetColor(DirectX::Colors::Red);
-
-	//_gameExitButton = API::CreateStaticObject("exit", _settingCanvas);
-	//_gameExitButton->GetTransform()->SetPosition(width / 2, height / 4 * 3, 0);
-	//_gameExitButton->AddComponent<BtnTextScript>();
-	//_gameExitButton->AddComponent<HDData::Button>();
 
 	_infoController = API::CreateStaticObject("myinfo", _settingCanvas);
 	auto info = _infoController->AddComponent<HDData::ImageUI>();
@@ -101,8 +113,6 @@ GameSetting::GameSetting()
 	_settingBackgroundkimg->ChangeScale(1.1f,1.1f);
 	_settingBackgroundkimg->SetImage("settingBackground.png");
 
-	//_quitButton = API::CreateStaticObject("quit", _settingCanvas);
-
 }
 
 GameSetting::~GameSetting()
@@ -115,6 +125,13 @@ void GameSetting::Start()
 	_bgmSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.95f);
 	_sfxSoundSlider->GetComponent<HDData::SliderUI>()->SetSortOrder(0.96f);
 	_exitButtonIndex->GetComponent<HDData::TextUI>()->SetSortOrder(0.93f);
+	_gameExitButton->GetComponent<HDData::Button>()->SetSortOrder(0.93f);
+	_gameExitButton->GetComponent<HDData::Button>()->SetImage("AlphaBtn.png");
+	_gameExitButton->GetComponent<HDData::Button>()->SetOnClickEvent(
+		[=]()
+		{
+			GameManager::Instance()->QuitGame();
+		});
 
 	SetSettingCanvasActive(false);
 }
@@ -137,7 +154,7 @@ void GameSetting::Update()
 void GameSetting::SetSettingCanvasActive(bool _isActive)
 {
 	_exitButtonIndex->SetSelfActive(_isActive);
-	//_gameExitButton->SetSelfActive(_isActive);
+	_gameExitButton->SetSelfActive(_isActive);
 	_settingCanvas->SetSelfActive(_isActive);
 	_infoController->SetSelfActive(_isActive);
 	_bgmSoundController->SetSelfActive(_isActive);

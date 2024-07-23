@@ -74,6 +74,7 @@ void PlayerInfo::SetPlayerUID(int uid)
 
 void PlayerInfo::SetCurrentHP(int hp)
 {
+	hp = hp < 0 ? 0 : hp;
 	_currentHP = hp;
 }
 

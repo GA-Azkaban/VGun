@@ -106,7 +106,7 @@ void MainMenuScene::MainMenu()
 	auto creditText = API::CreateImageBox(_scene, "creditPeople", credit);
 	creditText->GetTransform()->SetPosition((API::GetScreenWidth() / 2)+115.0f, (API::GetScreenHeight() / 2)-25.0f, 0.0f);
 	auto creditTextImg = creditText->GetComponent<HDData::ImageUI>();
-	creditTextImg->SetImage("credit.png");
+	creditTextImg->SetImage("creditnew.png");
 	creditTextImg->SetSortOrder(0.61f);
 
 	// play->RoomEnter & make sequence
@@ -212,7 +212,7 @@ void MainMenuScene::MainMenu()
 	HDData::GameObject* inputPW_inputBox = API::CreateTextInputBox(_scene, "inputPW_inputBox", enter_inputPasswordCanvas);
 	inputPW_inputBox->GetTransform()->SetLocalPosition(0.0f, 0.0f, 0.0f);
 	auto inputPW_inputBoxComp = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>();
-	inputPW_inputBoxComp->SetSortOrder(0.72f);
+	inputPW_inputBoxComp->SetSortOrder(0.73f);
 
 	/// 이부분 이미지 수정
 	HDData::GameObject* inputPW_enter = API::CreateButton(_scene, "inputPW_enter", enter_inputPasswordCanvas);
@@ -226,6 +226,7 @@ void MainMenuScene::MainMenu()
 		{
 			std::string input = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
 			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id), input);
+			enter_roomLstCanvas->SetSelfActive(false);
 		});
 
 	HDData::GameObject* inputPW_exit = API::CreateButton(_scene, "inputPW_exit", enter_inputPasswordCanvas);
@@ -426,78 +427,6 @@ void MainMenuScene::MainMenu()
 	tempText->GetComponent<HDData::TextUI>()->SetSortOrder(0.65f);
 	tempText->GetComponent<HDData::TextUI>()->SetText("LOGOUT");
 
-	// setting & option
-	HDData::GameObject* preferencesBtn = API::CreateButton(_scene, "preferencesBtn");
-	preferencesBtn->GetTransform()->SetPosition(1875.f * width / 1920, 30.f * height / 1080, 0.f);
-	preferencesBtn->AddComponent<BtnHoveringScript>();
-	auto prefBtn = preferencesBtn->GetComponent<HDData::Button>();
-	prefBtn->SetImage("icon_cog.png");
-	prefBtn->SetSortOrder(0.65f);
-	prefBtn->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-	// ex)해상도, BGM 볼륨, 환경볼륨, 마우스 감도
-	HDData::GameObject* settingControlObject = API::CreateImageBox(_scene, "settingControlObject");
-	settingControlObject->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
-	settingControlObject->SetSelfActive(false);
-
-	HDData::GameObject* preferencesCanvas = API::CreateImageBox(_scene, "Setting", settingControlObject);
-	preferencesCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
-	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetImage("alphaRefCanvas2.png");
-	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6f);
-	preferencesCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-	preferencesCanvas->GetComponent<HDData::ImageUI>()->SetIsIgnoreFocus(true);
-
-	// 마우스 감도
-	// Mouse Sensitivity
-	HDData::GameObject* mouseSensitivityText = API::CreateTextbox(_scene, "Mouse Sensitivity Text", preferencesCanvas);
-	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
-	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetText("Mouse Sensitivity");
-	mouseSensitivityText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
-	float mouseSensitivityTextWidth = mouseSensitivityText->GetComponent<HDData::TextUI>()->GetTextWidth();
-	float mouseSensitivityTextHeight = mouseSensitivityText->GetComponent<HDData::TextUI>()->GetTextHeight();
-	mouseSensitivityText->GetTransform()->SetPosition((300.0f * width / 1920) + 80, (250.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
-
-	HDData::GameObject* MouseSensitivityCanvas = API::CreateImageBox(_scene, "MouseSensitivityCanvas", preferencesCanvas);
-	MouseSensitivityCanvas->GetTransform()->SetPosition(960.f * width / 1920, 240.0f * height / 1080, 0.f);
-	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
-	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
-	MouseSensitivityCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-	/// 이부분 추가수정
-	HDData::GameObject* BGMVolumeText = API::CreateTextbox(_scene, "BGMVolumeText", preferencesCanvas);
-	BGMVolumeText->GetTransform()->SetPosition((302.0f * width / 1920) + 20, (350.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.14f * 0.001f)) * height / 1080, 0.f);
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetText("BGM Volume");
-	BGMVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
-	float screenModTextH = BGMVolumeText->GetComponent<HDData::TextUI>()->GetTextHeight();
-
-	HDData::GameObject* BGMVolumeCanvas = API::CreateImageBox(_scene, "ScreenModCanvas", preferencesCanvas);
-	BGMVolumeCanvas->GetTransform()->SetPosition(960.f * width / 1920, 340.0f * height / 1080, 0.f);
-	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
-	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
-	BGMVolumeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-	// Environment Volume
-	HDData::GameObject* EnvironmentVolumeText = API::CreateTextbox(_scene, "EnvironmentVolumeText", preferencesCanvas);
-	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_30.spritefont");
-	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetText("Environment Volume");
-	EnvironmentVolumeText->GetComponent<HDData::TextUI>()->SetSortOrder(0.61f);
-	float evTextWidth = EnvironmentVolumeText->GetComponent<HDData::TextUI>()->GetTextWidth();
-	EnvironmentVolumeText->GetTransform()->SetPosition((390.0f - ((evTextWidth - mouseSensitivityTextWidth) * (width - 1920) * 0.0002078f)) * width / 1920, (450.0f - (mouseSensitivityTextHeight * (height - 1080) * 0.138f * 0.0001f)) * height / 1080, 0.f);
-
-	HDData::GameObject* EnvironmentVolumeCanvas = API::CreateImageBox(_scene, "EnvironmentVolumeCanvas", preferencesCanvas);
-	EnvironmentVolumeCanvas->GetTransform()->SetPosition(960.f * width / 1920, 440.0f * height / 1080, 0.f);
-	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetImage("PrefBtntemp.png");
-	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.61f);
-	EnvironmentVolumeCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-	/// event
-	/// event
-	/// event
-	/// event
-	/// event
-	/// event
-
 	// game play btn
 	main_playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
@@ -556,6 +485,7 @@ void MainMenuScene::MainMenu()
 			else
 			{
 				make_canvas->SetSelfActive(false);
+				make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->SetOrigin();
 			}
 
 			if (enter_roomLstCanvas->GetSelfActive())
@@ -572,23 +502,7 @@ void MainMenuScene::MainMenu()
 			credit->SetSelfActive(false);
 			make_canvas->SetSelfActive(false);
 			NetworkManager::Instance().SendRoomCreate(newRoomName->GetCurrentText(), "", 6, false);
-		}
-	);
-
-	// game setting
-	preferencesBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			if (main_controlCanvas->GetSelfActive())
-			{
-				main_controlCanvas->SetSelfActive(false);
-				settingControlObject->SetSelfActive(true);
-			}
-			else
-			{
-				main_controlCanvas->SetSelfActive(true);
-				settingControlObject->SetSelfActive(false);
-			}
+			make_roomNameInput->GetComponent<HDData::TextInputBoxUI>()->SetOrigin();
 		}
 	);
 
