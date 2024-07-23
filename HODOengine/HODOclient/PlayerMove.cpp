@@ -265,8 +265,6 @@ void PlayerMove::ShootGun()
 
 	NetworkManager::Instance().SendPlayShoot(GetGameObject()->GetTransform());
 
-	// 총구 화염 이펙트
-
 	// 총 쏴서
 	HDData::Collider* hitCollider = nullptr;
 
@@ -289,8 +287,7 @@ void PlayerMove::ShootGun()
 		{
 			_isShootHead = true;
 			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
-			bloodParticle->GetTransform()->SetPosition(hitPoint);
-			bloodParticle->Play();
+			PlayParticle(hitPoint);
 		}
 		else
 		{
@@ -305,8 +302,7 @@ void PlayerMove::ShootGun()
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
 		_isShootBody = true;
-		bloodParticle->GetTransform()->SetPosition(hitPoint);
-		bloodParticle->Play();
+		PlayParticle(hitPoint);
 	}
 
 	// 건물을 맞췄을 때
@@ -704,6 +700,14 @@ void PlayerMove::UpdateStateText()
 	//_plPosText->SetText(posText);
 }
 
+void PlayerMove::PlayParticle(Vector3 position)
+{
+	bloodParticle->GetTransform()->SetPosition(position);
+	//Vector4 cameraRotation = _headCam->GetTransform()->GetRotation();
+	//bloodParticle->GetTransform()->SetRotation(cameraRotation);
+	//bloodParticle->GetTransform()->Rotate(0.0f, 90.0f, 0.0);
+	bloodParticle->Play();
+}
 
 int& PlayerMove::GetBulletCount()
 {

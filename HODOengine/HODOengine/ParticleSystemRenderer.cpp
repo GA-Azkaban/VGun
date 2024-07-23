@@ -53,14 +53,22 @@ namespace HDData
 			delta.y = (up.y) * 0.1f * speed * deltaTime;
 			delta.z = (forward.z) * speed * deltaTime;
 			Vector3 currentPos = e.first->GetPosition();
-			e.first->SetPosition(delta + currentPos);
+			// 중력
+			Vector3 localUp = Vector3::Transform(Vector3(0.0f, 1.0f, 0.0f), worldTM.Invert());
+			localUp.Normalize();
+			float velocity = e.first->GetGravityVelocity();
+			float modifier = e.first->GetGravityModifier();
+			velocity += (-9.8f) * modifier * deltaTime;
+			localUp *= velocity;
+			e.first->SetGravityVelocity(velocity);
+			e.first->SetPosition(delta + currentPos + localUp);
 			// worldTM 정보 넘겨주기
 			// 파티클의 localTM을 구해서 파티클렌더러의 worldTM과 곱해서 넘겨준다.
 			Matrix localTM;
 			localTM *= Matrix::CreateScale(e.first->GetScale());
 			localTM *= Matrix::CreateFromQuaternion(e.first->GetRotation());
 			localTM *= Matrix::CreateTranslation(e.first->GetPosition());
-			e.first->SetWorldTM(DirectX::XMMatrixMultiply(localTM, worldTM));
+			e.first->SetWorldTM(DirectX::XMMatrixMultiply(localTM, worldTM)); 
 			// 빌보드일 경우 카메라 방향을 바라보게 회전
 			if (_particleSystem->rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Billboard)
 			{
