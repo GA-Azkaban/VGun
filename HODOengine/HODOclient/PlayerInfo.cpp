@@ -1,6 +1,5 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
-#include "GameSetting.h"
 #include "RoundManager.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
@@ -123,7 +122,6 @@ void PlayerInfo::SetIsHost(bool isHost)
 void PlayerInfo::SetNickName(std::string nickName)
 {
 	_playerNickname = nickName;
-	GameSetting::Instance().SetMyNickname(nickName);
 }
 
 bool& PlayerInfo::GetIsDie()
