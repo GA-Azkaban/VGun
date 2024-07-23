@@ -75,9 +75,9 @@ namespace HDEngine
 		}
 
 		_accumulateTime += API::GetDeltaTime();
-		if (_accumulateTime >= 0.008333f)
+		if (_accumulateTime >= 0.007f)
 		{
-			_accumulateTime -= 0.008333f;
+			_accumulateTime -= 0.007f;
 			for (auto& rigid : _rigidDynamics)
 			{
 				HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
@@ -93,7 +93,7 @@ namespace HDEngine
 			}
 			_collisionCallback->Clear();
 
-			_pxScene->simulate(0.008333f);
+			_pxScene->simulate(0.007f);
 			_pxScene->fetchResults(true);
 
 			_collisionCallback->CollectResults();
