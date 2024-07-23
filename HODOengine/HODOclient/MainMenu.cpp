@@ -226,7 +226,6 @@ void MainMenuScene::MainMenu()
 		{
 			std::string input = inputPW_inputBox->GetComponent<HDData::TextInputBoxUI>()->GetCurrentText();
 			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id), input);
-			enter_roomLstCanvas->SetSelfActive(false);
 		});
 
 	HDData::GameObject* inputPW_exit = API::CreateButton(_scene, "inputPW_exit", enter_inputPasswordCanvas);
@@ -263,6 +262,7 @@ void MainMenuScene::MainMenu()
 		{
 			MenuManager::Instance().ShowCheckEnterCanvas(false);
 			NetworkManager::Instance().SendRoomEnter(std::to_string(MenuManager::Instance().selectedRoomInfo->id));
+			enter_roomLstCanvas->SetSelfActive(false);
 		});
 
 	HDData::GameObject* enter_enterCheckText = API::CreateTextbox(_scene, "enterCheckText", enter_enterBtn);

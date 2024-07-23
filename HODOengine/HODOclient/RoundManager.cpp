@@ -389,7 +389,7 @@ void RoundManager::ExitGame()
 
 	// 로비로 복귀
 	API::LoadSceneByName("MainMenu");
-	LobbyManager::Instance().RefreshRoom();
+	MenuManager::Instance().RenderRoomList();
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }

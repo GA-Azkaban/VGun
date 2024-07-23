@@ -39,7 +39,7 @@ GameSetting::GameSetting()
 	_settingCanvas = API::CreateStaticObject("setting");
 	_settingCanvas->GetTransform()->SetPosition(width / 2, height / 2, 0);
 	auto img = _settingCanvas->AddComponent<HDData::ImageUI>();
-	img->SetSortOrder(0.65f);
+	img->SetSortOrder(0.69f);
 	img->SetIsIgnoreFocus(true);
 	img->SetImage("alphaRefCanvas2.png");
 
@@ -68,7 +68,7 @@ GameSetting::GameSetting()
 
 	_sfxSoundController = API::CreateStaticObject("sfxSound", _settingCanvas);
 	auto sfximg = _sfxSoundController->AddComponent<HDData::ImageUI>();
-	sfximg->SetSortOrder(0.73f);
+	sfximg->SetSortOrder(0.75f);
 	_sfxSoundController->GetTransform()->SetPosition(960.f * width / 1920, 770, 0.f);
 	sfximg->SetImage("PrefBtntemp.png");
 
@@ -109,7 +109,7 @@ GameSetting::GameSetting()
 	_settingBackground = API::CreateStaticObject("blackCanvas");
 	_settingBackground->GetTransform()->SetPosition(width / 2, height / 2, 0);
 	auto _settingBackgroundkimg = _settingBackground->AddComponent<HDData::ImageUI>();
-	_settingBackgroundkimg->SetSortOrder(0.69f);
+	_settingBackgroundkimg->SetSortOrder(0.73f);
 	_settingBackgroundkimg->ChangeScale(1.1f,1.1f);
 	_settingBackgroundkimg->SetImage("settingBackground.png");
 
