@@ -74,7 +74,8 @@ namespace HDEngine
 		void Update3DSoundPosition(std::string soundName, Vector3 position);
 
 		std::unordered_map<std::string, std::string>& GetSoundPathList();
-		std::unordered_map<std::string, HDData::AudioClip>& GetSoundList();
+		std::unordered_map<std::string, HDData::AudioClip>& Get2DSoundList();
+		std::unordered_map<std::string, HDData::AudioClip>& Get3DSoundList();
 
 	private:
 		/// FMOD 관련 변수들
@@ -83,7 +84,8 @@ namespace HDEngine
 		FMOD::ChannelGroup* _channelGroupMaster;	// 오디오 채널 전체 그룹(_channelGroup 묶음)
 		std::vector<FMOD::ChannelGroup*> _channelGroups;	// 오디오 채널 그룹
 		std::unordered_map<std::string, std::string> _soundPathList;	// <soundName, soundPath>
-		std::unordered_map<std::string, HDData::AudioClip> _soundList;
+		std::unordered_map<std::string, HDData::AudioClip> _2DSoundList;
+		std::unordered_map<std::string, HDData::AudioClip> _3DSoundList;
 
 		/// FMOD 제어에 필요한 변수들
 		const unsigned int MAXCHANNELGROUP;
