@@ -717,7 +717,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 {
 	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
-
+	
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());

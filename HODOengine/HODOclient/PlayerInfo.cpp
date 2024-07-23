@@ -5,6 +5,7 @@
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "UIEffect.h"
+#include "Crosshair.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -266,11 +267,13 @@ void PlayerInfo::PlayDieEffect()
 {
 	_dieEffectImg->GetGameObject()->SetSelfActive(true);
 	_dieEffectImg->FadeIn(1);
+	_crosshair->SetActive(false);
 }
 
 void PlayerInfo::PlayRespawnEffect()
 {
 	_dieEffectImg->GetGameObject()->SetSelfActive(false);
+	_crosshair->SetActive(true);
 	// TODO) 리스폰 이펙트 
 }
 
@@ -289,6 +292,11 @@ void PlayerInfo::PlayKillLog(std::string log)
 void PlayerInfo::KillLogExit()
 {
 	_killLog->GetGameObject()->SetSelfActive(false);
+}
+
+void PlayerInfo::SetCrosshairUI(Crosshair* crosshair)
+{
+	_crosshair = crosshair;
 }
 
 bool& PlayerInfo::GetPlayerDie()

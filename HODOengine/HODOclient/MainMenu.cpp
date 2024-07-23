@@ -502,6 +502,8 @@ void MainMenuScene::MainMenu()
 	main_playBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			credit->SetSelfActive(false);
+
 			if (!main_makeBtn->GetSelfActive() && !main_enterBtn->GetSelfActive())
 			{
 				main_makeBtn->SetSelfActive(true);
@@ -524,6 +526,8 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
+			credit->SetSelfActive(false);
+
 			if (!enter_roomLstCanvas->GetSelfActive())
 			{
 				MenuManager::Instance().ShowRoomListCanvas(true);
@@ -543,6 +547,8 @@ void MainMenuScene::MainMenu()
 	main_makeBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			credit->SetSelfActive(false);
+
 			if (!make_canvas->GetSelfActive())
 			{
 				make_canvas->SetSelfActive(true);
@@ -563,6 +569,7 @@ void MainMenuScene::MainMenu()
 	(
 		[=]()
 		{
+			credit->SetSelfActive(false);
 			make_canvas->SetSelfActive(false);
 			NetworkManager::Instance().SendRoomCreate(newRoomName->GetCurrentText(), "", 6, false);
 		}
@@ -589,6 +596,8 @@ void MainMenuScene::MainMenu()
 	teamLogo->GetComponent<HDData::Button>()->SetOnClickEvent(
 		[=]()
 		{
+			make_canvas->SetSelfActive(false);
+			enter_roomLstCanvas->SetSelfActive(false);
 			if (credit->GetSelfActive())
 			{
 				credit->SetSelfActive(false);
@@ -601,9 +610,10 @@ void MainMenuScene::MainMenu()
 	);
 
 	exit_Btn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[]()
+		[=]()
 		{
 			NetworkManager::Instance().SendLogout();
+			credit->SetSelfActive(false);
 		}
 	);
 
