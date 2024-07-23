@@ -45,8 +45,8 @@ namespace HDEngine
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
 		_material = _physics->createMaterial(0.8f, 0.6f, 0.0f);
-		_playerMaterial = _physics->createMaterial(0.04f, 0.02f, 0.0f);
-		_planeMaterial = _physics->createMaterial(0.05f, 0.03f, 0.0f);
+		_playerMaterial = _physics->createMaterial(0.25f, 0.15f, 0.0f);
+		_planeMaterial = _physics->createMaterial(0.3f, 0.2f, 0.0f);
 
 		_collisionCallback = std::make_unique<CollisionCallback>();
 		_pxScene->setSimulationEventCallback(_collisionCallback.get());
@@ -75,9 +75,9 @@ namespace HDEngine
 		}
 
 		_accumulateTime += API::GetDeltaTime();
-		if (_accumulateTime >= 0.008333f)
+		if (_accumulateTime >= 0.007f)
 		{
-			_accumulateTime -= 0.008333f;
+			_accumulateTime -= 0.007f;
 			for (auto& rigid : _rigidDynamics)
 			{
 				HDData::DynamicCollider* dynamicCol = static_cast<HDData::DynamicCollider*>(rigid->userData);
@@ -93,7 +93,7 @@ namespace HDEngine
 			}
 			_collisionCallback->Clear();
 
-			_pxScene->simulate(0.008333f);
+			_pxScene->simulate(0.007f);
 			_pxScene->fetchResults(true);
 
 			_collisionCallback->CollectResults();

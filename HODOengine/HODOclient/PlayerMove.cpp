@@ -37,7 +37,7 @@ void PlayerMove::Start()
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
-	_moveSpeed = 3.0f;
+	_moveSpeed = 6.0f;
 
 	StartRoundCam();
 
@@ -319,7 +319,7 @@ void PlayerMove::ShootGun()
 void PlayerMove::Reload()
 {
 	_shootCount = 0;
-	_playerState.second = ePlayerMoveState::IDLE;
+	//_playerState.second = ePlayerMoveState::IDLE;
 	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
 }
 
@@ -339,7 +339,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_playerColliderStanding->Move(direction, 16.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 24.0f, _deltaTime);
 }
 
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
@@ -348,41 +348,22 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			//_fpanimator->GetAllAC()->SetBool("isIdle", true);
-			_tpanimator->GetAllAC()->SetBool("isIdle", true);
-			//_playerColliderStanding->Stop();
+			_fpanimator->GetAllAC()->SetBool("isIdle", true);
 
-			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
-			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
-			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
-			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_moveSpeed = 6.4f;
-
-			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
-				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
-			else if (_moveDirection == 4)
-				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
-			else if (_moveDirection == 6)
-				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
-			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
-				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
-
-			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
-
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
+
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
@@ -391,6 +372,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_tumbleCooldown = 6.0f;
 			recoilCooldown->SetTimerOn();
 			cooldownCountText->SetTimerOn();
+			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_roll");
 
 			_headCam->ToggleCameraShake(true);
@@ -408,13 +390,21 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			else
 			{
 				if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollFront");
+				}
 				else if (_moveDirection == 4)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollLeft");
+				}
 				else if (_moveDirection == 6)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollRight");
+				}
 				else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+				{
 					_tpanimator->GetAllAC()->SetTrigger("isRollBack");
+				}
 
 				_tumbleDirection = DecideDisplacement(_moveDirection);
 			}
@@ -446,6 +436,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::RELOAD:
 		{
 			_fpanimator->GetAllAC()->SetBool("isIdle", false);
+			_fpanimator->GetAllAC()->SetBool("isFire", false);
 			_fpanimator->GetAllAC()->SetTrigger("isReload");
 			_tpanimator->GetAllAC()->SetTrigger("isReload");
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_reload");
@@ -486,6 +477,35 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		{
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
+			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
+			else if (_moveDirection == 4)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			}
+			else if (_moveDirection == 6)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
+			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
+			{
+				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			}
+
 			break;
 		}
 		case ePlayerMoveState::JUMP:
@@ -521,7 +541,7 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
-			_fpmesh->SetMeshActive(false, 0);
+			//_fpmesh->SetMeshActive(false, 0);
 			break;
 		}
 		case ePlayerMoveState::DIE:
@@ -549,6 +569,10 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_playerColliderStanding->Stop();
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 
 			break;
 		}
@@ -595,9 +619,13 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RELOAD:
 		{
+			_fpanimator->GetAllAC()->SetBool("isReload", false);
+			_tpanimator->GetAllAC()->SetBool("isReload", false);
+
 			_fpmesh->SetMeshActive(true, 0);
 			Reload();
 			_reloadTimer = 0.0f;
+			_shootCooldown = 0.2f;
 
 			break;
 		}
@@ -1329,7 +1357,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		return;
 	}
-	else if (API::GetKeyDown(DIK_R) && _bulletCount < 6)
+	else if ((API::GetKeyDown(DIK_R) && _bulletCount < 6) || (_bulletCount == 0 && _playerState.second == ePlayerMoveState::AIM))
 	{
 		_playerState.second = ePlayerMoveState::RELOAD;
 		return;
@@ -1339,12 +1367,7 @@ void PlayerMove::DecidePlayerStateSecond()
 	{
 		if (API::GetMouseDown(MOUSE_LEFT))
 		{
-			if (_bulletCount == 0)
-			{
-				//_playerState.second = ePlayerMoveState::EMPTY;
-				_playerState.second = ePlayerMoveState::RELOAD;
-			}
-			else
+			if (_bulletCount != 0)
 			{
 				_playerState.second = ePlayerMoveState::FIRE;
 			}
