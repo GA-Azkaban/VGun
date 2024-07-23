@@ -750,6 +750,13 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 		if (t >= 1.0f)
 			lerpTime = 0.0f;
 	}
+	else if (posDif.Length() > 0.01f)
+	{
+		// 포지션 선형 보간
+		Vector3 interpolatedPos = (currentPos + serverPos) / 2.0f;
+
+		current->SetPosition(interpolatedPos);
+	}
 	else
 	{
 		current->SetPosition(serverPos);
