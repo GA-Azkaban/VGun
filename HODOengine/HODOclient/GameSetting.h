@@ -24,6 +24,9 @@ public:
 public:
 	HDData::GameObject* _settingCanvas;
 
+	HDData::GameObject* _gameExitButton;
+	HDData::GameObject* _exitButtonIndex;
+
 	HDData::GameObject* _infoController;
 	HDData::GameObject* _bgmSoundController;
 	HDData::GameObject* _sfxSoundController;

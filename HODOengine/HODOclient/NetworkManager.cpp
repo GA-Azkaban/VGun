@@ -638,7 +638,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		info->SetCurrentHP(player.hp());
 
 		// animation
-		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
+		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) continue;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
 	}
 }

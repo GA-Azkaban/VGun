@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -605,7 +605,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::DIE:
 		{
-			_fpanimator->GetAllAC()->SetBool("isDie", true);
+			_tpanimator->GetAllAC()->SetBool("isDie", false);
 			Respawn();
 
 			break;
