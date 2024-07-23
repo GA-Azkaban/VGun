@@ -6,7 +6,6 @@
 #include "NetworkManager.h"
 #include "PlayerTest.h"
 #include "MeshTransformController.h"
-#include "TPScript.h"
 #include "UIEffect.h"
 
 TestScene::TestScene()
@@ -121,7 +120,7 @@ TestScene::TestScene()
 
 	particleSystem->Play(); */
 
-	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle");
+	/*auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle");
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
 	particleSystem2->main.duration = 2.5f;
 	particleSystem2->main.loop = true;
@@ -175,13 +174,13 @@ TestScene::TestScene()
 	alphaKey3.time = 1.0f;
 	ak.push_back(alphaKey3);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck, ak);
-	particleSystem2->Play();
+	particleSystem2->Play(); */
 
 	auto buildingTest1 = API::CreateObject(_scene);
 	buildingTest1->GetComponent<HDData::Transform>()->SetPosition(20.0f, 0.0f, 10.0f);
 	//buildingTest1->GetComponent<HDData::Transform>()->Rotate(0.0f, -90.0f, 0.0f);
 	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
-	buildingRenderer1->LoadMesh("SM_Bld_Saloon_02.fbx");
+	buildingRenderer1->LoadMesh("SM_Bld_Saloon_01.fbx");
 	HDEngine::MaterialDesc buildingDesc1;
 	buildingDesc1.materialName = "PolygonKRAFTON_Texture_02";
 	buildingDesc1.albedo = "PolygonKRAFTON_Texture_02.png";
@@ -194,7 +193,7 @@ TestScene::TestScene()
 
 	// 플레이어 테스트
 	/*auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 0.0f, 0.0f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 30.0f, 0.0f, 0.0f });
 	playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
@@ -246,11 +245,68 @@ TestScene::TestScene()
 
 	//playerTest->AddComponent<TPScript>(); */
 
-	// 바닥
-	//auto groundFloor = API::CreateObject(_scene, "ground");
-	//groundFloor->GetComponent<HDData::Transform>()->SetPosition(0.f, 0.f, 0.f);
-	//auto groundCollier = groundFloor->AddComponent<HDData::StaticPlaneCollider>();
-
+	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
+	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
+	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
+	particleSystem3->main.duration = 1.0f;
+	particleSystem3->main.loop = true;
+	particleSystem3->main.minStartColor = { 180, 0, 0, 255 };
+	particleSystem3->main.maxStartColor = { 180, 0, 0, 255 };
+	particleSystem3->main.minStartLifetime = 0.8f;
+	particleSystem3->main.maxStartLifetime = 0.8f;
+	particleSystem3->main.minStartRotation = -180.0f;
+	particleSystem3->main.maxStartRotation = 180.0f;
+	particleSystem3->main.minStartSize = 0.025f;
+	particleSystem3->main.maxStartSize = 0.10f;
+	particleSystem3->main.minStartSpeed = 10.0f;
+	particleSystem3->main.maxStartSpeed = 100.0f;
+	particleSystem3->main.initialVelocity = 0.2f;
+	particleSystem3->main.gravityModifier = 0.05f;
+	particleSystem3->emission.enabled = true;
+	HDData::Burst newBurst3(0.0f, 6);
+	particleSystem3->emission.SetBurst(newBurst3);
+	particleSystem3->limitVelocityOverLifetime.enabled = true;
+	particleSystem3->limitVelocityOverLifetime.drag = true;
+	particleSystem3->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve3;
+	curve3.AddKey(0.0f, 0.2f, [](float t) { return 2.875f * t * t * t + (-4.3625f) * t * t + 0.6075f * t + 0.98f; });
+	particleSystem3->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve3);
+	particleSystem3->rotationOverLifetime.enabled = true;
+	particleSystem3->rotationOverLifetime.angularVelocity = 500.0f;
+	HDEngine::MaterialDesc bloodMatDesc;
+	bloodMatDesc.materialName = "bloodMat";
+	bloodMatDesc.color = { 180, 0, 0, 255 };
+	HDData::Material* bloodMat = API::CreateMaterial(bloodMatDesc);
+	particleSystem3->rendererModule.material = bloodMat;
+	particleSystem3->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem3->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
+	particleSystem3->rendererModule.alphaBlending = true;
+	particleSystem3->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck3;
+	std::vector<HDData::GradientAlphaKey> ak3;
+	HDData::GradientColorKey colorkey5;
+	colorkey5.color = { 180, 0, 0 };
+	colorkey5.time = 0.0f;
+	ck3.push_back(colorkey5);
+	HDData::GradientColorKey colorkey6;
+	colorkey6.color = { 255, 0, 0 };
+	colorkey6.time = 0.144f;
+	ck3.push_back(colorkey6);
+	HDData::GradientColorKey colorkey7;
+	colorkey7.color = { 220, 0, 0 };
+	colorkey7.time = 0.403f;
+	ck3.push_back(colorkey7);
+	HDData::GradientAlphaKey alphaKey6;
+	alphaKey6.alpha = 255;
+	alphaKey6.time = 0.0f;
+	ak3.push_back(alphaKey6);
+	HDData::GradientAlphaKey alphaKey7;
+	alphaKey7.alpha = 255;
+	alphaKey7.time = 1.0f;
+	ak3.push_back(alphaKey7);
+	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
+	particleSystem3->Play();
 }
 
 TestScene::~TestScene()

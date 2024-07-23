@@ -81,6 +81,16 @@ namespace HDData
 		return newVal;
 	}
 
+	void TextInputBoxUI::SetOrigin()
+	{
+		for (int i = 0; i < _text->GetText().size(); ++i)
+		{
+			newVal.pop_back();
+		}
+		GetTextUI()->SetText(newVal);
+		GetCursorImage()->GetTransform()->SetPosition(_textOriginPos + GetTextUI()->_sketchable->GetWidth() / 2 - 5, GetTextUI()->GetTop() + GetTextUI()->_sketchable->GetHeight() / 2, 0.f);
+	}
+
 	void TextInputBoxUI::SetSortOrder(float value)
 	{
 		_background->SetSortOrder(value);

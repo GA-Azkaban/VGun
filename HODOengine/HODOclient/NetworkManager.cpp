@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -231,7 +231,7 @@ void NetworkManager::Connected()
 {
 	_isConnect = true;
 
-#if _DEBUG
+// #if _DEBUG
 	FILE* pFile = nullptr;
 
 	if (AllocConsole())
@@ -240,7 +240,7 @@ void NetworkManager::Connected()
 		ASSERT_CRASH(false);
 
 	std::cout << "Connected" << std::endl;
-#endif
+// #endif
 }
 
 void NetworkManager::Disconnected()
@@ -318,14 +318,12 @@ void NetworkManager::SendLogout()
 	this->_service->BroadCast(sendBuffer);
 
 	// Todo 보내고 동작을 해야될까?
-
-
 }
 
 void NetworkManager::RecvLogout()
 {
 	// Todo 로그아웃을 받아서 동작해야할까?
-
+	API::LoadSceneByName("Login");
 }
 
 void NetworkManager::SendRoomListRequest()
@@ -572,14 +570,14 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
-
-	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
+
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
@@ -590,6 +588,7 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(false);
+	LobbyManager::Instance().RefreshRoom();
 }
 
 void NetworkManager::SendPlayUpdate()
@@ -621,20 +620,6 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
 
-	{
-		//static uint64 temp = 0;
-		//static int i = 0;
-		//static const Vector3 tempPos[4] = { {0,10,0},{0,10,50},{50,10,50},{50,10,0} };
-		//if (temp < ::GetTickCount64())
-		//{
-		//	cube->GetTransform()->SetPosition(tempPos[i]);
-		//	i++;
-		//	i %= 4;
-		//	temp = ::GetTickCount64() + 1000;gg
-		//}
-	}
-
-
 	for (auto& player : roominfo.users())
 	{
 		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
@@ -653,9 +638,8 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		info->SetCurrentHP(player.hp());
 
 		// animation
-		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) return;
+		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) continue;
 		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
-		info->SetIsStateChange(true);
 	}
 }
 
@@ -748,87 +732,95 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	if (currentPos == serverPos && currentRot == serverRot)
-		return;
-
-	static float lerpTime = 0.0f;
-	lerpTime += dt * intermediateValue;
-	float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
-	float t = x * x * (3 - 2 * x);
-
-	// 포지션 비선형 보간
-	Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, t);
-
-	// 로테이션 구면 선형 보간
-	Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
-
-	// 현재 Transform에 보간된 값 설정
-	current->SetPosition(interpolatedPos);
-	current->SetRotation(interpolatedRot);
-
-	// 보간 후에도 너무 멀리 있다면 즉시 이동
-	if (Vector3::Distance(currentPos, serverPos) > 1)
+	//if (currentPos == serverPos && currentRot == serverRot)
+	//	return;
+	Vector3 posDif = currentPos - serverPos;
+	if (posDif.Length() > 0.1f)
 	{
-		currentPos = serverPos;
+		static float lerpTime = 0.0f;
+		lerpTime += dt * intermediateValue;
+		float x = std::clamp(lerpTime / 1.0f, 0.0f, 1.0f);
+		float t = x * x * (3 - 2 * x);
+
+		// 포지션 비선형 보간
+		Vector3 interpolatedPos = Vector3::Lerp(currentPos, serverPos, x);
+		
+		current->SetPosition(interpolatedPos);
+
+		if (t >= 1.0f)
+			lerpTime = 0.0f;
 	}
 
-	if (t >= 1.0f)
-		lerpTime = 0.0f;
+	float dot = serverRot.Dot(currentRot);
+	float angleDif = 2.0f * acos(dot);
+	if (angleDif > 0.03f)
+	{
+		// 로테이션 구면 선형 보간
+		Quaternion interpolatedRot = Quaternion::Slerp(currentRot, serverRot, dt * intermediateValue * 10);
+
+		// 현재 Transform에 보간된 값 설정
+		current->SetRotation(interpolatedRot);
+	}
+	// 보간 후에도 너무 멀리 있다면 즉시 이동
+	//if (Vector3::Distance(currentPos, serverPos) > 1)
+	//{
+	//	currentPos = serverPos;
+	//}
 }
 
 Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)
 {
-	if (state == "")
-	{
-		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
-	}
 	if (state == "IDLE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_IDLE;
 	}
-	if (state == "RUN_R")
+	else if (state == "RUN_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RIGHT;
 	}
-	if (state == "RUN_L")
+	else if (state == "RUN_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_LEFT;
 	}
-	if (state == "RUN_F")
+	else if (state == "RUN_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_FORWARD;
 	}
-	if (state == "RUN_B")
+	else if (state == "RUN_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
 	}
-	if (state == "JUMP")
+	else if (state == "JUMP")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
 	}
-	if (state == "ROLL_F")
+	else if (state == "ROLL_F")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_FORWARD;
 	}
-	if (state == "ROLL_B")
+	else if (state == "ROLL_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_BACK;
 	}
-	if (state == "ROLL_R")
+	else if (state == "ROLL_R")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_RIGHT;
 	}
-	if (state == "ROLL_L")
+	else if (state == "ROLL_L")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_ROLL_LEFT;
 	}
-	if (state == "RELOAD")
+	else if (state == "RELOAD")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_RELOAD;
 	}
-	if (state == "DIE")
+	else if (state == "DIE")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_DEATH;
+	}
+	else
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_NONE;
 	}
 }
 

@@ -1,11 +1,10 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
 #include "../HODOEngine/CollisionCallback.h"
 #include "PlayerInfo.h"
 #include "Crosshair.h"
-#include "TPScript.h"
 #include "OthersAnim.h"
 #include "LowHPEffect.h"
 #include "HitEffect.h"
@@ -80,7 +79,6 @@ void InGameSceneView::Initialize()
 
 	player->AddComponent<HDData::Animator>();
 	API::LoadFPAnimationFromData(player, "TP_animation.json");
-	player->AddComponent<TPScript>();
 	RoundManager::Instance()->SetAnimationDummy(player);
 
 	RoundManager::Instance()->_myObj = player;
@@ -96,7 +94,7 @@ void InGameSceneView::Initialize()
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 	auto landingHelper = API::CreateObject(_scene, "landingHelper", player);
 	landingHelper->GetTransform()->SetLocalPosition(Vector3(0.0f, -0.1f, 0.0f));
-	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.26f, 0.14f, 0.26f);
+	auto helperBox = landingHelper->AddComponent<HDData::TriggerBoxCollider>(0.01f, 0.15f, 0.01f);
 	helperBox->SetParentCollider(playerCollider);
 
 	// 메인 카메라를 1인칭 캐릭터 머리에 붙은 카메라로 사용한다.
@@ -220,7 +218,6 @@ void InGameSceneView::Initialize()
 
 	// 총구 연기 이펙트
 	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle", particleSystemObj);
-	//particleSystemObj2->AddComponent<MeshTransformController>();
 	particleSystemObj2->GetTransform()->SetLocalRotation({ -0.380f, 0.1325f, -0.0551f, 0.9138f });
 	particleSystemObj2->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem2 = particleSystemObj2->AddComponent<HDData::ParticleSystem>();
@@ -279,31 +276,69 @@ void InGameSceneView::Initialize()
 	ak2.push_back(alphaKey5);
 	particleSystem2->colorOverLifetime.color.SetKeys(ck2, ak2);
 
-	std::vector<HDData::ParticleSphereCollider*> particleVec;
-	for (int i = 0; i < 30; ++i)
-	{
-		auto particleObj = API::CreateObject(_scene);
-		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
-		particle->SetScaleOffset(Vector3(0.01f, 0.01f, 0.01f));
-		particleVec.push_back(particle);
-	}
-	playerMove->SetHitParticle(particleVec);
-
-	// sound 추가
-	//HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
-	//playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound7-2.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("shoot2", "./Resources/Sound/Shoot/Gun_sound9.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("empty", "./Resources/Sound/Shoot/Gun_sound_empty.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("reload", "./Resources/Sound/GunReload/Reload3.wav", HDData::SoundGroup::GunSound);
-	//playerSound->AddAudio("jump", "./Resources/Sound/Walk/footfall_01.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("land", "./Resources/Sound/Jump&Land/landing2.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("walk", "./Resources/Sound/Walk/footfall_02.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("run", "./Resources/Sound/Walk/footfall_02_run.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("tumble", "./Resources/Sound/Tumble/tumble_large.wav", HDData::SoundGroup::MoveSound);
-	//playerSound->AddAudio("tumblingMan", "./Resources/Sound/Tumble/tumblingMan.wav", HDData::SoundGroup::ActionSound);
-	//playerSound->AddAudio("dance", "./Resources/Sound/Dance/danceMusic.wav", HDData::SoundGroup::ActionSound);
-	//playerSound->AddAudio("hitBody", "./Resources/Sound/Hit/hitBody3.wav", HDData::SoundGroup::EffectSound);
-	//playerSound->AddAudio("hitHead", "./Resources/Sound/Hit/hitHead2.wav", HDData::SoundGroup::EffectSound);
+	// 피 파티클
+	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
+	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
+	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
+	particleSystem3->main.duration = 1.0f;
+	particleSystem3->main.loop = false;
+	particleSystem3->main.minStartColor = { 180, 0, 0, 255 };
+	particleSystem3->main.maxStartColor = { 180, 0, 0, 255 };
+	particleSystem3->main.minStartLifetime = 0.8f;
+	particleSystem3->main.maxStartLifetime = 0.8f;
+	particleSystem3->main.minStartRotation = -180.0f;
+	particleSystem3->main.maxStartRotation = 180.0f;
+	particleSystem3->main.minStartSize = 0.025f;
+	particleSystem3->main.maxStartSize = 0.05f;
+	particleSystem3->main.minStartSpeed = -20.0f;
+	particleSystem3->main.maxStartSpeed = 100.0f;
+	particleSystem3->main.initialVelocity = 0.1f;
+	particleSystem3->main.gravityModifier = 0.2f;
+	particleSystem3->emission.enabled = true;
+	HDData::Burst newBurst3(0.0f, 6);
+	particleSystem3->emission.SetBurst(newBurst3);
+	particleSystem3->limitVelocityOverLifetime.enabled = true;
+	particleSystem3->limitVelocityOverLifetime.drag = true;
+	particleSystem3->sizeOverLifetime.enabled = true;
+	HDData::AnimationCurve curve3;
+	curve3.AddKey(0.0f, 0.2f, [](float t) { return 2.875f * t * t * t + (-4.3625f) * t * t + 0.6075f * t + 0.98f; });
+	particleSystem3->sizeOverLifetime.size = HDData::MinMaxCurve(1.0f, curve3);
+	particleSystem3->rotationOverLifetime.enabled = true;
+	particleSystem3->rotationOverLifetime.angularVelocity = 500.0f;
+	HDEngine::MaterialDesc bloodMatDesc;
+	bloodMatDesc.materialName = "bloodMat";
+	bloodMatDesc.color = { 180, 0, 0, 255 };
+	HDData::Material* bloodMat = API::CreateMaterial(bloodMatDesc);
+	particleSystem3->rendererModule.material = bloodMat;
+	particleSystem3->rendererModule.renderMode = HDEngine::ParticleSystemRenderMode::Mesh;
+	particleSystem3->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
+	particleSystem3->rendererModule.alphaBlending = true;
+	particleSystem3->colorOverLifetime.enabled = true;
+	// colorKey, alphaKey 생성
+	std::vector<HDData::GradientColorKey> ck3;
+	std::vector<HDData::GradientAlphaKey> ak3;
+	HDData::GradientColorKey colorkey5;
+	colorkey5.color = { 180, 0, 0 };
+	colorkey5.time = 0.0f;
+	ck3.push_back(colorkey5);
+	HDData::GradientColorKey colorkey6;
+	colorkey6.color = { 255, 0, 0 };
+	colorkey6.time = 0.144f;
+	ck3.push_back(colorkey6);
+	HDData::GradientColorKey colorkey7;
+	colorkey7.color = { 220, 0, 0 };
+	colorkey7.time = 0.403f;
+	ck3.push_back(colorkey7);
+	HDData::GradientAlphaKey alphaKey6;
+	alphaKey6.alpha = 255;
+	alphaKey6.time = 0.0f;
+	ak3.push_back(alphaKey6);
+	HDData::GradientAlphaKey alphaKey7;
+	alphaKey7.alpha = 255;
+	alphaKey7.time = 1.0f;
+	ak3.push_back(alphaKey7);
+	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
+	playerMove->bloodParticle = particleSystem3;;
 
 	posX += 1;
 	posT += 315;
@@ -403,27 +438,37 @@ void InGameSceneView::Initialize()
 
 		RoundManager::Instance()->_playerObjs.push_back(otherPlayer);
 
-		// sound 추가
-		HDData::AudioSource* otherPlayerSound = otherPlayer->AddComponent<HDData::AudioSource>();
-		otherPlayerSound->AddAudio3D("shootother", "./Resources/Sound/Shoot/Gun_sound7.wav", HDData::SoundGroup::EffectSound, 10, 150);
-		otherPlayerSound->AddAudio3D("walkother", "./Resources/Sound/Walk/footstep.wav", HDData::SoundGroup::EffectSound, 10, 250);
-
 		posX += 2;
 		posT += 315;
 	}
 
+
+
+	// killcount ui (mine)
+	auto nickname = API::CreateTextbox(_scene, "mine");
+	nickname->GetTransform()->SetPosition(130 - 40, 50, 0);
+	auto nickComp = nickname->GetComponent<HDData::TextUI>();
+	nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	nickComp->SetText("");
+	nickComp->SetSortOrder(0.7);
+
+	auto killcount = API::CreateTextbox(_scene, "mycount");
+	killcount->GetTransform()->SetPosition(130 + 75, 50, 0);
+	auto countComp = killcount->GetComponent<HDData::TextUI>();
+	countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	countComp->SetText("");
+	countComp->SetSortOrder(0.7);
+
+	RoundManager::Instance()->_myKillCount.first = nickComp;
+	RoundManager::Instance()->_myKillCount.second = countComp;
+
+	// killcount ui (others)
+
 	int uiX = 130;
-	int uiY = 52.0f;
+	int uiY = 100.0f;
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
-		// killCount UI
-		//auto uiBack = API::CreateImageBox(_scene, "back" + std::to_string(i));
-		//uiBack->GetTransform()->SetPosition(uiX, uiY, 0);
-		//uiBack->GetTransform()->SetScale(1, 3, 0);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetSortOrder(0.6);
-		//uiBack->GetComponent<HDData::ImageUI>()->SetImage("back.png");
-
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
 		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
@@ -432,13 +477,12 @@ void InGameSceneView::Initialize()
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 35, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 75, uiY, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
 		countComp->SetSortOrder(0.7);
 
-		//RoundManager::Instance()->SetKillCountBack(uiBack->GetComponent<HDData::ImageUI>(), i);
 		RoundManager::Instance()->SetKillCountUI(nickComp, countComp, i);
 
 		uiY += 60;
@@ -635,7 +679,7 @@ void InGameSceneView::Initialize()
 	tumbleObj->GetTransform()->SetPosition(1750, 1350, 0);
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
-	tumbleComp->SetSortOrder(0.7f);
+	tumbleComp->SetSortOrder(0.6f);
 	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
@@ -643,7 +687,7 @@ void InGameSceneView::Initialize()
 	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
-	tumbleAlphaImage->SetSortOrder(0.8f);
+	tumbleAlphaImage->SetSortOrder(0.61f);
 	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
@@ -663,6 +707,14 @@ void InGameSceneView::Initialize()
 	//cube->GetTransform()->SetPosition(-10, 3, 0);
 
 	//NetworkManager::Instance().cube = cube;
+
+	// 디버그용 텍스트니깐 주석처리하면서 계속 쓸거임
+	//auto playerState = API::CreateTextbox(_scene, "plState");
+	//playerState->GetTransform()->SetPosition(1200.0f, 1400.0f, 0.0f);
+	//auto playerStateComp = playerState->GetComponent<HDData::TextUI>();
+	//playerStateComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	//playerStateComp->SetColor(DirectX::Colors::OrangeRed);
+	//playerMove->_plStateText = playerStateComp;
 
 	API::LoadSceneFromData("sceneData.json", this->_scene);
 }

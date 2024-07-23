@@ -35,6 +35,7 @@ public:
 public:
 	void InitRound();
 	void UpdateRound();
+	void ExitRoom();
 	void SetUIActive(bool isActive);
 
 
@@ -62,7 +63,7 @@ public:
 	void SetIsRoundStart(bool isStart);
 	void SetEndCam(HDData::GameObject* cam);
 	void SetStartCam(HDData::Camera* cam);
-	
+
 	HDData::GameObject* GetEndCam();
 	void SetRoundEndButton(HDData::GameObject* obj);
 	HDData::GameObject* GetRoundEndButton();
@@ -104,15 +105,17 @@ public:
 	void SetResultTimerUI(HDData::TextUI* txt);
 	Timer* GetGameEndTimer();
 	void SetInitRoundTimer(HDData::TextUI* txt);
-	
+	void StartSerialKillTimer();
+
 
 private:
 	HDData::TextUI* _timerUI;
-	int _timer;			
+	int _timer;
 
 	Timer* _initTimer;
 	Timer* _gameEndTimer;
 	Timer* _showResultTimer;
+	Timer* _serialKillTimer;
 	std::chrono::time_point<std::chrono::steady_clock> _start_time;
 
 	HDData::TextUI* _hpUI;
@@ -128,10 +131,13 @@ public:
 	//void SetKillCountBack(HDData::ImageUI* img, int index);
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>>& GetKillCountMap();
 
-private:
+public:
 	// obj 보관용
 	std::pair<HDData::TextUI*, HDData::TextUI*> _killCountObjs[6];
+
+public:
 	// 인게임
+	std::pair<HDData::TextUI*, HDData::TextUI*> _myKillCount;
 	std::unordered_map<int, std::pair<HDData::TextUI*, HDData::TextUI*>> _inGameKillCounts;
 
 	// 스폰 지점
@@ -150,6 +156,7 @@ public:
 	void SetAnimationDummy(HDData::GameObject* obj);
 	HDData::GameObject* GetAnimationDummy();
 	void SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec);
+	void ResetWeedPos();
 
 private:
 	HDData::GameObject* _animationDummy = nullptr;

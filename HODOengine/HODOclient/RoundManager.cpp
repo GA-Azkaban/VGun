@@ -50,6 +50,14 @@ void RoundManager::Start()
 		ExitGame();
 		};
 
+	_serialKillTimer = new Timer;
+	_serialKillTimer->duration = 8;
+	_serialKillTimer->onExpiration = [&]()
+		{
+			_serialKillTimer->Stop();
+			GameManager::Instance()->GetMyInfo()->_serialkillcount = 0;
+		};
+
 	SetUIActive(false);
 }
 
@@ -96,7 +104,7 @@ void RoundManager::InitGame()
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
 	_timerUI->SetColor(DirectX::Colors::White);
 	_nowMaxKill = 0;
-	_winnerUID = NULL;
+	_winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 
 	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
@@ -122,15 +130,16 @@ void RoundManager::InitGame()
 		if (index >= _playerNum) break;
 
 		PlayerInfo* info = one->GetComponent<PlayerInfo>();
+		info->Init();
 
 		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
 			GameManager::Instance()->GetMyInfo()->audio = info->audio;
-			_killCountObjs[index].first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
-			_killCountObjs[index].first->SetColor(DirectX::Colors::WhiteSmoke);
-			_killCountObjs[index].second->SetColor(DirectX::Colors::WhiteSmoke);
-			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
+			_myKillCount.first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+			_myKillCount.first->SetColor(DirectX::Colors::WhiteSmoke);
+			_myKillCount.second->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerKillCount()));
+			_myKillCount.second->SetColor(DirectX::Colors::WhiteSmoke);
 		}
 		else
 		{
@@ -139,6 +148,7 @@ void RoundManager::InitGame()
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
+			_killCountObjs[index].second->SetText(std::to_string(info->GetPlayerKillCount()));
 			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 		}
@@ -154,15 +164,23 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	
+	tumbleAlphaImage->SetActive(false);
+	tumbleCountText->SetActive(false);
 
-	for (int i = 0; i < 6; ++i)
+
+	// 킬 카운트 정리
+	_inGameKillCounts.clear();
+
+	_myKillCount.first->GetGameObject()->SetSelfActive(false);
+	_myKillCount.second->GetGameObject()->SetSelfActive(false);
+
+	for (int i = 0; i < 5; ++i)
 	{
-		//_backIMG[i]->GetGameObject()->SetSelfActive(false);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 	}
 
+	// 라운드 종료
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
 	SetIsRoundStart(false);
 	_endObj->SetSelfActive(true);
@@ -171,9 +189,11 @@ void RoundManager::EndGame()
 
 void RoundManager::InitRound()
 {
-	for (int i = 0; i < _players.size() + 1; ++i)
+	_myKillCount.first->GetGameObject()->SetSelfActive(true);
+	_myKillCount.second->GetGameObject()->SetSelfActive(true);
+
+	for (int i = 0; i < _players.size(); ++i)
 	{
-		//_backIMG[i]->GetGameObject()->SetSelfActive(true);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
 	}
@@ -186,11 +206,11 @@ void RoundManager::InitRound()
 	{
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
 		info->SetParticleSystem(player->GetComponentInChildren<HDData::ParticleSystem>());
-		info->Init();
 		player->SetSelfActive(true);
 	}
 
 	SoundManager::Instance().PlayUI("sfx_bell");
+	ResetWeedPos();
 }
 
 void RoundManager::UpdateRound()
@@ -199,19 +219,18 @@ void RoundManager::UpdateRound()
 	UpdateHPText();
 	UpdateAmmoText();
 	UpdateDesiredKillChecker();
+	_serialKillTimer->Update();
 }
 
 void RoundManager::SetUIActive(bool isActive)
 {
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		//_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}
 
-	tumbleAlphaImage->SetActive(isActive);
-	tumbleCountText->SetActive(isActive);
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
@@ -396,46 +415,74 @@ void RoundManager::UpdateRoundTimer()
 		auto nowElapsed = static_cast<int>(_timer - elapsedTime.count());
 		_timerUI->SetText(ChangeSecToMin(nowElapsed));
 
-		if (nowElapsed >= 56 && nowElapsed <= 60)
+		if (nowElapsed == 118)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(1.0f, -2.0f, 0.0f), 2.0f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, -1.0f), 0.01f, 0);
 			}
 		}
-		else if (nowElapsed >= 46 && nowElapsed <= 50)
+		else if (nowElapsed >= 107 && nowElapsed <= 110)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(-1.0f, -2.0f, 0.0f), 2.0f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, 1.0f), 0.01f, 0);
 			}
 		}
-		else if (nowElapsed >= 36 && nowElapsed <= 40)
+		else if (nowElapsed >= 87 && nowElapsed <= 90)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(0.0f, -2.0f, 1.0f), 2.0f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, -1.0f), 0.01f, 0);
 			}
 		}
-		else if (nowElapsed >= 26 && nowElapsed <= 30)
+		else if (nowElapsed >= 69 && nowElapsed <= 70)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(0.0f, -2.0f, -1.0f), 2.0f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), 0.01f, 0);
 			}
 		}
-		else if (nowElapsed >= 16 && nowElapsed <= 20)
+		else if (nowElapsed >= 59 && nowElapsed <= 60)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(1.0f, -2.0f, 1.0f), 2.0f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), 0.01f, 0);
 			}
 		}
-		else if (nowElapsed >= 6 && nowElapsed <= 10)
+		else if (nowElapsed >= 48 && nowElapsed <= 50)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForce(Vector3(-1.0f, -2.0f, -1.0f), 2.0f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), 0.01f, 0);
+			}
+		}
+		else if (nowElapsed >= 38 && nowElapsed <= 40)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f), 0.01f, 0);
+			}
+		}
+		else if (nowElapsed >= 28 && nowElapsed <= 30)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(0.0f, 0.0f, -1.0f), 0.01f, 0);
+			}
+		}
+		else if (nowElapsed >= 19 && nowElapsed <= 20)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 1.0f), 0.02f, 0);
+			}
+		}
+		else if (nowElapsed >= 8 && nowElapsed <= 10)
+		{
+			for (auto& col : _weedColVector)
+			{
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, -1.0f), 0.01f, 0);
 			}
 		}
 
@@ -515,7 +562,6 @@ void RoundManager::UpdateBeginEndTimer()
 	{
 		_resultTimerUI->SetText("Quit by..." + std::to_string(static_cast<int>(_showResultTimer->duration - _showResultTimer->GetElapsedTime())));
 	}
-
 }
 
 void RoundManager::SetResultTimerUI(HDData::TextUI* txt)
@@ -533,11 +579,16 @@ void RoundManager::SetInitRoundTimer(HDData::TextUI* txt)
 	_initTimertxt = txt;
 }
 
+void RoundManager::StartSerialKillTimer()
+{
+	_serialKillTimer->Start();
+}
+
 void RoundManager::UpdateDesiredKillChecker()
 {
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
-		_inGameKillCounts[GameManager::Instance()->GetMyInfo()->GetPlayerUID()].second->SetText(std::to_string(count));
+		_myKillCount.second->SetText(std::to_string(count));
 		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
 	}
 
@@ -545,7 +596,7 @@ void RoundManager::UpdateDesiredKillChecker()
 	{
 		int count = player->GetComponent<PlayerInfo>()->GetPlayerKillCount();
 		_inGameKillCounts[uid].second->SetText(std::to_string(count));
-		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
+		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
 	}
 }
 
@@ -587,5 +638,16 @@ HDData::GameObject* RoundManager::GetAnimationDummy()
 void RoundManager::SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>& vec)
 {
 	_weedColVector = vec;
+}
+
+void RoundManager::ResetWeedPos()
+{
+	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
+						{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
+
+	for (int i = 0; i < 20; ++i)
+	{
+		_weedColVector[i]->SetColliderPosition(Vector3(weedPos[i][0], 1.0f, weedPos[i][1]));
+	}
 }
 

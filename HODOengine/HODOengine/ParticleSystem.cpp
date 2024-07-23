@@ -146,6 +146,15 @@ namespace HDData
 								particle->SetRotation(rot);
 								particle->SetPosition(0.0f, 0.0f, 0.0f);
 							}
+							// max size일 때 gravityModifier의 1배
+							// 사이즈 작아질 수록 gravityModifier도 작아진다
+							float gravityModifier = main.gravityModifier;
+							if (limitVelocityOverLifetime.drag)
+							{
+								gravityModifier = main.gravityModifier * (size / main.maxStartSize);
+							}
+							particle->SetGravityModifier(gravityModifier);
+							particle->SetGravityVelocity(main.initialVelocity);
 							float randomLifetime = real_dist(_gen);
 							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
 						}
@@ -247,6 +256,10 @@ namespace HDData
 			{
 				_accumulatedDeltaTime = 0.0f;
 				burst.currentCycleCount = 0;
+				for (auto iter = _activatedParticles.begin(); iter != _activatedParticles.end(); ++iter)
+				{
+					iter->first->SetGravityVelocity(main.initialVelocity);
+				}
 			}
 			else
 			{

@@ -21,6 +21,7 @@ namespace RocketCore::Graphics
 		_occlusionRoughMatel(materialDesc.occlusionRoughMatel),
 		_metallic(materialDesc.metallic),
 		_roughness(materialDesc.roughness),
+		_mask(materialDesc.mask),
 		_metallicValue(materialDesc.metallicValue),
 		_roughnessValue(materialDesc.roughnessValue),
 		_vertexShader(ResourceManager::Instance().GetVertexShader("VertexShader.cso")),
@@ -33,6 +34,7 @@ namespace RocketCore::Graphics
 		LoadARMTexture(_occlusionRoughMatel);
 		LoadMetallicTexture(_metallic);
 		LoadRoughnessTexture(_roughness);
+		LoadMaskTexture(_mask);
 	}
 
 	Material::~Material()
@@ -152,6 +154,18 @@ namespace RocketCore::Graphics
 		_materialRoughness = roughness;
 	}
 
+	void Material::LoadMaskTexture(const std::string& fileName)
+	{
+		if (fileName == "")
+			return;
+
+		ID3D11ShaderResourceView* mask = ResourceManager::Instance().GetTexture(fileName);
+		if (!mask)
+			return;
+		_mask = fileName;
+		_materialMask = mask;
+	}
+
 	void Material::SetMetallicValue(float value)
 	{
 		_metallicValue = value;
@@ -202,6 +216,11 @@ namespace RocketCore::Graphics
 		return _roughness;
 	}
 
+	const std::string& Material::GetMaskTextureName() const
+	{
+		return _mask;
+	}
+
 	float Material::GetMetallicValue() const
 	{
 		return _metallicValue;
@@ -237,6 +256,11 @@ namespace RocketCore::Graphics
 		return _materialARM.Get();
 	}
 
+	ID3D11ShaderResourceView* Material::GetMaskMap()
+	{
+		return _materialMask.Get();
+	}
+
 	void Material::SetAlbedoMap(ID3D11ShaderResourceView* srv, const std::string& fileName)
 	{
 		_materialAlbedo = srv;
@@ -265,6 +289,12 @@ namespace RocketCore::Graphics
 	{
 		_materialMetallic = srv;
 		_metallic = fileName;
+	}
+
+	void Material::SetMaskMap(ID3D11ShaderResourceView* srv, const std::string& fileName)
+	{
+		_materialMask = srv;
+		_mask = fileName;
 	}
 
 	VertexShader* Material::GetVertexShader() const

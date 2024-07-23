@@ -81,5 +81,10 @@ namespace RocketCore::Graphics
 		_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
 		_deviceContext->PSSetShaderResources(1, 1, &nullSRV);
 		_deviceContext->PSSetShaderResources(2, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(3, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(4, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(5, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(6, 1, &nullSRV);
+		_deviceContext->PSSetShaderResources(7, 1, &nullSRV);
 	}
 }

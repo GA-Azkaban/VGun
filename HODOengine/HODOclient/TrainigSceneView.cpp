@@ -129,16 +129,6 @@ void TrainigSceneView::Initialzie()
 	playerMove->SetPlayerCamera(freeRoamingCam);
 	playerMove->SetHeadCam(mainCam);
 
-	std::vector<HDData::ParticleSphereCollider*> particleVec;
-	for (int i = 0; i < 30; ++i)
-	{
-		auto particleObj = API::CreateObject(_scene);
-		auto particle = particleObj->AddComponent<HDData::ParticleSphereCollider>();
-		particle->SetScaleOffset(Vector3(0.1f, 0.1f, 0.1f));
-		particleVec.push_back(particle);
-	}
-	playerMove->SetHitParticle(particleVec);
-
 	// sound 추가
 	HDData::AudioSource* playerSound = player->AddComponent<HDData::AudioSource>();
 	playerSound->AddAudio("shoot", "./Resources/Sound/Shoot/Gun_sound6.wav", HDData::SoundGroup::EffectSound);

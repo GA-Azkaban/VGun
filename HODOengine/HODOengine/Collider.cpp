@@ -12,7 +12,8 @@ namespace HDData
 		_parentCollider(nullptr),
 		_collisionFilterNum(0),
 		_isTriggerType(false),
-		_colType(eColliderRole::NONE)
+		_colType(eColliderRole::NONE),
+		_colliderTag("")
 	{
 		
 	}
@@ -120,6 +121,16 @@ namespace HDData
 
 		return result;
 		//return Matrix::Identity * GetScaleMatrix() * GetRotationMatrix() * GetTranslateMatrix();
+	}
+
+	void Collider::SetColliderTag(const std::string& tag)
+	{
+		_colliderTag = tag;
+	}
+
+	const std::string& Collider::GetColliderTag()
+	{
+		return _colliderTag;
 	}
 
 	void Collider::Setflag(int flag)

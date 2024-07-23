@@ -11,55 +11,51 @@ void OthersAnim::Start()
 	auto a = GetGameObject();
 	_mesh = GetGameObject()->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_info = GetGameObject()->GetComponent<PlayerInfo>();
-	_audio = GetGameObject()->GetComponent<HDData::AudioSource>();
+	_audio = SoundManager::Instance().AddAudioSourceInObject(this->GetGameObject());
+	SoundManager::Instance().InitializePlayerAudio(_audio);
 }
 
 void OthersAnim::Update()
 {
-
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 	if (!_info->GetIsStateChange()) return;
-
-	if (_info->GetIsShoot())
-	{
-		_audio->Play3DOnce("shootother", GetGameObject()->GetTransform()->GetPosition());
-	}
 
 	switch (_info->GetPlayerState())
 	{
 		case ePlayerState::IDLE:
 		{
 			_mesh->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
-			_audio->Stop("walkother");
+			_audio->Stop("3d_footstep");
 		}
 		break;
 		case ePlayerState::FIRE:
 		{
 			_mesh->PlayAnimation("RV_fire", false, 0.1, true, 0.1);
+			_audio->Play3DRepeat("3d_fire", GetGameObject()->GetTransform()->GetPosition());
 		}
 		break;
 		case ePlayerState::WALK_R:
 		{
 			_mesh->PlayAnimation("RV_runR", true, 0.1, true, 0.1);
-			_audio->Play3DRepeat("walkother", GetGameObject()->GetTransform()->GetPosition());
+			_audio->Play3DRepeat("3d_footstep", GetGameObject()->GetTransform()->GetPosition());
 		}
 		break;
 		case ePlayerState::WALK_L:
 		{
 			_mesh->PlayAnimation("RV_runL", true, 0.1, true, 0.1);
-			_audio->Play3DRepeat("walkother", GetGameObject()->GetTransform()->GetPosition());
+			_audio->Play3DRepeat("3d_footstep", GetGameObject()->GetTransform()->GetPosition());
 		}
 		break;
 		case ePlayerState::WALK_F:
 		{
 			_mesh->PlayAnimation("RV_runF", true, 0.1, true, 0.1);
-			_audio->Play3DRepeat("walkother", GetGameObject()->GetTransform()->GetPosition());
+			_audio->Play3DRepeat("3d_footstep", GetGameObject()->GetTransform()->GetPosition());
 		}
 		break;
 		case ePlayerState::WALK_B:
 		{
 			_mesh->PlayAnimation("RV_runB", true, 0.1, true, 0.1);
-			_audio->Play3DRepeat("walkother", GetGameObject()->GetTransform()->GetPosition());
+			_audio->Play3DRepeat("3d_footstep", GetGameObject()->GetTransform()->GetPosition());
 		}
 		break;
 		case ePlayerState::JUMP:
@@ -95,7 +91,6 @@ void OthersAnim::Update()
 		case ePlayerState::DIE:
 		{
 			_mesh->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
-			//GetGameObject()->GetComponent<PlayerInfo>()->SetIsRespawn(true);
 		}
 		break;
 		default:
