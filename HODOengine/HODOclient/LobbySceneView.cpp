@@ -87,7 +87,7 @@ void LobbySceneView::Initialize()
 	ruleCanvasComp->SetImage("Button_horizon_02.png");
 
 	auto ruleImg = API::CreateImageBox(_scene, "ruleImg");
-	ruleImg->GetTransform()->SetPosition(550.0f * width / 1920, (960.0f * height / 1080) + 30.0f, 0);
+	ruleImg->GetTransform()->SetPosition(550.0f * width / 1920, (960.0f * height / 1080) + 40.0f, 0);
 	auto ruleImgComp = ruleImg->GetComponent<HDData::ImageUI>();
 	ruleImgComp->ChangeScale(0.6192f, 0.6314f);
 	ruleImgComp->SetImage("gamerule.png");
@@ -124,6 +124,13 @@ void LobbySceneView::Initialize()
 	dKeyImg->SetSortOrder(0.15f);
 	dKeyImg->SetImage("keyboard_d.png");
 
+	auto moveInfo = API::CreateImageBox(_scene,"Move");
+	moveInfo->GetTransform()->SetPosition(890.0f * width / 1920,890.0f * height / 1080,0.0f);
+	auto moveInfoImg = moveInfo->GetComponent<HDData::ImageUI>();
+	moveInfoImg->ChangeScale(1.7f, 1.7f);
+	moveInfoImg->SetSortOrder(0.15f);
+	moveInfoImg->SetImage("howtoplay_move.png");
+
 	auto shiftKey = API::CreateImageBox(_scene, "shiftKey");
 	shiftKey->GetTransform()->SetPosition(745.0f * width / 1920, 960.0f * height / 1080, 0);
 	auto shiftKeyImg = shiftKey->GetComponent<HDData::ImageUI>();
@@ -131,12 +138,26 @@ void LobbySceneView::Initialize()
 	shiftKeyImg->SetSortOrder(0.15f);
 	shiftKeyImg->SetImage("keyboard_shift.png");
 
+	auto shiftInfo = API::CreateImageBox(_scene,"shiftInfo");
+	shiftInfo->GetTransform()->SetPosition(840.0f * width / 1920, 965.0f * height / 1080, 0.0f);
+	auto shiftInfoImg = shiftInfo->GetComponent<HDData::ImageUI>();
+	shiftInfoImg->ChangeScale(1.6f, 1.6f);
+	shiftInfoImg->SetSortOrder(0.15f);
+	shiftInfoImg->SetImage("howtoplay_roll.png");
+
 	auto spaceKey = API::CreateImageBox(_scene, "spaceKey");
-	spaceKey->GetTransform()->SetPosition(960.0f * width / 1920, 960.0f * height / 1080, 0);
+	spaceKey->GetTransform()->SetPosition(980.0f * width / 1920, 960.0f * height / 1080, 0);
 	auto spaceKeyImg = spaceKey->GetComponent<HDData::ImageUI>();
 	spaceKeyImg->ChangeScale(1.7f,1.7f);
 	spaceKeyImg->SetSortOrder(0.15f);
 	spaceKeyImg->SetImage("keyboard_space.png");
+
+	auto spaceInfo = API::CreateImageBox(_scene, "spaceKeyInfo");
+	spaceInfo->GetTransform()->SetPosition(1060.0f * width / 1920, 965.0f * height / 1080, 0);
+	auto spaceInfoImg = spaceInfo->GetComponent<HDData::ImageUI>();
+	spaceInfoImg->ChangeScale(1.7f, 1.7f);
+	spaceInfoImg->SetSortOrder(0.15f);
+	spaceInfoImg->SetImage("howtoplay_jump.png");
 
 	auto mouseKey = API::CreateImageBox(_scene, "mouseKey");
 	mouseKey->GetTransform()->SetPosition(985.0f * width / 1920, 865.0f * height / 1080, 0);
@@ -144,6 +165,13 @@ void LobbySceneView::Initialize()
 	mouseKeyImg->ChangeScale(1.7f, 1.7f);
 	mouseKeyImg->SetSortOrder(0.15f);
 	mouseKeyImg->SetImage("mouse_left.png");
+
+	auto mouseInfo = API::CreateImageBox(_scene, "mouseKeyInfo");
+	mouseInfo->GetTransform()->SetPosition(1060.0f * width / 1920, 870.0f * height / 1080, 0);
+	auto mouseInfoImg = mouseInfo->GetComponent<HDData::ImageUI>();
+	mouseInfoImg->ChangeScale(1.7f, 1.7f);
+	mouseInfoImg->SetSortOrder(0.15f);
+	mouseInfoImg->SetImage("howtoplay_attack.png");
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;
