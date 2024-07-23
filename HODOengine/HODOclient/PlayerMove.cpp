@@ -37,7 +37,7 @@ void PlayerMove::Start()
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
-	_moveSpeed = 3.0f;
+	_moveSpeed = 6.0f;
 
 	StartRoundCam();
 
@@ -349,30 +349,21 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::IDLE:
 		{
 			_fpanimator->GetAllAC()->SetBool("isIdle", true);
-			//_tpanimator->GetAllAC()->SetBool("isIdle", true);
-			//_playerColliderStanding->Stop();
 
-			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
-			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
-			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
-			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_moveSpeed = 6.4f;
-			//_playerColliderStanding->SetVelocity(DecideDisplacement(_moveDirection), _moveSpeed);
 
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_moveSpeed = 6.4f;
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
-
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
+
 			break;
 		}
 		case ePlayerMoveState::TUMBLE:
@@ -568,6 +559,10 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			_playerColliderStanding->Stop();
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 
 			break;
 		}
