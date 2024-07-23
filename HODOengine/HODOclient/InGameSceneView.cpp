@@ -338,7 +338,7 @@ void InGameSceneView::Initialize()
 	alphaKey7.time = 1.0f;
 	ak3.push_back(alphaKey7);
 	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
-	playerMove->bloodParticle = particleSystem3;;
+	playerMove->bloodParticle = particleSystem3;
 
 	posX += 1;
 	posT += 315;
@@ -524,8 +524,6 @@ void InGameSceneView::Initialize()
 		});
 
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
-	//endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
-	//endText->GetTransform()->SetPosition(1225.0f, 1285.0f, 0.0f);
 	endText->GetTransform()->SetPosition(2175.0f, 1285.0f, 0.0f);	//endbutton.x -125
 	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
 	endTXTcomp->SetText("EXIT GAME");
