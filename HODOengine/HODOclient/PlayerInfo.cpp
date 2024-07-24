@@ -40,6 +40,14 @@ void PlayerInfo::Update()
 	}
 }
 
+void PlayerInfo::GetData(PlayerInfo* info)
+{
+	_playerUID = info->GetPlayerUID();
+	_isHost = info->GetIsHost();
+	_playerNickname = info->GetPlayerNickName();
+	audio = info->audio;
+}
+
 void PlayerInfo::Init()
 {
 	this->_kill = 0;
@@ -65,6 +73,16 @@ Vector3& PlayerInfo::GetServerPosition()
 Quaternion& PlayerInfo::GetServerRotation()
 {
 	return _serverRot;
+}
+
+void PlayerInfo::SetIsInterpolation(bool isInterpolation)
+{
+	this->_isInterpolation = isInterpolation;
+}
+
+bool PlayerInfo::GetIsInterpolation()
+{
+	return _isInterpolation;
 }
 
 void PlayerInfo::SetPlayerUID(int uid)

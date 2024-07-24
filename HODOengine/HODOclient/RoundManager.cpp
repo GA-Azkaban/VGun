@@ -196,7 +196,8 @@ void RoundManager::GetNewDataFromLobby()
 		{
 			if (index == _playerNum - 1) break;
 
-			auto playerInfo = _playerObjs[index]->AddComponent<PlayerInfo>(info);
+			auto playerInfo = _playerObjs[index]->GetComponent<PlayerInfo>();
+			playerInfo->GetData(info);
 			playerInfo->Init();
 
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());

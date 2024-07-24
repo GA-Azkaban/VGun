@@ -27,12 +27,15 @@ public:
 	void Update() override;
 
 public:
+	void GetData(PlayerInfo* info);
 	void Init();
 
 public:
 	void SetServerTransform(Vector3 pos, Quaternion rot);
 	Vector3& GetServerPosition();
 	Quaternion& GetServerRotation();
+	void SetIsInterpolation(bool isInterpolation);
+	bool GetIsInterpolation();
 
 	void SetPlayerUID(int uid);
 	void SetIsHost(bool isHost);
@@ -95,6 +98,7 @@ private:
 	// server info
 	Vector3 _serverPos;
 	Quaternion _serverRot;
+	bool _isInterpolation = false;
 
 	// player info
 	int _playerUID;
