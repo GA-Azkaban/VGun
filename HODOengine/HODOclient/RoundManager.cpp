@@ -112,6 +112,9 @@ void RoundManager::EndGame()
 	tumbleAlphaImage->SetActive(false);
 	tumbleCountText->SetActive(false);
 
+	hitCrosshair->SetActive(false);
+	criticalCrosshair->SetActive(false);
+
 	// 킬 카운트 정리
 	_inGameKillCounts.clear();
 
@@ -267,6 +270,7 @@ void RoundManager::SetUIActive(bool isActive)
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
+	defaultCrosshair->SetActive(isActive);
 }
 
 bool RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
