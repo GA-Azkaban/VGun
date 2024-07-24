@@ -33,6 +33,7 @@ void RoundManager::Start()
 	_gameEndTimer->onExpiration = [&]() {
 		_showResultTimer->Start();
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
+		SoundManager::Instance().PlayBGM("bgm_victory");
 		EndGame();
 		};
 
@@ -45,7 +46,7 @@ void RoundManager::Start()
 		};
 
 	_showResultTimer = new Timer;
-	_showResultTimer->duration = 10;
+	_showResultTimer->duration = 20;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		};
@@ -334,7 +335,7 @@ void RoundManager::CheckWinner()
 	}
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
-
+	_winnerImg->GetGameObject()->SetSelfActive(true);
 	for (int i = 0; i < count; ++i)
 	{
 		_loserTXT[i]->GetGameObject()->SetSelfActive(true);
@@ -400,9 +401,19 @@ void RoundManager::SetWinnerText(HDData::TextUI* txt)
 	_winnerTXT = txt;
 }
 
+void RoundManager::SetWinnerImg(HDData::ImageUI* img)
+{
+	_winnerImg = img;
+}
+
 void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
 {
 	_loserTXT[index] = txt;
+}
+
+void RoundManager::SetLoserImg(HDData::ImageUI* img)
+{
+	_loserImg = img;
 }
 
 bool RoundManager::GetMenuStatus()
