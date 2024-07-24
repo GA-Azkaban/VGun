@@ -75,7 +75,7 @@ namespace HDEngine
 		}
 
 		_accumulateTime += API::GetDeltaTime();
-		while (_accumulateTime >= 0.007f)
+		if (_accumulateTime >= 0.007f)
 		{
 			_accumulateTime -= 0.007f;
 			for (auto& rigid : _rigidDynamics)
@@ -251,11 +251,11 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-//#ifdef _DEBUG
-//		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 12, 0.0f);
-//#else
+#ifdef _DEBUG
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 12, 0.0f);
+#else
 		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3.2f, 0.0f);
-//#endif
+#endif
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;

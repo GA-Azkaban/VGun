@@ -23,7 +23,14 @@ GameSetting::GameSetting()
 	auto width = API::GetScreenWidth();
 	auto height = API::GetScreenHeight();
 
+
 	///////////////////////////// 상시로 뜨는 아이콘 (0.9) //////////////////////////////
+	_settingIcon = API::CreateStaticObject("icon");
+	_settingIcon->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 99, 26, 0);
+	auto icon = _settingIcon->AddComponent<HDData::ImageUI>();
+	icon->SetImage("icon_cog.png");
+	icon->SetSortOrder(0.95f);
+
 	_settingText = API::CreateStaticObject("OnSet");
 	_settingText->GetTransform()->SetPosition((API::GetScreenWidth() / 100 * 97)+30, 60, 0);
 	auto icontxt = _settingText->AddComponent<HDData::ImageUI>();
@@ -74,12 +81,12 @@ GameSetting::GameSetting()
 
 	//////////////////////////////// 게임 종료 버튼 ///////////////////////////////////////////////
 	_gameExitButton = API::CreateStaticButton("exit", _settingCanvas);
-	//_gameExitButton->GetTransform()->SetPosition(width / 2, height / 4 * 3, 0);
-	_gameExitButton->GetTransform()->SetPosition(width / 2, (440.f * height / 1080) + 400, 0);
+	_gameExitButton->GetTransform()->SetPosition(width / 2, height / 4 * 3, 0);
 	_gameExitButton->AddComponent<BtnTextScript>();
 
+
 	_exitButtonIndex = API::CreateStaticObject("exitIndex", _gameExitButton);
-	_exitButtonIndex->GetTransform()->SetPosition(900.f * width / 1920, (440.f * height / 1080) + 400, 0.f);
+	_exitButtonIndex->GetTransform()->SetPosition(900.f * width / 1920, (440.f * height / 1080) + 500, 0.f);
 	auto exittxt = _exitButtonIndex->AddComponent<HDData::TextUI>();
 	exittxt->SetSortOrder(0.9f);
 	exittxt->SetText("GAME EXIT");
