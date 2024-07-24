@@ -1,4 +1,6 @@
 ﻿#include "DamageLog.h"
+#include "GameManager.h"
+#include "PlayerInfo.h"
 
 DamageLog::DamageLog()
 	: _logIndex(0)
@@ -82,6 +84,8 @@ void DamageLog::Start()
 		_remainHPs[i]->SetText(" ");
 		_remainHPs[i]->SetActive(false);
 	}
+
+	GameManager::Instance()->GetMyInfo()->SetDamageLogUI(this);
 }
 
 void DamageLog::Update()
