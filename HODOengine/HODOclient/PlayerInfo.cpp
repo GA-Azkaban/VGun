@@ -1,10 +1,10 @@
 ﻿#include "PlayerInfo.h"
 #include "GameManager.h"
-#include "GameSetting.h"
 #include "RoundManager.h"
 #include "HitEffect.h"
 #include "IndicatorPool.h"
 #include "UIEffect.h"
+#include "Crosshair.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -38,6 +38,14 @@ void PlayerInfo::Update()
 		//GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>()->Jump(Vector3{ 0.f, 1.f, 0.f });
 		_isJump = false;
 	}
+}
+
+void PlayerInfo::GetData(PlayerInfo* info)
+{
+	_playerUID = info->GetPlayerUID();
+	_isHost = info->GetIsHost();
+	_playerNickname = info->GetPlayerNickName();
+	audio = info->audio;
 }
 
 void PlayerInfo::Init()
@@ -84,6 +92,7 @@ void PlayerInfo::SetPlayerUID(int uid)
 
 void PlayerInfo::SetCurrentHP(int hp)
 {
+	hp = hp < 0 ? 0 : hp;
 	_currentHP = hp;
 }
 
@@ -132,7 +141,6 @@ void PlayerInfo::SetIsHost(bool isHost)
 void PlayerInfo::SetNickName(std::string nickName)
 {
 	_playerNickname = nickName;
-	GameSetting::Instance().SetMyNickname(nickName);
 }
 
 bool& PlayerInfo::GetIsDie()
@@ -276,11 +284,13 @@ void PlayerInfo::PlayDieEffect()
 {
 	_dieEffectImg->GetGameObject()->SetSelfActive(true);
 	_dieEffectImg->FadeIn(1);
+	_crosshair->SetActive(false);
 }
 
 void PlayerInfo::PlayRespawnEffect()
 {
 	_dieEffectImg->GetGameObject()->SetSelfActive(false);
+	_crosshair->SetActive(true);
 	// TODO) 리스폰 이펙트 
 }
 
@@ -299,6 +309,11 @@ void PlayerInfo::PlayKillLog(std::string log)
 void PlayerInfo::KillLogExit()
 {
 	_killLog->GetGameObject()->SetSelfActive(false);
+}
+
+void PlayerInfo::SetCrosshairUI(Crosshair* crosshair)
+{
+	_crosshair = crosshair;
 }
 
 bool& PlayerInfo::GetPlayerDie()

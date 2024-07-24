@@ -1,5 +1,7 @@
 ﻿#include "Crosshair.h"
 #include "PlayerMove.h"
+#include "GameManager.h"
+#include "PlayerInfo.h"
 
 Crosshair::Crosshair()
 {
@@ -30,6 +32,8 @@ void Crosshair::Start()
 	_hitCrosshair->SetImage("Crosshair14White.png");
 	_hitCrosshair->ChangeScale(0.275f, 0.275f);
 	_hitCrosshair->SetActive(false);
+
+	GameManager::Instance()->GetMyInfo()->SetCrosshairUI(this);
 }
 
 void Crosshair::Update()
@@ -51,4 +55,17 @@ void Crosshair::Update()
 
 	_criticalTimer.Update();
 	_hitTimer.Update();
+}
+
+void Crosshair::SetActive(bool isActive)
+{
+	_defaultCrosshair->SetActive(isActive);
+
+	// 켜줄 때 Default crosshair만 켜주기
+	if (isActive)
+	{
+		return;
+	}
+	_criticalCrosshair->SetActive(isActive);
+	_hitCrosshair->SetActive(isActive);
 }

@@ -87,8 +87,8 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
 #ifdef _DEBUG
-	velo.x = moveStep.x * speed * 3;
-	velo.z = moveStep.z * speed * 3;
+	velo.x = moveStep.x * speed * 3.5f;
+	velo.z = moveStep.z * speed * 3.5f;
 #else
 	velo.x = moveStep.x * speed;
 	velo.z = moveStep.z * speed;
@@ -183,7 +183,7 @@ void HDData::DynamicCollider::Jump(Vector3 direction)
 	//_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 	//_physXRigid->addForce(physx::PxVec3(0.0f, 1.2f, 0.0f) * 120.0f, physx::PxForceMode::eIMPULSE);
 #ifdef _DEBUG
-	_physXRigid->addForce(physx::PxVec3(0.0f, 2800.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 3200.0f, 0.0f), physx::PxForceMode::eFORCE);
 #else
 	_physXRigid->addForce(physx::PxVec3(0.0f, 1600.0f, 0.0f), physx::PxForceMode::eFORCE);
 #endif
@@ -199,6 +199,14 @@ void HDData::DynamicCollider::Stop()
 	_physXRigid->setLinearVelocity(physx::PxVec3(0.f, _physXRigid->getLinearVelocity().y, 0.f));
 	_physXRigid->clearForce();
 	_physXRigid->clearTorque();
+	for (auto& child : _childColliders)
+	{
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->Stop();
+		}
+	}
 }
 
 void HDData::DynamicCollider::AddForce(Vector3 direction, float force /*= 1.0f*/, int forceType /*= 1*/)

@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -12,6 +12,8 @@
 #include "CloudRotate.h"
 #include "UIEffect.h"
 #include "GameManager.h"
+#include "LobbyManager.h"
+#include "MenuManager.h"
 
 #include "BtnTextScript.h"
 #include "CooldownAlpha.h"
@@ -83,12 +85,12 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->_myObj = player;
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
-	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
-	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
+	playerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.05f));
+	auto headCollider = playerHead->AddComponent<HDData::DynamicSphereCollider>(0.17f);
 	headCollider->SetParentCollider(playerCollider);
 	//headCollider->SetPositionOffset(Vector3(0.0f, -1.1f, 0.0f));
 	headCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
@@ -141,13 +143,13 @@ void InGameSceneView::Initialize()
 
 	// 수박...이 아니라 회전초
 	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
-							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
+							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {20, -7}, {22, 8}, {28, 13}};
 	std::vector<HDData::DynamicSphereCollider*> weedColVector;
 	weedColVector.reserve(20);
 	for (int i = 1; i <= 20; ++i)
 	{
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
-		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 1.0f, weedPos[i-1][1]));
+		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 0.4f, weedPos[i-1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
 		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
 		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
@@ -156,7 +158,7 @@ void InGameSceneView::Initialize()
 		weedMeshComp->LoadMaterial(chMat, 0);
 		weedMeshComp->SetShadowActive(true);
 		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
-		weedCollider->SetScaleOffset(Vector3(0.38f, 0.38f, 0.38f));
+		weedCollider->SetScaleOffset(Vector3(0.37f, 0.37f, 0.37f));
 		weedColVector.push_back(weedCollider);
 	}
 	RoundManager::Instance()->SetWeedColVector(weedColVector);
@@ -338,7 +340,7 @@ void InGameSceneView::Initialize()
 	alphaKey7.time = 1.0f;
 	ak3.push_back(alphaKey7);
 	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
-	playerMove->bloodParticle = particleSystem3;;
+	playerMove->bloodParticle = particleSystem3;
 
 	posX += 1;
 	posT += 315;
@@ -348,14 +350,15 @@ void InGameSceneView::Initialize()
 	{
 		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
+		otherPlayer->AddComponent<PlayerInfo>();
 		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.26f, 0.6f);
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
-		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.63f, 0.05f));
-		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.165f);
+		otherPlayerHead->GetTransform()->SetLocalPosition(Vector3(0.0f, 1.65f, 0.05f));
+		auto ohterPlayerHeadCollider = otherPlayerHead->AddComponent<HDData::DynamicSphereCollider>(0.17f);
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
@@ -521,11 +524,10 @@ void InGameSceneView::Initialize()
 	endComp->SetOnClickEvent([=]()
 		{
 			RoundManager::Instance()->ExitGame();
+			MenuManager::Instance().RenderRoomList();
 		});
 
 	auto endText = API::CreateTextbox(_scene, "endTXT", endButton);
-	//endText->GetTransform()->SetPosition(endButton->GetTransform()->GetPosition());
-	//endText->GetTransform()->SetPosition(1225.0f, 1285.0f, 0.0f);
 	endText->GetTransform()->SetPosition(2175.0f, 1285.0f, 0.0f);	//endbutton.x -125
 	auto endTXTcomp = endText->GetComponent<HDData::TextUI>();
 	endTXTcomp->SetText("EXIT GAME");
@@ -661,15 +663,17 @@ void InGameSceneView::Initialize()
 	auto dieblackimg = dieblack->GetComponent<HDData::ImageUI>();
 	dieblackimg->ChangeScale(4, 4);
 	dieblackimg->SetImage("black.png");
+	dieblackimg->SetSortOrder(0.65f);
 	GameManager::Instance()->GetMyInfo()->SetDieEffectImg(dieblackimg);
 
 	// kill log 
 	auto log = API::CreateTextbox(_scene);
-	log->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0);
+	log->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
 	auto logComp = log->GetComponent<HDData::TextUI>();
 	logComp->SetColor(DirectX::Colors::Red);
 	logComp->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 	logComp->SetText("Log");
+	logComp->SetSortOrder(0.75f);
 	log->SetSelfActive(false);
 
 	GameManager::Instance()->GetMyInfo()->SetLogUI(logComp);

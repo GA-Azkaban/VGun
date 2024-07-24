@@ -1,8 +1,9 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
 #include "SoundManager.h"
+#include "GameSetting.h"
 
 #include "Service.h"
 #include "ServerPacketHandler.h"
@@ -299,6 +300,8 @@ void NetworkManager::RecvLogin(int32 uid, std::string nickName)
 	GameManager::Instance()->GetMyInfo()->SetPlayerUID(uid);
 	GameManager::Instance()->GetMyInfo()->SetNickName(nickName);
 	GameManager::Instance()->GetMyInfo()->SetIsMyInfo(true);
+
+	GameSetting::Instance().SetMyNickname(nickName);
 
 	SoundManager::Instance().PlayUI("sfx_entry");
 	API::LoadSceneByName("MainMenu");
@@ -749,7 +752,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 {
 	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
-
+	
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());

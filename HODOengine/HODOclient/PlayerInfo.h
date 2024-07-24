@@ -12,6 +12,7 @@ enum class eHITLOC
 	BODY = 3
 };
 
+class Crosshair;
 class HitEffect;
 class IndicatorPool;
 
@@ -26,6 +27,7 @@ public:
 	void Update() override;
 
 public:
+	void GetData(PlayerInfo* info);
 	void Init();
 
 public:
@@ -88,6 +90,8 @@ public:
 	void PlayKillLog(std::string log);
 	void KillLogExit();
 
+	void SetCrosshairUI(Crosshair* crosshair);
+
 private:
 	bool _isMyInfo = false;
 
@@ -127,6 +131,8 @@ private:
 	HDData::ImageUI* _killEffectImg;
 	HDData::ImageUI* _dieEffectImg;
 	HDData::TextUI* _killLog;
+
+	Crosshair* _crosshair;
 
 public:
 	HDData::AudioSource* audio;

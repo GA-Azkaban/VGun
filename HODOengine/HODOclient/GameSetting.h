@@ -22,6 +22,9 @@ public:
 	bool GetSettingCanvasActive();
 
 public:
+	HDData::GameObject* _settingIcon;
+	HDData::GameObject* _settingText;
+
 	HDData::GameObject* _settingCanvas;
 
 	HDData::GameObject* _gameExitButton;
@@ -43,5 +46,6 @@ public:
 	HDData::GameObject* _quitButton;
 
 	HDData::GameObject* _settingBackground;
+
 };
 

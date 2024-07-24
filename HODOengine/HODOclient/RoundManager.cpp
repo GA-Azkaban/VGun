@@ -98,64 +98,8 @@ void RoundManager::SetRoundScene(HDData::Scene* scene)
 
 void RoundManager::InitGame()
 {
-	// 라운드 초기화
-
-	auto& obj = LobbyManager::Instance().GetPlayerObjects();
-	_playerNum = LobbyManager::Instance().GetPlayerNum();
-	_timerUI->SetColor(DirectX::Colors::White);
-	_nowMaxKill = 0;
-	_winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
-
-	// UI 활성화, 비활성화
-	_winnerTXT->GetGameObject()->SetSelfActive(false);
-	for (int i = 0; i < 5; ++i)
-	{
-		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
-	}
-
-	for (auto& p : _playerObjs)
-	{
-		p->SetSelfActive(false);
-	}
-
-	_initTimer->Start();
-	_initTimertxt->GetGameObject()->SetSelfActive(true);
-
-	_players.clear();
-
-	int index = 0;
-
-	for (auto& one : obj)
-	{
-		if (index >= _playerNum) break;
-
-		PlayerInfo* info = one->GetComponent<PlayerInfo>();
-		info->Init();
-
-		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-		{
-			GameManager::Instance()->SetMyObject(_myObj);
-			GameManager::Instance()->GetMyInfo()->audio = info->audio;
-			_myKillCount.first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
-			_myKillCount.first->SetColor(DirectX::Colors::WhiteSmoke);
-			_myKillCount.second->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerKillCount()));
-			_myKillCount.second->SetColor(DirectX::Colors::WhiteSmoke);
-		}
-		else
-		{
-			auto playerInfo = _playerObjs[index]->AddComponent<PlayerInfo>(info);
-			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
-			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
-			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
-			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
-			_killCountObjs[index].second->SetText(std::to_string(info->GetPlayerKillCount()));
-			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
-			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
-		}
-
-		++index;
-	}
-
+	GetNewDataFromLobby();
+	InitializeValue();
 	InitRound();
 }
 
@@ -166,7 +110,6 @@ void RoundManager::EndGame()
 	finRoundimg->GetGameObject()->SetSelfActive(false);
 	tumbleAlphaImage->SetActive(false);
 	tumbleCountText->SetActive(false);
-
 
 	// 킬 카운트 정리
 	_inGameKillCounts.clear();
@@ -180,26 +123,20 @@ void RoundManager::EndGame()
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 	}
 
+	_endObj->SetSelfActive(true);
+
 	// 라운드 종료
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
 	SetIsRoundStart(false);
-	_endObj->SetSelfActive(true);
 	CheckWinner();
 }
 
 void RoundManager::InitRound()
 {
-	_myKillCount.first->GetGameObject()->SetSelfActive(true);
-	_myKillCount.second->GetGameObject()->SetSelfActive(true);
-
-	for (int i = 0; i < _players.size(); ++i)
-	{
-		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
-		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
-	}
-
+	// 파티클 시스템 장착
 	GameManager::Instance()->GetMyInfo()->SetParticleSystem(_myObj->GetComponentInChildren<HDData::ParticleSystem>());
 
+	// 오브젝트들 활성화
 	_myObj->SetSelfActive(true);
 
 	for (auto& [uid, player] : _players)
@@ -209,8 +146,15 @@ void RoundManager::InitRound()
 		player->SetSelfActive(true);
 	}
 
-	SoundManager::Instance().PlayUI("sfx_bell");
+	// 회전초 위치 재정비
 	ResetWeedPos();
+
+	// 시작 타이머 세팅
+	_initTimer->Start();
+	_initTimertxt->GetGameObject()->SetSelfActive(true);
+
+	// 시작 벨 울리기 
+	SoundManager::Instance().PlayUI("sfx_bell");
 }
 
 void RoundManager::UpdateRound()
@@ -219,7 +163,89 @@ void RoundManager::UpdateRound()
 	UpdateHPText();
 	UpdateAmmoText();
 	UpdateDesiredKillChecker();
-	_serialKillTimer->Update();
+}
+
+void RoundManager::GetNewDataFromLobby()
+{
+	auto& obj = LobbyManager::Instance().GetPlayerObjects();
+	_playerNum = LobbyManager::Instance().GetPlayerNum();
+
+	for (auto& p : _playerObjs)
+	{
+		p->SetSelfActive(false);
+	}
+
+	int index = 0;
+
+	for (auto& one : obj)
+	{
+		PlayerInfo* info = one->GetComponent<PlayerInfo>();
+
+		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		{
+			GameManager::Instance()->SetMyObject(_myObj);
+			GameManager::Instance()->GetMyInfo()->Init();
+			GameManager::Instance()->GetMyInfo()->audio = info->audio;
+
+			_myKillCount.first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+			_myKillCount.first->SetColor(DirectX::Colors::WhiteSmoke);
+			_myKillCount.second->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerKillCount()));
+			_myKillCount.second->SetColor(DirectX::Colors::WhiteSmoke);
+		}
+		else
+		{
+			if (index == _playerNum - 1) break;
+
+			auto playerInfo = _playerObjs[index]->GetComponent<PlayerInfo>();
+			playerInfo->GetData(info);
+			playerInfo->Init();
+
+			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
+
+			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+
+			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
+			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
+			_killCountObjs[index].second->SetText(std::to_string(playerInfo->GetPlayerKillCount()));
+			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
+			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
+			++index;
+		}
+
+	}
+}
+
+void RoundManager::InitializeValue()
+{
+	// 현재 max kill, 우승자 uid 기본값으로 세팅
+	_desiredKill = 0;
+	_nowMaxKill = 0;
+	_winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
+
+	// 현재 UI가 가진 각 킬 카운트 비활성화 (값 정리 필요)
+	_myKillCount.first->GetGameObject()->SetSelfActive(true);
+	_myKillCount.second->GetGameObject()->SetSelfActive(true);
+
+	for (int i = 0; i < _players.size(); ++i)
+	{
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(true);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(true);
+	}
+}
+
+
+void RoundManager::SetUIOrigin()
+{
+	_timerUI->SetColor(DirectX::Colors::White);
+
+	// UI 활성화, 비활성화
+	_winnerTXT->GetGameObject()->SetSelfActive(false);
+	for (int i = 0; i < 5; ++i)
+	{
+		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
+	}
+
+	_players.clear();
 }
 
 void RoundManager::SetUIActive(bool isActive)
@@ -354,6 +380,8 @@ HDData::GameObject* RoundManager::GetRoundEndButton()
 
 void RoundManager::ExitGame()
 {
+	SetUIOrigin();
+
 	API::SetCurrentSceneMainCamera(_startCam);
 	_endObj->SetSelfActive(false);
 	_showResultTimer->Stop();
@@ -362,7 +390,7 @@ void RoundManager::ExitGame()
 
 	// 로비로 복귀
 	API::LoadSceneByName("MainMenu");
-	LobbyManager::Instance().RefreshRoom();
+	MenuManager::Instance().RenderRoomList();
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
 }
@@ -586,6 +614,10 @@ void RoundManager::StartSerialKillTimer()
 
 void RoundManager::UpdateDesiredKillChecker()
 {
+	// 연속 킬 타이머 업데이트
+	_serialKillTimer->Update();
+
+	// 해당 킬 값으로 텍스트를 계속 세팅해줌
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_myKillCount.second->SetText(std::to_string(count));
@@ -643,11 +675,11 @@ void RoundManager::SetWeedColVector(std::vector<HDData::DynamicSphereCollider*>&
 void RoundManager::ResetWeedPos()
 {
 	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
-						{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {22, 8}, {28, 13}, {35, -7} };
+						{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {20, -7}, {22, 8}, {28, 13} };
 
 	for (int i = 0; i < 20; ++i)
 	{
-		_weedColVector[i]->SetColliderPosition(Vector3(weedPos[i][0], 1.0f, weedPos[i][1]));
+		_weedColVector[i]->SetColliderPosition(Vector3(weedPos[i][0], 0.4f, weedPos[i][1]));
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "dllExporter.h"
 #include "Component.h"
 #include "SoundGroup.h"
+#include <vector>
 
 namespace HDEngine
 {
@@ -53,9 +54,11 @@ namespace HDData
 
 		bool IsSoundPlaying(std::string soundName);
 
-		void Update3DSoundPosition(std::string soundName, Vector3 position);
+	protected:
+		virtual void Update() override;
 
 	private:
 		HDEngine::SoundSystem& _soundSystem;
+		std::vector<std::string> _3DSoundList;
 	};
 }
