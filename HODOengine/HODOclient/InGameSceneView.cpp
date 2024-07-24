@@ -498,6 +498,13 @@ void InGameSceneView::Initialize()
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
 
+	// ammo Image
+	HDData::GameObject* ammoImg = API::CreateImageBox(_scene, "healthImg");
+	ammoImg->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	auto ammoImgComp = ammoImg->GetComponent<HDData::ImageUI>();
+	ammoImgComp->SetImage("bulletIcon.png");
+	ammoImgComp->ChangeScale(0.5f, 0.5f);
+
 	// ammo
 	auto ammo = API::CreateTextbox(_scene, "AmmoText");
 	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
@@ -505,6 +512,13 @@ void InGameSceneView::Initialize()
 	ammoTXT->SetColor(DirectX::Colors::LightGray);
 	ammoTXT->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
 	RoundManager::Instance()->SetAmmoText(ammoTXT);
+
+	// HP Image
+	HDData::GameObject* healthPointImg = API::CreateImageBox(_scene,"healthImg");
+	healthPointImg->GetTransform()->SetPosition(2100.0f,1400.0f,0.0f);
+	auto healthPointImgComp = healthPointImg->GetComponent<HDData::ImageUI>();
+	healthPointImgComp->SetImage("hpIcon.png");
+	healthPointImgComp->ChangeScale(0.5f,0.5f);
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");

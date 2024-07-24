@@ -89,7 +89,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 		auto players = RoundManager::Instance()->GetPlayerObjs();
 		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
-			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
+			Play3DOnce("3d_fire", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
 	}
 }
 
@@ -107,7 +107,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		auto players = RoundManager::Instance()->GetPlayerObjs();
 		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
-			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
+			Play3DOnce("3d_fire", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
 	}
 
 	// 맞은 사람 ) 체력 변화
@@ -907,6 +907,10 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
 	}
+	else if (state == "FIRE")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_SHOOT;
+	}
 	else if (state == "JUMP")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_JUMP;
@@ -948,6 +952,11 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 		case Protocol::ANIMATION_STATE_NONE:
 		{
 			return ePlayerState::NONE;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_SHOOT:
+		{
+			return ePlayerState::FIRE;
 		}
 		break;
 		case Protocol::ANIMATION_STATE_IDLE:

@@ -31,7 +31,7 @@ void OthersAnim::Update()
 		case ePlayerState::FIRE:
 		{
 			_mesh->PlayAnimation("RV_fire", false, 0.1, true, 0.1);
-			_audio->Play3DRepeat("3d_fire", GetGameObject()->GetTransform()->GetPosition());
+			_audio->Play3DOnce("3d_fire", GetGameObject()->GetTransform()->GetPosition());
 		}
 		break;
 		case ePlayerState::WALK_R:
