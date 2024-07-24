@@ -168,4 +168,7 @@ private:
 
 public:
 	bool _isIngamePlaying;
+
+private:
+	std::unordered_map<int, HDData::DynamicCollider*> _otherPlayers;
 };
