@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -620,29 +620,61 @@ void NetworkManager::SendPlayUpdate()
 
 void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 {
-	auto& playerobj = RoundManager::Instance()->GetPlayerObjs();
+	auto& playerObjs = RoundManager::Instance()->GetPlayerObjs();
 	auto& roominfo = playUpdate.roominfo();
 
-	for (auto& player : roominfo.users())
+	for (auto& playerData : roominfo.users())
 	{
-		if (player.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		if (playerData.userinfo().uid() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
-			GameManager::Instance()->GetMyInfo()->SetCurrentHP(player.hp());
+			GameManager::Instance()->GetMyInfo()->SetCurrentHP(playerData.hp());
 			continue;
 		}
 
-		auto& obj = playerobj[player.userinfo().uid()];
-		PlayerInfo* info = obj->GetComponent<PlayerInfo>();
+		auto& playerObj = playerObjs[playerData.userinfo().uid()];
+		auto playerInfo = playerObj->GetComponent<PlayerInfo>();
 
-		Vector3 pos = { player.transform().vector3().x(), player.transform().vector3().y(), player.transform().vector3().z() };
-		Quaternion rot = { player.transform().quaternion().x(), player.transform().quaternion().y(), player.transform().quaternion().z(), player.transform().quaternion().w() };
+		Vector3 pos = {
+			playerData.transform().vector3().x(),
+			playerData.transform().vector3().y(),
+			playerData.transform().vector3().z() };
+		Quaternion rot = {
+			playerData.transform().quaternion().x(),
+			playerData.transform().quaternion().y(),
+			playerData.transform().quaternion().z(),
+			playerData.transform().quaternion().w() };
 
-		info->SetServerTransform(pos, rot);
-		info->SetCurrentHP(player.hp());
+		playerInfo->SetServerTransform(pos, rot);
+		playerInfo->SetCurrentHP(playerData.hp());
 
-		// animation
-		if (info->GetPlayerState() == ConvertAnimationStateToEnum(player.animationstate())) continue;
-		info->SetCurrentState(ConvertAnimationStateToEnum(player.animationstate()));
+		// Animation
+
+		auto animationState = ConvertAnimationStateToEnum(playerData.animationstate());
+
+		if (playerInfo->GetPlayerState() == animationState)
+			continue;
+
+		if (animationState == ePlayerState::IDLE &&
+			playerInfo->GetIsInterpolation())
+		{
+			switch (playerInfo->GetPlayerState())
+			{
+				case ePlayerState::WALK_R:
+				case ePlayerState::WALK_L:
+				case ePlayerState::WALK_F:
+				case ePlayerState::WALK_B:
+				case ePlayerState::WALK:
+					playerInfo->SetCurrentState(playerInfo->GetPlayerState());
+					break;
+				default:
+					playerInfo->SetCurrentState(animationState);
+					break;
+			}
+		}
+		else
+		{
+			playerInfo->SetCurrentState(animationState);
+		}
 	}
 }
 
@@ -720,7 +752,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 {
 	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
-	
+
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
@@ -737,28 +769,41 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	//if (currentPos == serverPos && currentRot == serverRot)
 	//	return;
-	float speed = 6.4f;
+	float speed = 8.4f;
 
-	Vector3 posDif = currentPos - serverPos;
-	if (posDif.Length() > 5.0f)
+	Vector3 posDif = serverPos - currentPos;
+	Vector3 nomal = posDif;
+	nomal.Normalize();
+
+	auto directionVector = nomal * speed * dt * Vector3{ 1,0,1 };
+
+	if (posDif.Length() > 15.0f)
 	{
 		current->SetPosition(serverPos);
 	}
-	else if (posDif.Length() > 0.3f)
+	else if (posDif.Length() > 10.0f)
 	{
-		Vector3 nomal = posDif * -1;
-		nomal.Normalize();
+		current->SetPosition(currentPos + directionVector * 2);
+		// current->Translate(directionVector * 2);
 
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	}
+	else if (posDif.Length() > directionVector.Length())
+	{
 		// current->GetGameObject()->GetTransform()->Translate(nomal * speed * dt * Vector3{ 1,0,1 });
-		current->SetPosition(currentPos + nomal * speed * dt * Vector3{ 1,0,1 });
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetInterpolation(true);
+		// 이거 이름좀
+
+		// current->Translate(directionVector);
+		current->SetPosition(currentPos + directionVector);
+
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
 	}
 	else
 	{
-		current->SetPosition(serverPos);
+		// current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetInterpolation(false);
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
 	}
 
 	float dot = serverRot.Dot(currentRot);
@@ -775,11 +820,6 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	{
 		current->SetRotation(serverRot);
 	}
-	// 보간 후에도 너무 멀리 있다면 즉시 이동
-	//if (Vector3::Distance(currentPos, serverPos) > 1)
-	//{
-	//	currentPos = serverPos;
-	//}
 }
 
 Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& state)

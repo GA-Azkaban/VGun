@@ -37,7 +37,7 @@ void PlayerMove::Start()
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
-	_moveSpeed = 6.0f;
+	_moveSpeed = 6.4f;
 
 	StartRoundCam();
 
@@ -359,8 +359,13 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::JUMP:
 		{
 			_playerColliderStanding->Jump(Vector3::Zero);
+			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
 
 			break;
@@ -471,6 +476,10 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 		case ePlayerMoveState::RUN:
 		{
+			if (_prevDirection != _moveDirection)
+			{
+				_playerColliderStanding->ClearForce();
+			}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
 			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
@@ -564,7 +573,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_playerColliderStanding->Stop();
+			//_playerColliderStanding->Stop();
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
@@ -820,6 +829,7 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
+		_playerColliderStanding->AdjustFriction(0.7f, 0.63f);
 		//_isMoveableOnJump = true;
 
 		// 일단 

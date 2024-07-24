@@ -62,6 +62,11 @@ void HDData::DynamicCollider::SetPlayerShapes(physx::PxShape* stand, physx::PxSh
 	_sittingShape = sit;
 }
 
+void HDData::DynamicCollider::SetPlayerMaterial(physx::PxMaterial* material)
+{
+	_plMaterial = material;
+}
+
 bool HDData::DynamicCollider::GetFreezeRotation()
 {
 	return _freezeRotation;
@@ -87,8 +92,8 @@ void HDData::DynamicCollider::Move(Vector3 moveStep, float speed, float deltaTim
 
 	physx::PxVec3 velo = _physXRigid->getLinearVelocity();
 #ifdef _DEBUG
-	velo.x = moveStep.x * speed * 3;
-	velo.z = moveStep.z * speed * 3;
+	velo.x = moveStep.x * speed * 3.5f;
+	velo.z = moveStep.z * speed * 3.5f;
 #else
 	velo.x = moveStep.x * speed;
 	velo.z = moveStep.z * speed;
@@ -183,7 +188,7 @@ void HDData::DynamicCollider::Jump(Vector3 direction)
 	//_physXRigid->addForce(physx::PxVec3(direction.x * 0.16f, 1.2f, direction.z * 0.16f) * 100.0f, physx::PxForceMode::eIMPULSE);
 	//_physXRigid->addForce(physx::PxVec3(0.0f, 1.2f, 0.0f) * 120.0f, physx::PxForceMode::eIMPULSE);
 #ifdef _DEBUG
-	_physXRigid->addForce(physx::PxVec3(0.0f, 2800.0f, 0.0f), physx::PxForceMode::eFORCE);
+	_physXRigid->addForce(physx::PxVec3(0.0f, 3200.0f, 0.0f), physx::PxForceMode::eFORCE);
 #else
 	_physXRigid->addForce(physx::PxVec3(0.0f, 1600.0f, 0.0f), physx::PxForceMode::eFORCE);
 #endif
@@ -292,6 +297,21 @@ void HDData::DynamicCollider::ClearForceXYZ()
 	}
 }
 
+void HDData::DynamicCollider::ClearForce()
+{
+	_physXRigid->clearForce();
+	_physXRigid->clearTorque();
+
+	for (auto& child : _childColliders)
+	{
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->ClearForce();
+		}
+	}
+}
+
 void HDData::DynamicCollider::ResetCollider(eColliderType type, Vector3 widthDepthHeight)
 {
 
@@ -328,6 +348,12 @@ void HDData::DynamicCollider::EnableStanding(bool isStand)
 		_sittingShape->setFlag(physx::PxShapeFlag::eVISUALIZATION, true);
 		//_physXRigid->detachShape(*_standingShape);
 	}
+}
+
+void HDData::DynamicCollider::AdjustFriction(float staticFr, float dynamicFr)
+{
+	_plMaterial->setStaticFriction(staticFr);
+	_plMaterial->setDynamicFriction(dynamicFr);
 }
 
 void HDData::DynamicCollider::UpdateToPhysics()
