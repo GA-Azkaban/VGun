@@ -462,7 +462,7 @@ void RoundManager::UpdateRoundTimer()
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.006f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.005f, 0);
 			}
 		}
 		else if (nowElapsed >= 107 && nowElapsed <= 110)

@@ -358,8 +358,8 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_playerColliderStanding->Jump(Vector3::Zero);
 			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
+			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
