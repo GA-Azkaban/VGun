@@ -62,6 +62,11 @@ void HDData::DynamicCollider::SetPlayerShapes(physx::PxShape* stand, physx::PxSh
 	_sittingShape = sit;
 }
 
+void HDData::DynamicCollider::SetPlayerMaterial(physx::PxMaterial* material)
+{
+	_plMaterial = material;
+}
+
 bool HDData::DynamicCollider::GetFreezeRotation()
 {
 	return _freezeRotation;
@@ -292,6 +297,21 @@ void HDData::DynamicCollider::ClearForceXYZ()
 	}
 }
 
+void HDData::DynamicCollider::ClearForce()
+{
+	_physXRigid->clearForce();
+	_physXRigid->clearTorque();
+
+	for (auto& child : _childColliders)
+	{
+		auto dynamicChild = dynamic_cast<HDData::DynamicCollider*>(child);
+		if (dynamicChild != nullptr)
+		{
+			dynamicChild->ClearForce();
+		}
+	}
+}
+
 void HDData::DynamicCollider::ResetCollider(eColliderType type, Vector3 widthDepthHeight)
 {
 
@@ -328,6 +348,12 @@ void HDData::DynamicCollider::EnableStanding(bool isStand)
 		_sittingShape->setFlag(physx::PxShapeFlag::eVISUALIZATION, true);
 		//_physXRigid->detachShape(*_standingShape);
 	}
+}
+
+void HDData::DynamicCollider::AdjustFriction(float staticFr, float dynamicFr)
+{
+	_plMaterial->setStaticFriction(staticFr);
+	_plMaterial->setDynamicFriction(dynamicFr);
 }
 
 void HDData::DynamicCollider::UpdateToPhysics()
@@ -409,4 +435,10 @@ void HDData::DynamicCollider::SetCurTransform(TransformInfo info)
 {
 	_currentTransform.pos = info.pos;
 	_currentTransform.rot = info.rot;
+}
+
+Vector3 HDData::DynamicCollider::GetVelocity() const
+{
+	physx::PxVec3 velocity = _physXRigid->getLinearVelocity();
+	return Vector3(velocity.x, velocity.y, velocity.z);
 }

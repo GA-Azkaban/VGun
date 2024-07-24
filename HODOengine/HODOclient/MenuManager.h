@@ -9,10 +9,15 @@
 struct roomInfoObj
 {
 	HDData::Button* btn;
+	HDData::ImageUI* roomListCanavas;
 	HDData::TextUI* id;
 	HDData::TextUI* title;
+	HDData::ImageUI* userCount;
 	HDData::ImageUI* maxCount;
+	HDData::ImageUI* slash;
 	HDData::ImageUI* currentCount;
+	HDData::Button* joinBtn;
+	HDData::TextUI* jointxt;
 	HDData::ImageUI* isPrivate;
 	HDData::ImageUI* isTeam;
 
@@ -22,6 +27,10 @@ struct roomInfoObj
 		title->GetGameObject()->SetSelfActive(false);
 		maxCount->GetGameObject()->SetSelfActive(false);
 		currentCount->GetGameObject()->SetSelfActive(false);
+		userCount->GetGameObject()->SetSelfActive(false);
+		slash->GetGameObject()->SetSelfActive(false);
+		joinBtn->GetGameObject()->SetSelfActive(false);
+		jointxt->GetGameObject()->SetSelfActive(false);
 		//isPrivate->GetGameObject()->SetSelfActive(false);
 		//isTeam->GetGameObject()->SetSelfActive(false);
 	}

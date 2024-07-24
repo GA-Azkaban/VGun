@@ -89,7 +89,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 		auto players = RoundManager::Instance()->GetPlayerObjs();
 		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
-			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
+			Play3DOnce("3d_fire");
 	}
 }
 
@@ -107,7 +107,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		auto players = RoundManager::Instance()->GetPlayerObjs();
 		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
-			Play3DOnce("shootother", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
+			Play3DOnce("3d_fire");
 	}
 
 	// 맞은 사람 ) 체력 변화
@@ -147,6 +147,8 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+		
+		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
 	}
 
 	if (myUID == killPlayerData.userinfo().uid())
@@ -195,6 +197,8 @@ void NetworkManager::RecvPlayRespawn(Protocol::PlayerData playerData, int32 spaw
 		auto player = RoundManager::Instance()->GetPlayerObjs()[playerData.userinfo().uid()];
 		player->GetTransform()->SetPosition(pos);
 		player->GetComponent<PlayerInfo>()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+
+		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[playerData.userinfo().uid()]->OnEnable();
 	}
 }
 
@@ -772,39 +776,91 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	float speed = 8.4f;
 
 	Vector3 posDif = serverPos - currentPos;
-	Vector3 nomal = posDif;
-	nomal.Normalize();
+	Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
+	//nomal.Normalize();
 
-	auto directionVector = nomal * speed * dt * Vector3{ 1,0,1 };
+	auto directionVector = nomal * speed * dt;
 
-	if (posDif.Length() > 15.0f)
+	float dif = posDif.Length();
+
+
+	if (dif > 0.01f)
 	{
 		current->SetPosition(serverPos);
 	}
-	else if (posDif.Length() > 10.0f)
+	 
+	//if (posDif.Length() > 15.0f)
+	//{
+	//	current->SetPosition(serverPos);
+	//}
+	//else if (posDif.Length() > 10.0f)
+	//{
+	//	// current->Translate(directionVector * 2);
+	//	current->SetPosition(currentPos + directionVector * 2);
+	//	//current->SetPosition(serverPos);
+
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//}
+	//else if (posDif.Length() > directionVector.Length())
+	//{
+	//	// current->Translate(directionVector);
+	//	current->SetPosition(currentPos + directionVector);
+	//	//current->SetPosition(serverPos);
+
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//}
+	//else
+	//{
+	//	//current->SetPosition(serverPos);
+
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
+	//}
+	
+	//////
+	class CustomQueue
 	{
-		current->SetPosition(currentPos + directionVector * 2);
-		// current->Translate(directionVector * 2);
+	public:
+		void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
+		void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
+		std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
+		bool empty() const { return m_queue.empty(); }
+		std::size_t size() const { return m_queue.size(); }
+		void printQueue() const
+		{
+			std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
+			while (!tempQueue.empty())
+			{
+				std::cout.fixed;
+				std::cout.precision(6);
+				std::cout <<
+					tempQueue.front().first.x << " / \t" <<
+					tempQueue.front().first.y << " / \t" <<
+					tempQueue.front().first.z <<
+					" \t|\t" <<
+					tempQueue.front().second.x << " / \t" <<
+					tempQueue.front().second.y << " / \t" <<
+					tempQueue.front().second.z;
+				//std::cout << std::endl;
+				tempQueue.pop();
+			}
+		}
+		~CustomQueue()
+		{
+			printQueue();
+		}
+	private:
+		std::queue<std::pair<Vector3, Vector3>> m_queue;
+	};
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	}
-	else if (posDif.Length() > directionVector.Length())
-	{
-		// current->GetGameObject()->GetTransform()->Translate(nomal * speed * dt * Vector3{ 1,0,1 });
+	static CustomQueue posQueue;
+	if (posQueue.size() > 1)
+		posQueue.pop();
+	posQueue.push({ currentPos,serverPos });
 
-		// 이거 이름좀
-
-		// current->Translate(directionVector);
-		current->SetPosition(currentPos + directionVector);
-
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	}
-	else
-	{
-		// current->SetPosition(serverPos);
-
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
-	}
+	//std::cout << std::endl;
+	posQueue.printQueue();
+	std::cout << "\t" << directionVector.Length() << std::endl;
+	///////
 
 	float dot = serverRot.Dot(currentRot);
 	float angleDif = 2.0f * acos(dot);
@@ -843,6 +899,10 @@ Protocol::eAnimationState NetworkManager::ConvertStateToEnum(const std::string& 
 	else if (state == "RUN_B")
 	{
 		return Protocol::eAnimationState::ANIMATION_STATE_BACK;
+	}
+	else if (state == "FIRE")
+	{
+		return Protocol::eAnimationState::ANIMATION_STATE_SHOOT;
 	}
 	else if (state == "JUMP")
 	{
@@ -885,6 +945,11 @@ ePlayerState NetworkManager::ConvertAnimationStateToEnum(Protocol::eAnimationSta
 		case Protocol::ANIMATION_STATE_NONE:
 		{
 			return ePlayerState::NONE;
+		}
+		break;
+		case Protocol::ANIMATION_STATE_SHOOT:
+		{
+			return ePlayerState::FIRE;
 		}
 		break;
 		case Protocol::ANIMATION_STATE_IDLE:

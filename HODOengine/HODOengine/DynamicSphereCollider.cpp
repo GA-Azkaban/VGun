@@ -72,3 +72,13 @@ void HDData::DynamicSphereCollider::Update()
 	//
 	//_debugStruct->worldTM = transformMat;
 }
+
+void HDData::DynamicSphereCollider::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
+{
+	auto& opponentCollider = (*colArr)->_otherActor;
+
+	if (opponentCollider->GetColType() == eColliderRole::PLAYER)
+	{
+		this->ClearForce();
+	}
+}

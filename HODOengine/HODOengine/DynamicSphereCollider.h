@@ -21,6 +21,8 @@ namespace HDData
 
 		virtual void Update() override;
 
+		virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
+
 	private:
 		float _radius;
 		HDEngine::SpherePrimitive* _sphereDebugStruct;

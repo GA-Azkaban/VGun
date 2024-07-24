@@ -37,7 +37,7 @@ void PlayerMove::Start()
 	_fpMeshObj = GetGameObject()->GetGameObjectByNameInChildren("meshShell");
 	_fpmesh = _fpMeshObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	_weapon = _fpMeshObj->GetGameObjectByNameInChildren("Thumb_01.001")->GetGameObjectByNameInChildren("weapon")->GetComponent<HDData::MeshRenderer>();
-	_moveSpeed = 6.0f;
+	_moveSpeed = 6.4f;
 
 	StartRoundCam();
 
@@ -285,13 +285,13 @@ void PlayerMove::ShootGun()
 			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
 			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
 			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(forceDirection, 2.0f, 1);
+			hitDynamicSphere->AddForce(forceDirection, 1.0f, 1);
 			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
 			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
 			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
 							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
 							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
-			hitDynamicSphere->AddTorque(axis, 500.0f, 0);
+			hitDynamicSphere->AddTorque(axis, 2000.0f, 0);
 		}
 	}
 
@@ -348,16 +348,17 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-
+			
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
-
+			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
+			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
@@ -475,6 +476,10 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 		case ePlayerMoveState::RUN:
 		{
+			if (_prevDirection != _moveDirection)
+			{
+				_playerColliderStanding->ClearForce();
+			}
 			_playerColliderStanding->Move(DecideDisplacement(_moveDirection), _moveSpeed, _deltaTime);
 
 			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
@@ -569,6 +574,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			//_playerColliderStanding->Stop();
+			_playerColliderStanding->AdjustFriction(0.7f, 0.63f);
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
@@ -757,6 +763,11 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	}
 }
 
+std::unordered_map<int, HDData::DynamicCollider*>& PlayerMove::GetOtherPlayerCols()
+{
+	return _otherPlayers;
+}
+
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
 {
 	//++_enterCount;
@@ -824,6 +835,7 @@ void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
+		_playerColliderStanding->AdjustFriction(0.7f, 0.63f);
 		//_isMoveableOnJump = true;
 
 		// 일단 
@@ -1014,6 +1026,11 @@ void PlayerMove::StartRoundCam()
 {
 	_isHeadCam = true;
 	_isFirstPersonPerspective = true;
+}
+
+void PlayerMove::InsertOtherPlayerInfo(int uid, HDData::DynamicCapsuleCollider* collider)
+{
+	_otherPlayers.insert({uid, collider});
 }
 
 bool PlayerMove::IsShootHead()

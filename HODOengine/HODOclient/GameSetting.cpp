@@ -23,17 +23,17 @@ GameSetting::GameSetting()
 	auto width = API::GetScreenWidth();
 	auto height = API::GetScreenHeight();
 
-	_settingIcon = API::CreateStaticObject("icon");
-	_settingIcon->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 99, 26, 0);
-	auto icon = _settingIcon->AddComponent<HDData::ImageUI>();
-	icon->SetImage("icon_cog.png");
-	icon->SetSortOrder(0.95f);
+	//_settingIcon = API::CreateStaticObject("icon");
+	//_settingIcon->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 99, 26, 0);
+	//auto icon = _settingIcon->AddComponent<HDData::ImageUI>();
+	//icon->SetImage("icon_cog.png");
+	//icon->SetSortOrder(0.95f);
 
 	_settingText = API::CreateStaticObject("OnSet");
-	_settingText->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 97, 30, 0);
+	_settingText->GetTransform()->SetPosition((API::GetScreenWidth() / 100 * 97)+30, 60, 0);
 	auto icontxt = _settingText->AddComponent<HDData::ImageUI>();
 	icontxt->SetImage("escText.png");
-	icontxt->ChangeScale(0.7, 0.7);
+	icontxt->ChangeScale(1.5, 1.5);
 	icontxt->SetSortOrder(0.95);
 
 	_settingCanvas = API::CreateStaticObject("setting");

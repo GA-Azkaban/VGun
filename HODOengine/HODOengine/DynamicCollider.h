@@ -41,6 +41,7 @@ namespace HDData
 		//void SetParentCollider(HDData::DynamicCollider* col);
 		//void SetChildCollider(HDData::DynamicCollider* childCol);
 		void SetPlayerShapes(physx::PxShape* stand, physx::PxShape* sit);
+		void SetPlayerMaterial(physx::PxMaterial* material);
 
 	// getter
 	public:
@@ -65,10 +66,12 @@ namespace HDData
 		void AdjustVelocity(float ratio);
 		void ClearVeloY();
 		void ClearForceXYZ();
+		void ClearForce();
 		void ResetCollider(eColliderType type, Vector3 widthDepthHeight);
 		void EnableCollider();
 		void DisableCollider();
 		void EnableStanding(bool isStand);
+		void AdjustFriction(float staticFr, float dynamicFr);
 
 	public:
 		// PhysX 씬과 데이터를 주고받는 함수
@@ -88,6 +91,7 @@ namespace HDData
 		TransformInfo GetCurTransform() const;
 		void SetPrevTransform(TransformInfo info);
 		void SetCurTransform(TransformInfo info);
+		Vector3 GetVelocity() const;
 
 	protected:
 		bool _freezeRotation;
@@ -101,6 +105,7 @@ namespace HDData
 		physx::PxScene* _physScene;
 		physx::PxShape* _standingShape;
 		physx::PxShape* _sittingShape;
+		physx::PxMaterial* _plMaterial;
 
 	private:
 		TransformInfo _prevTransform;

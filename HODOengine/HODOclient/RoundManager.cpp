@@ -35,7 +35,7 @@ void RoundManager::Start()
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		SoundManager::Instance().PlayBGM("bgm_victory");
 		EndGame();
-		};
+		}; 
 
 	_initTimer = new Timer;
 	_initTimer->duration = 3;
@@ -204,6 +204,11 @@ void RoundManager::GetNewDataFromLobby()
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+			auto plMove = _myObj->GetComponent<PlayerMove>();
+			if (plMove != nullptr)
+			{
+				plMove->InsertOtherPlayerInfo(info->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
+			}
 
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
@@ -212,7 +217,6 @@ void RoundManager::GetNewDataFromLobby()
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 			++index;
 		}
-
 	}
 }
 
@@ -335,7 +339,7 @@ void RoundManager::CheckWinner()
 	}
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
-
+	_winnerImg->GetGameObject()->SetSelfActive(true);
 	for (int i = 0; i < count; ++i)
 	{
 		_loserTXT[i]->GetGameObject()->SetSelfActive(true);
@@ -401,9 +405,19 @@ void RoundManager::SetWinnerText(HDData::TextUI* txt)
 	_winnerTXT = txt;
 }
 
+void RoundManager::SetWinnerImg(HDData::ImageUI* img)
+{
+	_winnerImg = img;
+}
+
 void RoundManager::SetLoserText(HDData::TextUI* txt, int index)
 {
 	_loserTXT[index] = txt;
+}
+
+void RoundManager::SetLoserImg(HDData::ImageUI* img)
+{
+	_loserImg = img;
 }
 
 bool RoundManager::GetMenuStatus()
@@ -448,77 +462,78 @@ void RoundManager::UpdateRoundTimer()
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.005f, 0);
 			}
 		}
 		else if (nowElapsed >= 107 && nowElapsed <= 110)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, 1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, 1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 87 && nowElapsed <= 90)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 69 && nowElapsed <= 70)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 0.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 59 && nowElapsed <= 60)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 0.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 48 && nowElapsed <= 50)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(0.0f, -1.0f, 1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 38 && nowElapsed <= 40)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, 0.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 28 && nowElapsed <= 30)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(0.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(0.0f, -1.0f, -1.0f), 0.004f, 0);
 			}
 		}
-		else if (nowElapsed >= 19 && nowElapsed <= 20)
+		else if (nowElapsed >= 18 && nowElapsed <= 20)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 1.0f), 0.02f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 8 && nowElapsed <= 10)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, -1.0f), 0.004f, 0);
 			}
 		}
 
-		if (nowElapsed <= 10)
+		if (nowElapsed >= 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
 			// TODO) 사운드 이펙트 넣기
+
 		}
 		if (elapsedTime.count() >= _timer)
 		{

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../HODOengine/HODO_API.h"
 #include "../HODOengine/AudioSource.h"
 
@@ -29,11 +29,11 @@ public:
 		}
 		if (API::GetKeyDown('2'))
 		{
-			_audioSource->Play3DOnce("Gun_sound", Vector3{ 0,0,0 });
+			_audioSource->Play3DOnce("Gun_sound");
 		}
 		if (API::GetKeyDown('3'))
 		{
-			_audioSource->Play3DOnce("parts_buy", Vector3{ 20,0,0 });
+			_audioSource->Play3DOnce("parts_buy");
 		}
 		if (API::GetKeyDown('4'))
 		{

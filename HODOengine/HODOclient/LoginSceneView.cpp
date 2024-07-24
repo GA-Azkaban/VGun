@@ -112,98 +112,6 @@ void LoginSceneView::LoginView()
 	logintxt->SetSortOrder(0.65f);
 	logintxt->SetText("LOGIN");
 
-	// sign up control
-	HDData::GameObject* joinControlObject = API::CreateImageBox(_scene, "joinControlObject");
-	joinControlObject->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
-	joinControlObject->SetSelfActive(false);
-	_lobbyManager.SetJoinCanvas(joinControlObject);
-
-	// join Btn
-	HDData::GameObject* joinBtn = API::CreateButton(_scene, "joinBtn", loginControlObject);
-	joinBtn->GetTransform()->SetPosition((1055.f * width / 1920) + 200.0f, (640.f * height / 1080) + 500, 0.f);
-	joinBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
-	joinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.6f);
-	joinBtn->SetSelfActive(true);
-	joinBtn->AddComponent<BtnTextScript>();
-	HDData::GameObject* joinText = API::CreateTextbox(_scene, "joinText", joinBtn);
-	joinText->GetTransform()->SetPosition(joinBtn->GetTransform()->GetPosition());
-	joinText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	joinText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::Red);
-	joinText->GetComponent<HDData::TextUI>()->SetText("SIGN");
-
-	// join canvas
-	HDData::GameObject* joinCanvas = API::CreateImageBox(_scene, "joinCanvas", joinControlObject);
-	joinCanvas->GetComponent<HDData::ImageUI>()->SetImage("joinCanvas.png");
-	joinCanvas->GetTransform()->SetScale(500.0f, 500.0f, 0.0f);
-	joinCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.15f);
-	joinCanvas->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
-
-	_lobbyManager.SetJoinCanvas(joinCanvas);
-
-	HDData::GameObject* newIDtextbox = API::CreateTextInputBox(_scene, "newIDtextbox", joinControlObject);
-	newIDtextbox->GetTransform()->SetPosition(960.f * width / 1920, 340.f * height / 1080, 0.f);
-	auto newIDtext = newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
-	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
-	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
-	newIDtextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
-
-	HDData::GameObject* newIDLabel = API::CreateTextbox(_scene, "newIDLabel", newIDtextbox);
-	newIDLabel->GetTransform()->SetPosition(760.f * width / 1920, 340.f * height / 1080, 0.f);
-	newIDLabel->GetComponent<HDData::TextUI>()->SetText("ID");
-	newIDLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
-	newIDLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
-	newIDLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
-
-	HDData::GameObject* newPasswordTextbox = API::CreateTextInputBox(_scene, "newPasswordTextbox", joinControlObject);
-	newPasswordTextbox->GetTransform()->SetPosition(960.f * width / 1920, 440.f * height / 1080, 0.f);
-	auto newPWtext = newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
-	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
-	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
-	newPasswordTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
-
-	HDData::GameObject* newPasswordLabel = API::CreateTextbox(_scene, "newPasswordLabel", newPasswordTextbox);
-	newPasswordLabel->GetTransform()->SetPosition(740.f * width / 1920, 440.f * height / 1080, 0.f);
-	newPasswordLabel->GetComponent<HDData::TextUI>()->SetText("Password");
-	newPasswordLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
-	newPasswordLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
-	newPasswordLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
-
-	HDData::GameObject* newNicknameTextbox = API::CreateTextInputBox(_scene, "newNicknameTextbox", joinControlObject);
-	newNicknameTextbox->GetTransform()->SetPosition(960.f * width / 1920, 540.f * height / 1080, 0.f);
-	auto newNNtext = newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI();
-	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
-	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);
-	newNicknameTextbox->GetComponent<HDData::TextInputBoxUI>()->GetTextUI()->SetSortOrder(0.21f);
-
-	HDData::GameObject* newNicknameLabel = API::CreateTextbox(_scene, "newNicknameLabel", newNicknameTextbox);
-	newNicknameLabel->GetTransform()->SetPosition(740.f * width / 1920, 540.f * height / 1080, 0.f);
-	newNicknameLabel->GetComponent<HDData::TextUI>()->SetText("Nickname");
-	newNicknameLabel->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_25.spriteFont");
-	newNicknameLabel->GetComponent<HDData::TextUI>()->SetColor(DirectX::XMVectorSet(239.0f / 255.0f, 96.0f / 255.0f, 0.0f, 1.0f));
-	newNicknameLabel->GetComponent<HDData::TextUI>()->SetSortOrder(0.21f);
-
-	HDData::GameObject* makeAccountBtn = API::CreateButton(_scene, "makeAccountBtn", joinControlObject);
-	makeAccountBtn->GetComponent<HDData::Button>()->SetImage("125x45.png");
-	makeAccountBtn->GetComponent<HDData::Button>()->SetSortOrder(0.21f);
-	makeAccountBtn->GetTransform()->SetPosition(960.f * width / 1920, 640.f * height / 1080, 0.f);
-	makeAccountBtn->AddComponent<BtnTextScript>();
-	makeAccountBtn->GetComponent<HDData::Button>()->SetOnClickEvent
-	(
-		[=]()
-		{
-			if (!newIDtext->GetText().empty() && !newPWtext->GetText().empty() && !newNNtext->GetText().empty())
-			{
-				LobbyManager::Instance().MakeNewAccount(newIDtext->GetText(), newPWtext->GetText(), newNNtext->GetText());
-			}
-		}
-	);
-	HDData::GameObject* makeAccountText = API::CreateTextbox(_scene, "makeAccountText", makeAccountBtn);
-	makeAccountText->GetTransform()->SetPosition(makeAccountBtn->GetTransform()->GetPosition());
-	makeAccountText->GetComponent<HDData::TextUI>()->SetFont("Resources/Font/KRAFTON_40.spriteFont");
-	makeAccountText->GetComponent<HDData::TextUI>()->SetSortOrder(0.2f);
-	makeAccountText->GetComponent<HDData::TextUI>()->SetDefaultColor(DirectX::Colors::Red);
-	makeAccountText->GetComponent<HDData::TextUI>()->SetText("SIGN");
-
 	// 이부분을 어떻게 처리하지
 	// login sucess canvas
 	HDData::GameObject* loginSucess = API::CreateButton(_scene, "sucessImg");
@@ -286,39 +194,8 @@ void LoginSceneView::LoginView()
 		[=]()
 		{
 			LobbyManager::Instance().showOff(signupSuccess);
-			LobbyManager::Instance().showOff(joinControlObject);
+			//LobbyManager::Instance().showOff(joinControlObject);
 			LobbyManager::Instance().showOn(loginControlObject);
-		}
-	);
-
-	HDData::GameObject* exitJoinBtn = API::CreateButton(_scene, "exitJoinBtn", joinControlObject);
-	exitJoinBtn->AddComponent<BtnHoveringScript>();
-	exitJoinBtn->GetComponent<HDData::Button>()->SetSortOrder(0.5f);
-	exitJoinBtn->GetComponent<HDData::Button>()->SetImage("checkbox_cross.png");
-	exitJoinBtn->GetComponent<HDData::Button>()->ChangeScale(2.0f, 2.0f);
-	exitJoinBtn->GetTransform()->SetPosition((1300.f * width / 1920) - 150, (200.f * height / 1080) + 120, 0.f);
-	exitJoinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			if (joinControlObject->GetSelfActive())
-			{
-
-				LobbyManager::Instance().showOff(joinControlObject);
-				LobbyManager::Instance().showOn(loginControlObject);
-
-			}
-		}
-	);
-
-	joinBtn->GetComponent<HDData::Button>()->SetOnClickEvent(
-		[=]()
-		{
-			/*LobbyManager::Instance().Join();*/
-			if (loginControlObject->GetSelfActive())
-			{
-				LobbyManager::Instance().showOff(loginControlObject);
-				LobbyManager::Instance().showOn(joinControlObject);
-			}
 		}
 	);
 
