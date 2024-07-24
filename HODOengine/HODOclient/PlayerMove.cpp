@@ -361,6 +361,10 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
 			_tpanimator->GetAllAC()->SetTrigger("isJump");
 
 			break;
@@ -564,7 +568,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-			_playerColliderStanding->Stop();
+			//_playerColliderStanding->Stop();
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
