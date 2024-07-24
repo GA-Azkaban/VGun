@@ -26,6 +26,7 @@ public:
 	void SetPlayerColliders(HDData::DynamicCapsuleCollider* standing, HDData::DynamicCapsuleCollider* sitting);
 	void PresetSprayPattern(int gunType);
 	void StartRoundCam();
+	void InsertOtherPlayerInfo(int uid, HDData::DynamicCapsuleCollider* collider);
 
 public:
 	bool IsShootHead();

@@ -203,6 +203,11 @@ void RoundManager::GetNewDataFromLobby()
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+			auto plMove = one->GetComponent<PlayerMove>();
+			if (plMove != nullptr)
+			{
+				plMove->InsertOtherPlayerInfo(info->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
+			}
 
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
 			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
@@ -211,7 +216,6 @@ void RoundManager::GetNewDataFromLobby()
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
 			++index;
 		}
-
 	}
 }
 

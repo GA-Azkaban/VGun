@@ -1012,9 +1012,9 @@ void PlayerMove::StartRoundCam()
 	_isFirstPersonPerspective = true;
 }
 
-void PlayerMove::InsertOtherPlayerInfo(int uid, HDData::DynamicCollider* collider)
+void PlayerMove::InsertOtherPlayerInfo(int uid, HDData::DynamicCapsuleCollider* collider)
 {
-	_otherPlayers.insert(std::make_pair(uid, collider));
+	_otherPlayers.insert({uid, collider});
 }
 
 bool PlayerMove::IsShootHead()

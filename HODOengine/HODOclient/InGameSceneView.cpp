@@ -362,7 +362,7 @@ void InGameSceneView::Initialize()
 		ohterPlayerHeadCollider->SetParentCollider(otherPlayerCollider);
 		ohterPlayerHeadCollider->SetPositionOffset(Vector3(0.0f, -0.6f, 0.0f));
 
-		playerMove->InsertOtherPlayerInfo(i, otherPlayerCollider);
+		//playerMove->InsertOtherPlayerInfo(i, otherPlayerCollider);
 
 		auto otherMeshComp = otherPlayer->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 		otherMeshComp->LoadAnimation("TP");
