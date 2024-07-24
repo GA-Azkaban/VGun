@@ -33,6 +33,7 @@ void RoundManager::Start()
 	_gameEndTimer->onExpiration = [&]() {
 		_showResultTimer->Start();
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
+		SoundManager::Instance().PlayBGM("bgm_victory");
 		EndGame();
 		};
 
@@ -45,7 +46,7 @@ void RoundManager::Start()
 		};
 
 	_showResultTimer = new Timer;
-	_showResultTimer->duration = 10;
+	_showResultTimer->duration = 20;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		};

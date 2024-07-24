@@ -522,6 +522,7 @@ void InGameSceneView::Initialize()
 	endButton->GetTransform()->SetPosition(2300.0f, 1300.0f, 0.0f);
 	endButton->AddComponent<BtnTextScript>();
 	auto endComp = endButton->GetComponent<HDData::Button>();
+	endComp->SetSortOrder(0.8);
 	endComp->SetImage("Button_02.png");
 	endComp->SetOnClickEvent([=]()
 		{

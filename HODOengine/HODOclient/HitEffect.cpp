@@ -26,6 +26,7 @@ void HitEffect::Start()
 	_hitEffectImage->SetImage("hitEffect.png");
 	_hitEffectImage->ChangeScale(API::GetScreenWidth() / 1920.0f, API::GetScreenHeight() / 1080.0f);
 	_hitEffectImage->SetActive(false);
+	_hitEffectImage->SetIsIgnoreFocus(true);
 
 	GameManager::Instance()->GetMyInfo()->SetHitEffectObj(this);
 }
