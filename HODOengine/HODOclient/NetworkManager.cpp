@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -752,7 +752,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 {
 	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
-	
+
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
@@ -781,21 +781,21 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	{
 		current->SetPosition(serverPos);
 	}
-	if (posDif.Length() > 10.0f)
+	else if (posDif.Length() > 10.0f)
 	{
-		//current->SetPosition(currentPos + directionVector * 2);
-		current->Translate(directionVector * 2);
+		current->SetPosition(currentPos + directionVector * 2);
+		// current->Translate(directionVector * 2);
 
 		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
 	}
-	else if (posDif.Length() > 0.3f)
+	else if (posDif.Length() > directionVector.Length())
 	{
 		// current->GetGameObject()->GetTransform()->Translate(nomal * speed * dt * Vector3{ 1,0,1 });
 
 		// 이거 이름좀
 
-		current->Translate(directionVector);
-		// current->SetPosition(currentPos + directionVector);
+		// current->Translate(directionVector);
+		current->SetPosition(currentPos + directionVector);
 
 		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
 	}
