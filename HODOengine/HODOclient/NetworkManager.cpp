@@ -773,38 +773,44 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	//if (currentPos == serverPos && currentRot == serverRot)
 	//	return;
-	float speed = 8.4f;
+	float speed = 6.4f;
 
 	Vector3 posDif = serverPos - currentPos;
-	Vector3 nomal = posDif * Vector3{ 1,0,1 };
-	nomal.Normalize();
+	Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
+	//nomal.Normalize();
 
 	auto directionVector = nomal * speed * dt;
 
-	if (posDif.Length() > 15.0f)
+	if (posDif.Length() > 0.03f)
 	{
 		current->SetPosition(serverPos);
 	}
-	else if (posDif.Length() > 10.0f)
-	{
-		// current->Translate(directionVector * 2);
-		current->SetPosition(currentPos + directionVector * 2);
+	//if (posDif.Length() > 15.0f)
+	//{
+	//	current->SetPosition(serverPos);
+	//}
+	//else if (posDif.Length() > 10.0f)
+	//{
+	//	// current->Translate(directionVector * 2);
+	//	current->SetPosition(currentPos + directionVector * 2);
+	//	//current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	}
-	else if (posDif.Length() > directionVector.Length())
-	{
-		// current->Translate(directionVector);
-		current->SetPosition(currentPos + directionVector);
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//}
+	//else if (posDif.Length() > directionVector.Length())
+	//{
+	//	// current->Translate(directionVector);
+	//	current->SetPosition(currentPos + directionVector);
+	//	//current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	}
-	else
-	{
-		// current->SetPosition(serverPos);
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//}
+	//else
+	//{
+	//	//current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
-	}
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
+	//}
 	
 	//////
 	class CustomQueue
