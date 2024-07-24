@@ -75,12 +75,12 @@ Quaternion& PlayerInfo::GetServerRotation()
 	return _serverRot;
 }
 
-void PlayerInfo::SetInterpolation(bool isInterpolation)
+void PlayerInfo::SetIsInterpolation(bool isInterpolation)
 {
 	this->_isInterpolation = isInterpolation;
 }
 
-bool PlayerInfo::GetInterpolation()
+bool PlayerInfo::GetIsInterpolation()
 {
 	return _isInterpolation;
 }
