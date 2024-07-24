@@ -16,9 +16,6 @@
 #include "BtnTextScript.h"
 #include "CooldownAlpha.h"
 #include "CooldownText.h"
-#include "MeshTransformController.h"
-#include "UITransformController.h"
-#include "DamageLogTest.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -702,12 +699,8 @@ void InGameSceneView::Initialize()
 	playerMove->cooldownCountText = tumbleCooldownCount;
 
 	auto damageLogObj = API::CreateObject(_scene, "DamageLog");
-	damageLogObj->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f, API::GetScreenHeight() - 300, 0);
+	damageLogObj->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f + 100, API::GetScreenHeight() - 200, 0);
 	auto damageLogComp = damageLogObj->AddComponent<DamageLog>();
-
-	auto damageLogTest = API::CreateObject(_scene, "DamageLogTest");
-	auto damageTestComp = damageLogTest->AddComponent<DamageLogTest>();
-	damageTestComp->_damageLog = damageLogComp;
 
 	//auto cube = API::CreateObject(_scene);
 	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");

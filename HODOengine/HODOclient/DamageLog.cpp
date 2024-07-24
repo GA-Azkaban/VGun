@@ -59,23 +59,25 @@ void DamageLog::DisplayLog(const std::string& nickname, int damage, int remainHP
 void DamageLog::Start()
 {
 	Vector3 position = GetGameObject()->GetTransform()->GetPosition();
-	_uiXPosition = { position.x - 300, position.x, position.x + 300 };
-	_uiYPosition = { position.y - 100, position.y, position.y + 100 };
+	_uiXPosition = { position.x - 200, position.x, position.x + 100 };
+	_uiYPosition = { position.y - 60, position.y, position.y + 60 };
 
 	for (int i = 0; i < MAXLOGCOUNT; ++i)
 	{
-		auto damageLogObj = API::CreateObject(API::GetCurrentScene());
-		_nicknames[i] = damageLogObj->AddComponent<HDData::TextUI>();
+		auto nicknameObj = API::CreateObject(API::GetCurrentScene());
+		_nicknames[i] = nicknameObj->AddComponent<HDData::TextUI>();
 		_nicknames[i]->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		_nicknames[i]->SetText(" ");
 		_nicknames[i]->SetActive(false);
 
-		_damages[i] = damageLogObj->AddComponent<HDData::TextUI>();
+		auto damageObj = API::CreateObject(API::GetCurrentScene());
+		_damages[i] = damageObj->AddComponent<HDData::TextUI>();
 		_damages[i]->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 		_damages[i]->SetText(" ");
 		_damages[i]->SetActive(false);
 
-		_remainHPs[i] = damageLogObj->AddComponent<HDData::TextUI>();
+		auto remainHPObj = API::CreateObject(API::GetCurrentScene());
+		_remainHPs[i] = remainHPObj->AddComponent<HDData::TextUI>();
 		_remainHPs[i]->SetFont("Resources/Font/KRAFTON_40.spriteFont");
 		_remainHPs[i]->SetText(" ");
 		_remainHPs[i]->SetActive(false);
