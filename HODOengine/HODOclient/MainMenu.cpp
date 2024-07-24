@@ -290,19 +290,21 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
 
 		HDData::GameObject* enter_roomTitle = API::CreateTextbox(_scene, "title", enter_roomCanvas);
-		enter_roomTitle->GetTransform()->SetLocalPosition(-30, 10, 0);
+		enter_roomTitle->GetTransform()->SetLocalPosition(-75, 10, 0);
 		auto roomT = enter_roomTitle->GetComponent<HDData::TextUI>();
+		roomT->SetIsIgnoreFocus(true);
 		roomT->SetFont("Resources/Font/KRAFTON_30.spritefont");
 		roomT->SetText("Title");
-		roomT->SetSortOrder(0.71f);
+		roomT->SetSortOrder(0.66f);
 		roomT->SetColor(DirectX::Colors::BlanchedAlmond);
 
 		enter_roomTitle->SetSelfActive(false);
 
 		MenuManager::Instance()._roomObject[i].title = roomT;
 
-		HDData::GameObject* enter_roomID = API::CreateTextbox(_scene, "roomID", enter_roomCanvas);
-		enter_roomID->GetTransform()->SetLocalPosition(-230, 10, 0);
+		//HDData::GameObject* enter_roomID = API::CreateTextbox(_scene, "roomID", enter_roomCanvas);
+		HDData::GameObject* enter_roomID = API::CreateTextbox(_scene, "roomID");
+		enter_roomID->GetTransform()->SetLocalPosition(-250, 10, 0);
 		auto roomid = enter_roomID->GetComponent<HDData::TextUI>();
 		roomid->SetFont("Resources/Font/KRAFTON_25.spritefont");
 		roomid->SetText("ID");
@@ -312,6 +314,15 @@ void MainMenuScene::MainMenu()
 		enter_roomID->SetSelfActive(false);
 
 		MenuManager::Instance()._roomObject[i].id = roomid;
+
+		HDData::GameObject* userCount = API::CreateImageBox(_scene, "userCount", enter_roomCanvas);
+		userCount->GetTransform()->SetLocalPosition(200.0f,0.0f,0.0f);
+		auto userCountImg = userCount->GetComponent<HDData::ImageUI>();
+		userCountImg->SetImage("icon_user_filled.png");
+		userCountImg->SetSortOrder(0.81f);
+		userCount->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].userCount = userCountImg;
 
 		HDData::GameObject* enter_maxCount = API::CreateImageBox(_scene, "maxCount", enter_roomCanvas);
 		enter_maxCount->GetTransform()->SetLocalPosition(260.0f, -25.0f, 0);
@@ -323,6 +334,17 @@ void MainMenuScene::MainMenu()
 		enter_maxCount->SetSelfActive(false);
 
 		MenuManager::Instance()._roomObject[i].maxCount = max;
+
+		HDData::GameObject* slashCount = API::CreateImageBox(_scene, "slash", enter_roomCanvas);
+		slashCount->GetTransform()->SetLocalPosition(265.0f, 5.0f, 0);
+		auto slashImg = slashCount->GetComponent<HDData::ImageUI>();
+		slashImg->SetImage("slash.png");
+		slashImg->ChangeScale(0.1f, 0.12f);
+		slashImg->SetSortOrder(0.71f);
+
+		slashCount->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].slash = slashImg;
 
 		HDData::GameObject* enter_currentCount = API::CreateImageBox(_scene, "currentCount", enter_roomCanvas);
 		enter_currentCount->GetTransform()->SetLocalPosition(210.0f, -25.0f, 0);

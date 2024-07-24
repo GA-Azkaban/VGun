@@ -82,7 +82,9 @@ public:
 	void SetRoundEndButton(HDData::GameObject* obj);
 	HDData::GameObject* GetRoundEndButton();
 	void SetWinnerText(HDData::TextUI* txt);
+	void SetWinnerImg(HDData::ImageUI* img);
 	void SetLoserText(HDData::TextUI* txt, int index);
+	void SetLoserImg(HDData::ImageUI* img);
 
 	bool GetMenuStatus();
 	bool _ESCMenuOn = false;
@@ -101,7 +103,9 @@ private:
 	HDData::GameObject* _endCam;
 	HDData::GameObject* _endObj;
 	HDData::TextUI* _winnerTXT;
+	HDData::ImageUI* _winnerImg;
 	HDData::TextUI* _loserTXT[5];
+	HDData::ImageUI* _loserImg;
 
 public:
 	void SetRoundTimerObject(HDData::TextUI* obj);

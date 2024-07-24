@@ -44,7 +44,7 @@ void InGameSceneView::Initialize()
 	float posX = 0;
 	float posT = 165;
 
-	HDEngine::MaterialDesc characterMat;  
+	HDEngine::MaterialDesc characterMat;
 	characterMat.materialName = "PolygonWestern_Texture_01_A";
 	characterMat.albedo = "PolygonWestern_Texture_01_A.png";
 	characterMat.metallic = "PolygonWestern_Texture_Metallic.png";
@@ -76,7 +76,7 @@ void InGameSceneView::Initialize()
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAnimation("TP");
 	meshComp->LoadMaterial(chMat, 0);
-	meshComp->PlayAnimation("RV_idle"); 
+	meshComp->PlayAnimation("RV_idle");
 	meshComp->SetMeshActive(false, 0);
 
 	player->AddComponent<HDData::Animator>();
@@ -143,13 +143,13 @@ void InGameSceneView::Initialize()
 
 	// 수박...이 아니라 회전초
 	int weedPos[20][2] = { {-38, 14}, {-34, -26}, {-34, -14}, {-31, 8}, {-28, -15}, {-22, 1}, {-20, -30}, {-19, 19}, {-14, 14}, {-8, -25},
-							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {20, -7}, {22, 8}, {28, 13}};
+							{-8, -3}, {0, -2}, {0, -14}, {3, 0}, {3, -21}, {7, -30}, {14, 4}, {20, -7}, {22, 8}, {28, 13} };
 	std::vector<HDData::DynamicSphereCollider*> weedColVector;
 	weedColVector.reserve(20);
 	for (int i = 1; i <= 20; ++i)
 	{
 		auto tumbleWeed = API::CreateObject(_scene, "tumbleWeed" + std::to_string(i));
-		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i-1][0], 0.4f, weedPos[i-1][1]));
+		tumbleWeed->GetTransform()->SetPosition(Vector3(weedPos[i - 1][0], 0.4f, weedPos[i - 1][1]));
 		auto tumbleWeedMesh = API::CreateObject(_scene, "weedMesh" + std::to_string(i), tumbleWeed);
 		tumbleWeedMesh->LoadFBXFile("SM_Prop_Tumbleweed_01.fbx");
 		tumbleWeedMesh->GetTransform()->SetLocalPosition(Vector3(0.0f, 0.0f, 0.0f));
@@ -216,7 +216,7 @@ void InGameSceneView::Initialize()
 	alphaKey2.alpha = 255;
 	alphaKey2.time = 1.0f;
 	ak.push_back(alphaKey2);
-	particleSystem->colorOverLifetime.color.SetKeys(ck, ak); 
+	particleSystem->colorOverLifetime.color.SetKeys(ck, ak);
 
 	// 총구 연기 이펙트
 	auto particleSystemObj2 = API::CreateObject(_scene, "SmokeParticle", particleSystemObj);
@@ -473,7 +473,7 @@ void InGameSceneView::Initialize()
 	for (int i = 0; i < 5; ++i)
 	{
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
-		nickname->GetTransform()->SetPosition(uiX-40, uiY, 0);
+		nickname->GetTransform()->SetPosition(uiX - 40, uiY, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		nickComp->SetText("");
@@ -499,15 +499,17 @@ void InGameSceneView::Initialize()
 	// ammo
 	auto ammo = API::CreateTextbox(_scene, "AmmoText");
 	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
-	ammoTXT->SetFont("Resources/Font/KRAFTON_55.spriteFont");
-	ammoTXT->GetTransform()->SetPosition(2250.0f, 1400.0f, 0.0f);
+	ammoTXT->SetFont("Resources/Font/KRAFTON_100.spriteFont");
+	ammoTXT->SetColor(DirectX::Colors::LightGray);
+	ammoTXT->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
 	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
 	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
-	hpTxt->SetFont("Resources/Font/KRAFTON_55.spriteFont");
+	hpTxt->SetFont("Resources/Font/KRAFTON_100.spriteFont");
 	hpTxt->GetTransform()->SetPosition(2100.0f, 1400.0f, 0.0f);
+	hpTxt->SetColor(DirectX::Colors::LightGray);
 	RoundManager::Instance()->SetHPObject(hpTxt);
 
 	// Timer
@@ -538,11 +540,11 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->SetRoundEndButton(endButton);
 
 	// ESC Menu
-	HDData::GameObject* esc_controlObj = API::CreateImageBox(_scene,"escControlObj");
+	HDData::GameObject* esc_controlObj = API::CreateImageBox(_scene, "escControlObj");
 	esc_controlObj->SetSelfActive(false);
 	esc_controlObj->GetTransform()->SetPosition(-500.0f, -500.0f, 0.0f);
 
-	auto inGameESCMenuCanvas = API::CreateImageBox(_scene,"ESCMenuCanvas",esc_controlObj);
+	auto inGameESCMenuCanvas = API::CreateImageBox(_scene, "ESCMenuCanvas", esc_controlObj);
 
 	// 우승자
 	auto winnerObj = API::CreateObject(_scene, "winner");
@@ -554,24 +556,33 @@ void InGameSceneView::Initialize()
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadMaterial(chMat, 0);
 
 	auto winnerTextImg = API::CreateImageBox(_scene, "winnerImg");
-	winnerTextImg->SetSelfActive(false);
-	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth()/2,400.0f,0.0f);
+	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 400.0f, 0.0f);
 	winnerTextImg->SetSelfActive(false);
 	auto winnerTextImgComp = winnerTextImg->GetComponent<HDData::ImageUI>();
 	winnerTextImgComp->SetImage("winner.png");
-	winnerTextImgComp->SetColor(DirectX::Colors::Gold);	// 노란색 이미지를 가져올것
+	//winnerTextImgComp->SetColor(DirectX::Colors::Gold);	// 노란색 이미지를 가져올것
+
+	RoundManager::Instance()->SetWinnerImg(winnerTextImgComp);
 
 	auto winnerName = API::CreateTextbox(_scene, "winner");
-	winnerName->GetTransform()->SetPosition((API::GetScreenWidth()/2)-30, 1200.0f, 0.0f);
+	winnerName->GetTransform()->SetPosition((API::GetScreenWidth() / 2) - 30, 1200.0f, 0.0f);
 	auto winnerComp = winnerName->GetComponent<HDData::TextUI>();
 	winnerComp->SetFont("Resources/Font/KRAFTON_55.spriteFont");
 	winnerComp->SetColor(DirectX::Colors::Gold);
-	
+
 	RoundManager::Instance()->SetWinnerText(winnerComp);
 
 	winnerName->SetSelfActive(false);
 
 	// 루저들
+	//auto loserTextImg = API::CreateImageBox(_scene,"loserImg");
+	//loserTextImg->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 400.0f, 0.0f);
+	//loserTextImg->SetSelfActive(true);
+	//auto loserTextImgComp = loserTextImg->GetComponent<HDData::ImageUI>();
+	//loserTextImgComp->SetImage("loser.png");
+
+	//RoundManager::Instance()->SetLoserImg(loserTextImgComp);
+
 	float loserX = 100.f;
 
 	for (int i = 0; i < 5; ++i)
@@ -626,7 +637,7 @@ void InGameSceneView::Initialize()
 	/// init round
 	// 라운드 시작 카운터
 	auto initCounter = API::CreateTextbox(_scene, "initCounter");
-	initCounter->GetTransform()->SetPosition(API::GetScreenWidth()/2,API::GetScreenHeight()/2,0.0f);
+	initCounter->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 2, 0.0f);
 	initCounter->SetSelfActive(false);
 	auto countertxt = initCounter->GetComponent<HDData::TextUI>();
 	countertxt->SetFont("Resources/Font/KRAFTON_200.spriteFont");
@@ -680,14 +691,15 @@ void InGameSceneView::Initialize()
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");
-	tumbleObj->GetTransform()->SetPosition(1750, 1350, 0);
+	tumbleObj->GetTransform()->SetPosition(1900, 1350, 0);
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
+	tumbleComp->SetColor(DirectX::Colors::LightGray);
 	tumbleComp->SetSortOrder(0.6f);
 	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
-	tumbleAlphaObj->GetTransform()->SetPosition(1750, 1350, 0);
+	tumbleAlphaObj->GetTransform()->SetPosition(1900, 1350, 0);
 	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
@@ -695,7 +707,7 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
-	tumbleCooldownCountObj->GetTransform()->SetPosition(1750 - 5, 1350 + 5, 0);
+	tumbleCooldownCountObj->GetTransform()->SetPosition(1900 - 5, 1350 + 5, 0);
 	auto tumbleCooldownCount = tumbleCooldownCountObj->AddComponent<CooldownText>();
 	auto tumbleCooldownText = tumbleCooldownCountObj->AddComponent<HDData::TextUI>();
 	tumbleCooldownText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
