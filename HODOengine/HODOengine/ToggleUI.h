@@ -1,7 +1,7 @@
-#pragma once
-#include "UIBase.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
-#include "..\\HODO3DGraphicsInterface\\ISketchableText.h"
+﻿#pragma once
+#include <functional>
+
+#include "Component.h"
 
 namespace HDEngine
 {
@@ -10,7 +10,9 @@ namespace HDEngine
 
 namespace HDData
 {
-	class HODO_API ToggleUI : public UIBase
+	class ImageUI;
+
+	class HODO_API ToggleUI : public Component
 	{
 	public:
 		ToggleUI();
@@ -18,27 +20,36 @@ namespace HDData
 	public:
 		void Start() override;
 		void Update() override;
+		void SetToggleOnEvent(std::function<void()> event);
+		void SetToggleOffEvent(std::function<void()> event);
+		void CallToggleOnEvent();
+		void CallToggleOffEvent();
+		void SetSortOrder(float ord);
 
 	public:
 		void SetActive(bool active);
 		void SetScreenSpace();
 		void SetWorldSpace();
 
-		void SetToggleOnImage(const char* fileName);
-		void SetToggleOffImage(const char* fileName);
-
-		bool CheckIsClicked();
+	public:
+		void SetOnComp(ImageUI* comp);
+		void SetOffComp(ImageUI* comp);
+		ImageUI* GetOnComp();
+		ImageUI* GetOffComp();
+		bool GetIsOn();
 
 	private:
-		HDEngine::ISketchableImage* _toggleImage;
-		HDEngine::InputSystem& _inputSystem;
-
-		const char* _toggleOnImage;
-		const char* _toggleOffImage;
-
+		ImageUI* _toggleOn;
+		ImageUI* _toggleOff;
 
 		bool _isToggleOn;
+
+		std::function<void()> _toggleOnEvent;
+		std::function<void()> _toggleOffEvent;
 	};
 }
+
+
+
 
 

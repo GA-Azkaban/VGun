@@ -1,35 +1,49 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <vector>
 #include <string>
+#include "../HODO3DGraphicsInterface/ICubeMap.h"
 
 namespace RocketCore::Graphics
 {
 	class Mesh;
 	class Material;
+	class VertexShader;
+	class PixelShader;
+	class DeferredBuffers;
 
-	class Cubemap
+	class Cubemap : public HDEngine::ICubeMap
 	{
 	public:
-		Cubemap();
 		~Cubemap();
+		static Cubemap& Instance();
+		friend class SkyboxPass;
 
 		void Update(float deltaTime);
 		void Render();
 
+		virtual void LoadCubeMapTexture(const std::string& fileName) override;
+		virtual void SetActive(bool isActive) override { m_isActive = isActive; }
+		virtual void SetEnvLightIntensity(float value) override { m_envLightIntensity = value; }
+
 		void LoadMesh(const std::string& meshName);
-		void LoadVertexShader(const std::string& fileName);
-		void LoadPixelShader(const std::string& fileName);
-		void LoadCubeMapTexture(const std::string& fileName);
+		void SetVertexShader(const std::string& fileName);
+		void SetPixelShader(const std::string& fileName);
 
-		void SetSamplerState(ID3D11SamplerState* sampler);
+		float GetEnvLightIntensity() { return m_envLightIntensity; }
 
-		void SetActive(bool isActive) { m_isActive = isActive; };
+	public:
+		DeferredBuffers* _deferredBuffers;
 
 	private:
-		std::vector<Mesh*> m_meshes;
+		Cubemap();
+		Mesh* m_mesh;
 		Material* m_material;
+		VertexShader* m_vertexShader;
+		PixelShader* m_pixelShader;
 		bool m_isActive;
+		float m_size;
+		float m_envLightIntensity;
 	};
 }
 

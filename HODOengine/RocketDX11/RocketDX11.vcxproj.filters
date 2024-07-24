@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="ColorPS.hlsl">
-      <Filter>Resource\Shader\HLSL\Color</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Color</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturePS.hlsl">
-      <Filter>Resource\Shader\HLSL\Texture</Filter>
-    </FxCompile>
-    <FxCompile Include="TextureVS.hlsl">
-      <Filter>Resource\Shader\HLSL\Texture</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShader.hlsl">
       <Filter>Resource\Shader\HLSL\StaticMesh</Filter>
     </FxCompile>
@@ -37,25 +25,82 @@
     <FxCompile Include="DebugPixelShader.hlsl">
       <Filter>Resource\Shader\HLSL\DebugMesh</Filter>
     </FxCompile>
+    <FxCompile Include="FullScreenQuadVS.hlsl">
+      <Filter>Resource\Shader\HLSL\Quad</Filter>
+    </FxCompile>
+    <FxCompile Include="FullScreenQuadPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Quad</Filter>
+    </FxCompile>
+    <FxCompile Include="BlitPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Blit</Filter>
+    </FxCompile>
+    <FxCompile Include="IrradianceMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\IrradianceMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SpecularPreFilterPS.hlsl">
+      <Filter>Resource\Shader\HLSL\SpecularPreFilter</Filter>
+    </FxCompile>
+    <FxCompile Include="IntegrateBRDF.hlsl">
+      <Filter>Resource\Shader\HLSL\IntegrateBRDF</Filter>
+    </FxCompile>
+    <FxCompile Include="RectToCubeMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\RectToCubeMap</Filter>
+    </FxCompile>
+    <FxCompile Include="ToneMapReinhardPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ToneMapping</Filter>
+    </FxCompile>
+    <FxCompile Include="SSAOPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\SSAO</Filter>
+    </FxCompile>
+    <FxCompile Include="ToneMapAcesPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ToneMapping</Filter>
+    </FxCompile>
+    <FxCompile Include="ShadowMapPS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Outline_SobelDetectionPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="StaticMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="SkinningMeshShadowMapVS.hlsl">
+      <Filter>Resource\Shader\HLSL\ShadowMap</Filter>
+    </FxCompile>
+    <FxCompile Include="Outline_StencilColorPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="Outline_FullScreenQuadPS.hlsl">
+      <Filter>Resource\Shader\HLSL\Outline</Filter>
+    </FxCompile>
+    <FxCompile Include="BillboardVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Billboard</Filter>
+    </FxCompile>
+    <FxCompile Include="BillboardPixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Billboard</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticleVertexShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="ParticlePixelShader.hlsl">
+      <Filter>Resource\Shader\HLSL\Particle</Filter>
+    </FxCompile>
+    <FxCompile Include="ForwardPixelShaderNoLight.hlsl">
+      <Filter>Resource\Shader\HLSL\Forward</Filter>
+    </FxCompile>
+    <FxCompile Include="PostProcessPS.hlsl">
+      <Filter>Resource\Shader\HLSL\PostProcess</Filter>
+    </FxCompile>
+    <FxCompile Include="SpritePreprocessPS.hlsl">
+      <Filter>Resource\Shader\UI</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Axis.cpp">
-      <Filter>Object\HelperObject</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Object\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="CubeMesh.cpp">
-      <Filter>Resource\Resource3D\Primitive</Filter>
-    </ClCompile>
     <ClCompile Include="DeviceBuilderDX11.cpp">
       <Filter>Builder</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXLoader.cpp">
-      <Filter>FBXLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Grid.cpp">
-      <Filter>Object\HelperObject</Filter>
     </ClCompile>
     <ClCompile Include="ImageRenderer.cpp">
       <Filter>Object\ImageRenderer</Filter>
@@ -65,9 +110,6 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Resource\Model</Filter>
     </ClCompile>
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>Object\ObjectFactory</Filter>
@@ -89,9 +131,6 @@
     </ClCompile>
     <ClCompile Include="TextRenderer.cpp">
       <Filter>Object\TextObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Resource\Texture</Filter>
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>Resource\Shader\VertexShader</Filter>
@@ -117,16 +156,82 @@
     <ClCompile Include="Cubemap.cpp">
       <Filter>Object\Cubemap</Filter>
     </ClCompile>
+    <ClCompile Include="CubeMesh.cpp">
+      <Filter>Resource\Resource3D\Primitive\Deprecated</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerState.cpp">
+      <Filter>Resource\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="GBufferPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\GBufferPass</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredBuffers.cpp">
+      <Filter>DeferredRendering\DeferredBuffers</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadBuffer.cpp">
+      <Filter>DeferredRendering\QuadBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\DeferredPass</Filter>
+    </ClCompile>
+    <ClCompile Include="BlitPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\BlitPass</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
+    </ClCompile>
+    <ClCompile Include="SpritePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugMeshPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
+    </ClCompile>
+    <ClCompile Include="Line.cpp">
+      <Filter>Object\Line</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Object\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="LightAdapter.cpp">
+      <Filter>Object\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="ToneMapPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ToneMapPass</Filter>
+    </ClCompile>
+    <ClCompile Include="SSAOPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\SSAOPass</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMapPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClCompile>
+    <ClCompile Include="OutlinePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
+    </ClCompile>
+    <ClCompile Include="GeometryShader.cpp">
+      <Filter>Resource\Shader\GeometryShader</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardParticle.cpp">
+      <Filter>Object\Particle\Billboard</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
+    </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Object\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticlePool.cpp">
+      <Filter>Object\Particle\ParticlePool</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Object\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardPass.cpp">
+      <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Axis.h">
-      <Filter>Object\HelperObject</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Object\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeMesh.h">
-      <Filter>Resource\Resource3D\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="DeviceBuilderDX11.h">
       <Filter>Builder</Filter>
@@ -134,14 +239,8 @@
     <ClInclude Include="dllExporter.h">
       <Filter>dllExporter</Filter>
     </ClInclude>
-    <ClInclude Include="FBXLoader.h">
-      <Filter>FBXLoader</Filter>
-    </ClInclude>
     <ClInclude Include="GraphicsStruct.h">
       <Filter>Struct</Filter>
-    </ClInclude>
-    <ClInclude Include="Grid.h">
-      <Filter>Object\HelperObject</Filter>
     </ClInclude>
     <ClInclude Include="IBuilder.h">
       <Filter>Builder\Interface</Filter>
@@ -157,9 +256,6 @@
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Resource\Resource3D\BaseClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Resource\Model</Filter>
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
       <Filter>Object\ObjectFactory</Filter>
@@ -188,17 +284,11 @@
     <ClInclude Include="TextRenderer.h">
       <Filter>Object\TextObject</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Resource\Texture</Filter>
-    </ClInclude>
     <ClInclude Include="VertexShader.h">
       <Filter>Resource\Shader\VertexShader</Filter>
     </ClInclude>
     <ClInclude Include="ShaderStruct.h">
       <Filter>Resource\Shader\ShaderStruct</Filter>
-    </ClInclude>
-    <ClInclude Include="LightStruct.h">
-      <Filter>Object\Light</Filter>
     </ClInclude>
     <ClInclude Include="GeometryGenerator.h">
       <Filter>GeometryGenerator</Filter>
@@ -227,6 +317,84 @@
     <ClInclude Include="ImageRenderer.h">
       <Filter>Object\ImageRenderer</Filter>
     </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeMesh.h">
+      <Filter>Resource\Resource3D\Primitive\Deprecated</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerState.h">
+      <Filter>Resource\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="GBufferPass.h">
+      <Filter>DeferredRendering\RenderPasses\GBufferPass</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredBuffers.h">
+      <Filter>DeferredRendering\DeferredBuffers</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadBuffer.h">
+      <Filter>DeferredRendering\QuadBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredPass.h">
+      <Filter>DeferredRendering\RenderPasses\DeferredPass</Filter>
+    </ClInclude>
+    <ClInclude Include="BlitPass.h">
+      <Filter>DeferredRendering\RenderPasses\BlitPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxPass.h">
+      <Filter>DeferredRendering\RenderPasses\SkyboxPass</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugMeshPass.h">
+      <Filter>DeferredRendering\RenderPasses\DebugMeshPass</Filter>
+    </ClInclude>
+    <ClInclude Include="Line.h">
+      <Filter>Object\Line</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="LightAdapter.h">
+      <Filter>Object\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="ToneMapPass.h">
+      <Filter>DeferredRendering\RenderPasses\ToneMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SSAOPass.h">
+      <Filter>DeferredRendering\RenderPasses\SSAOPass</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMapPass.h">
+      <Filter>DeferredRendering\RenderPasses\ShadowMapPass</Filter>
+    </ClInclude>
+    <ClInclude Include="SpritePass.h">
+      <Filter>DeferredRendering\RenderPasses\SpritePass</Filter>
+    </ClInclude>
+    <ClInclude Include="OutlinePass.h">
+      <Filter>DeferredRendering\RenderPasses\OutlinePass</Filter>
+    </ClInclude>
+    <ClInclude Include="GeometryShader.h">
+      <Filter>Resource\Shader\GeometryShader</Filter>
+    </ClInclude>
+    <ClInclude Include="BillboardParticle.h">
+      <Filter>Object\Particle\Billboard</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePass.h">
+      <Filter>DeferredRendering\RenderPasses\ParticlePass</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Object\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticlePool.h">
+      <Filter>Object\Particle\ParticlePool</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Object\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardPass.h">
+      <Filter>DeferredRendering\RenderPasses\ForwardPass</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingVolumeHelper.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Builder">
@@ -237,9 +405,6 @@
     </Filter>
     <Filter Include="dllExporter">
       <UniqueIdentifier>{469f1d43-ecb9-4ad1-b5c5-b895bec72d42}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FBXLoader">
-      <UniqueIdentifier>{9e7db707-89b2-42b9-94c7-8b4977f88a36}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{7dcc5874-dd39-4cbf-8c16-a378066fa391}</UniqueIdentifier>
@@ -277,9 +442,6 @@
     <Filter Include="Resource\Interface">
       <UniqueIdentifier>{09e22f74-861b-465b-87d5-06f2a3723283}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Model">
-      <UniqueIdentifier>{586dfed4-01c4-4914-8839-59d9102b8d16}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Resource3D">
       <UniqueIdentifier>{0f5090f8-5e58-4fec-a487-5152d2dfacca}</UniqueIdentifier>
     </Filter>
@@ -289,20 +451,11 @@
     <Filter Include="Resource\Resource3D\Primitive">
       <UniqueIdentifier>{1be45435-87eb-4608-901a-d17ad8d542ac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource\Texture">
-      <UniqueIdentifier>{b426d68d-4899-470b-8822-54d1393565eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\Shader">
       <UniqueIdentifier>{dcfc1891-19ba-4656-930a-c318b65099f7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\HLSL">
       <UniqueIdentifier>{215b4f0b-7d91-4a0d-9303-f3dc430726f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Color">
-      <UniqueIdentifier>{68fef6da-5093-4b42-b063-173aaf7c8f7d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource\Shader\HLSL\Texture">
-      <UniqueIdentifier>{80cc8937-d3c0-4387-9237-e9b25aa161e4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource\Shader\Interface">
       <UniqueIdentifier>{7f875c8d-bce6-4837-919f-35ac117e4e09}</UniqueIdentifier>
@@ -355,5 +508,145 @@
     <Filter Include="Object\Cubemap">
       <UniqueIdentifier>{3e08331c-c291-4e77-87b4-6e4b8b73be12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{a0e0843e-87db-4207-b6b2-6ef6cbeb9a92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Resource3D\Primitive\Deprecated">
+      <UniqueIdentifier>{f4ba69ef-2cf5-47da-9cdc-4ffccc14b430}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\SamplerState">
+      <UniqueIdentifier>{d7b6e47f-d878-48ae-846c-3f969fd0dd9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Include">
+      <UniqueIdentifier>{30d25b20-4a36-4427-8418-c29a9081b387}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering">
+      <UniqueIdentifier>{a633a54d-e5e6-48d6-8777-515abda28ad0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\DeferredBuffers">
+      <UniqueIdentifier>{52c89a44-d55e-4772-bd4a-2ffc392686ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses">
+      <UniqueIdentifier>{d0b0fdc2-11bc-4709-a96e-819237152dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\BlitPass">
+      <UniqueIdentifier>{d47a6d75-f934-4319-91d2-fa2da18ca9a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\DeferredPass">
+      <UniqueIdentifier>{6a970d8f-0039-4675-a714-deb48e9e482f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\GBufferPass">
+      <UniqueIdentifier>{b732ccb3-77b3-4460-b825-b275f997baca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\SSAOPass">
+      <UniqueIdentifier>{5a191154-60fd-4586-b9e7-e593bee1daee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\QuadBuffer">
+      <UniqueIdentifier>{bf84c0e8-ad27-43da-8e9f-72f35429f3f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Quad">
+      <UniqueIdentifier>{f8f3c865-12a9-496e-92fb-de8ed8184ac8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Blit">
+      <UniqueIdentifier>{af0681c4-fccc-4e74-b680-bf064743ad4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\SpritePass">
+      <UniqueIdentifier>{2baf4854-637d-41df-b8aa-91c3b8bde7a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\SkyboxPass">
+      <UniqueIdentifier>{bfa3219e-18fc-4d99-9559-2e1d9e0ebe40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\DebugMeshPass">
+      <UniqueIdentifier>{7dc68242-c951-4d0e-be71-d43553753539}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Line">
+      <UniqueIdentifier>{fef4642c-22f2-447b-b01e-e62180ce51b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\IrradianceMap">
+      <UniqueIdentifier>{e56469f5-1ebe-4428-af53-7e3eeafcfaec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SpecularPreFilter">
+      <UniqueIdentifier>{e96f43f1-e783-4330-aaca-f7823fcd9b7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\IntegrateBRDF">
+      <UniqueIdentifier>{d10a3675-3d80-48f9-a61c-d45124868211}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\RectToCubeMap">
+      <UniqueIdentifier>{9588e615-68c0-401c-86d8-992554bcf5e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ToneMapPass">
+      <UniqueIdentifier>{a1c4f2fd-9601-46a4-bfc6-bdb7477c43ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\SSAO">
+      <UniqueIdentifier>{609197ae-927f-4bda-b671-7a4c68c7991b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ToneMapping">
+      <UniqueIdentifier>{1b00a9b2-7f5a-40f1-a1fb-05221e3907fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ShadowMapPass">
+      <UniqueIdentifier>{b2aef3ea-9f8d-43aa-aa30-ee77e710e2a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\ShadowMap">
+      <UniqueIdentifier>{86ff2d08-049d-45ef-9067-ebaf27727218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\OutlinePass">
+      <UniqueIdentifier>{154b15da-9c13-405c-8e04-537d5a386834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Outline">
+      <UniqueIdentifier>{2bf82f61-3088-497f-a437-6285e0724c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\GeometryShader">
+      <UniqueIdentifier>{6d310d2e-db01-44ec-b709-fa1ed4567547}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Billboard">
+      <UniqueIdentifier>{4760ce01-4cbd-402d-a9d4-70a17115984e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ParticlePass">
+      <UniqueIdentifier>{92fbb2e3-43d9-440e-94c9-2dfc4f4f7401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle">
+      <UniqueIdentifier>{cc412ae1-1605-4bc7-8249-4e9aaccd64dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle\Billboard">
+      <UniqueIdentifier>{85c54b1c-5cf4-4dcc-9a3a-e8a4c8ad4b4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Particle\ParticlePool">
+      <UniqueIdentifier>{efa6de55-2b1c-4dd8-ab1c-914388191068}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Particle">
+      <UniqueIdentifier>{94c2e166-e9b5-4cfd-9116-3f9445c5face}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\Forward">
+      <UniqueIdentifier>{c9118d53-19ff-4a72-8647-7694ba6581b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DeferredRendering\RenderPasses\ForwardPass">
+      <UniqueIdentifier>{fa17eb72-e773-473a-a0b8-f2625807947d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\HLSL\PostProcess">
+      <UniqueIdentifier>{6b6521f1-b7a7-491a-af8a-4af600272a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Shader\UI">
+      <UniqueIdentifier>{96068b70-ce97-4b53-b6f7-fb3d7d0919d7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sampler.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="Lighting.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="BRDF.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="Shading.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="ConstantBuffer.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
+    <None Include="CommonData.hlsli">
+      <Filter>Resource\Shader\HLSL\Include</Filter>
+    </None>
   </ItemGroup>
 </Project>

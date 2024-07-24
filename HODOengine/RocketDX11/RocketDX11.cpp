@@ -1,8 +1,7 @@
-#include <cassert>
+﻿#include <cassert>
+#include <windows.h>
 
 #include "RocketDX11.h"
-#include "Grid.h"
-#include "Axis.h"
 #include "CubeMesh.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
@@ -14,16 +13,32 @@
 
 #include "ResourceManager.h"
 #include "ObjectManager.h"
+#include "Light.h"
 
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
 #include "ImageRenderer.h"
 #include "LineRenderer.h"
-
 #include "Cubemap.h"
 
-#include "LightStruct.h"
+#include "DeferredBuffers.h"
+#include "QuadBuffer.h"
+#include "ShadowMapPass.h"
+#include "ForwardPass.h"
+#include "GBufferPass.h"
+#include "SSAOPass.h"
+#include "DeferredPass.h"
+#include "DebugMeshPass.h"
+#include "OutlinePass.h"
+#include "SkyboxPass.h"
+#include "ToneMapPass.h"
+#include "SpritePass.h"
+#include "ParticlePass.h"
+#include "BlitPass.h"
+
+#include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
+
 using namespace DirectX;
 
 namespace HDEngine
@@ -48,10 +63,8 @@ namespace RocketCore::Graphics
 	RocketDX11::RocketDX11()
 		: _hWnd(), _screenWidth(), _screenHeight(), _vSyncEnabled(),
 		_device(), _deviceContext(),
-		_featureLevel(),_m4xMsaaQuality(),
-		_swapChain(), _backBuffer(),
-		_renderTargetView(), _depthStencilBuffer(), _depthStencilView(),
-		_viewport(),
+		_featureLevel(), _m4xMsaaQuality(),
+		_swapChain(), _renderTargetView(), _viewport(),
 		_resourceManager(ResourceManager::Instance())
 	{
 
@@ -64,7 +77,6 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Initialize(void* hWnd, int screenWidth, int screenHeight)
 	{
-		// 매크로로 변경하려고 작업중
 		HRESULT hr = S_OK;
 
 		_hWnd = static_cast<HWND>(hWnd);
@@ -78,16 +90,6 @@ namespace RocketCore::Graphics
 		deviceBuilder.SetDeviceContext(_deviceContext.GetAddressOf());
 		HR(deviceBuilder.Build());
 
-		/// 아래 if문은 용책에서의 코드
-		/// 버전이 11_0이 아닐때 false를 리턴한다.
-		/// 내 코드에서는 11_1을 사용하는데 이래도 되는건가?!
-		/// 23.04.07 강석원 인재원
-	// 	if (_featureLevel != D3D_FEATURE_LEVEL_11_0)
-	// 	{
-	// 		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
-	// 		return false;
-	// 	}
-
 		/// 멀티 샘플링 품질레벨 체크
 		/// Direct11 에서는 항상 지원되므로, 반환된 품질 수준 값은 반드시 0보다 커야 한다.
 		/// 23.04.07 강석원 인재원
@@ -100,6 +102,8 @@ namespace RocketCore::Graphics
 		swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
 		swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
 		swapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		swapChainDesc.BufferDesc.Width = screenWidth;
+		swapChainDesc.BufferDesc.Height = screenHeight;
 		swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 		swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 		swapChainDesc.SampleDesc.Count = 4;      //multisampling setting	// 나는 4x를 사용하므로 4
@@ -112,13 +116,6 @@ namespace RocketCore::Graphics
 		//desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;	// MSDN 그대로 따라 친 것.
 		swapChainDesc.Flags = 0;
 
-		/// DXGIDevice로 DXGIAdapter를 만들고
-		/// DXGIAdapter로 DXGIFactory를 만들고
-		/// DXGIFactory로 SwapChain을 만든다!
-		/// 위의 swapchain 명세를 이용해 명세에 적힌대로 swapchain을 만드는 것!
-		/// 
-		/// 23.04.10 강석원 인재원
-		// Create the DXGI device object to use in other factories, such as Direct2D.
 		Microsoft::WRL::ComPtr<IDXGIDevice3> dxgiDevice;
 		_device.As(&dxgiDevice);
 
@@ -134,100 +131,125 @@ namespace RocketCore::Graphics
 
 			hr = factory->CreateSwapChain(
 				_device.Get(),
-				//_device.Get(),
 				&swapChainDesc,
 				&_swapChain
 			);
 		}
 
-		hr = _swapChain->GetBuffer(
-			0,
-			__uuidof(ID3D11Texture2D),
-			(void**)&_backBuffer);
-
-		hr = _device->CreateRenderTargetView(
-			_backBuffer.Get(),
-			nullptr,
-			_renderTargetView.GetAddressOf()
-		);
-
-		D3D11_TEXTURE2D_DESC backBufferDesc;
-
-		_backBuffer->GetDesc(&backBufferDesc);
-
-		CD3D11_TEXTURE2D_DESC depthStencilDesc(
-			DXGI_FORMAT_D24_UNORM_S8_UINT,
-			static_cast<UINT> (backBufferDesc.Width),
-			static_cast<UINT> (backBufferDesc.Height),
-			1, // This depth stencil view has only one texture.
-			1, // Use a single mipmap level.
-			D3D11_BIND_DEPTH_STENCIL
-		);
-
-		depthStencilDesc.SampleDesc.Count = 4;
-		depthStencilDesc.SampleDesc.Quality = _m4xMsaaQuality - 1;
-
-		hr = _device->CreateTexture2D(
-			&depthStencilDesc,
-			nullptr,
-			&_depthStencilBuffer
-		);
-
-		CD3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc(D3D11_DSV_DIMENSION_TEXTURE2D);
-
-		// 	hr = d3dDevice_->CreateDepthStencilView(
-		// 		depthStencilBuffer_.Get(),
-		// 		&depthStencilViewDesc,
-		// 		&depthStencilView_
-		// 	);
-
-		hr = _device->CreateDepthStencilView(
-			_depthStencilBuffer.Get(),
-			nullptr,
-			&_depthStencilView
-		);
-
-		/// RenderTargetView 와 DepthStencilBuffer를 출력 병합 단계(Output Merger Stage)에 바인딩
-		_deviceContext->OMSetRenderTargets(1, _renderTargetView.GetAddressOf(), _depthStencilView.Get());
+		ID3D11Texture2D* backBuffer;
+		hr = _swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer));
+		hr = _device->CreateRenderTargetView(backBuffer, nullptr, _renderTargetView.GetAddressOf());
 
 		ZeroMemory(&_viewport, sizeof(D3D11_VIEWPORT));
-		_viewport.Height = (float)backBufferDesc.Height;
-		_viewport.Width = (float)backBufferDesc.Width;
+		_viewport.Height = static_cast<float>(_screenHeight);
+		_viewport.Width = static_cast<float>(_screenWidth);
 		_viewport.MinDepth = 0;
 		_viewport.MaxDepth = 1;
-
-		_deviceContext->RSSetViewports(
-			1,
-			&_viewport
-		);
 
 		_resourceManager.Initialize(_device.Get(), _deviceContext.Get());
 
 		/// Load resources
-		_resourceManager.LoadFBXFile("Rob02.fbx");
-		_resourceManager.LoadTextureFile("sunsetcube1024.dds");
+		/// FBX파일보다 Texture 파일들이 먼저 로드되어야 한다.
+
+		/// tex
+
+		// load all static texture
+		const auto& SMtextures = GetEveryTextureFileNamesInFolder("Textures/StaticMesh");
+		for (int i = 0; i < SMtextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("StaticMesh/" + SMtextures[i]);
+		}
+
+		// load all crosshair textures
+		const auto& crosshairTextures = GetEveryTextureFileNamesInFolder("Textures/Crosshair");
+		for (int i = 0; i < crosshairTextures.size(); ++i)
+		{
+			_resourceManager.LoadUITextureFile("Crosshair/" + crosshairTextures[i]);
+		}
+
+		// load all particle texture
+		const auto& PCtextures = GetEveryTextureFileNamesInFolder("Textures/Particles");
+		for (int i = 0; i < PCtextures.size(); ++i)
+		{
+			_resourceManager.LoadTextureFile("Particles/" + PCtextures[i]);
+		}
+
+		// load all UI texture
+		const auto& UItextures = GetEveryTextureFileNamesInFolder("Textures/UI");
+		for (int i = 0; i < UItextures.size(); ++i)
+		{
+			_resourceManager.LoadUITextureFile("UI/" + UItextures[i]);
+		}
+
+		// load all skybox texture
+		const auto& SBtextures = GetEveryTextureFileNamesInFolder("Textures/Skybox");
+		for(int i = 0; i < SBtextures.size(); ++i)
+		{
+			_resourceManager.LoadCubeMapTextureFile("Skybox/" + SBtextures[i]);
+		}
+		//_resourceManager.LoadCubeMapTextureFile("sunsetcube1024.dds");
+		//_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear.dds");
+		//_resourceManager.LoadCubeMapTextureFile("Day Sun Peak Clear Gray.dds");
+
+		/// fbx
+
+		// load all static mesh
+		const auto& SMfiles = GetEveryMeshFileNamesInFolder("Models/SM");
+		for (int i = 0; i < SMfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("SM/" + SMfiles[i]);
+		}
+
+		// load all character mesh
+		const auto& TPfiles = GetEveryMeshFileNamesInFolder("Models/TP");
+		for (int i = 0; i < TPfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("TP/" + TPfiles[i]);
+		}
+		const auto& FPfiles = GetEveryMeshFileNamesInFolder("Models/FP");
+		for (int i = 0; i < FPfiles.size(); ++i)
+		{
+			_resourceManager.LoadFBXFile("FP/" + FPfiles[i]);
+		}
 
 		CreateDepthStencilStates();
-		SetLights();
+		
+		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(0.1, 0.1, 0.1, 1));
+		//LightManager::Instance().SetGlobalAmbient(XMFLOAT4(3.0f, 3.0f, 3.0f, 1.0f));
+		LightManager::Instance().SetGlobalAmbient(XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
-		/*_axis = new Axis();
-		_axis->Initialize(_device.Get());
+		_deferredBuffers = new DeferredBuffers(_device.Get(), _deviceContext.Get());
+		_quadBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
+		_stencilEnableBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
+		_toneMapBuffer = new QuadBuffer(_device.Get(), _deviceContext.Get());
+		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
+		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+		_stencilEnableBuffer->Initialize(_screenWidth, _screenHeight);
+		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
 
-		_grid = new Grid();
-		_grid->Initialize(_device.Get());*/
+		_shadowMapPass = new ShadowMapPass(_deferredBuffers);
+		_forwardPass = new ForwardPass(_deferredBuffers, _quadBuffer);
+		_GBufferPass = new GBufferPass(_deferredBuffers);
+		_SSAOPass = new SSAOPass(_deferredBuffers);
+		_deferredPass = new DeferredPass(_deferredBuffers, _quadBuffer);
+		_debugMeshPass = new DebugMeshPass(_deferredBuffers, _quadBuffer);
+		_outlinePass = new OutlinePass(_deferredBuffers, _quadBuffer, _stencilEnableBuffer);
+		_skyboxPass = new SkyboxPass(_deferredBuffers, _quadBuffer);
+		_toneMapPass = new ToneMapPass(_quadBuffer, _toneMapBuffer);
+		_spritePass = new SpritePass(_toneMapBuffer);
+		_particlePass = new ParticlePass(_deferredBuffers, _quadBuffer);
+		_blitPass = new BlitPass(_toneMapBuffer, _renderTargetView.Get());
+
+		Cubemap::Instance()._deferredBuffers = _deferredBuffers;
+		Cubemap::Instance().LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
+		Cubemap::Instance().SetEnvLightIntensity(1.0f);
 
 		/// DEBUG Obejct
 		HelperObject* grid = ObjectManager::Instance().CreateHelperObject();
-		grid->SetMesh("grid");
+		grid->LoadMesh("grid");
 		HelperObject* axis = ObjectManager::Instance().CreateHelperObject();
-		axis->SetMesh("axis");
+		axis->LoadMesh("axis");
 
-		/// CUBEMAP
-		_cubemap = new Cubemap();
-		_cubemap->LoadMesh("skySphere");
-		_cubemap->LoadCubeMapTexture("sunsetcube1024.dds");
-
-		_spriteBatch = new DirectX::SpriteBatch(_deviceContext.Get());
 		_lineBatch = new DirectX::PrimitiveBatch<DirectX::VertexPositionColor>(_deviceContext.Get());
 		_basicEffect = std::make_unique<DirectX::BasicEffect>(_device.Get());
 		_basicEffect->SetVertexColorEnabled(true);
@@ -242,92 +264,48 @@ namespace RocketCore::Graphics
 			shaderByteCode, byteCodeLength,
 			&_lineInputLayout));
 
-		/*SkinningMeshObject* test1 = ObjectManager::Instance().CreateSkinningMeshObject();
-		test1->LoadMesh("Rob02.fbx");
-		test1->LoadDiffuseMap("Rob02Yellow_AlbedoTransparency.png");
-		test1->LoadNormalMap("Rob02White_Normal.png");
-		test1->PlayAnimation(0, true);*/
 	}
 
-	void RocketDX11::BeginRender()
+	void RocketDX11::Finalize()
 	{
-		float color[4];
 
-		// Setup the color to clear the buffer to.
-		color[0] = 0.1f;	// r
-		color[1] = 0.1f;	// g
-		color[2] = 0.1f;	// b
-		color[3] = 0.1f;	// a
-		// Clear the back buffer.
-		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
-		// Clear the depth buffer.
-		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
-
-		return;
 	}
 
-	void RocketDX11::BeginRender(float r, float g, float b, float a)
+	void RocketDX11::OnResize(int screenWidth, int screenHeight)
 	{
-		float color[4];
+		_screenWidth = screenWidth;
+		_screenHeight = screenHeight;
 
-		// Setup the color to clear the buffer to.
-		color[0] = r;	// r
-		color[1] = g;	// g
-		color[2] = b;	// b
-		color[3] = a;	// a
-		// Clear the back buffer.
-		_deviceContext->ClearRenderTargetView(_renderTargetView.Get(), color);
-		// Clear the depth buffer.
-		_deviceContext->ClearDepthStencilView(_depthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0);
-		//d3dDeviceContext_->OMSetRenderTargets(1, renderTargetView_.GetAddressOf(), depthStencilView_.Get());
+		SetWindowPos(_hWnd, nullptr, 0, 0, screenWidth, screenHeight, SWP_NOMOVE | SWP_NOZORDER);
 
-		return;
-	}
+		// 투영 행렬 재계산
+		Camera::GetMainCamera()->SetAspect(static_cast<float>(_screenWidth / _screenHeight));
+		Camera::GetMainCamera()->UpdateProjectionMatrix();
 
-	void RocketDX11::RenderHelperObject()
-	{	
-		for (auto& helperObject : ObjectManager::Instance().GetHelperObjList())
-		{
-			helperObject->Render();
-		}
-	}
+		_renderTargetView.Reset();
 
-	void RocketDX11::RenderStaticMesh()
-	{
-		Camera* mainCam = Camera::GetMainCamera();
+		_swapChain->ResizeBuffers(0, _screenWidth, _screenHeight, DXGI_FORMAT_UNKNOWN, 0);
 
-		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
-		{
-			staticMeshObj->Render();
-		}
-	}
+		ID3D11Texture2D* backBuffer;
+		HR(_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer)));
+		HR(_device->CreateRenderTargetView(backBuffer, 0, _renderTargetView.GetAddressOf()));
+		backBuffer->Release();
 
-	void RocketDX11::RenderSkinningMesh()
-	{
-		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
-		{
-			skinningMeshObj->Render();
-		}
-	}
+		_deferredBuffers->Initialize(_screenWidth, _screenHeight);
+		_quadBuffer->Initialize(_screenWidth, _screenHeight);
+		_stencilEnableBuffer->Initialize(_screenWidth, _screenHeight);
+		_toneMapBuffer->Initialize(_screenWidth, _screenHeight);
+		_SSAOPass->CreateTexture(_screenWidth, _screenHeight);
 
-	void RocketDX11::RenderText()
-	{
-		_spriteBatch->Begin();
-		for (auto textRenderer : ObjectManager::Instance().GetTextList())
-		{
-			textRenderer->Render(_spriteBatch);
-		}
-		_spriteBatch->End();
-	}
+		// set the viewport transform
+		_viewport.TopLeftX = 0;
+		_viewport.TopLeftY = 0;
+		_viewport.Width = static_cast<float>(_screenWidth);
+		_viewport.Height = static_cast<float>(_screenHeight);
+		_viewport.MinDepth = 0.0f;
+		_viewport.MaxDepth = 1.0f;
 
-	void RocketDX11::RenderTexture()
-	{
-		// 이미지(UI)를 그리기 위한 함수
-		for (auto imageRenderer : ObjectManager::Instance().GetImageList())
-		{
-			imageRenderer->Render(_spriteBatch);
-		}		
+		//_deviceContext->RSSetViewports(1, &_viewport);
 	}
 
 	void RocketDX11::RenderLine()
@@ -363,13 +341,14 @@ namespace RocketCore::Graphics
 			// Present as fast as possible.
 			_swapChain->Present(0, 0);
 		}
-
 		return;
 	}
 
 	void RocketDX11::Update(float deltaTime)
 	{
 		Camera::GetMainCamera()->UpdateViewMatrix();
+		LightManager::Instance().UpdateViewProj();
+		Camera::GetMainCamera()->FrustumCulling();
 
 		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
 		{
@@ -379,28 +358,44 @@ namespace RocketCore::Graphics
 
 	void RocketDX11::Render()
 	{
-		BeginRender(0.0f, 0.0f, 0.0f, 1.0f);
+		SetDepthStencilState(_shadowmapDepthStencilState.Get());
+		_shadowMapPass->Render();
 
-		EnableZBuffering();
+		SetDepthStencilState(_depthStencilStateEnable.Get());
+		_GBufferPass->Render();
+		SetDepthStencilState(_depthStencilStateEnable.Get());
+		_SSAOPass->Render();
+		_deferredPass->Render();
+		_forwardPass->Render();
+		_outlinePass->Render();
 
-		RenderHelperObject();
-		RenderStaticMesh();
-		RenderSkinningMesh();
+#ifdef _DEBUG
+		static bool isDebugRender = false;
+		if (GetAsyncKeyState(VK_F12) & 0x8000)
+		{
+			isDebugRender = !isDebugRender;
+		}
+		if (isDebugRender)
+		{
+			_debugMeshPass->Render();
+			RenderLine();
+		}
+#endif
 
-		SetCubemapDSS();
-		_cubemap->Render();
+		SetDepthStencilState(_cubemapDepthStencilState.Get());
+		_skyboxPass->Render();
 
-		RenderText();
-		RenderTexture();
-		RenderLine();
+		SetDepthStencilState(_depthStencilStateDisable.Get());
+		_particlePass->Render();
+
+		SetDepthStencilState(_depthStencilStateDisable.Get());
+		_toneMapPass->Render();
+		_spritePass->Render();
+
+		_deviceContext->RSSetViewports(1, &_viewport);
+		_blitPass->Render();
+
 		EndRender();
-	}
-
-	void RocketDX11::Finalize()
-	{
-		//delete _grid;
-		//delete _axis;
-		delete _cubemap;
 	}
 
 	void RocketDX11::CreateDepthStencilStates()
@@ -412,22 +407,46 @@ namespace RocketCore::Graphics
 		enableDepthStencilDescription.DepthEnable = true;
 		enableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		enableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
-		enableDepthStencilDescription.StencilEnable = true;
-		enableDepthStencilDescription.StencilReadMask = 0xFF;
-		enableDepthStencilDescription.StencilWriteMask = 0xFF;
-		// Stencil operations if pixel is front-facing.
-		enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-		enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-		// Stencil operations if pixel is back-facing.
-		enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-		enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-		enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		enableDepthStencilDescription.StencilEnable = false;
+		//enableDepthStencilDescription.StencilReadMask = 0xFF;
+		//enableDepthStencilDescription.StencilWriteMask = 0xFF;
+		//// Stencil operations if pixel is front-facing.
+		//enableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
+		//enableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		//// Stencil operations if pixel is back-facing.
+		//enableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		//enableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 
 		// Create the depth stencil state for enabling Z buffering
-		_device->CreateDepthStencilState(&enableDepthStencilDescription, &_normalDepthStencilState);
+		_device->CreateDepthStencilState(&enableDepthStencilDescription, &_depthStencilStateEnable);
+
+		// Initialize the depth stencil states
+		D3D11_DEPTH_STENCIL_DESC disableDepthStencilDescription;
+		ZeroMemory(&disableDepthStencilDescription, sizeof(disableDepthStencilDescription));
+
+		disableDepthStencilDescription.DepthEnable = false;
+		disableDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		disableDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
+		disableDepthStencilDescription.StencilEnable = true;
+		disableDepthStencilDescription.StencilReadMask = 0xFF;
+		disableDepthStencilDescription.StencilWriteMask = 0xFF;
+		// Stencil operations if pixel is front-facing.
+		disableDepthStencilDescription.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+		disableDepthStencilDescription.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		// Stencil operations if pixel is back-facing.
+		disableDepthStencilDescription.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+		disableDepthStencilDescription.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+		disableDepthStencilDescription.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+		// Create the depth stencil state for disabling Z buffering
+		_device->CreateDepthStencilState(&disableDepthStencilDescription, &_depthStencilStateDisable);
 
 		// Initialize the depth stencil states
 		D3D11_DEPTH_STENCIL_DESC cubemapDepthStencilDescription;
@@ -452,49 +471,75 @@ namespace RocketCore::Graphics
 
 		// Create the depth stencil state for cube mapping
 		_device->CreateDepthStencilState(&cubemapDepthStencilDescription, &_cubemapDepthStencilState);
+
+		D3D11_DEPTH_STENCIL_DESC shadowDepthStencilDescription;
+		ZeroMemory(&shadowDepthStencilDescription, sizeof(shadowDepthStencilDescription));
+
+		shadowDepthStencilDescription.DepthEnable = true;
+		shadowDepthStencilDescription.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+		shadowDepthStencilDescription.DepthFunc = D3D11_COMPARISON_LESS;
+		shadowDepthStencilDescription.StencilEnable = false;
+
+		// Create the depth stencil state for enabling Z buffering
+		_device->CreateDepthStencilState(&shadowDepthStencilDescription, &_shadowmapDepthStencilState);
 	}
 
-	void RocketDX11::EnableZBuffering()
+	void RocketDX11::SetDepthStencilState(ID3D11DepthStencilState* dss)
 	{
-		_deviceContext->OMSetDepthStencilState(_normalDepthStencilState.Get(), 1);
+		_deviceContext->OMSetDepthStencilState(dss, 0);
 	}
 
-	void RocketDX11::SetCubemapDSS()
+	std::vector<std::string>& RocketDX11::GetEveryMeshFileNamesInFolder(const std::string filePath)
 	{
-		_deviceContext->OMSetDepthStencilState(_cubemapDepthStencilState.Get(), 1);
+		_fileNames.clear();
+
+		std::string searchPath = "Resources/" + filePath + "/*.*";
+		WIN32_FIND_DATAA fileData;
+		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &fileData);
+		if (hFind != INVALID_HANDLE_VALUE)
+		{
+			do
+			{
+				if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				{
+					std::string name = fileData.cFileName;
+					if (name.find("SM_") == 0 ||
+						name.find("SKM_") == 0)
+					{
+						_fileNames.push_back(fileData.cFileName);
+					}
+				}
+			} while (FindNextFileA(hFind, &fileData));
+			FindClose(hFind);
+		}
+
+		return _fileNames;
 	}
 
-	void RocketDX11::SetLights()
+	std::vector<std::string>& RocketDX11::GetEveryTextureFileNamesInFolder(const std::string filePath)
 	{
-		DirectionalLight* dirLight = new DirectionalLight();
-		dirLight->Color = XMFLOAT4{ 0.3f, 0.3f, 0.3f, 1.0f };
-		dirLight->Direction = XMFLOAT3{ 10.0f, -10.0f, 0.0f };
-		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetDirectionalLight("dirLight", *dirLight);
+		std::string searchPath = "Resources/" + filePath + "/*.*";
+		//if(searchPath.find_last_of("."))
+		WIN32_FIND_DATAA fileData;
+		HANDLE hFind = FindFirstFileA(searchPath.c_str(), &fileData);
+		if (hFind != INVALID_HANDLE_VALUE)
+		{
+			do
+			{
+				if (!(fileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+				{
+					std::string fileExtension = std::string(fileData.cFileName);
+					fileExtension = fileExtension.substr(fileExtension.find_last_of(".") + 1, fileExtension.length() - fileExtension.find_last_of("."));
+					if (fileExtension == "png" || fileExtension == "dds" || fileExtension == "fbx")
+					{
+						_fileNames.push_back(fileData.cFileName);
+					}
+				}
+			} while (FindNextFileA(hFind, &fileData));
+			FindClose(hFind);
+		}
 
-		PointLight pointLight[4];
-		pointLight[0].Color = XMFLOAT4{ 0.3f, 0.0f, 0.0f, 1.0f };
-		pointLight[0].Position = XMFLOAT4{ 5.0f, 5.0f, 0.0f, 1.0f };
-		pointLight[1].Color = XMFLOAT4{ 0.0f, 0.3f, 0.0f, 1.0f };
-		pointLight[1].Position = XMFLOAT4{ 0.0f, 3.0f, -5.0f, 1.0f };
-		pointLight[2].Color = XMFLOAT4{ 0.5f, 0.3f, 0.0f, 1.0f };
-		pointLight[2].Position = XMFLOAT4{ -1.0f, 0.0f, 0.0f, 1.0f };
-		pointLight[3].Color = XMFLOAT4{ 0.2f, 0.2f, 0.2f, 1.0f };
-		pointLight[3].Position = XMFLOAT4{ 0.0f, 3.0f, -10.0f, 1.0f };
-		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetPointLight("pointLight", pointLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetPointLight("pointLight", pointLight);
-
-		SpotLight spotLight[2];
-		spotLight[0].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
-		spotLight[0].Direction = XMFLOAT3{ 10.0f, -3.0f, 0.0f };
-		spotLight[0].Position = XMFLOAT4{ 20.0f, 10.0f, 0.0f, 1.0f };
-		spotLight[0].SpotPower = 1.0f;
-		spotLight[1].Color = XMFLOAT4{ 0.1f, 0.1f, 0.1f, 1.0f };
-		spotLight[1].Direction = XMFLOAT3{ -10.0f, 0.0f, -5.0f };
-		spotLight[1].Position = XMFLOAT4{ 10.0f, 20.0f, 5.0f, 1.0f };
-		spotLight[1].SpotPower = 1.0f;
-		ResourceManager::Instance().GetPixelShader("PixelShader.cso")->SetSpotLight("spotLight", spotLight);
-		ResourceManager::Instance().GetPixelShader("SkeletonPixelShader.cso")->SetSpotLight("spotLight", spotLight);
+		return _fileNames;
 	}
 
 }

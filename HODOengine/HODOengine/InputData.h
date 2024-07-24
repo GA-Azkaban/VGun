@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <dinput.h>
 
@@ -10,4 +10,5 @@
 #define MOUSE_RIGHT 1
 #define MOUSE_MIDDLE 2
 
-#define KEY_W DIK_W
+
+// 텍스트 입력용 매핑 테이블

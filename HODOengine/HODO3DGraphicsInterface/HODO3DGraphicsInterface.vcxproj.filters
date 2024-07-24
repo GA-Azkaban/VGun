@@ -47,6 +47,27 @@
     <Filter Include="Objects\LineRenderer">
       <UniqueIdentifier>{99552099-8929-4291-9915-0fdedb775323}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MathHeader">
+      <UniqueIdentifier>{3c71d896-f8be-4dc3-8a80-8080f218a8fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Primitive">
+      <UniqueIdentifier>{2a3c4158-ee49-439e-9648-a55b482c0086}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Renderable\ICubeMap">
+      <UniqueIdentifier>{70595cdf-0f97-461f-83a6-4700b1edc2ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{0cd91e06-de9d-4743-a4e7-368afe9cbf4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{b02baf03-ea33-4b33-8ca3-2c4eab4f9399}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Particle">
+      <UniqueIdentifier>{a7a8edbf-e147-4ac0-a5f6-9c00d8539a7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ParticleSystem">
+      <UniqueIdentifier>{5ef433ab-69ff-41fd-8302-32f05ef15182}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="I3DRenderer.h">
@@ -90,6 +111,30 @@
     </ClInclude>
     <ClInclude Include="ILineRenderer.h">
       <Filter>Objects\LineRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHeader.h">
+      <Filter>MathHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveHeader.h">
+      <Filter>Objects\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="ICubeMap.h">
+      <Filter>Objects\Renderable\ICubeMap</Filter>
+    </ClInclude>
+    <ClInclude Include="ILight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IParticle.h">
+      <Filter>Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystemRenderMode.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="IParticleSystem.h">
+      <Filter>ParticleSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

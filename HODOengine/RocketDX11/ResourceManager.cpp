@@ -1,6 +1,7 @@
-#include "ResourceManager.h"
+﻿#include "ResourceManager.h"
 #include "CubeMesh.h"
 #include "Mesh.h"
+#include "Material.h"
 #include "Model.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
@@ -11,74 +12,161 @@
 #include "WICTextureLoader.h"
 #include "GeometryGenerator.h"
 #include "AssimpMathConverter.h"
+#include "SamplerState.h"
+#include "ObjectManager.h"
+#include "../HODO3DGraphicsInterface/IMaterial.h"
 
-#define MODELS_DIRECTORY_NAME "../3DModels/"
+#define MODELS_DIRECTORY_NAME "Resources/Models/"
+#define TEXTURES_DIRECTORY_NAME "Resources/Textures/"
+#define CUBEMAPS_DIRECTORY_NAME "Resources/Textures/Skybox/"
 
 using namespace DirectX;
 using namespace DirectX::DX11;
 
 namespace RocketCore::Graphics
 {
-	ResourceManager::ResourceManager()
+	XMVECTOR forward[6] =
 	{
-		
+		{ 1, 0, 0, 0 },
+		{ -1, 0, 0, 0 },
+		{ 0, 1, 0, 0 },
+		{ 0, -1, 0, 0 },
+		{ 0, 0, 1, 0 },
+		{ 0, 0, -1, 0 },
+	};
+
+	XMVECTOR up[6] =
+	{
+		{ 0, 1, 0, 0 },
+		{ 0, 1, 0, 0 },
+		{ 0, 0, -1, 0 },
+		{ 0, 0, 1, 0 },
+		{ 0, 1, 0,  0 },
+		{ 0, 1, 0, 0 },
+	};
+
+	ResourceManager::ResourceManager()
+		: _fileInfoKeyName("")
+	{
+
 	}
 
 	void ResourceManager::Initialize(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
 	{
 		_device = device;
 		_deviceContext = deviceContext;
-		_cubeModel = new Model();
-		_cubeModel->AddMesh(new CubeMesh());
-		_cubeModel->Initialize(device);
-		_cubeModel->LoadTexture(device, L"../Resource/darkbrickdxt1.dds");
-
-		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"..\\Font\\NotoSansKR.spritefont");
+		 
+		_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/NotoSansKR.spritefont");
+		//_defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/KRAFTON_FontIncludeKR_10.spritefont");
 
 		LoadShaders();
-		CreateRenderStates();
+		CreateRasterizerStates();
 		CreateSamplerStates();
 		CreatePrimitiveMeshes();
+
+		HDEngine::MaterialDesc defaultParticleDesc;
+		defaultParticleDesc.materialName = "Default-ParticleSystem";
+		defaultParticleDesc.color = { 255, 0, 255, 255 };
+		ObjectManager::Instance().CreateMaterial(defaultParticleDesc);
 	}
 
-	void ResourceManager::LoadFBXFile(std::string fileName)
+	void ResourceManager::LoadFBXFile(std::string path)
 	{
-		UINT slashIndex = fileName.find_last_of("/\\");
+		// 로드하는 모든 FBX 파일들은 팀에서 정한 파일의 명명 규칙을 따라야 한다.
+		// 그 규칙에 맞는 파일들만 불러올 수 있도록 한다.
+		// Resources/Models/ 경로에 있는 폴더 경로를 통째로 넣어줘야 한다.
+		UINT slashIndex = path.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
-			_fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			_fileName = path.substr(slashIndex + 1, path.length() - slashIndex);
 		}
 		else
 		{
-			_fileName = fileName;
+			_fileName = path;
 		}
 
-		std::string path = std::string(MODELS_DIRECTORY_NAME) + _fileName;
+		// 확장자를 잘라낸다.
+		UINT dotIndex = _fileName.find_last_of(".");
+		_fileName = _fileName.substr(0, dotIndex);
+
+		// SKM_TP_X_Breathing.fbx 나 SKM_Player_Breathing.fbx 이나 
+		// SM_watch_tower.fbx 같은 파일명일 때
+		// 우선 SM인지 SKM인지 구분한다.
+		// SM이나 SKM이 없는 파일명이면 에러를 반환한다.
+		UINT firstBarIndex = _fileName.find_first_of("_");
+		if (firstBarIndex == std::string::npos)
+		{
+			MessageBox(NULL, L"Model file name error.", L"Error!", MB_ICONERROR | MB_OK);
+		}
+		std::string meshTypeStr = _fileName.substr(0, firstBarIndex);
+		_fileName = _fileName.substr(firstBarIndex + 1, _fileName.length() - firstBarIndex);
+		std::string animName = "";
+		if (meshTypeStr == "SM")
+		{
+			_fileInfoKeyName = _fileName;
+			_loadedFileInfo[_fileInfoKeyName].meshType = MeshType::STATIC;
+		}
+		else if (meshTypeStr == "SKM")
+		{
+			// TP_X_Breathing 이나 Player_Breathing 형태로 나옴
+			// 이 형태에서 첫번째 언더바를 기준으로 왼쪽 것이 파일명, 오른쪽 것이 애니메이션명
+			UINT firstBarIndex2 = _fileName.find_first_of("_");
+			if (firstBarIndex2 != std::string::npos)
+			{
+				_fileInfoKeyName = _fileName.substr(0, firstBarIndex2);
+				animName = _fileName.substr(firstBarIndex2 + 1, _fileName.length() - firstBarIndex2);
+			}
+			else // 언더바 없는 파일명
+			{
+				_fileInfoKeyName = _fileName;
+			}
+			_loadedFileInfo[_fileInfoKeyName].meshType = MeshType::SKINNING;
+		}
+		else
+		{
+			MessageBox(NULL, L"Model file name error.", L"Error!", MB_ICONERROR | MB_OK);
+		}
+
+		std::string filePath = std::string(MODELS_DIRECTORY_NAME) + path;
 
 		Assimp::Importer importer;
 
-		const aiScene* _scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded);
+		const aiScene* _scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_ConvertToLeftHanded | aiProcess_CalcTangentSpace);
 
-		if (_scene == nullptr || _scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || _scene->mRootNode == nullptr)
+		if (_scene == nullptr || _scene->mRootNode == nullptr)
 		{
 			MessageBox(NULL, L"Model file couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
 		}
 
-		ProcessNode(_scene->mRootNode, _scene);
-		LoadAnimation(_scene);
+		// SKM_ 으로 시작하는 파일명으로 받아온 FBX 파일은 메시랑 노드 한번만 로드한다.
+		// mesh 정보를 담고 있는 파일과 애니메이션 정보를 담고 있는 파일로 나뉜다.
+		// mesh 정보를 담고 있는 파일은 애니메이션 정보가 없고,
+		// 애니메이션 정보를 담고 있는 파일은 mesh 정보가 없다.
+		if (_scene->HasMeshes())
+		{
+			ProcessNode(_scene->mRootNode, _scene);
+		}
+		else
+		{
+			LoadAnimation(_scene, animName);
+		}
+		ProcessBoundingBox();
 	}
 
-	void ResourceManager::LoadTextureFile(std::string fileName)
+	void ResourceManager::LoadTextureFile(std::string path)
 	{
-		ID3D11ShaderResourceView* srv;
+		// 경로를 제외한 파일 이름만 들고 있는다. 확장자는 포함해서 들고 있는다.
+		std::string fileName = path;
 		UINT slashIndex = fileName.find_last_of("/\\");
 		if (slashIndex != std::string::npos)
 		{
 			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
 		}
-		std::string path = std::string(MODELS_DIRECTORY_NAME) + "Textures/" + fileName;
+		ID3D11ShaderResourceView* srv;
+		std::string filePath = std::string(TEXTURES_DIRECTORY_NAME) + path;
 		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
-		std::wstring pathWS = std::wstring(path.begin(), path.end());
+		std::wstring pathWS = std::wstring(filePath.begin(), filePath.end());
 
 		HRESULT hr = S_FALSE;
 
@@ -88,15 +176,180 @@ namespace RocketCore::Graphics
 		}
 		else
 		{
-			hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			//hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			hr = CreateWICTextureFromFileEx(_device.Get(), _deviceContext.Get(),
+				pathWS.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE,
+				0, 0, WIC_LOADER_IGNORE_SRGB | WIC_LOADER_MAKE_SQUARE, nullptr, &srv);
 		}
 
-		if (FAILED(hr))
+		/*if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
+		}*/
+
+		_loadedTextureFiles.insert(std::make_pair(fileName, srv));
+	}
+
+	void ResourceManager::LoadUITextureFile(std::string path)
+	{
+		// 경로를 제외한 파일 이름만 들고 있는다. 확장자는 포함해서 들고 있는다.
+		std::string fileName = path;
+		UINT slashIndex = fileName.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
+		{
+			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+		}
+		ID3D11ShaderResourceView* srv;
+		std::string filePath = std::string(TEXTURES_DIRECTORY_NAME) + path;
+		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
+		std::wstring pathWS = std::wstring(filePath.begin(), filePath.end());
+
+		HRESULT hr = S_FALSE;
+
+		if (extension == "dds")
+		{
+			hr = CreateDDSTextureFromFile(_device.Get(), pathWS.c_str(), nullptr, &srv);
+		}
+		else
+		{
+			//hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &srv);
+			hr = CreateWICTextureFromFileEx(_device.Get(), _deviceContext.Get(),
+				pathWS.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE,
+				0, 0, WIC_LOADER_IGNORE_SRGB, nullptr, &srv);
 		}
 
-		_loadedTextures.insert(std::make_pair(fileName, srv));
+		_loadedTextureFiles.insert(std::make_pair(fileName, srv));
+	}
+
+	void ResourceManager::LoadCubeMapTextureFile(std::string fileName)
+	{
+		UINT slashIndex = fileName.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
+		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			fileName = fileName.substr(slashIndex + 1, fileName.length() - slashIndex);
+		}
+		else
+		{
+			fileName = fileName;
+		}
+
+		EnvMapInfo envMapInfo;
+
+		ID3D11ShaderResourceView* skyboxTexture;
+		std::string path = std::string(CUBEMAPS_DIRECTORY_NAME) + fileName;
+		std::string extension = fileName.substr(fileName.find_last_of(".") + 1, fileName.length() - fileName.find_last_of("."));
+		std::wstring pathWS = std::wstring(path.begin(), path.end());
+
+		HRESULT hr = S_FALSE;
+
+		if (extension == "dds")
+		{
+			hr = CreateDDSTextureFromFile(_device.Get(), pathWS.c_str(), nullptr, &skyboxTexture);
+			envMapInfo.cubeMapTexture.shaderResourceView = skyboxTexture;
+		}
+		else
+		{
+			hr = CreateWICTextureFromFile(_device.Get(), _deviceContext.Get(), pathWS.c_str(), nullptr, &skyboxTexture);
+
+			D3D11_TEXTURE2D_DESC textureDesc;
+			ZeroMemory(&textureDesc, sizeof(textureDesc));
+			textureDesc.Width = cubeMapSize;
+			textureDesc.Height = cubeMapSize;
+			textureDesc.MipLevels = 1;
+			textureDesc.ArraySize = 6;
+			textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			textureDesc.SampleDesc.Count = 1;
+			textureDesc.Usage = D3D11_USAGE_DEFAULT;
+			textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+			textureDesc.CPUAccessFlags = 0;
+			textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+			HR(_device->CreateTexture2D(&textureDesc, nullptr, envMapInfo.cubeMapTexture.texture.GetAddressOf()));
+
+			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+			srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+			srvDesc.TextureCube.MostDetailedMip = 0;
+			srvDesc.TextureCube.MipLevels = 1;
+
+			HR(_device->CreateShaderResourceView(envMapInfo.cubeMapTexture.texture.Get(), &srvDesc, envMapInfo.cubeMapTexture.shaderResourceView.GetAddressOf()));
+
+			D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+			rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+			rtvDesc.Texture2DArray.MipSlice = 0;
+			rtvDesc.Texture2DArray.ArraySize = 1;
+			for (UINT i = 0; i < 6; ++i)
+			{
+				rtvDesc.Texture2DArray.FirstArraySlice = i;
+				ID3D11RenderTargetView* rtv;
+				HR(_device->CreateRenderTargetView(envMapInfo.cubeMapTexture.texture.Get(), &rtvDesc, &rtv));
+				envMapInfo.cubeMapTexture.renderTargetViews.push_back(rtv);
+			}
+
+			D3D11_VIEWPORT viewport{
+				.TopLeftX = 0.0f,
+				.TopLeftY = 0.0f,
+				.Width = cubeMapSize,
+				.Height = cubeMapSize,
+				.MinDepth = 0.0f,
+				.MaxDepth = 1.0f
+			};
+			_deviceContext->RSSetViewports(1, &viewport);
+
+			VertexShader* vs = GetVertexShader("CubeMapVertexShader.cso");
+			PixelShader* ps = GetPixelShader("RectToCubeMapPS.cso");
+
+			for (UINT i = 0; i < 6; ++i)
+			{
+				_deviceContext->OMSetRenderTargets(1, envMapInfo.cubeMapTexture.renderTargetViews[i].GetAddressOf(), nullptr);
+				XMVECTOR eyePos{ 0, 0, 0, 0 };
+				XMVECTOR lookAt = forward[i];
+				XMVECTOR upVec = up[i];
+				float nearZ = 0.0f;
+				float farZ = 10.0f;
+				float viewWidth = 2.0f;
+				float viewHeight = 2.0f;
+
+				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
+				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+				XMMATRIX viewProj = viewMatrix * projMatrix;
+
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
+				vs->CopyAllBufferData();
+				vs->SetShader();
+
+				ps->SetShaderResourceView("CubeMap", skyboxTexture);
+				ps->CopyAllBufferData();
+				ps->SetShader();
+
+				_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				Mesh* mesh = GetMeshes("skybox")[0];
+				mesh->BindBuffers();
+				mesh->Draw();
+
+				_deviceContext->Flush();
+			}
+
+			ID3D11ShaderResourceView* nullSRV = nullptr;
+			_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+			ID3D11RenderTargetView* nullRTV = nullptr;
+			_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+		}
+
+		/*if (FAILED(hr))
+		{
+			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
+		}*/
+
+		GenerateEnvMap(envMapInfo.envMapTexture, envMapInfo.cubeMapTexture.shaderResourceView.Get());
+		GenerateEnvPreFilter(envMapInfo.envPreFilterMapTexture, envMapInfo.cubeMapTexture.shaderResourceView.Get());
+		GenerateBrdfLUT(envMapInfo.brdfLUT);
+
+		_loadedEnvMaps.insert(std::make_pair(fileName, envMapInfo));
 	}
 
 	VertexShader* ResourceManager::GetVertexShader(const std::string& name)
@@ -119,14 +372,18 @@ namespace RocketCore::Graphics
 		return _pixelShaders[name];
 	}
 
+	RocketCore::Graphics::EnvMapInfo& ResourceManager::GetEnvMapInfo(const std::string& fileName)
+	{
+		if (_loadedEnvMaps.find(fileName) == _loadedEnvMaps.end())
+		{
+			LoadCubeMapTextureFile(fileName);
+		}
+		return _loadedEnvMaps[fileName];
+	}
+
 	DirectX::SpriteFont* ResourceManager::GetDefaultFont()
 	{
 		return _defaultFont;
-	}
-
-	Model* ResourceManager::GetCubeModel()
-	{
-		return _cubeModel;
 	}
 
 	ID3D11Device* ResourceManager::GetDevice()
@@ -141,41 +398,95 @@ namespace RocketCore::Graphics
 
 	std::vector<Mesh*>& ResourceManager::GetMeshes(const std::string& fileName)
 	{
-		if (_loadedFileInfo.find(fileName) == _loadedFileInfo.end())
+		std::string name = GetFileInfoKey(fileName);
+
+		// 엔진에 저장되어 있지 않다면 빈 벡터 반환
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
 		{
-			LoadFBXFile(fileName);
+			std::vector<Mesh*> ret;
+			return ret;
 		}
-		return _loadedFileInfo[fileName].loadedMeshes;
+		return iter->second.loadedMeshes;
+	}
+
+	std::vector<Material*>& ResourceManager::GetMaterials(const std::string& fileName)
+	{
+		std::string name = GetFileInfoKey(fileName);
+
+		// 엔진에 저장되어 있지 않다면 빈 벡터 반환
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
+		{
+			std::vector<Material*> ret;
+			return ret;
+		}
+		return iter->second.loadedMaterials;
 	}
 
 	ID3D11ShaderResourceView* ResourceManager::GetTexture(const std::string& fileName)
 	{
-		if (_loadedTextures.find(fileName) == _loadedTextures.end())
+		auto iter = _loadedTextureFiles.find(fileName);
+		if (iter == _loadedTextureFiles.end())
 		{
-			LoadTextureFile(fileName);
+			return nullptr;
 		}
-		return _loadedTextures[fileName];
+		return iter->second;
 	}
 
 	Node* ResourceManager::GetNode(const std::string& fileName)
 	{
-		if (_loadedFileInfo.find(fileName) == _loadedFileInfo.end())
+		std::string name = GetFileInfoKey(fileName);
+
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
 		{
-			LoadFBXFile(fileName);
+			return nullptr;
 		}
-		return _loadedFileInfo[fileName].node;
+		return iter->second.node;
 	}
 
-	std::unordered_map<std::string, Animation*>& ResourceManager::GetAnimations(const std::string& fileName)
+	std::unordered_map<std::string, Animation*> ResourceManager::GetAnimations(const std::string& fileName)
 	{
-		if (_loadedFileInfo.find(fileName) == _loadedFileInfo.end())
+		auto animIter = _loadedAnimations.find(fileName);
+		if (animIter == _loadedAnimations.end())
 		{
-			LoadFBXFile(fileName);
+			std::unordered_map<std::string, Animation*> emptyAnimList;
+			return emptyAnimList;
 		}
-		return _loadedFileInfo[fileName].loadedAnimation;
+		return animIter->second;
 	}
 
-	void ResourceManager::CreateRenderStates()
+	DirectX::BoundingBox ResourceManager::GetBoundingBox(const std::string& fileName)
+	{
+		std::string name = GetFileInfoKey(fileName);
+
+		// 엔진에 저장되어 있지 않다면
+		auto iter = _loadedFileInfo.find(name);
+		if (iter == _loadedFileInfo.end())
+		{
+			return DirectX::BoundingBox();
+		}
+		return iter->second.boundingBox;
+	}
+
+	Material* ResourceManager::GetLoadedMaterial(const std::string& materialName)
+	{
+		auto iter = _loadedMaterials.find(materialName);
+		if (iter == _loadedMaterials.end())
+		{
+			return nullptr;
+		}
+
+		return iter->second;
+	}
+
+	std::unordered_map<std::string, Material*>& ResourceManager::GetLoadedMaterials()
+	{
+		return _loadedMaterials;
+	}
+
+	void ResourceManager::CreateRasterizerStates()
 	{
 		// Render State 중 Rasterizer State
 		D3D11_RASTERIZER_DESC solidDesc;
@@ -186,7 +497,27 @@ namespace RocketCore::Graphics
 		solidDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* solid;
 		HR(_device->CreateRasterizerState(&solidDesc, &solid));
-		_renderStates.emplace_back(solid);
+		_rasterizerStates.emplace_back(solid);
+
+		D3D11_RASTERIZER_DESC cullFrontSolidDesc;
+		ZeroMemory(&cullFrontSolidDesc, sizeof(D3D11_RASTERIZER_DESC));
+		cullFrontSolidDesc.FillMode = D3D11_FILL_SOLID;
+		cullFrontSolidDesc.CullMode = D3D11_CULL_FRONT;
+		cullFrontSolidDesc.FrontCounterClockwise = false;
+		cullFrontSolidDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* cullFrontSolid;
+		HR(_device->CreateRasterizerState(&cullFrontSolidDesc, &cullFrontSolid));
+		_rasterizerStates.emplace_back(cullFrontSolid);
+
+		D3D11_RASTERIZER_DESC cullNoneSolidDesc;
+		ZeroMemory(&cullNoneSolidDesc, sizeof(D3D11_RASTERIZER_DESC));
+		cullNoneSolidDesc.FillMode = D3D11_FILL_SOLID;
+		cullNoneSolidDesc.CullMode = D3D11_CULL_NONE;
+		cullNoneSolidDesc.FrontCounterClockwise = false;
+		cullNoneSolidDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* cullNoneSolid;
+		HR(_device->CreateRasterizerState(&cullNoneSolidDesc, &cullNoneSolid));
+		_rasterizerStates.emplace_back(cullNoneSolid);
 
 		D3D11_RASTERIZER_DESC wireframeDesc;
 		ZeroMemory(&wireframeDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -196,7 +527,17 @@ namespace RocketCore::Graphics
 		wireframeDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* wireframe;
 		HR(_device->CreateRasterizerState(&wireframeDesc, &wireframe));
-		_renderStates.emplace_back(wireframe);
+		_rasterizerStates.emplace_back(wireframe);
+
+		D3D11_RASTERIZER_DESC shadowMapDesc;
+		ZeroMemory(&shadowMapDesc, sizeof(D3D11_RASTERIZER_DESC));
+		shadowMapDesc.FillMode = D3D11_FILL_SOLID;
+		shadowMapDesc.CullMode = D3D11_CULL_FRONT;
+		shadowMapDesc.FrontCounterClockwise = false;
+		shadowMapDesc.DepthClipEnable = true;
+		ID3D11RasterizerState* shadowMapRS;
+		HR(_device->CreateRasterizerState(&shadowMapDesc, &shadowMapRS));
+		_rasterizerStates.emplace_back(shadowMapRS);
 
 		D3D11_RASTERIZER_DESC cubeMapDesc;
 		ZeroMemory(&cubeMapDesc, sizeof(D3D11_RASTERIZER_DESC));
@@ -206,124 +547,365 @@ namespace RocketCore::Graphics
 		cubeMapDesc.DepthClipEnable = true;
 		ID3D11RasterizerState* cubemapRS;
 		HR(_device->CreateRasterizerState(&cubeMapDesc, &cubemapRS));
-		_renderStates.emplace_back(cubemapRS);
+		_rasterizerStates.emplace_back(cubemapRS);
 	}
 
-	ID3D11RasterizerState* ResourceManager::GetRenderState(eRenderState eState)
+	ID3D11RasterizerState* ResourceManager::GetRasterizerState(eRasterizerState eState)
 	{
-		return _renderStates[static_cast<int>(eState)];
+		return _rasterizerStates[static_cast<int>(eState)];
 	}
 
 	void ResourceManager::CreateSamplerStates()
 	{
-		D3D11_SAMPLER_DESC sampDesc;
-		ZeroMemory(&sampDesc, sizeof(sampDesc));
-		sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-		sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-		sampDesc.MinLOD = 0;
-		sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
-		ID3D11SamplerState* textureSampler;
-		_device->CreateSamplerState(&sampDesc, &textureSampler);
-		_samplerStates.push_back(textureSampler);
-	}
-
-	ID3D11SamplerState* ResourceManager::GetSamplerState(eSamplerState eState)
-	{
-		return _samplerStates[static_cast<int>(eState)];
+		_samplerState = new SamplerState();
+		_samplerState->CreateSamplerStates(_device.Get(), _deviceContext.Get());
 	}
 
 	void ResourceManager::LoadShaders()
 	{
-		VertexShader* colorVS = new VertexShader();
-		D3D11_INPUT_ELEMENT_DESC colorDesc[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-		};
-		colorVS->SetVertexDesc(colorDesc);
-		colorVS->Initialize(_device.Get(), "../x64/Debug/ColorVS.cso");
-		colorVS->SetVertexType(VertexType::COLOR_VERTEX);
-		_vertexShaders["ColorVS"] = colorVS;
-
-		PixelShader* colorPS = new PixelShader();
-		colorPS->Initialize(_device.Get(), "../x64/Debug/ColorPS.cso");
-		_pixelShaders["ColorPS"] = colorPS;
-
-		VertexShader* textureVS = new VertexShader();
-		D3D11_INPUT_ELEMENT_DESC textureDesc[] =
-		{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-		};
-		textureVS->SetVertexDesc(textureDesc);
-		textureVS->Initialize(_device.Get(), "../x64/Debug/TextureVS.cso");
-		textureVS->SetVertexType(VertexType::TEXTURE_VERTEX);
-		_vertexShaders["TextureVS"] = textureVS;
-
-		PixelShader* texturePS = new PixelShader();
-		texturePS->Initialize(_device.Get(), "../x64/Debug/TexturePS.cso");
-		_pixelShaders["TexturePS"] = texturePS;
-
 		VertexShader* vertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (vertexShader->LoadShaderFile(L"../Shaders/VertexShader.cso"))
+		if (vertexShader->LoadShaderFile(L"Resources/Shaders/VertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("VertexShader.cso", vertexShader));
 
 		PixelShader* pixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (pixelShader->LoadShaderFile(L"../Shaders/PixelShader.cso"))
+		if (pixelShader->LoadShaderFile(L"Resources/Shaders/PixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("PixelShader.cso", pixelShader));
 
 		VertexShader* skeletonVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (skeletonVertexShader->LoadShaderFile(L"../Shaders/SkeletonVertexShader.cso"))
+		if (skeletonVertexShader->LoadShaderFile(L"Resources/Shaders/SkeletonVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("SkeletonVertexShader.cso", skeletonVertexShader));
 
 		PixelShader* skeletonPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (skeletonPixelShader->LoadShaderFile(L"../Shaders/SkeletonPixelShader.cso"))
+		if (skeletonPixelShader->LoadShaderFile(L"Resources/Shaders/SkeletonPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("SkeletonPixelShader.cso", skeletonPixelShader));
 
+		VertexShader* staticMeshShadowMapVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (staticMeshShadowMapVS->LoadShaderFile(L"Resources/Shaders/StaticMeshShadowMapVS.cso"))
+			_vertexShaders.insert(std::make_pair("StaticMeshShadowMapVS.cso", staticMeshShadowMapVS));
+
+		VertexShader* skinningMeshShadowMapVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (skinningMeshShadowMapVS->LoadShaderFile(L"Resources/Shaders/SkinningMeshShadowMapVS.cso"))
+			_vertexShaders.insert(std::make_pair("SkinningMeshShadowMapVS.cso", skinningMeshShadowMapVS));
+
+		PixelShader* shadowMapPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (shadowMapPS->LoadShaderFile(L"Resources/Shaders/ShadowMapPS.cso"))
+			_pixelShaders.insert(std::make_pair("ShadowMapPS.cso", shadowMapPS));
+
 		VertexShader* debugVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (debugVertexShader->LoadShaderFile(L"../Shaders/DebugVertexShader.cso"))
+		if (debugVertexShader->LoadShaderFile(L"Resources/Shaders/DebugVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("DebugVertexShader.cso", debugVertexShader));
 
 		PixelShader* debugPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (debugPixelShader->LoadShaderFile(L"../Shaders/DebugPixelShader.cso"))
+		if (debugPixelShader->LoadShaderFile(L"Resources/Shaders/DebugPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("DebugPixelShader.cso", debugPixelShader));
 
+		PixelShader* outlineStecilColorPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (outlineStecilColorPS->LoadShaderFile(L"Resources/Shaders/Outline_StencilColorPS.cso"))
+			_pixelShaders.insert(std::make_pair("Outline_StencilColorPS.cso", outlineStecilColorPS));
+
+		PixelShader* outlineSobelDetectionPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (outlineSobelDetectionPS->LoadShaderFile(L"Resources/Shaders/Outline_SobelDetectionPS.cso"))
+			_pixelShaders.insert(std::make_pair("Outline_SobelDetectionPS.cso", outlineSobelDetectionPS));
+
+		PixelShader* outlineFullScreenQuadPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (outlineFullScreenQuadPS->LoadShaderFile(L"Resources/Shaders/Outline_FullScreenQuadPS.cso"))
+			_pixelShaders.insert(std::make_pair("Outline_FullScreenQuadPS.cso", outlineFullScreenQuadPS));
+
 		VertexShader* cubeMapVertexShader = new VertexShader(_device.Get(), _deviceContext.Get());
-		if (cubeMapVertexShader->LoadShaderFile(L"../Shaders/CubeMapVertexShader.cso"))
+		if (cubeMapVertexShader->LoadShaderFile(L"Resources/Shaders/CubeMapVertexShader.cso"))
 			_vertexShaders.insert(std::make_pair("CubeMapVertexShader.cso", cubeMapVertexShader));
 
 		PixelShader* cubeMapPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
-		if (cubeMapPixelShader->LoadShaderFile(L"../Shaders/CubeMapPixelShader.cso"))
+		if (cubeMapPixelShader->LoadShaderFile(L"Resources/Shaders/CubeMapPixelShader.cso"))
 			_pixelShaders.insert(std::make_pair("CubeMapPixelShader.cso", cubeMapPixelShader));
+
+		PixelShader* rectToCubeMapPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (rectToCubeMapPS->LoadShaderFile(L"Resources/Shaders/RectToCubeMapPS.cso"))
+			_pixelShaders.insert(std::make_pair("RectToCubeMapPS.cso", rectToCubeMapPS));
+
+		PixelShader* irradiancePS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (irradiancePS->LoadShaderFile(L"Resources/Shaders/IrradianceMapPS.cso"))
+			_pixelShaders.insert(std::make_pair("IrradianceMapPS.cso", irradiancePS));
+
+		PixelShader* specularPreFilterPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (specularPreFilterPS->LoadShaderFile(L"Resources/Shaders/SpecularPreFilterPS.cso"))
+			_pixelShaders.insert(std::make_pair("SpecularPreFilterPS.cso", specularPreFilterPS));
+
+		PixelShader* integrateBRDF = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (integrateBRDF->LoadShaderFile(L"Resources/Shaders/IntegrateBRDF.cso"))
+			_pixelShaders.insert(std::make_pair("IntegrateBRDF.cso", integrateBRDF));
+
+		VertexShader* fullScreenQuadVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (fullScreenQuadVS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadVS.cso"))
+			_vertexShaders.insert(std::make_pair("FullScreenQuadVS.cso", fullScreenQuadVS));
+
+		PixelShader* fullScreenQuadPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (fullScreenQuadPS->LoadShaderFile(L"Resources/Shaders/FullScreenQuadPS.cso"))
+			_pixelShaders.insert(std::make_pair("FullScreenQuadPS.cso", fullScreenQuadPS));
+
+		PixelShader* SSAOPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (SSAOPixelShader->LoadShaderFile(L"Resources/Shaders/SSAOPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("SSAOPixelShader.cso", SSAOPixelShader));
+
+		PixelShader* toneMapReinhardPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (toneMapReinhardPS->LoadShaderFile(L"Resources/Shaders/ToneMapReinhardPS.cso"))
+			_pixelShaders.insert(std::make_pair("ToneMapReinhardPS.cso", toneMapReinhardPS));
+
+		PixelShader* toneMapAcesPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (toneMapAcesPS->LoadShaderFile(L"Resources/Shaders/ToneMapAcesPS.cso"))
+			_pixelShaders.insert(std::make_pair("ToneMapAcesPS.cso", toneMapAcesPS));
+
+		PixelShader* blitPixelShader = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (blitPixelShader->LoadShaderFile(L"Resources/Shaders/BlitPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("BlitPixelShader.cso", blitPixelShader));
+
+		VertexShader* paricleVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (paricleVS->LoadShaderFile(L"Resources/Shaders/ParticleVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("ParticleVertexShader.cso", paricleVS));
+
+		PixelShader* pariclePS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (pariclePS->LoadShaderFile(L"Resources/Shaders/ParticlePixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("ParticlePixelShader.cso", pariclePS));
+
+		VertexShader* billboardVS = new VertexShader(_device.Get(), _deviceContext.Get());
+		if (billboardVS->LoadShaderFile(L"Resources/Shaders/BillboardVertexShader.cso"))
+			_vertexShaders.insert(std::make_pair("BillboardVertexShader.cso", billboardVS));
+
+		PixelShader* billboardPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (billboardPS->LoadShaderFile(L"Resources/Shaders/BillboardPixelShader.cso"))
+			_pixelShaders.insert(std::make_pair("BillboardPixelShader.cso", billboardPS));
+
+		PixelShader* forwardNoLightPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (forwardNoLightPS->LoadShaderFile(L"Resources/Shaders/ForwardPixelShaderNoLight.cso"))
+			_pixelShaders.insert(std::make_pair("ForwardPixelShaderNoLight.cso", forwardNoLightPS));
+
+		PixelShader* postProcessPS = new PixelShader(_device.Get(), _deviceContext.Get());
+		if (postProcessPS->LoadShaderFile(L"Resources/Shaders/PostProcessPS.cso"))
+			_pixelShaders.insert(std::make_pair("PostProcessPS.cso", postProcessPS));
 	}
 
 	void ResourceManager::CreatePrimitiveMeshes()
 	{
+		// 그리드 메쉬
 		GeometryGenerator::DebugMeshData gridMesh;
 		_geometryGen->CreateGrid(gridMesh);
-		GeometryGenerator::DebugMeshData axisMesh;
-		_geometryGen->CreateAxis(axisMesh);
 
 		Mesh* _gridMesh = new Mesh(&gridMesh.Vertices[0], gridMesh.Vertices.size(), &gridMesh.Indices[0], gridMesh.Indices.size());
 		_loadedFileInfo["grid"].loadedMeshes.push_back(_gridMesh);
+
+		// 축 메쉬
+		GeometryGenerator::DebugMeshData axisMesh;
+		_geometryGen->CreateAxis(axisMesh);
+
 		Mesh* _axisMesh = new Mesh(&axisMesh.Vertices[0], axisMesh.Vertices.size(), &axisMesh.Indices[0], axisMesh.Indices.size());
 		_loadedFileInfo["axis"].loadedMeshes.push_back(_axisMesh);
 
-		GeometryGenerator::MeshData skySphere;
-		_geometryGen->CreateSphere(5000, 30, 30, skySphere);
+		// 큐브맵 메쉬
+		GeometryGenerator::MeshData skybox;
+		_geometryGen->CreateSkybox(skybox);
 
-		Mesh* _sphere = new Mesh(&skySphere.Vertices[0], skySphere.Vertices.size(), &skySphere.Indices[0], skySphere.Indices.size());
-		_loadedFileInfo["skySphere"].loadedMeshes.push_back(_sphere);
+		Mesh* _skybox = new Mesh(&skybox.Vertices[0], skybox.Vertices.size(), &skybox.Indices[0], skybox.Indices.size(), true);
+		_loadedFileInfo["skybox"].loadedMeshes.push_back(_skybox);
+		HDEngine::MaterialDesc skyboxDesc;
+		skyboxDesc.materialName = "skybox";
+		Material* _skyboxMat = ObjectManager::Instance().CreateMaterial(skyboxDesc);
+		_skyboxMat->SetVertexShader(GetVertexShader("CubeMapVertexShader.cso"));
+		_skyboxMat->SetPixelShader(GetPixelShader("CubeMapPixelShader.cso"));
+		_loadedFileInfo["skybox"].loadedMaterials.push_back(_skyboxMat);
+
+		// 큐브 모양 메쉬
+		GeometryGenerator::MeshData cube;
+		_geometryGen->CreateBox(10, 2, 10, cube);
+		_loadedFileInfo["primitiveCube"].boundingBox = BoundingBox({ 0,0,0 }, { 5,1,5 });
+
+		Mesh* _cube = new Mesh(&cube.Vertices[0], cube.Vertices.size(), &cube.Indices[0], cube.Indices.size(), true);
+		_loadedFileInfo["primitiveCube"].loadedMeshes.push_back(_cube);
+		HDEngine::MaterialDesc cubeDesc;
+		cubeDesc.materialName = "cubeMaterial";
+		Material* _cubeMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_cubeMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_cubeMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveCube"].loadedMaterials.push_back(_cubeMaterial);
+
+		// 구체 모양 메쉬
+		GeometryGenerator::MeshData sphere;
+		_geometryGen->CreateSphere(2, 30, 30, sphere);
+
+		Mesh* _sphere = new Mesh(&sphere.Vertices[0], sphere.Vertices.size(), &sphere.Indices[0], sphere.Indices.size(), true);
+		_loadedFileInfo["primitiveSphere"].loadedMeshes.push_back(_sphere);
+		Material* _sphereMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_sphereMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_sphereMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveSphere"].loadedMaterials.push_back(_sphereMaterial);
+
+		// 쿼드 메쉬
+		GeometryGenerator::MeshData quad;
+		_geometryGen->CreateFullscreenQuad(quad);
+
+		Mesh* _quad = new Mesh(&quad.Vertices[0], quad.Vertices.size(), &quad.Indices[0], quad.Indices.size(), true);
+		_loadedFileInfo["primitiveQuad"].loadedMeshes.push_back(_quad);
+		Material* _quadMaterial = ObjectManager::Instance().CreateMaterial(cubeDesc);
+		_quadMaterial->SetVertexShader(GetVertexShader("VertexShader.cso"));
+		_quadMaterial->SetPixelShader(GetPixelShader("PixelShader.cso"));
+		_loadedFileInfo["primitiveQuad"].loadedMaterials.push_back(_quadMaterial);
+
+		// 디버그 메쉬
+		_cubePrimitive = GeometricPrimitive::CreateCube(_deviceContext.Get(), 1.0f, false);
+		_spherePrimitive = GeometricPrimitive::CreateSphere(_deviceContext.Get(), 1.0f, 8, false, false);
+		_cylinderPrimitive = GeometricPrimitive::CreateCylinder(_deviceContext.Get(), 2.0f, 1.0f, 8, false);
+
+		// Create capsule debug mesh
+		float radius = 0.5f; // 캡슐의 반지름
+		float height = 1.0f; // 캡슐의 높이
+		int stackCount = 5; // 수평 분할
+		int sliceCount = 10; // 수직 분할
+
+		DirectX::GeometricPrimitive::VertexCollection vertices;
+		DirectX::GeometricPrimitive::IndexCollection indices;
+
+		// 상단 반구 정점
+		vertices.push_back(DirectX::VertexPositionNormalTexture{
+		   DirectX::SimpleMath::Vector3{0.0f, radius + height * 0.5f, 0.0f},
+		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},DirectX::SimpleMath::Vector2{0.f,0.f} });
+
+		for (int i = 1; i <= stackCount; i++)
+		{
+			// 윗방향 벡터와의 각도
+			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
+
+			float xzsize = radius * sinf(upTheta);
+			float ysize = radius * cosf(upTheta);
+
+			for (int j = 0; j < sliceCount; j++)
+			{
+				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
+
+				float x = xzsize * sinf(zTheta);
+				float y = ysize + height * 0.5f;
+				float z = xzsize * cosf(zTheta);
+
+				vertices.push_back(DirectX::VertexPositionNormalTexture{
+				   DirectX::SimpleMath::Vector3{x, y, z},
+				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				   DirectX::SimpleMath::Vector2{0.f,0.f} }
+				   );
+			}
+		}
+
+		size_t middleIdx = vertices.size();
+
+		// 하단 반구 정점
+		for (int i = stackCount; i >= 1; i--)
+		{
+			// 윗방향 벡터와의 각도
+			float upTheta = DirectX::XM_PI * 0.5f * (i / static_cast<float>(stackCount));
+
+			float xzsize = radius * sinf(upTheta);
+			float ysize = radius * cosf(upTheta);
+
+			for (int j = 0; j < sliceCount; j++)
+			{
+				float zTheta = DirectX::XM_PI * 2.0f * (j / static_cast<float>(sliceCount));
+
+				float x = xzsize * sinf(zTheta);
+				float y = ysize + height * 0.5f;
+				float z = xzsize * cosf(zTheta);
+
+				vertices.push_back(DirectX::VertexPositionNormalTexture{
+				   DirectX::SimpleMath::Vector3(x, -y, z),
+				   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				   DirectX::SimpleMath::Vector2{0.f,0.f} }
+				   );
+			}
+		}
+
+		vertices.push_back(DirectX::VertexPositionNormalTexture{
+		   DirectX::SimpleMath::Vector3{0.0f, -(radius + height * 0.5f), 0.0f},
+		   DirectX::SimpleMath::Vector3{1.f, 1.f, 1.f},
+				 DirectX::SimpleMath::Vector2{0.f,0.f} }
+				 );
+
+		// 상단 반구 인덱스
+		for (int i = 0; i < sliceCount; i++) {
+			int a = 0;
+			int b = 1 + i;
+			int c = 1 + ((i + 1) % sliceCount);
+
+			indices.push_back(a);
+			indices.push_back(b);
+			indices.push_back(c);
+		}
+
+		for (int i = 1; i < stackCount; i++) {
+			for (int j = 0; j < sliceCount; j++) {
+				int a = 1 + (i - 1) * sliceCount + j;
+				int b = 1 + (i - 1) * sliceCount + ((j + 1) % sliceCount);
+				int c = 1 + i * sliceCount + j;
+				int d = 1 + i * sliceCount + ((j + 1) % sliceCount);
+
+				indices.push_back(a);
+				indices.push_back(c);
+				indices.push_back(d);
+
+				indices.push_back(a);
+				indices.push_back(d);
+				indices.push_back(b);
+			}
+		}
+
+		// 실린더 부분 인덱스
+		for (int i = 0; i < sliceCount; i++)
+		{
+			int a = middleIdx - sliceCount + i;
+			int b = middleIdx - sliceCount + ((i + 1) % sliceCount);
+			int c = middleIdx + i;
+			int d = middleIdx + ((i + 1) % sliceCount);
+
+			indices.push_back(a);
+			indices.push_back(c);
+			indices.push_back(d);
+
+			indices.push_back(a);
+			indices.push_back(d);
+			indices.push_back(b);
+		}
+
+		// 하단 반구 인덱스
+		for (int i = 1; i < stackCount; i++) {
+			for (int j = 0; j < sliceCount; j++) {
+				int a = middleIdx + (i - 1) * sliceCount + j;
+				int b = middleIdx + (i - 1) * sliceCount + ((j + 1) % sliceCount);
+				int c = middleIdx + i * sliceCount + j;
+				int d = middleIdx + i * sliceCount + ((j + 1) % sliceCount);
+
+				indices.push_back(a);
+				indices.push_back(c);
+				indices.push_back(d);
+
+				indices.push_back(a);
+				indices.push_back(d);
+				indices.push_back(b);
+			}
+		}
+
+		for (int i = 0; i < sliceCount; i++) {
+			int a = vertices.size() - 1;
+			int b = vertices.size() - 1 - sliceCount + i;
+			int c = vertices.size() - 1 - sliceCount + ((i + 1) % sliceCount);
+
+			indices.push_back(b);
+			indices.push_back(a);
+			indices.push_back(c);
+		}
+
+		_capsulePrimitive = GeometricPrimitive::CreateCustom(_deviceContext.Get(), vertices, indices);
 	}
 
 	void ResourceManager::ProcessNode(aiNode* node, const aiScene* scene)
 	{
 		for (UINT i = 0; i < node->mNumMeshes; ++i)
 		{
-			aiMesh* mesh = scene->mMeshes[i];
+			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			ProcessMesh(mesh, scene);
 		}
 
@@ -335,7 +917,8 @@ namespace RocketCore::Graphics
 
 	void ResourceManager::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
-		if (scene->mNumAnimations > 0)
+		//if (scene->mNumAnimations > 0)
+		if (_loadedFileInfo[_fileInfoKeyName].meshType == MeshType::SKINNING)
 		{
 			ProcessSkinningMesh(mesh, scene);
 		}
@@ -360,14 +943,49 @@ namespace RocketCore::Graphics
 			vertex.Position.y = mesh->mVertices[i].y;
 			vertex.Position.z = mesh->mVertices[i].z;
 
+			// get min max elements for calculate bounding box
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX > vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX = vertex.Position.x;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX < vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX = vertex.Position.x;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY > vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY = vertex.Position.y;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY < vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY = vertex.Position.y;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ > vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ = vertex.Position.z;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ < vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ = vertex.Position.z;
+			}
+
 			// process normal
 			vertex.Normal.x = mesh->mNormals[i].x;
 			vertex.Normal.y = mesh->mNormals[i].y;
 			vertex.Normal.z = mesh->mNormals[i].z;
 
 			// process uv
-			vertex.UV.x = mesh->mTextureCoords[0][i].x;
-			vertex.UV.y = mesh->mTextureCoords[0][i].y;
+			if (mesh->HasTextureCoords(0))
+			{
+				vertex.UV.x = mesh->mTextureCoords[0][i].x;
+				vertex.UV.y = mesh->mTextureCoords[0][i].y;
+			}
+
+			vertex.Tangent.x = mesh->mTangents[i].x;
+			vertex.Tangent.y = mesh->mTangents[i].y;
+			vertex.Tangent.z = mesh->mTangents[i].z;
 
 			vertices.push_back(vertex);
 		}
@@ -383,15 +1001,67 @@ namespace RocketCore::Graphics
 		}
 
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
+		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
+
+		int upAxis = 0;
+		scene->mMetaData->Get<int>("UpAxis", upAxis);
+		int upAxisSign = 1;
+		scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+		int frontAxis = 0;
+		scene->mMetaData->Get<int>("FrontAxis", frontAxis);
+		int frontAxisSign = 1;
+		scene->mMetaData->Get<int>("FrontAxisSign", frontAxisSign);
+		int coordAxis = 0;
+		scene->mMetaData->Get<int>("CoordAxis", coordAxis);
+		int coordAxisSign = 1;
+		scene->mMetaData->Get<int>("CoordAxisSign", coordAxisSign);
+
+		int originalUpAxis = 0;
+		scene->mMetaData->Get<int>("OriginalUpAxis", originalUpAxis);
+		int originalUpAxisSign = 1;
+		scene->mMetaData->Get<int>("OriginalUpAxisSign", originalUpAxisSign);
+
+		float unitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("UnitScaleFactor", unitScaleFactor);
+		float originalUnitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("OriginalUnitScaleFactor", originalUnitScaleFactor);
+
+		aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
+		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
+		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
+
+		//unitScaleFactor = 1.0f / unitScaleFactor;
+		unitScaleFactor = 0.01f;
+		upVec *= unitScaleFactor;
+		forwardVec *= unitScaleFactor;
+		rightVec *= unitScaleFactor;
+
+		aiMatrix4x4 mat(
+			rightVec.x, upVec.x, forwardVec.x, 0.0f,
+			rightVec.y, upVec.y, forwardVec.y, 0.0f,
+			rightVec.z, upVec.z, forwardVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
+
+		// create node hierarchy
+		Node* rootNode = new Node();
+		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
+		//rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(nullptr, rootNodeTM);
+		ReadNodeHierarchy(*rootNode, scene->mRootNode);
+
+		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
 
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+			HDEngine::MaterialDesc desc;
+			desc.materialName = mesh->mName.C_Str();
+			Material* newMaterial = ObjectManager::Instance().CreateMaterial(desc);
 			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
 			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
+				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
 			}
+			_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 		}
 	}
 
@@ -410,6 +1080,34 @@ namespace RocketCore::Graphics
 			vertex.Position.y = mesh->mVertices[i].y;
 			vertex.Position.z = mesh->mVertices[i].z;
 
+			// get min max elements for calculate bounding box
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX > vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minX = vertex.Position.x;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX < vertex.Position.x)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxX = vertex.Position.x;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY > vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minY = vertex.Position.y;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY < vertex.Position.y)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxY = vertex.Position.y;
+			}
+
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ > vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.minZ = vertex.Position.z;
+			}
+			if (_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ < vertex.Position.z)
+			{
+				_loadedFileInfo[_fileInfoKeyName].minMaxElements.maxZ = vertex.Position.z;
+			}
+
 			// process normal
 			vertex.Normal.x = mesh->mNormals[i].x;
 			vertex.Normal.y = mesh->mNormals[i].y;
@@ -418,6 +1116,10 @@ namespace RocketCore::Graphics
 			// process uv
 			vertex.UV.x = mesh->mTextureCoords[0][i].x;
 			vertex.UV.y = mesh->mTextureCoords[0][i].y;
+
+			vertex.Tangent.x = mesh->mTangents[i].x;
+			vertex.Tangent.y = mesh->mTangents[i].y;
+			vertex.Tangent.z = mesh->mTangents[i].z;
 
 			vertex.BoneIndices = DirectX::XMUINT4{ 0, 0, 0, 0 };
 			vertex.Weights = DirectX::XMFLOAT4{ 0.0f, 0.0f, 0.0f, 0.0f };
@@ -497,30 +1199,102 @@ namespace RocketCore::Graphics
 			}
 		}
 
-		// create node hierarchy
+		/*UINT metaDataCount = scene->mMetaData->mNumProperties;
+		for (UINT i = 0; i < metaDataCount; ++i)
+		{
+			const aiString* key;
+			const aiMetadataEntry* entry;
+			auto res = scene->mMetaData->Get(i, key, entry);
+			auto type = entry->mType;
+		}*/
+
+		int upAxis = 0;
+		scene->mMetaData->Get<int>("UpAxis", upAxis);
+		int upAxisSign = 1;
+		scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+		int frontAxis = 0;
+		scene->mMetaData->Get<int>("FrontAxis", frontAxis);
+		int frontAxisSign = 1;
+		scene->mMetaData->Get<int>("FrontAxisSign", frontAxisSign);
+		int coordAxis = 0;
+		scene->mMetaData->Get<int>("CoordAxis", coordAxis);
+		int coordAxisSign = 1;
+		scene->mMetaData->Get<int>("CoordAxisSign", coordAxisSign);
+
+		int originalUpAxis = 0;
+		scene->mMetaData->Get<int>("OriginalUpAxis", originalUpAxis);
+		int originalUpAxisSign = 1;
+		scene->mMetaData->Get<int>("OriginalUpAxisSign", originalUpAxisSign);
+
+		float unitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("UnitScaleFactor", unitScaleFactor);
+		float originalUnitScaleFactor = 1.0f;
+		scene->mMetaData->Get<float>("OriginalUnitScaleFactor", originalUnitScaleFactor);
+
+		aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
+		aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
+		aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
+
+		unitScaleFactor = 0.01f / unitScaleFactor;
+		//unitScaleFactor = 100.0f / unitScaleFactor;
+		upVec *= unitScaleFactor;
+		forwardVec *= unitScaleFactor;
+		rightVec *= unitScaleFactor;
+
+		aiMatrix4x4 mat(
+			rightVec.x, forwardVec.x, -upVec.x, 0.0f,
+			rightVec.y, forwardVec.y, -upVec.y, 0.0f,
+			rightVec.z, forwardVec.z, -upVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
+
+		/*aiMatrix4x4 mat(
+			rightVec.x, upVec.x, forwardVec.x, 0.0f,
+			rightVec.y, upVec.y, forwardVec.y, 0.0f,
+			rightVec.z, upVec.z, forwardVec.z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);*/
+
+			// create node hierarchy
 		Node* rootNode = new Node();
-		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation);
-		rootNode->rootNodeInvTransform = DirectX::XMMatrixInverse(0, rootNodeTM);
+		DirectX::XMMATRIX rootNodeTM = AIMatrix4x4ToXMMatrix(scene->mRootNode->mTransformation * mat);
+		rootNode->rootNodeInvTransform = DirectX::XMMatrixTranspose(rootNodeTM);
 		ReadNodeHierarchy(*rootNode, scene->mRootNode, boneInfo);
 
-		_loadedFileInfo[_fileName].node = rootNode;
+		_loadedFileInfo[_fileInfoKeyName].node = rootNode;
 
 		Mesh* newMesh = new Mesh(&vertices[0], vertices.size(), &indices[0], indices.size());
-		_loadedFileInfo[_fileName].loadedMeshes.push_back(newMesh);
+		_loadedFileInfo[_fileInfoKeyName].loadedMeshes.push_back(newMesh);
 
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			for (UINT i = 0; i <= aiTextureType_UNKNOWN; ++i)
+			HDEngine::MaterialDesc desc;
+			desc.materialName = mesh->mName.C_Str();
+			Material* newMaterial = ObjectManager::Instance().CreateMaterial(desc);
+			newMaterial->SetVertexShader(GetVertexShader("SkeletonVertexShader.cso"));
+			newMaterial->SetPixelShader(GetPixelShader("SkeletonPixelShader.cso"));
+			for (UINT i = 0; i <= 21; ++i)
 			{
-				LoadMaterialTextures(material, (aiTextureType)i, scene);
+				LoadMaterialTextures(material, (aiTextureType)i, scene, newMaterial);
 			}
+			std::string matName = mesh->mName.C_Str();
+			newMaterial->SetMaterialName(matName);
+			_loadedFileInfo[_fileInfoKeyName].loadedMaterials.push_back(newMaterial);
 		}
 	}
 
-	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene)
+	void ResourceManager::ProcessBoundingBox()
+	{
+		_loadedFileInfo[_fileInfoKeyName].boundingBox = BoundingVolumeHelper::BoundingBoxFromRange(_loadedFileInfo[_fileInfoKeyName].minMaxElements);
+	}
+
+	void ResourceManager::LoadMaterialTextures(aiMaterial* material, aiTextureType type, const aiScene* scene, Material* outMaterial)
 	{
 		UINT textureCount = material->GetTextureCount(type);
+		// 우선 첫번째 것만 가져오자.
+		if (textureCount > 0)
+		{
+			textureCount = 1;
+		}
 		for (UINT i = 0; i < textureCount; ++i)
 		{
 			aiString str;
@@ -528,18 +1302,83 @@ namespace RocketCore::Graphics
 			std::string s = std::string(str.C_Str());
 			std::string fileName = s.substr(s.find_last_of("/\\") + 1, s.length() - s.find_last_of("/\\"));
 			// Check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-			auto iter = _loadedTextures.find(fileName);
-			if (iter == _loadedTextures.end())
+			auto iter = _loadedTextureFiles.find(fileName);
+			if (iter == _loadedTextureFiles.end())
 			{
 				const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
 				if (embeddedTexture != nullptr)
 				{
 					ID3D11ShaderResourceView* texture = LoadEmbeddedTexture(embeddedTexture);
-					_loadedTextures.insert(std::make_pair(fileName, texture));
+					_loadedTextureFiles.insert(std::make_pair(fileName, texture));
 				}
 				else
 				{
 					LoadTextureFile(fileName);
+					switch (type)
+					{
+						case aiTextureType_NONE:
+							break;
+						case aiTextureType_DIFFUSE:
+						{
+							ID3D11ShaderResourceView* albedoTex = GetTexture(fileName);
+							outMaterial->SetAlbedoMap(albedoTex, fileName);
+							break;
+						}
+						case aiTextureType_SPECULAR:
+							break;
+						case aiTextureType_AMBIENT:
+							break;
+						case aiTextureType_EMISSIVE:
+							break;
+						case aiTextureType_HEIGHT:
+							break;
+						case aiTextureType_NORMALS:
+						{
+							ID3D11ShaderResourceView* normalTex = GetTexture(fileName);
+							outMaterial->SetNormalMap(normalTex, fileName);
+							break;
+						}
+						case aiTextureType_SHININESS:
+							break;
+						case aiTextureType_OPACITY:
+							break;
+						case aiTextureType_DISPLACEMENT:
+							break;
+						case aiTextureType_LIGHTMAP:
+							break;
+						case aiTextureType_REFLECTION:
+							break;
+						case aiTextureType_BASE_COLOR:
+							break;
+						case aiTextureType_NORMAL_CAMERA:
+							break;
+						case aiTextureType_EMISSION_COLOR:
+							break;
+						case aiTextureType_METALNESS:
+						{
+							ID3D11ShaderResourceView* metallicTex = GetTexture(fileName);
+							outMaterial->SetMetallicMap(metallicTex, fileName);
+							break;
+						}
+						case aiTextureType_DIFFUSE_ROUGHNESS:
+						{
+							ID3D11ShaderResourceView* roughnessTex = GetTexture(fileName);
+							outMaterial->SetRoughnessMap(roughnessTex, fileName);
+							break;
+						}
+						case aiTextureType_AMBIENT_OCCLUSION:
+							break;
+						case aiTextureType_SHEEN:
+							break;
+						case aiTextureType_CLEARCOAT:
+							break;
+						case aiTextureType_TRANSMISSION:
+							break;
+						case aiTextureType_UNKNOWN:
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}
@@ -586,12 +1425,25 @@ namespace RocketCore::Graphics
 		const size_t size = embeddedTexture->mWidth;
 
 		hr = CreateWICTextureFromMemory(_device.Get(), _deviceContext.Get(), reinterpret_cast<const unsigned char*>(embeddedTexture->pcData), size, nullptr, &texture);
-		if (FAILED(hr))
+		/*if (FAILED(hr))
 		{
 			MessageBox(nullptr, L"Texture couldn't be loaded", L"Error!", MB_ICONERROR | MB_OK);
-		}
+		}*/
 
 		return texture;
+	}
+
+	void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node)
+	{
+		nodeOutput.name = node->mName.C_Str();
+		nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
+
+		for (int i = 0; i < node->mNumChildren; ++i)
+		{
+			Node child;
+			ReadNodeHierarchy(child, node->mChildren[i]);
+			nodeOutput.children.push_back(child);
+		}
 	}
 
 	void ResourceManager::ReadNodeHierarchy(Node& nodeOutput, aiNode* node, std::unordered_map<std::string, std::pair<int, DirectX::XMMATRIX>>& boneInfo)
@@ -599,13 +1451,11 @@ namespace RocketCore::Graphics
 		if (boneInfo.find(node->mName.C_Str()) != boneInfo.end())
 		{
 			nodeOutput.name = node->mName.C_Str();
-			nodeOutput.nodeTransform = AIMatrix4x4ToXMMatrix(node->mTransformation);
-			//nodeOutput.nodeTransform = XMMatrixTranspose(nodeOutput.nodeTransform);
+			nodeOutput.nodeTransformOffset = AIMatrix4x4ToXMMatrix(node->mTransformation);
 
 			Bone bone;
 			bone.id = boneInfo[nodeOutput.name].first;
 			bone.offset = boneInfo[nodeOutput.name].second;
-			//bone.offset = XMMatrixTranspose(bone.offset);
 
 			nodeOutput.bone = bone;
 
@@ -625,15 +1475,31 @@ namespace RocketCore::Graphics
 		}
 	}
 
-	void ResourceManager::LoadAnimation(const aiScene* scene)
+	void ResourceManager::LoadAnimation(const aiScene* scene, std::string animationName)
 	{
 		// channel in animation contains aiNodeAnim (aiNodeAnim its transformation for bones)
-	// numChannels == numBones
+		// numChannels == numBones
 		UINT animCount = scene->mNumAnimations;
-		for (UINT i = 0; i < animCount; ++i)
+		//for (UINT i = 0; i < animCount; ++i)
+		if (animCount <= 0)
+		{
+			return;
+		}
+
+		for (UINT i = 0; i < 1; ++i)
 		{
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();
+			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
+			//newAnimation->animName = animationName;
+			if (animationName == "")
+			{
+				newAnimation->animName = animation->mName.C_Str();
+			}
+			else
+			{
+				newAnimation->animName = animationName;
+			}
 			newAnimation->duration = animation->mDuration;
 
 			if (scene->mAnimations[i]->mTicksPerSecond != 0.0)
@@ -670,7 +1536,328 @@ namespace RocketCore::Graphics
 
 				newAnimation->nodeAnimations.push_back(newNodeAnim);
 			}
-			_loadedFileInfo[_fileName].loadedAnimation.insert(std::make_pair(animation->mName.C_Str(), newAnimation));
+			_loadedAnimations[_fileInfoKeyName].insert(std::make_pair(newAnimation->animName, newAnimation));
 		}
 	}
+
+	void ResourceManager::GenerateEnvMap(Texture& envMapTexture, ID3D11ShaderResourceView* cubeMapSRV)
+	{
+		D3D11_TEXTURE2D_DESC textureDesc;
+		ZeroMemory(&textureDesc, sizeof(textureDesc));
+		textureDesc.Width = cubeMapSize;
+		textureDesc.Height = cubeMapSize;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 6;	// 6 faces
+		textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+		HR(_device->CreateTexture2D(&textureDesc, nullptr, envMapTexture.texture.GetAddressOf()));
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		srvDesc.TextureCube.MostDetailedMip = 0;
+		srvDesc.TextureCube.MipLevels = 1;
+
+		HR(_device->CreateShaderResourceView(envMapTexture.texture.Get(), &srvDesc, envMapTexture.shaderResourceView.GetAddressOf()));
+
+		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+		rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		rtvDesc.Texture2DArray.MipSlice = 0;
+		rtvDesc.Texture2DArray.ArraySize = 1;
+		for (UINT i = 0; i < 6; ++i)
+		{
+			rtvDesc.Texture2DArray.FirstArraySlice = i;
+			ID3D11RenderTargetView* rtv;
+			HR(_device->CreateRenderTargetView(envMapTexture.texture.Get(), &rtvDesc, &rtv));
+			envMapTexture.renderTargetViews.push_back(rtv);
+		}
+
+		D3D11_VIEWPORT viewport
+		{
+			.TopLeftX = 0.0f,
+			.TopLeftY = 0.0f,
+			.Width = cubeMapSize,
+			.Height = cubeMapSize,
+			.MinDepth = 0.0f,
+			.MaxDepth = 1.0f
+		};
+		_deviceContext->RSSetViewports(1, &viewport);
+
+		VertexShader* vs = GetVertexShader("CubeMapVertexShader.cso");
+		PixelShader* ps = GetPixelShader("IrradianceMapPS.cso");
+
+		for (int i = 0; i < 6; ++i)
+		{
+			_deviceContext->OMSetRenderTargets(1, envMapTexture.renderTargetViews[i].GetAddressOf(), nullptr);
+			XMVECTOR eyePos{ 0, 0, 0, 0 };
+			XMVECTOR lookAt = forward[i];
+			XMVECTOR upVec = up[i];
+			float nearZ = 0.0f;
+			float farZ = 10.0f;
+			float viewWidth = 2.0f;
+			float viewHeight = 2.0f;
+
+			XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
+			XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+			XMMATRIX viewProj = viewMatrix * projMatrix;
+
+			vs->SetMatrix4x4("world", XMMatrixIdentity());
+			vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
+			vs->CopyAllBufferData();
+			vs->SetShader();
+
+			ps->SetShaderResourceView("CubeMap", cubeMapSRV);
+			ps->CopyAllBufferData();
+			ps->SetShader();
+
+			_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+			Mesh* mesh = GetMeshes("skybox")[0];
+			mesh->BindBuffers();
+			mesh->Draw();
+
+			_deviceContext->Flush();
+		}
+
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+		ID3D11RenderTargetView* nullRTV = nullptr;
+		_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+	}
+
+	void ResourceManager::GenerateEnvPreFilter(Texture& envPreFilterMap, ID3D11ShaderResourceView* cubeMapSRV)
+	{
+		D3D11_TEXTURE2D_DESC textureDesc;
+		ZeroMemory(&textureDesc, sizeof(textureDesc));
+		textureDesc.Width = cubeMapSize;
+		textureDesc.Height = cubeMapSize;
+		textureDesc.MipLevels = 6;
+		textureDesc.ArraySize = 6;	// 6 faces
+		textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+		HR(_device->CreateTexture2D(&textureDesc, nullptr, envPreFilterMap.texture.GetAddressOf()));
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		srvDesc.TextureCube.MostDetailedMip = 0;
+		srvDesc.TextureCube.MipLevels = 1;
+
+		HR(_device->CreateShaderResourceView(envPreFilterMap.texture.Get(), &srvDesc, envPreFilterMap.shaderResourceView.GetAddressOf()));
+
+		for (UINT mipSlice = 0; mipSlice < 6; ++mipSlice)
+		{
+			D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+			rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+			rtvDesc.Texture2DArray.MipSlice = mipSlice;
+			rtvDesc.Texture2DArray.ArraySize = 1;
+			for (UINT i = 0; i < 6; ++i)
+			{
+				rtvDesc.Texture2DArray.FirstArraySlice = i;
+				ID3D11RenderTargetView* rtv;
+				HR(_device->CreateRenderTargetView(envPreFilterMap.texture.Get(), &rtvDesc, &rtv));
+				envPreFilterMap.renderTargetViews.push_back(rtv);
+			}
+		}
+
+		VertexShader* vs = GetVertexShader("CubeMapVertexShader.cso");
+		PixelShader* ps = GetPixelShader("SpecularPreFilterPS.cso");
+
+		int mapSize = cubeMapSize;
+
+		for (UINT i = 0; i < 6; ++i)
+		{
+			//float roughness = (float)i / 5.0;
+			float roughness = 1.0f;
+			ps->SetFloat("roughnessValue", roughness);
+			D3D11_VIEWPORT viewport
+			{
+				.TopLeftX = 0.0f,
+				.TopLeftY = 0.0f,
+				.Width = (float)mapSize,
+				.Height = (float)mapSize,
+				.MinDepth = 0.0f,
+				.MaxDepth = 1.0f
+			};
+			_deviceContext->RSSetViewports(1, &viewport);
+
+			for (UINT j = 0; j < 6; ++j)
+			{
+				_deviceContext->OMSetRenderTargets(1, envPreFilterMap.renderTargetViews[i * 6 + j].GetAddressOf(), nullptr);
+				XMVECTOR eyePos{ 0, 0, 0, 0 };
+				XMVECTOR lookAt = forward[j];
+				XMVECTOR upVec = up[j];
+				float nearZ = 0.0f;
+				float farZ = 10.0f;
+				float viewWidth = 2.0f;
+				float viewHeight = 2.0f;
+
+				XMMATRIX viewMatrix = XMMatrixLookAtLH(eyePos, lookAt, upVec);
+				XMMATRIX projMatrix = XMMatrixOrthographicLH(viewWidth, viewHeight, nearZ, farZ);
+				XMMATRIX viewProj = viewMatrix * projMatrix;
+				XMMATRIX transposeViewProj = (viewProj);
+
+				vs->SetMatrix4x4("world", XMMatrixIdentity());
+				vs->SetMatrix4x4("viewProjection", XMMatrixTranspose(viewProj));
+				vs->CopyAllBufferData();
+				vs->SetShader();
+
+				ps->SetShaderResourceView("CubeMap", cubeMapSRV);
+				ps->CopyAllBufferData();
+				ps->SetShader();
+
+				_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+				Mesh* mesh = GetMeshes("skybox")[0];
+				mesh->BindBuffers();
+				mesh->Draw();
+			}
+			mapSize /= 2;
+		}
+
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+		ID3D11RenderTargetView* nullRTV = nullptr;
+		_deviceContext->OMSetRenderTargets(1, &nullRTV, nullptr);
+	}
+
+	void ResourceManager::GenerateBrdfLUT(Texture& brdfLUT)
+	{
+		D3D11_TEXTURE2D_DESC textureDesc;
+		ZeroMemory(&textureDesc, sizeof(textureDesc));
+		textureDesc.Width = cubeMapSize;
+		textureDesc.Height = cubeMapSize;
+		textureDesc.MipLevels = 1;
+		textureDesc.ArraySize = 1;
+		textureDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+		textureDesc.CPUAccessFlags = 0;
+		textureDesc.MiscFlags = 0;
+
+		HR(_device->CreateTexture2D(&textureDesc, nullptr, &(brdfLUT.texture)));
+
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc;
+		srvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MostDetailedMip = 0;
+		srvDesc.Texture2D.MipLevels = 1;
+
+		HR(_device->CreateShaderResourceView(brdfLUT.texture.Get(), &srvDesc, brdfLUT.shaderResourceView.GetAddressOf()));
+
+		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc;
+		rtvDesc.Format = DXGI_FORMAT_R16G16B16A16_FLOAT;
+		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+		rtvDesc.Texture2D.MipSlice = 0;
+		ID3D11RenderTargetView* rtv;
+		HR(_device->CreateRenderTargetView(brdfLUT.texture.Get(), &rtvDesc, &rtv));
+		brdfLUT.renderTargetViews.push_back(rtv);
+
+		VertexShader* vs = GetVertexShader("FullScreenQuadVS.cso");
+		PixelShader* ps = GetPixelShader("IntegrateBRDF.cso");
+
+		D3D11_VIEWPORT viewport
+		{
+			.TopLeftX = 0.0f,
+			.TopLeftY = 0.0f,
+			.Width = cubeMapSize,
+			.Height = cubeMapSize,
+			.MinDepth = 0.0f,
+			.MaxDepth = 1.0f
+		};
+		_deviceContext->RSSetViewports(1, &viewport);
+		_deviceContext->OMSetRenderTargets(1, brdfLUT.renderTargetViews[0].GetAddressOf(), nullptr);
+
+		vs->SetShader();
+		ps->SetShader();
+
+		_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		_deviceContext->Draw(4, 0);
+
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		_deviceContext->PSSetShaderResources(0, 1, &nullSRV);
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCubePrimitive()
+	{
+		return _cubePrimitive.get();
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetSpherePrimitive()
+	{
+		return _spherePrimitive.get();
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCylinderPrimitive()
+	{
+		return _cylinderPrimitive.get();
+	}
+
+	DirectX::DX11::GeometricPrimitive* ResourceManager::GetCapsulePrimitive()
+	{
+		return _capsulePrimitive.get();
+	}
+
+	std::string ResourceManager::GetFileInfoKey(std::string fileName)
+	{
+		std::string name = fileName;
+
+		// 혹시 경로까지 넣었을 경우에 경로를 빼준다.
+		UINT slashIndex = name.find_last_of("/\\");
+		if (slashIndex != std::string::npos)
+		{
+			// 파일 경로를 잘라서 파일 이름 자체만 들고 있는다.
+			name = name.substr(slashIndex + 1, name.length() - slashIndex);
+		}
+
+		// 확장자를 자른다.
+		UINT dotIndex = name.find_last_of(".");
+		if (dotIndex != std::string::npos)
+		{
+			// SKM_TP_X_Breathing 이나 SM_Plane 과 같은 형태로 남긴다.
+			name = name.substr(0, dotIndex);
+		}
+
+		UINT firstBarIndex = name.find_first_of("_");
+		if (firstBarIndex == std::string::npos)
+		{
+			return name;
+		}
+
+		std::string meshType = name.substr(0, firstBarIndex);
+		name = name.substr(firstBarIndex + 1, name.length() - firstBarIndex);
+		if (meshType == "SM")
+		{
+			return name;
+		}
+
+		UINT firstBarIndex2 = name.find_first_of("_");
+		name = name.substr(0, firstBarIndex2);
+		return name;
+	}
+
+	DirectX::SpriteFont* ResourceManager::SetFont(const std::string& str)
+	{
+		std::wstring wstr(str.begin(), str.end());
+		const wchar_t* wchars = wstr.c_str();
+		DirectX::SpriteFont* font = new DirectX::SpriteFont(_device.Get(), wchars);
+
+		return font;
+
+		//return _defaultFont = new DirectX::SpriteFont(_device.Get(), L"Resources/Font/KRAFTON_FontIncludeKR_40.spritefont");
+	}
+
 }

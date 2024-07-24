@@ -1,27 +1,29 @@
-#pragma once
-#include <unordered_map>
+﻿#pragma once
+#include "PlayerInfo.h"
+#include "PlayerState.h"
 
-#include "../HODOengine/HODO_API.h"
-#include "Weapon.h"
-
-class GameManager : public HDData::Script
+class GameManager
 {
 public:
-	GameManager* GetInstance();
+	static GameManager* Instance();
 
 private:
-	static GameManager* instance;
+	static GameManager* _instance;
 	GameManager();
-	~GameManager() = default;
+	~GameManager();
 
 public:
-	void InitGame();
+	void Logout();
+	void QuitGame();
 
 public:
-	std::unordered_map<eWeaponType, const weaponData*> GetWeapons();
+	void SetMyInfo(PlayerInfo* info);
+	PlayerInfo* GetMyInfo();
+	void SetMyObject(HDData::GameObject* obj);
+	HDData::GameObject* GetMyObject();
 
 private:
-	void SetWeaponData();
-	std::unordered_map<eWeaponType, const weaponData*> _weapons;
+	HDData::GameObject* _myObj;
+	PlayerInfo* _myInfo;
 };
 

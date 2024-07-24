@@ -1,9 +1,5 @@
-#pragma once
-
-namespace HDMath
-{
-	struct HDFLOAT4X4;
-}
+﻿#pragma once
+#include "MathHeader.h"
 
 namespace HDEngine
 {
@@ -11,7 +7,14 @@ namespace HDEngine
 	{
 	public:
 		virtual ~IRenderable() {}
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) = 0;
+		virtual void SetWorldTM(const Matrix& worldTM) = 0;
 		virtual void SetActive(bool isActive) = 0;
+	};
+
+	enum class CullMode
+	{
+		NONE,
+		FRONT,
+		BACK
 	};
 }

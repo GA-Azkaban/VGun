@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <d3d11.h>
 #include <d3dcompiler.h>
@@ -14,12 +14,6 @@ namespace RocketCore::Graphics
 {
 	class IShader
 	{
-	public:
-		IShader() {};
-		virtual void Initialize(ID3D11Device* device, const std::string& path) = 0;
-
-
-		/// 2024.01.15 김민정
 	public:
 		IShader(ID3D11Device* device, ID3D11DeviceContext* context);
 		virtual ~IShader();
@@ -37,6 +31,7 @@ namespace RocketCore::Graphics
 		void SetData(std::string name, const void* data, unsigned int size);
 
 		void SetInt(std::string name, int data);
+		void SetInt2(std::string name, const DirectX::XMINT2& data);
 		void SetFloat(std::string name, float data);
 		void SetFloat2(std::string name, const float data[2]);
 		void SetFloat2(std::string name, const DirectX::XMFLOAT2& data);
@@ -44,10 +39,11 @@ namespace RocketCore::Graphics
 		void SetFloat3(std::string name, const DirectX::XMFLOAT3& data);
 		void SetFloat4(std::string name, const float data[4]);
 		void SetFloat4(std::string name, const DirectX::XMFLOAT4& data);
+		void SetFloat4Array(std::string name, const DirectX::XMFLOAT4* data, UINT size);
 		void SetMatrix4x4(std::string name, const float data[16]);
 		void SetMatrix4x4(std::string name, const DirectX::XMFLOAT4X4& data);
 		void SetMatrix4x4(std::string name, const DirectX::XMMATRIX& data);
-		void SetMatrix4x4Array(std::string name, const DirectX::XMMATRIX* data, UINT size);
+		void SetMatrix4x4Array(std::string name, const DirectX::XMMATRIX* data, UINT size = 1);
 
 		virtual void SetShaderResourceView(std::string name, ID3D11ShaderResourceView* srv) = 0;
 		virtual void SetSamplerState(std::string name, ID3D11SamplerState* samplerState) = 0;
@@ -85,4 +81,3 @@ namespace RocketCore::Graphics
 		std::unordered_map<std::string, SamplerInfo*> samplerTable;
 	};
 }
- 

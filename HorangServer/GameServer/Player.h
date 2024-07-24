@@ -1,10 +1,21 @@
 #pragma once
+
 class Player
 {
 public:
-	uint64 playerId = 0;
-	std::string name;
-	Protocol::PlayerType type = Protocol::PLAYER_TYPE_NONE;
-	GameSessionRef ownerGameSession; // cycle 문제 가능성
+	Player()
+		: uid(0), id(""), nickname(""), ownerGameSession(nullptr)
+	{}
+
+public:
+	void GetUserInfo(Protocol::UserInfo* userInfo);
+	void GetUserInfo(Protocol::UserInfo& userInfo);
+
+public:
+	int32 uid;
+	std::string id;
+	std::string nickname;
+
+	GameSessionRef ownerGameSession;
 };
 

@@ -1,19 +1,14 @@
-#include "InputSystem.h"
+﻿#include "InputSystem.h"
 #include <cassert>
+#include <ctype.h>
 
 
 namespace HDEngine
 {
-	void InputSystem::Initialize(HWND hWnd, HINSTANCE instance, int screenWidth, int screenHeight)
+	void InputSystem::Initialize(HWND hWnd, HINSTANCE instance)
 	{
 		_hWnd = hWnd;
 		_instance = instance;
-
-		_screenWidth = screenWidth;
-		_screenHeight = screenHeight;
-
-		_wheelMax = 500;
-		_wheelMin = -500;
 
 		StartDXInput();
 	}
@@ -44,30 +39,23 @@ namespace HDEngine
 			_mouseState[i] = _DImouseState.rgbButtons[i];
 		}
 
+		if (GetKeyDown(DIK_O))
+		{
+			_isFirstPersonPerspective = !_isFirstPersonPerspective;
+		}
+
+		if (_isFirstPersonPerspective)
+		{
+			RecursiveMouse();
+		}
+
 		// 스크린 좌표와 맞추기
 		GetCursorPos(&_mousePos);
 		ScreenToClient(_hWnd, &_mousePos);
 
 		_mousePos.x += _DImouseState.lX;
 		_mousePos.y += _DImouseState.lY;
-		_mouseWheel += _DImouseState.lZ;
-
-		// 윈도우 벗어나는 경우 좌표값 보정
-		if (_mousePos.x < 0 || _mousePos.x > _screenWidth || _mousePos.y < 0 || _mousePos.y > _screenHeight)
-		{
-			_mousePos.x = 0;
-			_mousePos.y = 0;
-		}
-
-		// 휠값 벗어나는 경우 보정
-		if (_mouseWheel > _wheelMax)
-		{
-			_mouseWheel = _wheelMax;
-		}
-		if (_mouseWheel < _wheelMin)
-		{
-			_mouseWheel = _wheelMin;
-		}
+		_mouseWheel += _DImouseState.lZ;			
 	}
 
 	void InputSystem::Finalize()
@@ -184,32 +172,12 @@ namespace HDEngine
 		return _mouseState[key] == false && _prevMouseState[key];
 	}
 
-	bool InputSystem::CheckMouseMove()
-	{
-		if (std::abs(_prevMousePos.x - _mousePos.x) > 2 ||
-			std::abs(_prevMousePos.y != _mousePos.y) > 2)
-		{
-			return true;
-		}
-	}
-
-	bool InputSystem::Check2DClicked(float x, float y, float width, float height)
-	{
-		if (_mousePos.x > x &&
-			_mousePos.y > y &&
-			_mousePos.x < x + width &&
-			_mousePos.y < y + height)
-		{
-			return true;
-		}
-	}
-
-	HDMath::HDFLOAT2 InputSystem::GetMousePosition()
+	Vector2 InputSystem::GetMousePosition()
 	{
 		float x = static_cast<float>(_mousePos.x);
 		float y = static_cast<float>(_mousePos.y);
 
-		return HDMath::HDFLOAT2{ x, y };
+		return Vector2{ x, y };
 	}
 
 	float InputSystem::GetMouseWheel()
@@ -232,19 +200,121 @@ namespace HDEngine
 		}
 
 		_prevMousePos = _mousePos;
+		_isKeyPressed = false;
+	}
+
+	void InputSystem::RecursiveMouse()
+	{
+		RECT clientRect;
+		GetClientRect(_hWnd, &clientRect);
+
+		/// when cursor get out of the window
+		if (_mousePos.x >= clientRect.right - 1)
+		{
+			_prevMousePos = { clientRect.left, _mousePos.y };
+			SetCursorPos(clientRect.left + 8, _mousePos.y);
+		}
+		else if (_mousePos.x <= clientRect.left + 1)
+		{
+			_prevMousePos = { clientRect.right, _mousePos.y };
+			SetCursorPos(clientRect.right - 8, _mousePos.y);
+		}
+
+		if (_mousePos.y >= clientRect.bottom - 1)
+		{
+			_prevMousePos = { _mousePos.x, clientRect.top};
+			SetCursorPos(_mousePos.x, clientRect.top + 10);
+		}
+		else if (_mousePos.y <= clientRect.top + 1)
+		{
+			_prevMousePos = { _mousePos.x, clientRect.bottom };
+			SetCursorPos(_mousePos.x, clientRect.bottom - 10);
+		}
+	}
+	void InputSystem::SetRecursiveMouseMode(bool isModeOn)
+	{
+		_isFirstPersonPerspective = isModeOn;
 	}
 }
 
-HDMath::HDFLOAT2 HDEngine::InputSystem::GetMouseDelta()
+Vector2 HDEngine::InputSystem::GetMouseDelta()
 {
 	_mouseDelta.x = _mousePos.x - _prevMousePos.x;
 	_mouseDelta.y = _mousePos.y - _prevMousePos.y;
 
-	HDMath::HDFLOAT2 result{};
+	Vector2 result{};
 	result.x = static_cast<float>((_mouseDelta.x + _prevMouseDelta.x) / 2.0f);
 	result.y = static_cast<float>((_mouseDelta.y + _prevMouseDelta.y) / 2.0f);
 
 	_prevMouseDelta = _mouseDelta;
 
 	return result;
+}
+
+char HDEngine::InputSystem::ConvertKeyToChar(BYTE key, bool isShiftPressed)
+{
+		switch (key)
+		{
+			case DIK_1: {return _isShiftPressed ? '!' : '1'; } break;
+			case DIK_2: {return _isShiftPressed ? '@' : '2'; } break;
+			case DIK_3: {return _isShiftPressed ? '#' : '3'; } break;
+			case DIK_4: {return _isShiftPressed ? '$' : '4'; } break;
+			case DIK_5: {return _isShiftPressed ? '%' : '5'; } break;
+			case DIK_6: {return _isShiftPressed ? '^' : '6'; } break;
+			case DIK_7: {return _isShiftPressed ? '&' : '7'; } break;
+			case DIK_8: {return _isShiftPressed ? '*' : '8'; } break;
+			case DIK_9: {return _isShiftPressed ? '(' : '9'; } break;
+			case DIK_0: {return _isShiftPressed ? ')' : '0'; } break;
+			case DIK_MINUS: {return _isShiftPressed ? '_' : '-'; } break;
+			case DIK_EQUALS: {return _isShiftPressed ? '+' : '='; } break;
+			case DIK_SEMICOLON: {return _isShiftPressed ? ':' : ';'; } break;
+			case DIK_APOSTROPHE: {return _isShiftPressed ? '"' : '\''; } break;
+			case DIK_GRAVE: {return _isShiftPressed ? '~' : '`'; } break;
+			case DIK_BACKSLASH: {return _isShiftPressed ? '|' : '\\'; } break;
+			case DIK_COMMA: {return _isShiftPressed ? '<' : ','; } break;
+			case DIK_PERIOD: {return _isShiftPressed ? '>' : '.'; } break;
+			case DIK_SLASH: {return _isShiftPressed ? '?' : '/'; } break;
+			case DIK_LBRACKET: {return _isShiftPressed ? '{' : '['; } break;
+			case DIK_RBRACKET: {return _isShiftPressed ? '}' : ']'; } break;
+			case DIK_Q : {return _isShiftPressed ? 'Q' : 'q'; } break;
+			case DIK_W: {return _isShiftPressed ? 'W' : 'w'; } break;
+			case DIK_E: {return _isShiftPressed ? 'E' : 'e'; } break;
+			case DIK_R: {return _isShiftPressed ? 'R' : 'r'; } break;
+			case DIK_T: {return _isShiftPressed ? 'T' : 't'; } break;
+			case DIK_Y: {return _isShiftPressed ? 'Y' : 'y'; } break;
+			case DIK_U: {return _isShiftPressed ? 'U' : 'u'; } break;
+			case DIK_I: {return _isShiftPressed ? 'I' : 'i'; } break;
+			case DIK_O: {return _isShiftPressed ? 'O' : 'o'; } break;
+			case DIK_P: {return _isShiftPressed ? 'P' : 'p'; } break;
+			case DIK_A: {return _isShiftPressed ? 'A' : 'a'; } break;
+			case DIK_S: {return _isShiftPressed ? 'S' : 's'; } break;
+			case DIK_D: {return _isShiftPressed ? 'D' : 'd'; } break;
+			case DIK_F: {return _isShiftPressed ? 'F' : 'f'; } break;
+			case DIK_G: {return _isShiftPressed ? 'G' : 'g'; } break;
+			case DIK_H: {return _isShiftPressed ? 'H' : 'h'; } break;
+			case DIK_J: {return _isShiftPressed ? 'J' : 'j'; } break;
+			case DIK_K: {return _isShiftPressed ? 'K' : 'k'; } break;
+			case DIK_L: {return _isShiftPressed ? 'L' : 'l'; } break;
+			case DIK_Z: {return _isShiftPressed ? 'Z' : 'z'; } break;
+			case DIK_X: {return _isShiftPressed ? 'X' : 'x'; } break;
+			case DIK_C: {return _isShiftPressed ? 'C' : 'c'; } break;
+			case DIK_V: {return _isShiftPressed ? 'V' : 'v'; } break;
+			case DIK_B: {return _isShiftPressed ? 'B' : 'b'; } break;
+			case DIK_N: {return _isShiftPressed ? 'N' : 'n'; } break;
+			case DIK_M: {return _isShiftPressed ? 'M' : 'm'; } break;
+			default:
+			{
+				return '?';
+			}
+			break;
+		}
+}
+
+char HDEngine::InputSystem::GetInputText(BYTE key)
+{
+	// shift 키 여부
+	_isShiftPressed = (_keyState[DIK_LSHIFT] & 0x80) || (_keyState[DIK_RSHIFT] & 0x80);
+
+	return ConvertKeyToChar(key, _isShiftPressed);
+
 }

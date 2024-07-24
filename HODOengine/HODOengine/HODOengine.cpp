@@ -1,4 +1,4 @@
-// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
+﻿// HODOengine.cpp : 애플리케이션에 대한 진입점을 정의합니다.
 //
 
 #include <windows.h>
@@ -18,13 +18,15 @@
 #include "EventSystem.h"
 #include "SoundSystem.h"
 #include "UISystem.h"
+#include "TweenSystem.h"
 
+#include "MaterialLoader.h"
 #include "DLL_Loader.h"
 
 #ifdef _DEBUG
-#define GRAPHICSDLL_PATH (L"..\\x64\\Debug\\RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
+#define GRAPHICSDLL_PATH (L"RocketDX11.dll") // (".\\my\\Path\\"#filename) ".\\my\\Path\\filename"
 #else
-#define GRAPHICSDLL_PATH (L"../x64/Release/RocketDX11.dll")
+#define GRAPHICSDLL_PATH (L"RocketDX11.dll")
 #endif // _DEBUG
 
 HODOengine* HODOengine::_instance = nullptr;
@@ -53,7 +55,9 @@ HODOengine::HODOengine()
 	_graphicsObjFactory(HDEngine::GraphicsObjFactory::Instance()),
 	_eventSystem(HDEngine::EventSystem::Instance()),
 	_soundSystem(HDEngine::SoundSystem::Instance()),
-	_uiSystem(HDEngine::UISystem::Instance())
+	_uiSystem(HDEngine::UISystem::Instance()),
+	_materialLoader(HDEngine::MaterialLoader::Instance()),
+	_tweenSystem(HDEngine::TweenSystem::Instance())
 {
 	
 }
@@ -85,9 +89,14 @@ void HODOengine::Initialize()
 	_graphicsObjFactory.Initialize(_dllLoader->GetDLLHandle());
 	_renderSystem.Initialize(_hWnd, _dllLoader->GetDLLHandle(), _screenWidth, _screenHeight);
 	_timeSystem.Initialize();
-	_inputSystem.Initialize(_hWnd, ins, _screenWidth, _screenHeight);
+	_inputSystem.Initialize(_hWnd, ins);
 	_physicsSystem.Initialize();
 	_uiSystem.Initialize();
+	_materialLoader.LoadMaterialData("materialData.json");
+
+	//RECT rect;
+	//GetClientRect(_hWnd, &rect);
+	//ClipCursor(&rect);
 }
 
 void HODOengine::Loop()
@@ -129,32 +138,49 @@ HWND HODOengine::GetHWND()
 }
 
 
+void HODOengine::Quit()
+{
+	Finalize();
+	DestroyWindow(_hWnd);
+}
+
+void HODOengine::ShowWindowCursor(bool show)
+{
+	ShowCursor(show);
+}
+
 void HODOengine::Run()
 {
 	_timeSystem.Update();
-
 	_objectSystem.FlushDestroyObjectList();
 
 	_inputSystem.Update();
 	_debugSystem.Update();
 	_uiSystem.Update();
 
+
+
 	_objectSystem.UpdateCurrentSceneObjects();
 	_soundSystem.Update();
 
 	_objectSystem.LateUpdateCurrentSceneObjects();
 
+	// physicsUpdate, temporary location
+	_physicsSystem.Update();
+
 	// draw
 	_renderSystem.Update(_timeSystem.GetDeltaTime());
 	_renderSystem.DrawProcess();
 
-	// physicsUpdate, temporary location
-	//HDEngine::PhysicsSystem::Instance().Update();
 
 	_eventSystem.InvokeEvent();
+	_objectSystem.UpdateDisableList();
+	_objectSystem.UpdateEnableList();
 
+	_physicsSystem.Flush();
 	// refresh input for next frame
 	_inputSystem.Flush();
+	_tweenSystem.Update();
 }
 
 ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
@@ -168,7 +194,8 @@ ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = hInstance;
-    wcex.hIcon = NULL;
+	//wcex.hIcon = "..//Resources//Textures//UI//gameLogo.png";
+	wcex.hIcon = NULL;
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
     wcex.lpszMenuName = NULL;
@@ -180,22 +207,47 @@ ATOM HODOengine::WindowRegisterClass(HINSTANCE hInstance)
 
 BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 {
-	_hWnd = CreateWindowW(_appName, _appName, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	DEVMODE dmSettings;									// Device Mode variable - Needed to change modes
+	memset(&dmSettings, 0, sizeof(dmSettings));			// Makes Sure Memory's Cleared
+
+	// Get the current display settings.  This function fills our the settings.
+	if (!EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &dmSettings))
+	{
+		// Display error message if we couldn't get display settings
+		MessageBox(NULL, L"Could Not Enum Display Settings", L"Error", MB_OK);
+		return FALSE;
+	}
+
+	_screenWidth = 2560;
+	_screenHeight = 1440;
+	//_screenWidth = 1920;
+	//_screenHeight = 1080;
+	dmSettings.dmPelsWidth = _screenWidth;
+	dmSettings.dmPelsHeight = _screenHeight;
+	dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+
+	// This function actually changes the screen to full screen
+	// CDS_FULLSCREEN Gets Rid Of Start Bar.
+	// We always want to get a result from this function to check if we failed
+	int result = ChangeDisplaySettings(&dmSettings, CDS_FULLSCREEN);
+	dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+	// Check if we didn't receive a good return message From the function
+	if (result != DISP_CHANGE_SUCCESSFUL)
+	{
+		// Display the error message and quit the program
+		MessageBox(NULL, L"Display Mode Not Compatible", L"Error", MB_OK);
+		PostQuitMessage(0);
+	}
+	
+	_hWnd = CreateWindowW(_appName, _appName, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+		0, 0, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 
 	if (!_hWnd)
 	{
 		return FALSE;
 	}
 
-	RECT rect;
-
-	GetClientRect(_hWnd, &rect);
-
-	_screenWidth = rect.right - rect.left;
-	_screenHeight = rect.bottom - rect.top;
-
-	ShowWindow(_hWnd, SW_SHOWNORMAL);
+	ShowWindow(_hWnd, SW_SHOWMAXIMIZED);
 	UpdateWindow(_hWnd);
 
 	return TRUE;

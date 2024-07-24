@@ -1,6 +1,8 @@
-#pragma once
+﻿#pragma once
 #include "IMaterial.h"
-#include <vector>
+#include <unordered_map>
+
+class Node;
 
 namespace HDEngine
 {
@@ -8,11 +10,6 @@ namespace HDEngine
 	{
 	public:
 		virtual ~IResourceManager() {};
-		virtual void LoadFile(const char* filePath) const = 0;
-		virtual void UnloadResource() const = 0;
-
-		virtual IMaterial* CreateMaterial(MaterialDesc& materialDesc) const = 0;
-
-		virtual std::vector<std::string> GetMeshKeys() const = 0;
+		virtual Node* GetNode(const std::string& fileName) = 0;
 	};
 }

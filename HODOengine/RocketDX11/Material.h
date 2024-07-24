@@ -1,39 +1,91 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
-#include "VertexShader.h"
-#include "PixelShader.h"
+#include <wrl.h>
 #include <string>
 #include <vector>
+#include <DirectXMath.h>
+#include "../HODO3DGraphicsInterface/IMaterial.h"
 using namespace Microsoft::WRL;
-
-class VertexShader;
-class PixelShader;
 
 namespace RocketCore::Graphics
 {
-	class Material
+	class VertexShader;
+	class PixelShader;
+
+	class Material : public HDEngine::IMaterial
 	{
 	public:
-		Material(VertexShader* vertexShader, PixelShader* pixelShader);
-		~Material();
-		ID3D11ShaderResourceView* GetTextureSRV();
-		ID3D11ShaderResourceView* GetNormalMapSRV();
-		ID3D11SamplerState* GetSamplerState();
-		VertexShader* GetVertexShader();
-		PixelShader* GetPixelShader();
+		friend class ObjectManager;
+		virtual ~Material();
 
-		void SetVertexShader(VertexShader* vertexShader) { m_vertexShader = vertexShader; };
-		void SetPixelShader(PixelShader* pixelShader) { m_pixelShader = pixelShader; };
-		void SetTextureSRV(ID3D11ShaderResourceView* textureSRV) { m_materialSRV = textureSRV; }
-		void SetNormalTexture(ID3D11ShaderResourceView* normalTex) { m_materialNormal = normalTex; }
-		void SetSamplerState(ID3D11SamplerState* sampler) { m_materialSampler = sampler; }
+		virtual void SetMaterialName(const std::string& materialName);
+		virtual void SetColor(UINT r, UINT g, UINT b, UINT a);
+		virtual void LoadAlbedoTexture(const std::string& fileName);
+		virtual void LoadNormalTexture(const std::string& fileName);
+		virtual void LoadARMTexture(const std::string& fileName);
+		virtual void LoadMetallicTexture(const std::string& fileName);
+		virtual void LoadRoughnessTexture(const std::string& fileName);
+		virtual void LoadMaskTexture(const std::string& fileName);
+		virtual void SetMetallicValue(float value);
+		virtual void SetRoughnessValue(float value);
+
+		virtual const std::string& GetMaterialName() const;
+		virtual const DirectX::XMINT4& GetColor() const;
+		virtual const DirectX::XMFLOAT4& GetColorFloat4() const;
+		virtual const std::string& GetAlbedoTextureName() const;
+		virtual const std::string& GetNormalTextureName() const;
+		virtual const std::string& GetARMTextureName() const;
+		virtual const std::string& GetMetallicTextureName() const;
+		virtual const std::string& GetRoughnessTextureName() const;
+		virtual const std::string& GetMaskTextureName() const;
+		virtual float GetMetallicValue() const;
+		virtual float GetRoughnessValue() const;
+
+		ID3D11ShaderResourceView* GetAlbedoMap();
+		ID3D11ShaderResourceView* GetNormalMap();
+		ID3D11ShaderResourceView* GetRoughnessMap();
+		ID3D11ShaderResourceView* GetMetallicMap();
+		ID3D11ShaderResourceView* GetOcclusionRoughnessMetalMap();
+		ID3D11ShaderResourceView* GetMaskMap();
+
+		void SetAlbedoMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+		void SetNormalMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+		void SetOcclusionRoughnessMetalMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+		void SetRoughnessMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+		void SetMetallicMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+		void SetMaskMap(ID3D11ShaderResourceView* srv, const std::string& fileName);
+
+		VertexShader* GetVertexShader() const;
+		PixelShader* GetPixelShader() const;
+
+		void SetVertexShader(VertexShader* vertexShader);
+		void SetPixelShader(PixelShader* pixelShader);
 
 	private:
-		VertexShader* m_vertexShader;
-		PixelShader* m_pixelShader;
-		ComPtr<ID3D11ShaderResourceView> m_materialSRV;
-		ComPtr<ID3D11ShaderResourceView> m_materialNormal;
-		ComPtr<ID3D11SamplerState> m_materialSampler;
+		Material(const HDEngine::MaterialDesc& materialDesc);
+
+	private:
+		std::string _materialName;
+		DirectX::XMINT4 _color;
+		DirectX::XMFLOAT4 _colorFloat4;
+		std::string _albedo;
+		std::string _normalMap;
+		std::string _occlusionRoughMatel;
+		std::string _metallic;
+		std::string _roughness;
+		std::string _mask;
+		float _metallicValue;
+		float _roughnessValue;
+
+		VertexShader* _vertexShader;
+		PixelShader* _pixelShader;
+
+		ComPtr<ID3D11ShaderResourceView> _materialAlbedo;
+		ComPtr<ID3D11ShaderResourceView> _materialNormal;
+		ComPtr<ID3D11ShaderResourceView> _materialARM;
+		ComPtr<ID3D11ShaderResourceView> _materialMetallic;
+		ComPtr<ID3D11ShaderResourceView> _materialRoughness;
+		ComPtr<ID3D11ShaderResourceView> _materialMask;
 	};
 }
 

@@ -5,6 +5,7 @@
 #include "ThreadManager.h"
 #include "BufferReader.h"
 #include "ServerPacketHandler.h"
+#include <fstream>
 
 using namespace std::chrono_literals;
 
@@ -44,15 +45,41 @@ int main()
 {
 	ServerPacketHandler::Init();
 
+	int count = 64 * 4;
 
-	int count = 64*4;
+	Horang::ClientServiceRef service;
 
-	Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
-		Horang::NetAddress(L"127.0.0.1", 7777),
-		Horang::MakeShared<Horang::IocpCore>(),
-		Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
-		1
-	);
+	std::wifstream ipAddressFile("serverIP.txt");
+	std::wstring ipAddressStr = L"";
+	if (ipAddressFile.is_open())
+	{
+		std::getline(ipAddressFile, ipAddressStr);
+
+		service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(ipAddressStr, 7776),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
+			1
+		);
+	}
+	else
+	{
+		service = Horang::MakeShared<Horang::ClientService>(
+			Horang::NetAddress(L"172.16.1.13", 7776),
+			Horang::MakeShared<Horang::IocpCore>(),
+			Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
+			1
+		);
+	}
+
+	ipAddressFile.close();
+
+	//Horang::ClientServiceRef service = Horang::MakeShared<Horang::ClientService>(
+	//	Horang::NetAddress(L"172.16.1.13", 7777),
+	//	Horang::MakeShared<Horang::IocpCore>(),
+	//	Horang::MakeShared<ServerSession>, // TODO : SessionManager 등
+	//	1
+	//);
 
 	ASSERT_CRASH(service->Start());
 
@@ -72,25 +99,80 @@ int main()
 	std::this_thread::sleep_for(1s);
 
 	{
-		Protocol::C_SIGNUP signUpPkt;
+		Protocol::C_AUTOLOGIN packet;
 
-		signUpPkt.set_id("test1");
-		signUpPkt.set_password("test1");
-		signUpPkt.set_nickname("test1");
-
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signUpPkt);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
 		service->BroadCast(sendBuffer);
 	}
 
+	while (true)
 	{
-		Protocol::C_SIGNIN signInPkt;
+		int menu = 0;
+		std::cout << "1. Room List" << std::endl;
+		std::cout << "2. Enter Room" << std::endl;
+		std::cout << "3. Create Room" << std::endl;
+		std::cout << " Select : ";
+		std::cin >> menu;
 
-		signInPkt.set_id("test1");
-		signInPkt.set_password("test1");
+		::system("cls");
+		if (menu == 1)
+		{
+			Protocol::C_ROOM_LIST_REQUEST packet;
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(signInPkt);
-		service->BroadCast(sendBuffer);
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+			service->BroadCast(sendBuffer);
+		}
+		else if (menu == 2)
+		{
+			Protocol::C_ROOM_ENTER packet;
+			std::string roomCode = "";
+			std::string password = "";
+
+			std::cout << "Room Code : ";
+			std::cin >> roomCode;
+			std::cout << "Password : ";
+			std::cin >> password;
+
+			packet.set_roomcode(roomCode);
+			packet.set_password(password);
+
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+			service->BroadCast(sendBuffer);
+		}
+		else if (menu == 3)
+		{
+
+		}
+		::system("pause");
+		::system("cls");
+
 	}
+
+	/*while (true)
+	{
+		Protocol::C_PLAY_UPDATE packet;
+		auto playerData = packet.mutable_playerdata();
+		auto transform = playerData->mutable_transform();
+		Protocol::Vector3 pos;
+		pos.set_x(1);
+		pos.set_y(2);
+		pos.set_z(3);
+		Protocol::Quaternion rot;
+		rot.set_x(4);
+		rot.set_y(5);
+		rot.set_z(6);
+		rot.set_w(7);
+
+		transform->mutable_vector3()->CopyFrom(pos);
+		transform->mutable_quaternion()->CopyFrom(rot);
+
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(packet);
+		service->BroadCast(sendBuffer);
+
+		::system("pause");
+	}*/
+
+
 
 	/*Protocol::C_CHAT chatPkt;
 	chatPkt.set_msg(u8"Hello World");
@@ -101,7 +183,7 @@ int main()
 
 		this_thread::sleep_for(1s);
 	}*/
-	
+
 
 	/*for (int32 i = 0; i < 4; i++)
 	{

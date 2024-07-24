@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 #include "dllExporter.h"
+#include "PhysicsCollision.h"
 #include <string>
 
 /// <summary>
@@ -39,23 +40,27 @@ namespace HDData
 
 		// 충돌 관련
 		// 충돌체들이 서로 충돌을 시작할 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionEnter() {};
+		virtual void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count) {};
 		// 충돌체들이 서로 충돌하고 있는 상태일 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionStay() {};
+		virtual void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count) {};
 		// 충돌체들의 충돌이 끝나고 서로 떨어져나갈 때 호출되는 콜백 함수입니다.
-		virtual void OnCollisionExit() {};
+		virtual void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count) {};
+		// Triggers
+		virtual void OnTriggerEnter(Collider** _colArr, unsigned int count) {};
+		virtual void OnTriggerExit(Collider** _colArr, unsigned int count) {};
+
 		virtual ~Component() {};
 
 		GameObject* GetGameObject() const;
 		Transform* GetTransform() const;
 
-		bool GetActive() { return _isActive; };
+		bool GetIsActive() { return _isActive; };
 		bool GetIsStarted() { return _isStarted; };
 
 		void SetActive(bool active) {
-			if (!_isActive && active)
+ 			if (!_isActive && active)
 				OnEnable();
-			if (_isActive && !active)
+			if (_isActive && !active) 
 				OnDisable();
 
 			_isActive = active;
