@@ -48,6 +48,8 @@ PlayerInfo* GameManager::GetMyInfo()
 void GameManager::SetMyObject(HDData::GameObject* obj)
 {
 	_myObj = obj;
+	_myObj->GetComponent<PlayerInfo>()->GetData(_myInfo);
+	_myInfo = _myObj->GetComponent<PlayerInfo>();
 }
 
 HDData::GameObject* GameManager::GetMyObject()

@@ -4,7 +4,6 @@
 #include "LobbyManager.h"
 #include "NetworkManager.h"
 #include "GameManager.h"
-#include "../HODOengine/TweenTimer.h"
 
 
 LobbyManager& LobbyManager::Instance()
@@ -86,7 +85,7 @@ void LobbyManager::LoginFAIL(int errorCode)
 
 void LobbyManager::LoginSucess(int uid, std::string nickname)
 {
-	//_loginSucessCanvas->OnEnable();
+	
 }
 
 void LobbyManager::SetidDupl(HDData::GameObject* iddupl)
@@ -162,6 +161,7 @@ RoomData* LobbyManager::GetRoomData()
 void LobbyManager::RoomEnter()
 {
 	NetworkManager::Instance().SendRoomEnter("room");
+
 }
 
 void LobbyManager::RoomEnterFAIL(int errorCode)
@@ -187,15 +187,13 @@ void LobbyManager::RoomEnterSUCCESS()
 {
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
 
-	auto& data = _roomData->_players;
-	_playerNum = data.size();
-
-	for (int i = 0; i < _playerNum; ++i)
+	// 사용하지 않는 캐릭터 타입을 나에게 할당
+	for (int i = 0; i < 6; ++i)
 	{
-		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
-		info->SetPlayerUID(data[i]->GetPlayerUID());
-		info->SetNickName(data[i]->GetPlayerNickName());
-		info->SetIsHost(data[i]->GetIsHost());
+		if (!isUsed[i])
+		{
+			GameManager::Instance()->GetMyInfo()->type = static_cast<eMeshType>(i);
+		}
 	}
 }
 
@@ -206,7 +204,6 @@ void LobbyManager::RefreshRoom()
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
-		//_quitButtons[i]->SetSelfActive(false);
 	}
 
 	auto& data = _roomData->_players;
@@ -214,34 +211,17 @@ void LobbyManager::RefreshRoom()
 
 	for (int i = 0; i < _playerNum; ++i)
 	{
-		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
-		info->SetPlayerUID(data[i]->GetPlayerUID());
-		info->SetNickName(data[i]->GetPlayerNickName());
-		info->SetIsHost(data[i]->GetIsHost());
-
-		if (data[i]->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
-		{
-			GameManager::Instance()->GetMyInfo()->SetIsHost(data[i]->GetIsHost());
-		}
-	}
-
-	for (int i = 0; i < _playerNum; ++i)
-	{
-		PlayerInfo* info = _playerObjs[i]->GetComponent<PlayerInfo>();
-
 		_playerObjs[i]->SetSelfActive(true);
 		_nickNameIndex[i]->SetSelfActive(true);
 		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
-		text->SetText(info->GetPlayerNickName());
+		text->SetText(data[i]->GetPlayerNickName());
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
-			//_quitButtons[i]->SetSelfActive(true);
 			_inGameStartButton->SetSelfActive(true);
 		}
-		else if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+		else if (data[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
 		{
-			//_quitButtons[i]->SetSelfActive(false);
 			_inGameStartButton->SetSelfActive(false);
 		}
 	}

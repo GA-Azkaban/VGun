@@ -509,6 +509,11 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
 
+		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
+		{
+			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
+		}
+
 		info->_players.push_back(one);
 	}
 

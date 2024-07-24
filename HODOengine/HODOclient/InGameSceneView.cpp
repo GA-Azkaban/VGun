@@ -70,6 +70,7 @@ void InGameSceneView::Initialize()
 	//playerMove->SetMovable(false);
 	player->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 	player->GetTransform()->SetPosition(-10, 3, 0);
+	player->AddComponent<PlayerInfo>();
 
 	auto meshComp = player->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAnimation("TP");
@@ -351,7 +352,7 @@ void InGameSceneView::Initialize()
 		std::string otherObjName = "otherPlayer" + std::to_string(i);
 		HDData::GameObject* otherPlayer = API::CreateObject(_scene, otherObjName);
 		otherPlayer->AddComponent<PlayerInfo>();
-		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
+		otherPlayer->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
 		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
@@ -674,7 +675,7 @@ void InGameSceneView::Initialize()
 	auto killEffectImg = killEffect->GetComponent<HDData::ImageUI>();
 	killEffectImg->ChangeScale(0.5, 0.5);
 	killEffect->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, true, 5);
-	GameManager::Instance()->GetMyInfo()->SetKillEffectImg(killEffectImg);
+	player->GetComponent<PlayerInfo>()->SetKillEffectImg(killEffectImg);
 
 	// round finish
 	auto roundfin = API::CreateImageBox(_scene);
@@ -692,7 +693,7 @@ void InGameSceneView::Initialize()
 	dieblackimg->ChangeScale(4, 4);
 	dieblackimg->SetImage("black.png");
 	dieblackimg->SetSortOrder(0.65f);
-	GameManager::Instance()->GetMyInfo()->SetDieEffectImg(dieblackimg);
+	player->GetComponent<PlayerInfo>()->SetDieEffectImg(dieblackimg);
 
 	// kill log 
 	auto log = API::CreateTextbox(_scene);
@@ -704,7 +705,7 @@ void InGameSceneView::Initialize()
 	logComp->SetSortOrder(0.75f);
 	log->SetSelfActive(false);
 
-	GameManager::Instance()->GetMyInfo()->SetLogUI(logComp);
+	player->GetComponent<PlayerInfo>()->SetLogUI(logComp);
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");
