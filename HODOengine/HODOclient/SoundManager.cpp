@@ -142,7 +142,8 @@ void SoundManager::InitializeAudios()
 	_UISoundController->AddAudio("sfx_entry", "Resources/Sound/SFX/ENTRY.wav", HDData::SoundGroup::EffectSound);
 	_UISoundController->AddAudio("sfx_bell", "Resources/Sound/SFX/BELL.mp3", HDData::SoundGroup::EffectSound);
 	_UISoundController->AddAudio("sfx_timer", "Resources/Sound/SFX/BELL.mp3", HDData::SoundGroup::EffectSound);
-
+	_UISoundController->AddAudio("sfx_singlebell", "Resources/Sound/SFX/SINGLE_BELL.wav", HDData::SoundGroup::EffectSound);
+	_UISoundController->AddAudio("sfx_countdown", "Resources/Sound/SFX/COUNTDOWN_MAN.wav", HDData::SoundGroup::EffectSound);
 }
 
 void SoundManager::InitializePlayerAudio(HDData::AudioSource* audio)

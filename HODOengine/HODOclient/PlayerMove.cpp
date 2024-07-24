@@ -348,7 +348,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-
+			
 			break;
 		}
 		case ePlayerMoveState::RUN:

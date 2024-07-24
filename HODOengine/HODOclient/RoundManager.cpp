@@ -35,7 +35,7 @@ void RoundManager::Start()
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		SoundManager::Instance().PlayBGM("bgm_victory");
 		EndGame();
-		};
+		}; 
 
 	_initTimer = new Timer;
 	_initTimer->duration = 3;
@@ -525,10 +525,11 @@ void RoundManager::UpdateRoundTimer()
 			}
 		}
 
-		if (nowElapsed <= 10)
+		if (nowElapsed >= 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
 			// TODO) 사운드 이펙트 넣기
+
 		}
 		if (elapsedTime.count() >= _timer)
 		{
