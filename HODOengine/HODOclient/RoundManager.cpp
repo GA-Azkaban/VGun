@@ -46,7 +46,7 @@ void RoundManager::Start()
 		};
 
 	_showResultTimer = new Timer;
-	_showResultTimer->duration = 20;
+	_showResultTimer->duration = 10;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		};
@@ -325,34 +325,34 @@ void RoundManager::CheckWinner()
 	{
 		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 
-		int index = 0;
-		for (auto& [uid, player] : _players)
-		{
-			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
-			++index;
-		}
+		//int index = 0;
+		//for (auto& [uid, player] : _players)
+		//{
+		//	_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
+		//	++index;
+		//}
 	}
 	else
 	{
 		_winnerTXT->SetText(_players[_winnerUID]->GetComponent<PlayerInfo>()->GetPlayerNickName());
 
-		int index = 0;
-		for (auto& [uid, player] : _players)
-		{
-			if (_winnerUID == uid) continue;
-			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
-			++index;
-		}
+		//int index = 0;
+		//for (auto& [uid, player] : _players)
+		//{
+		//	if (_winnerUID == uid) continue;
+		//	_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
+		//	++index;
+		//}
 
-		_loserTXT[index]->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+		//_loserTXT[index]->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 	}
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
 	_winnerImg->GetGameObject()->SetSelfActive(true);
-	for (int i = 0; i < count; ++i)
-	{
-		_loserTXT[i]->GetGameObject()->SetSelfActive(true);
-	}
+	//for (int i = 0; i < count; ++i)
+	//{
+	//	_loserTXT[i]->GetGameObject()->SetSelfActive(true);
+	//}
 }
 
 bool RoundManager::GetIsRoundStart()

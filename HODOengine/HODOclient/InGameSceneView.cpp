@@ -600,23 +600,23 @@ void InGameSceneView::Initialize()
 
 	//RoundManager::Instance()->SetLoserImg(loserTextImgComp);
 
-	float loserX = 100.f;
+	//float loserX = 100.f;
 
-	for (int i = 0; i < 5; ++i)
-	{
-		auto loserName = API::CreateTextbox(_scene, "loser" + std::to_string(i));
-		loserName->GetTransform()->SetPosition(loserX, 400.0f, 0.0f);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	auto loserName = API::CreateTextbox(_scene, "loser" + std::to_string(i));
+	//	loserName->GetTransform()->SetPosition(loserX, 400.0f, 0.0f);
 
-		auto loserComp = loserName->GetComponent<HDData::TextUI>();
-		loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		loserComp->SetColor(DirectX::Colors::Black);
+	//	auto loserComp = loserName->GetComponent<HDData::TextUI>();
+	//	loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	//	loserComp->SetColor(DirectX::Colors::Black);
 
-		RoundManager::Instance()->SetLoserText(loserComp, i);
+	//	RoundManager::Instance()->SetLoserText(loserComp, i);
 
-		loserName->SetSelfActive(false);
+	//	loserName->SetSelfActive(false);
 
-		loserX += 500;
-	}
+	//	loserX += 500;
+	//}
 
 	// 다시 로비 진입을 위한 타이머 UI
 	auto resultTimer = API::CreateTextbox(_scene, "resultTimer");
