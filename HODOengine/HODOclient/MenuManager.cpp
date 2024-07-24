@@ -309,7 +309,9 @@ void MenuManager::RenderRoomList()
 
 		_roomObject[i].id->GetGameObject()->SetSelfActive(true);
 		_roomObject[i].title->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].userCount->GetGameObject()->SetSelfActive(true);
 		_roomObject[i].maxCount->GetGameObject()->SetSelfActive(true);
+		_roomObject[i].slash->GetGameObject()->SetSelfActive(true);
 		_roomObject[i].currentCount->GetGameObject()->SetSelfActive(true);
 	}
 }
