@@ -753,6 +753,11 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	}
 }
 
+std::unordered_map<int, HDData::DynamicCollider*>& PlayerMove::GetOtherPlayerCols()
+{
+	return _otherPlayers;
+}
+
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
 {
 	//++_enterCount;

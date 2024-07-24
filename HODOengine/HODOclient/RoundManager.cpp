@@ -203,7 +203,7 @@ void RoundManager::GetNewDataFromLobby()
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 
 			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
-			auto plMove = one->GetComponent<PlayerMove>();
+			auto plMove = _myObj->GetComponent<PlayerMove>();
 			if (plMove != nullptr)
 			{
 				plMove->InsertOtherPlayerInfo(info->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
