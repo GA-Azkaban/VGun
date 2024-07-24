@@ -123,6 +123,13 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		ConvertDataToPlayerInfo(hitPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[hitPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+
+		int damage = 33;
+		if (hitLocation == Protocol::eHitLocation::HIT_LOCATION_HEAD)
+		{
+			damage = 100;
+		}
+		GameManager::Instance()->GetMyInfo()->DisplayDamageLog(hitPlayerData.userinfo().nickname(), damage, hitPlayerData.hp());
 	}
 
 }
@@ -231,7 +238,7 @@ void NetworkManager::Connected()
 {
 	_isConnect = true;
 
-// #if _DEBUG
+	// #if _DEBUG
 	FILE* pFile = nullptr;
 
 	if (AllocConsole())
@@ -240,7 +247,7 @@ void NetworkManager::Connected()
 		ASSERT_CRASH(false);
 
 	std::cout << "Connected" << std::endl;
-// #endif
+	// #endif
 }
 
 void NetworkManager::Disconnected()
@@ -717,7 +724,7 @@ void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::
 {
 	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
-	
+
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
