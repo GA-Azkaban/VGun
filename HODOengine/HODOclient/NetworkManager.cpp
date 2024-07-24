@@ -784,9 +784,13 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	float dif = posDif.Length();
 
 
-	if (dif > 0.01f)
+	if (dif > 0.03f)
 	{
 		current->SetPosition(serverPos);
+	}
+	else if (dif > 0.01f)
+	{
+		current->SetPosition((currentPos + serverPos) / 2.0f);
 	}
 	 
 	//if (posDif.Length() > 15.0f)
