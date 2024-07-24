@@ -129,4 +129,6 @@ private:
 public:
 	// 플레이어 캐릭터 타입을 관리
 	bool isUsed[6] = { false };
+
+	std::pair<bool, int> character[6];
 };

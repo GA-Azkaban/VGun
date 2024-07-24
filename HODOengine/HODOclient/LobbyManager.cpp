@@ -184,9 +184,11 @@ void LobbyManager::RoomEnterSUCCESS()
 	// 사용하지 않는 캐릭터 타입을 나에게 할당
 	for (int i = 0; i < 6; ++i)
 	{
-		if (!isUsed[i])
+		if (!character[i].first)
 		{
 			GameManager::Instance()->GetMyInfo()->type = static_cast<eMeshType>(i);
+			character[i].first = true;
+			character[i].second = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 		}
 	}
 }
@@ -222,9 +224,13 @@ void LobbyManager::RefreshRoom()
 		{
 			_inGameStartButton->SetSelfActive(true);
 		}
-		else if (data[i]->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		else
 		{
 			_inGameStartButton->SetSelfActive(false);
+		}
+
+		if (data[i]->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		{
 			text->SetColor(DirectX::Colors::Gold);
 		}
 	}
