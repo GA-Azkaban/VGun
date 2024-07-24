@@ -227,7 +227,7 @@ void PlayerInfo::PlayerAttacked(Vector3 targetPos)
 {
 	_hitEffect->SetEffectOn();
 	IndicatorPool::Instance().SummonIndicator(targetPos);
-	GameManager::Instance()->GetMyObject()->GetComponent<HDData::AudioSource>()->PlayOnce("2d_attacked");
+	GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_attacked");
 }
 
 void PlayerInfo::AddSerialKillCount()
