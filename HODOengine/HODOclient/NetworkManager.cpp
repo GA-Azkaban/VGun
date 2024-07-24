@@ -101,7 +101,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	if (myUID == playerData.userinfo().uid())
 	{
 		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
-		int damage = 33;
+		int damage = 34;
 		if (hitLocation == Protocol::eHitLocation::HIT_LOCATION_HEAD)
 		{
 			damage = 100;
