@@ -436,3 +436,9 @@ void HDData::DynamicCollider::SetCurTransform(TransformInfo info)
 	_currentTransform.pos = info.pos;
 	_currentTransform.rot = info.rot;
 }
+
+Vector3 HDData::DynamicCollider::GetVelocity() const
+{
+	physx::PxVec3 velocity = _physXRigid->getLinearVelocity();
+	return Vector3(velocity.x, velocity.y, velocity.z);
+}

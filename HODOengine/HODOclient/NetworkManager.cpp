@@ -781,10 +781,21 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	auto directionVector = nomal * speed * dt;
 
-	if (posDif.Length() > 0.03f)
+	Vector3 velo = current->GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>()->GetVelocity();
+
+	if (posDif.Length() > 15.0f)
 	{
 		current->SetPosition(serverPos);
 	}
+	else if (posDif.Length() > 1.0f)
+	{
+		current->SetPosition((currentPos + serverPos) / 2.0f);
+	}
+	else if (posDif.Length() > 0.1f)
+	{
+		current->SetPosition(serverPos);
+	}
+
 	//if (posDif.Length() > 15.0f)
 	//{
 	//	current->SetPosition(serverPos);
