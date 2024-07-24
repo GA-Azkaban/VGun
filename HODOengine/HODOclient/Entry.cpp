@@ -1,4 +1,4 @@
-﻿#include "targetver.h"
+#include "targetver.h"
 #include <windows.h>
 
 #include "Application.h"
@@ -8,7 +8,9 @@
 /// 프로그램의 시작점
 /// 
 
+//WCHAR g_ipAddress[256] = L"172.16.1.13";
 WCHAR g_ipAddress[256] = L"14.35.98.143";
+
 //int g_port = 7776;		// 짧은거
 int g_port = 7777;	// 60초
 //int g_port = 7778;	// 더 긴거
