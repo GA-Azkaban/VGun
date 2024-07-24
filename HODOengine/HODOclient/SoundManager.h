@@ -68,6 +68,7 @@ public:
 public:
 	void PlayBGM(std::string sourceName);
 	void PlayUI(std::string souceName);
+	void StopAllPlayerSFX();
 
 private:
 	// 현재 씬이 바뀔 때마다 씬을 체크하고 BGM 변경
