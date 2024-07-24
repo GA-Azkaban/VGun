@@ -1,4 +1,4 @@
-#include "PhysicsSystem.h"
+﻿#include "PhysicsSystem.h"
 #include "SceneSystem.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -75,7 +75,7 @@ namespace HDEngine
 		}
 
 		_accumulateTime += API::GetDeltaTime();
-		if (_accumulateTime >= 0.007f)
+		while (_accumulateTime >= 0.007f)
 		{
 			_accumulateTime -= 0.007f;
 			for (auto& rigid : _rigidDynamics)
