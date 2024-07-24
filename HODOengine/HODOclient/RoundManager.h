@@ -53,7 +53,6 @@ public:
 	void SetUIOrigin();
 	void ExitGame();
 
-
 public:
 	bool CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);
 	void CheckBodyColliderOwner(HDData::DynamicCapsuleCollider* collider);
@@ -95,6 +94,10 @@ public:
 
 	HDData::ImageUI* tumbleImage;
 	HDData::ImageUI* tumbleAlphaImage;
+
+	HDData::ImageUI* hpImage;
+	HDData::ImageUI* ammoImage;
+
 	HDData::TextUI* tumbleCountText;
 
 private:
@@ -123,7 +126,6 @@ public:
 	Timer* GetGameEndTimer();
 	void SetInitRoundTimer(HDData::TextUI* txt);
 	void StartSerialKillTimer();
-
 
 private:
 	HDData::TextUI* _timerUI;
