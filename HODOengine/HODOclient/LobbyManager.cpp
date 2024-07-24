@@ -158,12 +158,6 @@ RoomData* LobbyManager::GetRoomData()
 	return _roomData;
 }
 
-void LobbyManager::RoomEnter()
-{
-	NetworkManager::Instance().SendRoomEnter("room");
-
-}
-
 void LobbyManager::RoomEnterFAIL(int errorCode)
 {
 	switch (errorCode)
@@ -198,6 +192,13 @@ void LobbyManager::RoomEnterSUCCESS()
 }
 
 
+void LobbyManager::RoomLeaveSuccess()
+{
+	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
+	isUsed[static_cast<int>(GameManager::Instance()->GetMyInfo()->type)] = false;
+	API::LoadSceneByName("MainMenu");
+}
+
 void LobbyManager::RefreshRoom()
 {
 	for (int i = 0; i < 6; ++i) 
@@ -215,14 +216,16 @@ void LobbyManager::RefreshRoom()
 		_nickNameIndex[i]->SetSelfActive(true);
 		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
 		text->SetText(data[i]->GetPlayerNickName());
+		text->SetColor(DirectX::Colors::White);
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
 			_inGameStartButton->SetSelfActive(true);
 		}
-		else if (data[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+		else if (data[i]->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			_inGameStartButton->SetSelfActive(false);
+			text->SetColor(DirectX::Colors::Gold);
 		}
 	}
 }

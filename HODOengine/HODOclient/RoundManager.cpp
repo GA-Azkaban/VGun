@@ -255,7 +255,6 @@ void RoundManager::SetUIActive(bool isActive)
 {
 	for (int i = 0; i < 5; ++i)
 	{
-		//_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
 		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
 	}

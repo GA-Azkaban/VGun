@@ -427,8 +427,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
-	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
-	API::LoadSceneByName("MainMenu");
+	LobbyManager::Instance().RoomLeaveSuccess();
 }
 
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)

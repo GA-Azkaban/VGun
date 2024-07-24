@@ -101,9 +101,9 @@ private:
 
 public:
 	RoomData* GetRoomData();
-	void RoomEnter();
 	void RoomEnterFAIL(int errorCode);
 	void RoomEnterSUCCESS();
+	void RoomLeaveSuccess();
 
 private:
 	RoomData* _roomData;
