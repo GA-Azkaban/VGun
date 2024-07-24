@@ -1,4 +1,4 @@
-﻿#include "RoundManager.h"
+#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -113,6 +113,9 @@ void RoundManager::EndGame()
 	tumbleCountText->SetActive(false);
 	hpImage->SetActive(false);
 	ammoImage->SetActive(false);
+
+	hitCrosshair->SetActive(false);
+	criticalCrosshair->SetActive(false);
 
 	// 킬 카운트 정리
 	_inGameKillCounts.clear();
@@ -269,6 +272,7 @@ void RoundManager::SetUIActive(bool isActive)
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
+	defaultCrosshair->SetActive(isActive);
 	hpImage->GetGameObject()->SetSelfActive(isActive);
 	ammoImage->GetGameObject()->SetSelfActive(isActive);
 }

@@ -340,6 +340,7 @@ void InGameSceneView::Initialize()
 	alphaKey7.time = 1.0f;
 	ak3.push_back(alphaKey7);
 	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
+	playerMove->bloodParticle = particleSystem3;
 
 	posX += 1;
 	posT += 315;

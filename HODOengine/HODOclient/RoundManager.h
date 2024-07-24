@@ -100,6 +100,10 @@ public:
 
 	HDData::TextUI* tumbleCountText;
 
+	HDData::ImageUI* defaultCrosshair;
+	HDData::ImageUI* hitCrosshair;
+	HDData::ImageUI* criticalCrosshair;
+
 private:
 	bool _isRoundStart = false;
 	HDData::Camera* _startCam;
