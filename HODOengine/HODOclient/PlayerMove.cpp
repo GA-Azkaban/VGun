@@ -353,7 +353,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::RUN:
 		{
-
+			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
 			break;
 		}
 		case ePlayerMoveState::JUMP:
@@ -574,6 +574,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			//_playerColliderStanding->Stop();
+			_playerColliderStanding->AdjustFriction(0.7f, 0.63f);
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
