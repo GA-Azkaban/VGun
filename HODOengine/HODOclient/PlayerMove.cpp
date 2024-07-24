@@ -285,13 +285,13 @@ void PlayerMove::ShootGun()
 			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
 			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
 			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(forceDirection, 2.0f, 1);
+			hitDynamicSphere->AddForce(forceDirection, 1.0f, 1);
 			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
 			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
 			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
 							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
 							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
-			hitDynamicSphere->AddTorque(axis, 500.0f, 0);
+			hitDynamicSphere->AddTorque(axis, 2000.0f, 0);
 		}
 	}
 

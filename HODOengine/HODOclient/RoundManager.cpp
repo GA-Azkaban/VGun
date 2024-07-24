@@ -447,70 +447,70 @@ void RoundManager::UpdateRoundTimer()
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.006f, 0);
 			}
 		}
 		else if (nowElapsed >= 107 && nowElapsed <= 110)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, 1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, 1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 87 && nowElapsed <= 90)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 69 && nowElapsed <= 70)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 0.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 59 && nowElapsed <= 60)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 0.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 0.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 48 && nowElapsed <= 50)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(0.0f, 0.0f, 1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(0.0f, -1.0f, 1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 38 && nowElapsed <= 40)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, 0.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, 0.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 28 && nowElapsed <= 30)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(0.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(0.0f, -1.0f, -1.0f), 0.004f, 0);
 			}
 		}
-		else if (nowElapsed >= 19 && nowElapsed <= 20)
+		else if (nowElapsed >= 18 && nowElapsed <= 20)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(1.0f, 0.0f, 1.0f), 0.02f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 1.0f), 0.004f, 0);
 			}
 		}
 		else if (nowElapsed >= 8 && nowElapsed <= 10)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.37f, 0.0f), Vector3(-1.0f, 0.0f, -1.0f), 0.01f, 0);
+				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, -1.0f), 0.004f, 0);
 			}
 		}
 

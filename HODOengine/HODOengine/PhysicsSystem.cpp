@@ -515,7 +515,14 @@ namespace HDEngine
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
 				//physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
-				sphereRigid->setMass(0.2f);
+				if (sphere->GetParentCollider() == nullptr)
+				{
+					sphereRigid->setMass(0.05f);
+				}
+				else
+				{
+					sphereRigid->setMass(0.2f);
+				}
 				sphereRigid->attachShape(*shape);
 
 				//_pxScene->addActor(*sphereRigid);
