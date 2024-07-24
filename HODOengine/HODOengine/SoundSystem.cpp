@@ -1,5 +1,6 @@
 ﻿#include "SoundSystem.h"
 #include "AudioListener.h"
+#include "AudioSource.h"
 #include "Transform.h"
 #include "TimeSystem.h"
 
@@ -35,7 +36,10 @@ HDEngine::SoundSystem::~SoundSystem()
 	}
 	for (auto& eachSound : _3DSoundList)
 	{
-		eachSound.second.sound->release();
+		for (auto& eachSound : eachSound.second)
+		{
+			eachSound.second.sound->release();
+		}
 	}
 
 	// System과 Channel Group 해제
@@ -63,6 +67,8 @@ void HDEngine::SoundSystem::Update()
 
 	_fmodSystem->set3DListenerAttributes(0, &listenerPosVec, 0, &listenerForwardVec, &listenerUpVec);
 	_fmodSystem->update();
+
+	Update3DSoundPosition();
 }
 
 void HDEngine::SoundSystem::SetAudioListner(HDData::AudioListner* listner)
@@ -84,7 +90,7 @@ void HDEngine::SoundSystem::CreateSound(std::string soundPath, HDData::SoundGrou
 	_2DSoundList.insert(std::make_pair(soundPath, audioClip));
 }
 
-void HDEngine::SoundSystem::CreateSound3D(std::string soundPath, HDData::SoundGroup soundGroup, float minDistance, float maxDistance)
+void HDEngine::SoundSystem::CreateSound3D(HDData::AudioSource* audioSource, std::string soundPath, HDData::SoundGroup soundGroup, float minDistance, float maxDistance)
 {
 	HDData::AudioClip audioClip;
 	_fmodSystem->createSound(soundPath.c_str(), FMOD_3D | FMOD_3D_LINEARROLLOFF, NULL, &(audioClip.sound));
@@ -96,7 +102,7 @@ void HDEngine::SoundSystem::CreateSound3D(std::string soundPath, HDData::SoundGr
 	audioClip.soundGroup = soundGroup;
 	audioClip.is3DSound = true;
 
-	_3DSoundList.insert(std::make_pair(soundPath, audioClip));
+	_3DSoundList[audioSource].insert(std::make_pair(soundPath, audioClip));
 }
 
 void HDEngine::SoundSystem::PlayOnce(std::string soundPath)
@@ -122,48 +128,62 @@ void HDEngine::SoundSystem::PlayRepeat(std::string soundPath)
 	}
 }
 
-void HDEngine::SoundSystem::Play3DOnce(std::string soundPath, Vector3 startPos)
+void HDEngine::SoundSystem::Play3DOnce(HDData::AudioSource* audioSource, std::string soundPath)
 {
-	auto soundIter = _3DSoundList.find(soundPath);
-	if (soundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
-		FMOD_VECTOR velocity{ 0.0f, 0.0f, 0.0f };
-		soundIter->second.sound->setMode(FMOD_LOOP_OFF);
-		soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
-		soundIter->second.channel->setPaused(false);
-		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
-			true, &(soundIter->second.channel));
+		auto soundIter = sourceIter->second.find(soundPath);
+		if (soundIter != sourceIter->second.end())
+		{
+			Vector3 startPos = audioSource->GetTransform()->GetPosition();
+			FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
+			FMOD_VECTOR velocity{ 0.0f, 0.0f, 0.0f };
+			soundIter->second.sound->setMode(FMOD_LOOP_OFF);
+			soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
+			soundIter->second.channel->setPaused(false);
+			_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
+				true, &(soundIter->second.channel));
+		}
 	}
 }
 
-void HDEngine::SoundSystem::Play3DRepeat(std::string soundPath, Vector3 startPos)
+void HDEngine::SoundSystem::Play3DRepeat(HDData::AudioSource* audioSource, std::string soundPath)
 {
-	auto soundIter = _3DSoundList.find(soundPath);
-	if (soundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		soundIter->second.channel->stop();
-		FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
-		FMOD_VECTOR velocity{ 0, 0, 0 };
-		soundIter->second.sound->setMode(FMOD_LOOP_NORMAL);
-		_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
-			true, &(soundIter->second.channel));
-		soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
-		soundIter->second.channel->setPaused(false);
+		auto soundIter = sourceIter->second.find(soundPath);
+		if (soundIter != sourceIter->second.end())
+		{
+			soundIter->second.channel->stop();
+			Vector3 startPos = audioSource->GetTransform()->GetPosition();
+			FMOD_VECTOR startPosition{ startPos.x, startPos.y, startPos.z };
+			FMOD_VECTOR velocity{ 0, 0, 0 };
+			soundIter->second.sound->setMode(FMOD_LOOP_NORMAL);
+			_fmodSystem->playSound(soundIter->second.sound, _channelGroups[(int)soundIter->second.soundGroup],
+				true, &(soundIter->second.channel));
+			soundIter->second.channel->set3DAttributes(&startPosition, &velocity);
+			soundIter->second.channel->setPaused(false);
+		}
 	}
 }
 
-void HDEngine::SoundSystem::Stop(std::string soundPath)
+void HDEngine::SoundSystem::Stop(HDData::AudioSource* audioSource, std::string soundPath)
 {
 	auto _2dSoundIter = _2DSoundList.find(soundPath);
 	if (_2dSoundIter != _2DSoundList.end())
 	{
 		_2dSoundIter->second.channel->stop();
 	}
-	auto _3dSoundIter = _3DSoundList.find(soundPath);
-	if (_3dSoundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		_3dSoundIter->second.channel->stop();
+		auto _3dSoundIter = sourceIter->second.find(soundPath);
+		if (_3dSoundIter != sourceIter->second.end())
+		{
+			_3dSoundIter->second.channel->stop();
+		}
 	}
 }
 
@@ -180,7 +200,7 @@ void HDEngine::SoundSystem::StopAll()
 	}
 }
 
-void HDEngine::SoundSystem::Mute(std::string soundPath)
+void HDEngine::SoundSystem::Mute(HDData::AudioSource* audioSource, std::string soundPath)
 {
 	auto _2dSoundIter = _2DSoundList.find(soundPath);
 	if (_2dSoundIter != _2DSoundList.end())
@@ -189,12 +209,16 @@ void HDEngine::SoundSystem::Mute(std::string soundPath)
 		_2dSoundIter->second.channel->getMute(&isMuted);
 		_2dSoundIter->second.channel->setMute(!isMuted);
 	}
-	auto _3dSoundIter = _3DSoundList.find(soundPath);
-	if (_3dSoundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		bool isMuted = false;
-		_3dSoundIter->second.channel->getMute(&isMuted);
-		_3dSoundIter->second.channel->setMute(!isMuted);
+		auto _3dSoundIter = sourceIter->second.find(soundPath);
+		if (_3dSoundIter != sourceIter->second.end())
+		{
+			bool isMuted = false;
+			_3dSoundIter->second.channel->getMute(&isMuted);
+			_3dSoundIter->second.channel->setMute(!isMuted);
+		}
 	}
 }
 
@@ -212,7 +236,7 @@ void HDEngine::SoundSystem::MuteAll()
 	_channelGroupMaster->setMute(!isMuted);
 }
 
-void HDEngine::SoundSystem::Paused(std::string soundPath)
+void HDEngine::SoundSystem::Paused(HDData::AudioSource* audioSource, std::string soundPath)
 {
 	auto _2dSoundIter = _2DSoundList.find(soundPath);
 	if (_2dSoundIter != _2DSoundList.end())
@@ -221,12 +245,16 @@ void HDEngine::SoundSystem::Paused(std::string soundPath)
 		_2dSoundIter->second.channel->getPaused(&isPaused);
 		_2dSoundIter->second.channel->setPaused(!isPaused);
 	}
-	auto _3dSoundIter = _3DSoundList.find(soundPath);
-	if (_3dSoundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		bool isPaused = false;
-		_3dSoundIter->second.channel->getPaused(&isPaused);
-		_3dSoundIter->second.channel->setPaused(!isPaused);
+		auto _3dSoundIter = sourceIter->second.find(soundPath);
+		if (_3dSoundIter != sourceIter->second.end())
+		{
+			bool isPaused = false;
+			_3dSoundIter->second.channel->getPaused(&isPaused);
+			_3dSoundIter->second.channel->setPaused(!isPaused);
+		}
 	}
 }
 
@@ -244,7 +272,7 @@ void HDEngine::SoundSystem::PausedAll()
 	_channelGroupMaster->setPaused(!isPaused);
 }
 
-void HDEngine::SoundSystem::SetSoundVolume(std::string soundPath, float volume)
+void HDEngine::SoundSystem::SetSoundVolume(HDData::AudioSource* audioSource, std::string soundPath, float volume)
 {
 	auto _2dSoundIter = _2DSoundList.find(soundPath);
 	if (_2dSoundIter != _2DSoundList.end())
@@ -253,12 +281,16 @@ void HDEngine::SoundSystem::SetSoundVolume(std::string soundPath, float volume)
 		v = (volume < 0.0f) ? 0.0f : volume;
 		_2dSoundIter->second.channel->setVolume(v);
 	}
-	auto _3dSoundIter = _3DSoundList.find(soundPath);
-	if (_3dSoundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		float v = (volume > 1.0f) ? 1.0f : volume;
-		v = (volume < 0.0f) ? 0.0f : volume;
-		_3dSoundIter->second.channel->setVolume(v);
+		auto _3dSoundIter = sourceIter->second.find(soundPath);
+		if (_3dSoundIter != sourceIter->second.end())
+		{
+			float v = (volume > 1.0f) ? 1.0f : volume;
+			v = (volume < 0.0f) ? 0.0f : volume;
+			_3dSoundIter->second.channel->setVolume(v);
+		}
 	}
 }
 
@@ -276,7 +308,7 @@ void HDEngine::SoundSystem::SetSoundVolumeAll(float volume)
 	_channelGroupMaster->setVolume(v);
 }
 
-bool HDEngine::SoundSystem::IsSoundPlaying(std::string soundPath)
+bool HDEngine::SoundSystem::IsSoundPlaying(HDData::AudioSource* audioSource, std::string soundPath)
 {
 	auto _2dSoundIter = _2DSoundList.find(soundPath);
 	if (_2dSoundIter != _2DSoundList.end())
@@ -285,24 +317,31 @@ bool HDEngine::SoundSystem::IsSoundPlaying(std::string soundPath)
 		_2dSoundIter->second.channel->isPlaying(&isPlaying);
 		return isPlaying;
 	}
-	auto _3dSoundIter = _3DSoundList.find(soundPath);
-	if (_3dSoundIter != _3DSoundList.end())
+	auto sourceIter = _3DSoundList.find(audioSource);
+	if (sourceIter != _3DSoundList.end())
 	{
-		bool isPlaying = false;
-		_3dSoundIter->second.channel->isPlaying(&isPlaying);
-		return isPlaying;
+		auto _3dSoundIter = sourceIter->second.find(soundPath);
+		if (_3dSoundIter != sourceIter->second.end())
+		{
+			bool isPlaying = false;
+			_3dSoundIter->second.channel->isPlaying(&isPlaying);
+			return isPlaying;
+		}
 	}
 	return false;
 }
 
-void HDEngine::SoundSystem::Update3DSoundPosition(std::string soundName, Vector3 position)
+void HDEngine::SoundSystem::Update3DSoundPosition()
 {
-	auto soundIter = _3DSoundList.find(soundName);
-	if (soundIter != _3DSoundList.end())
+	for (auto& eachSource : _3DSoundList)
 	{
+		Vector3 position = eachSource.first->GetTransform()->GetPosition();
 		FMOD_VECTOR pos{ position.x, position.y, position.z };
 		FMOD_VECTOR velocity{ 0, 0, 0 };
-		soundIter->second.channel->set3DAttributes(&pos, &velocity);
+		for (auto& eachSound : eachSource.second)
+		{
+			eachSound.second.channel->set3DAttributes(&pos, &velocity);
+		}
 	}
 }
 
@@ -316,8 +355,16 @@ std::unordered_map<std::string, HDData::AudioClip>& HDEngine::SoundSystem::Get2D
 	return _2DSoundList;
 }
 
-std::unordered_map<std::string, HDData::AudioClip>& HDEngine::SoundSystem::Get3DSoundList()
+std::unordered_map<std::string, HDData::AudioClip>& HDEngine::SoundSystem::Get3DSoundList(HDData::AudioSource* audioSource)
 {
-	return _3DSoundList;
+	if (_3DSoundList.find(audioSource) != _3DSoundList.end())
+	{
+		return _3DSoundList[audioSource];
+	}
+	else
+	{
+		std::unordered_map<std::string, HDData::AudioClip> emptyMap;
+		return emptyMap;
+	}
 }
 

@@ -89,7 +89,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData)
 		auto players = RoundManager::Instance()->GetPlayerObjs();
 		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
-			Play3DOnce("3d_fire", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
+			Play3DOnce("3d_fire");
 	}
 }
 
@@ -107,7 +107,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 		auto players = RoundManager::Instance()->GetPlayerObjs();
 		players[playerData.userinfo().uid()]->GetComponent<PlayerInfo>()->SetIsShoot(true);
 		players[playerData.userinfo().uid()]->GetComponent<HDData::AudioSource>()->
-			Play3DOnce("3d_fire", players[playerData.userinfo().uid()]->GetTransform()->GetPosition());
+			Play3DOnce("3d_fire");
 	}
 
 	// 맞은 사람 ) 체력 변화
