@@ -100,6 +100,7 @@ public:
 
 	HDData::TextUI* tumbleCountText;
 
+	HDData::GameObject* crosshair;
 	HDData::ImageUI* defaultCrosshair;
 	HDData::ImageUI* hitCrosshair;
 	HDData::ImageUI* criticalCrosshair;

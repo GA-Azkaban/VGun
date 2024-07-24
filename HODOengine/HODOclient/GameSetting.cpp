@@ -23,13 +23,12 @@ GameSetting::GameSetting()
 	auto width = API::GetScreenWidth();
 	auto height = API::GetScreenHeight();
 
-
 	///////////////////////////// 상시로 뜨는 아이콘 (0.9) //////////////////////////////
-	_settingIcon = API::CreateStaticObject("icon");
-	_settingIcon->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 99, 26, 0);
-	auto icon = _settingIcon->AddComponent<HDData::ImageUI>();
-	icon->SetImage("icon_cog.png");
-	icon->SetSortOrder(0.95f);
+	//_settingIcon = API::CreateStaticObject("icon");
+	//_settingIcon->GetTransform()->SetPosition(API::GetScreenWidth() / 100 * 99, 26, 0);
+	//auto icon = _settingIcon->AddComponent<HDData::ImageUI>();
+	//icon->SetImage("icon_cog.png");
+	//icon->SetSortOrder(0.95f);
 
 	_settingText = API::CreateStaticObject("OnSet");
 	_settingText->GetTransform()->SetPosition((API::GetScreenWidth() / 100 * 97)+30, 60, 0);
