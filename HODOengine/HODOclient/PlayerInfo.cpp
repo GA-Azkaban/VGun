@@ -5,6 +5,7 @@
 #include "IndicatorPool.h"
 #include "UIEffect.h"
 #include "Crosshair.h"
+#include "DamageLog.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -315,6 +316,16 @@ void PlayerInfo::KillLogExit()
 void PlayerInfo::SetCrosshairUI(Crosshair* crosshair)
 {
 	_crosshair = crosshair;
+}
+
+void PlayerInfo::SetDamageLogUI(DamageLog* damageLog)
+{
+	_damageLog = damageLog;
+}
+
+void PlayerInfo::DisplayDamageLog(std::string nickname, int damage, int remainHP)
+{
+	_damageLog->DisplayLog(nickname, damage, remainHP);
 }
 
 bool& PlayerInfo::GetPlayerDie()

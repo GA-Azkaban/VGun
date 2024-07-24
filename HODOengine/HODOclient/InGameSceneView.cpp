@@ -1,4 +1,4 @@
-﻿#include "InGameSceneView.h"
+#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -14,12 +14,10 @@
 #include "GameManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
-
+#include "DamageLog.h"
 #include "BtnTextScript.h"
 #include "CooldownAlpha.h"
 #include "CooldownText.h"
-#include "MeshTransformController.h"
-#include "UITransformController.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -734,6 +732,10 @@ void InGameSceneView::Initialize()
 
 	playerMove->recoilCooldown = tumbleCooldown;
 	playerMove->cooldownCountText = tumbleCooldownCount;
+
+	auto damageLogObj = API::CreateObject(_scene, "DamageLog");
+	damageLogObj->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f + 100, API::GetScreenHeight() - 200, 0);
+	auto damageLogComp = damageLogObj->AddComponent<DamageLog>();
 
 	//auto cube = API::CreateObject(_scene);
 	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");
