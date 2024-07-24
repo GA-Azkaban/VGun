@@ -270,7 +270,9 @@ void RoundManager::SetUIActive(bool isActive)
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
-	defaultCrosshair->SetActive(isActive);
+	crosshair->SetSelfActive(isActive);
+	hpImage->GetGameObject()->SetSelfActive(isActive);
+	ammoImage->GetGameObject()->SetSelfActive(isActive);
 }
 
 bool RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)

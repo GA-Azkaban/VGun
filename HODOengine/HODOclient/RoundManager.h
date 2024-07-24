@@ -97,6 +97,10 @@ public:
 	HDData::ImageUI* tumbleAlphaImage;
 	HDData::TextUI* tumbleCountText;
 
+	HDData::ImageUI* hpImage;
+	HDData::ImageUI* ammoImage;
+
+	HDData::GameObject* crosshair;
 	HDData::ImageUI* defaultCrosshair;
 	HDData::ImageUI* hitCrosshair;
 	HDData::ImageUI* criticalCrosshair;
