@@ -248,10 +248,10 @@ void RoundManager::SetUIOrigin()
 
 	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
-	for (int i = 0; i < 5; ++i)
-	{
-		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
-	}
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	_loserTXT[i]->GetGameObject()->SetSelfActive(false);
+	//}
 
 	_players.clear();
 }
