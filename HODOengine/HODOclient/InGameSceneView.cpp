@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -278,6 +278,8 @@ void InGameSceneView::Initialize()
 
 	// 피 파티클
 	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
+	particleSystemObj3->GetTransform()->SetPosition(10.0f, 0.0f, 0.0f);
+	particleSystemObj3->GetTransform()->Rotate(0.0f, 45.0f, 0.0f);
 	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
 	particleSystem3->main.duration = 1.0f;
@@ -289,13 +291,13 @@ void InGameSceneView::Initialize()
 	particleSystem3->main.minStartRotation = -180.0f;
 	particleSystem3->main.maxStartRotation = 180.0f;
 	particleSystem3->main.minStartSize = 0.025f;
-	particleSystem3->main.maxStartSize = 0.05f;
-	particleSystem3->main.minStartSpeed = -20.0f;
+	particleSystem3->main.maxStartSize = 0.10f;
+	particleSystem3->main.minStartSpeed = -100.0f;
 	particleSystem3->main.maxStartSpeed = 100.0f;
-	particleSystem3->main.initialVelocity = 0.1f;
-	particleSystem3->main.gravityModifier = 0.2f;
+	particleSystem3->main.initialVelocity = 0.2f;
+	particleSystem3->main.gravityModifier = 0.1f;
 	particleSystem3->emission.enabled = true;
-	HDData::Burst newBurst3(0.0f, 6);
+	HDData::Burst newBurst3(0.0f, 12);
 	particleSystem3->emission.SetBurst(newBurst3);
 	particleSystem3->limitVelocityOverLifetime.enabled = true;
 	particleSystem3->limitVelocityOverLifetime.drag = true;
@@ -338,7 +340,6 @@ void InGameSceneView::Initialize()
 	alphaKey7.time = 1.0f;
 	ak3.push_back(alphaKey7);
 	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
-	playerMove->bloodParticle = particleSystem3;
 
 	posX += 1;
 	posT += 315;
