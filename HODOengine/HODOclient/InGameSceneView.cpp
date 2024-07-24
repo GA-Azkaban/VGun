@@ -14,12 +14,10 @@
 #include "GameManager.h"
 #include "LobbyManager.h"
 #include "MenuManager.h"
-
+#include "DamageLog.h"
 #include "BtnTextScript.h"
 #include "CooldownAlpha.h"
 #include "CooldownText.h"
-#include "MeshTransformController.h"
-#include "UITransformController.h"
 
 InGameSceneView::InGameSceneView()
 {
@@ -280,6 +278,8 @@ void InGameSceneView::Initialize()
 
 	// 피 파티클
 	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
+	particleSystemObj3->GetTransform()->SetPosition(10.0f, 0.0f, 0.0f);
+	particleSystemObj3->GetTransform()->Rotate(0.0f, 45.0f, 0.0f);
 	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
 	particleSystem3->main.duration = 1.0f;
@@ -291,13 +291,13 @@ void InGameSceneView::Initialize()
 	particleSystem3->main.minStartRotation = -180.0f;
 	particleSystem3->main.maxStartRotation = 180.0f;
 	particleSystem3->main.minStartSize = 0.025f;
-	particleSystem3->main.maxStartSize = 0.05f;
-	particleSystem3->main.minStartSpeed = -20.0f;
+	particleSystem3->main.maxStartSize = 0.10f;
+	particleSystem3->main.minStartSpeed = -100.0f;
 	particleSystem3->main.maxStartSpeed = 100.0f;
-	particleSystem3->main.initialVelocity = 0.1f;
-	particleSystem3->main.gravityModifier = 0.2f;
+	particleSystem3->main.initialVelocity = 0.2f;
+	particleSystem3->main.gravityModifier = 0.1f;
 	particleSystem3->emission.enabled = true;
-	HDData::Burst newBurst3(0.0f, 6);
+	HDData::Burst newBurst3(0.0f, 12);
 	particleSystem3->emission.SetBurst(newBurst3);
 	particleSystem3->limitVelocityOverLifetime.enabled = true;
 	particleSystem3->limitVelocityOverLifetime.drag = true;
@@ -734,6 +734,10 @@ void InGameSceneView::Initialize()
 
 	playerMove->recoilCooldown = tumbleCooldown;
 	playerMove->cooldownCountText = tumbleCooldownCount;
+
+	auto damageLogObj = API::CreateObject(_scene, "DamageLog");
+	damageLogObj->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f + 100, API::GetScreenHeight() - 200, 0);
+	auto damageLogComp = damageLogObj->AddComponent<DamageLog>();
 
 	//auto cube = API::CreateObject(_scene);
 	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");

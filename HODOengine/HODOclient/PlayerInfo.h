@@ -15,6 +15,7 @@ enum class eHITLOC
 class Crosshair;
 class HitEffect;
 class IndicatorPool;
+class DamageLog;
 
 class PlayerInfo : public HDData::Script
 {
@@ -92,6 +93,9 @@ public:
 
 	void SetCrosshairUI(Crosshair* crosshair);
 
+	void SetDamageLogUI(DamageLog* damageLog);
+	void DisplayDamageLog(std::string nickname, int damage, int remainHP);
+
 private:
 	bool _isMyInfo = false;
 
@@ -133,6 +137,7 @@ private:
 	HDData::TextUI* _killLog;
 
 	Crosshair* _crosshair;
+	DamageLog* _damageLog;
 
 public:
 	HDData::AudioSource* audio;

@@ -38,6 +38,7 @@ namespace HDData
 		_fpsText = fpsTextObj->AddComponent<HDData::TextUI>();
 		_fpsText->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 1.0f, 1.0f });
 		_fpsText->SetText("");
+		_fpsText->SetSortOrder(1.0f);
 	}
 
 	Scene::~Scene()
