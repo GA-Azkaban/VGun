@@ -772,10 +772,10 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	float speed = 8.4f;
 
 	Vector3 posDif = serverPos - currentPos;
-	Vector3 nomal = posDif;
+	Vector3 nomal = posDif * Vector3{ 1,0,1 };
 	nomal.Normalize();
 
-	auto directionVector = nomal * speed * dt * Vector3{ 1,0,1 };
+	auto directionVector = nomal * speed * dt;
 
 	if (posDif.Length() > 15.0f)
 	{
@@ -783,17 +783,13 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	}
 	else if (posDif.Length() > 10.0f)
 	{
-		current->SetPosition(currentPos + directionVector * 2);
 		// current->Translate(directionVector * 2);
+		current->SetPosition(currentPos + directionVector * 2);
 
 		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
 	}
 	else if (posDif.Length() > directionVector.Length())
 	{
-		// current->GetGameObject()->GetTransform()->Translate(nomal * speed * dt * Vector3{ 1,0,1 });
-
-		// 이거 이름좀
-
 		// current->Translate(directionVector);
 		current->SetPosition(currentPos + directionVector);
 
@@ -805,6 +801,52 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
 	}
+	
+	//////
+	class CustomQueue
+	{
+	public:
+		void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
+		void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
+		std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
+		bool empty() const { return m_queue.empty(); }
+		std::size_t size() const { return m_queue.size(); }
+		void printQueue() const
+		{
+			std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
+			while (!tempQueue.empty())
+			{
+				std::cout.fixed;
+				std::cout.precision(6);
+				std::cout <<
+					tempQueue.front().first.x << " / \t" <<
+					tempQueue.front().first.y << " / \t" <<
+					tempQueue.front().first.z <<
+					" \t|\t" <<
+					tempQueue.front().second.x << " / \t" <<
+					tempQueue.front().second.y << " / \t" <<
+					tempQueue.front().second.z;
+				//std::cout << std::endl;
+				tempQueue.pop();
+			}
+		}
+		~CustomQueue()
+		{
+			printQueue();
+		}
+	private:
+		std::queue<std::pair<Vector3, Vector3>> m_queue;
+	};
+
+	static CustomQueue posQueue;
+	if (posQueue.size() > 1)
+		posQueue.pop();
+	posQueue.push({ currentPos,serverPos });
+
+	//std::cout << std::endl;
+	posQueue.printQueue();
+	std::cout << "\t" << directionVector.Length() << std::endl;
+	///////
 
 	float dot = serverRot.Dot(currentRot);
 	float angleDif = 2.0f * acos(dot);
