@@ -1,4 +1,6 @@
 ﻿#include "DamageLog.h"
+#include "GameManager.h"
+#include "PlayerInfo.h"
 
 DamageLog::DamageLog()
 	: _logIndex(0)
@@ -44,7 +46,7 @@ void DamageLog::DisplayLog(const std::string& nickname, int damage, int remainHP
 	{
 		remainHP = 0;
 	}
-	int percent = remainHP / 100;
+	int percent = remainHP;
 	_remainHPs[_logIndex]->SetText(std::to_string(percent) + "%");
 	_remainHPs[_logIndex]->SetActive(true);
 	_remainHPs[_logIndex]->SetColor({ 0.0f, 56.0f / 255.0f, 90.0f / 255.0f, 1.0f });
@@ -82,6 +84,8 @@ void DamageLog::Start()
 		_remainHPs[i]->SetText(" ");
 		_remainHPs[i]->SetActive(false);
 	}
+
+	GameManager::Instance()->GetMyInfo()->SetDamageLogUI(this);
 }
 
 void DamageLog::Update()

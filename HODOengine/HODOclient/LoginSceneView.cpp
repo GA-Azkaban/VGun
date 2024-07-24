@@ -55,7 +55,6 @@ void LoginSceneView::LoginView()
 	HDData::GameObject* loginControlObject = API::CreateImageBox(_scene, "loginControlObject");
 	loginControlObject->GetTransform()->SetPosition(-500.0f * width / 1920, -500.0f * height / 1080, 0.0f);
 	loginControlObject->SetSelfActive(true);
-	//loginControlObject->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
 	_lobbyManager.SetLobbyMainCanvas(loginControlObject);
 
 	// gameLogo
@@ -77,7 +76,6 @@ void LoginSceneView::LoginView()
 	// id input box
 	HDData::GameObject* idTextbox = API::CreateTextInputBox(_scene, "idTextBox", loginControlObject);
 	auto id = idTextbox->GetComponent<HDData::TextInputBoxUI>();
-	//idTextbox->GetTransform()->SetPosition(950.0f * width / 1920, (440.f * height / 1080) + 600, 0.f);
 	idTextbox->GetTransform()->SetPosition(API::GetScreenWidth() / 2, (440.f * height / 1080) + 600, 0.f);
 	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetBackgroundImage()->SetSortOrder(0.2f);
 	idTextbox->GetComponent<HDData::TextInputBoxUI>()->GetCursorImage()->SetSortOrder(0.21f);

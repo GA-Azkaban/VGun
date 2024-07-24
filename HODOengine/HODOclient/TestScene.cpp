@@ -246,6 +246,8 @@ TestScene::TestScene()
 	//playerTest->AddComponent<TPScript>(); */
 
 	auto particleSystemObj3 = API::CreateObject(_scene, "BloodParticle");
+	particleSystemObj3->GetTransform()->SetPosition(10.0f, 0.0f, 0.0f);
+	particleSystemObj3->GetTransform()->Rotate(0.0f, 45.0f, 0.0f);
 	particleSystemObj3->GetTransform()->SetLocalScale({ 0.01f, 0.01f, 0.01f });
 	auto particleSystem3 = particleSystemObj3->AddComponent<HDData::ParticleSystem>();
 	particleSystem3->main.duration = 1.0f;
@@ -258,12 +260,12 @@ TestScene::TestScene()
 	particleSystem3->main.maxStartRotation = 180.0f;
 	particleSystem3->main.minStartSize = 0.025f;
 	particleSystem3->main.maxStartSize = 0.10f;
-	particleSystem3->main.minStartSpeed = 10.0f;
-	particleSystem3->main.maxStartSpeed = 100.0f;
+	particleSystem3->main.minStartSpeed = -200.0f;
+	particleSystem3->main.maxStartSpeed = 200.0f;
 	particleSystem3->main.initialVelocity = 0.2f;
-	particleSystem3->main.gravityModifier = 0.05f;
+	particleSystem3->main.gravityModifier = 0.1f;
 	particleSystem3->emission.enabled = true;
-	HDData::Burst newBurst3(0.0f, 6);
+	HDData::Burst newBurst3(0.0f, 12);
 	particleSystem3->emission.SetBurst(newBurst3);
 	particleSystem3->limitVelocityOverLifetime.enabled = true;
 	particleSystem3->limitVelocityOverLifetime.drag = true;
