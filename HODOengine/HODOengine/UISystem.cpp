@@ -109,12 +109,16 @@ namespace HDEngine
 				_focusedUI = ui;
 				_focusedUI->SetIsHovering(true);
 
+				if (ui->GetIsGrabbing() && InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
+				{
+					ui->SetIsGrabbing(false);
+				}
+
 				if (InputSystem::Instance().GetMouseDown(MOUSE_LEFT))
 				{
 					_focusedUI->SetIsClicked(true);
 					_focusedUI->SetIsGrabbing(true);
 					_focusedUI->OnClickEvent();
-					auto one = _focusedUI->GetSortOrder();
 					break;
 				}
 
@@ -125,9 +129,9 @@ namespace HDEngine
 			ui->SetIsClicked(false);
 			ui->SetIsHovering(false);
 
-			if (_focusedUI != nullptr && InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
+			if (ui->GetIsGrabbing() && InputSystem::Instance().GetMouseUp(MOUSE_LEFT))
 			{
-				_focusedUI->SetIsGrabbing(false);
+				ui->SetIsGrabbing(false);
 			}
 		}
 	}
