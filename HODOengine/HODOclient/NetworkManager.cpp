@@ -790,8 +790,9 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	}
 	else if (dif > 1.0f)
 	{
-		float ratio = dif / 10.000f;
-		current->SetPosition(currentPos * (1 - dif) + serverPos * dif);
+		//float ratio = dif / 10.000f;
+		//current->SetPosition(currentPos * (1 - dif) + serverPos * dif);
+		current->SetPosition((currentPos + serverPos) / 2.0f);
 	}
 	else if (dif > 0.5f)
 	{
