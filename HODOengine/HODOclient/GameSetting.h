@@ -18,6 +18,7 @@ public:
 public:
 	void SetSettingCanvasActive(bool _isActive);
 	void SetMyNickname(std::string nick);
+	void HideESCButton(bool isHide);
 
 	bool GetSettingCanvasActive();
 

@@ -679,7 +679,7 @@ void InGameSceneView::Initialize()
 	killEffect->GetTransform()->SetPosition(API::GetScreenWidth() / 2, API::GetScreenHeight() / 4, 0);
 	auto killEffectImg = killEffect->GetComponent<HDData::ImageUI>();
 	killEffectImg->ChangeScale(0.5, 0.5);
-	killEffect->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, true, 5);
+	killEffect->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.5, true, 5);
 	player->GetComponent<PlayerInfo>()->SetKillEffectImg(killEffectImg);
 
 	// round finish

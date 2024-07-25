@@ -26,7 +26,7 @@ GameSetting::GameSetting()
 
 	///////////////////////////// 상시로 뜨는 아이콘 (0.9) //////////////////////////////
 	_settingText = API::CreateStaticObject("OnSet");
-	_settingText->GetTransform()->SetPosition((API::GetScreenWidth() / 100 * 97)+30, 60, 0);
+	_settingText->GetTransform()->SetPosition((API::GetScreenWidth() / 100 * 97) + 30, 60, 0);
 	auto icontxt = _settingText->AddComponent<HDData::ImageUI>();
 	icontxt->SetImage("escText.png");
 	icontxt->ChangeScale(1.5, 1.5);
@@ -160,6 +160,9 @@ void GameSetting::Update()
 			GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetMovable(!_settingCanvas->GetSelfActive());
 		}
 	}
+
+	HideESCButton(!RoundManager::Instance()->GetIsRoundStart());
+
 }
 
 void GameSetting::SetSettingCanvasActive(bool _isActive)
@@ -184,6 +187,11 @@ void GameSetting::SetSettingCanvasActive(bool _isActive)
 void GameSetting::SetMyNickname(std::string nick)
 {
 	_nicknameText->GetComponent<HDData::TextUI>()->SetText(nick);
+}
+
+void GameSetting::HideESCButton(bool isHide)
+{
+	_settingText->SetSelfActive(isHide);
 }
 
 bool GameSetting::GetSettingCanvasActive()

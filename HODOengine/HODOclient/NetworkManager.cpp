@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -154,6 +154,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());	
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
 		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
 	}
 
@@ -432,8 +433,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
-	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
-	API::LoadSceneByName("MainMenu");
+	LobbyManager::Instance().RoomLeaveSuccess();
 }
 
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
@@ -494,6 +494,14 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
 
+		for (int i = 0; i < 6; ++i)
+		{
+			if (!LobbyManager::Instance().isUsed[i])
+			{
+				one->type = static_cast<eMeshType>(i);
+			}
+		}
+
 		info->_players.push_back(one);
 	}
 
@@ -518,6 +526,8 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		{
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
+
+		LobbyManager::Instance().isUsed[static_cast<int>(GameManager::Instance()->GetMyInfo()->type)] = false;
 
 		info->_players.push_back(one);
 	}
@@ -695,6 +705,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		}
 		else
 		{
+			if (playerInfo->GetIsDie()) return;
 			playerInfo->SetCurrentState(animationState);
 		}
 	}
