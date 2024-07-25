@@ -65,7 +65,22 @@ void NetworkManager::Update()
 
 	auto& playerObj = RoundManager::Instance()->GetPlayerObjs();
 
-	if (playerObj.size() == 0) return;
+	{
+		static float time = 0.0f;
+		time += API::GetDeltaTime();
+
+		if (time > 2.0f)
+		{
+			if (!RoundManager::Instance()->GetIsRoundStart())
+			{
+				SendRoomListRequest();
+			}
+			time = 0.0f;
+		}
+	}
+
+	if (playerObj.size() == 0) 
+		return;
 
 	for (auto& [uid, player] : playerObj)
 	{
@@ -783,7 +798,7 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
 {
-	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	// mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
 
 	info->SetCurrentKill(data.killcount());
