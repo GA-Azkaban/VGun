@@ -1286,6 +1286,7 @@ void PlayerMove::Die()
 	auto origin = _headCam->GetTransform()->GetPosition();
 	_headCam->GetTransform()->Rotate(0, 90, 0);
 	_playerColliderStanding->OnDisable();
+	_playerState.second = ePlayerMoveState::AIM;
 }
 
 void PlayerMove::Respawn()
@@ -1293,6 +1294,7 @@ void PlayerMove::Respawn()
 	_playerColliderStanding->OnEnable();
 	_tpanimator->GetAllAC()->SetBool("isDie", false);
 	Reload();
+	_playerState.first = ePlayerMoveState::IDLE;
 	_headCam->ResetCameraPos();
 }
 
