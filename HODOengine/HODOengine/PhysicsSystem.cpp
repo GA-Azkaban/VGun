@@ -474,10 +474,13 @@ namespace HDEngine
 				capsuleRigid->userData = capsule;
 				standingShape->release();
 
-				if (capsule->GetFreezeRotation())
-				{
-					capsule->LockPlayerRotation(true);
-				}
+				//if (capsule->GetFreezeRotation())
+				//{
+				//	capsule->LockPlayerRotation(true);
+				//}
+				capsuleRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+				capsuleRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+				capsuleRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
 
 				// 본체와 물리에서 서로의 rigid, collider를 건드릴 수 있게 해주는 부분. 추가?
 			}
@@ -522,6 +525,9 @@ namespace HDEngine
 				else
 				{
 					sphereRigid->setMass(0.2f);
+					sphereRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_X, true);
+					sphereRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Y, true);
+					sphereRigid->setRigidDynamicLockFlag(physx::PxRigidDynamicLockFlag::eLOCK_ANGULAR_Z, true);
 				}
 				sphereRigid->attachShape(*shape);
 
