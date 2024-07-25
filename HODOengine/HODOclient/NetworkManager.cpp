@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -75,6 +75,21 @@ void NetworkManager::Update()
 			continue;
 		}
 		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 1.0f);
+	}
+
+	// 2초마다 SendRoomListRequest 보내기
+	// RoundManager 에서 GetIsRoundStart() 가 false 일때만 보내도록
+
+	static float time = 0.0f;
+	time += API::GetDeltaTime();
+
+	if (time > 2.0f)
+	{
+		if (!RoundManager::Instance()->GetIsRoundStart())
+		{
+			SendRoomListRequest();
+		}
+		time = 0.0f;
 	}
 }
 
@@ -153,7 +168,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		// 모든 데스 갱신
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
-			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());	
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
 	}
 
@@ -834,7 +849,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	//		current->SetPosition(serverPos);
 	//	}
 	//}
-	 
+
 	//if (posDif.Length() > 15.0f)
 	//{
 	//	current->SetPosition(serverPos);
@@ -861,7 +876,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
 	//}
-	
+
 	//////
 	//class CustomQueue
 	//{
