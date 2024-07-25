@@ -15,7 +15,7 @@ PlayerMove::PlayerMove()
 	_jumpCooldown(0.0f),
 	_tumbleCooldown(0.0f),
 	_shootCount(0),
-	_bulletCount(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()),
+	_bulletCount(6),
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),
@@ -313,6 +313,7 @@ void PlayerMove::ShootGun()
 
 	++_shootCount;
 	--_bulletCount;
+	GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(_bulletCount);
 	_shootCooldown = 0.5f;
 }
 
@@ -320,7 +321,7 @@ void PlayerMove::Reload()
 {
 	_shootCount = 0;
 	//_playerState.second = ePlayerMoveState::IDLE;
-	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
+	_bulletCount = 6;
 }
 
 void PlayerMove::ApplyRecoil()

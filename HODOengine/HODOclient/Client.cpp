@@ -28,12 +28,12 @@ Client::~Client()
 void Client::Initialize()
 {	
 	// 매니저 초기화
+	GameSetting::Instance();
+	SoundManager::Instance();
 	NetworkManager::Instance();
 	LobbyManager::Instance();
 	MenuManager::Instance();
 	RoundManager::Instance();
-	GameSetting::Instance();
-	SoundManager::Instance();
 	
 	// 씬 초기화
 	//TestScene test;

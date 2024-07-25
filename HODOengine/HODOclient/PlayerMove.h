@@ -146,7 +146,7 @@ private:
 	float _jumpCooldown;
 	float _tumbleCooldown;
 	int _shootCount;
-	int& _bulletCount;
+	int _bulletCount;
 	float _reloadTimer;
 	float _tumbleTimer;
 	bool _isReloading;

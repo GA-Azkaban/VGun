@@ -13,6 +13,18 @@ enum class eHITLOC
 	BODY = 3
 };
 
+enum class eMeshType
+{
+	NONE,
+	COWBOY,
+	COWGIRL,
+	BADGUY,
+	GUNMAN,
+	WORKINGGIRL,
+
+	LAST
+};
+
 class Crosshair;
 class HitEffect;
 class IndicatorPool;
@@ -144,6 +156,7 @@ private:
 	KillLog* _killLogUI;
 
 public:
+	eMeshType type = eMeshType::NONE;
 	HDData::AudioSource* audio;
 	int _serialkillcount;
 };

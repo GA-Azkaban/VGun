@@ -260,15 +260,16 @@ void MainMenuScene::MainMenu()
 		HDData::GameObject* enter_roomCanvas = API::CreateImageBox(_scene, "room", enter_roomLstCanvas);
 		enter_roomCanvas->GetComponent<HDData::ImageUI>()->SetImage("subCanvas_alpha_long.png");
 		//enter_roomCanvas->GetTransform()->SetPosition((960.0f + 130.0f) * width / 1920, posY * height / 1080, 0);
-		enter_roomCanvas->GetTransform()->SetPosition(900.0f * width / 1920, posY * height / 1080, 0);
+		enter_roomCanvas->GetTransform()->SetPosition(935.0f * width / 1920, posY * height / 1080, 0);
 		enter_roomCanvas->GetComponent<HDData::ImageUI>()->SetSortOrder(0.65f);
-		enter_roomCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+		//enter_roomCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+		enter_roomCanvas->GetComponent<HDData::ImageUI>()->ChangeScale(1.7f, static_cast<float>(height) / 1080);
 
 		//MenuManager::Instance()._roomObject[i].btn = enter_roomCanvas->GetComponent<HDData::Button>();
 		MenuManager::Instance()._roomObject[i].roomListCanavas = enter_roomCanvas->GetComponent<HDData::ImageUI>();
 
 		HDData::GameObject* enter_roomTitle = API::CreateTextbox(_scene, "title", enter_roomCanvas);
-		enter_roomTitle->GetTransform()->SetLocalPosition(-75, 10, 0);
+		enter_roomTitle->GetTransform()->SetLocalPosition(-225, 10, 0);
 		auto roomT = enter_roomTitle->GetComponent<HDData::TextUI>();
 		roomT->SetIsIgnoreFocus(true);
 		roomT->SetFont("Resources/Font/KRAFTON_30.spritefont");
@@ -294,7 +295,7 @@ void MainMenuScene::MainMenu()
 		MenuManager::Instance()._roomObject[i].id = roomid;
 
 		HDData::GameObject* userCount = API::CreateImageBox(_scene, "userCount", enter_roomCanvas);
-		userCount->GetTransform()->SetLocalPosition(200.0f, 0.0f, 0.0f);
+		userCount->GetTransform()->SetLocalPosition(50.0f, 0.0f, 0.0f);
 		auto userCountImg = userCount->GetComponent<HDData::ImageUI>();
 		userCountImg->SetImage("icon_user_filled.png");
 		userCountImg->SetSortOrder(0.81f);
@@ -302,30 +303,8 @@ void MainMenuScene::MainMenu()
 
 		MenuManager::Instance()._roomObject[i].userCount = userCountImg;
 
-		HDData::GameObject* enter_maxCount = API::CreateImageBox(_scene, "maxCount", enter_roomCanvas);
-		enter_maxCount->GetTransform()->SetLocalPosition(260.0f, -25.0f, 0);
-		auto max = enter_maxCount->GetComponent<HDData::ImageUI>();
-		max->SetImage("flair_number_6_outline.png");
-		max->SetSortOrder(0.81);
-		max->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
-
-		enter_maxCount->SetSelfActive(false);
-
-		MenuManager::Instance()._roomObject[i].maxCount = max;
-
-		HDData::GameObject* slashCount = API::CreateImageBox(_scene, "slash", enter_roomCanvas);
-		slashCount->GetTransform()->SetLocalPosition(265.0f, 5.0f, 0);
-		auto slashImg = slashCount->GetComponent<HDData::ImageUI>();
-		slashImg->SetImage("slash.png");
-		slashImg->ChangeScale(0.1f, 0.12f);
-		slashImg->SetSortOrder(0.71f);
-
-		slashCount->SetSelfActive(false);
-
-		MenuManager::Instance()._roomObject[i].slash = slashImg;
-
 		HDData::GameObject* enter_currentCount = API::CreateImageBox(_scene, "currentCount", enter_roomCanvas);
-		enter_currentCount->GetTransform()->SetLocalPosition(210.0f, -25.0f, 0);
+		enter_currentCount->GetTransform()->SetLocalPosition(70.0f, -25.0f, 0);
 		auto current = enter_currentCount->GetComponent<HDData::ImageUI>();
 		current->SetImage("flair_number_2_outline.png");
 		current->SetSortOrder(0.71);
@@ -335,9 +314,33 @@ void MainMenuScene::MainMenu()
 
 		MenuManager::Instance()._roomObject[i].currentCount = current;
 
+		HDData::GameObject* slashCount = API::CreateImageBox(_scene, "slash", enter_roomCanvas);
+		slashCount->GetTransform()->SetLocalPosition(140.0f, 5.0f, 0);
+		auto slashImg = slashCount->GetComponent<HDData::ImageUI>();
+		slashImg->SetImage("slash.png");
+		slashImg->ChangeScale(0.1f, 0.12f);
+		slashImg->SetSortOrder(0.71f);
+
+		slashCount->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].slash = slashImg;
+
+		HDData::GameObject* enter_maxCount = API::CreateImageBox(_scene, "maxCount", enter_roomCanvas);
+		enter_maxCount->GetTransform()->SetLocalPosition(140.0f, -25.0f, 0);
+		auto max = enter_maxCount->GetComponent<HDData::ImageUI>();
+		max->SetImage("flair_number_6_outline.png");
+		max->SetSortOrder(0.81);
+		max->ChangeScale(static_cast<float>(width) / 1920, static_cast<float>(height) / 1080);
+
+		enter_maxCount->SetSelfActive(false);
+
+		MenuManager::Instance()._roomObject[i].maxCount = max;
+
+
+
 		/// 이부분 하는중
 		HDData::GameObject* enter_enterBtn = API::CreateButton(_scene, "enterButton", enter_roomCanvas);
-		enter_enterBtn->GetTransform()->SetLocalPosition(440.0f, 0.0f, 0);
+		enter_enterBtn->GetTransform()->SetLocalPosition(320.0f, 0.0f, 0);
 		enter_enterBtn->AddComponent<BtnTextScript>();
 		auto enter_enterImg = enter_enterBtn->GetComponent<HDData::Button>();
 		enter_enterImg->SetImage("Button_01.png");
