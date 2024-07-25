@@ -800,17 +800,18 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		OnStateExit(ePlayerMoveState::JUMP);
 	}
 	*/
-	auto& opponentCollider = (*colArr)->_otherActor;
 
-	if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
-	{
-		//_isMoveableOnJump = false;
-	}
+	//auto& opponentCollider = (*colArr)->_otherActor;
+
+	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
+	//{
+	//	_isMoveableOnJump = false;
+	//}
 }
 
 void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-	auto& opponentCollider = (*colArr)->_otherActor;
+	//auto& opponentCollider = (*colArr)->_otherActor;
 
 	//// plane인 경우
 	//if (opponentCollider == nullptr)
