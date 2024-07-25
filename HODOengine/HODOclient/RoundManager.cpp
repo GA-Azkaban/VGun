@@ -541,6 +541,7 @@ void RoundManager::UpdateRoundTimer()
 			_gameEndTimer->Start();
 			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 			_myObj->GetComponent<PlayerMove>()->ResetState();
+			_myObj->GetComponent<PlayerMove>()->StopMoving();
 		}
 	}
 }
