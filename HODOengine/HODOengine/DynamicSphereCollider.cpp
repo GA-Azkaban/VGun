@@ -75,13 +75,13 @@ void HDData::DynamicSphereCollider::Update()
 
 void HDData::DynamicSphereCollider::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-	HDData::Collider* opponentCollider = (*colArr)->_otherActor;
-	
+	/*HDData::Collider* opponentCollider = (*colArr)->_otherActor;
+
 	if (opponentCollider != nullptr)
 	{
 		if (opponentCollider->GetColType() == eColliderRole::PLAYER)
 		{
 			this->ClearForce();
 		}
-	}
+	}*/
 }

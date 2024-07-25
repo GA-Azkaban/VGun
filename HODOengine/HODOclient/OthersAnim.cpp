@@ -19,9 +19,18 @@ void OthersAnim::Update()
 {
 	if (!RoundManager::Instance()->GetIsRoundStart()) return;
 	if (!_info->GetIsStateChange()) return;
+	if (_info->GetIsDie())
+	{
+		_audio->Stop("3d_footstep");
+		return;
+	}
 
 	switch (_info->GetPlayerState())
 	{
+		case ePlayerState::DIE:
+		{
+		}
+		break;
 		case ePlayerState::IDLE:
 		{
 			_mesh->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
@@ -86,12 +95,6 @@ void OthersAnim::Update()
 		case ePlayerState::ROLL_L:
 		{
 			_mesh->PlayAnimation("RV_rollL", false, 0.1, true, 0.1);
-		}
-		break;
-		case ePlayerState::DIE:
-		{
-			_mesh->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
-			_audio->Stop("3d_footstep");
 		}
 		break;
 		default:

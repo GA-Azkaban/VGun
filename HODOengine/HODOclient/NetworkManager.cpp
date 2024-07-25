@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -154,6 +154,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());	
+		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
 		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
 	}
 
@@ -704,6 +705,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		}
 		else
 		{
+			if (playerInfo->GetIsDie()) return;
 			playerInfo->SetCurrentState(animationState);
 		}
 	}
