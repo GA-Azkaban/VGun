@@ -1,4 +1,4 @@
-#include "targetver.h"
+﻿#include "targetver.h"
 #include <windows.h>
 
 #include "Application.h"

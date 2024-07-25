@@ -787,52 +787,52 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	auto directionVector = nomal * speed * dt;
 
-	float dif = posDif.Length();
+	//float dif = posDif.Length();
 	//auto plMove = current->GetGameObject()->GetComponent<PlayerMove>();
-	auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
+	//auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
 
 	//if (dif > 0.01f && plMove->GetPlayerMoveEnum(1) != ePlayerMoveState::IDLE)
-	if (plInfo->GetPlayerState() == ePlayerState::IDLE)
-	{
-		if (dif > 0.1f)
-		{
-			current->SetPosition(serverPos);
-		}
-	}
-	else
-	{
-		if (dif > 0.001f)
-		{
-			current->SetPosition(serverPos);
-		}
-	}
-	 
-	//if (posDif.Length() > 15.0f)
+	//if (plInfo->GetPlayerState() == ePlayerState::IDLE)
 	//{
-	//	current->SetPosition(serverPos);
-	//}
-	//else if (posDif.Length() > 10.0f)
-	//{
-	//	// current->Translate(directionVector * 2);
-	//	current->SetPosition(currentPos + directionVector * 2);
-	//	//current->SetPosition(serverPos);
-
-	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	//}
-	//else if (posDif.Length() > directionVector.Length())
-	//{
-	//	// current->Translate(directionVector);
-	//	current->SetPosition(currentPos + directionVector);
-	//	//current->SetPosition(serverPos);
-
-	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//	if (dif > 0.1f)
+	//	{
+	//		current->SetPosition(serverPos);
+	//	}
 	//}
 	//else
 	//{
-	//	//current->SetPosition(serverPos);
-
-	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
+	//	if (dif > 0.001f)
+	//	{
+	//		current->SetPosition(serverPos);
+	//	}
 	//}
+	 
+	if (posDif.Length() > 15.0f)
+	{
+		current->SetPosition(serverPos);
+	}
+	else if (posDif.Length() > 10.0f)
+	{
+		// current->Translate(directionVector * 2);
+		current->SetPosition(currentPos + directionVector * 2);
+		//current->SetPosition(serverPos);
+
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	}
+	else if (posDif.Length() > directionVector.Length())
+	{
+		// current->Translate(directionVector);
+		current->SetPosition(currentPos + directionVector);
+		//current->SetPosition(serverPos);
+
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	}
+	else
+	{
+		//current->SetPosition(serverPos);
+
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
+	}
 	
 	//////
 	class CustomQueue
