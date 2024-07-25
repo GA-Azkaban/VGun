@@ -314,10 +314,6 @@ int RoundManager::GetPlayerNum()
 
 void RoundManager::CheckWinner()
 {
-	if (_winnerUID == NULL) return;
-
-	int count = _players.size();
-
 	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
 		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
@@ -622,7 +618,7 @@ void RoundManager::UpdateDesiredKillChecker()
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_myKillCount.second->SetText(std::to_string(count));
-		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
+		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
 	}
 
 	for (auto& [uid, player] : _players)
