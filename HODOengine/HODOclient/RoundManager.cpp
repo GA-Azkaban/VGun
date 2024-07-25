@@ -50,6 +50,7 @@ void RoundManager::Start()
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		_timerUI->SetColor(DirectX::Colors::White);
+		SoundManager::Instance().StopAllPlayerSFX();
 		};
 
 	_serialKillTimer = new Timer;
