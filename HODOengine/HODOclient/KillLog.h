@@ -28,6 +28,7 @@ public:
 protected:
 	virtual void Start() override;
 	virtual void Update() override;
+	virtual void OnDisable() override;
 
 private:
 	constexpr static int MAXLOGCOUNT = 4;

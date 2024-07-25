@@ -1,6 +1,7 @@
 ﻿#include "KillLog.h"
 #include "GameManager.h"
 #include "PlayerInfo.h"
+#include "RoundManager.h"
 
 KillLog::KillLog()
 	: _logIndex(0)
@@ -113,6 +114,7 @@ void KillLog::Start()
 	}
 
 	GameManager::Instance()->GetMyInfo()->SetKillLogUI(this);
+	RoundManager::Instance()->killLog = this;
 }
 
 void KillLog::Update()
@@ -121,6 +123,11 @@ void KillLog::Update()
 	{
 		_logTimer[i].Update();
 	}
+}
+
+void KillLog::OnDisable()
+{
+	SetActive(false);
 }
 
 void KillLog::SetActive(bool isActive)

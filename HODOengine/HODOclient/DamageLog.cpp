@@ -1,6 +1,7 @@
 ﻿#include "DamageLog.h"
 #include "GameManager.h"
 #include "PlayerInfo.h"
+#include "RoundManager.h"
 
 DamageLog::DamageLog()
 	: _logIndex(0)
@@ -99,6 +100,7 @@ void DamageLog::Start()
 	}
 
 	GameManager::Instance()->GetMyInfo()->SetDamageLogUI(this);
+	RoundManager::Instance()->damageLog = this;
 }
 
 void DamageLog::Update()
