@@ -111,8 +111,8 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	tumbleAlphaImage->SetActive(false);
-	tumbleCountText->SetActive(false);
+	//tumbleAlphaImage->SetActive(false);
+	//tumbleCountText->SetActive(false);
 
 	hitCrosshair->SetActive(false);
 	criticalCrosshair->SetActive(false);
@@ -197,7 +197,7 @@ void RoundManager::GetNewDataFromLobby()
 			_myKillCount.first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 			_myKillCount.first->SetColor(DirectX::Colors::WhiteSmoke);
 			_myKillCount.second->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerKillCount()));
-			_myKillCount.second->SetColor(DirectX::Colors::WhiteSmoke);
+			_myKillCount.second->SetColor(DirectX::Colors::Yellow);
 		}
 		else
 		{
@@ -217,7 +217,7 @@ void RoundManager::GetNewDataFromLobby()
 			}
 
 			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
-			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
+			_killCountObjs[index].first->SetColor(DirectX::Colors::OrangeRed);
 			_killCountObjs[index].second->SetText(std::to_string(playerInfo->GetPlayerKillCount()));
 			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
 			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
@@ -528,7 +528,7 @@ void RoundManager::UpdateRoundTimer()
 		}
 
 
-		if (nowElapsed >= 10)
+		if (nowElapsed == 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
 			// TODO) 사운드 이펙트 넣기
@@ -537,8 +537,13 @@ void RoundManager::UpdateRoundTimer()
 		if (elapsedTime.count() >= _timer)
 		{
 			_isRoundStart = false;
+
+			tumbleAlphaImage->SetActive(false);
+			tumbleCountText->SetActive(false);
+
 			_gameEndTimer->Start();
 			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
+			_myObj->GetComponent<PlayerMove>()->ResetState();
 		}
 	}
 }

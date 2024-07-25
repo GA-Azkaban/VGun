@@ -44,7 +44,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.8f, 0.6f, 0.1f);
+		_material = _physics->createMaterial(0.9f, 0.8f, 0.2f);
 		_playerMaterial = _physics->createMaterial(0.7f, 0.63f, 0.0f);
 		_planeMaterial = _physics->createMaterial(0.2f, 0.1f, 0.0f);
 
@@ -517,7 +517,7 @@ namespace HDEngine
 				//physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
 				if (sphere->GetParentCollider() == nullptr)
 				{
-					sphereRigid->setMass(0.05f);
+					sphereRigid->setMass(0.08f);
 				}
 				else
 				{
