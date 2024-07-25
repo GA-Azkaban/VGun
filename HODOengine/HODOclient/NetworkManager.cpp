@@ -153,10 +153,8 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		// 모든 데스 갱신
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
-			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
-		
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());	
 		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
-		GameManager::Instance()->GetMyInfo()->DisplayKillLog(killPlayerData.userinfo().nickname(), deathPlayerData.userinfo().nickname(), KillLog::KillLogType::ENEMYKILLENEMY);
 	}
 
 	if (myUID == killPlayerData.userinfo().uid())
@@ -174,6 +172,10 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(killPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+		if (myUID == deathPlayerData.userinfo().uid())
+		{
+			GameManager::Instance()->GetMyInfo()->DisplayKillLog(killPlayerData.userinfo().nickname(), deathPlayerData.userinfo().nickname(), KillLog::KillLogType::ENEMYKILLENEMY);
+		}
 	}
 
 
