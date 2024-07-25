@@ -782,11 +782,27 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	float speed = 8.4f;
 
 	Vector3 posDif = serverPos - currentPos;
-	Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
-	//nomal.Normalize();
+	//Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
+	////nomal.Normalize();
 
-	auto directionVector = nomal * speed * dt;
+	//auto directionVector = nomal * speed * dt;
+	auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
 
+	float dif = posDif.Length();
+	if (plInfo->GetPlayerState() == ePlayerState::IDLE)
+	{
+		if (dif > 0.1f)
+		{
+			current->SetPosition(serverPos);
+		}
+	}
+	else
+	{
+		if (dif > 0.001f)
+		{
+			current->SetPosition(serverPos);
+		}
+	}
 	//float dif = posDif.Length();
 	//auto plMove = current->GetGameObject()->GetComponent<PlayerMove>();
 	//auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
@@ -807,78 +823,78 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	//	}
 	//}
 	 
-	if (posDif.Length() > 15.0f)
-	{
-		current->SetPosition(serverPos);
-	}
-	else if (posDif.Length() > 10.0f)
-	{
-		// current->Translate(directionVector * 2);
-		current->SetPosition(currentPos + directionVector * 2);
-		//current->SetPosition(serverPos);
+	//if (posDif.Length() > 15.0f)
+	//{
+	//	current->SetPosition(serverPos);
+	//}
+	//else if (posDif.Length() > 10.0f)
+	//{
+	//	// current->Translate(directionVector * 2);
+	//	current->SetPosition(currentPos + directionVector * 2);
+	//	//current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	}
-	else if (posDif.Length() > directionVector.Length())
-	{
-		// current->Translate(directionVector);
-		current->SetPosition(currentPos + directionVector);
-		//current->SetPosition(serverPos);
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//}
+	//else if (posDif.Length() > directionVector.Length())
+	//{
+	//	// current->Translate(directionVector);
+	//	current->SetPosition(currentPos + directionVector);
+	//	//current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	}
-	else
-	{
-		//current->SetPosition(serverPos);
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	//}
+	//else
+	//{
+	//	//current->SetPosition(serverPos);
 
-		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
-	}
+	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
+	//}
 	
 	//////
-	class CustomQueue
-	{
-	public:
-		void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
-		void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
-		std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
-		bool empty() const { return m_queue.empty(); }
-		std::size_t size() const { return m_queue.size(); }
-		void printQueue() const
-		{
-			std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
-			while (!tempQueue.empty())
-			{
-				std::cout.fixed;
-				std::cout.precision(6);
-				std::cout <<
-					tempQueue.front().first.x << " / \t" <<
-					tempQueue.front().first.y << " / \t" <<
-					tempQueue.front().first.z <<
-					" \t|\t" <<
-					tempQueue.front().second.x << " / \t" <<
-					tempQueue.front().second.y << " / \t" <<
-					tempQueue.front().second.z;
-				//std::cout << std::endl;
-				tempQueue.pop();
-			}
-		}
-		~CustomQueue()
-		{
-			printQueue();
-		}
-	private:
-		std::queue<std::pair<Vector3, Vector3>> m_queue;
-	};
+	//class CustomQueue
+	//{
+	//public:
+	//	void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
+	//	void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
+	//	std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
+	//	bool empty() const { return m_queue.empty(); }
+	//	std::size_t size() const { return m_queue.size(); }
+	//	void printQueue() const
+	//	{
+	//		std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
+	//		while (!tempQueue.empty())
+	//		{
+	//			std::cout.fixed;
+	//			std::cout.precision(6);
+	//			std::cout <<
+	//				tempQueue.front().first.x << " / \t" <<
+	//				tempQueue.front().first.y << " / \t" <<
+	//				tempQueue.front().first.z <<
+	//				" \t|\t" <<
+	//				tempQueue.front().second.x << " / \t" <<
+	//				tempQueue.front().second.y << " / \t" <<
+	//				tempQueue.front().second.z;
+	//			//std::cout << std::endl;
+	//			tempQueue.pop();
+	//		}
+	//	}
+	//	~CustomQueue()
+	//	{
+	//		printQueue();
+	//	}
+	//private:
+	//	std::queue<std::pair<Vector3, Vector3>> m_queue;
+	//};
 
-	static CustomQueue posQueue;
-	if (posQueue.size() > 1)
-		posQueue.pop();
-	posQueue.push({ currentPos,serverPos });
+	//static CustomQueue posQueue;
+	//if (posQueue.size() > 1)
+	//	posQueue.pop();
+	//posQueue.push({ currentPos,serverPos });
 
-	//std::cout << std::endl;
-	posQueue.printQueue();
-	std::cout << "\t" << directionVector.Length() << std::endl;
-	///////
+	////std::cout << std::endl;
+	//posQueue.printQueue();
+	//std::cout << "\t" << directionVector.Length() << std::endl;
+	/////////
 
 	float dot = serverRot.Dot(currentRot);
 	float angleDif = 2.0f * acos(dot);

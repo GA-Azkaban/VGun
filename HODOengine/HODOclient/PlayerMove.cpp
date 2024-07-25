@@ -1292,6 +1292,8 @@ void PlayerMove::Respawn()
 {
 	_playerColliderStanding->OnEnable();
 	_tpanimator->GetAllAC()->SetBool("isDie", false);
+	Reload();
+	_headCam->ResetCameraPos();
 }
 
 void PlayerMove::DecidePlayerState()

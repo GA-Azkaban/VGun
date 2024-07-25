@@ -83,7 +83,7 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->_myObj = player;
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.56f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
@@ -353,7 +353,7 @@ void InGameSceneView::Initialize()
 		otherPlayer->AddComponent<PlayerInfo>();
 		otherPlayer->LoadFBXFile("SKM_GunManTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.56f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
