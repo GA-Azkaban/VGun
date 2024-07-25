@@ -5,6 +5,7 @@
 #include "IndicatorPool.h"
 #include "UIEffect.h"
 #include "Crosshair.h"
+#include "DamageLog.h"
 
 PlayerInfo::PlayerInfo()
 {
@@ -45,7 +46,6 @@ void PlayerInfo::GetData(PlayerInfo* info)
 	_playerUID = info->GetPlayerUID();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
-	audio = info->audio;
 }
 
 void PlayerInfo::Init()
@@ -227,6 +227,7 @@ void PlayerInfo::PlayerAttacked(Vector3 targetPos)
 {
 	_hitEffect->SetEffectOn();
 	IndicatorPool::Instance().SummonIndicator(targetPos);
+	GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_attacked");
 }
 
 void PlayerInfo::AddSerialKillCount()
@@ -314,6 +315,26 @@ void PlayerInfo::KillLogExit()
 void PlayerInfo::SetCrosshairUI(Crosshair* crosshair)
 {
 	_crosshair = crosshair;
+}
+
+void PlayerInfo::SetDamageLogUI(DamageLog* damageLog)
+{
+	_damageLog = damageLog;
+}
+
+void PlayerInfo::DisplayDamageLog(std::string nickname, int damage, int remainHP)
+{
+	_damageLog->DisplayLog(nickname, damage, remainHP);
+}
+
+void PlayerInfo::SetKillLogUI(KillLog* killLog)
+{
+	_killLogUI = killLog;
+}
+
+void PlayerInfo::DisplayKillLog(std::string nickname, std::string deadNickname, KillLog::KillLogType logType)
+{
+	_killLogUI->DisplayLog(nickname, deadNickname, logType);
 }
 
 bool& PlayerInfo::GetPlayerDie()

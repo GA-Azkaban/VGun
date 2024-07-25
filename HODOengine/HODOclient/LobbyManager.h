@@ -125,4 +125,8 @@ private:
 	// 씬 내부에 계속 존재하는 오브젝트들
 	std::vector<HDData::GameObject*> _playerObjs;
 	std::vector<HDData::GameObject*> _nickNameIndex;
+
+public:
+	// 플레이어 캐릭터 타입을 관리
+	bool isUsed[6] = { false };
 };

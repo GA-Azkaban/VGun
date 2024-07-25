@@ -91,6 +91,7 @@ namespace HDData
 		TransformInfo GetCurTransform() const;
 		void SetPrevTransform(TransformInfo info);
 		void SetCurTransform(TransformInfo info);
+		Vector3 GetVelocity() const;
 
 	protected:
 		bool _freezeRotation;

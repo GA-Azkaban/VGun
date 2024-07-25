@@ -26,6 +26,7 @@ public:
 	void SetPlayerColliders(HDData::DynamicCapsuleCollider* standing, HDData::DynamicCapsuleCollider* sitting);
 	void PresetSprayPattern(int gunType);
 	void StartRoundCam();
+	void InsertOtherPlayerInfo(int uid, HDData::DynamicCapsuleCollider* collider);
 
 public:
 	bool IsShootHead();
@@ -55,8 +56,11 @@ private:
 	void Move(int direction);
 	void Pitch(float rotationValue);
 	void ToggleSit(bool isSit);
+
+public:
 	void Die();
 	void Respawn();
+	void ResetState();
 
 	// 사격 관련
 private:
@@ -78,6 +82,8 @@ private:
 public:
 	int& GetBulletCount();
 	ePlayerMoveState GetPlayerMoveEnum(int index);
+	std::unordered_map<int, HDData::DynamicCollider*>& GetOtherPlayerCols();
+	
 public:
 	virtual void OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count) override;
 	virtual void OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count) override;
@@ -140,7 +146,7 @@ private:
 	float _jumpCooldown;
 	float _tumbleCooldown;
 	int _shootCount;
-	int& _bulletCount;
+	int _bulletCount;
 	float _reloadTimer;
 	float _tumbleTimer;
 	bool _isReloading;
@@ -168,4 +174,7 @@ private:
 
 public:
 	bool _isIngamePlaying;
+
+private:
+	std::unordered_map<int, HDData::DynamicCollider*> _otherPlayers;
 };

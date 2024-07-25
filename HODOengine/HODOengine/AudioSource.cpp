@@ -8,14 +8,6 @@ HDData::AudioSource::AudioSource()
 
 }
 
-void HDData::AudioSource::Update()
-{
-	for (auto& sound : _3DSoundList)
-	{
-		_soundSystem.Update3DSoundPosition(sound, GetTransform()->GetPosition());
-	}
-}
-
 void HDData::AudioSource::AddAudio(std::string soundName, std::string soundPath, HDData::SoundGroup soundGroup)
 {
 	_soundSystem.CreateSound(soundPath, soundGroup);
@@ -24,9 +16,8 @@ void HDData::AudioSource::AddAudio(std::string soundName, std::string soundPath,
 
 void HDData::AudioSource::AddAudio3D(std::string soundName, std::string soundPath, HDData::SoundGroup soundGroup, float minDistance, float maxDistance)
 {
-	_soundSystem.CreateSound3D(soundPath, soundGroup, minDistance, maxDistance);
+	_soundSystem.CreateSound3D(this, soundPath, soundGroup, minDistance, maxDistance);
 	_soundSystem.GetSoundPathList().insert(std::make_pair(soundName, soundPath));
-	_3DSoundList.push_back(soundName);
 }
 
 void HDData::AudioSource::PlayOnce(std::string soundName)
@@ -65,25 +56,25 @@ void HDData::AudioSource::PlayRepeat(std::string soundName)
 		_soundSystem.PlayRepeat(iter->second);
 }
 
-void HDData::AudioSource::Play3DOnce(std::string soundName, Vector3 startPos)
+void HDData::AudioSource::Play3DOnce(std::string soundName)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
-		_soundSystem.Play3DOnce(iter->second, startPos);
+		_soundSystem.Play3DOnce(this, iter->second);
 }
 
-void HDData::AudioSource::Play3DRepeat(std::string soundName, Vector3 startPos)
+void HDData::AudioSource::Play3DRepeat(std::string soundName)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
-		_soundSystem.Play3DRepeat(iter->second, startPos);
+		_soundSystem.Play3DRepeat(this, iter->second);
 }
 
 void HDData::AudioSource::Stop(std::string soundName)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
-		_soundSystem.Stop(iter->second);
+		_soundSystem.Stop(this, iter->second);
 }
 
 void HDData::AudioSource::StopSoundGroup(HDData::SoundGroup group)
@@ -100,7 +91,7 @@ void HDData::AudioSource::Mute(std::string soundName)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
-		_soundSystem.Mute(iter->second);
+		_soundSystem.Mute(this, iter->second);
 }
 
 void HDData::AudioSource::MuteSoundGroup(HDData::SoundGroup group)
@@ -117,7 +108,7 @@ void HDData::AudioSource::Paused(std::string soundName)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
-		_soundSystem.Paused(iter->second);
+		_soundSystem.Paused(this, iter->second);
 }
 
 void HDData::AudioSource::PausedSoundGroup(HDData::SoundGroup group)
@@ -134,7 +125,7 @@ void HDData::AudioSource::SetSoundVolume(std::string soundName, float volume)
 {
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
-		_soundSystem.SetSoundVolume(iter->second, volume);
+		_soundSystem.SetSoundVolume(this, iter->second, volume);
 }
 
 void HDData::AudioSource::SetSoundGroupVolume(HDData::SoundGroup group, float volume)
@@ -152,7 +143,7 @@ bool HDData::AudioSource::IsSoundPlaying(std::string soundName)
 	auto iter = _soundSystem.GetSoundPathList().find(soundName);
 	if (iter != _soundSystem.GetSoundPathList().end())
 	{
-		return _soundSystem.IsSoundPlaying(iter->second);
+		return _soundSystem.IsSoundPlaying(this, iter->second);
 	}
 
 	return false;

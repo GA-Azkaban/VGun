@@ -44,7 +44,7 @@ namespace HDEngine
 		CreatePhysXScene();
 
 		// 마찰과 탄성을 지정해 머티리얼 생성
-		_material = _physics->createMaterial(0.8f, 0.6f, 0.1f);
+		_material = _physics->createMaterial(0.9f, 0.8f, 0.2f);
 		_playerMaterial = _physics->createMaterial(0.7f, 0.63f, 0.0f);
 		_planeMaterial = _physics->createMaterial(0.2f, 0.1f, 0.0f);
 
@@ -75,7 +75,7 @@ namespace HDEngine
 		}
 
 		_accumulateTime += API::GetDeltaTime();
-		if (_accumulateTime >= 0.007f)
+		while (_accumulateTime >= 0.007f)
 		{
 			_accumulateTime -= 0.007f;
 			for (auto& rigid : _rigidDynamics)
@@ -251,11 +251,11 @@ namespace HDEngine
 	{
 		// 씬에 대한 설정
 		physx::PxSceneDesc sceneDesc(_physics->getTolerancesScale());
-#ifdef _DEBUG
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 12, 0.0f);
-#else
-		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3.2f, 0.0f);
-#endif
+//#ifdef _DEBUG
+//		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 12, 0.0f);
+//#else
+		sceneDesc.gravity = physx::PxVec3(0.0f, -9.80665f * 3, 0.0f);
+//#endif
 		_dispatcher = physx::PxDefaultCpuDispatcherCreate(2);
 		sceneDesc.cpuDispatcher = _dispatcher;
 		//sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
@@ -515,7 +515,14 @@ namespace HDEngine
 				physx::PxTransform localTransform(physx::PxVec3(position.x, position.y, position.z));
 				physx::PxRigidDynamic* sphereRigid = _physics->createRigidDynamic(localTransform);
 				//physx::PxRigidBodyExt::updateMassAndInertia(*sphereRigid, 0.0f);
-				sphereRigid->setMass(0.2f);
+				if (sphere->GetParentCollider() == nullptr)
+				{
+					sphereRigid->setMass(0.08f);
+				}
+				else
+				{
+					sphereRigid->setMass(0.2f);
+				}
 				sphereRigid->attachShape(*shape);
 
 				//_pxScene->addActor(*sphereRigid);

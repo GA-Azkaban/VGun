@@ -9,6 +9,8 @@
 #include "Timer.h"
 
 class LowHPEffect;
+class DamageLog;
+class KillLog;
 
 class RoundManager : public HDData::Script
 {
@@ -96,6 +98,16 @@ public:
 	HDData::ImageUI* tumbleImage;
 	HDData::ImageUI* tumbleAlphaImage;
 	HDData::TextUI* tumbleCountText;
+
+	HDData::ImageUI* hpImage;
+	HDData::ImageUI* ammoImage;
+
+	HDData::ImageUI* defaultCrosshair;
+	HDData::ImageUI* hitCrosshair;
+	HDData::ImageUI* criticalCrosshair;
+
+	DamageLog* damageLog;
+	KillLog* killLog;
 
 private:
 	bool _isRoundStart = false;

@@ -1,4 +1,4 @@
-﻿#include "PlayerMove.h"
+#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -15,7 +15,7 @@ PlayerMove::PlayerMove()
 	_jumpCooldown(0.0f),
 	_tumbleCooldown(0.0f),
 	_shootCount(0),
-	_bulletCount(GameManager::Instance()->GetMyInfo()->GetCurrentBulletCount()),
+	_bulletCount(6),
 	_reloadTimer(0.0f),
 	_isReloading(false),
 	_isRunning(false),
@@ -285,13 +285,13 @@ void PlayerMove::ShootGun()
 			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
 			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
 			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(forceDirection, 2.0f, 1);
+			hitDynamicSphere->AddForce(forceDirection, 1.5f, 1);
 			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
 			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
 			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
 							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
 							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
-			hitDynamicSphere->AddTorque(axis, 500.0f, 0);
+			hitDynamicSphere->AddTorque(axis, 10.0f, 1);
 		}
 	}
 
@@ -313,6 +313,7 @@ void PlayerMove::ShootGun()
 
 	++_shootCount;
 	--_bulletCount;
+	GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(_bulletCount);
 	_shootCooldown = 0.5f;
 }
 
@@ -320,7 +321,7 @@ void PlayerMove::Reload()
 {
 	_shootCount = 0;
 	//_playerState.second = ePlayerMoveState::IDLE;
-	_bulletCount = GameManager::Instance()->GetMyInfo()->GetMaxBulletCount();
+	_bulletCount = 6;
 }
 
 void PlayerMove::ApplyRecoil()
@@ -348,18 +349,18 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-
+			
 			break;
 		}
 		case ePlayerMoveState::RUN:
 		{
-
+			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
 			break;
 		}
 		case ePlayerMoveState::JUMP:
 		{
-			_playerColliderStanding->Jump(Vector3::Zero);
 			_playerColliderStanding->AdjustFriction(0.02f, 0.01f);
+			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
@@ -574,6 +575,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RUN:
 		{
 			//_playerColliderStanding->Stop();
+			_playerColliderStanding->AdjustFriction(0.7f, 0.63f);
 			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
@@ -741,6 +743,12 @@ void PlayerMove::PlayParticle(Vector3 position)
 	bloodParticle->Play();
 }
 
+void PlayerMove::ResetState()
+{
+	_playerState.first = ePlayerMoveState::IDLE;
+	_playerState.second = ePlayerMoveState::AIM;
+}
+
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
@@ -760,6 +768,11 @@ ePlayerMoveState PlayerMove::GetPlayerMoveEnum(int index)
 	{
 		assert(false);
 	}
+}
+
+std::unordered_map<int, HDData::DynamicCollider*>& PlayerMove::GetOtherPlayerCols()
+{
+	return _otherPlayers;
 }
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
@@ -787,17 +800,18 @@ void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned in
 		OnStateExit(ePlayerMoveState::JUMP);
 	}
 	*/
-	auto& opponentCollider = (*colArr)->_otherActor;
 
-	if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
-	{
-		//_isMoveableOnJump = false;
-	}
+	//auto& opponentCollider = (*colArr)->_otherActor;
+
+	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
+	//{
+	//	_isMoveableOnJump = false;
+	//}
 }
 
 void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-	auto& opponentCollider = (*colArr)->_otherActor;
+	//auto& opponentCollider = (*colArr)->_otherActor;
 
 	//// plane인 경우
 	//if (opponentCollider == nullptr)
@@ -1020,6 +1034,11 @@ void PlayerMove::StartRoundCam()
 {
 	_isHeadCam = true;
 	_isFirstPersonPerspective = true;
+}
+
+void PlayerMove::InsertOtherPlayerInfo(int uid, HDData::DynamicCapsuleCollider* collider)
+{
+	_otherPlayers.insert({uid, collider});
 }
 
 bool PlayerMove::IsShootHead()
@@ -1275,12 +1294,16 @@ void PlayerMove::Die()
 	auto origin = _headCam->GetTransform()->GetPosition();
 	_headCam->GetTransform()->Rotate(0, 90, 0);
 	_playerColliderStanding->OnDisable();
+	_playerState.second = ePlayerMoveState::AIM;
 }
 
 void PlayerMove::Respawn()
 {
 	_playerColliderStanding->OnEnable();
 	_tpanimator->GetAllAC()->SetBool("isDie", false);
+	Reload();
+	_playerState.first = ePlayerMoveState::IDLE;
+	_headCam->ResetCameraPos();
 }
 
 void PlayerMove::DecidePlayerState()
@@ -1531,17 +1554,17 @@ void PlayerMove::CameraMove()
 
 	float ratio = _deltaTime * 10;
 	
-	float finalRotX = _rotAngleX * (1.0f - ratio) + _prevRotAngleX * ratio;
-	float finalRotY = _rotAngleY * (1.0f - ratio) + _prevRotAngleY * ratio;
+	//float finalRotX = _rotAngleX * (1.0f - ratio) + _prevRotAngleX * ratio;
+	//float finalRotY = _rotAngleY * (1.0f - ratio) + _prevRotAngleY * ratio;
 
-	Quaternion rot = rot.CreateFromYawPitchRoll(finalRotY, 0.0f, 0.0f);
+	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerColliderStanding->SetColliderRotation(rot);
 
 	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
-	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(finalRotY, finalRotX, 0.0f);
+	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	_headCam->GetTransform()->SetRotation(pitchRotQuat);
 
 	// 메쉬 회전
-	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, finalRotX);
+	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
 }

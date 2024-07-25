@@ -37,6 +37,11 @@ namespace HDData
 		_textUI->SetColor(color);
 	}
 
+	void TextUI::SetAlpha(float alpha)
+	{
+		_textUI->SetAlpha(alpha);
+	}
+
 	void TextUI::SetText(const std::string& str)
 	{
 		_textUI->SetText(str);

@@ -3,6 +3,7 @@
 #include "PlayerState.h"
 #include "SoundManager.h"
 #include "Timer.h"
+#include "KillLog.h"
 
 enum class eHITLOC
 {
@@ -12,9 +13,22 @@ enum class eHITLOC
 	BODY = 3
 };
 
+enum class eMeshType
+{
+	NONE,
+	COWBOY,
+	COWGIRL,
+	BADGUY,
+	GUNMAN,
+	WORKINGGIRL,
+
+	LAST
+};
+
 class Crosshair;
 class HitEffect;
 class IndicatorPool;
+class DamageLog;
 
 class PlayerInfo : public HDData::Script
 {
@@ -92,6 +106,11 @@ public:
 
 	void SetCrosshairUI(Crosshair* crosshair);
 
+	void SetDamageLogUI(DamageLog* damageLog);
+	void DisplayDamageLog(std::string nickname, int damage, int remainHP);
+	void SetKillLogUI(KillLog* killLog);
+	void DisplayKillLog(std::string nickname, std::string deadNickname, KillLog::KillLogType logType);
+
 private:
 	bool _isMyInfo = false;
 
@@ -133,8 +152,11 @@ private:
 	HDData::TextUI* _killLog;
 
 	Crosshair* _crosshair;
+	DamageLog* _damageLog;
+	KillLog* _killLogUI;
 
 public:
+	eMeshType type = eMeshType::NONE;
 	HDData::AudioSource* audio;
 	int _serialkillcount;
 };

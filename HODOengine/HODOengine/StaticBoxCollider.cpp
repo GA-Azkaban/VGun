@@ -53,7 +53,7 @@ void HDData::StaticBoxCollider::SetDepth(float val)
 	_depth = val;
 }
 
-void HDData::StaticBoxCollider::Update()
+void HDData::StaticBoxCollider::UpdateToPhysics()
 {
 	Matrix colWorld = Matrix::Identity;
 	colWorld *= GetTransformMatrix();

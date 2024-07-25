@@ -54,7 +54,8 @@ namespace HDData
 			delta.z = (forward.z) * speed * deltaTime;
 			Vector3 currentPos = e.first->GetPosition();
 			// 중력
-			Vector3 localUp = Vector3::Transform(Vector3(0.0f, 1.0f, 0.0f), worldTM.Invert());
+			//Vector3 localUp = Vector3::Transform(Vector3(0.0f, 1.0f, 0.0f), worldTM.Invert());
+			Vector3 localUp = Vector3(0.0f, 1.0f, 0.0f);
 			localUp.Normalize();
 			float velocity = e.first->GetGravityVelocity();
 			float modifier = e.first->GetGravityModifier();

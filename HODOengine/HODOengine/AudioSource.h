@@ -32,8 +32,8 @@ namespace HDData
 		void PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup);
 		void PlayRepeat(std::string soundName);
 
-		void Play3DOnce(std::string soundName, Vector3 startPos);
-		void Play3DRepeat(std::string soundName, Vector3 startPos);
+		void Play3DOnce(std::string soundName);
+		void Play3DRepeat(std::string soundName);
 
 		void Stop(std::string soundName);
 		void StopSoundGroup(HDData::SoundGroup group);
@@ -54,11 +54,7 @@ namespace HDData
 
 		bool IsSoundPlaying(std::string soundName);
 
-	protected:
-		virtual void Update() override;
-
 	private:
 		HDEngine::SoundSystem& _soundSystem;
-		std::vector<std::string> _3DSoundList;
 	};
 }

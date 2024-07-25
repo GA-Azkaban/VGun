@@ -133,6 +133,12 @@
     <ClCompile Include="DecalPool.cpp">
       <Filter>02_Client\01_Script\Decal\Pool</Filter>
     </ClCompile>
+    <ClCompile Include="DamageLog.cpp">
+      <Filter>02_Client\01_Script\UI\DamageLog</Filter>
+    </ClCompile>
+    <ClCompile Include="KillLog.cpp">
+      <Filter>02_Client\01_Script\UI\KillLog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -294,6 +300,12 @@
     <ClInclude Include="DecalPool.h">
       <Filter>02_Client\01_Script\Decal\Pool</Filter>
     </ClInclude>
+    <ClInclude Include="DamageLog.h">
+      <Filter>02_Client\01_Script\UI\DamageLog</Filter>
+    </ClInclude>
+    <ClInclude Include="KillLog.h">
+      <Filter>02_Client\01_Script\UI\KillLog</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="HODOclient.ico">
@@ -441,6 +453,12 @@
     </Filter>
     <Filter Include="02_Client\01_Script\Decal\Pool">
       <UniqueIdentifier>{4ca97fbb-d632-4dc3-984e-718607b7e37d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\DamageLog">
+      <UniqueIdentifier>{c354c068-e02b-485d-a23a-3233758a2c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\KillLog">
+      <UniqueIdentifier>{ee8c2273-cfcc-4d50-b665-3585d7b6090d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
