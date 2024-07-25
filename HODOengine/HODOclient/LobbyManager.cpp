@@ -233,16 +233,21 @@ void LobbyManager::RefreshRoom()
 		_nickNameIndex[i]->SetSelfActive(true);
 		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
 		text->SetText(info->GetPlayerNickName());
+		text->SetColor(DirectX::Colors::White);
+
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
-			//_quitButtons[i]->SetSelfActive(true);
 			_inGameStartButton->SetSelfActive(true);
 		}
-		else if (info->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+		else
 		{
-			//_quitButtons[i]->SetSelfActive(false);
 			_inGameStartButton->SetSelfActive(false);
+		}
+
+		if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == info->GetPlayerUID())
+		{
+			text->SetColor(DirectX::Colors::Gold);
 		}
 	}
 }
