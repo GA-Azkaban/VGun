@@ -19,7 +19,7 @@ namespace HDData
 		void SetWidth(float val);
 		void SetDepth(float val);
 
-		virtual void Update() override;
+		virtual void UpdateToPhysics() override;
 
 	private:
 		float _width;

@@ -391,36 +391,36 @@ void NetworkManager::SendRoomLeave()
 
 void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
-	// Todo RoomInfo 설정
-	auto info = LobbyManager::Instance().GetRoomData();
+	//// Todo RoomInfo 설정
+	//auto info = LobbyManager::Instance().GetRoomData();
 
-	info->_players.clear();
+	//info->_players.clear();
 
-	info->roomid = roomInfo.roomid();
+	//info->roomid = roomInfo.roomid();
 
-	info->isPrivate = roomInfo.isprivate();
+	//info->isPrivate = roomInfo.isprivate();
 
-	info->roomName = roomInfo.roomname();
-	info->password = roomInfo.password();
+	//info->roomName = roomInfo.roomname();
+	//info->password = roomInfo.password();
 
-	info->currentPlayerCount = roomInfo.currentplayercount();
+	//info->currentPlayerCount = roomInfo.currentplayercount();
 
-	if (roomInfo.users().empty())
-	{
-		return;
-	}
+	//if (roomInfo.users().empty())
+	//{
+	//	return;
+	//}
 
-	for (auto& player : roomInfo.users())
-	{
-		PlayerInfo* one = new PlayerInfo;
+	//for (auto& player : roomInfo.users())
+	//{
+	//	PlayerInfo* one = new PlayerInfo;
 
-		one->SetNickName(player.userinfo().nickname());
-		one->SetIsHost(player.host());
-		one->SetPlayerUID(player.userinfo().uid());
+	//	one->SetNickName(player.userinfo().nickname());
+	//	one->SetIsHost(player.host());
+	//	one->SetPlayerUID(player.userinfo().uid());
 
-		// 플레이어 정보 받기	
-		info->_players.push_back(one);
-	}
+	//	// 플레이어 정보 받기	
+	//	info->_players.push_back(one);
+	//}
 
 	LobbyManager::Instance().RoomEnterSUCCESS();
 }
@@ -508,6 +508,11 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		one->SetNickName(player.userinfo().nickname());
 		one->SetIsHost(player.host());
 		one->SetCurrentHP(player.hp());
+
+		if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
+		{
+			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
+		}
 
 		info->_players.push_back(one);
 	}

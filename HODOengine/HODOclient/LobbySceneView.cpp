@@ -249,10 +249,6 @@ void LobbySceneView::Initialize()
 		meshComp->LoadAnimation("TP");
 		meshComp->LoadMaterial(M_Red, 0);
 		meshComp->PlayAnimation("RV_idle", true, 0.1, true, 0.1);
-		player->AddComponent<PlayerInfo>();
-
-		/*player->AddComponent<HDData::Animator>();
-		API::LoadFPAnimationFromData(player, "FP_animation.json");*/
 
 		LobbyManager::Instance().GetPlayerObjects().push_back(player);
 

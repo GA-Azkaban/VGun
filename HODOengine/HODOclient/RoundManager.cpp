@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -174,7 +174,7 @@ void RoundManager::UpdateRound()
 
 void RoundManager::GetNewDataFromLobby()
 {
-	auto& obj = LobbyManager::Instance().GetPlayerObjects();
+	auto& obj = LobbyManager::Instance().GetRoomData()->_players;
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
 
 	for (auto& p : _playerObjs)
@@ -186,13 +186,10 @@ void RoundManager::GetNewDataFromLobby()
 
 	for (auto& one : obj)
 	{
-		PlayerInfo* info = one->GetComponent<PlayerInfo>();
-
-		if (info->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		if (one->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
 			GameManager::Instance()->GetMyInfo()->Init();
-			GameManager::Instance()->GetMyInfo()->audio = info->audio;
 
 			_myKillCount.first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 			_myKillCount.first->SetColor(DirectX::Colors::WhiteSmoke);
@@ -204,23 +201,24 @@ void RoundManager::GetNewDataFromLobby()
 			if (index == _playerNum - 1) break;
 
 			auto playerInfo = _playerObjs[index]->GetComponent<PlayerInfo>();
-			playerInfo->GetData(info);
+			playerInfo->GetData(one);
 			playerInfo->Init();
 
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 
-			_players.insert({ info->GetPlayerUID(), _playerObjs[index] });
+			_players.insert({ one->GetPlayerUID(), _playerObjs[index] });
+
 			auto plMove = _myObj->GetComponent<PlayerMove>();
 			if (plMove != nullptr)
 			{
-				plMove->InsertOtherPlayerInfo(info->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
+				plMove->InsertOtherPlayerInfo(one->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
 			}
 
-			_killCountObjs[index].first->SetText(info->GetPlayerNickName());
-			_killCountObjs[index].first->SetColor(DirectX::Colors::OrangeRed);
+			_killCountObjs[index].first->SetText(one->GetPlayerNickName());
+			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
 			_killCountObjs[index].second->SetText(std::to_string(playerInfo->GetPlayerKillCount()));
 			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
-			_inGameKillCounts.insert({ info->GetPlayerUID(), _killCountObjs[index] });
+			_inGameKillCounts.insert({ one->GetPlayerUID(), _killCountObjs[index] });
 			++index;
 		}
 	}
@@ -249,6 +247,12 @@ void RoundManager::SetUIOrigin()
 {
 	_timerUI->SetColor(DirectX::Colors::White);
 
+	for (int i = 0; i < 5; ++i)
+	{
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
+	}
+
 	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
 	_winnerImg->GetGameObject()->SetSelfActive(false);
@@ -258,13 +262,6 @@ void RoundManager::SetUIOrigin()
 
 void RoundManager::SetUIActive(bool isActive)
 {
-	for (int i = 0; i < 5; ++i)
-	{
-		//_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
-		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
-		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
-	}
-
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
