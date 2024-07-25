@@ -158,6 +158,7 @@ void RoundManager::InitRound()
 	// 시작 타이머 세팅
 	_initTimer->Start();
 	_initTimertxt->GetGameObject()->SetSelfActive(true);
+	_timerUI->SetColor(DirectX::Colors::White);
 
 	// 시작 벨 울리기 
 	SoundManager::Instance().PlayUI("sfx_bell");
