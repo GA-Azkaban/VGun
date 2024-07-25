@@ -1,4 +1,4 @@
-﻿#include "RoundManager.h"
+#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -545,6 +545,7 @@ void RoundManager::UpdateRoundTimer()
 			_gameEndTimer->Start();
 			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 			_myObj->GetComponent<PlayerMove>()->ResetState();
+			_myObj->GetComponent<PlayerMove>()->StopMoving();
 		}
 	}
 }
