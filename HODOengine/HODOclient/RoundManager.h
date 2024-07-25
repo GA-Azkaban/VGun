@@ -97,6 +97,13 @@ public:
 	HDData::ImageUI* tumbleAlphaImage;
 	HDData::TextUI* tumbleCountText;
 
+	HDData::ImageUI* hpImage;
+	HDData::ImageUI* ammoImage;
+
+	HDData::ImageUI* defaultCrosshair;
+	HDData::ImageUI* hitCrosshair;
+	HDData::ImageUI* criticalCrosshair;
+
 private:
 	bool _isRoundStart = false;
 	HDData::Camera* _startCam;

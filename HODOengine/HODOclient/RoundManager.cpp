@@ -1,4 +1,4 @@
-﻿#include "RoundManager.h"
+#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -46,9 +46,11 @@ void RoundManager::Start()
 		};
 
 	_showResultTimer = new Timer;
-	_showResultTimer->duration = 20;
+	_showResultTimer->duration = 10;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
+		_timerUI->SetColor(DirectX::Colors::White);
+		SoundManager::Instance().StopAllPlayerSFX();
 		};
 
 	_serialKillTimer = new Timer;
@@ -109,8 +111,11 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	tumbleAlphaImage->SetActive(false);
-	tumbleCountText->SetActive(false);
+	//tumbleAlphaImage->SetActive(false);
+	//tumbleCountText->SetActive(false);
+
+	hitCrosshair->SetActive(false);
+	criticalCrosshair->SetActive(false);
 
 	// 킬 카운트 정리
 	_inGameKillCounts.clear();
@@ -153,6 +158,7 @@ void RoundManager::InitRound()
 	// 시작 타이머 세팅
 	_initTimer->Start();
 	_initTimertxt->GetGameObject()->SetSelfActive(true);
+	_timerUI->SetColor(DirectX::Colors::White);
 
 	// 시작 벨 울리기 
 	SoundManager::Instance().PlayUI("sfx_bell");
@@ -188,7 +194,7 @@ void RoundManager::GetNewDataFromLobby()
 			_myKillCount.first->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 			_myKillCount.first->SetColor(DirectX::Colors::WhiteSmoke);
 			_myKillCount.second->SetText(std::to_string(GameManager::Instance()->GetMyInfo()->GetPlayerKillCount()));
-			_myKillCount.second->SetColor(DirectX::Colors::WhiteSmoke);
+			_myKillCount.second->SetColor(DirectX::Colors::Yellow);
 		}
 		else
 		{
@@ -241,29 +247,32 @@ void RoundManager::SetUIOrigin()
 {
 	_timerUI->SetColor(DirectX::Colors::White);
 
-	// UI 활성화, 비활성화
-	_winnerTXT->GetGameObject()->SetSelfActive(false);
 	for (int i = 0; i < 5; ++i)
 	{
-		_loserTXT[i]->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
 	}
+
+	// UI 활성화, 비활성화
+	_winnerTXT->GetGameObject()->SetSelfActive(false);
+	_winnerImg->GetGameObject()->SetSelfActive(false);
 
 	_players.clear();
 }
 
 void RoundManager::SetUIActive(bool isActive)
 {
-	for (int i = 0; i < 5; ++i)
-	{
-		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
-		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
-	}
-
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
+	hpImage->GetGameObject()->SetSelfActive(isActive);
+	ammoImage->GetGameObject()->SetSelfActive(isActive);
+	if (defaultCrosshair != nullptr)
+	{
+		defaultCrosshair->SetActive(isActive);
+	}
 }
 
 bool RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
@@ -305,42 +314,17 @@ int RoundManager::GetPlayerNum()
 
 void RoundManager::CheckWinner()
 {
-	if (_winnerUID == NULL) return;
-
-	int count = _players.size();
-
 	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
 		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
-
-		int index = 0;
-		for (auto& [uid, player] : _players)
-		{
-			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
-			++index;
-		}
 	}
 	else
 	{
 		_winnerTXT->SetText(_players[_winnerUID]->GetComponent<PlayerInfo>()->GetPlayerNickName());
-
-		int index = 0;
-		for (auto& [uid, player] : _players)
-		{
-			if (_winnerUID == uid) continue;
-			_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
-			++index;
-		}
-
-		_loserTXT[index]->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 	}
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
 	_winnerImg->GetGameObject()->SetSelfActive(true);
-	for (int i = 0; i < count; ++i)
-	{
-		_loserTXT[i]->GetGameObject()->SetSelfActive(true);
-	}
 }
 
 bool RoundManager::GetIsRoundStart()
@@ -457,76 +441,91 @@ void RoundManager::UpdateRoundTimer()
 
 		if (nowElapsed == 118)
 		{
-			for (auto& col : _weedColVector)
+			for (int i = 0; i < _weedColVector.size(); ++i)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.005f, 0);
+				Vector3 axis = _weedColVector[i]->GetTransform()->GetRight();
+				axis.y += i * 0.01f;
+				axis.Normalize();
+				_weedColVector[i]->AddTorque(axis, 3.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 107 && nowElapsed <= 110)
 		{
-			for (auto& col : _weedColVector)
+			for (int i = 0; i < _weedColVector.size(); ++i)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, 1.0f), 0.004f, 0);
+				Vector3 axis = _weedColVector[i]->GetTransform()->GetForward();
+				axis.y += i * 0.01f;
+				axis.Normalize();
+				_weedColVector[i]->AddTorque(axis, 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 87 && nowElapsed <= 90)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, -1.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetRight() * -1;
+				col->AddTorque(axis, 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 69 && nowElapsed <= 70)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 0.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetForward() * -1;
+				col->AddTorque(axis, 3.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 59 && nowElapsed <= 60)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 0.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetRight();
+				col->AddTorque(axis, 3.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 48 && nowElapsed <= 50)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(0.0f, -1.0f, 1.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetForward();
+				col->AddTorque(axis, 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 38 && nowElapsed <= 40)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, 0.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetRight() * -1;
+				col->AddTorque(axis, 2.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 28 && nowElapsed <= 30)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(0.0f, -1.0f, -1.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetForward() * -1;
+				col->AddTorque(axis, 3.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 18 && nowElapsed <= 20)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(1.0f, -1.0f, 1.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetRight();
+				col->AddTorque(axis, 3.0f, 0);
 			}
 		}
 		else if (nowElapsed >= 8 && nowElapsed <= 10)
 		{
 			for (auto& col : _weedColVector)
 			{
-				col->AddForceAtPoint(col->GetTransform()->GetPosition() + Vector3(0.0f, 0.38f, 0.0f), Vector3(-1.0f, -1.0f, -1.0f), 0.004f, 0);
+				Vector3 axis = col->GetTransform()->GetForward();
+				col->AddTorque(axis, 4.0f, 0);
 			}
 		}
 
-		if (nowElapsed >= 10)
+
+		if (nowElapsed == 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
 			// TODO) 사운드 이펙트 넣기
@@ -535,8 +534,13 @@ void RoundManager::UpdateRoundTimer()
 		if (elapsedTime.count() >= _timer)
 		{
 			_isRoundStart = false;
+
+			tumbleAlphaImage->SetActive(false);
+			tumbleCountText->SetActive(false);
+
 			_gameEndTimer->Start();
 			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
+			_myObj->GetComponent<PlayerMove>()->ResetState();
 		}
 	}
 }
@@ -634,7 +638,7 @@ void RoundManager::UpdateDesiredKillChecker()
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_myKillCount.second->SetText(std::to_string(count));
-		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
+		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
 	}
 
 	for (auto& [uid, player] : _players)

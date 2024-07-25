@@ -101,7 +101,7 @@ void NetworkManager::RecvPlayShoot(Protocol::PlayerData playerData, Protocol::Pl
 	if (myUID == playerData.userinfo().uid())
 	{
 		GameManager::Instance()->GetMyInfo()->SetIsShoot(true);
-		int damage = 33;
+		int damage = 34;
 		if (hitLocation == Protocol::eHitLocation::HIT_LOCATION_HEAD)
 		{
 			damage = 100;
@@ -391,36 +391,36 @@ void NetworkManager::SendRoomLeave()
 
 void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 {
-	// Todo RoomInfo 설정
-	auto info = LobbyManager::Instance().GetRoomData();
+	//// Todo RoomInfo 설정
+	//auto info = LobbyManager::Instance().GetRoomData();
 
-	info->_players.clear();
+	//info->_players.clear();
 
-	info->roomid = roomInfo.roomid();
+	//info->roomid = roomInfo.roomid();
 
-	info->isPrivate = roomInfo.isprivate();
+	//info->isPrivate = roomInfo.isprivate();
 
-	info->roomName = roomInfo.roomname();
-	info->password = roomInfo.password();
+	//info->roomName = roomInfo.roomname();
+	//info->password = roomInfo.password();
 
-	info->currentPlayerCount = roomInfo.currentplayercount();
+	//info->currentPlayerCount = roomInfo.currentplayercount();
 
-	if (roomInfo.users().empty())
-	{
-		return;
-	}
+	//if (roomInfo.users().empty())
+	//{
+	//	return;
+	//}
 
-	for (auto& player : roomInfo.users())
-	{
-		PlayerInfo* one = new PlayerInfo;
+	//for (auto& player : roomInfo.users())
+	//{
+	//	PlayerInfo* one = new PlayerInfo;
 
-		one->SetNickName(player.userinfo().nickname());
-		one->SetIsHost(player.host());
-		one->SetPlayerUID(player.userinfo().uid());
+	//	one->SetNickName(player.userinfo().nickname());
+	//	one->SetIsHost(player.host());
+	//	one->SetPlayerUID(player.userinfo().uid());
 
-		// 플레이어 정보 받기	
-		info->_players.push_back(one);
-	}
+	//	// 플레이어 정보 받기	
+	//	info->_players.push_back(one);
+	//}
 
 	LobbyManager::Instance().RoomEnterSUCCESS();
 }
@@ -597,14 +597,14 @@ void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRu
 	// Todo roomInfo, gameRule 설정
 	RoundManager::Instance()->SetRoundTimer(gameRule.gametime());
 	RoundManager::Instance()->SetDesiredKill(gameRule.desiredkill());
+
+	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameStart()
 {
 	RoundManager::Instance()->SetIsRoundStart(true);
 	RoundManager::Instance()->SetStartTime(std::chrono::steady_clock::now());
-
-	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(true);
 }
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
@@ -796,18 +796,46 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	float speed = 8.4f;
 
 	Vector3 posDif = serverPos - currentPos;
-	Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
-	//nomal.Normalize();
+	//Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
+	////nomal.Normalize();
 
-	auto directionVector = nomal * speed * dt;
+	//auto directionVector = nomal * speed * dt;
+	auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
 
 	float dif = posDif.Length();
-
-
-	if (dif > 0.01f)
+	if (plInfo->GetPlayerState() == ePlayerState::IDLE)
 	{
-		current->SetPosition(serverPos);
+		if (dif > 0.1f)
+		{
+			current->SetPosition(serverPos);
+		}
 	}
+	else
+	{
+		if (dif > 0.001f)
+		{
+			current->SetPosition(serverPos);
+		}
+	}
+	//float dif = posDif.Length();
+	//auto plMove = current->GetGameObject()->GetComponent<PlayerMove>();
+	//auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
+
+	//if (dif > 0.01f && plMove->GetPlayerMoveEnum(1) != ePlayerMoveState::IDLE)
+	//if (plInfo->GetPlayerState() == ePlayerState::IDLE)
+	//{
+	//	if (dif > 0.1f)
+	//	{
+	//		current->SetPosition(serverPos);
+	//	}
+	//}
+	//else
+	//{
+	//	if (dif > 0.001f)
+	//	{
+	//		current->SetPosition(serverPos);
+	//	}
+	//}
 	 
 	//if (posDif.Length() > 15.0f)
 	//{
@@ -837,50 +865,50 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	//}
 	
 	//////
-	class CustomQueue
-	{
-	public:
-		void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
-		void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
-		std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
-		bool empty() const { return m_queue.empty(); }
-		std::size_t size() const { return m_queue.size(); }
-		void printQueue() const
-		{
-			std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
-			while (!tempQueue.empty())
-			{
-				std::cout.fixed;
-				std::cout.precision(6);
-				std::cout <<
-					tempQueue.front().first.x << " / \t" <<
-					tempQueue.front().first.y << " / \t" <<
-					tempQueue.front().first.z <<
-					" \t|\t" <<
-					tempQueue.front().second.x << " / \t" <<
-					tempQueue.front().second.y << " / \t" <<
-					tempQueue.front().second.z;
-				//std::cout << std::endl;
-				tempQueue.pop();
-			}
-		}
-		~CustomQueue()
-		{
-			printQueue();
-		}
-	private:
-		std::queue<std::pair<Vector3, Vector3>> m_queue;
-	};
+	//class CustomQueue
+	//{
+	//public:
+	//	void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
+	//	void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
+	//	std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
+	//	bool empty() const { return m_queue.empty(); }
+	//	std::size_t size() const { return m_queue.size(); }
+	//	void printQueue() const
+	//	{
+	//		std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
+	//		while (!tempQueue.empty())
+	//		{
+	//			std::cout.fixed;
+	//			std::cout.precision(6);
+	//			std::cout <<
+	//				tempQueue.front().first.x << " / \t" <<
+	//				tempQueue.front().first.y << " / \t" <<
+	//				tempQueue.front().first.z <<
+	//				" \t|\t" <<
+	//				tempQueue.front().second.x << " / \t" <<
+	//				tempQueue.front().second.y << " / \t" <<
+	//				tempQueue.front().second.z;
+	//			//std::cout << std::endl;
+	//			tempQueue.pop();
+	//		}
+	//	}
+	//	~CustomQueue()
+	//	{
+	//		printQueue();
+	//	}
+	//private:
+	//	std::queue<std::pair<Vector3, Vector3>> m_queue;
+	//};
 
-	static CustomQueue posQueue;
-	if (posQueue.size() > 1)
-		posQueue.pop();
-	posQueue.push({ currentPos,serverPos });
+	//static CustomQueue posQueue;
+	//if (posQueue.size() > 1)
+	//	posQueue.pop();
+	//posQueue.push({ currentPos,serverPos });
 
-	//std::cout << std::endl;
-	posQueue.printQueue();
-	std::cout << "\t" << directionVector.Length() << std::endl;
-	///////
+	////std::cout << std::endl;
+	//posQueue.printQueue();
+	//std::cout << "\t" << directionVector.Length() << std::endl;
+	/////////
 
 	float dot = serverRot.Dot(currentRot);
 	float angleDif = 2.0f * acos(dot);

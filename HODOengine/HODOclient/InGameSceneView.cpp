@@ -84,7 +84,7 @@ void InGameSceneView::Initialize()
 
 	RoundManager::Instance()->_myObj = player;
 
-	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
+	auto playerCollider = player->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.56f);
 	playerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 	playerCollider->SetFreezeRotation(true);
 	auto playerHead = API::CreateObject(_scene, "head", player);
@@ -354,7 +354,7 @@ void InGameSceneView::Initialize()
 		otherPlayer->AddComponent<PlayerInfo>();
 		otherPlayer->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 		otherPlayer->GetTransform()->SetPosition(posX, 0, 0);
-		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.28f, 0.58f);
+		auto otherPlayerCollider = otherPlayer->AddComponent<HDData::DynamicCapsuleCollider>(0.3f, 0.56f);
 		otherPlayerCollider->SetPositionOffset({ 0.0f, 0.43f, 0.0f });
 		otherPlayerCollider->SetFreezeRotation(true);
 		auto otherPlayerHead = API::CreateObject(_scene, otherObjName + "Head", otherPlayer);
@@ -452,14 +452,14 @@ void InGameSceneView::Initialize()
 
 	// killcount ui (mine)
 	auto nickname = API::CreateTextbox(_scene, "mine");
-	nickname->GetTransform()->SetPosition(130 - 40, 50, 0);
+	nickname->GetTransform()->SetPosition(130 + 30, 50, 0);
 	auto nickComp = nickname->GetComponent<HDData::TextUI>();
 	nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	nickComp->SetText("");
 	nickComp->SetSortOrder(0.7);
 
 	auto killcount = API::CreateTextbox(_scene, "mycount");
-	killcount->GetTransform()->SetPosition(130 + 75, 50, 0);
+	killcount->GetTransform()->SetPosition(130 + 270, 50, 0);
 	auto countComp = killcount->GetComponent<HDData::TextUI>();
 	countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 	countComp->SetText("");
@@ -476,14 +476,14 @@ void InGameSceneView::Initialize()
 	for (int i = 0; i < 5; ++i)
 	{
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
-		nickname->GetTransform()->SetPosition(uiX - 40, uiY, 0);
+		nickname->GetTransform()->SetPosition(uiX + 30, uiY + 10, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 75, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 270, uiY + 10, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
@@ -501,32 +501,36 @@ void InGameSceneView::Initialize()
 
 	// ammo Image
 	HDData::GameObject* ammoImg = API::CreateImageBox(_scene, "healthImg");
-	ammoImg->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	ammoImg->GetTransform()->SetPosition(2250.0f, 1370.0f, 0.0f);
 	auto ammoImgComp = ammoImg->GetComponent<HDData::ImageUI>();
 	ammoImgComp->SetImage("bulletIcon.png");
-	ammoImgComp->ChangeScale(0.5f, 0.5f);
+	ammoImgComp->ChangeScale(0.7f, 0.7f);
+	RoundManager::Instance()->ammoImage = ammoImgComp;
 
 	// ammo
 	auto ammo = API::CreateTextbox(_scene, "AmmoText");
 	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
 	ammoTXT->SetFont("Resources/Font/KRAFTON_100.spriteFont");
 	ammoTXT->SetColor(DirectX::Colors::LightGray);
-	ammoTXT->GetTransform()->SetPosition(2350.0f, 1400.0f, 0.0f);
+	ammoTXT->GetTransform()->SetPosition(2430.0f, 1410.0f, 0.0f);
+	ammoTXT->ChangeScale(0.6f);
 	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP Image
-	HDData::GameObject* healthPointImg = API::CreateImageBox(_scene,"healthImg");
-	healthPointImg->GetTransform()->SetPosition(2100.0f,1400.0f,0.0f);
+	HDData::GameObject* healthPointImg = API::CreateImageBox(_scene, "healthImg");
+	healthPointImg->GetTransform()->SetPosition(1900.0f, 1370.0f, 0.0f);
 	auto healthPointImgComp = healthPointImg->GetComponent<HDData::ImageUI>();
 	healthPointImgComp->SetImage("hpIcon.png");
-	healthPointImgComp->ChangeScale(0.5f,0.5f);
+	healthPointImgComp->ChangeScale(0.2f, 0.2f);
+	RoundManager::Instance()->hpImage = healthPointImgComp;
 
 	// HP
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
 	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
 	hpTxt->SetFont("Resources/Font/KRAFTON_100.spriteFont");
-	hpTxt->GetTransform()->SetPosition(2100.0f, 1400.0f, 0.0f);
+	hpTxt->GetTransform()->SetPosition(2100.0f, 1410.0f, 0.0f);
 	hpTxt->SetColor(DirectX::Colors::LightGray);
+	hpTxt->ChangeScale(0.6f);
 	RoundManager::Instance()->SetHPObject(hpTxt);
 
 	// Timer
@@ -601,23 +605,23 @@ void InGameSceneView::Initialize()
 
 	//RoundManager::Instance()->SetLoserImg(loserTextImgComp);
 
-	float loserX = 100.f;
+	//float loserX = 100.f;
 
-	for (int i = 0; i < 5; ++i)
-	{
-		auto loserName = API::CreateTextbox(_scene, "loser" + std::to_string(i));
-		loserName->GetTransform()->SetPosition(loserX, 400.0f, 0.0f);
+	//for (int i = 0; i < 5; ++i)
+	//{
+	//	auto loserName = API::CreateTextbox(_scene, "loser" + std::to_string(i));
+	//	loserName->GetTransform()->SetPosition(loserX, 400.0f, 0.0f);
 
-		auto loserComp = loserName->GetComponent<HDData::TextUI>();
-		loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
-		loserComp->SetColor(DirectX::Colors::Black);
+	//	auto loserComp = loserName->GetComponent<HDData::TextUI>();
+	//	loserComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
+	//	loserComp->SetColor(DirectX::Colors::Black);
 
-		RoundManager::Instance()->SetLoserText(loserComp, i);
+	//	RoundManager::Instance()->SetLoserText(loserComp, i);
 
-		loserName->SetSelfActive(false);
+	//	loserName->SetSelfActive(false);
 
-		loserX += 500;
-	}
+	//	loserX += 500;
+	//}
 
 	// 다시 로비 진입을 위한 타이머 UI
 	auto resultTimer = API::CreateTextbox(_scene, "resultTimer");
@@ -709,7 +713,7 @@ void InGameSceneView::Initialize()
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");
-	tumbleObj->GetTransform()->SetPosition(1900, 1350, 0);
+	tumbleObj->GetTransform()->SetPosition(1700, 1370, 0);
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
 	tumbleComp->SetColor(DirectX::Colors::LightGray);
@@ -717,7 +721,7 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
-	tumbleAlphaObj->GetTransform()->SetPosition(1900, 1350, 0);
+	tumbleAlphaObj->GetTransform()->SetPosition(1700, 1370, 0);
 	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
@@ -725,7 +729,7 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
-	tumbleCooldownCountObj->GetTransform()->SetPosition(1900 - 5, 1350 + 5, 0);
+	tumbleCooldownCountObj->GetTransform()->SetPosition(1700 - 5, 1370 + 5, 0);
 	auto tumbleCooldownCount = tumbleCooldownCountObj->AddComponent<CooldownText>();
 	auto tumbleCooldownText = tumbleCooldownCountObj->AddComponent<HDData::TextUI>();
 	tumbleCooldownText->SetFont("Resources/Font/KRAFTON_55.spriteFont");
