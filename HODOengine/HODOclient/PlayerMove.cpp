@@ -742,6 +742,12 @@ void PlayerMove::PlayParticle(Vector3 position)
 	bloodParticle->Play();
 }
 
+void PlayerMove::ResetState()
+{
+	_playerState.first = ePlayerMoveState::IDLE;
+	_playerState.second = ePlayerMoveState::AIM;
+}
+
 int& PlayerMove::GetBulletCount()
 {
 	return _bulletCount;
