@@ -16,10 +16,11 @@ public:
 
 	PlayerMove* playerMove;
 
-private:
 	HDData::ImageUI* _defaultCrosshair;
 	HDData::ImageUI* _hitCrosshair;
 	HDData::ImageUI* _criticalCrosshair;
+
+private:
 	Timer _hitTimer;
 	Timer _criticalTimer;
 };

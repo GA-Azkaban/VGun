@@ -50,6 +50,7 @@ void RoundManager::Start()
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
 		_timerUI->SetColor(DirectX::Colors::White);
+		SoundManager::Instance().StopAllPlayerSFX();
 		};
 
 	_serialKillTimer = new Timer;
@@ -157,6 +158,7 @@ void RoundManager::InitRound()
 	// 시작 타이머 세팅
 	_initTimer->Start();
 	_initTimertxt->GetGameObject()->SetSelfActive(true);
+	_timerUI->SetColor(DirectX::Colors::White);
 
 	// 시작 벨 울리기 
 	SoundManager::Instance().PlayUI("sfx_bell");
@@ -268,9 +270,12 @@ void RoundManager::SetUIActive(bool isActive)
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);
 	lowHPEffect->GetGameObject()->SetSelfActive(isActive);
 	tumbleImage->GetGameObject()->SetSelfActive(isActive);
-	crosshair->SetSelfActive(isActive);
 	hpImage->GetGameObject()->SetSelfActive(isActive);
 	ammoImage->GetGameObject()->SetSelfActive(isActive);
+	if (defaultCrosshair != nullptr)
+	{
+		defaultCrosshair->SetActive(isActive);
+	}
 }
 
 bool RoundManager::CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider)
@@ -312,10 +317,6 @@ int RoundManager::GetPlayerNum()
 
 void RoundManager::CheckWinner()
 {
-	if (_winnerUID == NULL) return;
-
-	int count = _players.size();
-
 	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
 		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
@@ -620,7 +621,7 @@ void RoundManager::UpdateDesiredKillChecker()
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
 		_myKillCount.second->SetText(std::to_string(count));
-		if (count >= _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
+		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
 	}
 
 	for (auto& [uid, player] : _players)
