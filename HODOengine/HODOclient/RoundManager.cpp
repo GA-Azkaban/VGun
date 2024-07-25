@@ -533,6 +533,8 @@ void RoundManager::UpdateRoundTimer()
 		}
 		if (elapsedTime.count() >= _timer)
 		{
+			SoundManager::Instance().PlayUI("sfx_roundend");
+
 			_isRoundStart = false;
 
 			tumbleAlphaImage->SetActive(false);

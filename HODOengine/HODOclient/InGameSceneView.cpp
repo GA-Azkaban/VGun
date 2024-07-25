@@ -502,9 +502,10 @@ void InGameSceneView::Initialize()
 
 	// ammo Image
 	HDData::GameObject* ammoImg = API::CreateImageBox(_scene, "healthImg");
-	ammoImg->GetTransform()->SetPosition(2250.0f, 1370.0f, 0.0f);
+	ammoImg->GetTransform()->SetPosition(2270.0f, 1370.0f, 0.0f);
 	auto ammoImgComp = ammoImg->GetComponent<HDData::ImageUI>();
-	ammoImgComp->SetImage("bulletIcon.png");
+	ammoImgComp->SetImage("bulletIcon2.png");
+	ammoImgComp->SetColor(DirectX::Colors::LightGray);
 	ammoImgComp->ChangeScale(0.7f, 0.7f);
 	RoundManager::Instance()->ammoImage = ammoImgComp;
 
@@ -513,15 +514,16 @@ void InGameSceneView::Initialize()
 	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
 	ammoTXT->SetFont("Resources/Font/KRAFTON_100.spriteFont");
 	ammoTXT->SetColor(DirectX::Colors::LightGray);
-	ammoTXT->GetTransform()->SetPosition(2430.0f, 1410.0f, 0.0f);
+	ammoTXT->GetTransform()->SetPosition(2460.0f, 1410.0f, 0.0f);
 	ammoTXT->ChangeScale(0.6f);
 	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP Image
 	HDData::GameObject* healthPointImg = API::CreateImageBox(_scene, "healthImg");
-	healthPointImg->GetTransform()->SetPosition(1900.0f, 1370.0f, 0.0f);
+	healthPointImg->GetTransform()->SetPosition(1930.0f, 1370.0f, 0.0f);
 	auto healthPointImgComp = healthPointImg->GetComponent<HDData::ImageUI>();
 	healthPointImgComp->SetImage("hpIcon.png");
+	healthPointImgComp->SetColor(DirectX::Colors::LightGray);
 	healthPointImgComp->ChangeScale(0.2f, 0.2f);
 	RoundManager::Instance()->hpImage = healthPointImgComp;
 
@@ -529,7 +531,7 @@ void InGameSceneView::Initialize()
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
 	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
 	hpTxt->SetFont("Resources/Font/KRAFTON_100.spriteFont");
-	hpTxt->GetTransform()->SetPosition(2100.0f, 1410.0f, 0.0f);
+	hpTxt->GetTransform()->SetPosition(2120.0f, 1410.0f, 0.0f);
 	hpTxt->SetColor(DirectX::Colors::LightGray);
 	hpTxt->ChangeScale(0.6f);
 	RoundManager::Instance()->SetHPObject(hpTxt);
@@ -714,7 +716,7 @@ void InGameSceneView::Initialize()
 
 	// 구르기 UI
 	auto tumbleObj = API::CreateObject(_scene, "Tumble");
-	tumbleObj->GetTransform()->SetPosition(1700, 1370, 0);
+	tumbleObj->GetTransform()->SetPosition(1730, 1370, 0);
 	auto tumbleComp = tumbleObj->AddComponent<HDData::ImageUI>();
 	tumbleComp->SetImage("recoil_rounded.png");
 	tumbleComp->SetColor(DirectX::Colors::LightGray);
@@ -722,7 +724,7 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->tumbleImage = tumbleComp;
 
 	auto tumbleAlphaObj = API::CreateObject(_scene, "TumbleAlpha");
-	tumbleAlphaObj->GetTransform()->SetPosition(1700, 1370, 0);
+	tumbleAlphaObj->GetTransform()->SetPosition(1730, 1370, 0);
 	auto tumbleCooldown = tumbleAlphaObj->AddComponent<CooldownAlpha>();
 	auto tumbleAlphaImage = tumbleAlphaObj->AddComponent<HDData::ImageUI>();
 	tumbleAlphaImage->SetImage("recoil_alpha_rounded.png");
@@ -730,7 +732,7 @@ void InGameSceneView::Initialize()
 	RoundManager::Instance()->tumbleAlphaImage = tumbleAlphaImage;
 
 	auto tumbleCooldownCountObj = API::CreateObject(_scene, "TumbleCount");
-	tumbleCooldownCountObj->GetTransform()->SetPosition(1700 - 5, 1370 + 5, 0);
+	tumbleCooldownCountObj->GetTransform()->SetPosition(1730 - 5, 1370 + 5, 0);
 	auto tumbleCooldownCount = tumbleCooldownCountObj->AddComponent<CooldownText>();
 	auto tumbleCooldownText = tumbleCooldownCountObj->AddComponent<HDData::TextUI>();
 	tumbleCooldownText->SetFont("Resources/Font/KRAFTON_55.spriteFont");

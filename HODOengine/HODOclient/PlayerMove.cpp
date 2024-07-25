@@ -275,6 +275,7 @@ void PlayerMove::ShootGun()
 		{
 			_isShootHead = true;
 			GameManager::Instance()->GetMyInfo()->PlayHeadShotEffect();
+			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_hithead");
 			PlayParticle(hitPoint);
 		}
 		else
@@ -300,6 +301,7 @@ void PlayerMove::ShootGun()
 	if (hitDynamicCapsule != nullptr)
 	{
 		RoundManager::Instance()->CheckBodyColliderOwner(hitDynamicCapsule);
+		GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_hitbody");
 		_isShootBody = true;
 		PlayParticle(hitPoint);
 	}
@@ -320,7 +322,6 @@ void PlayerMove::ShootGun()
 void PlayerMove::Reload()
 {
 	_shootCount = 0;
-	//_playerState.second = ePlayerMoveState::IDLE;
 	_bulletCount = 6;
 }
 
@@ -777,77 +778,23 @@ std::unordered_map<int, HDData::DynamicCollider*>& PlayerMove::GetOtherPlayerCol
 
 void PlayerMove::OnCollisionEnter(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-	//++_enterCount;
-	//if (_enterCount == 1)
-	//{
-	//	return;
-	//}
 
-	/*
-	if (_playerState.first == ePlayerMoveState::TUMBLE)
-	{
-		return;
-	}
-
-	auto& opponentCollider = (*colArr)->_otherActor;
-
-	// 지형인 경우
-	if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
-	{
-		// 착지 판정
-		_playerState.first = ePlayerMoveState::IDLE;
-		// 일단 
-		OnStateExit(ePlayerMoveState::JUMP);
-	}
-	*/
-
-	//auto& opponentCollider = (*colArr)->_otherActor;
-
-	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN && _playerState.first == ePlayerMoveState::JUMP)
-	//{
-	//	_isMoveableOnJump = false;
-	//}
 }
 
 void PlayerMove::OnCollisionExit(HDData::PhysicsCollision** colArr, unsigned int count)
 {
-	//auto& opponentCollider = (*colArr)->_otherActor;
 
-	//// plane인 경우
-	//if (opponentCollider == nullptr)
-	//{
-	//	_isOnGround = false;
-	//}
-	//// 지형인 경우
-	//else if (opponentCollider->GetColType() == eColliderType::TERRAIN)
-	//{
-	//	_isOnGround = false;
-	//}
-
-	//if (opponentCollider->GetColType() == eColliderRole::TERRAIN)
-	//{
-	//	_playerColliderStanding->ClearForceXYZ();
-	//}
 }
 
 void PlayerMove::OnTriggerEnter(HDData::Collider** colArr, unsigned int count)
 {
-	//if (_playerState.first == ePlayerMoveState::TUMBLE)
-	//{
-	//	return;
-	//}
-
-
 	// 지형인 경우
 	if ((*colArr)->GetColType() != eColliderRole::PLAYER && _playerState.first == ePlayerMoveState::JUMP)
 	{
 		// 착지 판정
 		_playerState.first = ePlayerMoveState::IDLE;
 		_playerColliderStanding->AdjustFriction(0.7f, 0.63f);
-		//_isMoveableOnJump = true;
-
-		// 일단 
-		//OnStateExit(ePlayerMoveState::JUMP);
+		//GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_landing");
 	}
 
 	return;
@@ -1311,16 +1258,6 @@ void PlayerMove::DecidePlayerState()
 	// 이전 스테이트 정보로 저장해주고 넘어간다.
 	_prevPlayerState.first = _playerState.first;
 	_prevPlayerState.second = _playerState.second;
-
-	//_isDie = GameManager::Instance()->GetMyInfo()->GetIsDie();
-	//if (_isDie)
-	//{
-	//	_playerState.first = ePlayerMoveState::DIE;
-	//}
-	//else
-	//{
-	//	_playerState.first = ePlayerMoveState::IDLE;
-	//}
 
 	if (GameManager::Instance()->GetMyInfo()->GetIsDie() != _isDie)
 	{
