@@ -91,6 +91,7 @@ void OthersAnim::Update()
 		case ePlayerState::DIE:
 		{
 			_mesh->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
+			_audio->Stop("3d_footstep");
 		}
 		break;
 		default:
