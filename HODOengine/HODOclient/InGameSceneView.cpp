@@ -475,14 +475,14 @@ void InGameSceneView::Initialize()
 	for (int i = 0; i < 5; ++i)
 	{
 		auto nickname = API::CreateTextbox(_scene, "nick" + std::to_string(i));
-		nickname->GetTransform()->SetPosition(uiX + 30, uiY, 0);
+		nickname->GetTransform()->SetPosition(uiX + 30, uiY + 10, 0);
 		auto nickComp = nickname->GetComponent<HDData::TextUI>();
 		nickComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		nickComp->SetText("");
 		nickComp->SetSortOrder(0.7);
 
 		auto killcount = API::CreateTextbox(_scene, "count" + std::to_string(i));
-		killcount->GetTransform()->SetPosition(uiX + 270, uiY, 0);
+		killcount->GetTransform()->SetPosition(uiX + 270, uiY + 10, 0);
 		auto countComp = killcount->GetComponent<HDData::TextUI>();
 		countComp->SetFont("Resources/Font/KRAFTON_30.spriteFont");
 		countComp->SetText("");
@@ -500,10 +500,10 @@ void InGameSceneView::Initialize()
 
 	// ammo Image
 	HDData::GameObject* ammoImg = API::CreateImageBox(_scene, "healthImg");
-	ammoImg->GetTransform()->SetPosition(2230.0f, 1370.0f, 0.0f);
+	ammoImg->GetTransform()->SetPosition(2250.0f, 1370.0f, 0.0f);
 	auto ammoImgComp = ammoImg->GetComponent<HDData::ImageUI>();
 	ammoImgComp->SetImage("bulletIcon.png");
-	ammoImgComp->ChangeScale(0.6f, 0.7f);
+	ammoImgComp->ChangeScale(0.7f, 0.7f);
 	RoundManager::Instance()->ammoImage = ammoImgComp;
 
 	// ammo
@@ -511,13 +511,13 @@ void InGameSceneView::Initialize()
 	auto ammoTXT = ammo->GetComponent<HDData::TextUI>();
 	ammoTXT->SetFont("Resources/Font/KRAFTON_100.spriteFont");
 	ammoTXT->SetColor(DirectX::Colors::LightGray);
-	ammoTXT->GetTransform()->SetPosition(2410.0f, 1410.0f, 0.0f);
-	ammoTXT->ChangeScale(0.5f);
+	ammoTXT->GetTransform()->SetPosition(2430.0f, 1410.0f, 0.0f);
+	ammoTXT->ChangeScale(0.6f);
 	RoundManager::Instance()->SetAmmoText(ammoTXT);
 
 	// HP Image
 	HDData::GameObject* healthPointImg = API::CreateImageBox(_scene, "healthImg");
-	healthPointImg->GetTransform()->SetPosition(1880.0f, 1370.0f, 0.0f);
+	healthPointImg->GetTransform()->SetPosition(1900.0f, 1370.0f, 0.0f);
 	auto healthPointImgComp = healthPointImg->GetComponent<HDData::ImageUI>();
 	healthPointImgComp->SetImage("hpIcon.png");
 	healthPointImgComp->ChangeScale(0.2f, 0.2f);
@@ -527,9 +527,9 @@ void InGameSceneView::Initialize()
 	HDData::GameObject* healthPoint = API::CreateTextbox(_scene, "healthPoint");
 	auto hpTxt = healthPoint->GetComponent<HDData::TextUI>();
 	hpTxt->SetFont("Resources/Font/KRAFTON_100.spriteFont");
-	hpTxt->GetTransform()->SetPosition(2080.0f, 1410.0f, 0.0f);
+	hpTxt->GetTransform()->SetPosition(2100.0f, 1410.0f, 0.0f);
 	hpTxt->SetColor(DirectX::Colors::LightGray);
-	hpTxt->ChangeScale(0.5f);
+	hpTxt->ChangeScale(0.6f);
 	RoundManager::Instance()->SetHPObject(hpTxt);
 
 	// Timer

@@ -339,7 +339,7 @@ void PlayerMove::ApplyRecoil()
 void PlayerMove::Tumble(Vector3 direction)
 {
 	// 데굴
-	_playerColliderStanding->Move(direction, 30.0f, _deltaTime);
+	_playerColliderStanding->Move(direction, 24.0f, _deltaTime);
 }
 
 void PlayerMove::OnStateEnter(ePlayerMoveState state)
