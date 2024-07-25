@@ -3,6 +3,7 @@
 #include "PlayerState.h"
 #include "SoundManager.h"
 #include "Timer.h"
+#include "KillLog.h"
 
 enum class eHITLOC
 {
@@ -107,6 +108,8 @@ public:
 
 	void SetDamageLogUI(DamageLog* damageLog);
 	void DisplayDamageLog(std::string nickname, int damage, int remainHP);
+	void SetKillLogUI(KillLog* killLog);
+	void DisplayKillLog(std::string nickname, std::string deadNickname, KillLog::KillLogType logType);
 
 private:
 	bool _isMyInfo = false;
@@ -150,6 +153,7 @@ private:
 
 	Crosshair* _crosshair;
 	DamageLog* _damageLog;
+	KillLog* _killLogUI;
 
 public:
 	eMeshType type = eMeshType::NONE;

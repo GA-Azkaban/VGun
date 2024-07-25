@@ -8,6 +8,8 @@
 #include "CameraMove.h"
 #include "SoundManager.h"
 #include "LowHPEffect.h"
+#include "DamageLog.h"
+#include "KillLog.h"
 
 RoundManager* RoundManager::_instance = nullptr;
 
@@ -116,6 +118,8 @@ void RoundManager::EndGame()
 
 	hitCrosshair->SetActive(false);
 	criticalCrosshair->SetActive(false);
+	damageLog->SetActive(false);
+	killLog->SetActive(false);
 
 	// 킬 카운트 정리
 	_inGameKillCounts.clear();
@@ -541,6 +545,7 @@ void RoundManager::UpdateRoundTimer()
 			_gameEndTimer->Start();
 			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
 			_myObj->GetComponent<PlayerMove>()->ResetState();
+			_myObj->GetComponent<PlayerMove>()->StopMoving();
 		}
 	}
 }

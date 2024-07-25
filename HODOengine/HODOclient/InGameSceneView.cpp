@@ -15,6 +15,7 @@
 #include "LobbyManager.h"
 #include "MenuManager.h"
 #include "DamageLog.h"
+#include "KillLog.h"
 #include "BtnTextScript.h"
 #include "CooldownAlpha.h"
 #include "CooldownText.h"
@@ -743,6 +744,10 @@ void InGameSceneView::Initialize()
 	auto damageLogObj = API::CreateObject(_scene, "DamageLog");
 	damageLogObj->GetTransform()->SetPosition(API::GetScreenWidth() / 2.0f + 100, API::GetScreenHeight() - 200, 0);
 	auto damageLogComp = damageLogObj->AddComponent<DamageLog>();
+
+	auto killLogObj = API::CreateObject(_scene, "KillLog");
+	killLogObj->GetTransform()->SetPosition(API::GetScreenWidth() - 300, 200, 0);
+	auto killLogComp = killLogObj->AddComponent<KillLog>();
 
 	//auto cube = API::CreateObject(_scene);
 	//cube->LoadFBXFile("SM_Bld_TowerClock_01.fbx");

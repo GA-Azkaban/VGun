@@ -328,6 +328,16 @@ void PlayerInfo::DisplayDamageLog(std::string nickname, int damage, int remainHP
 	_damageLog->DisplayLog(nickname, damage, remainHP);
 }
 
+void PlayerInfo::SetKillLogUI(KillLog* killLog)
+{
+	_killLogUI = killLog;
+}
+
+void PlayerInfo::DisplayKillLog(std::string nickname, std::string deadNickname, KillLog::KillLogType logType)
+{
+	_killLogUI->DisplayLog(nickname, deadNickname, logType);
+}
+
 bool& PlayerInfo::GetPlayerDie()
 {
 	return _isDie;

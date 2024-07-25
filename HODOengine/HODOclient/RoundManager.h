@@ -9,6 +9,8 @@
 #include "Timer.h"
 
 class LowHPEffect;
+class DamageLog;
+class KillLog;
 
 class RoundManager : public HDData::Script
 {
@@ -103,6 +105,9 @@ public:
 	HDData::ImageUI* defaultCrosshair;
 	HDData::ImageUI* hitCrosshair;
 	HDData::ImageUI* criticalCrosshair;
+
+	DamageLog* damageLog;
+	KillLog* killLog;
 
 private:
 	bool _isRoundStart = false;

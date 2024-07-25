@@ -97,7 +97,7 @@ void LobbySceneView::Initialize()
 	keyInfoCanvas->GetTransform()->SetPosition(1000.0f * width / 1920, 932.0f * height / 1080, 0);
 	auto keyCanvasImg = keyInfoCanvas->GetComponent<HDData::ImageUI>();
 	keyCanvasImg->SetSortOrder(0.09f);
-	keyCanvasImg->ChangeScale(0.8f,1.0f);
+	keyCanvasImg->ChangeScale(1.0f,1.0f);
 	keyCanvasImg->SetImage("Button_horizon_02.png");
 
 	auto aKey = API::CreateImageBox(_scene, "aKey");
@@ -172,6 +172,20 @@ void LobbySceneView::Initialize()
 	mouseInfoImg->ChangeScale(1.7f, 1.7f);
 	mouseInfoImg->SetSortOrder(0.15f);
 	mouseInfoImg->SetImage("howtoplay_attack.png");
+
+	auto rKey = API::CreateImageBox(_scene, "rKey");
+	rKey->GetTransform()->SetPosition(1160.0f * width / 1920, 875.0f * height / 1080, 0);
+	auto rKeyImg = rKey->GetComponent<HDData::ImageUI>();
+	rKeyImg->ChangeScale(1.3f, 1.3f);
+	rKeyImg->SetSortOrder(0.15f);
+	rKeyImg->SetImage("keyboard_r.png");
+
+	auto rKeyInfo = API::CreateImageBox(_scene, "rKeyInfo");
+	rKeyInfo->GetTransform()->SetPosition(1220.0f * width / 1920, 870.0f * height / 1080, 0);
+	auto rKeyInfoImg = rKeyInfo->GetComponent<HDData::ImageUI>();
+	rKeyInfoImg->ChangeScale(1.7f, 1.7f);
+	rKeyInfoImg->SetSortOrder(0.15f);
+	rKeyInfoImg->SetImage("howtoplay_reload.png");
 
 	// Create Meterial
 	HDEngine::MaterialDesc red;

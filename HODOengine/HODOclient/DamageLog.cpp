@@ -1,6 +1,7 @@
 ﻿#include "DamageLog.h"
 #include "GameManager.h"
 #include "PlayerInfo.h"
+#include "RoundManager.h"
 
 DamageLog::DamageLog()
 	: _logIndex(0)
@@ -32,6 +33,19 @@ DamageLog::DamageLog()
 
 void DamageLog::DisplayLog(const std::string& nickname, int damage, int remainHP)
 {
+	for (int i = 0; i < MAXLOGCOUNT; ++i)
+	{
+		if (_nicknames[i]->GetIsActive())
+		{
+			break;
+		}
+
+		if (i == MAXLOGCOUNT - 1)
+		{
+			_logIndex = 0;
+		}
+	}
+
 	_nicknames[_logIndex]->SetText(nickname);
 	_nicknames[_logIndex]->SetActive(true);
 	_nicknames[_logIndex]->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
@@ -86,6 +100,7 @@ void DamageLog::Start()
 	}
 
 	GameManager::Instance()->GetMyInfo()->SetDamageLogUI(this);
+	RoundManager::Instance()->damageLog = this;
 }
 
 void DamageLog::Update()

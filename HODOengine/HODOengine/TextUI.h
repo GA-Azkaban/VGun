@@ -18,6 +18,7 @@ namespace HDData
 		void SetWorldSpace();
 		void SetFont(const std::string& str);
 		void SetColor(DirectX::FXMVECTOR color);
+		void SetAlpha(float alpha);
 		void SetText(const std::string& str);
 
 		void SetDefaultColor(DirectX::FXMVECTOR color);

@@ -158,8 +158,6 @@ void HODOengine::Run()
 	_debugSystem.Update();
 	_uiSystem.Update();
 
-
-
 	_objectSystem.UpdateCurrentSceneObjects();
 	_soundSystem.Update();
 

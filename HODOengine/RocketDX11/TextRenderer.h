@@ -29,6 +29,8 @@ namespace RocketCore::Graphics
 
 		virtual void SetColor(DirectX::FXMVECTOR color) override;
 
+		virtual void SetAlpha(float alpha) override;
+
 		virtual void SetDefaultColor(DirectX::FXMVECTOR color)override;
 
 		virtual void ReturnDefaultColor()override;
