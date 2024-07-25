@@ -497,7 +497,6 @@ void InGameSceneView::Initialize()
 	auto crosshairObj = API::CreateObject(_scene, "Crosshair");
 	auto crosshairComp = crosshairObj->AddComponent<Crosshair>();
 	crosshairComp->playerMove = playerMove;
-	RoundManager::Instance()->crosshair = crosshairObj;
 
 	// ammo Image
 	HDData::GameObject* ammoImg = API::CreateImageBox(_scene, "healthImg");
