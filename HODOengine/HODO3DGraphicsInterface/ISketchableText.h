@@ -15,6 +15,7 @@ namespace HDEngine
 		virtual void SetintValue(const int value) = 0;
 		virtual void SetScreenSpacePosition(float x, float y) = 0;
 		virtual void SetColor(DirectX::FXMVECTOR color) = 0;
+		virtual void SetAlpha(float alpha) = 0;
 		virtual void SetActive(bool active) = 0;
 		virtual bool GetActive() = 0;
 

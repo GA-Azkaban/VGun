@@ -146,6 +146,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 
 		GameManager::Instance()->GetMyInfo()->PlayDieEffect();
 		GameManager::Instance()->GetMyInfo()->PlayKillLog(killPlayerData.userinfo().nickname());
+		GameManager::Instance()->GetMyInfo()->DisplayKillLog(killPlayerData.userinfo().nickname(), deathPlayerData.userinfo().nickname(), KillLog::KillLogType::ENEMYKILLPLAYER);
 	}
 	else
 	{
@@ -155,6 +156,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 		
 		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
+		GameManager::Instance()->GetMyInfo()->DisplayKillLog(killPlayerData.userinfo().nickname(), deathPlayerData.userinfo().nickname(), KillLog::KillLogType::ENEMYKILLENEMY);
 	}
 
 	if (myUID == killPlayerData.userinfo().uid())
@@ -164,6 +166,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			GameManager::Instance()->GetMyInfo());
 
 		GameManager::Instance()->GetMyInfo()->AddSerialKillCount();
+		GameManager::Instance()->GetMyInfo()->DisplayKillLog(killPlayerData.userinfo().nickname(), deathPlayerData.userinfo().nickname(), KillLog::KillLogType::PLAYERKILLENEMY);
 	}
 	else
 	{

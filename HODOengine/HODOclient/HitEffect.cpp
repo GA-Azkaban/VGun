@@ -33,11 +33,6 @@ void HitEffect::Start()
 
 void HitEffect::Update()
 {
-	if (API::GetKeyDown(DIK_5))
-	{
-		SetEffectOn();
-	}
-
 	_hitEffectTimer.Update();
 }
 

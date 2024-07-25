@@ -44,7 +44,7 @@ void LowHPEffect::Update()
 		}
 		if (playerHP <= (maxHP * 0.66f) && playerHP > (maxHP * 0.33f))
 		{
-			_effectColorThreshold = 0.5f;
+			_effectColorThreshold = 0.75f;
 		}
 		else if (playerHP <= (maxHP * 0.33f) && playerHP > 0)
 		{

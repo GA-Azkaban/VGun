@@ -73,6 +73,11 @@ namespace RocketCore::Graphics
 		_color = color;
 	}
 
+	void TextRenderer::SetAlpha(float alpha)
+	{
+		_color.m128_f32[3] = alpha;
+	}
+
 	void TextRenderer::SetScreenSpacePosition(float x, float y)
 	{
 		_xLocation = x;

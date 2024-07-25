@@ -136,6 +136,9 @@
     <ClCompile Include="DamageLog.cpp">
       <Filter>02_Client\01_Script\UI\DamageLog</Filter>
     </ClCompile>
+    <ClCompile Include="KillLog.cpp">
+      <Filter>02_Client\01_Script\UI\KillLog</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -300,8 +303,8 @@
     <ClInclude Include="DamageLog.h">
       <Filter>02_Client\01_Script\UI\DamageLog</Filter>
     </ClInclude>
-    <ClInclude Include="DamageLogTest.h">
-      <Filter>02_Client\01_Script\UI\DamageLog</Filter>
+    <ClInclude Include="KillLog.h">
+      <Filter>02_Client\01_Script\UI\KillLog</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -453,6 +456,9 @@
     </Filter>
     <Filter Include="02_Client\01_Script\UI\DamageLog">
       <UniqueIdentifier>{c354c068-e02b-485d-a23a-3233758a2c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02_Client\01_Script\UI\KillLog">
+      <UniqueIdentifier>{ee8c2273-cfcc-4d50-b665-3585d7b6090d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
