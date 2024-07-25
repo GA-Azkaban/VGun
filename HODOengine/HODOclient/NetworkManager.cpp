@@ -65,7 +65,22 @@ void NetworkManager::Update()
 
 	auto& playerObj = RoundManager::Instance()->GetPlayerObjs();
 
-	if (playerObj.size() == 0) return;
+	{
+		static float time = 0.0f;
+		time += API::GetDeltaTime();
+
+		if (time > 2.0f)
+		{
+			if (!RoundManager::Instance()->GetIsRoundStart())
+			{
+				SendRoomListRequest();
+			}
+			time = 0.0f;
+		}
+	}
+
+	if (playerObj.size() == 0)
+		return;
 
 	for (auto& [uid, player] : playerObj)
 	{
@@ -75,21 +90,6 @@ void NetworkManager::Update()
 			continue;
 		}
 		Interpolation(player->GetTransform(), info->GetServerPosition(), info->GetServerRotation(), 1.0f);
-	}
-
-	// 2초마다 SendRoomListRequest 보내기
-	// RoundManager 에서 GetIsRoundStart() 가 false 일때만 보내도록
-
-	static float time = 0.0f;
-	time += API::GetDeltaTime();
-
-	if (time > 2.0f)
-	{
-		if (!RoundManager::Instance()->GetIsRoundStart())
-		{
-			SendRoomListRequest();
-		}
-		time = 0.0f;
 	}
 }
 
@@ -787,14 +787,15 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
 {
-	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	// Todo 위치 갱신 이상해지면 주석해제
+	// mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
 
 	info->SetCurrentKill(data.killcount());
 	info->SetCurrentDeath(data.deathcount());
 	info->SetCurrentHP(data.hp());
 	info->SetIsDie(data.isdead());
-	//info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
+	info->SetCurrentState(ConvertAnimationStateToEnum(data.animationstate()));
 }
 
 void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos, Quaternion serverRot, float intermediateValue)
@@ -804,18 +805,19 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	Vector3 currentPos = current->GetPosition();
 	Quaternion currentRot = current->GetRotation();
 
-	//if (currentPos == serverPos && currentRot == serverRot)
-	//	return;
 	float speed = 8.4f;
 
 	Vector3 posDif = serverPos - currentPos;
-	//Vector3 nomal = {posDif.x / posDif.Length(), 0.0f, posDif.z / posDif.Length()};
-	////nomal.Normalize();
+	Vector3 nomal = posDif;
+	nomal.Normalize();
+	auto distance = posDif.Length();
 
-	//auto directionVector = nomal * speed * dt;
-	auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
+	auto directionVector = nomal * speed * dt;
+	if (directionVector.Length() < 0.01f)
+		directionVector = { 0, 0, 0 };
 
-	float dif = posDif.Length();
+	//auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
+	/*float dif = posDif.Length();
 	if (plInfo->GetPlayerState() == ePlayerState::IDLE)
 	{
 		if (dif > 0.1f)
@@ -829,99 +831,52 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 		{
 			current->SetPosition(serverPos);
 		}
+	}*/
+
+	/*float dif = posDif.Length();
+	auto plMove = current->GetGameObject()->GetComponent<PlayerMove>();
+	auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
+
+	if (dif > 0.01f && plMove->GetPlayerMoveEnum(1) != ePlayerMoveState::IDLE)
+	if (plInfo->GetPlayerState() == ePlayerState::IDLE)
+	{
+		if (dif > 0.1f)
+		{
+			current->SetPosition(serverPos);
+		}
 	}
-	//float dif = posDif.Length();
-	//auto plMove = current->GetGameObject()->GetComponent<PlayerMove>();
-	//auto plInfo = current->GetGameObject()->GetComponent<PlayerInfo>();
+	else
+	{
+		if (dif > 0.001f)
+		{
+			current->SetPosition(serverPos);
+		}
+	}*/
 
-	//if (dif > 0.01f && plMove->GetPlayerMoveEnum(1) != ePlayerMoveState::IDLE)
-	//if (plInfo->GetPlayerState() == ePlayerState::IDLE)
-	//{
-	//	if (dif > 0.1f)
-	//	{
-	//		current->SetPosition(serverPos);
-	//	}
-	//}
-	//else
-	//{
-	//	if (dif > 0.001f)
-	//	{
-	//		current->SetPosition(serverPos);
-	//	}
-	//}
+	if (distance > 15.0f)
+	{
+		current->SetPosition(serverPos);
+	}
+	else if (distance > 10.0f)
+	{
+		current->SetPosition(currentPos + directionVector * 2);
+		//current->SetPosition(serverPos);
 
-	//if (posDif.Length() > 15.0f)
-	//{
-	//	current->SetPosition(serverPos);
-	//}
-	//else if (posDif.Length() > 10.0f)
-	//{
-	//	// current->Translate(directionVector * 2);
-	//	current->SetPosition(currentPos + directionVector * 2);
-	//	//current->SetPosition(serverPos);
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	}
+	else if (distance > 0.1f)
+	{
+		current->SetPosition(currentPos + directionVector);
+		//current->SetPosition(serverPos);
 
-	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	//}
-	//else if (posDif.Length() > directionVector.Length())
-	//{
-	//	// current->Translate(directionVector);
-	//	current->SetPosition(currentPos + directionVector);
-	//	//current->SetPosition(serverPos);
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
+	}
+	else
+	{
+		//current->SetPosition(serverPos);
 
-	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(true);
-	//}
-	//else
-	//{
-	//	//current->SetPosition(serverPos);
-
-	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
-	//}
-
-	//////
-	//class CustomQueue
-	//{
-	//public:
-	//	void push(const std::pair<Vector3, Vector3>& value) { m_queue.push(value); }
-	//	void pop() { if (!m_queue.empty()) { m_queue.pop(); } }
-	//	std::pair<Vector3, Vector3>& front() { return m_queue.front(); }
-	//	bool empty() const { return m_queue.empty(); }
-	//	std::size_t size() const { return m_queue.size(); }
-	//	void printQueue() const
-	//	{
-	//		std::queue<std::pair<Vector3, Vector3>> tempQueue = m_queue;
-	//		while (!tempQueue.empty())
-	//		{
-	//			std::cout.fixed;
-	//			std::cout.precision(6);
-	//			std::cout <<
-	//				tempQueue.front().first.x << " / \t" <<
-	//				tempQueue.front().first.y << " / \t" <<
-	//				tempQueue.front().first.z <<
-	//				" \t|\t" <<
-	//				tempQueue.front().second.x << " / \t" <<
-	//				tempQueue.front().second.y << " / \t" <<
-	//				tempQueue.front().second.z;
-	//			//std::cout << std::endl;
-	//			tempQueue.pop();
-	//		}
-	//	}
-	//	~CustomQueue()
-	//	{
-	//		printQueue();
-	//	}
-	//private:
-	//	std::queue<std::pair<Vector3, Vector3>> m_queue;
-	//};
-
-	//static CustomQueue posQueue;
-	//if (posQueue.size() > 1)
-	//	posQueue.pop();
-	//posQueue.push({ currentPos,serverPos });
-
-	////std::cout << std::endl;
-	//posQueue.printQueue();
-	//std::cout << "\t" << directionVector.Length() << std::endl;
-	/////////
+		current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
+	}
 
 	float dot = serverRot.Dot(currentRot);
 	float angleDif = 2.0f * acos(dot);
