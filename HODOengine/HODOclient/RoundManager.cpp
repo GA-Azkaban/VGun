@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -86,11 +86,11 @@ void RoundManager::Update()
 
 	NetworkManager::Instance().SendPlayUpdate();
 
-	if (API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
+	if(API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
 	{
 		_ESCMenuOn = true;
 	}
-	else if (API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
+	else if(API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
 	{
 		_ESCMenuOn = false;
 	}

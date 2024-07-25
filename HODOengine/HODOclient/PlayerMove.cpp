@@ -1,4 +1,4 @@
-#include "PlayerMove.h"
+﻿#include "PlayerMove.h"
 #include "../HODOengine/DynamicCollider.h"
 #include "PlayerInfo.h"
 #include "GameManager.h"
@@ -280,11 +280,6 @@ void PlayerMove::ShootGun()
 		}
 		else
 		{
-			//Vector3 direction = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			//hitDynamicSphere->AddForce(direction, 4.0f, 1);
-			//Vector3 axis = GetTransform()->GetRight();
-			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
-			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
 			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
 			hitDynamicSphere->AddForce(forceDirection, 1.5f, 1);
 			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;

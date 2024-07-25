@@ -1,4 +1,4 @@
-#include "InGameSceneView.h"
+﻿#include "InGameSceneView.h"
 #include "CameraMove.h"
 #include "PlayerMove.h"
 #include "RoundManager.h"
@@ -157,7 +157,7 @@ void InGameSceneView::Initialize()
 		weedMeshComp->LoadMesh("SM_Prop_Tumbleweed_01.fbx");
 		weedMeshComp->LoadMaterial(chMat, 0);
 		weedMeshComp->SetShadowActive(true);
-		auto weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
+		HDData::DynamicSphereCollider* weedCollider = tumbleWeed->AddComponent<HDData::DynamicSphereCollider>(1.0f);
 		weedCollider->SetScaleOffset(Vector3(0.37f, 0.37f, 0.37f));
 		weedColVector.push_back(weedCollider);
 	}
