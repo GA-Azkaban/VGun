@@ -1,4 +1,4 @@
-﻿#include "RoundManager.h"
+#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -535,6 +535,8 @@ void RoundManager::UpdateRoundTimer()
 		}
 		if (elapsedTime.count() >= _timer)
 		{
+			SoundManager::Instance().PlayUI("sfx_roundend");
+
 			_isRoundStart = false;
 
 			tumbleAlphaImage->SetActive(false);

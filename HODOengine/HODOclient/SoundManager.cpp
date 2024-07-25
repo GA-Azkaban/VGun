@@ -152,6 +152,7 @@ void SoundManager::InitializeAudios()
 	_UISoundController->AddAudio("sfx_timer", "Resources/Sound/SFX/BELL.mp3", HDData::SoundGroup::EffectSound);
 	_UISoundController->AddAudio("sfx_singlebell", "Resources/Sound/SFX/SINGLE_BELL.mp3", HDData::SoundGroup::EffectSound);
 	_UISoundController->AddAudio("sfx_countdown", "Resources/Sound/SFX/COUNTDOWN_MAN.mp3", HDData::SoundGroup::EffectSound);
+	_UISoundController->AddAudio("sfx_roundend", "Resources/Sound/SFX/ROUNDEND.mp3", HDData::SoundGroup::EffectSound);
 }
 
 void SoundManager::InitializePlayerAudio(HDData::AudioSource* audio)
@@ -163,10 +164,13 @@ void SoundManager::InitializePlayerAudio(HDData::AudioSource* audio)
 	// 2d sound
 	audio->AddAudio("2d_jump", "Resources/Sound/SFX/JUMP.mp3", HDData::SoundGroup::EffectSound);
 	audio->AddAudio("2d_roll", "Resources/Sound/SFX/TUMBLE.mp3", HDData::SoundGroup::EffectSound);
-	audio->AddAudio("2d_attacked", "Resources/Sound/SFX/ATTACKED.mp3", HDData::SoundGroup::EffectSound);
+	//audio->AddAudio("2d_attacked", "Resources/Sound/SFX/ATTACKED.mp3", HDData::SoundGroup::EffectSound);
+	audio->AddAudio("2d_attacked", "Resources/Sound/SFX/ATTACKED2.mp3", HDData::SoundGroup::EffectSound);
 	audio->AddAudio("2d_die", "Resources/Sound/SFX/DIE.mp3", HDData::SoundGroup::EffectSound);
 	audio->AddAudio("2d_reload", "Resources/Sound/SFX/RELOAD.mp3", HDData::SoundGroup::EffectSound);
 	audio->AddAudio("2d_fire", "Resources/Sound/SFX/FIRE.mp3", HDData::SoundGroup::EffectSound);
-	audio->AddAudio("2d_reload", "Resources/Sound/SFX/FOOTSTEP.mp3", HDData::SoundGroup::EffectSound);
+	audio->AddAudio("2d_hitbody", "Resources/Sound/SFX/HITBODY.mp3", HDData::SoundGroup::EffectSound);
+	audio->AddAudio("2d_hithead", "Resources/Sound/SFX/HITHEAD.mp3", HDData::SoundGroup::EffectSound);
+	audio->AddAudio("2d_landing", "Resources/Sound/SFX/LANDING.mp3", HDData::SoundGroup::EffectSound);
 
 }
