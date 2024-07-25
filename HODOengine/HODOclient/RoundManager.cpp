@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -247,6 +247,12 @@ void RoundManager::SetUIOrigin()
 {
 	_timerUI->SetColor(DirectX::Colors::White);
 
+	for (int i = 0; i < 5; ++i)
+	{
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
+	}
+
 	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
 	_winnerImg->GetGameObject()->SetSelfActive(false);
@@ -256,13 +262,6 @@ void RoundManager::SetUIOrigin()
 
 void RoundManager::SetUIActive(bool isActive)
 {
-	for (int i = 0; i < 5; ++i)
-	{
-		//_backIMG[i]->GetGameObject()->SetSelfActive(isActive);
-		_killCountObjs[i].first->GetGameObject()->SetSelfActive(isActive);
-		_killCountObjs[i].second->GetGameObject()->SetSelfActive(isActive);
-	}
-
 	_timerUI->GetGameObject()->SetSelfActive(isActive);
 	_hpUI->GetGameObject()->SetSelfActive(isActive);
 	_ammoUI->GetGameObject()->SetSelfActive(isActive);

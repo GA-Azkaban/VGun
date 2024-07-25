@@ -85,7 +85,7 @@ void LobbyManager::LoginFAIL(int errorCode)
 
 void LobbyManager::LoginSucess(int uid, std::string nickname)
 {
-	
+
 }
 
 void LobbyManager::SetidDupl(HDData::GameObject* iddupl)
@@ -187,26 +187,26 @@ void LobbyManager::RoomEnterSUCCESS()
 {
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
 
-	// 사용하지 않는 캐릭터 타입을 나에게 할당
-	for (int i = 0; i < 6; ++i)
-	{
-		if (!isUsed[i])
-		{
-			GameManager::Instance()->GetMyInfo()->type = static_cast<eMeshType>(i);
-		}
-	}
+	//// 사용하지 않는 캐릭터 타입을 나에게 할당
+	//for (int i = 0; i < 6; ++i)
+	//{
+	//	if (!isUsed[i])
+	//	{
+	//		GameManager::Instance()->GetMyInfo()->type = static_cast<eMeshType>(i);
+	//	}
+	//}
 }
 
 
 void LobbyManager::RefreshRoom()
 {
-	for (int i = 0; i < 6; ++i) 
+	for (int i = 0; i < 6; ++i)
 	{
 		_playerObjs[i]->SetSelfActive(false);
 		_nickNameIndex[i]->SetSelfActive(false);
 	}
 
-	auto& data = _roomData->_players;
+	std::vector<PlayerInfo*>& data = _roomData->_players;
 	_playerNum = data.size();
 
 	for (int i = 0; i < _playerNum; ++i)
@@ -217,20 +217,19 @@ void LobbyManager::RefreshRoom()
 		text->SetText(data[i]->GetPlayerNickName());
 		text->SetColor(DirectX::Colors::White);
 
-
-		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
-		{
-			_inGameStartButton->SetSelfActive(true);
-		}
-		else
-		{
-			_inGameStartButton->SetSelfActive(false);
-		}
-
 		if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == data[i]->GetPlayerUID())
 		{
 			text->SetColor(DirectX::Colors::Gold);
 		}
+	}
+
+	if (GameManager::Instance()->GetMyInfo()->GetIsHost())
+	{
+		_inGameStartButton->SetSelfActive(true);
+	}
+	else
+	{
+		_inGameStartButton->SetSelfActive(false);
 	}
 }
 
