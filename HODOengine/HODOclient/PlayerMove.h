@@ -60,6 +60,7 @@ private:
 public:
 	void Die();
 	void Respawn();
+	void ResetState();
 
 	// 사격 관련
 private:

@@ -285,13 +285,13 @@ void PlayerMove::ShootGun()
 			//hitDynamicSphere->AddTorque(axis, 4.0f, 1);
 			//hitDynamicSphere->AddForceAtPoint(hitPoint, direction, 2.0f, 1);
 			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(forceDirection, 1.0f, 1);
+			hitDynamicSphere->AddForce(forceDirection, 1.5f, 1);
 			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
 			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
 			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
 							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
 							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
-			hitDynamicSphere->AddTorque(axis, 2000.0f, 0);
+			hitDynamicSphere->AddTorque(axis, 10.0f, 1);
 		}
 	}
 
@@ -741,6 +741,12 @@ void PlayerMove::PlayParticle(Vector3 position)
 	//bloodParticle->GetTransform()->SetRotation(cameraRotation);
 	//bloodParticle->GetTransform()->Rotate(0.0f, 90.0f, 0.0);
 	bloodParticle->Play();
+}
+
+void PlayerMove::ResetState()
+{
+	_playerState.first = ePlayerMoveState::IDLE;
+	_playerState.second = ePlayerMoveState::AIM;
 }
 
 int& PlayerMove::GetBulletCount()
@@ -1287,12 +1293,16 @@ void PlayerMove::Die()
 	auto origin = _headCam->GetTransform()->GetPosition();
 	_headCam->GetTransform()->Rotate(0, 90, 0);
 	_playerColliderStanding->OnDisable();
+	_playerState.second = ePlayerMoveState::AIM;
 }
 
 void PlayerMove::Respawn()
 {
 	_playerColliderStanding->OnEnable();
 	_tpanimator->GetAllAC()->SetBool("isDie", false);
+	Reload();
+	_playerState.first = ePlayerMoveState::IDLE;
+	_headCam->ResetCameraPos();
 }
 
 void PlayerMove::DecidePlayerState()
@@ -1543,17 +1553,17 @@ void PlayerMove::CameraMove()
 
 	float ratio = _deltaTime * 10;
 	
-	float finalRotX = _rotAngleX * (1.0f - ratio) + _prevRotAngleX * ratio;
-	float finalRotY = _rotAngleY * (1.0f - ratio) + _prevRotAngleY * ratio;
+	//float finalRotX = _rotAngleX * (1.0f - ratio) + _prevRotAngleX * ratio;
+	//float finalRotY = _rotAngleY * (1.0f - ratio) + _prevRotAngleY * ratio;
 
-	Quaternion rot = rot.CreateFromYawPitchRoll(finalRotY, 0.0f, 0.0f);
+	Quaternion rot = rot.CreateFromYawPitchRoll(_rotAngleY, 0.0f, 0.0f);
 	_playerColliderStanding->SetColliderRotation(rot);
 
 	// 통짜 콜라이더일 때 위아래 카메라 움직이는 부분
-	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(finalRotY, finalRotX, 0.0f);
+	Quaternion pitchRotQuat = Quaternion::CreateFromYawPitchRoll(_rotAngleY, _rotAngleX, 0.0f);
 	_headCam->GetTransform()->SetRotation(pitchRotQuat);
 
 	// 메쉬 회전
-	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, finalRotX);
+	Quaternion rotX = Quaternion::CreateFromAxisAngle({ 1.0f, 0.0f, 0.0f }, _rotAngleX);
 	_fpMeshObj->GetTransform()->SetLocalRotation(rotX);
 }

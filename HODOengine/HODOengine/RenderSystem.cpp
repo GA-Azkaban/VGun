@@ -27,6 +27,7 @@ namespace HDEngine
 		:_hWnd(), _screenWidth(), _screenHeight(),
 		_dx11Renderer()
 	{
+
 	}
 
 	void RenderSystem::Initialize(HWND hWnd, HMODULE hModule, int screenWidth, int screenHeight)

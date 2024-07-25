@@ -1,4 +1,4 @@
-﻿#include <algorithm>
+#include <algorithm>
 #include "pch.h"
 #include "Types.h"
 #include "LobbyManager.h"
@@ -214,15 +214,22 @@ void LobbyManager::RefreshRoom()
 		_playerObjs[i]->SetSelfActive(true);
 		_nickNameIndex[i]->SetSelfActive(true);
 		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
-		text->SetText(data[i]->GetPlayerNickName());
+		text->SetText(info->GetPlayerNickName());
+		text->SetColor(DirectX::Colors::White);
+
 
 		if (GameManager::Instance()->GetMyInfo()->GetIsHost())
 		{
 			_inGameStartButton->SetSelfActive(true);
 		}
-		else if (data[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
+		else
 		{
 			_inGameStartButton->SetSelfActive(false);
+		}
+
+		if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == info->GetPlayerUID())
+		{
+			text->SetColor(DirectX::Colors::Gold);
 		}
 	}
 }

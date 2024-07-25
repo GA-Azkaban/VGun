@@ -2,6 +2,7 @@
 #include "PlayerMove.h"
 #include "GameManager.h"
 #include "PlayerInfo.h"
+#include "RoundManager.h"
 
 Crosshair::Crosshair()
 {
@@ -34,6 +35,9 @@ void Crosshair::Start()
 	_hitCrosshair->SetActive(false);
 
 	GameManager::Instance()->GetMyInfo()->SetCrosshairUI(this);
+	RoundManager::Instance()->defaultCrosshair = _defaultCrosshair;
+	RoundManager::Instance()->hitCrosshair = _hitCrosshair;
+	RoundManager::Instance()->criticalCrosshair = _criticalCrosshair;
 }
 
 void Crosshair::Update()
