@@ -49,6 +49,7 @@ void RoundManager::Start()
 	_showResultTimer->duration = 10;
 	_showResultTimer->onExpiration = [&]() {
 		ExitGame();
+		_timerUI->SetColor(DirectX::Colors::White);
 		};
 
 	_serialKillTimer = new Timer;
@@ -248,10 +249,7 @@ void RoundManager::SetUIOrigin()
 
 	// UI 활성화, 비활성화
 	_winnerTXT->GetGameObject()->SetSelfActive(false);
-	//for (int i = 0; i < 5; ++i)
-	//{
-	//	_loserTXT[i]->GetGameObject()->SetSelfActive(false);
-	//}
+	_winnerImg->GetGameObject()->SetSelfActive(false);
 
 	_players.clear();
 }
@@ -321,35 +319,14 @@ void RoundManager::CheckWinner()
 	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
 		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
-
-		//int index = 0;
-		//for (auto& [uid, player] : _players)
-		//{
-		//	_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
-		//	++index;
-		//}
 	}
 	else
 	{
 		_winnerTXT->SetText(_players[_winnerUID]->GetComponent<PlayerInfo>()->GetPlayerNickName());
-
-		//int index = 0;
-		//for (auto& [uid, player] : _players)
-		//{
-		//	if (_winnerUID == uid) continue;
-		//	_loserTXT[index]->SetText(player->GetComponent<PlayerInfo>()->GetPlayerNickName());
-		//	++index;
-		//}
-
-		//_loserTXT[index]->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
 	}
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
 	_winnerImg->GetGameObject()->SetSelfActive(true);
-	//for (int i = 0; i < count; ++i)
-	//{
-	//	_loserTXT[i]->GetGameObject()->SetSelfActive(true);
-	//}
 }
 
 bool RoundManager::GetIsRoundStart()
