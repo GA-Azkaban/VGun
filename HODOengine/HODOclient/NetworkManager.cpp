@@ -188,7 +188,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		ConvertDataToPlayerInfo(killPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[killPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
-		if (myUID == deathPlayerData.userinfo().uid())
+		if (myUID != deathPlayerData.userinfo().uid())
 		{
 			GameManager::Instance()->GetMyInfo()->DisplayKillLog(killPlayerData.userinfo().nickname(), deathPlayerData.userinfo().nickname(), KillLog::KillLogType::ENEMYKILLENEMY);
 		}
