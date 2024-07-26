@@ -92,12 +92,25 @@ void LobbySceneView::Initialize()
 	ruleImgComp->ChangeScale(0.6192f, 0.6314f);
 	ruleImgComp->SetImage("gamerule.png");
 
+	// tip
+	auto tipone = API::CreateImageBox(_scene, "tipone");
+	tipone->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 50.0f * height / 1080, 0);
+	auto tiponeImg = tipone->GetComponent<HDData::ImageUI>();
+	tiponeImg->SetSortOrder(0.09f);
+	tiponeImg->SetImage("tip.png");
+
+	auto tiptwo = API::CreateImageBox(_scene, "tipone");
+	tiptwo->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 90.0f * height / 1080, 0);
+	auto tiptwoImg = tiptwo->GetComponent<HDData::ImageUI>();
+	tiptwoImg->SetSortOrder(0.09f);
+	tiptwoImg->SetImage("tip2.png");
+
 	// Key
 	auto keyInfoCanvas = API::CreateImageBox(_scene, "keyInfo");
 	keyInfoCanvas->GetTransform()->SetPosition(1000.0f * width / 1920, 932.0f * height / 1080, 0);
 	auto keyCanvasImg = keyInfoCanvas->GetComponent<HDData::ImageUI>();
 	keyCanvasImg->SetSortOrder(0.09f);
-	keyCanvasImg->ChangeScale(1.0f,1.0f);
+	keyCanvasImg->ChangeScale(1.0f, 1.0f);
 	keyCanvasImg->SetImage("Button_horizon_02.png");
 
 	auto aKey = API::CreateImageBox(_scene, "aKey");
@@ -117,15 +130,15 @@ void LobbySceneView::Initialize()
 	auto wKeyImg = wKey->GetComponent<HDData::ImageUI>();
 	wKeyImg->SetSortOrder(0.15f);
 	wKeyImg->SetImage("keyboard_w.png");
-	
+
 	auto dKey = API::CreateImageBox(_scene, "dKey");
 	dKey->GetTransform()->SetPosition(830.0f * width / 1920, 900.0f * height / 1080, 0);
 	auto dKeyImg = dKey->GetComponent<HDData::ImageUI>();
 	dKeyImg->SetSortOrder(0.15f);
 	dKeyImg->SetImage("keyboard_d.png");
 
-	auto moveInfo = API::CreateImageBox(_scene,"Move");
-	moveInfo->GetTransform()->SetPosition(890.0f * width / 1920,890.0f * height / 1080,0.0f);
+	auto moveInfo = API::CreateImageBox(_scene, "Move");
+	moveInfo->GetTransform()->SetPosition(890.0f * width / 1920, 890.0f * height / 1080, 0.0f);
 	auto moveInfoImg = moveInfo->GetComponent<HDData::ImageUI>();
 	moveInfoImg->ChangeScale(1.7f, 1.7f);
 	moveInfoImg->SetSortOrder(0.15f);
@@ -138,7 +151,7 @@ void LobbySceneView::Initialize()
 	shiftKeyImg->SetSortOrder(0.15f);
 	shiftKeyImg->SetImage("keyboard_shift.png");
 
-	auto shiftInfo = API::CreateImageBox(_scene,"shiftInfo");
+	auto shiftInfo = API::CreateImageBox(_scene, "shiftInfo");
 	shiftInfo->GetTransform()->SetPosition(840.0f * width / 1920, 965.0f * height / 1080, 0.0f);
 	auto shiftInfoImg = shiftInfo->GetComponent<HDData::ImageUI>();
 	shiftInfoImg->ChangeScale(1.6f, 1.6f);
@@ -148,7 +161,7 @@ void LobbySceneView::Initialize()
 	auto spaceKey = API::CreateImageBox(_scene, "spaceKey");
 	spaceKey->GetTransform()->SetPosition(980.0f * width / 1920, 960.0f * height / 1080, 0);
 	auto spaceKeyImg = spaceKey->GetComponent<HDData::ImageUI>();
-	spaceKeyImg->ChangeScale(1.7f,1.7f);
+	spaceKeyImg->ChangeScale(1.7f, 1.7f);
 	spaceKeyImg->SetSortOrder(0.15f);
 	spaceKeyImg->SetImage("keyboard_space.png");
 
