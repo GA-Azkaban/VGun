@@ -504,7 +504,7 @@ void InGameSceneView::Initialize()
 	HDData::GameObject* ammoImg = API::CreateImageBox(_scene, "healthImg");
 	ammoImg->GetTransform()->SetPosition(2270.0f, 1370.0f, 0.0f);
 	auto ammoImgComp = ammoImg->GetComponent<HDData::ImageUI>();
-	ammoImgComp->SetImage("bulletIcon.png");
+	ammoImgComp->SetImage("bulletIcon2.png");
 	ammoImgComp->SetColor(DirectX::Colors::LightGray);
 	ammoImgComp->ChangeScale(0.7f, 0.7f);
 	RoundManager::Instance()->ammoImage = ammoImgComp;
