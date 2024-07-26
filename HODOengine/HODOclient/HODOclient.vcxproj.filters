@@ -109,9 +109,6 @@
     <ClCompile Include="IndicatorPool.cpp">
       <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator\Pool</Filter>
     </ClCompile>
-    <ClCompile Include="CloudRotate.cpp">
-      <Filter>02_Client\01_Script\Cloud</Filter>
-    </ClCompile>
     <ClCompile Include="UIEffect.cpp">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
     </ClCompile>
@@ -273,9 +270,6 @@
     <ClInclude Include="IndicatorPool.h">
       <Filter>02_Client\01_Script\UI\ScreenEffect\Indicator\Pool</Filter>
     </ClInclude>
-    <ClInclude Include="CloudRotate.h">
-      <Filter>02_Client\01_Script\Cloud</Filter>
-    </ClInclude>
     <ClInclude Include="UIEffect.h">
       <Filter>02_Client\01_Script\Effect\TextEffect</Filter>
     </ClInclude>
@@ -432,9 +426,6 @@
     </Filter>
     <Filter Include="02_Client\01_Script\UI\ScreenEffect\Indicator\Pool">
       <UniqueIdentifier>{c3e2d269-cb42-46a6-9294-404a10cf2436}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02_Client\01_Script\Cloud">
-      <UniqueIdentifier>{29cee099-4558-4fc9-bb6b-a2a4fdbc28db}</UniqueIdentifier>
     </Filter>
     <Filter Include="02_Client\01_Script\Effect\TextEffect">
       <UniqueIdentifier>{22af6bc9-505f-41c5-ad4f-145a7b01a825}</UniqueIdentifier>

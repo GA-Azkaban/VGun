@@ -27,10 +27,9 @@ RoundManager::RoundManager()
 {
 	API::CreateStaticComponent(this);
 
-	winnerMotion[0] = "RV_sillyDancing";
-	winnerMotion[1] = "RV_victory1";
-	winnerMotion[2] = "RV_victory2";
-	winnerMotion[3] = "RV_victory3";
+	winnerMotion[0] = "RV_victory1";
+	winnerMotion[1] = "RV_victory2";
+	winnerMotion[2] = "RV_victory3";
 }
 
 void RoundManager::Start()
@@ -344,7 +343,7 @@ void RoundManager::CheckWinner()
 	auto mesh = winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	mesh->LoadMesh(GameManager::Instance()->meshes[meshtype]);
 	mesh->LoadMaterial(API::GetMaterial("PolygonWestern_Texture_01_A"));
-	mesh->PlayAnimation(winnerMotion[_winnerUID % 4]);
+	mesh->PlayAnimation(winnerMotion[_winnerUID % 3]);
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
 	_winnerImg->GetGameObject()->SetSelfActive(true);

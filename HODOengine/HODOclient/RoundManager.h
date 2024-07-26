@@ -190,6 +190,6 @@ private:
 public:
 	void CheckWinner();
 	HDData::GameObject* winnerObj;
-	std::string winnerMotion[4];
+	std::string winnerMotion[3];
 };
 
