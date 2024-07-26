@@ -15,6 +15,15 @@ GameManager* GameManager::_instance = nullptr;
 GameManager::GameManager()
 {
 	_myInfo = new PlayerInfo;
+
+	meshes[0] = "SKM_BadguyTP_X_default.fbx";
+	meshes[1] = "SKM_BusinessManTP_X_default.fbx";
+	meshes[2] = "SKM_CowboyTP_X_default.fbx";
+	meshes[3] = "SKM_CowgirlTP_X_default.fbx";
+	meshes[4] = "SKM_GunManTP_X_default.fbx";
+	meshes[5] = "SKM_SheriffTP_X_default.fbx";
+	meshes[6] = "SKM_WomanTP_X_default.fbx";
+	meshes[7] = "SKM_WorkingGirlTP_X_default.fbx";
 }
 
 GameManager::~GameManager()

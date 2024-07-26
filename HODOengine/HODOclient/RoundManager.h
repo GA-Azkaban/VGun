@@ -36,10 +36,10 @@ public:
 
 	// 로비에서 데이터를 가져옴
 	void GetNewDataFromLobby();
-	
+
 	// 값들을 재정비
 	void InitializeValue();
-	
+
 	// 라운드 시작할 때 호출
 	void InitRound();
 
@@ -49,7 +49,6 @@ public:
 	// 라운드 끝났을 때 호출
 	void EndGame();
 	void SetUIActive(bool isActive);
-	void CheckWinner();
 
 	// 방 나갈 때 호출
 	void SetUIOrigin();
@@ -187,5 +186,10 @@ public:
 private:
 	HDData::GameObject* _animationDummy = nullptr;
 	std::vector<HDData::DynamicSphereCollider*> _weedColVector;
+
+public:
+	void CheckWinner();
+	HDData::GameObject* winnerObj;
+	std::string winnerMotion[4];
 };
 

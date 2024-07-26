@@ -26,6 +26,11 @@ RoundManager* RoundManager::Instance()
 RoundManager::RoundManager()
 {
 	API::CreateStaticComponent(this);
+
+	winnerMotion[0] = "RV_sillyDancing";
+	winnerMotion[1] = "RV_victory1";
+	winnerMotion[2] = "RV_victory2";
+	winnerMotion[3] = "RV_victory3";
 }
 
 void RoundManager::Start()
@@ -198,6 +203,10 @@ void RoundManager::GetNewDataFromLobby()
 			playerInfo->GetData(one);
 			playerInfo->Init();
 
+			auto mesh = _playerObjs[index]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+			mesh->LoadMesh(GameManager::Instance()->meshes[playerInfo->meshtype]);
+			mesh->LoadMaterial(API::GetMaterial("PolygonWestern_Texture_01_A"));
+
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 
 			_players.insert({ one->GetPlayerUID(), _playerObjs[index] });
@@ -317,14 +326,25 @@ int RoundManager::GetPlayerNum()
 
 void RoundManager::CheckWinner()
 {
+	int meshtype = 0;
+
 	if (_winnerUID == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 	{
-		_winnerTXT->SetText(GameManager::Instance()->GetMyInfo()->GetPlayerNickName());
+		auto info = GameManager::Instance()->GetMyInfo();
+		_winnerTXT->SetText(info->GetPlayerNickName());
+		meshtype = info->meshtype;
 	}
 	else
 	{
-		_winnerTXT->SetText(_players[_winnerUID]->GetComponent<PlayerInfo>()->GetPlayerNickName());
+		auto info = _players[_winnerUID]->GetComponent<PlayerInfo>();
+		_winnerTXT->SetText(info->GetPlayerNickName());
+		meshtype = info->meshtype;
 	}
+
+	auto mesh = winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+	mesh->LoadMesh(GameManager::Instance()->meshes[meshtype]);
+	mesh->LoadMaterial(API::GetMaterial("PolygonWestern_Texture_01_A"));
+	mesh->PlayAnimation(winnerMotion[_winnerUID % 4]);
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
 	_winnerImg->GetGameObject()->SetSelfActive(true);

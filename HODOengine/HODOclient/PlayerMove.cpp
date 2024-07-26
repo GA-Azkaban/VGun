@@ -318,6 +318,7 @@ void PlayerMove::Reload()
 {
 	_shootCount = 0;
 	_bulletCount = 6;
+	GameManager::Instance()->GetMyInfo()->SetCurrentBulletCount(_bulletCount);
 }
 
 void PlayerMove::ApplyRecoil()

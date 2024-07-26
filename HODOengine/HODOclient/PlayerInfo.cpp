@@ -46,7 +46,7 @@ void PlayerInfo::GetData(PlayerInfo* info)
 	_playerUID = info->GetPlayerUID();
 	_isHost = info->GetIsHost();
 	_playerNickname = info->GetPlayerNickName();
-	type = info->type;
+	meshtype = info->meshtype;
 }
 
 void PlayerInfo::Init()

@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include "pch.h"
 #include "Types.h"
 #include "LobbyManager.h"
@@ -180,22 +180,12 @@ void LobbyManager::RoomEnterFAIL(int errorCode)
 void LobbyManager::RoomEnterSUCCESS()
 {
 	HDData::Scene* room = API::LoadSceneByName("Lobby");
-
-	//// 사용하지 않는 캐릭터 타입을 나에게 할당
-	//for (int i = 0; i < 6; ++i)
-	//{
-	//	if (!isUsed[i])
-	//	{
-	//		GameManager::Instance()->GetMyInfo()->type = static_cast<eMeshType>(i);
-	//	}
-	//}
 }
 
 
 void LobbyManager::RoomLeaveSuccess()
 {
 	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
-	isUsed[static_cast<int>(GameManager::Instance()->GetMyInfo()->type)] = false;
 	API::LoadSceneByName("MainMenu");
 }
 
@@ -212,7 +202,15 @@ void LobbyManager::RefreshRoom()
 
 	for (int i = 0; i < _playerNum; ++i)
 	{
+		// 오브젝트 활성화, 캐릭터 타입
 		_playerObjs[i]->SetSelfActive(true);
+		auto mesh = _playerObjs[i]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
+		int type = data[i]->GetPlayerUID() % 8;
+		mesh->LoadMesh(GameManager::Instance()->meshes[type]);
+		mesh->LoadMaterial(API::GetMaterial("PolygonWestern_Texture_01_A"));
+		data[i]->meshtype = type;
+
+		// 닉네임 색깔 설정
 		_nickNameIndex[i]->SetSelfActive(true);
 		auto text = _nickNameIndex[i]->GetComponent<HDData::TextUI>();
 		text->SetText(data[i]->GetPlayerNickName());
@@ -221,20 +219,12 @@ void LobbyManager::RefreshRoom()
 		if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() == data[i]->GetPlayerUID())
 		{
 			text->SetColor(DirectX::Colors::Gold);
-		}
-		else if (data[i]->GetPlayerNickName() == GameManager::Instance()->GetMyInfo()->GetPlayerNickName())
-		{
-			_inGameStartButton->SetSelfActive(false);
-		}
-	}
 
-	if (GameManager::Instance()->GetMyInfo()->GetIsHost())
-	{
-		_inGameStartButton->SetSelfActive(true);
-	}
-	else
-	{
-		_inGameStartButton->SetSelfActive(false);
+			if (data[i]->GetIsHost())	
+				_inGameStartButton->SetSelfActive(true);
+			else
+				_inGameStartButton->SetSelfActive(false);
+		}
 	}
 }
 

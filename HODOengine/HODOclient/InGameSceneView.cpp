@@ -580,6 +580,8 @@ void InGameSceneView::Initialize()
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_sillyDancing");
 	winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->LoadMaterial(chMat, 0);
 
+	RoundManager::Instance()->winnerObj = winnerObj;
+
 	auto winnerTextImg = API::CreateImageBox(_scene, "winnerImg");
 	winnerTextImg->GetTransform()->SetPosition(API::GetScreenWidth() / 2, 400.0f, 0.0f);
 	winnerTextImg->SetSelfActive(false);
