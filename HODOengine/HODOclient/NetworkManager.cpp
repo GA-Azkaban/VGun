@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -170,7 +170,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
-		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnEnable();
+		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
 	}
 
 	if (myUID == killPlayerData.userinfo().uid())
@@ -657,6 +657,9 @@ void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 
 		maxKillCount = user.killcount();
 		RoundManager::Instance()->_winnerUID = user.userinfo().uid();
+
+		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->OnRoundEnd();
+		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->StopMoving();
 
 		auto uid = user.userinfo().uid();
 		if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() != uid)

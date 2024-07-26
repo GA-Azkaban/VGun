@@ -61,6 +61,7 @@ public:
 	void Die();
 	void Respawn();
 	void ResetState();
+	void OnRoundEnd();
 
 	// 사격 관련
 private:

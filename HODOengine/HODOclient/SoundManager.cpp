@@ -130,6 +130,11 @@ void SoundManager::StopAllPlayerSFX()
 	}
 }
 
+void SoundManager::Stop(std::string sourceName)
+{
+	_2DsoundController->Stop(sourceName);
+}
+
 HDData::AudioSource* SoundManager::AddAudioSourceInObject(HDData::GameObject* obj)
 {
 	auto source = obj->AddComponent<HDData::AudioSource>();

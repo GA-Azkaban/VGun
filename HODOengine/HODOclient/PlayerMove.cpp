@@ -751,6 +751,16 @@ void PlayerMove::PlayParticle(Vector3 position)
 	bloodParticle->Play();
 }
 
+void PlayerMove::OnRoundEnd()
+{
+	OnStateExit(ePlayerMoveState::DIE);
+	OnStateExit(ePlayerMoveState::RUN);
+	OnStateExit(ePlayerMoveState::JUMP);
+	OnStateExit(ePlayerMoveState::TUMBLE);
+	OnStateExit(ePlayerMoveState::RELOAD);
+	OnStateExit(ePlayerMoveState::FIRE);
+}
+
 void PlayerMove::ResetState()
 {
 	_playerState.first = ePlayerMoveState::IDLE;
@@ -1254,9 +1264,11 @@ void PlayerMove::Die()
 void PlayerMove::Respawn()
 {
 	_playerColliderStanding->OnEnable();
+	_playerColliderStanding->Stop();
 	_tpanimator->GetAllAC()->SetBool("isDie", false);
 	Reload();
 	_playerState.first = ePlayerMoveState::IDLE;
+	_playerState.second = ePlayerMoveState::AIM;
 	//_headCam->ResetCameraPos();
 }
 

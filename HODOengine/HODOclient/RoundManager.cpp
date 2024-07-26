@@ -408,6 +408,8 @@ void RoundManager::ExitGame()
 
 void RoundManager::FinishGame()
 {
+	SoundManager::Instance().Stop("3d_footstep");
+
 	if (!_isRoundStart)
 		return;
 
