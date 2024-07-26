@@ -484,7 +484,17 @@ void RoundManager::UpdateRoundTimer()
 		auto nowElapsed = static_cast<int>(_timer - elapsedTime.count());
 		_timerUI->SetText(ChangeSecToMin(nowElapsed));
 
-		if (nowElapsed == 118)
+		if (nowElapsed > 130)
+		{
+			for (int i = 0; i < _weedColVector.size(); ++i)
+			{
+				Vector3 axis = _weedColVector[i]->GetTransform()->GetRight();
+				axis.y += i * 0.01f;
+				axis.Normalize();
+				_weedColVector[i]->AddTorque(axis, 0.05f, 0);
+			}
+		}
+		else if (nowElapsed == 118)
 		{
 			for (int i = 0; i < _weedColVector.size(); ++i)
 			{

@@ -281,13 +281,13 @@ void PlayerMove::ShootGun()
 		else
 		{
 			Vector3 forceDirection = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
-			hitDynamicSphere->AddForce(forceDirection, 1.5f, 1);
+			hitDynamicSphere->AddForce(forceDirection, 1.2f, 1);
 			Vector3 shootDirection = _headCam->GetTransform()->GetForward() - rayOrigin;
 			Vector3 hitToCenter = hitDynamicSphere->GetTransform()->GetPosition() - hitPoint;
 			Vector3 axis = {shootDirection.y * hitToCenter.z - shootDirection.z * hitToCenter.y,
 							shootDirection.z * hitToCenter.x - shootDirection.x * hitToCenter.z,
 							shootDirection.x * hitToCenter.y - shootDirection.y * hitToCenter.x};
-			hitDynamicSphere->AddTorque(axis, 10.0f, 1);
+			hitDynamicSphere->AddTorque(axis, 6.0f, 1);
 		}
 	}
 
@@ -346,11 +346,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			_tpanimator->GetAllAC()->SetBool("isIdle", true);
-			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
-			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
-			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
-			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+			_tpanimator->GetAllAC()->SetTrigger("isIdle");
 
 			break;
 		}
@@ -365,11 +361,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_playerColliderStanding->Jump(Vector3::Zero);
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_jump");
 			//NetworkManager::Instance().SendPlayJump();
-			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
-			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
-			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
-			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
-			_tpanimator->GetAllAC()->SetBool("isJump", true);
+			_tpanimator->GetAllAC()->SetTrigger("isJump");
 
 			break;
 		}
@@ -421,7 +413,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		}
 		case ePlayerMoveState::AIM:
 		{
-			_fpanimator->GetAllAC()->SetBool("isIdle", true);
+			_fpanimator->GetAllAC()->SetTrigger("isIdle");
 
 			break;
 		}
@@ -452,7 +444,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 		case ePlayerMoveState::DIE:
 		{
 			GameManager::Instance()->GetMyInfo()->audio->PlayOnce("2d_die");
-			_tpanimator->GetAllAC()->SetBool("isDie", true);
+			_tpanimator->GetAllAC()->SetTrigger("isDie");
 			Die();
 
 			break;
@@ -487,31 +479,31 @@ void PlayerMove::OnStateStay(ePlayerMoveState state)
 
 			if (_moveDirection == 8 || _moveDirection == 7 || _moveDirection == 9)
 			{
-				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
 				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
 				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+				_tpanimator->GetAllAC()->SetBool("isRunFront", true);
 			}
 			else if (_moveDirection == 4)
 			{
-				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
 				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+				_tpanimator->GetAllAC()->SetBool("isRunLeft", true);
 			}
 			else if (_moveDirection == 6)
 			{
-				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
 				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 				_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+				_tpanimator->GetAllAC()->SetBool("isRunRight", true);
 			}
 			else if (_moveDirection == 1 || _moveDirection == 3 || _moveDirection == 2)
 			{
-				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
 				_tpanimator->GetAllAC()->SetBool("isRunFront", false);
 				_tpanimator->GetAllAC()->SetBool("isRunRight", false);
 				_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+				_tpanimator->GetAllAC()->SetBool("isRunBack", true);
 			}
 
 			break;
@@ -604,6 +596,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			_weapon->SetMeshActive(true, 1);
 			_weapon->SetMeshActive(true, 2);
 			_weapon->SetMeshActive(true, 3);
+
 			_tpanimator->GetAllAC()->SetBool("isRollFront", false);
 			_tpanimator->GetAllAC()->SetBool("isRollBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRollRight", false);
@@ -638,6 +631,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		{
 			//_fpmesh->SetMeshActive(true, 0);
 			_fpanimator->GetAllAC()->SetBool("isReload", false);
+			_tpanimator->GetAllAC()->SetBool("isReload", false);
 			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 
 			Reload();
