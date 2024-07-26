@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include <string>
 #include <chrono>
 #include "NetworkManager.h"
@@ -79,7 +79,7 @@ void NetworkManager::Update()
 		}
 	}
 
-	if (playerObj.size() == 0)
+	if (playerObj.size() == 0) 
 		return;
 
 	for (auto& [uid, player] : playerObj)
@@ -168,7 +168,7 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		// 모든 데스 갱신
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
-			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());	
 		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
 	}
 
@@ -447,8 +447,7 @@ void NetworkManager::RecvRoomEnter(Protocol::RoomInfo roomInfo)
 
 void NetworkManager::RecvRoomLeave(Protocol::RoomInfo roomInfo)
 {
-	GameManager::Instance()->GetMyInfo()->SetIsHost(false);
-	API::LoadSceneByName("MainMenu");
+	LobbyManager::Instance().RoomLeaveSuccess();
 }
 
 void NetworkManager::SendRoomCreate(std::string roomName, std::string password /*= ""*/, int32 maxPlayerCount /*= 6*/, bool isPrivate /*= false*/, bool isTeam /*= true*/)
@@ -509,6 +508,14 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
 
+		for (int i = 0; i < 6; ++i)
+		{
+			if (!LobbyManager::Instance().isUsed[i])
+			{
+				one->type = static_cast<eMeshType>(i);
+			}
+		}
+
 		info->_players.push_back(one);
 	}
 
@@ -533,6 +540,8 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		{
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
+
+		LobbyManager::Instance().isUsed[static_cast<int>(GameManager::Instance()->GetMyInfo()->type)] = false;
 
 		info->_players.push_back(one);
 	}
@@ -710,6 +719,7 @@ void NetworkManager::RecvPlayUpdate(Protocol::S_PLAY_UPDATE playUpdate)
 		}
 		else
 		{
+			if (playerInfo->GetIsDie()) return;
 			playerInfo->SetCurrentState(animationState);
 		}
 	}
@@ -787,8 +797,7 @@ Protocol::PlayerData NetworkManager::ConvertPlayerInfoToData(HDData::GameObject*
 
 void NetworkManager::ConvertDataToPlayerInfo(Protocol::PlayerData data, HDData::GameObject* mine, PlayerInfo* info)
 {
-	// Todo 위치 갱신 이상해지면 주석해제
-	// mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
+	mine->GetTransform()->SetPosition(data.transform().vector3().x(), data.transform().vector3().y(), data.transform().vector3().z());
 	mine->GetTransform()->SetRotation(data.transform().quaternion().x(), data.transform().quaternion().y(), data.transform().quaternion().z(), data.transform().quaternion().w());
 
 	info->SetCurrentKill(data.killcount());

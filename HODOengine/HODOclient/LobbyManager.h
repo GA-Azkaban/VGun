@@ -101,9 +101,9 @@ private:
 
 public:
 	RoomData* GetRoomData();
-	void RoomEnter();
 	void RoomEnterFAIL(int errorCode);
 	void RoomEnterSUCCESS();
+	void RoomLeaveSuccess();
 
 private:
 	RoomData* _roomData;
@@ -129,4 +129,6 @@ private:
 public:
 	// 플레이어 캐릭터 타입을 관리
 	bool isUsed[6] = { false };
+
+	std::pair<bool, int> character[6];
 };

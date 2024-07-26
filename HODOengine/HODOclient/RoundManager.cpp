@@ -1,4 +1,4 @@
-#include "RoundManager.h"
+﻿#include "RoundManager.h"
 #include "NetworkManager.h"
 #include "LobbyManager.h"
 #include "PlayerMove.h"
@@ -86,11 +86,11 @@ void RoundManager::Update()
 
 	NetworkManager::Instance().SendPlayUpdate();
 
-	if (API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
+	if(API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
 	{
 		_ESCMenuOn = true;
 	}
-	else if (API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
+	else if(API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
 	{
 		_ESCMenuOn = false;
 	}
@@ -123,16 +123,6 @@ void RoundManager::EndGame()
 
 	// 킬 카운트 정리
 	_inGameKillCounts.clear();
-
-	_myKillCount.first->GetGameObject()->SetSelfActive(false);
-	_myKillCount.second->GetGameObject()->SetSelfActive(false);
-
-	for (int i = 0; i < 5; ++i)
-	{
-		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
-		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
-	}
-
 	_endObj->SetSelfActive(true);
 
 	// 라운드 종료
@@ -249,6 +239,15 @@ void RoundManager::InitializeValue()
 
 void RoundManager::SetUIOrigin()
 {
+	_myKillCount.first->GetGameObject()->SetSelfActive(false);
+	_myKillCount.second->GetGameObject()->SetSelfActive(false);
+
+	for (int i = 0; i < 5; ++i)
+	{
+		_killCountObjs[i].first->GetGameObject()->SetSelfActive(false);
+		_killCountObjs[i].second->GetGameObject()->SetSelfActive(false);
+	}
+
 	_timerUI->SetColor(DirectX::Colors::White);
 
 	for (int i = 0; i < 5; ++i)
@@ -528,8 +527,7 @@ void RoundManager::UpdateRoundTimer()
 			}
 		}
 
-
-		if (nowElapsed == 10)
+		if (nowElapsed <= 10)
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
 			// TODO) 사운드 이펙트 넣기
@@ -537,10 +535,14 @@ void RoundManager::UpdateRoundTimer()
 		}
 		if (elapsedTime.count() >= _timer)
 		{
+			SoundManager::Instance().PlayUI("sfx_roundend");
+
 			_isRoundStart = false;
 
 			tumbleAlphaImage->SetActive(false);
 			tumbleCountText->SetActive(false);
+
+			SoundManager::Instance().StopAllPlayerSFX();
 
 			_gameEndTimer->Start();
 			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
