@@ -509,14 +509,6 @@ void NetworkManager::RecvAnotherPlayerEnter(Protocol::RoomInfo roomInfo)
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
 
-		for (int i = 0; i < 6; ++i)
-		{
-			if (!LobbyManager::Instance().isUsed[i])
-			{
-				one->type = static_cast<eMeshType>(i);
-			}
-		}
-
 		info->_players.push_back(one);
 	}
 
@@ -541,8 +533,6 @@ void NetworkManager::RecvAnotherPlayerLeave(Protocol::RoomInfo roomInfo)
 		{
 			GameManager::Instance()->GetMyInfo()->SetIsHost(true);
 		}
-
-		LobbyManager::Instance().isUsed[static_cast<int>(GameManager::Instance()->GetMyInfo()->type)] = false;
 
 		info->_players.push_back(one);
 	}

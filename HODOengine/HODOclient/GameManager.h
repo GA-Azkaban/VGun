@@ -25,5 +25,9 @@ public:
 private:
 	HDData::GameObject* _myObj;
 	PlayerInfo* _myInfo;
+
+public:
+	// 캐릭터 메시 관리용
+	std::string meshes[8];
 };
 
