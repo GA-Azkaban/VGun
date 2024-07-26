@@ -254,7 +254,9 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="MeshTransformController.h" />
     <ClInclude Include="OthersAnim.h" />
     <ClInclude Include="PlayerMoveState.h" />
-    <ClInclude Include="PlayerTest.h" />
+    <ClInclude Include="PlayerTest.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="RoundManager.h" />
     <ClInclude Include="InGameSceneView.h" />
     <ClInclude Include="LobbyManager.h" />
@@ -274,11 +276,17 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestScene.h" />
-    <ClInclude Include="TestSound.h" />
+    <ClInclude Include="TestScene.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="TestSound.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="UIEffect.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="TrainigSceneView.h" />
+    <ClInclude Include="TrainigSceneView.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="UITransformController.h" />
   </ItemGroup>
   <ItemGroup>
@@ -307,7 +315,9 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="LowHPEffect.cpp" />
     <ClCompile Include="MeshTransformController.cpp" />
     <ClCompile Include="OthersAnim.cpp" />
-    <ClCompile Include="PlayerTest.cpp" />
+    <ClCompile Include="PlayerTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="RoundManager.cpp" />
     <ClCompile Include="InGameSceneView.cpp" />
     <ClCompile Include="LobbyManager.cpp" />
@@ -324,10 +334,14 @@ if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionD
     <ClCompile Include="SliderSoundScript.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Struct.pb.cc" />
-    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="TestScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="UIEffect.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="TrainigSceneView.cpp" />
+    <ClCompile Include="TrainigSceneView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />
