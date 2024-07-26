@@ -550,12 +550,9 @@ void RoundManager::UpdateRoundTimer()
 		{
 			_timerUI->SetColor(DirectX::Colors::Red);
 			// TODO) 사운드 이펙트 넣기
-
 		}
 		if (elapsedTime.count() >= _timer)
 		{
-			SoundManager::Instance().PlayUI("sfx_roundend");
-
 			_isRoundStart = false;
 
 			tumbleAlphaImage->SetActive(false);

@@ -346,7 +346,12 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
-			
+			_tpanimator->GetAllAC()->SetBool("isIdle", true);
+			_tpanimator->GetAllAC()->SetBool("isRunFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
+
 			break;
 		}
 		case ePlayerMoveState::RUN:
@@ -364,7 +369,7 @@ void PlayerMove::OnStateEnter(ePlayerMoveState state)
 			_tpanimator->GetAllAC()->SetBool("isRunBack", false);
 			_tpanimator->GetAllAC()->SetBool("isRunRight", false);
 			_tpanimator->GetAllAC()->SetBool("isRunLeft", false);
-			_tpanimator->GetAllAC()->SetTrigger("isJump");
+			_tpanimator->GetAllAC()->SetBool("isJump", true);
 
 			break;
 		}
@@ -566,6 +571,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 	{
 		case ePlayerMoveState::IDLE:
 		{
+			_tpanimator->GetAllAC()->SetBool("isIdle", false);
 
 			break;
 		}
@@ -583,6 +589,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::JUMP:
 		{
 			Landing();
+			_tpanimator->GetAllAC()->SetBool("isJump", false);
 
 			break;
 		}
@@ -597,6 +604,10 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			_weapon->SetMeshActive(true, 1);
 			_weapon->SetMeshActive(true, 2);
 			_weapon->SetMeshActive(true, 3);
+			_tpanimator->GetAllAC()->SetBool("isRollFront", false);
+			_tpanimator->GetAllAC()->SetBool("isRollBack", false);
+			_tpanimator->GetAllAC()->SetBool("isRollRight", false);
+			_tpanimator->GetAllAC()->SetBool("isRollLeft", false);
 
 			_playerState.second = ePlayerMoveState::AIM;
 
@@ -614,7 +625,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 			_shootCount = 0;
 			_headCam->ToggleCameraShake(false);
 			_headCam->ResetCameraPos();
-			_fpanimator->GetAllAC()->SetTrigger("isFire");
+			_fpanimator->GetAllAC()->SetBool("isFire", false);
 
 			break;
 		}
@@ -626,7 +637,7 @@ void PlayerMove::OnStateExit(ePlayerMoveState state)
 		case ePlayerMoveState::RELOAD:
 		{
 			//_fpmesh->SetMeshActive(true, 0);
-			_fpanimator->GetAllAC()->SetTrigger("isReload");
+			_fpanimator->GetAllAC()->SetBool("isReload", false);
 			GameManager::Instance()->GetMyInfo()->audio->Stop("2d_reload");
 
 			Reload();

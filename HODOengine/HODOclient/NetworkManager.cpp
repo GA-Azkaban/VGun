@@ -622,6 +622,8 @@ void NetworkManager::RecvGameStart()
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
+	SoundManager::Instance().PlayUI("sfx_roundend");
+
 	API::SetRecursiveMouseMode(false);
 	API::ShowWindowCursor(true);
 	RoundManager::Instance()->SetIsRoundStart(false);
