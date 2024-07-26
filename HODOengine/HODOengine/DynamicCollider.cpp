@@ -404,6 +404,7 @@ void HDData::DynamicCollider::OnEnable()
 void HDData::DynamicCollider::OnDisable()
 {
 	//_physXRigid->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+
 	_physXRigid->clearForce();
 	_physXRigid->clearTorque();
 	_physXRigid->setLinearVelocity(physx::PxVec3(0.0f, 0.0f, 0.0f));
