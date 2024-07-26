@@ -79,7 +79,7 @@ void NetworkManager::Update()
 		}
 	}
 
-	if (playerObj.size() == 0) 
+	if (playerObj.size() == 0)
 		return;
 
 	for (auto& [uid, player] : playerObj)
@@ -168,9 +168,9 @@ void NetworkManager::RecvPlayKillDeath(Protocol::PlayerData deathPlayerData, Pro
 		// 모든 데스 갱신
 		ConvertDataToPlayerInfo(deathPlayerData,
 			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()],
-			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());	
+			RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponent<PlayerInfo>());
 		RoundManager::Instance()->GetPlayerObjs()[deathPlayerData.userinfo().uid()]->GetComponentInChildren<HDData::SkinnedMeshRenderer>()->PlayAnimation("RV_dying", false, 0.1, true, 0.1);
-		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnDisable();
+		GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[deathPlayerData.userinfo().uid()]->OnEnable();
 	}
 
 	if (myUID == killPlayerData.userinfo().uid())
@@ -588,15 +588,37 @@ void NetworkManager::SendGameStart()
 
 void NetworkManager::RecvRoomStart(Protocol::RoomInfo roomInfo, Protocol::GameRule gameRule, int32 spawnpointindex)
 {
+	{
+		auto roomData = LobbyManager::Instance().GetRoomData();
+
+		roomData->_players.clear();
+		for (auto& player : roomInfo.users())
+		{
+			PlayerInfo* playerInfo = new PlayerInfo;
+			playerInfo->SetNickName(player.userinfo().nickname());
+			playerInfo->SetIsHost(player.host());
+			playerInfo->SetPlayerUID(player.userinfo().uid());
+			playerInfo->SetCurrentHP(player.hp());
+			playerInfo->meshtype = player.userinfo().uid() % 8;
+
+			if (player.host() && (GameManager::Instance()->GetMyInfo()->GetPlayerNickName() == player.userinfo().nickname()))
+			{
+				GameManager::Instance()->GetMyInfo()->SetIsHost(true);
+			}
+
+			roomData->_players.push_back(playerInfo);
+		}
+	}
+
 	// 라운드 초기화
-	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->InitGame();
+	RoundManager::Instance()->SetIsRoundStart(false);
 
 	// 스폰 포인트로 위치 갱신
 	auto pos = API::GetSpawnPointArr()[spawnpointindex];
 
 	GameManager::Instance()->GetMyObject()->GetTransform()->SetPosition(pos);
-	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 0 });
+	GameManager::Instance()->GetMyInfo()->SetServerTransform(pos, Quaternion{ 0, 0, 0, 1 });
 
 	// 씬 로드
 	API::LoadSceneByName("InGame");
@@ -622,8 +644,26 @@ void NetworkManager::RecvGameStart()
 
 void NetworkManager::RecvGameEnd(Protocol::RoomInfo roomInfo)
 {
+	//
+	auto users = roomInfo.users();
+	int maxKillCount = 0;
+
+	for (auto& user : users)
+	{
+		if (maxKillCount >= user.killcount())
+			continue;
+
+		maxKillCount = user.killcount();
+		RoundManager::Instance()->_winnerUID = user.userinfo().uid();
+
+		auto uid = user.userinfo().uid();
+		if (GameManager::Instance()->GetMyInfo()->GetPlayerUID() != uid)
+			GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->GetOtherPlayerCols()[uid]->OnEnable();
+	}
+
 	API::SetRecursiveMouseMode(false);
 	API::ShowWindowCursor(true);
+	RoundManager::Instance()->UpdateDesiredKillChecker();
 	RoundManager::Instance()->SetIsRoundStart(false);
 	RoundManager::Instance()->GetGameEndTimer()->Start();
 	GameManager::Instance()->GetMyObject()->GetComponent<PlayerMove>()->SetIsIngamePlaying(false);
@@ -850,7 +890,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 	//		current->SetPosition(serverPos);
 	//	}
 	//}
-	 
+
 	//if (posDif.Length() > 15.0f)
 	//{
 	//	current->SetPosition(serverPos);
@@ -877,7 +917,7 @@ void NetworkManager::Interpolation(HDData::Transform* current, Vector3 serverPos
 
 	//	current->GetGameObject()->GetComponent<PlayerInfo>()->SetIsInterpolation(false);
 	//}
-	
+
 	//////
 	//class CustomQueue
 	//{

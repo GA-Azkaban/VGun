@@ -54,6 +54,9 @@ public:
 	void SetUIOrigin();
 	void ExitGame();
 
+public:
+	void FinishGame();
+
 
 public:
 	bool CheckHeadColliderOwner(HDData::DynamicSphereCollider* collider);

@@ -39,6 +39,12 @@ void PlayerInfo::Update()
 		//GetGameObject()->GetComponent<HDData::DynamicCapsuleCollider>()->Jump(Vector3{ 0.f, 1.f, 0.f });
 		_isJump = false;
 	}
+
+	if (!RoundManager::Instance()->GetIsRoundStart() && _isDie)
+	{
+		PlayRespawnEffect();
+		KillLogExit();
+	}
 }
 
 void PlayerInfo::GetData(PlayerInfo* info)
@@ -294,6 +300,8 @@ void PlayerInfo::PlayDieEffect()
 
 void PlayerInfo::PlayRespawnEffect()
 {
+	if (_dieEffectImg == nullptr) 
+		return;
 	_dieEffectImg->GetGameObject()->SetSelfActive(false);
 	_crosshair->SetActive(true);
 	// TODO) 리스폰 이펙트 
@@ -313,6 +321,7 @@ void PlayerInfo::PlayKillLog(std::string log)
 
 void PlayerInfo::KillLogExit()
 {
+	if (_killLog == nullptr) return;
 	_killLog->GetGameObject()->SetSelfActive(false);
 }
 

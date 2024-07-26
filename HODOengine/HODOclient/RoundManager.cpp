@@ -41,7 +41,7 @@ void RoundManager::Start()
 		_resultTimerUI->GetGameObject()->SetSelfActive(true);
 		SoundManager::Instance().PlayBGM("bgm_victory");
 		EndGame();
-		}; 
+		};
 
 	_initTimer = new Timer;
 	_initTimer->duration = 3;
@@ -90,11 +90,11 @@ void RoundManager::Update()
 
 	NetworkManager::Instance().SendPlayUpdate();
 
-	if(API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
+	if (API::GetKeyDown(DIK_ESCAPE) && !_ESCMenuOn)	// ESC메뉴 꺼져있을때
 	{
 		_ESCMenuOn = true;
 	}
-	else if(API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
+	else if (API::GetKeyDown(DIK_ESCAPE) && _ESCMenuOn)	// ESC메뉴 켜져있을때
 	{
 		_ESCMenuOn = false;
 	}
@@ -117,8 +117,8 @@ void RoundManager::EndGame()
 	// UI 활성화, 비활성화
 	SetUIActive(false);
 	finRoundimg->GetGameObject()->SetSelfActive(false);
-	//tumbleAlphaImage->SetActive(false);
-	//tumbleCountText->SetActive(false);
+	tumbleAlphaImage->SetActive(false);
+	tumbleCountText->SetActive(false);
 
 	hitCrosshair->SetActive(false);
 	criticalCrosshair->SetActive(false);
@@ -133,6 +133,7 @@ void RoundManager::EndGame()
 	API::SetCurrentSceneMainCamera(_endCam->GetComponent<HDData::Camera>());
 	SetIsRoundStart(false);
 	CheckWinner();
+	FinishGame();
 }
 
 void RoundManager::InitRound()
@@ -142,7 +143,6 @@ void RoundManager::InitRound()
 
 	// 오브젝트들 활성화
 	_myObj->SetSelfActive(true);
-
 	for (auto& [uid, player] : _players)
 	{
 		PlayerInfo* info = player->GetComponent<PlayerInfo>();
@@ -172,7 +172,7 @@ void RoundManager::UpdateRound()
 
 void RoundManager::GetNewDataFromLobby()
 {
-	auto& obj = LobbyManager::Instance().GetRoomData()->_players;
+	auto& roomDataPlayers = LobbyManager::Instance().GetRoomData()->_players;
 	_playerNum = LobbyManager::Instance().GetPlayerNum();
 
 	for (auto& p : _playerObjs)
@@ -182,9 +182,9 @@ void RoundManager::GetNewDataFromLobby()
 
 	int index = 0;
 
-	for (auto& one : obj)
+	for (auto& player : roomDataPlayers)
 	{
-		if (one->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
+		if (player->GetPlayerUID() == GameManager::Instance()->GetMyInfo()->GetPlayerUID())
 		{
 			GameManager::Instance()->SetMyObject(_myObj);
 			GameManager::Instance()->GetMyInfo()->Init();
@@ -196,10 +196,11 @@ void RoundManager::GetNewDataFromLobby()
 		}
 		else
 		{
-			if (index == _playerNum - 1) break;
+			if (index == _playerNum - 1) 
+				break;
 
 			auto playerInfo = _playerObjs[index]->GetComponent<PlayerInfo>();
-			playerInfo->GetData(one);
+			playerInfo->GetData(player);
 			playerInfo->Init();
 
 			auto mesh = _playerObjs[index]->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
@@ -208,19 +209,19 @@ void RoundManager::GetNewDataFromLobby()
 
 			playerInfo->SetParticleSystem(_playerObjs[index]->GetComponentInChildren<HDData::ParticleSystem>());
 
-			_players.insert({ one->GetPlayerUID(), _playerObjs[index] });
+			_players.insert({ player->GetPlayerUID(), _playerObjs[index] });
 
 			auto plMove = _myObj->GetComponent<PlayerMove>();
 			if (plMove != nullptr)
 			{
-				plMove->InsertOtherPlayerInfo(one->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
+				plMove->InsertOtherPlayerInfo(player->GetPlayerUID(), _playerObjs[index]->GetComponent<HDData::DynamicCapsuleCollider>());
 			}
 
-			_killCountObjs[index].first->SetText(one->GetPlayerNickName());
+			_killCountObjs[index].first->SetText(player->GetPlayerNickName());
 			_killCountObjs[index].first->SetColor(DirectX::Colors::Red);
 			_killCountObjs[index].second->SetText(std::to_string(playerInfo->GetPlayerKillCount()));
 			_killCountObjs[index].second->SetColor(DirectX::Colors::Red);
-			_inGameKillCounts.insert({ one->GetPlayerUID(), _killCountObjs[index] });
+			_inGameKillCounts.insert({ player->GetPlayerUID(), _killCountObjs[index] });
 			++index;
 		}
 	}
@@ -233,7 +234,7 @@ void RoundManager::InitializeValue()
 	_nowMaxKill = 0;
 	_winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
 
-	// 현재 UI가 가진 각 킬 카운트 비활성화 (값 정리 필요)
+	// 현재 UI가 가진 각 킬 카운트 활성화 (값 정리 필요)
 	_myKillCount.first->GetGameObject()->SetSelfActive(true);
 	_myKillCount.second->GetGameObject()->SetSelfActive(true);
 
@@ -341,9 +342,11 @@ void RoundManager::CheckWinner()
 	}
 
 	auto mesh = winnerObj->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
-	mesh->LoadMesh(GameManager::Instance()->meshes[meshtype]);
+	// mesh->LoadMesh(GameManager::Instance()->meshes[meshtype]);
+	mesh->LoadMesh(GameManager::Instance()->meshes[_winnerUID%8]);
+
 	mesh->LoadMaterial(API::GetMaterial("PolygonWestern_Texture_01_A"));
-	mesh->PlayAnimation(winnerMotion[_winnerUID % 3]);
+	mesh->PlayAnimation(winnerMotion[::GetTickCount64() % 3]);
 
 	_winnerTXT->GetGameObject()->SetSelfActive(true);
 	_winnerImg->GetGameObject()->SetSelfActive(true);
@@ -401,6 +404,26 @@ void RoundManager::ExitGame()
 	MenuManager::Instance().RenderRoomList();
 	API::GetCubeMap()->LoadCubeMapTexture("Day Sun Peak Clear Gray.dds");
 	API::GetCubeMap()->SetEnvLightIntensity(1.0f);
+}
+
+void RoundManager::FinishGame()
+{
+	if (!_isRoundStart)
+		return;
+
+	SoundManager::Instance().PlayUI("sfx_roundend");
+
+	_isRoundStart = false;
+
+	tumbleAlphaImage->SetActive(false);
+	tumbleCountText->SetActive(false);
+
+	SoundManager::Instance().StopAllPlayerSFX();
+
+	_gameEndTimer->Start();
+	finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
+	_myObj->GetComponent<PlayerMove>()->ResetState();
+	_myObj->GetComponent<PlayerMove>()->StopMoving();
 }
 
 void RoundManager::SetWinnerText(HDData::TextUI* txt)
@@ -554,19 +577,7 @@ void RoundManager::UpdateRoundTimer()
 		}
 		if (elapsedTime.count() >= _timer)
 		{
-			SoundManager::Instance().PlayUI("sfx_roundend");
-
-			_isRoundStart = false;
-
-			tumbleAlphaImage->SetActive(false);
-			tumbleCountText->SetActive(false);
-
-			SoundManager::Instance().StopAllPlayerSFX();
-
-			_gameEndTimer->Start();
-			finRoundimg->GetGameObject()->GetComponent<UIEffect>()->Play();
-			_myObj->GetComponent<PlayerMove>()->ResetState();
-			_myObj->GetComponent<PlayerMove>()->StopMoving();
+			FinishGame();
 		}
 	}
 }
@@ -663,15 +674,27 @@ void RoundManager::UpdateDesiredKillChecker()
 	// 해당 킬 값으로 텍스트를 계속 세팅해줌
 	{
 		int count = GameManager::Instance()->GetMyInfo()->GetPlayerKillCount();
+
 		_myKillCount.second->SetText(std::to_string(count));
-		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID(); }
+
+// 		if (count > _nowMaxKill)
+// 		{
+// 			_nowMaxKill = count;
+// 			_winnerUID = GameManager::Instance()->GetMyInfo()->GetPlayerUID();
+// 		}
 	}
 
 	for (auto& [uid, player] : _players)
 	{
 		int count = player->GetComponent<PlayerInfo>()->GetPlayerKillCount();
+
 		_inGameKillCounts[uid].second->SetText(std::to_string(count));
-		if (count > _nowMaxKill) { _nowMaxKill = count; _winnerUID = uid; }
+
+// 		if (count > _nowMaxKill)
+// 		{
+// 			_nowMaxKill = count;
+// 			// _winnerUID = uid;
+// 		}
 	}
 }
 
