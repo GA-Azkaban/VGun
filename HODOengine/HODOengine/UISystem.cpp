@@ -18,11 +18,6 @@ namespace HDEngine
 
 	}
 
-	void UISystem::Update()
-	{
-		CheckIsFocused();
-	}
-
 	void UISystem::Finalize()
 	{
 

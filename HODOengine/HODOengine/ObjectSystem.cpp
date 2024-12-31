@@ -66,7 +66,7 @@ namespace HDEngine
 		_destroyStaticObjectList.push_back(gameObject);
 	}
 
-	void ObjectSystem::FlushDestroyObjectList()
+	void ObjectSystem::FlushDestroyObjects()
 	{
 		for (auto& destroyStaticObj : _destroyStaticObjectList)
 		{
@@ -203,7 +203,7 @@ namespace HDEngine
 		return _destroyStaticObjectList;
 	}
 
-	void ObjectSystem::UpdateEnableList()
+	void ObjectSystem::EnableObjects()
 	{
 		for (auto& obj : _onEnableList)
 		{
@@ -213,7 +213,7 @@ namespace HDEngine
 		_onEnableList.clear();
 	}
 
-	void ObjectSystem::UpdateDisableList()
+	void ObjectSystem::DisableObjects()
 	{
 		for (auto& obj : _onDisableList)
 		{

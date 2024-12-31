@@ -76,7 +76,7 @@ namespace RocketCore::Graphics
 		int _screenHeight;
 		bool _vSyncEnabled;
 
-		/// 초기화 관련
+		/// DX 초기화 관련
 	private:
 		ComPtr<ID3D11Device> _device;
 		ComPtr<ID3D11DeviceContext> _deviceContext;	// immediateContext
@@ -102,6 +102,7 @@ namespace RocketCore::Graphics
 	private:
 		ResourceManager& _resourceManager;
 
+		// deferred rendering 관련
 	private:
 		DeferredBuffers* _deferredBuffers;
 		QuadBuffer* _quadBuffer;

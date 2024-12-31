@@ -21,7 +21,6 @@ namespace HDEngine
 		UISystem() = default;
 
 		void Initialize();
-		void Update();
 		void Finalize();
 
 		void SetChangedScene(HDData::Scene* currentScene);

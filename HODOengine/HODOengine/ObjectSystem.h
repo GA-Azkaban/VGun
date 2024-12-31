@@ -27,7 +27,7 @@ namespace HDEngine
 		void DestroyObject(HDData::Scene* scene, HDData::GameObject* gameObject);
 		void DestroyStaticObject(HDData::GameObject* gameObject);
 
-		void FlushDestroyObjectList();
+		void FlushDestroyObjects();
 
 		void UpdateCurrentSceneObjects();
 		void LateUpdateCurrentSceneObjects();
@@ -45,8 +45,8 @@ namespace HDEngine
 		std::vector<HDData::Component*> _runningStaticComponentList;
 
 	public:
-		void UpdateEnableList();
-		void UpdateDisableList();
+		void EnableObjects();
+		void DisableObjects();
 		void AddOnEnableList(HDData::GameObject* obj);
 		void AddOnDisableList(HDData::GameObject* obj);
 

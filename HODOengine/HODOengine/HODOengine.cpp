@@ -152,11 +152,11 @@ void HODOengine::ShowWindowCursor(bool show)
 void HODOengine::Run()
 {
 	_timeSystem.Update();
-	_objectSystem.FlushDestroyObjectList();
+	_objectSystem.EnableObjects();
 
 	_inputSystem.Update();
 	_debugSystem.Update();
-	_uiSystem.Update();
+	_uiSystem.CheckIsFocused();
 
 	_objectSystem.UpdateCurrentSceneObjects();
 	_soundSystem.Update();
@@ -171,8 +171,8 @@ void HODOengine::Run()
 	_renderSystem.DrawProcess();
 
 	_eventSystem.InvokeEvent();
-	_objectSystem.UpdateDisableList();
-	_objectSystem.UpdateEnableList();
+	_objectSystem.DisableObjects();
+	_objectSystem.FlushDestroyObjects();
 
 	_physicsSystem.Flush();
 	// refresh input for next frame
