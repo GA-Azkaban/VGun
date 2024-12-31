@@ -219,6 +219,8 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 	_screenHeight = 1440;
 	//_screenWidth = 1920;
 	//_screenHeight = 1080;
+	//_screenWidth = 1600;
+	//_screenHeight = 900;
 	dmSettings.dmPelsWidth = _screenWidth;
 	dmSettings.dmPelsHeight = _screenHeight;
 	dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
@@ -226,17 +228,18 @@ BOOL HODOengine::CreateWindows(HINSTANCE hInstance)
 	// This function actually changes the screen to full screen
 	// CDS_FULLSCREEN Gets Rid Of Start Bar.
 	// We always want to get a result from this function to check if we failed
-	int result = ChangeDisplaySettings(&dmSettings, CDS_FULLSCREEN);
-	dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
-	// Check if we didn't receive a good return message From the function
-	if (result != DISP_CHANGE_SUCCESSFUL)
-	{
-		// Display the error message and quit the program
-		MessageBox(NULL, L"Display Mode Not Compatible", L"Error", MB_OK);
-		PostQuitMessage(0);
-	}
+	//int result = ChangeDisplaySettings(&dmSettings, CDS_FULLSCREEN);
+	//dmSettings.dmFields = DM_PELSWIDTH | DM_PELSHEIGHT;
+	//// Check if we didn't receive a good return message From the function
+	//if (result != DISP_CHANGE_SUCCESSFUL)
+	//{
+	//	// Display the error message and quit the program
+	//	MessageBox(NULL, L"Display Mode Not Compatible", L"Error", MB_OK);
+	//	PostQuitMessage(0);
+	//}
 	
-	_hWnd = CreateWindowW(_appName, _appName, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+	//_hWnd = CreateWindowW(_appName, _appName, WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
+	_hWnd = CreateWindowW(_appName, _appName, WS_OVERLAPPED,
 		0, 0, _screenWidth, _screenHeight, nullptr, nullptr, hInstance, nullptr);
 
 	if (!_hWnd)

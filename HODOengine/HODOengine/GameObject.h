@@ -30,12 +30,9 @@ namespace HDData
 
 	template <class ComponentType>
 	concept ComponentConcept = std::is_base_of<Component, ComponentType>::value;
-
 	class HODO_API GameObject
 	{
 	public:
-		friend HDEngine::ObjectSystem;
-		friend Component::Component();
 		// GameObject의 생성과 초기화 작업은 Scene에서 CreateObject()를 호출할 때 할 것임.
 		~GameObject() = default;
 		GameObject(const GameObject&) = delete;
@@ -45,20 +42,11 @@ namespace HDData
 
 		void OnEnable();
 		void OnDisable();
-		void FlushEnable();
-		void FlushDisable();
 		void Start();
 		void Update();
 		void LateUpdate();
 		void FixedUpdate();
 		void OnDestroy();
-
-		void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count);
-		void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count);
-		void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count);
-
-		void OnTriggerEnter(Collider** _colArr, unsigned int count);
-		void OnTriggerExit(Collider** _colArr, unsigned int count);
 
 		template <ComponentConcept ComponentType, typename... Args>
 		ComponentType* AddComponent(Args&&... args) {
@@ -144,6 +132,16 @@ namespace HDData
 		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
 		void LoadFBXFile(std::string fileName);
 
+		void FlushEnable();
+		void FlushDisable();
+
+		void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count);
+		void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count);
+		void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count);
+
+		void OnTriggerEnter(Collider** _colArr, unsigned int count);
+		void OnTriggerExit(Collider** _colArr, unsigned int count);
+
 	private:
 		GameObject(std::string name = "");
 
@@ -163,5 +161,7 @@ namespace HDData
 		Transform* _transform;
 		bool _selfActive;
 
+		friend HDEngine::ObjectSystem;
+		friend Component::Component();
 	};
 }

@@ -14,14 +14,6 @@ TestScene::TestScene()
 
 	auto mainCam = _scene->GetMainCamera()->GetGameObject();
 	mainCam->AddComponent<CameraMove>();
-
-	//auto image = API::CreateButton(_scene);
-	//image->GetTransform()->SetPosition(1000, 800, 0);
-	//image->GetComponent<HDData::Button>()->GetButtonComp()->SetImage("headshot.png");
-	//auto effect = image->AddComponent<UIEffect>(Vector2{ 1.5, 1.5 }, 0.2, false);
-	//image->GetComponent<HDData::Button>()->SetOnClickEvent([=]() {
-	//	effect->Play();
-	//	});
 	
 	//auto testBox1 = API::CreateObject(_scene);
 	//testBox1->GetComponent<HDData::Transform>()->SetPosition(0.0f, 0.0f, 10.0f);
@@ -182,8 +174,8 @@ TestScene::TestScene()
 	auto buildingRenderer1 = buildingTest1->AddComponent<HDData::MeshRenderer>();
 	buildingRenderer1->LoadMesh("SM_Bld_Saloon_01.fbx");
 	HDEngine::MaterialDesc buildingDesc1;
-	buildingDesc1.materialName = "PolygonKRAFTON_Texture_02";
-	buildingDesc1.albedo = "PolygonKRAFTON_Texture_02.png";
+	buildingDesc1.materialName = "PolygonWestern_Texture_02";
+	buildingDesc1.albedo = "PolygonWestern_Texture_02.png";
 	buildingDesc1.metallic = 0.0f;
 	HDData::Material* newBuildingMat1 = API::CreateMaterial(buildingDesc1);
 	for (int i = 0; i < buildingRenderer1->GetMeshCount(); ++i)
@@ -192,28 +184,30 @@ TestScene::TestScene()
 	}
 
 	// 플레이어 테스트
-	/*auto playerTest = API::CreateObject(_scene, "player");
-	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 30.0f, 0.0f, 0.0f });
+	auto playerTest = API::CreateObject(_scene, "player");
+	playerTest->GetComponent<HDData::Transform>()->SetPosition(Vector3{ 20.0f, 0.0f, 0.0f });
+	playerTest->GetComponent<HDData::Transform>()->Rotate(0.0f, 0.0f, 0.0f);
 	playerTest->AddComponent<PlayerTest>();
 	// 확장자 포함한 파일이름을 넣어준다.
 	// LoadFBXFile 함수는 노드를 따라 게임오브젝트를 계층구조대로 생성해주고
 	// 메쉬와 노드를 불러와 적용시킨다.
 	// 그리고 자식오브젝트를 만들어 SkinnedMeshRenderer 컴포넌트를 부착한다.
-	playerTest->LoadFBXFile("SKM_BadguyTP_X_default.fbx");
+	playerTest->LoadFBXFile("SKM_CowboyTP_X_default.fbx");
 
-	//SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
-	//GetComponentInChildren 함수로 가져와서 사용해야 한다.
+	////SkinnedMeshRenderer 컴포넌트는 자식오브젝트에 생성되므로
+	////GetComponentInChildren 함수로 가져와서 사용해야 한다.
 	auto meshComp = playerTest->GetComponentInChildren<HDData::SkinnedMeshRenderer>();
 	meshComp->LoadAnimation("TP");
-	//meshComp->SetFillModeWireFrame(true);
+	////meshComp->SetMeshActive(false, 0);
+	////meshComp->SetFillModeWireFrame(true);
 
 	HDEngine::MaterialDesc desc;
-	desc.materialName = "PolygonKRAFTON_Texture_01_A";
-	desc.albedo = "PolygonKRAFTON_Texture_01_A.png";
+	desc.materialName = "PolygonWestern_Texture_01_A";
+	desc.albedo = "PolygonWestern_Texture_01_A.png";
 	HDData::Material* newMat = API::CreateMaterial(desc);
 	meshComp->LoadMaterial(newMat, 0);
 
-	meshComp->PlayAnimation("RV_runR", true);
+	meshComp->PlayAnimation("RV_none", true);
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
@@ -221,24 +215,18 @@ TestScene::TestScene()
 
 	//// 오른손 노드의 오브젝트를 가져와서
 	//// 그 오브젝트의 자식 오브젝트를 새로 만들어 총기 메쉬를 부착한다.
-	//auto hand = playerTest->GetGameObjectByNameInChildren("hand_r");
-	auto hand = playerTest->GetGameObjectByNameInChildren("Thumb_01.001");
+	/*auto hand = playerTest->GetGameObjectByNameInChildren("Thumb_01.001");
 	auto weaponTest = API::CreateObject(_scene, "weapon", hand);
 	weaponTest->AddComponent<MeshTransformController>();
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalPosition(-2.1510f, 8.9123f, 7.9229f);
 	weaponTest->GetComponent<HDData::Transform>()->SetLocalRotation({ 0.0398f, -0.6211f, 0.0026f, 0.7820f });
 	auto weaponComp = weaponTest->AddComponent<HDData::MeshRenderer>();
 	weaponComp->LoadMesh("SM_Wep_Revolver_01.fbx");
-	HDEngine::MaterialDesc weaponMatDesc;
-	weaponMatDesc.materialName = "Revolver01Mat";
-	weaponMatDesc.albedo = "PolygonKRAFTON_Texture_01_A.png";
-	weaponMatDesc.metallic = "PolygonKRAFTON_Texture_Metallic.png";
-	HDData::Material* weaponMat1 = API::CreateMaterial(weaponMatDesc);
-	
-	weaponComp->LoadMaterial(weaponMat1, 0);
-	weaponComp->LoadMaterial(weaponMat1, 1);
-	weaponComp->LoadMaterial(weaponMat1, 2);
-	weaponComp->LoadMaterial(weaponMat1, 3);
+
+	weaponComp->LoadMaterial(newMat, 0);
+	weaponComp->LoadMaterial(newMat, 1);
+	weaponComp->LoadMaterial(newMat, 2);
+	weaponComp->LoadMaterial(newMat, 3);*/
 
 	//playerTest->AddComponent<HDData::Animator>();
 	//API::LoadFPAnimationFromData(playerTest, "TP_animation.json");
@@ -254,16 +242,6 @@ TestScene::TestScene()
 	particleSystem3->main.loop = true;
 	particleSystem3->main.minStartColor = { 180, 0, 0, 255 };
 	particleSystem3->main.maxStartColor = { 180, 0, 0, 255 };
-	particleSystem3->main.minStartLifetime = 0.8f;
-	particleSystem3->main.maxStartLifetime = 0.8f;
-	particleSystem3->main.minStartRotation = -180.0f;
-	particleSystem3->main.maxStartRotation = 180.0f;
-	particleSystem3->main.minStartSize = 0.025f;
-	particleSystem3->main.maxStartSize = 0.10f;
-	particleSystem3->main.minStartSpeed = -200.0f;
-	particleSystem3->main.maxStartSpeed = 200.0f;
-	particleSystem3->main.initialVelocity = 0.2f;
-	particleSystem3->main.gravityModifier = 0.1f;
 	particleSystem3->emission.enabled = true;
 	HDData::Burst newBurst3(0.0f, 12);
 	particleSystem3->emission.SetBurst(newBurst3);
@@ -284,31 +262,31 @@ TestScene::TestScene()
 	particleSystem3->rendererModule.mesh = "SM_FX_Sphere_01.fbx";
 	particleSystem3->rendererModule.alphaBlending = true;
 	particleSystem3->colorOverLifetime.enabled = true;
-	// colorKey, alphaKey 생성
-	std::vector<HDData::GradientColorKey> ck3;
-	std::vector<HDData::GradientAlphaKey> ak3;
-	HDData::GradientColorKey colorkey5;
-	colorkey5.color = { 180, 0, 0 };
-	colorkey5.time = 0.0f;
-	ck3.push_back(colorkey5);
-	HDData::GradientColorKey colorkey6;
-	colorkey6.color = { 255, 0, 0 };
-	colorkey6.time = 0.144f;
-	ck3.push_back(colorkey6);
-	HDData::GradientColorKey colorkey7;
-	colorkey7.color = { 220, 0, 0 };
-	colorkey7.time = 0.403f;
-	ck3.push_back(colorkey7);
-	HDData::GradientAlphaKey alphaKey6;
-	alphaKey6.alpha = 255;
-	alphaKey6.time = 0.0f;
-	ak3.push_back(alphaKey6);
-	HDData::GradientAlphaKey alphaKey7;
-	alphaKey7.alpha = 255;
-	alphaKey7.time = 1.0f;
-	ak3.push_back(alphaKey7);
-	particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
-	particleSystem3->Play();
+	//// colorKey, alphaKey 생성
+	//std::vector<HDData::GradientColorKey> ck3;
+	//std::vector<HDData::GradientAlphaKey> ak3;
+	//HDData::GradientColorKey colorkey5;
+	//colorkey5.color = { 180, 0, 0 };
+	//colorkey5.time = 0.0f;
+	//ck3.push_back(colorkey5);
+	//HDData::GradientColorKey colorkey6;
+	//colorkey6.color = { 255, 0, 0 };
+	//colorkey6.time = 0.144f;
+	//ck3.push_back(colorkey6);
+	//HDData::GradientColorKey colorkey7;
+	//colorkey7.color = { 220, 0, 0 };
+	//colorkey7.time = 0.403f;
+	//ck3.push_back(colorkey7);
+	//HDData::GradientAlphaKey alphaKey6;
+	//alphaKey6.alpha = 255;
+	//alphaKey6.time = 0.0f;
+	//ak3.push_back(alphaKey6);
+	//HDData::GradientAlphaKey alphaKey7;
+	//alphaKey7.alpha = 255;
+	//alphaKey7.time = 1.0f;
+	//ak3.push_back(alphaKey7);
+	//particleSystem3->colorOverLifetime.color.SetKeys(ck3, ak3);
+	//particleSystem3->Play();
 }
 
 TestScene::~TestScene()

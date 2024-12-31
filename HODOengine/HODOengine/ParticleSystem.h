@@ -46,6 +46,9 @@ namespace HDData
 		virtual void Start() override;
 		virtual void Update() override;
 
+	private:
+		void SummonParticleFromPool();
+
 	public:
 		MainModule main;
 		ColorOverLifetimeModule colorOverLifetime;

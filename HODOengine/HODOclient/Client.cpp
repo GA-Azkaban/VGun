@@ -28,12 +28,12 @@ Client::~Client()
 void Client::Initialize()
 {	
 	// 매니저 초기화
-	GameSetting::Instance();
-	SoundManager::Instance();
-	NetworkManager::Instance();
-	LobbyManager::Instance();
-	MenuManager::Instance();
-	RoundManager::Instance();
+	//GameSetting::Instance();
+	//SoundManager::Instance();
+	//NetworkManager::Instance();
+	//LobbyManager::Instance();
+	//MenuManager::Instance();
+	//RoundManager::Instance();
 	
 	// 씬 초기화
 	//TestScene test;
@@ -45,22 +45,22 @@ void Client::Initialize()
 	//AnimationLoaderTest loader;
 	//loader.Start(); 
 
-	LoginSceneView login;		//Scene N@ame : Login
-	login.Initialize();
-	
-	MainMenuScene menu;			//Scene Name : MainMenu
-	menu.Initalize();
-
-	LobbySceneView lobby;		//Scene Name : Lobby
-	lobby.Initialize();
-	
+	//LoginSceneView login;		//Scene N@ame : Login
+	//login.Initialize();
+	//
+	//MainMenuScene menu;			//Scene Name : MainMenu
+	//menu.Initalize();
+	//
+	//LobbySceneView lobby;		//Scene Name : Lobby
+	//lobby.Initialize();
+	//
 	InGameSceneView inGame;			//Scene Name : InGame
 	inGame.Initialize();
-	
-	API::LoadSceneByName("Login");
+	//
+	//API::LoadSceneByName("Login");
 
 	//InGameSceneView inGame;			//Scene Name : InGame
 	//inGame.Initialize();
-	//API::LoadSceneByName("InGame");
+	API::LoadSceneByName("InGame");
 	//API::SetRecursiveMouseMode(true);
 }

@@ -101,63 +101,11 @@ namespace HDData
 		{
 			if (burst.currentCycleCount < burst.cycleCount)
 			{
-				std::uniform_real_distribution<float> real_dist(main.minStartLifetime, main.maxStartLifetime);
 				if (burst.count > -1)
 				{
 					for (int i = 0; i < burst.count; ++i)
 					{
-						// 파티쿨 풀에서 가져오기
-						HDEngine::IParticle* particle = _particleSystem->SummonParticle();
-
-						if (particle != nullptr)
-						{
-							// 파티클 정보 세팅
-							std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
-							std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
-							std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
-							std::uniform_int_distribution<> color_dist_a(main.minStartColor.w, main.maxStartColor.w);
-							int r = color_dist_r(_gen);
-							int g = color_dist_g(_gen);
-							int b = color_dist_b(_gen);
-							int a = color_dist_a(_gen);
-							particle->SetColor(DirectX::XMINT4{ r, g, b, a });
-							std::uniform_real_distribution<float> speed_dist(main.minStartSpeed, main.maxStartSpeed);
-							float speed = speed_dist(_gen);
-							particle->SetSpeed(speed);
-							std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
-							float size = size_dist(_gen);
-							particle->SetStartSize(size);
-							particle->SetSize(size);
-							particle->SetScale(size, size, size);
-							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
-							float angle = rotation_dist(_gen);
-							particle->SetAngle(0.0f);
-							if (rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
-							{
-								float radian = DirectX::XMConvertToRadians(angle);
-								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
-								particle->SetRotation(rot);
-								particle->SetPosition(0.0f, 0.0f, 0.0f);
-							}
-							else
-							{
-								float radian = DirectX::XMConvertToRadians(angle);
-								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
-								particle->SetRotation(rot);
-								particle->SetPosition(0.0f, 0.0f, 0.0f);
-							}
-							// max size일 때 gravityModifier의 1배
-							// 사이즈 작아질 수록 gravityModifier도 작아진다
-							float gravityModifier = main.gravityModifier;
-							if (limitVelocityOverLifetime.drag)
-							{
-								gravityModifier = main.gravityModifier * (size / main.maxStartSize);
-							}
-							particle->SetGravityModifier(gravityModifier);
-							particle->SetGravityVelocity(main.initialVelocity);
-							float randomLifetime = real_dist(_gen);
-							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
-						}
+						SummonParticleFromPool();
 					}
 				}
 				else
@@ -166,47 +114,7 @@ namespace HDData
 					int randomCount = int_dist(_gen);
 					for (int i = 0; i < randomCount; ++i)
 					{
-						// 파티클 풀에서 가져오기
-						HDEngine::IParticle* particle = _particleSystem->SummonParticle();
-						if (particle != nullptr)
-						{
-							std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
-							std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
-							std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
-							std::uniform_int_distribution<> color_dist_a(main.minStartColor.w, main.maxStartColor.w);
-							int r = color_dist_r(_gen);
-							int g = color_dist_g(_gen);
-							int b = color_dist_b(_gen);
-							int a = color_dist_a(_gen);
-							particle->SetColor(DirectX::XMINT4{ r, g, b, a });
-							std::uniform_real_distribution<float> speed_dist(main.minStartSpeed, main.maxStartSpeed);
-							float speed = speed_dist(_gen);
-							particle->SetSpeed(speed);
-							std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
-							float size = size_dist(_gen);
-							particle->SetStartSize(size);
-							particle->SetSize(size);
-							particle->SetScale(size, size, size);
-							std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
-							float angle = rotation_dist(_gen);
-							particle->SetAngle(0.0f);
-							if (rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
-							{
-								float radian = DirectX::XMConvertToRadians(angle);
-								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
-								particle->SetRotation(rot);
-								particle->SetPosition(0.0f, 0.0f, 0.0f);
-							}
-							else
-							{
-								float radian = DirectX::XMConvertToRadians(angle);
-								Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
-								particle->SetRotation(rot);
-								particle->SetPosition(0.0f, 0.0f, 0.0f);
-							}
-							float randomLifetime = real_dist(_gen);
-							_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
-						}
+						SummonParticleFromPool();
 					}
 				}
 				++(burst.currentCycleCount);
@@ -275,6 +183,62 @@ namespace HDData
 		else
 		{
 			_accumulatedDeltaTime += deltaTime;
+		}
+	}
+
+	void ParticleSystem::SummonParticleFromPool()
+	{
+		std::uniform_real_distribution<float> real_dist(main.minStartLifetime, main.maxStartLifetime);
+		// 파티쿨 풀에서 가져오기
+		HDEngine::IParticle* particle = _particleSystem->SummonParticle();
+
+		if (particle != nullptr)
+		{
+			// 파티클 정보 세팅
+			std::uniform_int_distribution<> color_dist_r(main.minStartColor.x, main.maxStartColor.x);
+			std::uniform_int_distribution<> color_dist_g(main.minStartColor.y, main.maxStartColor.y);
+			std::uniform_int_distribution<> color_dist_b(main.minStartColor.z, main.maxStartColor.z);
+			std::uniform_int_distribution<> color_dist_a(main.minStartColor.w, main.maxStartColor.w);
+			int r = color_dist_r(_gen);
+			int g = color_dist_g(_gen);
+			int b = color_dist_b(_gen);
+			int a = color_dist_a(_gen);
+			particle->SetColor(DirectX::XMINT4{ r, g, b, a });
+			std::uniform_real_distribution<float> speed_dist(main.minStartSpeed, main.maxStartSpeed);
+			float speed = speed_dist(_gen);
+			particle->SetSpeed(speed);
+			std::uniform_real_distribution<float> size_dist(main.minStartSize, main.maxStartSize);
+			float size = size_dist(_gen);
+			particle->SetStartSize(size);
+			particle->SetSize(size);
+			particle->SetScale(size, size, size);
+			std::uniform_real_distribution<float> rotation_dist(main.minStartRotation, main.maxStartRotation);
+			float angle = rotation_dist(_gen);
+			particle->SetAngle(0.0f);
+			particle->SetPosition(0.0f, 0.0f, 0.0f);
+			if (rendererModule.renderMode == HDEngine::ParticleSystemRenderMode::Mesh)
+			{
+				float radian = DirectX::XMConvertToRadians(angle);
+				Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, radian, 0.0f });
+				particle->SetRotation(rot);
+			}
+			else
+			{
+				float radian = DirectX::XMConvertToRadians(angle);
+				Quaternion rot = Quaternion::CreateFromYawPitchRoll({ 0.0f, 0.0f, radian });
+				particle->SetRotation(rot);
+			}
+			// max size일 때 gravityModifier의 1배
+			// 사이즈 작아질 수록 gravityModifier도 작아진다
+			float gravityModifier = main.gravityModifier;
+			if (limitVelocityOverLifetime.drag)
+			{
+				gravityModifier = main.gravityModifier * (size / main.maxStartSize);
+			}
+			particle->SetGravityModifier(gravityModifier);
+			particle->SetGravityVelocity(main.initialVelocity);
+			float randomLifetime = real_dist(_gen);
+			_activatedParticles.insert(std::make_pair(particle, std::make_pair(randomLifetime, 0.0f)));
 		}
 	}
 

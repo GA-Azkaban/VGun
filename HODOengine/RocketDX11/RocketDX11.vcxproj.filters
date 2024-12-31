@@ -628,6 +628,9 @@
     <Filter Include="Resource\Shader\UI">
       <UniqueIdentifier>{96068b70-ce97-4b53-b6f7-fb3d7d0919d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\GBufferDebug">
+      <UniqueIdentifier>{275f1f03-f930-4a5c-992f-5b17ccf5d9b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="Sampler.hlsli">

@@ -3,9 +3,10 @@
 #include "GraphicsObjFactory.h"
 
 HDData::StaticBoxCollider::StaticBoxCollider()
-	: _width(1.0f), _height(1.0f), _depth(1.0f)
+	//: _width(1.0f), _height(1.0f), _depth(1.0f)
+	: _width(0.01f), _height(0.01f), _depth(0.01f)
 {
-	_colType = eColliderRole::TERRAIN;
+	_colType = eColliderRole::NONE;
 	_cubeDebugStruct = HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateCubePrimitive();
 	_debugStruct = _cubeDebugStruct;
 	//HDEngine::PhysicsSystem::Instance().CreateStaticBoxCollider(_width, _height, _depth);

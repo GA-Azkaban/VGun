@@ -1490,8 +1490,7 @@ namespace RocketCore::Graphics
 		{
 			const aiAnimation* animation = scene->mAnimations[i];
 			Animation* newAnimation = new Animation();
-			//newAnimation->animName = _fileName.substr(0, _fileName.find_last_of('.'));
-			//newAnimation->animName = animationName;
+			
 			if (animationName == "")
 			{
 				newAnimation->animName = animation->mName.C_Str();
