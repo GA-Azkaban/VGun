@@ -5,9 +5,8 @@
 #include <string>
 
 /// <summary>
-/// Component�� ���� ������Ʈ�� ��ġ�� �� �ִ� ��ü�Դϴ�.
-/// ���� ������Ʈ�� ��ġ�� ������Ʈ�� ���� ���� ������Ʈ�� ������ �����˴ϴ�.
-/// 2023.11.01 �����
+/// Component는 GameObject에 부착됩니다.
+/// 부착된 Component들에 따라 GameObject의 속성이 결정됩니다.
 /// </summary>
 
 class HODOengine;
