@@ -1,52 +1,70 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 
-GameManager* GameManager::GetInstance()
+GameManager* GameManager::Instance()
 {
-	if (instance == nullptr)
+	if (_instance == nullptr)
 	{
-		instance = new GameManager;
+		_instance = new GameManager;
 	}
 
-	return instance;
+	return _instance;
 }
 
-GameManager* GameManager::instance = nullptr;
+GameManager* GameManager::_instance = nullptr;
 
 GameManager::GameManager()
 {
+	_myInfo = new PlayerInfo;
 
+	meshes[0] = "SKM_BadguyTP_X_default.fbx";
+	meshes[1] = "SKM_BusinessManTP_X_default.fbx";
+	meshes[2] = "SKM_CowboyTP_X_default.fbx";
+	meshes[3] = "SKM_CowgirlTP_X_default.fbx";
+	meshes[4] = "SKM_GunManTP_X_default.fbx";
+	meshes[5] = "SKM_SheriffTP_X_default.fbx";
+	meshes[6] = "SKM_WomanTP_X_default.fbx";
+	meshes[7] = "SKM_WorkingGirlTP_X_default.fbx";
 }
 
-void GameManager::InitGame()
+GameManager::~GameManager()
 {
-
-
-	// 모든 무기에 대한 데이터 설정
-	SetWeaponData();
+	delete _myInfo;
+	delete _instance;
 }
 
-std::unordered_map<eWeaponType, const weaponData*> GameManager::GetWeapons()
+void GameManager::Logout()
 {
-	return _weapons;
+	_myObj = nullptr;
+	_myInfo = nullptr;
 }
 
-void GameManager::SetWeaponData()
+void GameManager::QuitGame()
 {
-	weaponData* handGun = new weaponData;
-	_weapons.insert({eWeaponType::HANDGUN, handGun});
-
-	weaponData* shotGun = new weaponData;
-	_weapons.insert({ eWeaponType::SHOTGUN, shotGun });
-
-	weaponData* AR1 = new weaponData;
-	_weapons.insert({ eWeaponType::ASSAULT_RIFLE1, AR1 });
-
-	weaponData* AR2 = new weaponData;
-	_weapons.insert({ eWeaponType::ASSAULT_RIFLE2, AR2 });
-
-	weaponData* AR3 = new weaponData;
-	_weapons.insert({ eWeaponType::ASSAULT_RIFLE3, AR3 });
-
-	weaponData* sniper = new weaponData;
-	_weapons.insert({ eWeaponType::SNIPER, sniper });
+	// TODO) 게임 종료 전에 해야 하는 것들
+	API::QuitWindow();
 }
+
+void GameManager::SetMyInfo(PlayerInfo* info)
+{
+	_myInfo = info;
+}
+
+PlayerInfo* GameManager::GetMyInfo()
+{
+	return _myInfo;
+}
+
+void GameManager::SetMyObject(HDData::GameObject* obj)
+{
+	_myObj = obj;
+	_myObj->GetComponent<PlayerInfo>()->GetData(_myInfo);
+	_myInfo = _myObj->GetComponent<PlayerInfo>();
+}
+
+HDData::GameObject* GameManager::GetMyObject()
+{
+	return _myObj;
+}
+
+
+

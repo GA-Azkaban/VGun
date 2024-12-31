@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Component.h"
 #include "SoundSystem.h"
 
@@ -8,6 +8,11 @@ namespace HDData
 	{
 	public:
 		AudioListner()
+		{
+			HDEngine::SoundSystem::Instance().SetAudioListner(this);
+		}
+
+		void SetAudioListner()
 		{
 			HDEngine::SoundSystem::Instance().SetAudioListner(this);
 		}

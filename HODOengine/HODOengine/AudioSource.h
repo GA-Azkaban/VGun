@@ -1,9 +1,10 @@
-#pragma once
+﻿#pragma once
+#include <string>
+#include "MathHeader.h"
 #include "dllExporter.h"
 #include "Component.h"
 #include "SoundGroup.h"
-#include "../HODOmath//HODOmath.h"
-#include <string>
+#include <vector>
 
 namespace HDEngine
 {
@@ -26,10 +27,13 @@ namespace HDData
 			float minDistance, float maxDistance);
 
 		void PlayOnce(std::string soundName);
+		void PlayOnceIfNotPlaying(std::string soundName);
+		void PlayOnceIfNotPlaying2(std::string soundName1, std::string soundName2);
+		void PlayOnceAfterStop(std::string soundName, HDData::SoundGroup stopGroup);
 		void PlayRepeat(std::string soundName);
 
-		void Play3DOnce(std::string soundName, HDMath::HDFLOAT3 startPos);
-		void Play3DRepeat(std::string soundName, HDMath::HDFLOAT3 startPos);
+		void Play3DOnce(std::string soundName);
+		void Play3DRepeat(std::string soundName);
 
 		void Stop(std::string soundName);
 		void StopSoundGroup(HDData::SoundGroup group);

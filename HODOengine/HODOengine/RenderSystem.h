@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
 #include <vector>
 #include <memory>
@@ -6,18 +6,20 @@
 
 #include "..\\HODO3DGraphicsInterface\\I3DRenderer.h"
 #include "Singleton.h"
-#include "../HODOmath/HODOmath.h"
+#include "MathHeader.h"
 #include "../HODO3DGraphicsInterface/ILineRenderer.h"
 
 namespace HDData
 {
 	class RendererBase;
 	class UIBase;
+	class Collider;
 }
 
 namespace HDEngine
 {
 	class IRenderable;
+	class ICubeMap;
 }
 
 namespace HDEngine
@@ -37,8 +39,13 @@ namespace HDEngine
 	public:
 		void Update(float deltaTime);
 		void DrawProcess();
-		void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color);
-		void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color);
+		void DrawLine(Vector3 start, Vector3 end, Vector4 color);
+		void DrawLine(Vector3 start, Vector3 direction, float length, Vector4 color);
+
+		//test
+		void OnResize(int screenWidth, int screenHeight);
+
+		HDEngine::ICubeMap* GetCubeMap();
 
 	private:
 		void UpdateRenderData();
@@ -57,14 +64,6 @@ namespace HDEngine
 	private:
 		HMODULE _dllHandle;
 		std::unique_ptr<I3DRenderer> _dx11Renderer;
-
-	public:
-		void PushRenderComponent(HDData::RendererBase* comp);
-		void PushSketchComponent(HDData::UIBase* comp);
-
-	private:
-		std::vector<HDData::RendererBase*> _rendererList;
-		std::vector<HDData::UIBase*> _uiList;
-		ILineRenderer* _lineRenderer;
+		ILineRenderer* _lineRenderer;		
 	};
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "StaticCollider.h"
 
@@ -19,10 +19,13 @@ namespace HDData
 		void SetWidth(float val);
 		void SetDepth(float val);
 
+		virtual void UpdateToPhysics() override;
+
 	private:
 		float _width;
 		float _height;
 		float _depth;
+		HDEngine::CubePrimitive* _cubeDebugStruct;
 	};
 }
 

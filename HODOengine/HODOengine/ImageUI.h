@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "UIBase.h"
 #include "dllExporter.h"
 #include "..\\HODO3DGraphicsInterface\\ISketchableImage.h"
@@ -18,10 +18,29 @@ namespace HDData
 		float GetScreenSpacePositionX();
 		float GetScreenSpacePositionY();
 
+		DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color);
+		void SetDefaultColor(DirectX::FXMVECTOR color);
+		void RetunDefaultColor();
+
 		float GetImageWidth();
 		float GetImageHeight();
 
+		void OnClickEvent() override;
+
 		void ChangeScale(float x, float y);
+		DirectX::XMFLOAT2 GetScale();
+
+		void SetAngle(float angle);
+		void SetOrigin(float x, float y);
+		void SetCenter(float x, float y);
+
+		Vector2 GetImageScale();
+
+		// fade In & out
+		void FadeIn(float time);
+		void FadeOut(float time);
+		bool GetComplete();
+		bool GetFadeMode();
 
 	private:
 		HDEngine::ISketchableImage* _imageUI;

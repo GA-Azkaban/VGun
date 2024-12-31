@@ -1,4 +1,8 @@
-#include "StaticCollider.h"
+ï»¿#include "StaticCollider.h"
+#include "Transform.h"
+
+#include "../include/physX/PxPhysics.h"
+#include "../include/physX/PxPhysicsAPI.h"
 
 HDData::StaticCollider::StaticCollider()
 	: _isCollided(false)
@@ -8,7 +12,13 @@ HDData::StaticCollider::StaticCollider()
 
 void HDData::StaticCollider::UpdateToPhysics()
 {
-	// physics ¾ÀÀ» °¡Á®¿Í¼­ ÄÝ¶óÀÌ´õÀÇ transform °ªÀ» º¸³½´Ù
+	// physics ì”¬ì„ ê°€ì ¸ì™€ì„œ ì½œë¼ì´ë”ì˜ transform ê°’ì„ ë³´ë‚¸ë‹¤
+}
+
+void HDData::StaticCollider::UpdateFromPhysics(Vector3 pos, Quaternion quat)
+{
+	GetTransform()->SetPosition(pos.x, pos.y, pos.z);
+	GetTransform()->SetRotation(quat);
 }
 
 void HDData::StaticCollider::Collided()
@@ -19,4 +29,19 @@ void HDData::StaticCollider::Collided()
 bool HDData::StaticCollider::GetIsCollided()
 {
 	return _isCollided;
+}
+
+void HDData::StaticCollider::SetGlobalPosition(Vector3 pos)
+{
+	physx::PxTransform position = { pos.x, pos.y, pos.z };
+	_physXStatic->setGlobalPose(position);
+}
+
+void HDData::StaticCollider::Update()
+{
+}
+
+void HDData::StaticCollider::SetPhysXRigid(physx::PxRigidStatic* rigid)
+{
+	_physXStatic = rigid;
 }

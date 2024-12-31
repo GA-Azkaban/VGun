@@ -1,23 +1,37 @@
-#pragma once
+﻿#pragma once
 #include "RendererBase.h"
 #include "dllExporter.h"
-#include "..\\HODO3DGraphicsInterface\\IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IStaticMesh.h"
+#include "../HODO3DGraphicsInterface/IMaterial.h"
 
 namespace HDData
 {
+	class Material;
+
 	class HODO_API MeshRenderer : public RendererBase
 	{
 	public:
 		MeshRenderer();
+		~MeshRenderer();
 
 		void LoadMesh(const std::string& fileName);
-		void LoadNormalMap(const std::string& fileName);
-		void LoadDiffuseMap(const std::string& fileName);
-		void LoadVertexShader(const std::string& fileName);
-		void LoadPixelShader(const std::string& fileName);
+		void LoadMaterial(HDData::Material* material, unsigned int element = 0);
+		void LoadAlbedoMap(const std::string& fileName, unsigned int element = 0);
+		void LoadNormalMap(const std::string& fileName, unsigned int element = 0);
+		void LoadARMMap(const std::string& fileName, unsigned int element = 0);
+		void LoadRoughnessMap(const std::string& fileName, unsigned int element = 0);
+		void LoadMetallicMap(const std::string& fileName, unsigned int element = 0);
+		void SetRoughnessValue(float value, unsigned int element = 0);
+		void SetMetallicValue(float value, unsigned int element = 0);
+		void SetAlbedoColor(UINT r, UINT g, UINT b, UINT a, unsigned int element = 0);
+		void SetUseLight(bool useLight);
+		void SetMeshActive(bool isActive, unsigned int index);
+		void SetShadowActive(bool isActive);
+		int GetMeshCount();
+		void SetCullMode(HDEngine::CullMode cullMode);
 
 	protected:
-		virtual void UpdateRenderData() override;
+		virtual void Update() override;
 		virtual void OnEnable() override;
 		virtual void OnDisable() override;
 

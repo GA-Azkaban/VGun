@@ -1,6 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/c++,windows,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=c++,windows,visualstudio
 
+
+
 ### C++ ###
 # Prerequisites
 *.d
@@ -471,3 +473,39 @@ HODOengine/SoundLib/lib/.svn/pristine/0a/0a2d9e4c011ce25df935468e24996c4cbe94eab
 HODOengine/SoundLib/lib/.svn/pristine/1e/1eebb51416c35f06966aaf74ee3ce95faf5d181c.svn-base
 HODOengine/SoundLib/lib/.svn/pristine/20/2033a101388cd9b2d1575af9cceffec78da51e7e.svn-base
 HODOengine/SoundLib/lib/.svn/pristine/9d/9d33f091a6ab1d4a53b59f8714875267ed6a585a.svn-base
+
+### 프로젝트 리소스들 ###
+
+*.wav
+*.mp3
+*.dds
+*.png
+*.fbx
+*.cso
+*.dae
+
+HODOengine/Resources/Models/SM/SM_renameRecur.bat
+
+HODOengine/Include/RapidJson/
+
+HODOengine/Resources/SceneData/lobbyData.json
+
+HODOengine/Resources/UI/반투명캔버스만드는법.txt
+
+HODOengine/Resources/Textures/UI/반투명캔버스만드는법.txt
+
+HODOengine/Include/DXTK/SpriteFont.h
+
+HODOengine/Include/Protobuf/Enum.proto
+
+HODOengine/Include/Protobuf/Protocol.proto
+
+HODOengine/Include/Protobuf/Struct.proto
+
+HODOengine/Include/ServerCore/Log.h
+
+HODOengine/Include/
+
+HODOengine/Resources/
+
+HODOengine/HODOclient/Entry.cpp

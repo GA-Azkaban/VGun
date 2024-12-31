@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="TEST|Win32">
+      <Configuration>TEST</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="TEST|x64">
+      <Configuration>TEST</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -32,6 +40,12 @@
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TEST|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -40,6 +54,12 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TEST|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
@@ -60,17 +80,45 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='TEST|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='TEST|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+    <ExcludePath>$(CommonExcludePath);$(VC_ExecutablePath_x64);$(VC_LibraryPath_x64);</ExcludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">
+    <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TEST|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
@@ -102,16 +150,51 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;$(SolutionDir)ServerCore\</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HODOengine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\;$(SolutionDir)Lib\$(Configuration)\;$(SolutionDir)Lib\$(Configuration)\Protobuf;$(SolutionDir)Lib\$(Configuration)\ServerCore;$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Build\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HODOengine.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\;$(SolutionDir)Lib\$(Configuration)\;$(SolutionDir)Lib\$(Configuration)\Protobuf;$(SolutionDir)Lib\$(Configuration)\ServerCore;$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Build\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HODOengine.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -119,47 +202,157 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)Lib\;$(SolutionDir)include\;$(SolutionDir)include\ServerCore;$(SolutionDir)include\DXTK;</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>HODOengine.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib\;$(SolutionDir)Lib\$(Configuration)\;$(SolutionDir)Lib\$(Configuration)\Protobuf;$(SolutionDir)Lib\$(Configuration)\ServerCore;$(SolutionDir)Lib\$(Configuration)\DXTK;$(SolutionDir)Build\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>HODOengine.lib;DirectXTK.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /E /Y "$(SolutionDir)Resources\*" "$(SolutionDir)Build\$(Configuration)\Resources\"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)Build" mkdir "$(SolutionDir)Build"
+if not exist "$(SolutionDir)Build\$(Configuration)" mkdir "$(SolutionDir)Build\$(Configuration)"
+if not exist "$(SolutionDir)Build\$(Configuration)\Resources" mkdir "$(SolutionDir)Build\$(Configuration)\Resources"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BtnHoveringScript.h" />
+    <ClInclude Include="BtnImageScript.h" />
+    <ClInclude Include="BtnTextScript.h" />
     <ClInclude Include="CameraMove.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="CooldownText.h" />
+    <ClInclude Include="Crosshair.h" />
+    <ClInclude Include="DamageLog.h" />
+    <ClInclude Include="Decal.h" />
+    <ClInclude Include="DecalPool.h" />
+    <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="ErrorCode.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameSetting.h" />
+    <ClInclude Include="GameStruct.h" />
+    <ClInclude Include="HitEffect.h" />
+    <ClInclude Include="CooldownAlpha.h" />
+    <ClInclude Include="Indicator.h" />
+    <ClInclude Include="IndicatorPool.h" />
+    <ClInclude Include="KillLog.h" />
+    <ClInclude Include="LobbySceneView.h" />
+    <ClInclude Include="LowHPEffect.h" />
+    <ClInclude Include="MeshTransformController.h" />
+    <ClInclude Include="OthersAnim.h" />
+    <ClInclude Include="PlayerMoveState.h" />
+    <ClInclude Include="PlayerTest.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="RoundManager.h" />
+    <ClInclude Include="InGameSceneView.h" />
     <ClInclude Include="LobbyManager.h" />
     <ClInclude Include="LoginSceneView.h" />
-    <ClInclude Include="Player.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MenuManager.h" />
+    <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="PlayerMove.h" />
+    <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SliderSoundScript.h" />
+    <ClInclude Include="ServerPacketHandler.h" />
+    <ClInclude Include="ServerSession.h" />
+    <ClInclude Include="SliderSoundScript.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestScene.h" />
-    <ClInclude Include="TestSound.h" />
-    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="TestScene.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="TestSound.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="UIEffect.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="TrainigSceneView.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="UITransformController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BtnHoveringScript.cpp" />
+    <ClCompile Include="BtnImageScript.cpp" />
+    <ClCompile Include="BtnTextScript.cpp" />
     <ClCompile Include="CameraMove.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="CooldownText.cpp" />
+    <ClCompile Include="Crosshair.cpp" />
+    <ClCompile Include="DamageLog.cpp" />
+    <ClCompile Include="Decal.cpp" />
+    <ClCompile Include="DecalPool.cpp" />
     <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="Enum.pb.cc" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameSetting.cpp" />
+    <ClCompile Include="HitEffect.cpp" />
+    <ClCompile Include="CooldownAlpha.cpp" />
+    <ClCompile Include="Indicator.cpp" />
+    <ClCompile Include="IndicatorPool.cpp" />
+    <ClCompile Include="KillLog.cpp" />
+    <ClCompile Include="LobbySceneView.cpp" />
+    <ClCompile Include="LowHPEffect.cpp" />
+    <ClCompile Include="MeshTransformController.cpp" />
+    <ClCompile Include="OthersAnim.cpp" />
+    <ClCompile Include="PlayerTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="RoundManager.cpp" />
+    <ClCompile Include="InGameSceneView.cpp" />
     <ClCompile Include="LobbyManager.cpp" />
     <ClCompile Include="LoginSceneView.cpp" />
-    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MenuManager.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="PlayerInfo.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
-    <ClCompile Include="SliderSoundScript.cpp" />
-    <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Protocol.pb.cc" />
+    <ClCompile Include="ServerPacketHandler.cpp" />
+    <ClCompile Include="ServerSession.cpp" />
+    <ClCompile Include="SliderSoundScript.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="Struct.pb.cc" />
+    <ClCompile Include="TestScene.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='TEST|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="UIEffect.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TrainigSceneView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HODOclient.rc" />
@@ -167,6 +360,11 @@
   <ItemGroup>
     <Image Include="HODOclient.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Include\Protobuf\Enum.proto" />
+    <None Include="..\Include\Protobuf\Protocol.proto" />
+    <None Include="..\Include\Protobuf\Struct.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

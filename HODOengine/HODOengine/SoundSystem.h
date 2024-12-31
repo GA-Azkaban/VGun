@@ -1,15 +1,13 @@
-#pragma once
+﻿#pragma once
+#include <unordered_map>
 #include "Singleton.h"
 #include "AudioClip.h"
-#include "HODOmath.h"
-#include <vector>
-#include <unordered_map>
-
-#pragma comment(lib, "..//SoundLib//lib//x64//fmod_vc.lib")
+#include "MathHeader.h"
 
 namespace HDData
 {
 	class AudioListner;
+	class AudioSource;
 }
 
 namespace HDEngine
@@ -44,37 +42,40 @@ namespace HDEngine
 		/// <param name="soundGroup">Sound Group 지정</param>
 		/// <param name="minDistance">소리가 가장 크게 들리는 범위. 이 범위 밖으로 나갈수록 소리가 점차 감소</param>
 		/// <param name="maxDistance">소리가 들리는 최대 범위. 이 범위 밖으로 나가면 소리가 들리지 않음</param>
-		void CreateSound3D(std::string soundPath, HDData::SoundGroup soundGroup,
+		void CreateSound3D(HDData::AudioSource* audioSource, std::string soundPath, HDData::SoundGroup soundGroup,
 			float minDistance, float maxDistance);
 
 		/// 사운드 재생 관련.
 		void PlayOnce(std::string soundPath);
 		void PlayRepeat(std::string soundPath);
 
-		void Play3DOnce(std::string soundPath, HDMath::HDFLOAT3 startPos);
-		void Play3DRepeat(std::string soundPath, HDMath::HDFLOAT3 startPos);
+		void Play3DOnce(HDData::AudioSource* audioSource, std::string soundPath);
+		void Play3DRepeat(HDData::AudioSource* audioSource, std::string soundPath);
 
-		void Stop(std::string soundPath);
+		void Stop(HDData::AudioSource* audioSource, std::string soundPath);
 		void StopSoundGroup(HDData::SoundGroup group);
 		void StopAll();
 
-		void Mute(std::string soundPath);
+		void Mute(HDData::AudioSource* audioSource, std::string soundPath);
 		void MuteSoundGroup(HDData::SoundGroup group);
 		void MuteAll();
 
-		void Paused(std::string soundPath);
+		void Paused(HDData::AudioSource* audioSource, std::string soundPath);
 		void PausedSoundGroup(HDData::SoundGroup group);
 		void PausedAll();
 
 		/// volume min = 0.0f, max = 1.0f;
-		void SetSoundVolume(std::string soundPath, float volume);
+		void SetSoundVolume(HDData::AudioSource* audioSource, std::string soundPath, float volume);
 		void SetSoundGroupVolume(HDData::SoundGroup group, float volume);
 		void SetSoundVolumeAll(float volume);
 
-		bool IsSoundPlaying(std::string soundPath);
+		bool IsSoundPlaying(HDData::AudioSource* audioSource, std::string soundPath);
+
+		void Update3DSoundPosition();
 
 		std::unordered_map<std::string, std::string>& GetSoundPathList();
-		std::unordered_map<std::string, HDData::AudioClip>& GetSoundList();
+		std::unordered_map<std::string, HDData::AudioClip>& Get2DSoundList();
+		std::unordered_map<std::string, HDData::AudioClip>& Get3DSoundList(HDData::AudioSource* audioSource);
 
 	private:
 		/// FMOD 관련 변수들
@@ -83,7 +84,8 @@ namespace HDEngine
 		FMOD::ChannelGroup* _channelGroupMaster;	// 오디오 채널 전체 그룹(_channelGroup 묶음)
 		std::vector<FMOD::ChannelGroup*> _channelGroups;	// 오디오 채널 그룹
 		std::unordered_map<std::string, std::string> _soundPathList;	// <soundName, soundPath>
-		std::unordered_map<std::string, HDData::AudioClip> _soundList;
+		std::unordered_map<std::string, HDData::AudioClip> _2DSoundList;
+		std::unordered_map<HDData::AudioSource*, std::unordered_map<std::string, HDData::AudioClip>> _3DSoundList;
 
 		/// FMOD 제어에 필요한 변수들
 		const unsigned int MAXCHANNELGROUP;

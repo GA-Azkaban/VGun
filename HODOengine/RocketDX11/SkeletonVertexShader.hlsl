@@ -1,14 +1,4 @@
-
-cbuffer externalData : register(b0)
-{
-	float4x4 world;
-	float4x4 worldViewProj;
-}
-
-cbuffer skeleton
-{
-	float4x4 boneTransforms[96];
-};
+#include "ConstantBuffer.hlsli"
 
 struct VertexShaderInput
 {
@@ -49,11 +39,11 @@ VertexToPixel main(VertexShaderInput input)
 		normalL += _weights[i] * mul(input.normal, (float3x3)boneTransforms[input.boneIndices[i]]);
 	}
 
-	output.worldPos = mul(float4(posL, 1.0f), world).xyz;
+	float4 pos = mul(float4(posL, 1.0f), world);
+	output.position = mul(pos, viewProjection);
 	output.normal = mul(normalL, (float3x3)world);
-
-	output.position = mul(float4(posL, 1.0f), worldViewProj);
 	output.tangent = mul(input.tangent, (float3x3)world);
+	output.worldPos = pos.xyz;
 	output.uv = input.uv;
 
 	return output;

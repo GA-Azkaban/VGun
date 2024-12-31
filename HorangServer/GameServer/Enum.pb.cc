@@ -18,7 +18,7 @@
 PROTOBUF_PRAGMA_INIT_SEG
 namespace Protocol {
 }  // namespace Protocol
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[1];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[6];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = nullptr;
@@ -28,11 +28,32 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "\n\nEnum.proto\022\010Protocol*h\n\nPlayerType\022\024\n\020"
   "PLAYER_TYPE_NONE\020\000\022\026\n\022PLAYER_TYPE_KNIGHT"
   "\020\001\022\024\n\020PLAYER_TYPE_MAGE\020\002\022\026\n\022PLAYER_TYPE_"
-  "ARCHER\020\003b\006proto3"
+  "ARCHER\020\003*`\n\neRoomState\022\023\n\017ROOM_STATE_NON"
+  "E\020\000\022\024\n\020ROOM_STATE_LOBBY\020\001\022\023\n\017ROOM_STATE_"
+  "PLAY\020\002\022\022\n\016ROOM_STATE_END\020\003*`\n\neTeamColor"
+  "\022\023\n\017TEAM_COLOR_NONE\020\000\022\022\n\016TEAM_COLOR_RED\020"
+  "\001\022\024\n\020TEAM_COLOR_GREEN\020\002\022\023\n\017TEAM_COLOR_BL"
+  "UE\020\003*7\n\007eRGBMap\022\014\n\010MAP_NONE\020\000\022\016\n\nMAP_RAN"
+  "DOM\020\001\022\016\n\nMAP_DESERT\020\002*\230\001\n\014eHitLocation\022\025"
+  "\n\021HIT_LOCATION_NONE\020\000\022\027\n\023HIT_LOCATION_NO"
+  "_HIT\020\001\022\025\n\021HIT_LOCATION_HEAD\020\002\022\025\n\021HIT_LOC"
+  "ATION_BODY\020\003\022\024\n\020HIT_LOCATION_ARM\020\004\022\024\n\020HI"
+  "T_LOCATION_LEG\020\005*\267\003\n\017eAnimationState\022\030\n\024"
+  "ANIMATION_STATE_NONE\020\000\022\030\n\024ANIMATION_STAT"
+  "E_IDLE\020\001\022\033\n\027ANIMATION_STATE_FORWARD\020\002\022\030\n"
+  "\024ANIMATION_STATE_BACK\020\003\022\030\n\024ANIMATION_STA"
+  "TE_LEFT\020\004\022\031\n\025ANIMATION_STATE_RIGHT\020\005\022\031\n\025"
+  "ANIMATION_STATE_SHOOT\020\006\022\030\n\024ANIMATION_STA"
+  "TE_JUMP\020\007\022\030\n\024ANIMATION_STATE_ROLL\020\010\022\032\n\026A"
+  "NIMATION_STATE_RELOAD\020\t\022\031\n\025ANIMATION_STA"
+  "TE_DEATH\020\n\022 \n\034ANIMATION_STATE_ROLL_FORWA"
+  "RD\020\013\022\035\n\031ANIMATION_STATE_ROLL_LEFT\020\014\022\036\n\032A"
+  "NIMATION_STATE_ROLL_RIGHT\020\r\022\035\n\031ANIMATION"
+  "_STATE_ROLL_BACK\020\016b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Enum_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Enum_2eproto = {
-  false, false, 136, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
+  false, false, 986, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
   &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
   schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
   nullptr, file_level_enum_descriptors_Enum_2eproto, file_level_service_descriptors_Enum_2eproto,
@@ -54,6 +75,98 @@ bool PlayerType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eRoomState_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[1];
+}
+bool eRoomState_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eTeamColor_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[2];
+}
+bool eTeamColor_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eRGBMap_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[3];
+}
+bool eRGBMap_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eHitLocation_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[4];
+}
+bool eHitLocation_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* eAnimationState_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[5];
+}
+bool eAnimationState_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14:
       return true;
     default:
       return false;

@@ -1,37 +1,11 @@
+#include "Sampler.hlsli"
+#include "Shading.hlsli"
 
-struct DirectionalLight
-{
-	float4 Color;
-	float3 Direction;
-};
-
-struct PointLight
-{
-	float4 Color;
-	float4 Position;
-};
-
-struct SpotLight
-{
-	float4 Color;
-	float4 Position;
-	float3 Direction;
-	float SpotPower;
-};
-
-cbuffer lightData : register(b0)
-{
-	DirectionalLight dirLight;
-	PointLight pointLight[4];
-	SpotLight spotLight[2];
-
-	float3 cameraPosition;
-}
-
-// External texture-related data
-Texture2D Texture		: register(t0);
-Texture2D NormalMap		: register(t1);
-SamplerState Sampler	: register(s0);
+Texture2D Albedo : register(t0);
+Texture2D NormalMap : register(t1);
+Texture2D OcclusionRoughnessMetal : register(t2);
+Texture2D Roughness : register(t3);
+Texture2D Metallic : register(t4);
 
 struct VertexToPixel
 {
@@ -42,54 +16,71 @@ struct VertexToPixel
 	float2 uv			: TEXCOORD;
 };
 
-float4 main(VertexToPixel input) : SV_TARGET
+struct PSOutput
 {
+	float4 position : SV_TARGET0;
+	float4 diffuse : SV_TARGET1;
+	float4 normal : SV_TARGET2;
+	float4 occlusionRoughMetal : SV_TARGET3;
+};
+
+PSOutput main(VertexToPixel input)
+{
+	PSOutput output;
+
 	input.normal = normalize(input.normal);
 	input.tangent = normalize(input.tangent);
 
 	// Read and unpack normal from map
-	float3 normalFromMap = NormalMap.Sample(Sampler, input.uv).xyz * 2 - 1;
+	if (useNormalMap)
+	{
+		float3 normalFromMap = NormalMap.Sample(LinearWrapSampler, input.uv).xyz * 2 - 1;
 
-	// Transform from tangent to world space
-	float3 N = input.normal;
-	float3 T = normalize(input.tangent - N * dot(input.tangent, N));
-	float3 B = cross(T, N);
+		// Transform from tangent to world space
+		float3 N = input.normal;
+		float3 T = normalize(input.tangent - N * dot(input.tangent, N));
+		float3 B = cross(T, N);
 
-	float3x3 TBN = float3x3(T, B, N);
-	input.normal = normalize(mul(normalFromMap, TBN));
+		float3x3 TBN = float3x3(T, B, N);
+		input.normal = normalize(mul(normalFromMap, TBN));
+	}
 
 	// Sample the texture
-	float4 textureColor = Texture.Sample(Sampler, input.uv);
-
-	float3 toCamera = normalize(cameraPosition - input.worldPos);
-
-	// Directional light calculation
-	float dirLightAmount = saturate(dot(input.normal, -normalize(dirLight.Direction)));
-	float3 totalDirLight = dirLight.Color * dirLightAmount * textureColor;
-
-	// Point light calculation
-	float3 totalPointLight = float3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < 4; ++i)
+	float4 textureColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	if (useAlbedo)
 	{
-		float dirToPointLight = normalize(pointLight[i].Position - input.worldPos);
-		float pointLightAmount = saturate(dot(input.normal, dirToPointLight));
-		float3 refl = reflect(-dirToPointLight, input.normal);
-		float spec = pow(max(dot(refl, toCamera), 0), 32);
-		totalPointLight += pointLight[i].Color * pointLightAmount * textureColor + spec;
+		textureColor = Albedo.Sample(LinearWrapSampler, input.uv);
 	}
 
-	// Spot light calculation
-	float3 totalSpotLight = float3(0.0f, 0.0f, 0.0f);
-	for (int i = 0; i < 2; ++i)
+	float occlusion = 1.0f;
+
+	float metallic = metallicValue;
+	float roughness = roughnessValue;
+
+	if (useOccMetalRough)
 	{
-		float dirToSpotLight = normalize(spotLight[i].Position - input.worldPos);
-		float angleFromCenter = max(dot(dirToSpotLight, spotLight[i].Direction), 0.0f);
-		float spotAmount = pow(angleFromCenter, spotLight[i].SpotPower);
-		totalSpotLight += (spotAmount * spotLight[i].Color * textureColor);
+		float3 occRoughMetal = OcclusionRoughnessMetal.Sample(LinearWrapSampler, input.uv).rgb;
+		occlusion = occRoughMetal.r;
+		roughness = occRoughMetal.g;
+		metallic = occRoughMetal.b;
 	}
 
-	float3 totalLight = totalDirLight + totalPointLight + totalSpotLight;
+	if (useRoughnessMap)
+	{
+		roughness = Roughness.Sample(LinearWrapSampler, input.uv).r;
+	}
 
-	return float4(totalLight, 1.0f);
-	//return textureColor;
+	if (useMetallicMap)
+	{
+		metallic = Metallic.Sample(LinearWrapSampler, input.uv).r;
+	}
+
+	output.position = float4(input.worldPos, 1.0f);
+	output.diffuse = textureColor * albedoColor;
+	//output.diffuse = pow(float4(textureColor.rgb, 0), 2.2f);
+	//output.normal = float4(input.normal, 1.0f);
+	output.normal = float4(input.normal * 0.5f + 0.5f, 1.0f);
+	output.occlusionRoughMetal = float4(occlusion, roughness, metallic, 1.0f);
+
+	return output;
 }

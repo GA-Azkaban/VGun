@@ -1,4 +1,4 @@
-//***************************************************************************************
+﻿//***************************************************************************************
 // GeometryGenerator.cpp by Frank Luna (C) 2011 All Rights Reserved.
 //***************************************************************************************
 
@@ -69,6 +69,56 @@ namespace RocketCore::Graphics
 		meshData.Indices.assign(&indices[0], &indices[6]);
 	}
 
+	void GeometryGenerator::CreateSkybox(MeshData& meshData)
+	{
+		Vertex vertices[] =
+		{
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  0.0f, -1.0f), XMFLOAT2(0.0f, 1.0f) },
+
+			{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  0.0f,  1.0f), XMFLOAT2(0.0f, 1.0f) },
+
+			{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(-1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) },
+
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(1.0f,  0.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) },
+
+			{ XMFLOAT3(-1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT3(1.0f, -1.0f,  1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f, -1.0f, -1.0f), XMFLOAT3(0.0f, -1.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) },
+
+			{ XMFLOAT3(-1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(0.0f, 0.0f) },
+			{ XMFLOAT3(-1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(1.0f, 0.0f) },
+			{ XMFLOAT3(1.0f,  1.0f, -1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(1.0f, 1.0f) },
+			{ XMFLOAT3(1.0f,  1.0f,  1.0f), XMFLOAT3(0.0f,  1.0f,  0.0f), XMFLOAT2(0.0f, 1.0f) }
+		};
+
+		meshData.Vertices.assign(&vertices[0], &vertices[24]);
+
+		UINT indices[] =
+		{
+			0,  1,  2,  0,  2,  3,
+			4,  5,  6,  4,  6,  7,
+			8,  9, 10,  8, 10, 11,
+		   12, 13, 14, 12, 14, 15,
+		   16, 17, 18, 16, 18, 19,
+		   20, 21, 22, 20, 22, 23
+		};
+
+		meshData.Indices.assign(&indices[0], &indices[36]);
+	}
+
 	void GeometryGenerator::CreateBox(float width, float height, float depth, MeshData& meshData)
 	{
 		//
@@ -87,31 +137,31 @@ namespace RocketCore::Graphics
 		v[2] = Vertex(+w2, +h2, -d2, 1.0f, 0.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f);
 		v[3] = Vertex(+w2, -h2, -d2, 1.0f, 1.0f, 0.0f, 0.0f, -1.0f, 1.0f, 0.0f, 0.0f);
 
-		// Fill in the back face vertex data.
+		// Fill in the back face vertex data.								
 		v[4] = Vertex(-w2, -h2, +d2, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f);
 		v[5] = Vertex(+w2, -h2, +d2, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f);
 		v[6] = Vertex(+w2, +h2, +d2, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f);
 		v[7] = Vertex(-w2, +h2, +d2, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f);
 
-		// Fill in the top face vertex data.
+		// Fill in the top face vertex data.								
 		v[8] = Vertex(-w2, +h2, -d2, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 		v[9] = Vertex(-w2, +h2, +d2, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 		v[10] = Vertex(+w2, +h2, +d2, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 		v[11] = Vertex(+w2, +h2, -d2, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f);
 
-		// Fill in the bottom face vertex data.
+		// Fill in the bottom face vertex data.								
 		v[12] = Vertex(-w2, -h2, -d2, 1.0f, 1.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f);
 		v[13] = Vertex(+w2, -h2, -d2, 0.0f, 1.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f);
 		v[14] = Vertex(+w2, -h2, +d2, 0.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f);
 		v[15] = Vertex(-w2, -h2, +d2, 1.0f, 0.0f, 0.0f, -1.0f, 0.0f, -1.0f, 0.0f, 0.0f);
 
-		// Fill in the left face vertex data.
+		// Fill in the left face vertex data.								
 		v[16] = Vertex(-w2, -h2, +d2, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f);
 		v[17] = Vertex(-w2, +h2, +d2, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f);
 		v[18] = Vertex(-w2, +h2, -d2, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f);
 		v[19] = Vertex(-w2, -h2, -d2, 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, -1.0f);
 
-		// Fill in the right face vertex data.
+		// Fill in the right face vertex data.							
 		v[20] = Vertex(+w2, -h2, -d2, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 		v[21] = Vertex(+w2, +h2, -d2, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
 		v[22] = Vertex(+w2, +h2, +d2, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
@@ -644,29 +694,41 @@ namespace RocketCore::Graphics
 
 	void GeometryGenerator::CreateFullscreenQuad(MeshData& meshData)
 	{
-		meshData.Vertices.resize(4);
+		meshData.Vertices.resize(6);
 		meshData.Indices.resize(6);
 
 		// Position coordinates specified in NDC space.
 		meshData.Vertices[0] = Vertex(
+			-1.0f, 1.0f, 0.0f,
+			0.0f, 0.0f,
+			0.0f, 0.0f, -1.0f,
+			1.0f, 0.0f, 0.0f);
+
+		meshData.Vertices[1] = Vertex(
+			+1.0f, +1.0f, 0.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f, -1.0f,
+			1.0f, 0.0f, 0.0f);
+
+		meshData.Vertices[2] = Vertex(
 			-1.0f, -1.0f, 0.0f,
 			0.0f, 1.0f,
 			0.0f, 0.0f, -1.0f,
 			1.0f, 0.0f, 0.0f);
 
-		meshData.Vertices[1] = Vertex(
-			-1.0f, +1.0f, 0.0f,
-			0.0f, 0.0f,
-			0.0f, 0.0f, -1.0f,
-			1.0f, 0.0f, 0.0f);
-
-		meshData.Vertices[2] = Vertex(
-			+1.0f, +1.0f, 0.0f,
-			0.0f, 0.0f,
-			0.0f, 0.0f, -1.0f,
-			1.0f, 0.0f, 0.0f);
-
 		meshData.Vertices[3] = Vertex(
+			-1.0f, -1.0f, 0.0f,
+			0.0f, 1.0f,
+			0.0f, 0.0f, -1.0f,
+			1.0f, 0.0f, 0.0f);
+
+		meshData.Vertices[4] = Vertex(
+			+1.0f, +1.0f, 0.0f,
+			1.0f, 0.0f,
+			0.0f, 0.0f, -1.0f,
+			1.0f, 0.0f, 0.0f);
+
+		meshData.Vertices[5] = Vertex(
 			+1.0f, -1.0f, 0.0f,
 			1.0f, 1.0f,
 			0.0f, 0.0f, -1.0f,
@@ -676,8 +738,8 @@ namespace RocketCore::Graphics
 		meshData.Indices[1] = 1;
 		meshData.Indices[2] = 2;
 
-		meshData.Indices[3] = 0;
-		meshData.Indices[4] = 2;
-		meshData.Indices[5] = 3;
+		meshData.Indices[3] = 3;
+		meshData.Indices[4] = 4;
+		meshData.Indices[5] = 5;
 	}
 }

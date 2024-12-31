@@ -1,15 +1,21 @@
-#include "ObjectManager.h"
+﻿#include "ObjectManager.h"
 
 #include "..\\HODO3DGraphicsInterface\\IRenderable.h"
+#include "../HODO3DGraphicsInterface/PrimitiveHeader.h"
 
 #include "Camera.h"
 #include "HelperObject.h"
 #include "StaticMeshObject.h"
 #include "SkinningMeshObject.h"
+#include "Cubemap.h"
+#include "LightAdapter.h"
 #include "TextRenderer.h"
 #include "ImageRenderer.h"
 #include "ResourceManager.h"
 #include "LineRenderer.h"
+#include "Material.h"
+#include "ParticlePool.h"
+#include "ParticleSystem.h"
 
 namespace RocketCore::Graphics
 {
@@ -42,7 +48,7 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
-	RocketCore::Graphics::SkinningMeshObject* ObjectManager::CreateSkinningMeshObject()
+	SkinningMeshObject* ObjectManager::CreateSkinningMeshObject()
 	{
 		SkinningMeshObject* temp = new SkinningMeshObject();
 		_skinningMeshObjectList.emplace_back(temp);
@@ -50,21 +56,111 @@ namespace RocketCore::Graphics
 		return temp;
 	}
 
-	RocketCore::Graphics::ImageRenderer* ObjectManager::CreateImage()
+	Cubemap* ObjectManager::GetCubeMap()
+	{
+		Cubemap* temp = &(Cubemap::Instance());
+		return temp;
+	}
+
+	LightAdapter* ObjectManager::CreateLight()
+	{
+		LightAdapter* temp = new LightAdapter();
+		return temp;
+	}
+
+	ImageRenderer* ObjectManager::CreateImage()
 	{
 		auto& resourceMgr = ResourceManager::Instance();
 
 		ImageRenderer* temp = new ImageRenderer();
 		temp->InitalizeImageRenderer(resourceMgr.GetDevice(), resourceMgr.GetDeviceContext());
-		temp->SetImage("abcd.jpg");
+		temp->SetImage("defaultImg.png");
 		_ImageList.emplace_back(temp);
 
 		return temp;
 	}
 
-	std::vector<ImageRenderer*>& ObjectManager::GetImageList()
+	LineRenderer* ObjectManager::CreateLineRenderer()
 	{
-		return _ImageList;
+		_lineRenderer = new LineRenderer();
+		return _lineRenderer;
+	}
+
+	RocketCore::Graphics::Material* ObjectManager::CreateMaterial(HDEngine::MaterialDesc desc)
+	{
+		std::unordered_map<std::string, Material*>& materialList = ResourceManager::Instance().GetLoadedMaterials();
+
+		std::string matName = desc.materialName;
+		if (matName == "")
+		{
+			matName = "NewMaterial";
+		}
+
+		// 이미 있는 이름이라면 뒤에 숫자를 붙혀준다.
+		if (materialList.find(matName) != materialList.end())
+		{
+			std::string tempName = matName;
+			for (UINT i = 1; ++i;)
+			{
+				matName = tempName + std::to_string(i);
+				if (materialList.find(matName) == materialList.end())
+				{
+					break;
+				}
+			}
+		}
+		desc.materialName = matName;
+
+		Material* newMaterial = new Material(desc);
+		materialList.insert(std::make_pair(matName, newMaterial));
+
+		return newMaterial;
+	}
+
+	HDEngine::IParticleSystem* ObjectManager::CreateParticleSystem()
+	{
+		ParticleSystem* ps = new ParticleSystem();
+		_particleSystemList.push_back(ps);
+		return ps;
+	}
+
+	HDEngine::CubePrimitive* ObjectManager::CreateCubePrimitive()
+	{
+		HDEngine::CubePrimitive* cube = new HDEngine::CubePrimitive();
+		cube->isWire = true;
+		_cubePrimitiveList.emplace_back(cube);
+		return cube;
+	}
+
+	HDEngine::SpherePrimitive* ObjectManager::CreateSpherePrimitive()
+	{
+		HDEngine::SpherePrimitive* sphere = new HDEngine::SpherePrimitive();
+		sphere->isWire = true;
+		_spherePrimitiveList.emplace_back(sphere);
+		return sphere;
+	}
+
+	HDEngine::CylinderPrimitive* ObjectManager::CreateCylinderPrimitive()
+	{
+		HDEngine::CylinderPrimitive* cylinder = new HDEngine::CylinderPrimitive();
+		cylinder->isWire = true;
+		_cylinderPrimitiveList.emplace_back(cylinder);
+		return cylinder;
+	}
+
+	HDEngine::CapsulePrimitive* ObjectManager::CreateCapsulePrimitive()
+	{
+		HDEngine::CapsulePrimitive* capsule = new HDEngine::CapsulePrimitive();
+		capsule->isWire = true;
+		_capsulePrimitiveList.emplace_back(capsule);
+		return capsule;
+	}
+
+	TextRenderer* ObjectManager::CreateText()
+	{
+		TextRenderer* TextObject = new TextRenderer();
+		_textList.emplace_back(TextObject);
+		return TextObject;
 	}
 
 	std::vector<HelperObject*>& ObjectManager::GetHelperObjList()
@@ -77,16 +173,19 @@ namespace RocketCore::Graphics
 		return _staticMeshObjectList;
 	}
 
+	std::vector<StaticMeshObject*>& ObjectManager::GetFowardStaticMeshObjList()
+	{
+		return _forwardStaticMeshObjectList;
+	}
+
 	std::vector<SkinningMeshObject*>& ObjectManager::GetSkinningMeshObjList()
 	{
 		return _skinningMeshObjectList;
 	}
 
-	RocketCore::Graphics::TextRenderer* ObjectManager::CreateText()
+	std::vector<ParticleSystem*>& ObjectManager::GetParticleSystemList()
 	{
-		TextRenderer* TextObject = new TextRenderer();
-		_textList.emplace_back(TextObject);
-		return TextObject;
+		return _particleSystemList;
 	}
 
 	std::vector<TextRenderer*>& ObjectManager::GetTextList()
@@ -94,10 +193,9 @@ namespace RocketCore::Graphics
 		return _textList;
 	}
 
-	LineRenderer* ObjectManager::CreateLineRenderer()
+	std::vector<ImageRenderer*>& ObjectManager::GetImageList()
 	{
-		_lineRenderer = new LineRenderer();
-		return _lineRenderer;
+		return _ImageList;
 	}
 
 	LineRenderer* ObjectManager::GetLineRenderer()

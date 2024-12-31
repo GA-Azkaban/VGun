@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <wrl.h>
@@ -16,7 +16,8 @@ using Microsoft::WRL::ComPtr;
 namespace RocketCore::Graphics
 {
 	class Mesh;
-	class Material;
+	class VertexShader;
+	class PixelShader;
 
 	class HelperObject : public HDEngine::IDebugObject
 	{
@@ -28,19 +29,21 @@ namespace RocketCore::Graphics
 		void Update(float deltaTime);
 		void Render();
 
-		virtual void SetWorldTM(const HDMath::HDFLOAT4X4& worldTM) override;
+		virtual void SetWorldTM(const Matrix& worldTM) override;
 		virtual void SetActive(bool isActive) override { m_isActive = isActive; };
 
 		virtual void SetFillModeSolid() override;
 		virtual void SetFillModeWireframe() override;
-		virtual void SetColor(const HDMath::HDFLOAT4& color) override;
-		virtual void SetMesh(const std::string& meshName) override;
+		virtual void SetColor(const Vector4& color) override;
+		virtual void LoadMesh(const std::string& meshName) override;
 
 	private:
 		ComPtr<ID3D11DeviceContext> m_deviceContext;
 		ComPtr<ID3D11RasterizerState> m_RS;
+
 		std::vector<Mesh*> m_meshes;
-		Material* m_material;
+		VertexShader* m_vertexShader;
+		PixelShader* m_pixelShader;
 		bool m_isActive;
 
 		DirectX::XMMATRIX m_world;

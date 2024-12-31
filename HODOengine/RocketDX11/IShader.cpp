@@ -1,4 +1,4 @@
-#include "IShader.h"
+﻿#include "IShader.h"
 
 namespace RocketCore::Graphics
 {
@@ -228,6 +228,11 @@ namespace RocketCore::Graphics
 		SetData(name, (void*)(&data), sizeof(int));
 	}
 
+	void IShader::SetInt2(std::string name, const DirectX::XMINT2& data)
+	{
+		SetData(name, &data, sizeof(int) * 2);
+	}
+
 	void IShader::SetFloat(std::string name, float data)
 	{
 		SetData(name, (void*)(&data), sizeof(float));
@@ -261,6 +266,11 @@ namespace RocketCore::Graphics
 	void IShader::SetFloat4(std::string name, const DirectX::XMFLOAT4& data)
 	{
 		SetData(name, &data, sizeof(float) * 4);
+	}
+
+	void IShader::SetFloat4Array(std::string name, const DirectX::XMFLOAT4* data, UINT size)
+	{
+		SetData(name, data, sizeof(float) * 4 * size);
 	}
 
 	void IShader::SetMatrix4x4(std::string name, const float data[16])

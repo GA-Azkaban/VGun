@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "dllExporter.h"
 #include "IHODOengine.h"
 
@@ -17,6 +17,8 @@ namespace HDEngine
 	class EventSystem;
 	class SoundSystem;
 	class UISystem;
+	class MaterialLoader;
+	class TweenSystem;
 }
 
 class HODOengine final : public IHODOengine
@@ -33,6 +35,9 @@ public:
 	void Finalize() override;
 
 	HWND GetHWND();
+
+	void Quit();
+	void ShowWindowCursor(bool show);
 
 private:
 	void Run();
@@ -66,4 +71,6 @@ private:
 	HDEngine::EventSystem&			_eventSystem;
 	HDEngine::SoundSystem&			_soundSystem;
 	HDEngine::UISystem&				_uiSystem;
+	HDEngine::MaterialLoader&		_materialLoader;
+	HDEngine::TweenSystem&			_tweenSystem;
 };

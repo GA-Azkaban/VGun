@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include <iostream>
 
 #include "ThreadManager.h"
@@ -14,146 +14,93 @@
 #include "DBConnectionPool.h"
 #include "DBBind.h"
 #include "DBConnectionRef.h"
+#include "Room.h"
+#include "AuthenticationManager.h"
+#include "RoomManager.h"
+#include "JobTimer.h"
+#include "Player.h"
 
-int main()
+#include "Log.h"
+
+class TestClass : public Horang::JobQueue
 {
-
+public:
+	void Test()
 	{
-		//
-			// Todo
-			// Driver와 Server IP Database name은 별도의 config파일로 분리해서 관리하기
-		{
-			/*ASSERT_CRASH(GDBConnectionPool->Connect(1,
-				L"Driver={MySQL ODBC 8.2 Unicode Driver};\
-			Server=14.35.71.148;\
-			Database=VGunDB;\
-			User=VGun2;\
-			Password=akdgoTdj;"));*/
+		std::cout << "TestJob" << std::endl;
+	}
+};
 
-			ASSERT_CRASH(GDBConnectionPool->Connect(1,
+class TestJob : public Horang::IJob
+{
+public:
+	TestJob(std::shared_ptr<TestClass> testClass)
+		: mTestClass(testClass)
+	{
+	}
+
+	void Execute() override
+	{
+		std::cout << "Execute" << std::endl;
+		mTestClass->Test();
+	}
+
+	std::shared_ptr<TestClass> mTestClass;
+};
+
+bool g_useDB = false;
+int g_gameTime = 120;
+
+int main(int argc, char* argv[])
+{
+	// 172.16.1.13
+	//std::wstring ip = L"127.0.0.1";
+	std::wstring ip = L"172.16.1.13";
+	int port = 7777;
+	if (ip == L"172.16.1.13")
+		g_useDB = true;
+
+	if (argc >= 2)
+	{
+		std::string str(argv[1]);
+		ip = std::wstring(str.begin(), str.end());
+	}
+	if (argc >= 3)
+		port = atoi(argv[2]);
+	if (argc >= 4)
+		if (strcmp(argv[3], "true") == 0)
+			g_useDB = true;
+	if (argc >= 5)
+		g_gameTime = atoi(argv[4]);
+
+	if (g_useDB)
+	{
+		// Todo Driver와 Server IP Database name은 별도의 config파일로 분리해서 관리하기
+		ASSERT_CRASH
+		(
+			GDBConnectionPool->Connect
+			(
+				1,
 				L"Driver={MySQL ODBC 8.2 Unicode Driver};\
 					Server=127.0.0.1;\
 					Database=VGunDB;\
 					User=VGun2;\
-					Password=akdgoTdj;"));
-		}
-
-		{
-			//auto dbConn = GDBConnectionPool->Pop();
-
-			//Horang::DBBind<2, 2> dbBind(*dbConn, L"SELECT uid, nickname FROM user WHERE id = (?) AND password = (?);");
-
-			//WCHAR a[40] = L"test1";
-			//WCHAR b[80] = L"test1";
-			//dbBind.BindParam(0, a);
-			//dbBind.BindParam(1, b);
-
-			//int32 uid = 0;
-			//WCHAR nickName[16] = L"";
-
-			//dbBind.BindCol(0, uid);
-			//dbBind.BindCol(1, nickName);
-
-			//ASSERT_CRASH(dbBind.Execute());
-
-			//if (dbBind.Fetch())
-			//{
-			//	std::wcout << "First :" << uid << " : " << nickName << std::endl;
-			//}
-			//else
-			//{
-			//	// Null
-			//	std::wcout << "Fetch fail" << std::endl;
-			//}
-
-			//GDBConnectionPool->Push(dbConn);
-		}
-
-		// 회원가입
-		/*for (int32 i = 0; i < 0; i++)
-		{
-			auto dbConn = GDBConnectionPool->Pop();
-
-			DBBind<3, 0> dbBind(*dbConn, L"INSERT INTO user (id, password, nickname) VALUES(?, ?, ?)");
-
-			WCHAR id[30] = L"test";
-			dbBind.BindParam(0, id);
-
-			WCHAR password[30] = L"1234";
-			dbBind.BindParam(1, password);
-
-			WCHAR nickName[30] = L"Test";
-			dbBind.BindParam(2, nickName);
-
-			TIMESTAMP_STRUCT ts = { 2023, 11, 5 };
-			dbBind.BindParam(2, ts);
-
-			ASSERT_CRASH(dbBind.Execute());
-
-			{
-				//// 기존의 바인딩 된 정보 날리기
-				//dbConn->Unbind();
-
-				//int32 gold = 100;
-				//SQLLEN len = 0;
-				//
-				//WCHAR name[100] = L"호랑";
-				//SQLLEN nameLen = 0;
-
-				//TIMESTAMP_STRUCT ts = {};
-				//ts.year = 2023;
-				//ts.month = 11;
-				//ts.day = 5;
-				//SQLLEN tsLen = 0;
-
-				//ASSERT_CRASH(dbConn->BindParam(1, &gold, &len));
-				//ASSERT_CRASH(dbConn->BindParam(2, name, &nameLen));
-				//ASSERT_CRASH(dbConn->BindParam(3, &ts, &tsLen));
-
-				//// SQL 실행
-				//ASSERT_CRASH(dbConn->Execute(L"INSERT INTO Gold (gold, name, createDate) VALUES(?, ?, ?)"));
-			}
-
-			GDBConnectionPool->Push(dbConn);
-		}*/
-
-		// Read ID
-		/* {
-			auto dbConn = GDBConnectionPool->Pop();
-
-			DBBind<2, 3> dbBind(*dbConn, L"SELECT uid, id, nickname FROM user WHERE id = (?) AND password = (?)");
-
-			WCHAR a[20] = L"test";
-			WCHAR b[20] = L"1234";
-			dbBind.BindParam(0, a);
-			dbBind.BindParam(1, b);
-
-			int32 uid = 0;
-			WCHAR id[20] = L"";
-			WCHAR nickName[16] = L"";
-
-			dbBind.BindCol(0, uid);
-			dbBind.BindCol(1, id);
-			dbBind.BindCol(2, nickName);
-
-			ASSERT_CRASH(dbBind.Execute());
-
-			while (dbBind.Fetch())
-			{
-				cout << "select" << endl;
-			}
-
-			GDBConnectionPool->Push(dbConn);
-		}*/
-
+					Password=akdgoTdj;"
+			)
+		);
 	}
 
 	//
 	GSessionManager = new GameSessionManager();
 	ClientPacketHandler::Init();
+	GRoomManager = Horang::MakeShared<RoomManager>();
+	GAuthentication = Horang::MakeShared<AuthenticationManager>();
+
+	std::wcout << L"Server IP : " << ip.c_str() << " : " << port << " " << g_useDB << std::endl;
+	std::wcout << L"GameTime : " << g_gameTime << " seconds" << std::endl;
 
 	Horang::ServerServiceRef service = Horang::MakeShared<Horang::ServerService>(
-		Horang::NetAddress(L"127.0.0.1", 7777),
+		Horang::NetAddress(ip.c_str(), port),
 		Horang::MakeShared<Horang::IocpCore>(),
 		Horang::MakeShared<GameSession>, // TODO : SessionManager 등
 		1
@@ -161,17 +108,36 @@ int main()
 
 	ASSERT_CRASH(service->Start());
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < std::thread::hardware_concurrency() / 2; i++)
 	{
 		GThreadManager->Launch([=]()
 			{
 				while (true)
 				{
-					service->GetIocpCore()->Dispatch();
+					LEndTickCount = ::GetTickCount64() + 64;
+
+					service->GetIocpCore()->Dispatch(10);
+
+					Horang::ThreadManager::DistributeReservedJobs();
+
+					Horang::ThreadManager::DoGlobalQueueWork();
 				}
 			}
 		);
 	}
+
+
+	GRoomManager->Initialize();
+
+	/*
+	GRoomManager->CreateRoom("TestRoom1", "", 6, false, false,1);
+	GRoomManager->CreateRoom("TestRoom2", "123", 5, true, false,2);
+	GRoomManager->CreateRoom("TestRoom3", "", 6, false, true,3);
+
+	auto testClass = Horang::MakeShared<TestClass>();
+	GJobTimer->Reserve(100, testClass->weak_from_this(), Horang::MakeShared<TestJob>(testClass));
+	GJobTimer->Reserve(300, testClass->weak_from_this(), Horang::MakeShared<TestJob>(testClass));
+	*/
 
 	GThreadManager->Join();
 

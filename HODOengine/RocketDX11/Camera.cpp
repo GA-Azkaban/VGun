@@ -1,7 +1,11 @@
-#include <cmath>
+﻿#include <cmath>
 #include "Camera.h"
-#include "..\\HODOmath\\HODOmath.h"
+#include "MathHeader.h"
 #include "ResourceManager.h"
+#include "ObjectManager.h"
+#include "StaticMeshObject.h"
+#include "SkinningMeshObject.h"
+#include "Light.h"
 
 using namespace DirectX;
 
@@ -12,12 +16,18 @@ namespace RocketCore::Graphics
 	Camera::Camera()
 		: _position(0.0f, 2.0f, -10.0f),
 		_rotation(0.0f, 0.0f, 0.0f, 1.0f),
-		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f ), _fovY(70.0f),
-		_nearWindowHeight(), _farWindowHeight(),
+		_nearZ(0.01f), _farZ(1000.0f), _aspect(16.0f / 9.0f), _fovY(90.0f),
+		_nearWindowHeight(), _farWindowHeight(), _nearWindowWidth(), _farWindowWidth(),
 		_viewMatrix(), _projectionMatrix()
 	{
 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
+		_nearWindowWidth = _nearWindowHeight * _aspect;
+		_farWindowWidth = _farWindowHeight * _aspect;
+
+		_boundingSphere.Center = { 0.0f, 0.0f, 0.0f };
+		_boundingSphere.Radius = 12.5f;
+
 		UpdateProjectionMatrix();
 	}
 
@@ -36,46 +46,19 @@ namespace RocketCore::Graphics
 		_position = { x,y,z };
 	}
 
-	void Camera::SetRotation(float w, float x, float y, float z)
+	void Camera::SetRotation(float x, float y, float z, float w)
 	{
 		_rotation = { x,y,z,w };
 	}
 
-	/// 카메라의 세팅을 설정한다.
-	/// 들어온 값에 맞춰 여러 멤버들도 재설정해준다.
-	/// 지금은 XMMatrixPerspectiveFovLH 함수를 이용해서 투영행렬을 만든다.
-	/// 이 부분은 내가 직접 투영행렬을 만들어보고 싶다.
-	/// 
-	/// 23.04.20 강석원 인재원
-// 	void Camera::SetFrustum(float fovY, float aspect, float nearZ, float farZ)
-// 	{
-// 		_fovY = fovY;
-// 		_aspect = aspect;
-// 		_nearZ = nearZ;
-// 		_farZ = farZ;
-// 
-// 		_nearWindowHeight = 2.0f * _nearZ * std::tanf(XMConvertToRadians(_fovY / 2));
-// 		_farWindowHeight = 2.0f * _farZ * std::tanf(XMConvertToRadians(_fovY / 2));
-// 	}
-
-	/// ViewMatrix를 갱신해준다.
-	/// 교수님 코드에서는 잘못된 벡터가 되어있을 시 look을 기준으로 다시 점검해서 변경하는 듯 하다.
-	/// 나는 그냥 viewMatrix만 갱신해줬다.
-	/// 
-	/// 그리고 position은 음수로 줘야한다! 왜냐하면 카메라 기준으로 옮기는거니까!
-	/// 
-	/// 23.04.20 강석원 인재원
 	void Camera::UpdateViewMatrix()
 	{
-// 		XMMATRIX world = XMLoadFloat4x4(&_worldMatrix);
-// 		XMVECTOR det = XMMatrixDeterminant(world);
-// 		XMStoreFloat4x4(&_viewMatrix, XMMatrixInverse(&det, world));
-// 
-// 		return;
-
-		XMVECTOR R = GetRight();
-		XMVECTOR U = GetUp();
-		XMVECTOR L = GetForward();
+		XMFLOAT3 right = GetRight();
+		XMFLOAT3 up = GetUp();
+		XMFLOAT3 forward = GetForward();
+		XMVECTOR R = XMLoadFloat3(&right);
+		XMVECTOR U = XMLoadFloat3(&up);
+		XMVECTOR L = XMLoadFloat3(&forward);
 		XMVECTOR P = XMLoadFloat3(&_position);
 
 		// Keep camera's axes orthogonal to each other and of unit length.
@@ -98,25 +81,46 @@ namespace RocketCore::Graphics
 		XMStoreFloat3(&_up, U);
 		XMStoreFloat3(&_look, L);
 
-		_viewMatrix(0, 0) = _right.x;
-		_viewMatrix(1, 0) = _right.y;
-		_viewMatrix(2, 0) = _right.z;
-		_viewMatrix(3, 0) = x;
+		_viewMatrix.r[0].m128_f32[0] = _right.x;
+		_viewMatrix.r[1].m128_f32[0] = _right.y;
+		_viewMatrix.r[2].m128_f32[0] = _right.z;
+		_viewMatrix.r[3].m128_f32[0] = x;
 
-		_viewMatrix(0, 1) = _up.x;
-		_viewMatrix(1, 1) = _up.y;
-		_viewMatrix(2, 1) = _up.z;
-		_viewMatrix(3, 1) = y;
+		//_viewMatrix(0, 0) = _right.x;
+		//_viewMatrix(1, 0) = _right.y;
+		//_viewMatrix(2, 0) = _right.z;
+		//_viewMatrix(3, 0) = x;
 
-		_viewMatrix(0, 2) = _look.x;
-		_viewMatrix(1, 2) = _look.y;
-		_viewMatrix(2, 2) = _look.z;
-		_viewMatrix(3, 2) = z;
+		_viewMatrix.r[0].m128_f32[1] = _up.x;
+		_viewMatrix.r[1].m128_f32[1] = _up.y;
+		_viewMatrix.r[2].m128_f32[1] = _up.z;
+		_viewMatrix.r[3].m128_f32[1] = y;
 
-		_viewMatrix(0, 3) = 0.0f;
-		_viewMatrix(1, 3) = 0.0f;
-		_viewMatrix(2, 3) = 0.0f;
-		_viewMatrix(3, 3) = 1.0f;
+		//_viewMatrix(0, 1) = _up.x;
+		//_viewMatrix(1, 1) = _up.y;
+		//_viewMatrix(2, 1) = _up.z;
+		//_viewMatrix(3, 1) = y;
+
+		_viewMatrix.r[0].m128_f32[2] = _look.x;
+		_viewMatrix.r[1].m128_f32[2] = _look.y;
+		_viewMatrix.r[2].m128_f32[2] = _look.z;
+		_viewMatrix.r[3].m128_f32[2] = z;
+
+		//_viewMatrix(0, 2) = _look.x;
+		//_viewMatrix(1, 2) = _look.y;
+		//_viewMatrix(2, 2) = _look.z;
+		//_viewMatrix(3, 2) = z;
+
+		_viewMatrix.r[0].m128_f32[3] = 0.0f;
+		_viewMatrix.r[1].m128_f32[3] = 0.0f;
+		_viewMatrix.r[2].m128_f32[3] = 0.0f;
+		_viewMatrix.r[3].m128_f32[3] = 1.0f;
+
+		//_viewMatrix(0, 3) = 0.0f;
+		//_viewMatrix(1, 3) = 0.0f;
+		//_viewMatrix(2, 3) = 0.0f;
+		//_viewMatrix(3, 3) = 1.0f;
+
 		// 
 		// 	viewMatrix_ =
 		// 	{
@@ -125,16 +129,70 @@ namespace RocketCore::Graphics
 		// 		right_.z,		up_.z,			look_.z,		0.0f,
 		// 		-position_.x,	-position_.y,	-position_.z,	1.0f
 		// 	};
+
+		//_boundingSphere.Transform(_boundingSphere, XMMatrixTranslation(_position.x, _position.y, _position.z));
+	}
+
+	void Camera::FrustumCulling()
+	{
+		BoundingFrustum frustum = _boundingFrustum;
+		frustum.Transform(frustum, XMMatrixInverse(nullptr, _viewMatrix));
+
+		BoundingSphere sphere = _boundingSphere;
+		sphere.Transform(sphere, XMMatrixInverse(nullptr, _viewMatrix));
+
+		//XMMATRIX lightView = LightManager::Instance().GetLightView();
+		//XMMATRIX lightProj = LightManager::Instance().GetLightProj();
+
+		//BoundingFrustum lightFrustum(lightProj);
+		//lightFrustum.Transform(lightFrustum, XMMatrixInverse(nullptr, lightView));
+
+		for (auto staticMeshObj : ObjectManager::Instance().GetStaticMeshObjList())
+		{
+			if (!staticMeshObj->IsActive())
+			{
+				staticMeshObj->SetCameraVisible(false);
+				staticMeshObj->SetLightVisible(false);
+				continue;
+			}
+			bool isInCameraFrustum = frustum.Intersects(staticMeshObj->GetBoundingBox());
+			staticMeshObj->SetCameraVisible(isInCameraFrustum);
+			//bool isInLightFrustum = lightFrustum.Intersects(staticMeshObj->GetBoundingBox());
+			bool isInLightFrustum = frustum.Intersects(staticMeshObj->GetBoundingBox());
+			if (!isInLightFrustum)
+			{
+				bool isInCullingSphere = sphere.Intersects(staticMeshObj->GetBoundingBox());
+				staticMeshObj->SetLightVisible(isInCullingSphere);
+			}
+			else
+			{
+				staticMeshObj->SetLightVisible(isInLightFrustum);
+			}						
+		}
+
+		for (auto skinningMeshObj : ObjectManager::Instance().GetSkinningMeshObjList())
+		{
+			if (!skinningMeshObj->IsActive())
+			{
+				skinningMeshObj->SetCameraVisible(false);
+				skinningMeshObj->SetLightVisible(false);
+				continue;
+			}
+			//bool isInCameraFrustum = frustum.Intersects(skinningMeshObj->GetBoundingBox());
+			//skinningMeshObj->SetCameraVisible(isInCameraFrustum);
+			//bool isInLightFrustum = lightFrustum.Intersects(skinningMeshObj->GetBoundingBox());
+			//skinningMeshObj->SetLightVisible(isInLightFrustum);
+		}
 	}
 
 	DirectX::XMMATRIX Camera::GetViewMatrix() const
 	{
-		return XMLoadFloat4x4(&_viewMatrix);
+		return _viewMatrix;
 	}
 
 	DirectX::XMMATRIX Camera::GetProjectionMatrix() const
 	{
-		return XMLoadFloat4x4(&_projectionMatrix);
+		return _projectionMatrix;
 	}
 
 	DirectX::XMMATRIX Camera::GetViewProjectionMatrix() const
@@ -142,41 +200,73 @@ namespace RocketCore::Graphics
 		return XMMatrixMultiply(GetViewMatrix(), GetProjectionMatrix());
 	}
 
-	DirectX::XMVECTOR Camera::GetForward() const
+	DirectX::XMFLOAT3 Camera::GetForward() const
 	{
-		XMFLOAT3 forward = { 0.0f,0.0f,1.0f };
+		XMFLOAT3 ret;
+		XMVECTOR forward = { 0.0f,0.0f,1.0f };
 		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
-		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&forward), rotationMatrix);
-		return result;
+		auto result = DirectX::XMVector3Transform(forward, rotationMatrix);
+		XMStoreFloat3(&ret, result);
+		return ret;
 	}
 
-	DirectX::XMVECTOR Camera::GetUp() const
+	DirectX::XMFLOAT3 Camera::GetUp() const
 	{
-		XMFLOAT3 up = { 0.0f,1.0f,0.0f };
+		XMFLOAT3 ret;
+		XMVECTOR up = { 0.0f,1.0f,0.0f };
 		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
-		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&up), rotationMatrix);
-		return result;
+		auto result = DirectX::XMVector3Transform(up, rotationMatrix);
+		XMStoreFloat3(&ret, result);
+		return ret;
 	}
 
-	DirectX::XMVECTOR Camera::GetRight() const
+	DirectX::XMFLOAT3 Camera::GetRight() const
 	{
-		XMFLOAT3 right = { 1.0f,0.0f,0.0f };
+		XMFLOAT3 ret;
+		XMVECTOR right = { 1.0f,0.0f,0.0f };
 		auto rotationMatrix = XMMatrixRotationQuaternion(XMLoadFloat4(&_rotation));
-		auto result = DirectX::XMVector3Transform(XMLoadFloat3(&right), rotationMatrix);
-		return result;
+		auto result = DirectX::XMVector3Transform(right, rotationMatrix);
+		XMStoreFloat3(&ret, result);
+		return ret;
 	}
 
-	void Camera::SetWorldTM(const HDMath::HDFLOAT4X4& matrix)
+	float Camera::GetFOVY() const
 	{
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				_worldMatrix.m[i][j] = matrix.element[i][j];
-			}
-		}
+		return _fovY;
+	}
 
-		XMMATRIX worldTM = XMLoadFloat4x4(&_worldMatrix);
+	float Camera::GetFOVZ() const
+	{
+		return _fovY * _aspect;
+	}
+
+	float Camera::GetAspect() const
+	{
+		return _aspect;
+	}
+
+	float Camera::GetNearZ() const
+	{
+		return _nearZ;
+	}
+
+	float Camera::GetFarZ() const
+	{
+		return _farZ;
+	}
+
+	void Camera::SetWorldTM(const Matrix& matrix)
+	{
+		_worldMatrix = matrix;
+// 		for (int i = 0; i < 4; i++)
+// 		{
+// 			for (int j = 0; j < 4; j++)
+// 			{
+// 				_worldMatrix.m[i][j] = matrix.element[i][j];
+// 			}
+// 		}
+
+		//XMMATRIX worldTM = XMLoadFloat4x4(&_worldMatrix);
 		/*XMVECTOR scale;
 		XMVECTOR rotation;
 		XMVECTOR translate;
@@ -185,8 +275,6 @@ namespace RocketCore::Graphics
 		XMStoreFloat4(&_rotation, rotation);
 
 		UpdateViewMatrix();*/
-		XMMATRIX inverse = XMMatrixInverse(nullptr, worldTM);
-		SetViewMatrix(inverse);
 	}
 
 	void Camera::SetNearZ(float nearZ)
@@ -216,22 +304,21 @@ namespace RocketCore::Graphics
 	void Camera::SetNearHeight(float height)
 	{
 		_nearWindowHeight = height;
-		float nearZ = _nearWindowHeight * 0.5f / tan(0.5 * _fovY);
+		float nearZ = _nearWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetNearZ(nearZ);
 	}
 
 	void Camera::SetFarHeight(float height)
 	{
 		_farWindowHeight = height;
-		float farZ = _farWindowHeight * 0.5f / tan(0.5 * _fovY);
+		float farZ = _farWindowHeight * 0.5f / tan(0.5f * _fovY);
 		SetFarZ(farZ);
-
 	}
 
 	void Camera::UpdateProjectionMatrix()
 	{
-		XMMATRIX temp = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
-		XMStoreFloat4x4(&_projectionMatrix, temp);
+		_projectionMatrix = XMMatrixPerspectiveFovLH(XMConvertToRadians(_fovY / 2), _aspect, _nearZ, _farZ);
+		_boundingFrustum = DirectX::BoundingFrustum(_projectionMatrix);
 	}
 
 	void Camera::SetAsMainCamera()
@@ -244,15 +331,15 @@ namespace RocketCore::Graphics
 		return _mainCamera;
 	}
 
-	void Camera::SetPositionAndRotation(const HDMath::HDFLOAT3& pos, const HDMath::HDQuaternion& rot)
+	void Camera::SetPositionAndRotation(const Vector3& pos, const Quaternion& rot)
 	{
 		SetPosition(pos.x, pos.y, pos.z);
-		SetRotation(rot.w, rot.x, rot.y, rot.z);
+		SetRotation(rot.x, rot.y, rot.z, rot.w);
 	}
 
 	void Camera::SetViewMatrix(const DirectX::XMMATRIX& tm)
 	{
-		XMStoreFloat4x4(&_viewMatrix, tm);
+		_viewMatrix = tm;
 	}
 
 }

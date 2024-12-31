@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 #include "dllExporter.h"
 
@@ -8,6 +9,8 @@ namespace HDData
 {
 	class GameObject;
 	class Camera;
+	class Light;
+	class TextUI;
 
 	class HODO_API Scene
 	{
@@ -35,6 +38,8 @@ namespace HDData
 		std::string GetSceneName();
 		void SetSceneName(std::string sceneName);
 
+		GameObject* GetGameObjectByName(std::string objectName);
+
 	private:
 		std::vector<GameObject*> _gameObjects;
 		std::vector<GameObject*> _runningObjects;
@@ -44,9 +49,14 @@ namespace HDData
 	public:
 		Camera* GetMainCamera();
 		void SetMainCamera(Camera* camera);
+		Light* GetMainLight();
+		void SetMainLight(Light* light);
 
 	private:
 		Camera* _mainCamera;
+		Light* _mainLight;
+
+		HDData::TextUI* _fpsText;
 	};
 }
 

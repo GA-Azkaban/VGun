@@ -1,70 +1,104 @@
-#include "ToggleUI.h"
-#include "RenderSystem.h"
+﻿#include "ToggleUI.h"
+#include "GameObject.h"
+#include "ImageUI.h"
+#include "TextUI.h"
 #include "GraphicsObjFactory.h"
+#include "RenderSystem.h"
 #include "InputSystem.h"
 
 HDData::ToggleUI::ToggleUI()
-	: _toggleImage(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage()),
-	_inputSystem(HDEngine::InputSystem::Instance()),
-	_isToggleOn(true)
+	: _isToggleOn(false),
+	_toggleOn(nullptr), _toggleOff(nullptr)
 {
-	HDEngine::RenderSystem::Instance().PushSketchComponent(this);
-	_sketchable = _toggleImage;
+
 }
 
 void HDData::ToggleUI::Start()
 {
-	_toggleOffImage = "Mute.png";
-	_toggleOnImage = "Sound.png";
+	_toggleOn->SetActive(true);
+	_toggleOff->SetActive(false);
 }
 
 void HDData::ToggleUI::Update()
 {
-	if (CheckIsClicked() && _inputSystem.GetMouseDown(MOUSE_LEFT))
+	if (_toggleOn->GetIsClicked())
 	{
-		if (_isToggleOn)
-		{
-			_toggleImage->SetImage(_toggleOnImage);
-		}
-		else
-		{
-			_toggleImage->SetImage(_toggleOffImage);
-		}
-	}
+		_isToggleOn = !_isToggleOn;
+		_toggleOff->SetActive(!_isToggleOn);
+		_toggleOn->SetActive(_isToggleOn);
 
+		if (_isToggleOn) { CallToggleOnEvent(); }
+		else { CallToggleOffEvent(); }
+	}
+}
+
+void HDData::ToggleUI::SetToggleOnEvent(std::function<void()> event)
+{
+	_toggleOnEvent = event;
+}
+
+void HDData::ToggleUI::SetToggleOffEvent(std::function<void()> event)
+{
+	_toggleOffEvent = event;
+}
+
+void HDData::ToggleUI::CallToggleOnEvent()
+{
+	_toggleOnEvent();
+}
+
+void HDData::ToggleUI::CallToggleOffEvent()
+{
+	_toggleOffEvent();
 }
 
 void HDData::ToggleUI::SetActive(bool active)
 {
-	_toggleImage->SetActive(active);
+	_toggleOn->SetActive(active);
+	_toggleOff->SetActive(active);
 }
 
 void HDData::ToggleUI::SetScreenSpace()
 {
-	_toggleImage->SetScreenSpace();
+	_toggleOn->SetScreenSpace();
+	_toggleOff->SetScreenSpace();
 }
 
 void HDData::ToggleUI::SetWorldSpace()
 {
-	_toggleImage->SetWorldSpace();
+	_toggleOn->SetWorldSpace();
+	_toggleOff->SetWorldSpace();
 }
 
-void HDData::ToggleUI::SetToggleOnImage(const char* fileName)
+void HDData::ToggleUI::SetOnComp(ImageUI* comp)
 {
-	_toggleOnImage = fileName;
+	_toggleOn = comp;
 }
 
-void HDData::ToggleUI::SetToggleOffImage(const char* fileName)
+void HDData::ToggleUI::SetOffComp(ImageUI* comp)
 {
-	_toggleOffImage = fileName;
+	_toggleOff = comp;
 }
 
-bool HDData::ToggleUI::CheckIsClicked()
+HDData::ImageUI* HDData::ToggleUI::GetOnComp()
 {
-	if (_inputSystem.GetMousePosition().x > _toggleImage->GetScreenSpacePositionX() &&
-		_inputSystem.GetMousePosition().y > _toggleImage->GetScreenSpacePositionY())
-	{
-		return true;
-	}
+	return _toggleOn;
 }
+
+HDData::ImageUI* HDData::ToggleUI::GetOffComp()
+{
+	return _toggleOff;
+}
+
+bool HDData::ToggleUI::GetIsOn()
+{
+	return _isToggleOn;
+}
+
+void HDData::ToggleUI::SetSortOrder(float ord)
+{
+	_toggleOff->SetSortOrder(ord);
+	_toggleOn->SetSortOrder(ord);
+}
+
 

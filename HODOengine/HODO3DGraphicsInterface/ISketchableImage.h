@@ -1,7 +1,6 @@
 #pragma once
-#include "ISketchable.h"
-#include "..\\HODOmath\HODOmath.h"
 #include <string>
+#include "ISketchable.h"
 
 namespace HDEngine
 {
@@ -12,9 +11,24 @@ namespace HDEngine
 		virtual void SetScreenSpacePosition(float x, float y) = 0;
 		virtual float GetScreenSpacePositionX() = 0;
 		virtual float GetScreenSpacePositionY() = 0;
-		virtual void SetWorldSpace() = 0;
-		virtual float GetWidth() = 0;
-		virtual float GetHeight() = 0;
+		virtual DirectX::FXMVECTOR SetColor(DirectX::FXMVECTOR color) = 0;
+		virtual float GetWidth() override = 0;
+		virtual float GetHeight() override = 0;
 		virtual void ChangeScale(float x, float y) = 0;
+		virtual DirectX::XMFLOAT2 GetScale() = 0;
+		virtual void SetAngle(float angle) = 0;
+		virtual void SetOrigin(float x, float y) = 0;
+		virtual void SetCenter(float x, float y) = 0;
+
+		virtual void SetDefalutColor(DirectX::FXMVECTOR color) = 0;
+		virtual	void RetunDefalutColor() = 0;
+		virtual Vector2 GetImageScale() = 0;
+
+		// Fade
+		virtual void FadeIn(float time) override = 0;
+		virtual void FadeOut(float time) override = 0;
+		virtual bool GetFadeMode() override = 0;
+		virtual bool GetComplete() override = 0;
+
 	};
 }

@@ -1,4 +1,4 @@
-#include "SliderUI.h"
+﻿#include "SliderUI.h"
 #include "GameObject.h"
 #include "ImageUI.h"
 #include "TextUI.h"
@@ -11,7 +11,12 @@
 namespace HDData
 {
 	SliderUI::SliderUI()
-		:_inputSystem(HDEngine::InputSystem::Instance())
+		: _min(0), _max(0),
+		_background(nullptr),
+		_fill(nullptr),
+		_handle(nullptr),
+		_value(nullptr),
+		_defaultValue(0)
 	{
 	}
 
@@ -36,45 +41,36 @@ namespace HDData
 			if (child->GetObjectName() == "value")
 			{
 				_value = child->GetComponent<HDData::TextUI>();
+				_value->SetFont("Resources/Font/KRAFTON_25.spriteFont");
 			}
 		}
-		auto test = _background->GetImageWidth();
-		_min = GetTransform()->GetWorldPosition().x - (_background->GetImageWidth() / 2);
-		_max = GetTransform()->GetWorldPosition().x + _background->GetImageWidth() / 2;
+
+		_min = GetTransform()->GetPosition().x - (_background->GetImageWidth() / 2);
+		_max = GetTransform()->GetPosition().x + _background->GetImageWidth() / 2;
+		_handle->GetTransform()->SetPosition(_max, GetTransform()->GetPosition().y, 0);
+		_value->GetTransform()->SetPosition(_background->GetTransform()->GetPosition().x + _background->GetImageWidth() + 1, _handle->GetTransform()->GetPosition().y, 0);
 	}
 
 	void SliderUI::Update()
 	{
-		if (_inputSystem.GetMouseDown(MOUSE_LEFT))
+		if (_background->GetIsGrabbing())
 		{
-			_isClicked = _inputSystem.Check2DClicked(_background->GetScreenSpacePositionX(), _background->GetScreenSpacePositionY(),
-										_background->GetScreenSpacePositionX() + _background->GetImageWidth(),
-										_background->GetScreenSpacePositionY() + _background->GetImageHeight());
-		}
-	
-		if (_isClicked == true)
-		{
-			float mouseX = _inputSystem.GetMousePosition().x;
-			auto newValue = ((_handle->GetScreenSpacePositionX() - _background->GetScreenSpacePositionX()) / _background->GetImageWidth()) * 100;
+			auto mouseX = HDEngine::InputSystem::Instance().GetMousePosition().x;
+			auto newValue = ((_handle->GetTransform()->GetPosition().x - _background->GetLeft()) / _background->GetImageWidth()) * 100;
 
-			_handle->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
-			_value->GetTransform()->SetWorldPosition(mouseX - _handle->GetImageWidth(), _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
+			_handle->GetTransform()->SetPosition(mouseX, _background->GetTransform()->GetPosition().y, 0);
 			_value->SetText(std::to_string((int)newValue));
 
 			if (mouseX > _max)
 			{
-				_handle->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_max, _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetPosition(_max, _handle->GetTransform()->GetPosition().y, 0);
 				_value->SetText("100");
 			}
 			if (mouseX < _min)
 			{
-				_handle->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetWorldPosition().y, GetTransform()->GetWorldPosition().z);
-				_value->GetTransform()->SetWorldPosition(_min, _handle->GetTransform()->GetWorldPosition().y - 30, GetTransform()->GetWorldPosition().z);
+				_handle->GetTransform()->SetPosition(_min, _handle->GetTransform()->GetPosition().y, 0);
 				_value->SetText("0");
 			}
-
-			if (_inputSystem.GetMouseUp(MOUSE_LEFT)) _isClicked = false;
 		}
 	}
 
@@ -115,6 +111,13 @@ namespace HDData
 	void SliderUI::SetSliderHandleImage(const char* fileName)
 	{
 		_handle->SetImage(fileName);
+	}
+
+	void SliderUI::SetSortOrder(float value)
+	{
+		_background->SetSortOrder(value);
+		_handle->SetSortOrder(value + 0.01f);
+		_value->SetSortOrder(value + 0.02f);
 	}
 
 	void SliderUI::SetValueText(std::string val)

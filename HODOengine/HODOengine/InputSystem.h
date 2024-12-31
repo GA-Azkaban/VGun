@@ -1,10 +1,12 @@
-#pragma once
+﻿#pragma once
 #include <windows.h>
-#include "InputData.h"
-#include "../HODOmath/HODOmath.h"
-#include "Singleton.h"
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
+
+#include "InputData.h"
+#include "MathHeader.h"
+#include "Singleton.h"
 /// <summary>
 /// 오수안
 /// DirectInput을 이용한 개선된 인풋 시스템
@@ -22,7 +24,7 @@ namespace HDEngine
 		InputSystem() = default;
 
 	public:
-		void Initialize(HWND hWnd, HINSTANCE instance, int screenWidth, int screenHeight);
+		void Initialize(HWND hWnd, HINSTANCE instance);
 		void Update();
 		void Finalize();
 
@@ -34,15 +36,18 @@ namespace HDEngine
 		bool GetMouseDown(BYTE key);
 		bool GetMouseUp(BYTE key);
 
-		bool CheckMouseMove();
-		bool Check2DClicked(float x, float y, float width, float height);
+		Vector2 GetMousePosition();
+		Vector2 GetMouseDelta();
 
-		HDMath::HDFLOAT2 GetMousePosition();
-		HDMath::HDFLOAT2 GetMouseDelta();
-	
+		char ConvertKeyToChar(BYTE key, bool isShiftPressed);
+		char GetInputText(BYTE key);
+
 		float GetMouseWheel();
 
 		void Flush();
+		void RecursiveMouse();
+
+		void SetRecursiveMouseMode(bool isModeOn);
 
 	private:
 		bool StartDXInput();
@@ -65,13 +70,17 @@ namespace HDEngine
 		bool					_keyState[256];
 		bool					_prevKeyState[256];
 
+		bool					_isKeyPressed;
+		bool					_isShiftPressed;
+
 		POINT					_mousePos;
 		POINT					_prevMousePos;
 		POINT					_mouseDelta;
 		POINT					_prevMouseDelta;
 		int						_mouseWheel;
-		int						_wheelMax;
-		int						_wheelMin;
+
+		// 무한마우스를 조건부로 하기 위해 추가. 24.2.1.AJY.
+		bool					_isFirstPersonPerspective = false;
 	};
 }
 

@@ -15,8 +15,16 @@
 
 #include "CorePch.h"	
 #include "Enum.pb.h"
+#include "Struct.pb.h"
+#include "Protocol.pb.h"
 
 using GameSessionRef = std::shared_ptr<class GameSession>;
+
 using PlayerRef = std::shared_ptr<class Player>;
+using PlayerWeakRef = std::weak_ptr<class Player>;
+
+using RoomRef = std::shared_ptr<class Room>;
+using RoomWeakRef = std::weak_ptr<class Room>;
 
 #include "ErrorCode.h"
+#include "Job.h"

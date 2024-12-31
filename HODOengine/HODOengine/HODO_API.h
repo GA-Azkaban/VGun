@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 /// <summary>
@@ -11,13 +11,8 @@
 
 #include <windows.h>
 #include <string>
-#include "..\HODOmath\HODOmath.h"
-
-#ifdef _DEBUG
-#pragma comment(lib,"..\\x64\\Debug\\HODOmath.lib")
-#else
-#pragma comment(lib,"..\\x64\\Release\\HODOmath.lib")
-#endif // _DEBUG
+#include "MathHeader.h"
+#include <DirectXColors.h>
 
 #include "Scene.h"
 #include "GameObject.h"
@@ -26,10 +21,13 @@
 #include "Camera.h"
 #include "Script.h"
 #include "Collider.h"
+#include "StaticPlaneCollider.h"
 #include "StaticBoxCollider.h"
+#include "StaticSphereCollider.h"
 #include "DynamicBoxCollider.h"
 #include "DynamicCapsuleCollider.h"
 #include "DynamicSphereCollider.h"
+#include "ParticleSphereCollider.h"
 #include "MeshRenderer.h"
 #include "SkinnedMeshRenderer.h"
 #include "InputData.h"
@@ -41,8 +39,21 @@
 #include "AudioSource.h"
 #include "AudioClip.h"
 #include "ToggleUI.h"
+#include "TextInputBoxUI.h"
+#include "UIBase.h"
+#include "Animator.h"
+#include "AnimationController.h"
+#include "HDMaterial.h"
+#include "MaterialManager.h"
+#include "Tween.h"
+#include "ParticleSystem.h"
+#include "TriggerBoxCollider.h"
+#include "Light.h"
+#include "PhysicsCollision.h"
 
+#include "RenderSystem.h"
 #include "ObjectSystem.h"
+#include "../HODO3DGraphicsInterface/ICubeMap.h"
 
 namespace API
 {
@@ -51,16 +62,44 @@ namespace API
 		// 씬을 생성, 로드
 		HODO_API HDData::Scene* CreateScene(std::string sceneName);
 		HODO_API void LoadScene(HDData::Scene* scene);
+		HODO_API HDData::Scene* LoadSceneByName(std::string scene);
+		HODO_API std::vector<HDData::UIBase*>& GetAllUIList();
+
+		// 씬 데이터에서 씬 로드
+		HODO_API void LoadSceneFromData(std::string fileName, HDData::Scene* scene);
+		HODO_API std::unordered_map<int, Vector3>& GetSpawnPointArr();
+		HODO_API Vector3* GetCloudPosition();
+
+		// 애니메이션 툴 데이터에서 FSM 로드
+		HODO_API void LoadFPAnimationFromData(HDData::GameObject* gameobject, std::string data);
 
 		// 각종 오브젝트 생성
 		HODO_API HDData::GameObject* CreateObject(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateStaticObject(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API void CreateStaticComponent(HDData::Component* component);
+		HODO_API HDData::GameObject* CreateStaticButton(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateImageBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateButton(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
-		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);/*
-		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);*/
-		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateTextbox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateSlidebox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateSlider(HDData::Scene* scene, int defaultValue, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateStaticSlider(std::string objectName = "", HDData::GameObject* parentObject = nullptr);
 		HODO_API HDData::GameObject* CreateToggle(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::GameObject* CreateTextInputBox(HDData::Scene* scene, std::string objectName = "", HDData::GameObject* parentObject = nullptr);
+		HODO_API HDData::Tween* CreateTween();
 
+		HODO_API HDData::GameObject* GetObjectByName(HDData::Scene* scene, std::string objectName);
+
+		HODO_API HDEngine::ICubeMap* GetCubeMap();
+
+		// 현재 씬
+		HODO_API HDData::Scene* GetCurrentScene();
+		HODO_API std::string GetCurrentSceneName();
+		HODO_API std::string GetPrevSceneName();
+
+		// 메인 카메라 조작을 위한 함수
+		HODO_API HDData::Camera* GetCurrenSceneMainCamera();
+		HODO_API HDData::Camera* SetCurrentSceneMainCamera(HDData::Camera* camera);
 
 		// 키 입력을 위한 함수 (키보드, 마우스)
 		HODO_API bool GetKeyDown(BYTE keyCode);
@@ -69,20 +108,39 @@ namespace API
 		HODO_API bool GetMouseDown(int keyCode);
 		HODO_API bool GetMouseUp(int keyCode);
 		HODO_API bool GetMouseHold(int keyCode);
-		HODO_API HDMath::HDFLOAT2 GetMousePosition();
+		HODO_API Vector2 GetMousePosition();
 		HODO_API float GetMouseWheel();
-		HODO_API HDMath::HDFLOAT2 GetMouseDelta();
+		HODO_API Vector2 GetMouseDelta();
+		HODO_API void SetRecursiveMouseMode(bool isModeOn);
 
 		// 디버그 시스템을 위한 함수
 		HODO_API void DebugModeOn(int flag);
-		HODO_API void DrawLine(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 end, HDMath::HDFLOAT4 color);
-		HODO_API void DrawLineDir(HDMath::HDFLOAT3 start, HDMath::HDFLOAT3 direction, float length, HDMath::HDFLOAT4 color);
+		HODO_API void DrawLine(Vector3 start, Vector3 end, Vector4 color);
+		HODO_API void DrawLineDir(Vector3 start, Vector3 direction, float length, Vector4 color);
 
 		// 델타 타임
 		HODO_API float GetDeltaTime();
 
+		// Screen Size
+		HODO_API int GetScreenWidth();
+		HODO_API int GetScreenHeight();
+
 		/// physics stuff
-		HODO_API HDData::Collider* ShootRay(HDMath::HDFLOAT3 origin, HDMath::HDFLOAT3 direction, float length = 100.0f, int* type = nullptr);
+		HODO_API HDData::Collider* ShootRay(Vector3 origin, Vector3 direction, float length = 100.0f, int* type = nullptr);
+		HODO_API HDData::Collider* ShootRayHitPoint(Vector3 origin, Vector3 direction, Vector3& hitPoint, float length = 100.0f, int* type = nullptr);
+
+		// Material
+		HODO_API HDData::Material* CreateMaterial(const HDEngine::MaterialDesc& desc);
+		HODO_API HDData::Material* GetMaterial(const std::string materialName);
+
+		// Resize
+		HODO_API void Resize(int width, int height);
+
+		// Destroy window
+		HODO_API void QuitWindow();
+
+		// Show cursor
+		HODO_API void ShowWindowCursor(bool isShow);
 	}
 }
 

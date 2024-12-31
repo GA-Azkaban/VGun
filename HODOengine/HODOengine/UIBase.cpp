@@ -1,18 +1,18 @@
-#include "UIBase.h"
+﻿#include "UIBase.h"
 #include "Transform.h"
 #include "InputSystem.h"
+#include "GameObject.h"
 
 namespace HDData
 {
 	UIBase::UIBase()
-		:_sketchable(NULL)
+		:_sketchable(NULL),
+		_sortOrder(0.1f),
+		_isHovering(false),
+		_isGrabbing(false),
+		_isClicked(false)
 	{
 
-	}
-
-	void UIBase::UpdateRenderData()
-	{
-		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
 	}
 
 	bool UIBase::CheckFocus()
@@ -22,19 +22,42 @@ namespace HDData
 			return false;
 		}
 
-		HDMath::HDFLOAT2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
+		Vector2 mouse = HDEngine::InputSystem::Instance().GetMousePosition();
 
-		return true;
+		if (mouse.x > GetLeft() &&
+			mouse.y > GetTop() &&
+			mouse.x < GetRight() &&
+			mouse.y < GetBottom())
+		{
+			return true;
+		}
+
+		return false;
 	}
 
-	int UIBase::GetSortOrder() const
+	void UIBase::OnEnable()
+	{
+		_sketchable->SetActive(true);
+	}
+
+	void UIBase::OnDisable()
+	{
+		_sketchable->SetActive(false);
+	}
+
+	void UIBase::Update()
+	{
+		_sketchable->SetWorldTM(GetTransform()->GetWorldTM());
+	}
+
+	float UIBase::GetSortOrder() const
 	{
 		return _sortOrder;
 	}
 
-	bool UIBase::GetIsFocused()
+	bool UIBase::GetIsHovering()
 	{
-		return _isFocused;
+		return _isHovering;
 	}
 
 	bool UIBase::GetIsClicked()
@@ -42,29 +65,74 @@ namespace HDData
 		return _isClicked;
 	}
 
+	bool UIBase::GetIsGrabbing()
+	{
+		return _isGrabbing;
+	}
+
 	bool UIBase::IsIgnoreFocused()
 	{
 		return _ignoreFocus;
 	}
 
+	void UIBase::SetSortOrder(float orderNum)
+	{
+		_sortOrder = orderNum;
+		_sketchable->SetSortOrder(orderNum);
+	}
+
+	void UIBase::SetIsHovering(bool isHovering)
+	{
+		_isHovering = isHovering;
+	}
+
+	void UIBase::SetIsClicked(bool isClicked)
+	{
+		_isClicked = isClicked;
+	}
+
+	void UIBase::SetIsGrabbing(bool isGrabbing)
+	{
+		_isGrabbing = isGrabbing;
+	}
+
+	void UIBase::SetIsIgnoreFocus(bool isIgnore)
+	{
+		_ignoreFocus = isIgnore;
+	}
+
 	float UIBase::GetLeft()
 	{
-		return {};
+		return GetTransform()->GetPosition().x -
+			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
 	}
 
 	float UIBase::GetRight()
 	{
-		return {};
+		return GetTransform()->GetPosition().x +
+			(_sketchable->GetWidth() * GetTransform()->GetScale().x / 2);
 	}
 
 	float UIBase::GetTop()
 	{
-		return {};
+		return GetTransform()->GetPosition().y -
+			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
 	}
 
 	float UIBase::GetBottom()
 	{
-		return {};
+		return GetTransform()->GetPosition().y +
+			(_sketchable->GetHeight() * GetTransform()->GetScale().y / 2);
+	}
+
+	void UIBase::FadeIn(float time)
+	{
+		_sketchable->FadeIn(time);
+	}
+
+	void UIBase::FadeOut(float time)
+	{
+		_sketchable->FadeOut(time);
 	}
 
 }

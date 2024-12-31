@@ -1,15 +1,18 @@
-#include "ImageUI.h"
+﻿#include "ImageUI.h"
 #include "Transform.h"
 #include "GraphicsObjFactory.h"
 #include "RenderSystem.h"
+#include "GameObject.h"
+#include "ToggleUI.h"
+#include "Component.h"
 
 namespace HDData
 {
 	ImageUI::ImageUI()
 		: _imageUI(HDEngine::GraphicsObjFactory::Instance().GetFactory()->CreateImage())
 	{
-		HDEngine::RenderSystem::Instance().PushSketchComponent(this);
 		_sketchable = _imageUI;
+		_imageUI->SetActive(true);
 	}
 
 	void ImageUI::SetActive(bool active)
@@ -42,6 +45,21 @@ namespace HDData
 		return _imageUI->GetScreenSpacePositionY();
 	}
 
+	DirectX::FXMVECTOR ImageUI::SetColor(DirectX::FXMVECTOR color)
+	{
+		return _imageUI->SetColor(color);
+	}
+
+	void ImageUI::SetDefaultColor(DirectX::FXMVECTOR color)
+	{
+		_imageUI->SetDefalutColor(color);
+	}
+
+	void ImageUI::RetunDefaultColor()
+	{
+		_imageUI->RetunDefalutColor();
+	}
+
 	float ImageUI::GetImageWidth()
 	{
 		return _imageUI->GetWidth();
@@ -52,9 +70,59 @@ namespace HDData
 		return _imageUI->GetHeight();
 	}
 
+	void ImageUI::OnClickEvent()
+	{
+
+	}
+
 	void ImageUI::ChangeScale(float x, float y)
 	{
 		_imageUI->ChangeScale(x, y);
+	}
+
+	DirectX::XMFLOAT2 ImageUI::GetScale()
+	{
+		return _imageUI->GetScale();
+	}
+
+	void ImageUI::SetAngle(float angle)
+	{
+		_imageUI->SetAngle(angle);
+	}
+
+	void ImageUI::SetOrigin(float x, float y)
+	{
+		_imageUI->SetOrigin(x, y);
+	}
+
+	void ImageUI::SetCenter(float x, float y)
+	{
+		_imageUI->SetCenter(x, y);
+	}
+
+	Vector2 ImageUI::GetImageScale()
+	{
+		return _imageUI->GetImageScale();
+	}
+
+	void ImageUI::FadeIn(float time)
+	{
+		return _imageUI->FadeIn(time);
+	}
+
+	void ImageUI::FadeOut(float time)
+	{
+		return _imageUI->FadeOut(time);
+	}
+
+	bool ImageUI::GetComplete()
+	{
+		return _imageUI->GetComplete();
+	}
+
+	bool ImageUI::GetFadeMode()
+	{
+		return _imageUI->GetFadeMode();
 	}
 
 }

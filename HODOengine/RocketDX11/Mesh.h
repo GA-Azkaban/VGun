@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <d3d11.h>
 #include <dxgi.h>
 #include <DirectXMath.h>
@@ -39,7 +39,7 @@ namespace RocketCore::Graphics
 		/// 2024.01.15 김민정
 	public:
 		Mesh(PosColor* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
-		Mesh(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
+		Mesh(Vertex* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum, bool tangentCalculated = false);
 		Mesh(VertexSkinning* vertexArray, int vertexNum, unsigned int* indexArray, int indicesNum);
 		Mesh(const char* objFile);
 		~Mesh();
@@ -48,6 +48,7 @@ namespace RocketCore::Graphics
 
 		void BindBuffers();
 		void Draw();
+		void DrawInstanced(UINT instanceCount);
 
 	private:
 		void CalculateTangents(Vertex* vertex, int vertexNum, unsigned int* indices, int indicesNum);

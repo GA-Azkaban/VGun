@@ -1,11 +1,14 @@
-#include <cassert>
+﻿#include <cassert>
 
 #include "Scene.h"
 #include "GameObject.h"
 #include "Camera.h"
 #include "AudioListener.h"
+#include "Light.h"
+#include "TextUI.h"
 
 #include "ObjectSystem.h"
+#include "TimeSystem.h"
 #include <algorithm>
 
 namespace HDData
@@ -17,14 +20,30 @@ namespace HDData
 		GameObject* camObj = CreateObject("MainCamera");
 		Camera* mainCam = camObj->AddComponent<Camera>();
 		SetMainCamera(mainCam);
-		camObj->GetTransform()->SetWorldPosition(0.0f, 2.0f, -10.0f);
+		camObj->GetTransform()->SetPosition(0.0f, 2.0f, -10.0f);
 		// 씬이 생성될 때 메인카메라에 오디오리스너 컴포넌트를 생성하여 부착한다
 		camObj->AddComponent<AudioListner>();
+		// 씬이 생성될 때 Directional Light를 자동으로 생성한다.
+		GameObject* dirLight = CreateObject("DirectionalLight");
+		auto dirLightComp = dirLight->AddComponent<Light>();
+		dirLightComp->SetDirection(Vector4(0, -3, -2, 0));
+		dirLightComp->SetColor(Vector4(255/255.0f, 255/255.0f, 255/255.0f, 1.0f));
+		dirLightComp->SetLightType(Light::DirectionalLight);
+		SetMainLight(dirLightComp);
+
+		// 임시
+		// fps debugging text
+		auto fpsTextObj = CreateObject("fpsText");
+		fpsTextObj->GetTransform()->SetPosition(Vector3(100.0f, 20.0f, 50.0f));
+		_fpsText = fpsTextObj->AddComponent<HDData::TextUI>();
+		_fpsText->SetColor(DirectX::XMVECTOR{ 1.0f, 0.0f, 1.0f, 1.0f });
+		_fpsText->SetText("");
+		_fpsText->SetSortOrder(1.0f);
 	}
 
 	Scene::~Scene()
 	{
-		
+
 	}
 
 	HDData::GameObject* Scene::CreateObject(std::string objectName /*= ""*/, HDData::GameObject* parent /*= nullptr*/)
@@ -56,24 +75,32 @@ namespace HDData
 	{
 		if (!_gameObjects.empty())
 		{
-			for (auto& gameObject : _gameObjects)
+			for (auto it = _gameObjects.begin(); it != _gameObjects.end(); )
 			{
-				if (gameObject->IsActive())
+				if ((*it)->IsActive() && (*it)->GetParentActive())
 				{
-					gameObject->Start();
+					(*it)->Start();
+					_runningObjects.push_back(*it);
+					it = _gameObjects.erase(it);
 				}
-				GetRunningObjectList().push_back(gameObject);
+				else
+				{
+					++it;
+				}
 			}
-			_gameObjects.clear();
 		}
 
 		for (auto& gameObject : GetRunningObjectList())
 		{
 			if (gameObject->IsActive())
 			{
-				gameObject->Update();
+ 				gameObject->Update();
 			}
 		}
+
+#ifdef _DEBUG
+		_fpsText->SetText("FPS: " + std::to_string(HDEngine::TimeSystem::Instance().GetFramePerSecond()));
+#endif
 	}
 
 	void Scene::LateUpdate()
@@ -123,6 +150,19 @@ namespace HDData
 		_sceneName = sceneName;
 	}
 
+	HDData::GameObject* Scene::GetGameObjectByName(std::string objectName)
+	{
+		for (auto& gameObject : _gameObjects)
+		{
+			if (gameObject->GetObjectName() == objectName)
+			{
+				return gameObject;
+			}
+		}
+
+		return nullptr;
+	}
+
 	HDData::Camera* Scene::GetMainCamera()
 	{
 		assert(_mainCamera);
@@ -131,7 +171,17 @@ namespace HDData
 
 	void Scene::SetMainCamera(Camera* camera)
 	{
-		_mainCamera = camera;
-		_mainCamera->SetAsMainCamera();
+		this->_mainCamera = camera;
 	}
+
+	HDData::Light* Scene::GetMainLight()
+	{
+		return _mainLight;
+	}
+
+	void Scene::SetMainLight(Light* light)
+	{
+		_mainLight = light;
+	}
+
 }

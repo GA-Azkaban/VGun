@@ -1,10 +1,11 @@
-#pragma once
-#include "dllExporter.h"
-//#include "Component.h"
-#include "Transform.h"
+﻿#pragma once
 #include <unordered_set>
 #include <vector>
 #include <string>
+#include "dllExporter.h"
+//#include "Component.h"
+#include "Transform.h"
+#include "../HODO3DGraphicsInterface/Node.h"
 
 /// <summary>
 /// 게임 오브젝트는 게임 씬에 배치될 수 있는 가장 기본적인 단위의 객체입니다.
@@ -16,22 +17,24 @@
 /// 2023.11.01 김민정
 /// </summary>
 
+namespace HDEngine
+{
+	class ObjectSystem;
+}
+
 namespace HDData
 {
 	class Component;
 	class Transform;
-
+	class Scene;
 
 	template <class ComponentType>
 	concept ComponentConcept = std::is_base_of<Component, ComponentType>::value;
-
 	class HODO_API GameObject
 	{
 	public:
-		friend Component::Component();
-		// GameObject의 생성과 초기화 작업은 Scene에서 AddGameObject()를 호출할 때 할 것임.
+		// GameObject의 생성과 초기화 작업은 Scene에서 CreateObject()를 호출할 때 할 것임.
 		~GameObject() = default;
-		GameObject(std::string name = "");
 		GameObject(const GameObject&) = delete;
 		GameObject(GameObject&&) = delete;
 		GameObject& operator=(const GameObject&) = delete;
@@ -45,73 +48,120 @@ namespace HDData
 		void FixedUpdate();
 		void OnDestroy();
 
-		void OnCollisionEnter();
-		void OnCollisionStay();
-		void OnCollisionExit();
-
-		template <ComponentConcept ComponentType>
-		ComponentType* AddComponent() {
-			ComponentType* component = new ComponentType();
+		template <ComponentConcept ComponentType, typename... Args>
+		ComponentType* AddComponent(Args&&... args) {
+			ComponentType* component = new ComponentType(std::forward<Args>(args)...);
 			component->_gameObject = this;
-			_components.emplace(component);
+			_componentsIndexed.push_back(component);
 			return component;
 		}
 
 		template <ComponentConcept ComponentType>
 		ComponentType* GetComponent() const {
-			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+			for (int i = 0; i < _componentsIndexed.size(); ++i)
 			{
-				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
+				ComponentType* castedPointer = dynamic_cast<ComponentType*>(_componentsIndexed[i]);
 				if (castedPointer)
 					return castedPointer;
 			}
 			return nullptr;
 		}
 
+		template <ComponentConcept ComponentType>
+		ComponentType* GetComponentInChildren() const {
+			ComponentType* comp = GetComponent<ComponentType>();
+			if (comp != nullptr)
+			{
+				return comp;
+			}
+
+			for (int i = 0; i < _childGameObjectsIndexed.size(); ++i)
+			{
+				ComponentType* findComp = _childGameObjectsIndexed[i]->GetComponentInChildren<ComponentType>();
+				if (findComp != nullptr)
+				{
+					return findComp;
+				}
+			}
+
+			return nullptr;
+		}
+
 		template<ComponentConcept ComponentType>
 		std::vector<ComponentType*> GetComponents() const {
 			std::vector<ComponentType*> ret;
-			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+			for (int i = 0; i < _componentsIndexed.size(); ++i)
 			{
-				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
+				ComponentType* castedPointer = dynamic_cast<ComponentType*>(_componentsIndexed[i]);
 				if (castedPointer)
 					ret.push_back(castedPointer);
 			}
 			return ret;
 		}
 
-		const std::unordered_set<Component*>& GetAllComponents() const;
-		const std::unordered_set<GameObject*>& GetChildGameObjects() const;
-		
+		const std::vector<Component*>& GetAllComponents() const;
+		const std::vector<GameObject*>& GetChildGameObjects() const;
+
 		template<ComponentConcept ComponentType>
 		void DeleteComponent()
 		{
-			for (auto iter = _components.begin(); iter != _components.end(); ++iter)
+			for (auto iter = _componentsIndexed.begin(); iter != _componentsIndexed.end(); ++iter)
 			{
 				ComponentType* castedPointer = dynamic_cast<ComponentType*>(*iter);
 				if (castedPointer != nullptr)
 				{
-					_components.erase(iter);
+					_componentsIndexed.erase(iter);
 				}
 			}
 		}
 
 		GameObject* GetParentGameObject() { return _parentGameObject; }
-		Transform* GetTransform() const { return _transform; }
+		GameObject* GetGameObjectByNameInChildren(const std::string& objectName);
+		Scene* GetThisObjectScene();
+		Transform* GetTransform() { return _transform; }
 		bool IsActive() { return _selfActive; }
 
 		void SetParentObject(GameObject* parentObject);
 		void SetSelfActive(bool active);
+		bool GetSelfActive();
+		bool GetParentActive();
+		void SetObjectName(std::string str);
 		std::string GetObjectName();
+		GameObject* GetParentObject();
+
+		// 노드 계층화가 있는 오브젝트에 호출해 파일 내에 있는 계층도대로 자식 오브젝트들을 만들어준다.
+		void LoadFBXFile(std::string fileName);
+
+		void FlushEnable();
+		void FlushDisable();
+
+		void OnCollisionEnter(PhysicsCollision** _colArr, unsigned int count);
+		void OnCollisionStay(PhysicsCollision** _colArr, unsigned int count);
+		void OnCollisionExit(PhysicsCollision** _colArr, unsigned int count);
+
+		void OnTriggerEnter(Collider** _colArr, unsigned int count);
+		void OnTriggerExit(Collider** _colArr, unsigned int count);
 
 	private:
-		std::unordered_set<Component*> _components;
+		GameObject(std::string name = "");
 
-		std::unordered_set<GameObject*> _childGameObjects;
+	private:
+		Node* FindNodeByName(Node* node, std::string nodeName);
+		void ProcessNode(Scene* scene, Node* node, GameObject* parentObject);
+
+	private:
+		//std::unordered_set<Component*> _components;
+		std::vector<Component*> _componentsIndexed;
+
+		//std::unordered_set<GameObject*> _childGameObjects;
+		std::vector<GameObject*> _childGameObjectsIndexed;
+
 		std::string _objectName;
 		GameObject* _parentGameObject;
 		Transform* _transform;
 		bool _selfActive;
 
+		friend HDEngine::ObjectSystem;
+		friend Component::Component();
 	};
 }
